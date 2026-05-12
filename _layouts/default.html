@@ -1660,6 +1660,10 @@ let lastY = window.scrollY;
       hamburger.addEventListener('click', () => {
         // Close the main nav if it was open (one menu at a time)
         document.body.classList.remove('main-nav-open');
+        // The mobile drawer is always a full slide-in — never inherit the
+        // desktop's collapsed-rail state, which would render the drawer at
+        // 36px wide with the cramped icon-only collapsed styles.
+        document.body.classList.remove('toc-collapsed');
         document.body.classList.toggle('drawer-open');
       });
     }
@@ -1852,6 +1856,28 @@ let lastY = window.scrollY;
     // Defer a tick so initialPopulate has run first
     setTimeout(handleHashChange, 0);
   }
+
+  // ════════════════════════════════════════════════════════════════════
+  // Mobile-viewport guard — the toc-collapsed class is a desktop-only
+  // state (it shrinks the side rail to a 36px icon column). If a user
+  // collapses the rail on desktop and then resizes their browser into
+  // mobile width, the class persists and breaks the mobile drawer styles.
+  // This listener clears the class whenever the viewport enters mobile
+  // range, so the drawer always opens to its full mobile width.
+  // ════════════════════════════════════════════════════════════════════
+  const mobileQuery = window.matchMedia('(max-width: 720px)');
+  function syncTocStateToViewport(e) {
+    if (e.matches) {
+      document.body.classList.remove('toc-collapsed');
+    }
+  }
+  if (typeof mobileQuery.addEventListener === 'function') {
+    mobileQuery.addEventListener('change', syncTocStateToViewport);
+  } else if (typeof mobileQuery.addListener === 'function') {
+    mobileQuery.addListener(syncTocStateToViewport);  // older Safari
+  }
+  // Run once on load in case the page opens already at mobile width
+  syncTocStateToViewport(mobileQuery);
 
 })();
   {% endraw %}
