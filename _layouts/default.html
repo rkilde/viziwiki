@@ -1382,11 +1382,45 @@
     width: var(--wiki-rail-w);
     background: var(--wiki-bg);
     border-right: 1px solid var(--wiki-faint);
-    z-index: 98;
+    z-index: 110;  /* must beat backdrop (108–109) so mobile drawer shows */
     overflow-y: auto;
     padding: 24px 16px;
     display: block;
   }
+
+  /* ── BACK LINK at top of drawer — hidden until WIKI_TOC.parentUrl is set ── */
+  body.wiki-page .wiki-back {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 16px;
+    margin: 0 -16px 18px;
+    color: var(--wiki-muted);
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--wiki-faint);
+    transition: color .15s ease, background .15s ease;
+  }
+  body.wiki-page .wiki-back:hover {
+    color: var(--wiki-fg);
+    background: rgba(42, 31, 21, .04);
+  }
+  body.wiki-page .wiki-back svg { width: 12px; height: 12px; flex-shrink: 0; }
+  body.wiki-page .wiki-back[hidden] { display: none; }
+
+  /* ── LOGO slot in wiki-bar — sits to the left of the page title ── */
+  body.wiki-page .wiki-bar-logo {
+    width: 22px; height: 22px; flex-shrink: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  body.wiki-page .wiki-bar-logo svg,
+  body.wiki-page .wiki-bar-logo img {
+    width: 100%; height: 100%; display: block;
+  }
+  body.wiki-page .wiki-bar-logo:empty { display: none; }
+
   body.wiki-page .wiki-toc-header {
     display: flex; align-items: center; gap: 8px;
     font-family: 'JetBrains Mono', monospace;
@@ -1457,6 +1491,220 @@
       transform: translateX(0);
     }
   }
+
+  /* ═══════════════════════════════ JOURNEYS MODAL ═══════════════════════════
+     Opens when the "Journeys" nav link is clicked. Two side-by-side panels
+     for the wiki path (cream theme) and the Vizi-verse path (dark theme),
+     each previewing 3 candidate logo concepts the user can pick from.
+     ──────────────────────────────────────────────────────────────────────── */
+  .journey-modal {
+    position: fixed; inset: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  body.journey-open .journey-modal { display: flex; }
+
+  .journey-backdrop {
+    position: absolute; inset: 0;
+    background: rgba(10, 14, 26, .68);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  }
+
+  .journey-card {
+    position: relative;
+    background: #fff;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 960px;
+    max-height: 92vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, .45);
+    animation: journeyPopIn .28s cubic-bezier(.2, .85, .2, 1);
+  }
+  @keyframes journeyPopIn {
+    from { transform: scale(.96); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+  }
+
+  .journey-close {
+    position: absolute;
+    top: 14px; right: 14px;
+    z-index: 2;
+    width: 32px; height: 32px;
+    border: none; border-radius: 50%;
+    background: rgba(10, 14, 26, .06);
+    color: #0a0e1a;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background .18s ease;
+  }
+  .journey-close:hover { background: rgba(10, 14, 26, .12); }
+  .journey-close svg { width: 12px; height: 12px; }
+
+  .journey-header {
+    text-align: center;
+    padding: 40px 24px 16px;
+  }
+  .journey-header h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 30px; font-weight: 500;
+    letter-spacing: -.015em;
+    color: #0a0e1a;
+    margin: 0 0 6px;
+  }
+  .journey-header p {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    color: rgba(10, 14, 26, .55);
+    margin: 0;
+    letter-spacing: .01em;
+  }
+
+  .journey-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 16px 24px 28px;
+  }
+
+  .journey-half {
+    padding: 24px 20px;
+    border-radius: 10px;
+    text-align: center;
+    display: flex; flex-direction: column;
+  }
+  .journey-half.wiki {
+    background: #fdf8e7;
+    color: #2a1f15;
+    border: 1px solid rgba(42, 31, 21, .1);
+  }
+  .journey-half.verse {
+    background: linear-gradient(160deg, #0e1326 0%, #1a1330 70%, #2a1840 100%);
+    color: #f0f0f0;
+    border: 1px solid rgba(183, 148, 212, .25);
+  }
+
+  .journey-logo-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .journey-logo-option {
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    background: transparent;
+    border: 1.5px solid transparent;
+    transition: transform .2s ease, background .2s ease, border-color .2s ease;
+  }
+  .journey-half.wiki .journey-logo-option {
+    background: rgba(42, 31, 21, .04);
+    border-color: rgba(42, 31, 21, .12);
+    color: #2a1f15;
+  }
+  .journey-half.wiki .journey-logo-option:hover {
+    background: rgba(42, 31, 21, .08);
+    border-color: rgba(42, 31, 21, .35);
+    transform: translateY(-2px);
+  }
+  .journey-half.wiki .journey-logo-option.selected {
+    background: rgba(233, 30, 94, .08);
+    border-color: #e91e5e;
+  }
+  .journey-half.verse .journey-logo-option {
+    background: rgba(255, 255, 255, .03);
+    border-color: rgba(183, 148, 212, .2);
+    color: #f0f0f0;
+  }
+  .journey-half.verse .journey-logo-option:hover {
+    background: rgba(255, 255, 255, .08);
+    border-color: rgba(183, 148, 212, .5);
+    transform: translateY(-2px);
+  }
+  .journey-half.verse .journey-logo-option.selected {
+    background: rgba(183, 148, 212, .12);
+    border-color: #b794d4;
+  }
+  .journey-logo-option svg {
+    width: 100%; height: 100%; max-width: 48px; max-height: 48px;
+  }
+  .journey-logo-option .logo-label {
+    position: absolute;
+    bottom: 4px; left: 0; right: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px; font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    opacity: .55;
+  }
+
+  .journey-half h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 22px; font-weight: 500;
+    letter-spacing: -.01em;
+    margin: 0 0 8px;
+  }
+  .journey-half .desc {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12.5px; line-height: 1.5;
+    margin: 0 0 22px;
+    opacity: .72;
+    flex: 1;
+  }
+
+  .journey-start {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; font-weight: 700;
+    letter-spacing: .18em; text-transform: uppercase;
+    padding: 12px 22px;
+    border: none; border-radius: 4px;
+    cursor: pointer;
+    align-self: center;
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .journey-half.wiki .journey-start {
+    background: #2a1f15; color: #fdf8e7;
+  }
+  .journey-half.wiki .journey-start:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(42, 31, 21, .35);
+  }
+  .journey-half.verse .journey-start {
+    background: #b794d4; color: #0a0e1a;
+  }
+  .journey-half.verse .journey-start:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(183, 148, 212, .45);
+  }
+
+  /* Journey nav-icon styling (small icon next to "Journeys" link) */
+  .main-nav a.has-journey-icon {
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .main-nav-panel a.has-journey-icon {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .journey-nav-icon { width: 13px; height: 13px; }
+
+  @media (max-width: 720px) {
+    .journey-modal { padding: 12px; }
+    .journey-card { max-height: 96vh; }
+    .journey-header { padding: 32px 16px 12px; }
+    .journey-header h2 { font-size: 24px; }
+    .journey-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      padding: 12px 16px 20px;
+    }
+    .journey-half { padding: 20px 16px; }
+    .journey-half h3 { font-size: 19px; }
+  }
   {% endraw %}
   </style>
 
@@ -1499,6 +1747,13 @@
       </svg>
       Vizi-verses
     </a>
+    <a href="#" data-action="open-journey" class="has-journey-icon">
+      <svg class="journey-nav-icon" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="7" cy="7" r="5.5"/>
+        <polygon points="7,3 8.2,7 7,11 5.8,7" fill="currentColor" stroke="none"/>
+      </svg>
+      Journeys
+    </a>
     <a href="#">About</a>
   </nav>
   <div class="main-spacer"></div>
@@ -1524,10 +1779,144 @@
         <circle cx="24" cy="24" r="3.4" fill="#b794d4"/>
       </svg>
   </a>
+  <a href="#" data-action="open-journey" data-nav="journeys" class="has-journey-icon">
+    Journeys
+    <svg class="journey-nav-icon" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="7" cy="7" r="5.5"/>
+      <polygon points="7,3 8.2,7 7,11 5.8,7" fill="currentColor" stroke="none"/>
+    </svg>
+  </a>
   <a href="#" data-nav="about">About</a>
 </div>
 
 <div class="drawer-backdrop" id="drawer-backdrop"></div>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     JOURNEYS MODAL  — opens via the "Journeys" main-nav link.
+     Picker for one of two narrative modes: encyclopedia-style wiki path
+     vs. dramatic Vizi-verse path. Each side previews 3 logo concepts.
+     Open/close handled by body.journey-open class.
+     ════════════════════════════════════════════════════════════════════ -->
+<div class="journey-modal" id="journey-modal" aria-hidden="true" role="dialog" aria-labelledby="journey-title">
+  <div class="journey-backdrop" id="journey-backdrop"></div>
+  <div class="journey-card">
+    <button class="journey-close" id="journey-close" aria-label="Close journeys picker">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+        <line x1="3.5" y1="3.5" x2="10.5" y2="10.5"/>
+        <line x1="10.5" y1="3.5" x2="3.5" y2="10.5"/>
+      </svg>
+    </button>
+
+    <div class="journey-header">
+      <h2 id="journey-title">Choose your journey</h2>
+      <p>Two ways to explore ViziWiki — pick how you want to travel.</p>
+    </div>
+
+    <div class="journey-grid">
+      <!-- ─── LEFT: WIKI JOURNEY (cream / encyclopedic) ─── -->
+      <div class="journey-half wiki">
+        <div class="journey-logo-row" data-journey="wiki">
+          <!-- Logo concept 1: TOME — open book with text -->
+          <button class="journey-logo-option" data-logo="tome" aria-label="Tome">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M 6 14 L 24 10 L 42 14 L 42 38 L 24 34 L 6 38 Z"/>
+              <line x1="24" y1="10" x2="24" y2="34"/>
+              <line x1="11" y1="19" x2="20" y2="17.5"/>
+              <line x1="11" y1="24" x2="20" y2="22.5"/>
+              <line x1="11" y1="29" x2="20" y2="27.5"/>
+              <line x1="28" y1="17.5" x2="37" y2="19"/>
+              <line x1="28" y1="22.5" x2="37" y2="24"/>
+              <line x1="28" y1="27.5" x2="37" y2="29"/>
+            </svg>
+            <span class="logo-label">Tome</span>
+          </button>
+
+          <!-- Logo concept 2: CARD — index card with file-folder tab -->
+          <button class="journey-logo-option" data-logo="card" aria-label="Card">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M 16 12 L 16 9 Q 16 8 17 8 L 24 8 Q 25 8 25 9 L 25 12"/>
+              <rect x="8" y="12" width="32" height="26" rx="2"/>
+              <line x1="13" y1="20" x2="35" y2="20"/>
+              <line x1="13" y1="25" x2="32" y2="25"/>
+              <line x1="13" y1="30" x2="28" y2="30"/>
+            </svg>
+            <span class="logo-label">Card</span>
+          </button>
+
+          <!-- Logo concept 3: STACK — stacked encyclopedia volumes -->
+          <button class="journey-logo-option" data-logo="stack" aria-label="Stack">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="11" y="10" width="26" height="7" rx="1"/>
+              <line x1="14" y1="13.5" x2="16" y2="13.5"/>
+              <rect x="9" y="20" width="30" height="7" rx="1"/>
+              <line x1="12" y1="23.5" x2="14" y2="23.5"/>
+              <rect x="11" y="30" width="26" height="7" rx="1"/>
+              <line x1="14" y1="33.5" x2="16" y2="33.5"/>
+            </svg>
+            <span class="logo-label">Stack</span>
+          </button>
+        </div>
+        <h3>Journey through the wiki</h3>
+        <p class="desc">Browse like an encyclopedia. Indexed facts, sourced articles, clean reference pages. The cream side.</p>
+        <button class="journey-start" data-start="wiki">Start a journey</button>
+      </div>
+
+      <!-- ─── RIGHT: VIZI-VERSE JOURNEY (dark / dramatic / cosmic) ─── -->
+      <div class="journey-half verse">
+        <div class="journey-logo-row" data-journey="verse">
+          <!-- Logo concept 1: PORTAL — wormhole rings -->
+          <button class="journey-logo-option" data-logo="portal" aria-label="Portal">
+            <svg viewBox="0 0 48 48" fill="none">
+              <ellipse cx="24" cy="24" rx="20" ry="6" stroke="#7dd3fc" stroke-width="1.8"/>
+              <ellipse cx="24" cy="24" rx="16" ry="8" stroke="#b794d4" stroke-width="1.6" transform="rotate(45 24 24)"/>
+              <ellipse cx="24" cy="24" rx="10" ry="4" stroke="#f0abfc" stroke-width="1.4"/>
+              <circle cx="24" cy="24" r="2.5" fill="#b794d4"/>
+            </svg>
+            <span class="logo-label">Portal</span>
+          </button>
+
+          <!-- Logo concept 2: EYE — cosmic eye with star constellation -->
+          <button class="journey-logo-option" data-logo="eye" aria-label="Eye">
+            <svg viewBox="0 0 48 48" fill="none">
+              <path d="M 6 24 Q 24 8 42 24 Q 24 40 6 24 Z" stroke="#b794d4" stroke-width="1.5"/>
+              <circle cx="24" cy="24" r="7" fill="none" stroke="#7dd3fc" stroke-width="1.5"/>
+              <circle cx="24" cy="24" r="2.5" fill="#fef9e7"/>
+              <circle cx="9" cy="14" r="1" fill="#fef9e7"/>
+              <circle cx="39" cy="14" r="1" fill="#fef9e7"/>
+              <circle cx="9" cy="34" r="1" fill="#fef9e7"/>
+              <circle cx="39" cy="34" r="1" fill="#fef9e7"/>
+              <line x1="9" y1="14" x2="39" y2="14" stroke="#b794d4" stroke-width=".5" stroke-dasharray="1 2"/>
+              <line x1="9" y1="34" x2="39" y2="34" stroke="#b794d4" stroke-width=".5" stroke-dasharray="1 2"/>
+            </svg>
+            <span class="logo-label">Eye</span>
+          </button>
+
+          <!-- Logo concept 3: THRESHOLD — doorway with light beam -->
+          <button class="journey-logo-option" data-logo="threshold" aria-label="Threshold">
+            <svg viewBox="0 0 48 48" fill="none">
+              <path d="M 14 40 L 14 14 Q 14 8 20 8 L 28 8 Q 34 8 34 14 L 34 40"
+                    stroke="#b794d4" stroke-width="1.8" stroke-linecap="round"/>
+              <line x1="14" y1="40" x2="34" y2="40" stroke="#b794d4" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M 18 35 L 18 16 Q 18 12 21 12 L 27 12 Q 30 12 30 16 L 30 35 Z"
+                    fill="url(#journey-door-gradient)" stroke="none"/>
+              <circle cx="28" cy="25" r="1" fill="#fef9e7"/>
+              <defs>
+                <linearGradient id="journey-door-gradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#fef9e7" stop-opacity="0.9"/>
+                  <stop offset="100%" stop-color="#7dd3fc" stop-opacity="0.5"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <span class="logo-label">Threshold</span>
+          </button>
+        </div>
+        <h3>Journey through the multi-verse</h3>
+        <p class="desc">Drop into dramatic, immersive worlds. Dark visuals, rich narrative, cinematic mode. The Vizi-verse side.</p>
+        <button class="journey-start" data-start="verse">Start a journey</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ════════════════════════════════════════════════════════════════════
      WIKI CHROME · HTML  — only renders visually when body has .wiki-page.
@@ -1546,6 +1935,7 @@
       <line x1="10.5" y1="3.5" x2="3.5" y2="10.5"/>
     </svg>
   </button>
+  <span class="wiki-bar-logo" id="wiki-bar-logo-host" aria-hidden="true"></span>
   <span class="wiki-bar-title" id="wiki-bar-title-host"></span>
   <div class="wiki-bar-actions">
     <button class="wiki-bar-btn" aria-label="Save page">
@@ -1563,6 +1953,13 @@
 </header>
 
 <nav class="wiki-toc" id="wiki-toc" aria-label="Wiki contents">
+  <a class="wiki-back" id="wiki-back" href="#" hidden>
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6,3 2,7 6,11"/>
+      <line x1="2" y1="7" x2="12" y2="7"/>
+    </svg>
+    <span class="wiki-back-label">Back</span>
+  </a>
   <div class="wiki-toc-header">
     <svg class="wiki-toc-header-icon" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
       <line x1="2" y1="3.5" x2="5" y2="3.5"/>
@@ -1863,6 +2260,13 @@
 
   // Initial population: find which view is currently active and populate.
   (function initialPopulate() {
+    // Wiki pages have their own chrome system (wiki-bar / wiki-toc).
+    // Skip facet-chrome init entirely — otherwise populateChrome(null)
+    // stamps `no-facet-chrome` onto body, whose !important padding-left:0
+    // would override the wiki-page rail padding and let the rail cover
+    // the content on desktop.
+    if (document.body.classList.contains('wiki-page')) return;
+
     const active = document.querySelector('.view.active');
     if (active && active.id) {
       populateChrome(active.id);
@@ -2162,6 +2566,102 @@ let lastY = window.scrollY;
   syncTocStateToViewport(mobileQuery);
 
   // ════════════════════════════════════════════════════════════════════
+  // WIKI HAMBURGER — bound at IIFE init, NOT inside populateWiki.
+  // The wiki-bar HTML is always in the layout, so the hamburger should
+  // toggle the drawer regardless of whether WIKI_TOC was set. Event
+  // delegation via document.body so the handler survives any DOM rewrites.
+  // ════════════════════════════════════════════════════════════════════
+  function toggleWikiDrawer(e) {
+    if (!e.target) return;
+    const hamburgerHit = e.target.closest('#wiki-hamburger');
+    if (hamburgerHit) {
+      e.preventDefault();
+      e.stopPropagation();
+      // Close other menus, never inherit collapsed-rail state from desktop
+      document.body.classList.remove('main-nav-open');
+      document.body.classList.remove('toc-collapsed');
+      document.body.classList.toggle('drawer-open');
+      return;
+    }
+    // Tap on a section link inside wiki-toc → close drawer (mobile only)
+    const sectionHit = e.target.closest('.wiki-section-item');
+    if (sectionHit && window.matchMedia('(max-width: 720px)').matches) {
+      document.body.classList.remove('drawer-open');
+    }
+  }
+  // Bind to BOTH click and touchend. iOS Safari occasionally drops button
+  // click events when ancestors mutate during the touch; touchend is the
+  // safety net. The `if (e.cancelable)` guards against double-firing.
+  document.body.addEventListener('click', toggleWikiDrawer);
+  document.body.addEventListener('touchend', function (e) {
+    if (e.target && e.target.closest('#wiki-hamburger')) {
+      // Let the synthetic click also fire; touchend just guarantees
+      // the toggle even when the click is suppressed
+      if (e.cancelable) e.preventDefault();
+      toggleWikiDrawer(e);
+    }
+  }, { passive: false });
+
+  // ════════════════════════════════════════════════════════════════════
+  // JOURNEYS MODAL — open from any [data-action="open-journey"] link
+  // ════════════════════════════════════════════════════════════════════
+  function openJourneyModal() {
+    document.body.classList.add('journey-open');
+    // If mobile main-nav was open, close it so the modal isn't behind it
+    document.body.classList.remove('main-nav-open');
+    const modal = document.getElementById('journey-modal');
+    if (modal) modal.setAttribute('aria-hidden', 'false');
+  }
+  function closeJourneyModal() {
+    document.body.classList.remove('journey-open');
+    const modal = document.getElementById('journey-modal');
+    if (modal) modal.setAttribute('aria-hidden', 'true');
+  }
+
+  document.querySelectorAll('[data-action="open-journey"]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      openJourneyModal();
+    });
+  });
+
+  const journeyClose = document.getElementById('journey-close');
+  if (journeyClose) journeyClose.addEventListener('click', closeJourneyModal);
+
+  const journeyBackdrop = document.getElementById('journey-backdrop');
+  if (journeyBackdrop) journeyBackdrop.addEventListener('click', closeJourneyModal);
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && document.body.classList.contains('journey-open')) {
+      closeJourneyModal();
+    }
+  });
+
+  // Logo concept selection — visual only, lets the user preview picks.
+  // Each side tracks its own selection independently.
+  document.querySelectorAll('.journey-logo-row').forEach(function (row) {
+    row.addEventListener('click', function (e) {
+      const btn = e.target.closest('.journey-logo-option');
+      if (!btn) return;
+      // Clear other selections in this row, mark this one
+      row.querySelectorAll('.journey-logo-option').forEach(function (b) {
+        b.classList.remove('selected');
+      });
+      btn.classList.add('selected');
+    });
+  });
+
+  // "Start a journey" buttons — placeholder for now. Wire to actual
+  // entry-points once the journey-tracking flow is defined.
+  document.querySelectorAll('.journey-start').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      const which = btn.dataset.start;
+      // TODO: navigate to journey entry-point or kick off tracking flow
+      console.log('Starting ' + which + ' journey (placeholder)');
+    });
+  });
+
+  // ════════════════════════════════════════════════════════════════════
   // WIKI CHROME — populate side drawer + top bar from window.WIKI_TOC
   // Wiki pages define WIKI_TOC = { pageTitle, sections:[{group,id,label}] }
   // ════════════════════════════════════════════════════════════════════
@@ -2177,6 +2677,18 @@ let lastY = window.scrollY;
 
     if (count) count.textContent = toc.sections.length;
     if (barTitle && toc.pageTitle) barTitle.textContent = toc.pageTitle;
+
+    // Logo slot — raw SVG markup string from page config
+    const logoHost = document.getElementById('wiki-bar-logo-host');
+    if (logoHost && toc.pageLogo) logoHost.innerHTML = toc.pageLogo;
+
+    // Back link — only shown if both parent URL and title are provided
+    const backEl = document.getElementById('wiki-back');
+    if (backEl && toc.parentUrl && toc.parentTitle) {
+      backEl.href = toc.parentUrl;
+      backEl.querySelector('.wiki-back-label').textContent = 'Back to ' + toc.parentTitle;
+      backEl.hidden = false;
+    }
 
     // Group sections by their `group` label (preserving order)
     const groups = [];
@@ -2223,22 +2735,6 @@ let lastY = window.scrollY;
     updateActive();
     window.addEventListener('scroll', updateActive, { passive: true });
     window.addEventListener('resize', updateActive);
-
-    // Mobile hamburger toggles drawer-open
-    const wikiHamburger = document.getElementById('wiki-hamburger');
-    if (wikiHamburger) {
-      wikiHamburger.addEventListener('click', function () {
-        document.body.classList.toggle('drawer-open');
-      });
-    }
-
-    // Tapping a section link in the drawer dismisses it (mobile only)
-    inner.addEventListener('click', function (e) {
-      const link = e.target.closest('.wiki-section-item');
-      if (link && window.matchMedia('(max-width: 720px)').matches) {
-        document.body.classList.remove('drawer-open');
-      }
-    });
   }
   // Run after DOM is ready. The IIFE is already at end of body, so
   // window.WIKI_TOC (set inline within the page content above) is defined.
