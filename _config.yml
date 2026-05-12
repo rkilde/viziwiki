@@ -1,20 +1,14 @@
-# ViziWiki — Jekyll site config
-# This file tells GitHub Pages how to build the site.
-# After pushing to your repo, enable Pages in Settings → Pages → "Deploy from branch".
+# Jekyll build output
+_site/
+.jekyll-cache/
+.jekyll-metadata
 
-title: ViziWiki
-description: Visual-first encyclopedia for the modern web
-# baseurl is the path under your domain — leave empty if the repo is `username.github.io`,
-# or set to `/repo-name` if it's a project page like `username.github.io/repo-name`.
-baseurl: ""
-url: ""
+# Ruby / bundler
+.bundle/
+vendor/
+Gemfile.lock
+*.gem
 
-# No plugins needed beyond what GitHub Pages provides by default.
-plugins: []
-
-# Files Jekyll should ignore (it ignores anything starting with _ or . by default; this is just for clarity)
-exclude:
-  - README.md
-  - Gemfile
-  - Gemfile.lock
-  - node_modules
+# OS junk
+.DS_Store
+Thumbs.db
