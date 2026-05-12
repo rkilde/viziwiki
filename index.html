@@ -486,25 +486,8 @@ nav_active: home
     box-shadow: 6px 6px 0 var(--col);
   }
   .banner-icon::after {
-    content: attr(data-label);
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: #0a0a0a;
-    color: #fff;
-    padding: 5px 10px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    font-weight: 700;
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.12s;
-    z-index: 50;
-    border: 1.5px solid var(--col);
+    content: none !important;
+    display: none !important;  /* Completely disabled — all tooltips JS-managed. */
   }
   .banner-icon:hover::after { opacity: 1; }
 
@@ -3256,29 +3239,12 @@ nav_active: home
     .banner-summary { font-size: 14px; padding-top: 14px; margin-top: 14px; line-height: 1.6; }
     .banner-bar { height: 10px; }
 
-    /* On mobile, REMOVE the hover transform on banner-icon. Reason: any
-       ancestor with a `transform` becomes the containing block for its
-       position:fixed descendants — which would defeat the viewport-pinned
-       tooltip below. Visual feedback is preserved via the box-shadow change. */
-    .banner-icon:hover,
-    .banner-icon-primary:hover {
-      transform: none;
-    }
-
-    /* On mobile, pin the icon's label tooltip to the bottom-center of the
-       viewport. The default position (directly below the icon) can clip
-       off-screen when an icon sits near the left or right edge, AND be
-       visually blocked by adjacent icons in the row. Fixed positioning
-       relative to the viewport guarantees it's always visible. */
+    /* On mobile, the CSS ::after tooltip can't reliably escape ancestor
+       containing-block traps to clamp itself within the viewport. Disable
+       it here — mobile tooltips are handled by JavaScript (see end of file)
+       which appends a tooltip directly to <body> and positions it correctly. */
     .banner-icon::after {
-      position: fixed;
-      top: auto;
-      bottom: 24px;
-      left: 50%;
-      right: auto;
-      transform: translateX(-50%);
-      max-width: calc(100vw - 32px);
-      z-index: 200;
+      display: none !important;
     }
 
     /* Ranking section mobile */
@@ -3379,6 +3345,16 @@ nav_active: home
       font-size: 8px;
       padding: 4px 8px;
       letter-spacing: 0.1em;
+    }
+  }
+
+  /* Additionally hide the CSS ::after tooltip on any touch-only device,
+     regardless of viewport width. Catches tablets, the artifact preview
+     iframe when wider than 700px on a phone, and desktops with touch.
+     JS tooltip (end of file) takes over on these. */
+  @media (hover: none) {
+    .banner-icon::after {
+      display: none !important;
     }
   }
   /* ====================================================================== */
@@ -23080,4 +23056,159 @@ window.addEventListener('DOMContentLoaded', () => {
     <div id="modalContent"></div>
   </div>
 </div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     MOBILE BANNER-ICON TOOLTIP (JS-managed)
+     ──────────────────────────────────────────────────────────────────────
+     On mobile, the CSS ::after tooltip on .banner-icon couldn't reliably
+     escape ancestor containing blocks (overflow:clip on .view.detail,
+     transforms elsewhere) to clamp itself within the viewport. This
+     script appends a tooltip element directly to <body> so it can be
+     positioned absolutely relative to the document, then clamped to
+     stay fully on-screen no matter which icon is tapped.
+     Desktop hover behavior is unaffected — handled by the CSS ::after
+     which is `display: none` only on mobile.
+     ══════════════════════════════════════════════════════════════════════ -->
+<script>
+(function setupMobileBannerTooltip() {
+  // Inject a viewport meta tag if one isn't already present. This is a
+  // no-op on the live site (the layout provides it) but it's essential
+  // for the artifact preview, which renders index.html without the
+  // layout — without this, mobile Safari uses a 980px viewport and
+  // mobile media queries never match.
+  if (!document.querySelector('meta[name="viewport"]')) {
+    const meta = document.createElement('meta');
+    meta.name = 'viewport';
+    meta.content = 'width=device-width, initial-scale=1';
+    document.head.appendChild(meta);
+  }
+
+  // BELT-AND-SUSPENDERS: rename every icon's `data-label` attribute to
+  // `data-tip`. The CSS `::after` rule uses `content: attr(data-label)` —
+  // by renaming it, even if `display: none !important` somehow gets
+  // overridden, the pseudo-element will have no content to show.
+  document.querySelectorAll('.banner-icon[data-label]').forEach(icon => {
+    icon.setAttribute('data-tip', icon.getAttribute('data-label'));
+    icon.removeAttribute('data-label');
+  });
+
+  let tooltip = null;
+
+  // Layout-viewport width — must match the coordinate system that
+  // getBoundingClientRect returns (which is in CSS layout pixels). Do NOT
+  // use visualViewport.width here; that's the *visual* viewport which is
+  // a separate coordinate system on devices that haven't applied a
+  // viewport meta tag yet, and mixing the two breaks the clamping math.
+  function getViewportWidth() {
+    return (document.documentElement && document.documentElement.clientWidth)
+        || window.innerWidth
+        || 400;
+  }
+
+  function ensureTooltip() {
+    if (tooltip) return tooltip;
+    tooltip = document.createElement('div');
+    tooltip.className = 'mobile-banner-tooltip';
+    tooltip.style.cssText = [
+      'position:absolute',
+      'display:none',
+      'background:#0a0a0a',
+      'color:#fff',
+      'padding:5px 10px',
+      "font-family:'JetBrains Mono', monospace",
+      'font-size:9px',
+      'letter-spacing:0.12em',
+      'text-transform:uppercase',
+      'font-weight:700',
+      'white-space:normal',
+      'text-align:center',
+      'box-sizing:border-box',
+      'z-index:1000',
+      'border:1.5px solid #ccc',
+      'pointer-events:none',
+      'left:0',
+      'top:0',
+    ].join(';');
+    document.body.appendChild(tooltip);
+    return tooltip;
+  }
+
+  function showTooltip(icon) {
+    const label = icon.getAttribute('data-tip') || icon.getAttribute('data-label');
+    if (!label) return;
+    const tt = ensureTooltip();
+    tt.textContent = label;
+
+    // Per-facet accent color for the border (--col on the .view ancestor)
+    const view = icon.closest('.view');
+    if (view) {
+      const accent = getComputedStyle(view).getPropertyValue('--col').trim();
+      if (accent) tt.style.borderColor = accent;
+    }
+
+    // Use a reliable viewport width — never trust CSS 100vw alone, since
+    // it can report the layout viewport (980px) on devices without the
+    // viewport meta tag, blowing past the visible screen.
+    const vpWidth = getViewportWidth();
+    const SAFE_MARGIN = 16;
+    tt.style.maxWidth = (vpWidth - SAFE_MARGIN * 2) + 'px';
+
+    // Reveal off-screen first so we can measure the rendered width
+    tt.style.left = '-9999px';
+    tt.style.top = '0px';
+    tt.style.display = 'block';
+    const tooltipWidth = tt.offsetWidth;
+
+    // VERTICAL: 10px below the bottom of the icon's row container
+    const row = icon.closest('.banner-title-group') || icon.closest('.banner-icons-secondary') || icon;
+    const rowRect = row.getBoundingClientRect();
+    const topPx = rowRect.bottom + window.scrollY + 10;
+
+    // HORIZONTAL: ideally centered on the tapped icon, clamped to viewport
+    const iconRect = icon.getBoundingClientRect();
+    const iconCenterX = iconRect.left + iconRect.width / 2;
+    const idealLeft = iconCenterX - tooltipWidth / 2;
+    const minLeft = SAFE_MARGIN;
+    const maxLeft = vpWidth - tooltipWidth - SAFE_MARGIN;
+    const clampedLeft = Math.max(minLeft, Math.min(idealLeft, maxLeft));
+
+    tt.style.left = clampedLeft + 'px';
+    tt.style.top = topPx + 'px';
+  }
+
+  function hideTooltip() {
+    if (tooltip) tooltip.style.display = 'none';
+  }
+
+  document.addEventListener('click', (e) => {
+    const icon = e.target.closest('.banner-icon');
+    if (icon) {
+      showTooltip(icon);
+    } else {
+      hideTooltip();
+    }
+  });
+
+  // Mouse-hover behavior — bubbling mouseover/mouseout so a single
+  // document-level listener catches every icon. The tooltip has
+  // pointer-events:none, so moving the cursor over it doesn't trigger
+  // mouseout on the icon.
+  document.addEventListener('mouseover', (e) => {
+    const icon = e.target.closest('.banner-icon');
+    if (icon) showTooltip(icon);
+  });
+
+  document.addEventListener('mouseout', (e) => {
+    const icon = e.target.closest('.banner-icon');
+    if (!icon) return;
+    if (e.relatedTarget && icon.contains(e.relatedTarget)) return;
+    hideTooltip();
+  });
+
+  // Dismiss tooltip on any scroll, resize, or orientation change
+  window.addEventListener('scroll', hideTooltip, { passive: true });
+  window.addEventListener('resize', hideTooltip);
+  window.addEventListener('orientationchange', hideTooltip);
+})();
+</script>
 {% endraw %}
