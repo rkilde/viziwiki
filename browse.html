@@ -1,10 +1,10 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Browse — ViziWiki</title>
-<meta name="description" content="Browse every wiki on ViziWiki by category, popularity, or alphabetical order." />
+---
+layout: default
+title: "Browse — ViziWiki"
+nav_active: browse
+body_class: "no-facet-chrome"
+---
+{% raw %}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Spectral:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -66,36 +66,10 @@
   .tile .icon{transition:transform .3s;}
   .tile:hover .icon{transform:rotate(6deg) scale(1.1);}
 </style>
-</head>
-<body class="min-h-screen">
-
-<header class="border-b border-foreground/20 bg-card">
-  <div class="mx-auto flex max-w-[1500px] items-center gap-6 px-6 py-3">
-    <a href="#" class="flex items-center gap-3">
-      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="ViziWiki">
-        <rect x="2" y="2" width="28" height="28" rx="4" fill="var(--ink)"/>
-        <path d="M6 9 L11 23 L16 11 L21 23 L26 9" stroke="var(--neon)" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="26" cy="9" r="2" fill="var(--hot-pink)"/>
-      </svg>
-      <div class="leading-tight">
-        <div class="font-display text-2xl font-semibold tracking-tight">ViziWiki<span class="text-neon">.</span></div>
-        <div class="font-mono-acc text-[9px] uppercase tracking-[0.2em] text-muted-foreground">The Visual Pop Encyclopedia</div>
-      </div>
-    </a>
-    <div class="flex flex-1 items-center">
-      <div class="flex w-full max-w-2xl items-center overflow-hidden rounded-sm border border-foreground/30 bg-background">
-        <input id="q" type="text" placeholder="Search wikis…" class="flex-1 bg-transparent px-4 py-2 text-sm outline-none" />
-        <span id="hits" class="border-l border-foreground/30 bg-secondary px-4 py-2 font-mono-acc text-[11px] uppercase">0 hits</span>
-      </div>
-    </div>
-    <nav class="hidden items-center gap-5 font-mono-acc text-[11px] uppercase text-muted-foreground md:flex">
-      <a href="#" class="hover:text-neon">Home</a>
-      <a href="#" class="text-foreground">Browse</a>
-      <a href="#">Log in</a>
-    </nav>
-  </div>
-</header>
-
+<style>
+  /* Keep Loveable's sticky filter row below the main-bar. */
+  .sticky.top-0 { top: var(--main-h); }
+</style>
 <section class="border-b border-foreground/15 bg-secondary/40">
   <div class="mx-auto flex max-w-[1500px] flex-col gap-2 px-6 py-8">
     <div class="font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground">▸ Index · Browse all wikis</div>
@@ -263,5 +237,4 @@ el('q').addEventListener('input', e=>{ q=e.target.value; renderList(); });
 renderTiles(); renderFilters(); renderList();
 lucide.createIcons();
 </script>
-</body>
-</html>
+{% endraw %}
