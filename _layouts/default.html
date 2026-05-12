@@ -33,7 +33,7 @@
     --page-h: 76px;
   }
 
-  html { scroll-behavior: smooth; overflow-y: scroll; }
+  html { scroll-behavior: smooth; overflow-y: scroll; overflow-x: hidden; }
   body {
     background: var(--bg);
     color: var(--text);
@@ -43,6 +43,7 @@
     padding-top: calc(var(--main-h) + var(--page-h));
     padding-left: 0;
     min-height: 200vh;
+    overflow-x: hidden;
     transition: padding-left .38s cubic-bezier(.2,.85,.2,1);
   }
 
@@ -1693,12 +1694,21 @@ let lastY = window.scrollY;
       if (e.target.closest('#main-nav-panel') || e.target.closest('#main-hamburger')) return;
       document.body.classList.remove('main-nav-open');
     });
-    // Tapping a panel link closes the panel
+    // Tapping a panel link sets active state and (for same-page anchor
+    // links only) closes the panel. We deliberately DON'T close the panel
+    // for real page navigations (href="index.html" / "browse.html") because
+    // Safari iOS cancels the link's default navigation when its ancestor
+    // is set to pointer-events:none mid-click — which is exactly what
+    // closing the panel does. Real navigations reset state on the next
+    // page load anyway, so leaving the panel open here is harmless.
     document.querySelectorAll('#main-nav-panel a').forEach(a => {
       a.addEventListener('click', () => {
         document.querySelectorAll('#main-nav-panel a').forEach(x => x.classList.remove('active'));
         a.classList.add('active');
-        document.body.classList.remove('main-nav-open');
+        const href = a.getAttribute('href') || '';
+        if (href === '' || href.startsWith('#')) {
+          document.body.classList.remove('main-nav-open');
+        }
       });
     });
     // Save button toggle (visual demo only)
