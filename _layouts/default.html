@@ -1694,20 +1694,23 @@ let lastY = window.scrollY;
       if (e.target.closest('#main-nav-panel') || e.target.closest('#main-hamburger')) return;
       document.body.classList.remove('main-nav-open');
     });
-    // Tapping a panel link sets active state and (for same-page anchor
-    // links only) closes the panel. We deliberately DON'T close the panel
-    // for real page navigations (href="index.html" / "browse.html") because
-    // Safari iOS cancels the link's default navigation when its ancestor
-    // is set to pointer-events:none mid-click — which is exactly what
-    // closing the panel does. Real navigations reset state on the next
-    // page load anyway, so leaving the panel open here is harmless.
+    // Tapping a panel link. Two distinct paths:
+    //   - Same-page anchor (#, #foo, or empty href) → just close the panel
+    //   - Real page link (index.html, browse.html) → explicitly force the
+    //     navigation via window.location.href. We bypass the default <a>
+    //     click action because iOS Safari can cancel it when DOM mutations
+    //     happen mid-click (and we want to close the panel too).
     document.querySelectorAll('#main-nav-panel a').forEach(a => {
-      a.addEventListener('click', () => {
+      a.addEventListener('click', (e) => {
         document.querySelectorAll('#main-nav-panel a').forEach(x => x.classList.remove('active'));
         a.classList.add('active');
         const href = a.getAttribute('href') || '';
-        if (href === '' || href.startsWith('#')) {
+        if (href === '' || href === '#' || href.startsWith('#')) {
           document.body.classList.remove('main-nav-open');
+        } else {
+          e.preventDefault();
+          document.body.classList.remove('main-nav-open');
+          window.location.href = href;
         }
       });
     });
