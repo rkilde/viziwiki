@@ -3256,10 +3256,20 @@ nav_active: home
     .banner-summary { font-size: 14px; padding-top: 14px; margin-top: 14px; line-height: 1.6; }
     .banner-bar { height: 10px; }
 
+    /* On mobile, REMOVE the hover transform on banner-icon. Reason: any
+       ancestor with a `transform` becomes the containing block for its
+       position:fixed descendants — which would defeat the viewport-pinned
+       tooltip below. Visual feedback is preserved via the box-shadow change. */
+    .banner-icon:hover,
+    .banner-icon-primary:hover {
+      transform: none;
+    }
+
     /* On mobile, pin the icon's label tooltip to the bottom-center of the
        viewport. The default position (directly below the icon) can clip
-       off-screen when an icon sits near the left or right edge. Fixed
-       positioning relative to the viewport guarantees it's always visible. */
+       off-screen when an icon sits near the left or right edge, AND be
+       visually blocked by adjacent icons in the row. Fixed positioning
+       relative to the viewport guarantees it's always visible. */
     .banner-icon::after {
       position: fixed;
       top: auto;
