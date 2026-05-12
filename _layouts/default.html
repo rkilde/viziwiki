@@ -1467,6 +1467,18 @@
     const cfg = FACET_NAV[viewId];
     const body = document.body;
 
+    // Body has `transition: padding-left .38s` for the toc-collapsed
+    // (chevron-click) animation on desktop. When populateChrome toggles
+    // the no-facet-chrome class on view switch, body padding-left jumps
+    // between 0 and 240px — without suppression, this transition would
+    // fire and visibly slide the content into place. Disable it for the
+    // duration of this class swap; restore it next frame so future
+    // chevron clicks still animate smoothly.
+    body.style.transition = 'none';
+    requestAnimationFrame(() => {
+      body.style.transition = '';
+    });
+
     // page-home class controls body background — set only when view-main
     // is the active view (cream bg matching view-main's own background).
     // Removed for facet views and other non-main views so body bg goes
