@@ -310,6 +310,19 @@
     display: none;
   }
 
+  /* Suppress all chrome transitions until the first paint has completed.
+     Without this, the browser fires a transition when CSS first applies
+     each element's initial transform — e.g., the mobile drawer briefly
+     animates from its default (translateX(0)) to translateX(-100%) on
+     every page load. The `chrome-ready` class is added via JS after a
+     double requestAnimationFrame, by which point the initial paint has
+     committed and subsequent transform changes will animate normally. */
+  body:not(.chrome-ready) .page-toc,
+  body:not(.chrome-ready) .page-bar,
+  body:not(.chrome-ready) .main-bar {
+    transition: none !important;
+  }
+
   /* Chevron / X toggle in top-right of the rail */
   .toc-close {
     position: absolute; top: 12px; right: 12px;
@@ -694,6 +707,10 @@
       pointer-events: auto;
     }
     .drawer-backdrop { z-index: 109; }
+    /* The drawer's save button is redundant on mobile — the page-bar
+       already shows a save action. Hide it here so the drawer's top-right
+       corner has just the X close button. */
+    .toc-save { display: none; }
   }
 
   /* ═══════════════════════════════════════════════════════════════════
@@ -1367,6 +1384,20 @@
   <script>
   {% raw %}
 (function() {
+  // ════════════════════════════════════════════════════════════════════
+  // CHROME-READY GUARD — promote body.chrome-ready after first paint.
+  // Without this, transitions on .main-bar / .page-bar / .page-toc fire
+  // when CSS first applies their initial transforms (e.g. the mobile
+  // drawer's translateX(-100%) plays as a "closing" animation on every
+  // page load). The CSS uses `body:not(.chrome-ready)` to suppress all
+  // chrome transitions until this class lands.
+  // ════════════════════════════════════════════════════════════════════
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.body.classList.add('chrome-ready');
+    });
+  });
+
   // ════════════════════════════════════════════════════════════════════
   // FACET_NAV — per-facet TOC data.
   // To add/remove sections: edit the entry for that view ID.
