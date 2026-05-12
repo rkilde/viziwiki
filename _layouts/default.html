@@ -1467,6 +1467,17 @@
     const cfg = FACET_NAV[viewId];
     const body = document.body;
 
+    // page-home class controls body background — set only when view-main
+    // is the active view (cream bg matching view-main's own background).
+    // Removed for facet views and other non-main views so body bg goes
+    // back to the default dark, which is what semi-transparent chrome
+    // elements (like the drawer) blend with for the intended dark look.
+    if (viewId === 'view-main') {
+      body.classList.add('page-home');
+    } else {
+      body.classList.remove('page-home');
+    }
+
     if (!cfg) {
       // No chrome data for this view (view-main, view-insights, etc.)
       body.classList.add('no-facet-chrome');
@@ -1752,8 +1763,33 @@ let lastY = window.scrollY;
         } else {
           e.preventDefault();
           document.body.classList.remove('main-nav-open');
+
+          // Same-page navigation to home? Use showView to avoid the full
+          // reload (which causes a brief flash during navigation).
+          if (href === 'index.html' && typeof window.showView === 'function') {
+            const currentPath = (window.location.pathname.split('/').pop()) || 'index.html';
+            if (currentPath === 'index.html' || currentPath === '') {
+              window.showView('view-main');
+              window.history.replaceState(null, '', 'index.html');
+              return;
+            }
+          }
+
           window.location.href = href;
         }
+      });
+    });
+
+    // Desktop main-nav Home link — same in-page optimization as the mobile
+    // panel: switch views without a reload when we're already on index.html.
+    document.querySelectorAll('.main-nav a[href="index.html"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        if (typeof window.showView !== 'function') return;
+        const currentPath = (window.location.pathname.split('/').pop()) || 'index.html';
+        if (currentPath !== 'index.html' && currentPath !== '') return;
+        e.preventDefault();
+        window.showView('view-main');
+        window.history.replaceState(null, '', 'index.html');
       });
     });
     // Save button toggle (visual demo only)
