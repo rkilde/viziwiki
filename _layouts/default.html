@@ -47,6 +47,13 @@
     transition: padding-left .38s cubic-bezier(.2,.85,.2,1);
   }
 
+  /* Override body background for the home page so navigation to it doesn't
+     briefly flash dark before view-main's cream background renders. Other
+     no-facet-chrome pages (like browse) keep the dark default. */
+  body.page-home {
+    background: #fef9e7;
+  }
+
   /* Per-facet color tokens (AOL example) */
   :root {
     --col: #0066cc;
