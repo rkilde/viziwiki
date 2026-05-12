@@ -1,20 +1,244 @@
-# ViziWiki — Jekyll site config
-# This file tells GitHub Pages how to build the site.
-# After pushing to your repo, enable Pages in Settings → Pages → "Deploy from branch".
+---
+layout: default
+title: "Browse — ViziWiki"
+nav_active: browse
+body_class: "no-facet-chrome"
+---
+{% raw %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Spectral:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  :root{
+    --background: oklch(0.972 0.012 85);
+    --foreground: oklch(0.18 0.02 60);
+    --card: oklch(1 0 0);
+    --secondary: oklch(0.93 0.02 80);
+    --muted-foreground: oklch(0.45 0.03 60);
+    --ink: oklch(0.18 0.02 60);
+    --teal: oklch(0.55 0.10 200);
+    --olive: oklch(0.55 0.10 130);
+    --plum: oklch(0.40 0.13 340);
+    --gold: oklch(0.78 0.14 75);
+    --rust: oklch(0.55 0.18 35);
+    --neon: oklch(0.65 0.26 5);
+    --electric: oklch(0.62 0.22 260);
+    --hot-pink: oklch(0.70 0.27 350);
+    --acid: oklch(0.88 0.24 130);
+    --cyan-pop: oklch(0.78 0.18 210);
+  }
+  html,body{background:var(--background); color:var(--foreground);}
+  body{font-family:'Spectral',Georgia,serif;}
+  .font-display{font-family:'Fraunces','Spectral',Georgia,serif; font-optical-sizing:auto; font-variation-settings:"SOFT" 30,"WONK" 0; letter-spacing:-0.02em;}
+  .font-mono-acc{font-family:'JetBrains Mono',ui-monospace,monospace; letter-spacing:.05em;}
+  .halftone{background-image:radial-gradient(var(--hot-pink) 1.4px, transparent 1.6px); background-size:10px 10px;}
+  .sticker{box-shadow:3px 3px 0 0 var(--ink); border:2px solid var(--ink);}
+  .bg-background{background:var(--background);} .bg-card{background:var(--card);}
+  .bg-secondary{background:var(--secondary);} .bg-secondary\/40{background:color-mix(in oklab,var(--secondary) 40%, transparent);}
+  .bg-secondary\/60{background:color-mix(in oklab,var(--secondary) 60%, transparent);}
+  .bg-background\/95{background:color-mix(in oklab,var(--background) 95%, transparent);}
+  .text-foreground{color:var(--foreground);} .text-background{color:var(--background);}
+  .text-muted-foreground{color:var(--muted-foreground);}
+  .bg-foreground{background:var(--foreground);} .bg-foreground\/20{background:color-mix(in oklab,var(--foreground) 20%, transparent);}
+  .border-foreground{border-color:var(--foreground);}
+  .border-foreground\/15{border-color:color-mix(in oklab,var(--foreground) 15%, transparent);}
+  .border-foreground\/20{border-color:color-mix(in oklab,var(--foreground) 20%, transparent);}
+  .border-foreground\/25{border-color:color-mix(in oklab,var(--foreground) 25%, transparent);}
+  .border-foreground\/30{border-color:color-mix(in oklab,var(--foreground) 30%, transparent);}
+  .text-hp{color:var(--hot-pink);} .bg-hp{background:var(--hot-pink);} .border-hp{border-color:var(--hot-pink);}
+  .text-neon{color:var(--neon);}
+  .grad-all{background-image:linear-gradient(to bottom right,var(--ink),var(--plum));}
+  .grad-pop{background-image:linear-gradient(to bottom right,var(--hot-pink),var(--neon));}
+  .grad-music{background-image:linear-gradient(to bottom right,var(--electric),var(--plum));}
+  .grad-film{background-image:linear-gradient(to bottom right,var(--rust),var(--gold));}
+  .grad-games{background-image:linear-gradient(to bottom right,var(--acid),var(--olive));}
+  .grad-anime{background-image:linear-gradient(to bottom right,var(--plum),var(--hot-pink));}
+  .grad-sports{background-image:linear-gradient(to bottom right,var(--teal),var(--cyan-pop));}
+  .grad-food{background-image:linear-gradient(to bottom right,var(--gold),var(--rust));}
+  .grad-tech{background-image:linear-gradient(to bottom right,var(--electric),var(--cyan-pop));}
+  .grad-fashion{background-image:linear-gradient(to bottom right,var(--hot-pink),var(--plum));}
+  .grad-books{background-image:linear-gradient(to bottom right,var(--olive),var(--teal));}
+  .grad-internet{background-image:linear-gradient(to bottom right,var(--neon),var(--acid));}
+  .tile{transition:transform .2s;}
+  .tile:hover{transform:translateY(-4px);}
+  .tile .icon{transition:transform .3s;}
+  .tile:hover .icon{transform:rotate(6deg) scale(1.1);}
+</style>
+<style>
+  /* Keep Loveable's sticky filter row below the main-bar. */
+  .sticky.top-0 { top: var(--main-h); }
+</style>
+<section class="border-b border-foreground/15 bg-secondary/40">
+  <div class="mx-auto flex max-w-[1500px] flex-col gap-2 px-6 py-8">
+    <div class="font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground">▸ Index · Browse all wikis</div>
+    <h1 class="font-display text-5xl font-semibold tracking-tight">Browse<span class="text-hp">.</span></h1>
+    <p class="max-w-2xl text-sm text-muted-foreground">Every fandom, every encyclopedia. Pick a vibe below or scroll the full index.</p>
+    <div class="mt-4 flex w-full max-w-2xl items-center overflow-hidden rounded-sm border border-foreground/30 bg-background">
+      <input id="q" type="text" placeholder="Search wikis…" class="flex-1 bg-transparent px-4 py-2 text-sm outline-none" />
+      <span id="hits" class="border-l border-foreground/30 bg-secondary px-4 py-2 font-mono-acc text-[11px] uppercase">0 hits</span>
+    </div>
+  </div>
+</section>
 
-title: ViziWiki
-description: Visual-first encyclopedia for the modern web
-# baseurl is the path under your domain — leave empty if the repo is `username.github.io`,
-# or set to `/repo-name` if it's a project page like `username.github.io/repo-name`.
-baseurl: ""
-url: ""
+<section class="mx-auto max-w-[1500px] px-6 py-8">
+  <div class="mb-4 flex items-baseline justify-between">
+    <h2 class="font-display text-2xl font-semibold">Quick jumps</h2>
+    <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground" id="genreCount"></span>
+  </div>
+  <div id="tiles" class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6"></div>
+</section>
 
-# No plugins needed beyond what GitHub Pages provides by default.
-plugins: []
+<section class="sticky top-0 z-10 border-y border-foreground/15 bg-background/95 backdrop-blur">
+  <div class="mx-auto flex max-w-[1500px] flex-wrap items-center gap-3 px-6 py-3">
+    <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Filter:</span>
+    <div id="filters" class="flex flex-wrap gap-1"></div>
+    <div class="ml-auto flex items-center gap-1">
+      <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Sort:</span>
+      <div id="sorts" class="flex gap-1"></div>
+    </div>
+  </div>
+</section>
 
-# Files Jekyll should ignore (it ignores anything starting with _ or . by default; this is just for clarity)
-exclude:
-  - README.md
-  - Gemfile
-  - Gemfile.lock
-  - node_modules
+<section class="mx-auto max-w-[1500px] px-6 py-8">
+  <div id="list"></div>
+</section>
+
+<footer class="border-t border-foreground/15 bg-secondary/40">
+  <div class="mx-auto max-w-[1500px] px-6 py-6 font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">
+    ViziWiki · Browse Index · <span id="totalCount">0</span> wikis indexed
+  </div>
+</footer>
+
+<script>
+const CATEGORIES = [
+  {key:"all",label:"All",grad:"grad-all",icon:"sparkles"},
+  {key:"pop",label:"Pop Culture",grad:"grad-pop",icon:"sparkles"},
+  {key:"music",label:"Music",grad:"grad-music",icon:"music"},
+  {key:"film",label:"Film & TV",grad:"grad-film",icon:"film"},
+  {key:"games",label:"Video Games",grad:"grad-games",icon:"gamepad-2"},
+  {key:"anime",label:"Anime & Manga",grad:"grad-anime",icon:"tv"},
+  {key:"sports",label:"Sports",grad:"grad-sports",icon:"trophy"},
+  {key:"food",label:"Fast Food",grad:"grad-food",icon:"pizza"},
+  {key:"tech",label:"Tech & Web",grad:"grad-tech",icon:"cpu"},
+  {key:"fashion",label:"Fashion",grad:"grad-fashion",icon:"shirt"},
+  {key:"books",label:"Books",grad:"grad-books",icon:"book-open"},
+  {key:"internet",label:"Internet Lore",grad:"grad-internet",icon:"globe"},
+];
+
+const WIKIS = [
+  {name:"Dune",category:"film",entries:4821,popularity:98,blurb:"Spice, sandworms, and Atreides lore."},
+  {name:"BTS",category:"music",entries:12044,popularity:99,blurb:"ARMY-built encyclopedia of the septet."},
+  {name:"The Legend of Zelda",category:"games",entries:8932,popularity:97,blurb:"Hyrule, Triforce, every dungeon mapped."},
+  {name:"Studio Ghibli",category:"anime",entries:2188,popularity:92,blurb:"Every frame, every Totoro."},
+  {name:"Taylor Swift",category:"music",entries:15788,popularity:99,blurb:"Eras, easter eggs, and re-records."},
+  {name:"McDonald's",category:"food",entries:1042,popularity:84,blurb:"McRib release schedule, Grimace, Travis meal."},
+  {name:"Star Wars",category:"film",entries:22910,popularity:96,blurb:"A galaxy far, far away — fully indexed."},
+  {name:"Minecraft",category:"games",entries:9821,popularity:95,blurb:"Blocks, mobs, redstone, every snapshot."},
+  {name:"Marvel Cinematic Universe",category:"film",entries:18044,popularity:97,blurb:"Phases 1 through whatever we're on now."},
+  {name:"Naruto",category:"anime",entries:7320,popularity:90,blurb:"Hidden villages, jutsu, the whole shinobi grid."},
+  {name:"NBA",category:"sports",entries:24018,popularity:93,blurb:"Every box score since 1946."},
+  {name:"FIFA World Cup",category:"sports",entries:6210,popularity:91,blurb:"Every tournament, every Panini sticker."},
+  {name:"Formula 1",category:"sports",entries:5094,popularity:89,blurb:"Drivers, constructors, lap records."},
+  {name:"Pokémon",category:"games",entries:14002,popularity:96,blurb:"All 1000+ pocket monsters."},
+  {name:"Genshin Impact",category:"games",entries:6814,popularity:87,blurb:"Teyvat, characters, weapons, banners."},
+  {name:"Kendrick Lamar",category:"music",entries:3210,popularity:94,blurb:"Pulitzer, Compton, GNX."},
+  {name:"Taco Bell",category:"food",entries:1284,popularity:96,blurb:"Crunchwraps, Mexican Pizza revivals, every limited-time menu logged."},
+  {name:"Chick-fil-A",category:"food",entries:488,popularity:75,blurb:"Sauces, secret menu, Sunday rule."},
+  {name:"Severance",category:"film",entries:1244,popularity:88,blurb:"Lumon, MDR, the goats."},
+  {name:"One Piece",category:"anime",entries:18991,popularity:95,blurb:"1100+ chapters mapped to the Grand Line."},
+  {name:"Sabrina Carpenter",category:"music",entries:1812,popularity:89,blurb:"Espresso, Short n' Sweet, every tour fit."},
+  {name:"TikTok Trends",category:"internet",entries:9421,popularity:92,blurb:"Sounds, dances, brain rot — archived."},
+  {name:"Y2K Fashion",category:"fashion",entries:2104,popularity:81,blurb:"Low-rise, butterfly clips, juicy tracksuits."},
+  {name:"GeoCities",category:"tech",entries:3088,popularity:70,blurb:"Neighborhoods of the early web."},
+  {name:"Fortnite",category:"games",entries:7041,popularity:88,blurb:"Every season, every skin, every collab."},
+  {name:"Beyoncé",category:"music",entries:9210,popularity:98,blurb:"Renaissance, Cowboy Carter, the BeyHive."},
+  {name:"Harry Potter",category:"books",entries:11240,popularity:91,blurb:"Hogwarts, Horcruxes, the whole wizarding world."},
+  {name:"Stranger Things",category:"film",entries:4112,popularity:90,blurb:"Hawkins, Upside Down, every Demogorgon."},
+  {name:"Demon Slayer",category:"anime",entries:3920,popularity:89,blurb:"Hashira, breathing styles, Muzan arc."},
+  {name:"K-pop",category:"music",entries:26012,popularity:96,blurb:"Every group, every comeback, every fandom name."},
+  {name:"Wendy's",category:"food",entries:410,popularity:72,blurb:"Square patties, frosty, Twitter roasts."},
+  {name:"Wii Sports",category:"games",entries:188,popularity:68,blurb:"Matt is undefeated. Document everything."},
+  {name:"Vine (rip)",category:"internet",entries:2491,popularity:80,blurb:"Six seconds, eternal."},
+  {name:"Streetwear",category:"fashion",entries:4204,popularity:83,blurb:"Supreme drops, Yeezys, Bape archives."},
+  {name:"Squid Game",category:"film",entries:1804,popularity:86,blurb:"Pink guards, dalgona, every game."},
+];
+
+let active = "all", sort = "popular", q = "";
+
+const el = (id) => document.getElementById(id);
+const catBy = (k) => CATEGORIES.find(c=>c.key===k);
+
+function renderTiles(){
+  el('genreCount').textContent = (CATEGORIES.length-1)+' genres';
+  el('totalCount').textContent = WIKIS.length.toLocaleString();
+  el('tiles').innerHTML = CATEGORIES.filter(c=>c.key!=="all").map(c=>`
+    <button data-cat="${c.key}" class="tile sticker group relative aspect-[4/5] overflow-hidden rounded-md ${c.grad} text-left">
+      <div class="absolute inset-0 halftone opacity-20 mix-blend-overlay"></div>
+      <div class="absolute left-3 top-3 font-mono-acc text-[9px] uppercase tracking-[0.2em] text-white/80">Genre</div>
+      <i data-lucide="${c.icon}" class="icon pointer-events-none absolute -bottom-4 -right-4 h-28 w-28 rotate-12 text-white/90 drop-shadow-lg" stroke-width="1.5"></i>
+      <div class="absolute bottom-3 left-3 right-3">
+        <div class="font-display text-xl font-semibold leading-tight text-white drop-shadow">${c.label}</div>
+      </div>
+      <div class="absolute right-3 top-3 grid h-7 w-7 rotate-12 place-items-center rounded-sm bg-background text-[10px] font-bold text-foreground">↗</div>
+    </button>
+  `).join('');
+  el('tiles').querySelectorAll('button').forEach(b=>{
+    b.addEventListener('click',()=>{ active = b.dataset.cat; renderFilters(); renderList(); window.scrollTo({top:600,behavior:'smooth'}); });
+  });
+}
+
+function renderFilters(){
+  el('filters').innerHTML = CATEGORIES.map(c=>`
+    <button data-cat="${c.key}" class="rounded-full border px-3 py-1 font-mono-acc text-[10px] uppercase tracking-wider transition ${active===c.key?'border-foreground bg-foreground text-background':'border-foreground/25 text-muted-foreground hover:border-foreground hover:text-foreground'}">${c.label}</button>
+  `).join('');
+  el('filters').querySelectorAll('button').forEach(b=>{
+    b.addEventListener('click',()=>{ active=b.dataset.cat; renderFilters(); renderList(); });
+  });
+  const sorts = [["popular","Most popular"],["az","A–Z"],["entries","Most entries"]];
+  el('sorts').innerHTML = sorts.map(([k,l])=>`
+    <button data-sort="${k}" class="rounded-sm border px-3 py-1 font-mono-acc text-[10px] uppercase tracking-wider transition ${sort===k?'border-hp bg-hp text-white':'border-foreground/25 text-muted-foreground hover:border-foreground hover:text-foreground'}">${l}</button>
+  `).join('');
+  el('sorts').querySelectorAll('button').forEach(b=>{
+    b.addEventListener('click',()=>{ sort=b.dataset.sort; renderFilters(); renderList(); });
+  });
+}
+
+function renderList(){
+  let list = WIKIS.slice();
+  if(active!=='all') list = list.filter(w=>w.category===active);
+  if(q.trim()){ const s=q.toLowerCase(); list=list.filter(w=>w.name.toLowerCase().includes(s)||w.blurb.toLowerCase().includes(s)); }
+  if(sort==='popular') list.sort((a,b)=>b.popularity-a.popularity);
+  if(sort==='az') list.sort((a,b)=>a.name.localeCompare(b.name));
+  if(sort==='entries') list.sort((a,b)=>b.entries-a.entries);
+  el('hits').textContent = list.length+' hits';
+  if(list.length===0){
+    el('list').innerHTML = `<div class="border border-dashed border-foreground/25 bg-card p-12 text-center text-muted-foreground">No wikis match those filters.</div>`;
+    return;
+  }
+  el('list').innerHTML = `<ul class="grid grid-cols-1 gap-px overflow-hidden rounded-md border border-foreground/20 bg-foreground/20 sm:grid-cols-2 lg:grid-cols-3">${
+    list.map(w=>{
+      const cat = catBy(w.category);
+      const href = w.name === 'Taco Bell' ? 'taco-bell.html' : '#';
+      return `<li class="group bg-card transition hover:bg-secondary/60"><a href="${href}" class="block p-4">
+        <div class="mb-2 flex items-center justify-between">
+          <span class="inline-block rounded-sm ${cat.grad} px-2 py-0.5 font-mono-acc text-[9px] uppercase tracking-wider text-white">${cat.label}</span>
+          <span class="font-mono-acc text-[10px] text-muted-foreground">★ ${w.popularity}</span>
+        </div>
+        <div class="font-display text-xl font-semibold leading-tight group-hover:text-hp">${w.name}</div>
+        <p class="mt-1 line-clamp-2 text-sm text-muted-foreground">${w.blurb}</p>
+        <div class="mt-3 flex items-center justify-between font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">
+          <span>${w.entries.toLocaleString()} entries</span>
+          <span class="text-foreground">Open →</span>
+        </div>
+      </a></li>`;
+    }).join('')
+  }</ul>`;
+}
+
+el('q').addEventListener('input', e=>{ q=e.target.value; renderList(); });
+renderTiles(); renderFilters(); renderList();
+lucide.createIcons();
+</script>
+{% endraw %}
