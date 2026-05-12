@@ -3256,6 +3256,21 @@ nav_active: home
     .banner-summary { font-size: 14px; padding-top: 14px; margin-top: 14px; line-height: 1.6; }
     .banner-bar { height: 10px; }
 
+    /* On mobile, pin the icon's label tooltip to the bottom-center of the
+       viewport. The default position (directly below the icon) can clip
+       off-screen when an icon sits near the left or right edge. Fixed
+       positioning relative to the viewport guarantees it's always visible. */
+    .banner-icon::after {
+      position: fixed;
+      top: auto;
+      bottom: 24px;
+      left: 50%;
+      right: auto;
+      transform: translateX(-50%);
+      max-width: calc(100vw - 32px);
+      z-index: 200;
+    }
+
     /* Ranking section mobile */
     .ranking-section { padding: 0 16px; margin-top: 40px; }
     .ranking-section-head { margin-bottom: 22px; }
@@ -5698,7 +5713,8 @@ body.has-graphic-overlay { overflow: hidden; }
 
 </style>
 
-by JS */
+<style>
+/* ─── Expandable graphic overlay (loaded by JS) ─── */
 .expandable-graphic-overlay {
   position: fixed; inset: 0;
   background: rgba(5, 8, 16, 0.94);
