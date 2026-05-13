@@ -1654,6 +1654,8 @@
     body.wiki-page.drawer-open .wiki-bar {
       display: none !important;
     }
+    /* Save is already in the wiki-bar on the right — redundant in the drawer on mobile */
+    body.wiki-page .wiki-toc-save { display: none; }
   }
 
   /* ═══════════════════════════════ JOURNEYS MODAL ═══════════════════════════
