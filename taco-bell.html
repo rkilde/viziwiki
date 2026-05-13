@@ -79,6 +79,11 @@ body_class: "wiki-page"
 <style>
   /* Keep Loveable's sticky filter row below the main-bar. */
   .sticky.top-0 { top: var(--main-h); }
+  /* footprint tabs + views */
+  .fp-tab{padding:5px 14px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;border:1px solid rgba(42,31,21,.15);border-radius:4px;background:transparent;color:rgba(42,31,21,.54);transition:all .15s;}
+  .fp-tab.fp-on{background:#FED141;color:#2e1065;font-weight:600;border-color:transparent;}
+  .fp-view{display:none;}.fp-view.fp-show{display:block;}
+  #fp-glob-svg,#fp-glob-svg *{touch-action:none;}
 </style>
 <div class="border-b border-foreground/15 bg-secondary/40">
   <div class="mx-auto flex max-w-[1500px] items-center gap-2 px-6 py-2 font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
@@ -453,22 +458,39 @@ body_class: "wiki-page"
 </section>
 
 <section class="mx-auto max-w-[1500px] px-6 py-12">
-  <div class="grid gap-8 md:grid-cols-[1.5fr_1fr]">
+  <div class="mb-5">
+    <div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><i data-lucide="map-pin" class="h-3 w-3"></i> Footprint</div>
+    <h2 id="global" class="mt-1 font-display text-3xl font-semibold">A purple sign in 31 countries.</h2>
+    <p class="mt-2 max-w-3xl text-[15px] leading-relaxed text-foreground/85">Taco Bell operates more than 7,200 restaurants worldwide, the vast majority in the United States. International expansion has been famously bumpy — Mexico’s launch lasted just two years — but the chain has found steady growth across the UK, Spain, India, and the Middle East.</p>
+  </div>
+  <div class="grid gap-6 lg:grid-cols-[1fr_260px]">
     <div>
-      <div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><i data-lucide="map-pin" class="h-3 w-3"></i> Footprint</div>
-      <h2 id="global" class="mt-1 font-display text-3xl font-semibold">A purple sign in 31 countries.</h2>
-      <p class="mt-3 max-w-2xl text-[15px] leading-relaxed text-foreground/85">Taco Bell operates more than 7,200 restaurants worldwide, the vast majority in the United States. International expansion has been famously bumpy — Mexico's launch lasted just two years — but the chain has found steady growth across the UK, Spain, India, and the Middle East.</p>
+      <div id="fp-stats-map" class="grid grid-cols-4 gap-px border border-foreground/15 rounded-md overflow-hidden mb-3"></div>
+      <div class="flex gap-2 mb-3">
+        <button class="fp-tab fp-on" onclick="fpSwitch('us',this)">United States</button>
+        <button class="fp-tab" onclick="fpSwitch('globe',this)">Global</button>
+      </div>
+      <div class="rounded-md border border-foreground/15 bg-card overflow-hidden">
+        <div class="fp-view fp-show" id="fp-us">
+          <div class="p-3">
+            <div id="fp-us-load" class="h-48 flex items-center justify-center font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Loading map…</div>
+            <svg id="fp-us-svg" viewBox="0 0 960 560" style="width:100%;height:auto;display:none"></svg>
+            <div class="mt-2 font-mono-acc text-[9px] uppercase tracking-wider text-muted-foreground">Dot size = location count · hover for details</div>
+          </div>
+        </div>
+        <div class="fp-view" id="fp-globe">
+          <div class="p-3 flex flex-col items-center">
+            <svg id="fp-glob-svg" viewBox="0 0 480 480" style="width:100%;max-width:420px;height:auto;display:block;cursor:grab;touch-action:none"></svg>
+            <div class="mt-2 font-mono-acc text-[9px] uppercase tracking-wider text-muted-foreground text-center">Drag or swipe to rotate · auto-spins when idle</div>
+          </div>
+        </div>
+        <div id="fp-ibar" class="border-t border-foreground/10 px-4 h-9 flex items-center font-mono-acc text-[10px] text-muted-foreground">Hover any dot for details</div>
+      </div>
     </div>
-    <div class="rounded-md border border-foreground/15 bg-card p-5">
-      <div class="font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground">By the numbers</div>
-      <dl class="mt-3 divide-y divide-foreground/10 text-sm">
-        <div class="flex items-baseline justify-between gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">US locations</dt><dd class="text-right font-medium">~7,000</dd></div>
-        <div class="flex items-baseline justify-between gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">International</dt><dd class="text-right font-medium">~250</dd></div>
-        <div class="flex items-baseline justify-between gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">First store</dt><dd class="text-right font-medium">Downey, CA · 1962</dd></div>
-        <div class="flex items-baseline justify-between gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Parent company</dt><dd class="text-right font-medium">Yum! Brands</dd></div>
-        <div class="flex items-baseline justify-between gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Largest country (ex-US)</dt><dd class="text-right font-medium">United Kingdom</dd></div>
-        <div class="flex items-baseline justify-between gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Mexico stores</dt><dd class="text-right font-medium">0 (pulled out 2010)</dd></div>
-      </dl>
+    <div>
+      <div id="fp-stats-ctx" class="grid grid-cols-2 gap-px border border-foreground/15 rounded-md overflow-hidden mb-3"></div>
+      <div class="font-mono-acc text-[9px] uppercase tracking-wider text-muted-foreground mb-3" id="fp-tbl-lbl">Top 10 · United States</div>
+      <div class="rounded-md border border-foreground/15 bg-card overflow-hidden" id="fp-tbl"></div>
     </div>
   </div>
 </section>
@@ -689,6 +711,190 @@ body_class: "wiki-page"
   <div class="mx-auto max-w-[1500px] px-6 py-6 font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">ViziWiki · Taco Bell Visual Wiki · 1,284 entries · Updated daily</div>
 </footer>
 
+
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script>
+const FM=[{la:34.05,lo:-118.24,lb:"Los Angeles",st:"CA",c:350},{la:32.78,lo:-96.8,lb:"Dallas",st:"TX",c:240},{la:29.76,lo:-95.37,lb:"Houston",st:"TX",c:200},{la:33.45,lo:-112.07,lb:"Phoenix",st:"AZ",c:180},{la:29.42,lo:-98.49,lb:"San Antonio",st:"TX",c:170},{la:41.88,lo:-87.63,lb:"Chicago",st:"IL",c:160},{la:32.72,lo:-117.15,lb:"San Diego",st:"CA",c:110},{la:40.71,lo:-74.01,lb:"New York",st:"NY",c:100},{la:36.17,lo:-115.14,lb:"Las Vegas",st:"NV",c:90},{la:30.27,lo:-97.74,lb:"Austin",st:"TX",c:85},{la:33.75,lo:-84.39,lb:"Atlanta",st:"GA",c:85},{la:39.74,lo:-104.99,lb:"Denver",st:"CO",c:80},{la:38.57,lo:-121.47,lb:"Sacramento",st:"CA",c:75},{la:37.34,lo:-121.89,lb:"San Jose",st:"CA",c:70},{la:25.77,lo:-80.19,lb:"Miami",st:"FL",c:70},{la:42.33,lo:-83.05,lb:"Detroit",st:"MI",c:55},{la:27.97,lo:-82.47,lb:"Tampa",st:"FL",c:55},{la:36.17,lo:-86.78,lb:"Nashville",st:"TN",c:55},{la:47.61,lo:-122.33,lb:"Seattle",st:"WA",c:52},{la:37.77,lo:-122.42,lb:"San Francisco",st:"CA",c:50},{la:35.15,lo:-90.05,lb:"Memphis",st:"TN",c:50},{la:45.52,lo:-122.68,lb:"Portland",st:"OR",c:48},{la:42.36,lo:-71.06,lb:"Boston",st:"MA",c:45},{la:39.95,lo:-75.17,lb:"Philadelphia",st:"PA",c:44},{la:39.1,lo:-94.58,lb:"Kansas City",st:"MO",c:40},{la:44.98,lo:-93.27,lb:"Minneapolis",st:"MN",c:40},{la:35.47,lo:-97.52,lb:"Oklahoma City",st:"OK",c:58},{la:39.96,lo:-82.99,lb:"Columbus",st:"OH",c:45},{la:35.23,lo:-80.84,lb:"Charlotte",st:"NC",c:42},{la:29.95,lo:-90.07,lb:"New Orleans",st:"LA",c:42},{la:38.25,lo:-85.76,lb:"Louisville",st:"KY",c:42},{la:41.5,lo:-81.69,lb:"Cleveland",st:"OH",c:38},{la:30.09,lo:-91.99,lb:"Baton Rouge",st:"LA",c:35},{la:21.31,lo:-157.86,lb:"Honolulu",st:"HI",c:15},{la:61.22,lo:-149.9,lb:"Anchorage",st:"AK",c:8},{la:33.52,lo:-86.81,lb:"Birmingham",st:"AL",c:15},{la:34.74,lo:-92.29,lb:"Little Rock",st:"AR",c:12},{la:41.76,lo:-72.68,lb:"Hartford",st:"CT",c:14},{la:39.74,lo:-75.54,lb:"Wilmington",st:"DE",c:9},{la:30.33,lo:-81.66,lb:"Jacksonville",st:"FL",c:20},{la:28.54,lo:-81.38,lb:"Orlando",st:"FL",c:22},{la:32.08,lo:-81.1,lb:"Savannah",st:"GA",c:9},{la:43.62,lo:-116.2,lb:"Boise",st:"ID",c:14},{la:39.77,lo:-86.16,lb:"Indianapolis",st:"IN",c:22},{la:41.59,lo:-93.62,lb:"Des Moines",st:"IA",c:14},{la:37.69,lo:-97.34,lb:"Wichita",st:"KS",c:16},{la:43.66,lo:-70.26,lb:"Portland",st:"ME",c:7},{la:39.29,lo:-76.61,lb:"Baltimore",st:"MD",c:26},{la:42.96,lo:-85.67,lb:"Grand Rapids",st:"MI",c:13},{la:32.3,lo:-90.18,lb:"Jackson",st:"MS",c:12},{la:45.78,lo:-108.5,lb:"Billings",st:"MT",c:8},{la:41.26,lo:-95.94,lb:"Omaha",st:"NE",c:18},{la:42.99,lo:-71.46,lb:"Manchester",st:"NH",c:9},{la:40.73,lo:-74.17,lb:"Newark",st:"NJ",c:22},{la:35.09,lo:-106.65,lb:"Albuquerque",st:"NM",c:18},{la:46.88,lo:-96.79,lb:"Fargo",st:"ND",c:9},{la:35.93,lo:-78.94,lb:"Raleigh",st:"NC",c:18},{la:39.1,lo:-84.51,lb:"Cincinnati",st:"OH",c:18},{la:40.44,lo:-79.99,lb:"Pittsburgh",st:"PA",c:16},{la:41.82,lo:-71.41,lb:"Providence",st:"RI",c:9},{la:34.0,lo:-81.03,lb:"Columbia",st:"SC",c:13},{la:43.54,lo:-96.73,lb:"Sioux Falls",st:"SD",c:9},{la:36.1,lo:-83.93,lb:"Knoxville",st:"TN",c:13},{la:40.76,lo:-111.89,lb:"Salt Lake City",st:"UT",c:26},{la:44.48,lo:-73.21,lb:"Burlington",st:"VT",c:6},{la:37.54,lo:-77.43,lb:"Richmond",st:"VA",c:22},{la:36.85,lo:-76.29,lb:"Norfolk",st:"VA",c:16},{la:38.35,lo:-81.63,lb:"Charleston",st:"WV",c:11},{la:43.04,lo:-87.91,lb:"Milwaukee",st:"WI",c:22},{la:41.14,lo:-104.82,lb:"Cheyenne",st:"WY",c:6},{la:38.63,lo:-90.2,lb:"St. Louis",st:"MO",c:28},{la:42.88,lo:-78.88,lb:"Buffalo",st:"NY",c:11},{la:43.05,lo:-76.15,lb:"Syracuse",st:"NY",c:9},{la:43.07,lo:-89.4,lb:"Madison",st:"WI",c:10},{la:30.44,lo:-84.28,lb:"Tallahassee",st:"FL",c:10},{la:37.34,lo:-79.18,lb:"Roanoke",st:"VA",c:8}];
+const FG=[{la:38.0,lo:-97.0,lb:"United States",c:7000},{la:51.5,lo:-0.12,lb:"United Kingdom",c:85},{la:35.7,lo:139.7,lb:"Japan",c:70},{la:24.5,lo:54.4,lb:"UAE",c:50},{la:24.7,lo:46.7,lb:"Saudi Arabia",c:45},{la:40.4,lo:-3.7,lb:"Spain",c:30},{la:14.6,lo:121.0,lb:"Philippines",c:28},{la:37.6,lo:127.0,lb:"South Korea",c:25},{la:40.2,lo:28.5,lb:"Turkey",c:25},{la:1.35,lo:103.8,lb:"Singapore",c:18},{la:45.4,lo:-75.7,lb:"Canada",c:15},{la:3.15,lo:101.7,lb:"Malaysia",c:15},{la:25.0,lo:51.5,lb:"Qatar",c:12},{la:28.6,lo:77.2,lb:"India",c:12},{la:-33.9,lo:151.2,lb:"Australia",c:10},{la:31.8,lo:35.2,lb:"Israel",c:8}];
+(async function(){
+const _U10=[...FM].sort((a,b)=>b.c-a.c).slice(0,10);
+const _G10=[...FG].sort((a,b)=>b.c-a.c).slice(0,10);
+
+/* tooltip */
+const _t=document.createElement('div');
+_t.style.cssText='position:fixed;display:none;pointer-events:none;z-index:9999;background:#2a1f15;color:#fdf8e7;padding:6px 12px;border-radius:4px;font-family:JetBrains Mono,monospace;font-size:11px;min-width:120px;box-shadow:0 4px 16px rgba(0,0,0,.22)';
+document.body.appendChild(_t);
+function _sh(e,lb,c){_t.style.display='block';_t.innerHTML='<div style="font-weight:600">'+lb+'</div><div style="font-size:10px;color:#FED141;margin-top:2px">'+c.toLocaleString()+' locations</div>';_mv(e);}
+function _mv(e){_t.style.left=(e.clientX+12)+'px';_t.style.top=(e.clientY-40)+'px';}
+function _hi(){_t.style.display='none';}
+function _ib(h){var b=document.getElementById('fp-ibar');if(b)b.innerHTML=h||'Hover any dot for details';}
+
+/* table */
+function fpTbl(data,mode){
+  var max=data[0].c;
+  document.getElementById('fp-tbl').innerHTML=data.map(function(d,i){
+    var pct=(d.c/max*100).toFixed(1);
+    var lb=mode==='us'?d.lb+', '+d.st:d.lb;
+    var bdr=i<data.length-1?'border-bottom:.5px solid rgba(42,31,21,.08)':'';
+    return '<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;'+bdr+'">'+
+      '<span class="font-display" style="font-size:15px;font-weight:700;color:rgba(42,31,21,.4);min-width:22px;font-variant-numeric:tabular-nums">'+String(i+1).padStart(2,'0')+'</span>'+
+      '<div style="flex:1;min-width:0">'+
+        '<div class="font-mono-acc" style="font-size:10px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+lb+'</div>'+
+        '<div style="margin-top:3px;height:4px;background:rgba(42,31,21,.07);border-radius:2px;overflow:hidden">'+
+          '<div style="width:'+pct+'%;height:100%;background:#FED141;border-radius:2px"></div></div>'+
+      '</div>'+
+      '<span class="font-display" style="font-size:14px;font-weight:700;flex-shrink:0;font-variant-numeric:tabular-nums">'+d.c.toLocaleString()+'</span>'+
+    '</div>';
+  }).join('');
+}
+
+/* stats strip data — switches with tab */
+var _MS={
+  us:[
+    {v:'7,200+', l:'locations worldwide'},
+    {v:'~7,000', l:'in the United States'},
+    {v:'250+',   l:'international'},
+    {v:'31',     l:'countries'}
+  ],
+  globe:[
+    {v:'31',     l:'countries'},
+    {v:'~7,000', l:'U.S. stores'},
+    {v:'250+',   l:'intl. stores'},
+    {v:'93%',    l:'of stores in the U.S.'}
+  ]
+};
+var _CS={
+  us:[
+    {v:'Los Angeles', l:'Largest market \xb7 350 stores'},
+    {v:'Texas',       l:'Densest state \xb7 3 of top 5'},
+    {v:'Top 10',      l:'~22% of all U.S. stores'},
+    {v:'Southwest',   l:'Dominant region'}
+  ],
+  globe:[
+    {v:'United States',  l:'Dominant \xb7 ~7,000 stores'},
+    {v:'United Kingdom', l:'Largest intl \xb7 85 stores'},
+    {v:'31',             l:'countries with TB presence'},
+    {v:'4 regions',      l:'Middle East \xb7 Asia \xb7 Europe \xb7 Pacific'}
+  ]
+};
+function _renderStats(id,data){
+  var el=document.getElementById(id);if(!el)return;
+  el.innerHTML=data.map(function(d,i){
+    var bdr=i<data.length-1?'border-right:.5px solid rgba(42,31,21,.08)':'';
+    return '<div style="background:var(--card,#fff);padding:10px 14px;'+bdr+'">'+
+      '<div class="font-display" style="font-size:clamp(14px,2vw,20px);font-weight:700;letter-spacing:-.015em;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+d.v+'</div>'+
+      '<div class="font-mono-acc" style="font-size:8.5px;letter-spacing:.13em;text-transform:uppercase;color:rgba(42,31,21,.52);margin-top:3px;line-height:1.3">'+d.l+'</div>'+
+    '</div>';
+  }).join('');
+}
+
+/* tab switch */
+window.fpSwitch=function(w,btn){
+  document.querySelectorAll('.fp-tab').forEach(function(b){b.classList.remove('fp-on');});
+  btn.classList.add('fp-on');
+  document.querySelectorAll('.fp-view').forEach(function(v){v.classList.remove('fp-show');});
+  var view=document.getElementById('fp-'+w);if(view)view.classList.add('fp-show');
+  if(w==='globe')_ss(); else _xs();
+  fpTbl(w==='us'?_U10:_G10,w);
+  var l=document.getElementById('fp-tbl-lbl');
+  if(l)l.textContent=w==='us'?'Top 10 \xb7 United States':'Top 10 \xb7 Countries';
+  _renderStats('fp-stats-ctx',_CS[w]);
+  _ib('');
+};
+
+/* load geo */
+var topo=window.topojson;
+var _data=await Promise.all([
+  fetch('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json').then(function(r){return r.json();}),
+  fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(function(r){return r.json();})
+]);
+var _states=topo.feature(_data[0],_data[0].objects.states);
+var _cntrs=topo.feature(_data[1],_data[1].objects.countries);
+
+/* US density dot map */
+(function(){
+  var proj=d3.geoAlbersUsa().scale(1100).translate([480,285]);
+  var path=d3.geoPath().projection(proj);
+  var rs=d3.scaleSqrt().domain([0,350]).range([2,12]);
+  var el=document.getElementById('fp-us-svg');
+  var ld=document.getElementById('fp-us-load');
+  if(ld)ld.style.display='none';
+  if(!el)return;
+  el.style.display='block';
+  var svg=d3.select('#fp-us-svg');
+  svg.append('rect').attr('width',960).attr('height',560).attr('fill','#1e1b4b').attr('rx',2);
+  svg.selectAll('.fst').data(_states.features).join('path').attr('class','fst')
+    .attr('d',path).attr('fill','#6d28d9').attr('fill-opacity',.9)
+    .attr('stroke','#2e1065').attr('stroke-width',.7);
+  FM.forEach(function(m){
+    var p=proj([m.lo,m.la]);if(!p)return;
+    var r=rs(m.c);
+    var g=svg.append('g').style('cursor','pointer');
+    g.append('circle').attr('cx',p[0]).attr('cy',p[1]).attr('r',r)
+      .attr('fill','#FED141').attr('stroke','#92400e').attr('stroke-width',.7);
+    g.on('mouseenter',function(e){
+      _sh(e,m.lb+', '+m.st,m.c);
+      _ib('<span style="font-weight:600">'+m.lb+', '+m.st+'</span>&nbsp;<span style="background:#FED141;color:#92400e;padding:1px 7px;border-radius:3px;font-size:9px;text-transform:uppercase;letter-spacing:.1em">'+m.c.toLocaleString()+' locations</span>');
+    }).on('mousemove',_mv).on('mouseleave',function(){_hi();_ib('');});
+  });
+})();
+
+/* globe */
+var _rot=[-20,-25,0],_dr=false,_lx,_ly,_sid;
+function _ss(){clearInterval(_sid);_sid=setInterval(function(){_rot[0]+=0.06;_dg();},16);}
+function _xs(){clearInterval(_sid);}
+function _dg(){
+  var svg=d3.select('#fp-glob-svg');svg.selectAll('*').remove();
+  var proj=d3.geoOrthographic().scale(215).translate([240,240]).rotate(_rot).clipAngle(90);
+  var path=d3.geoPath().projection(proj);
+  var sp={type:'Sphere'};
+  svg.append('path').datum(sp).attr('d',path).attr('fill','#1e1b4b');
+  svg.append('path').datum(d3.geoGraticule()()).attr('d',path).attr('fill','none')
+    .attr('stroke','rgba(255,255,255,0.05)').attr('stroke-width',.5);
+  svg.selectAll('.fc').data(_cntrs.features).join('path').attr('d',path)
+    .attr('fill','#6d28d9').attr('fill-opacity',.9).attr('stroke','#2e1065').attr('stroke-width',.4);
+  var vc=[-_rot[0],-_rot[1]];
+  var rs=d3.scaleSqrt().domain([0,7000]).range([5,17]);
+  FG.forEach(function(loc){
+    var p=proj([loc.lo,loc.la]);if(!p)return;
+    var ad=d3.geoDistance([loc.lo,loc.la],vc);
+    var ps=Math.pow(Math.cos(ad),.45);
+    var r=rs(loc.c)*ps;if(r<1.5)return;
+    var g=svg.append('g').style('cursor','pointer');
+    g.append('circle').attr('cx',p[0]).attr('cy',p[1]).attr('r',r)
+      .attr('fill','#FED141').attr('stroke','#92400e').attr('stroke-width',Math.max(.4,.8*ps));
+    g.on('mouseenter',function(e){
+      if(!_dr){
+        _sh(e,loc.lb,loc.c);
+        _ib('<span style="font-weight:600">'+loc.lb+'</span>&nbsp;<span style="background:#FED141;color:#92400e;padding:1px 7px;border-radius:3px;font-size:9px;text-transform:uppercase;letter-spacing:.1em">'+loc.c.toLocaleString()+' locations</span>');
+      }
+    }).on('mousemove',_mv).on('mouseleave',function(){_hi();_ib('');});
+  });
+  svg.append('path').datum(sp).attr('d',path).attr('fill','none').attr('stroke','#2e1065').attr('stroke-width',1.5);
+}
+var _ge=document.getElementById('fp-glob-svg');
+_ge.addEventListener('pointerdown',function(e){
+  e.preventDefault();
+  _dr=true;_lx=e.clientX;_ly=e.clientY;_xs();_ge.style.cursor='grabbing';
+  try{_ge.setPointerCapture(e.pointerId);}catch(x){}
+},{passive:false});
+_ge.addEventListener('pointermove',function(e){
+  if(!_dr)return;
+  e.preventDefault();
+  _rot[0]+=(e.clientX-_lx)*.35;_rot[1]-=(e.clientY-_ly)*.35;
+  _lx=e.clientX;_ly=e.clientY;_dg();
+},{passive:false});
+_ge.addEventListener('pointerup',function(){_dr=false;_ge.style.cursor='grab';_ss();});
+_ge.addEventListener('pointercancel',function(){_dr=false;_ge.style.cursor='grab';_ss();});
+
+fpTbl(_U10,'us');
+_renderStats('fp-stats-map',_MS.us);
+_renderStats('fp-stats-ctx',_CS.us);
+_dg();
+})();
+</script>
 
 <script>lucide.createIcons();</script>
 
