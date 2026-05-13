@@ -1640,7 +1640,7 @@
     }
     body.wiki-page .wiki-bar { display: flex; }
     body.wiki-page .wiki-toc {
-      top: var(--main-h);            /* drawer starts right below main bar */
+      top: 0;                        /* drawer covers the full vertical, including main nav */
       width: var(--wiki-rail-w);     /* 280px — partial width */
       transform: translateX(-100%);
       transition: transform .32s cubic-bezier(.4, 0, .2, 1);
