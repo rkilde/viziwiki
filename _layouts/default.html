@@ -1350,7 +1350,7 @@
     display: flex; align-items: center;
     padding: 0 16px; gap: 12px;
     transform: translateY(var(--main-h));
-    transition: transform .25s cubic-bezier(.2,.85,.2,1);
+    transition: transform .32s cubic-bezier(.4, 0, .2, 1);
     will-change: transform;
   }
   body.wiki-page.nav-scrolled .wiki-bar {
@@ -2677,33 +2677,37 @@ let lastY = window.scrollY;
   // ════════════════════════════════════════════════════════════════════
   function populateWiki() {
     const toc = window.WIKI_TOC;
-    if (!toc || !Array.isArray(toc.sections)) return;
+    if (!toc) return;
     if (!document.body.classList.contains('wiki-page')) return;
 
-    const inner = document.getElementById('wiki-toc-inner');
-    const count = document.getElementById('wiki-toc-count');
+    // STEP 1 · Top bar slots — fill these FIRST so they always render,
+    // even if the side drawer markup is somehow missing or wrong.
     const barTitle = document.getElementById('wiki-bar-title-host');
-    if (!inner) return;
-
-    if (count) count.textContent = toc.sections.length;
     if (barTitle && toc.pageTitle) barTitle.textContent = toc.pageTitle;
-
-    // Logo slot — raw SVG markup string from page config
     const logoHost = document.getElementById('wiki-bar-logo-host');
     if (logoHost && toc.pageLogo) logoHost.innerHTML = toc.pageLogo;
 
-    // Back link — only shown if both parent URL and title are provided
+    // STEP 2 · Back link in the drawer (only if both parent fields set)
     const backEl = document.getElementById('wiki-back');
     if (backEl && toc.parentUrl && toc.parentTitle) {
       backEl.href = toc.parentUrl;
-      backEl.querySelector('.wiki-back-label').textContent = 'Back to ' + toc.parentTitle;
+      const lbl = backEl.querySelector('.wiki-back-label');
+      if (lbl) lbl.textContent = 'Back to ' + toc.parentTitle;
       backEl.hidden = false;
     }
 
-    // Group sections by their `group` label (preserving order)
+    // STEP 3 · Section list — only if drawer markup + sections both exist
+    const inner = document.getElementById('wiki-toc-inner');
+    if (!inner || !Array.isArray(toc.sections)) return;
+
+    const count = document.getElementById('wiki-toc-count');
+    if (count) count.textContent = toc.sections.length;
+
+    // Group sections by their `group` label (preserving order).
+    // Sections without a group property still group together correctly.
     const groups = [];
     let cur = null;
-    toc.sections.forEach((s, i) => {
+    toc.sections.forEach(function (s, i) {
       if (s.group !== cur) {
         groups.push({ group: s.group, items: [] });
         cur = s.group;
@@ -2711,7 +2715,7 @@ let lastY = window.scrollY;
       groups[groups.length - 1].items.push(Object.assign({}, s, { num: i + 1 }));
     });
 
-    // Render markup
+    // Render markup. Group label only renders when group is defined.
     inner.innerHTML = groups.map(function (g) {
       const items = g.items.map(function (item) {
         return '<a class="wiki-section-item" href="#' + item.id + '" data-section="' + item.id + '">' +
@@ -2719,7 +2723,8 @@ let lastY = window.scrollY;
                  '<span class="label">' + item.label + '</span>' +
                '</a>';
       }).join('');
-      return '<div class="wiki-group-label">' + g.group + '</div>' + items;
+      const groupLabel = g.group ? '<div class="wiki-group-label">' + g.group + '</div>' : '';
+      return groupLabel + items;
     }).join('');
 
     // Scroll-spy: mark whichever section's top is just above viewport-top
@@ -2729,8 +2734,6 @@ let lastY = window.scrollY;
     const items = inner.querySelectorAll('.wiki-section-item');
 
     function updateActive() {
-      // Offset = main-bar height + a margin so the next section becomes
-      // active just before it scrolls fully into view
       const mainH = parseInt(getComputedStyle(document.documentElement)
         .getPropertyValue('--main-h')) || 56;
       const offset = mainH + 80;
