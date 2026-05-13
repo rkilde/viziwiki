@@ -1334,16 +1334,27 @@
   body.wiki-page .page-bar,
   body.wiki-page .page-toc { display: none !important; }
 
-  /* ── TOP BAR (mobile only) — hamburger · title · save · share ── */
+  /* ── TOP BAR (mobile only) — hamburger · title · save · share ──
+     Positioned via transform on the GPU so it animates together with the
+     main-bar. Starts at translateY(--main-h) which puts it BELOW the main
+     bar. When body.nav-scrolled is set, both bars translate up — the
+     wiki-bar to translateY(0) (replacing the main-bar's old position) and
+     the main-bar to translateY(-100%) (offscreen). */
   body.wiki-page .wiki-bar {
     position: fixed;
-    top: var(--main-h); left: 0; right: 0;
+    top: 0; left: 0; right: 0;
     height: var(--wiki-bar-h);
     z-index: 99;
     background: var(--wiki-bg);
     border-bottom: 1px solid var(--wiki-faint);
     display: flex; align-items: center;
     padding: 0 16px; gap: 12px;
+    transform: translateY(var(--main-h));
+    transition: transform .25s cubic-bezier(.2,.85,.2,1);
+    will-change: transform;
+  }
+  body.wiki-page.nav-scrolled .wiki-bar {
+    transform: translateY(0);
   }
   body.wiki-page .wiki-hamburger,
   body.wiki-page .wiki-bar-btn {
@@ -2566,41 +2577,40 @@ let lastY = window.scrollY;
   syncTocStateToViewport(mobileQuery);
 
   // ════════════════════════════════════════════════════════════════════
-  // WIKI HAMBURGER — bound at IIFE init, NOT inside populateWiki.
-  // The wiki-bar HTML is always in the layout, so the hamburger should
-  // toggle the drawer regardless of whether WIKI_TOC was set. Event
-  // delegation via document.body so the handler survives any DOM rewrites.
+  // WIKI HAMBURGER — pure body-level delegation. No race conditions with
+  // when the button mounts, no _wikiBound flags, no need to re-attach on
+  // DOMContentLoaded. Every click that lands on or inside #wiki-hamburger
+  // toggles the drawer. Robust across iOS Safari, Chrome, Firefox.
   // ════════════════════════════════════════════════════════════════════
-  function toggleWikiDrawer(e) {
-    if (!e.target) return;
-    const hamburgerHit = e.target.closest('#wiki-hamburger');
-    if (hamburgerHit) {
-      e.preventDefault();
-      e.stopPropagation();
-      // Close other menus, never inherit collapsed-rail state from desktop
-      document.body.classList.remove('main-nav-open');
-      document.body.classList.remove('toc-collapsed');
-      document.body.classList.toggle('drawer-open');
-      return;
-    }
-    // Tap on a section link inside wiki-toc → close drawer (mobile only)
-    const sectionHit = e.target.closest('.wiki-section-item');
+  function toggleWikiDrawer() {
+    document.body.classList.remove('main-nav-open');
+    document.body.classList.remove('toc-collapsed');
+    document.body.classList.toggle('drawer-open');
+  }
+  function closeWikiDrawerIfSectionTap(e) {
+    const sectionHit = e.target && e.target.closest && e.target.closest('.wiki-section-item');
     if (sectionHit && window.matchMedia('(max-width: 720px)').matches) {
       document.body.classList.remove('drawer-open');
     }
   }
-  // Bind to BOTH click and touchend. iOS Safari occasionally drops button
-  // click events when ancestors mutate during the touch; touchend is the
-  // safety net. The `if (e.cancelable)` guards against double-firing.
-  document.body.addEventListener('click', toggleWikiDrawer);
-  document.body.addEventListener('touchend', function (e) {
-    if (e.target && e.target.closest('#wiki-hamburger')) {
-      // Let the synthetic click also fire; touchend just guarantees
-      // the toggle even when the click is suppressed
-      if (e.cancelable) e.preventDefault();
-      toggleWikiDrawer(e);
+  document.body.addEventListener('click', function (e) {
+    if (e.target && e.target.closest && e.target.closest('#wiki-hamburger')) {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleWikiDrawer();
+      return;
     }
-  }, { passive: false });
+    closeWikiDrawerIfSectionTap(e);
+  });
+  // Backdrop click closes the wiki drawer (mobile)
+  const wikiBackdrop = document.getElementById('drawer-backdrop');
+  if (wikiBackdrop) {
+    wikiBackdrop.addEventListener('click', function () {
+      if (document.body.classList.contains('wiki-page')) {
+        document.body.classList.remove('drawer-open');
+      }
+    });
+  }
 
   // ════════════════════════════════════════════════════════════════════
   // JOURNEYS MODAL — open from any [data-action="open-journey"] link
