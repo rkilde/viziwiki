@@ -1395,31 +1395,68 @@
     border-right: 1px solid var(--wiki-faint);
     z-index: 110;  /* must beat backdrop (108–109) so mobile drawer shows */
     overflow-y: auto;
-    padding: 24px 16px;
+    padding: 0;
     display: block;
   }
 
-  /* ── BACK LINK at top of drawer — hidden until WIKI_TOC.parentUrl is set ── */
-  body.wiki-page .wiki-back {
-    display: flex; align-items: center; gap: 8px;
-    padding: 8px 16px;
-    margin: 0 -16px 18px;
-    color: var(--wiki-muted);
+  /* ── LARGE BACK TILE (top of drawer) — hidden until WIKI_TOC.parentUrl is set ── */
+  body.wiki-page .wiki-back-tile {
+    display: flex; align-items: center; gap: 12px;
+    padding: 18px 20px;
+    color: var(--wiki-fg);
     text-decoration: none;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10.5px;
-    font-weight: 500;
-    letter-spacing: .12em;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: .18em;
     text-transform: uppercase;
+    background: rgba(42, 31, 21, .03);
     border-bottom: 1px solid var(--wiki-faint);
-    transition: color .15s ease, background .15s ease;
+    transition: background .15s ease;
   }
-  body.wiki-page .wiki-back:hover {
+  body.wiki-page .wiki-back-tile:hover {
+    background: rgba(42, 31, 21, .07);
+  }
+  body.wiki-page .wiki-back-tile-arrow {
+    width: 14px; height: 14px; flex-shrink: 0;
+    transition: transform .15s ease;
+  }
+  body.wiki-page .wiki-back-tile:hover .wiki-back-tile-arrow {
+    transform: translateX(-2px);
+  }
+  body.wiki-page .wiki-back-tile[hidden] { display: none; }
+
+  /* ── HERO: page logo + page name ── */
+  body.wiki-page .wiki-toc-hero {
+    display: flex; align-items: center; gap: 12px;
+    padding: 22px 20px 18px;
+    border-bottom: 1px solid var(--wiki-faint);
+  }
+  body.wiki-page .wiki-toc-hero-logo {
+    width: 28px; height: 28px; flex-shrink: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  body.wiki-page .wiki-toc-hero-logo svg,
+  body.wiki-page .wiki-toc-hero-logo img {
+    width: 100%; height: 100%; display: block;
+  }
+  body.wiki-page .wiki-toc-hero-logo:empty { display: none; }
+  body.wiki-page .wiki-toc-hero-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: -.01em;
     color: var(--wiki-fg);
-    background: rgba(42, 31, 21, .04);
   }
-  body.wiki-page .wiki-back svg { width: 12px; height: 12px; flex-shrink: 0; }
-  body.wiki-page .wiki-back[hidden] { display: none; }
+
+  /* ── CONTENTS LABEL ── */
+  body.wiki-page .wiki-toc-contents-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px; font-weight: 600;
+    letter-spacing: .22em; text-transform: uppercase;
+    color: var(--wiki-muted);
+    padding: 18px 20px 10px;
+  }
 
   /* ── LOGO slot in wiki-bar — sits to the left of the page title ── */
   body.wiki-page .wiki-bar-logo {
@@ -1432,32 +1469,21 @@
   }
   body.wiki-page .wiki-bar-logo:empty { display: none; }
 
-  body.wiki-page .wiki-toc-header {
-    display: flex; align-items: center; gap: 8px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10.5px; font-weight: 600;
-    letter-spacing: .18em; text-transform: uppercase;
-    color: var(--wiki-muted);
-    margin: 0 0 20px 4px;
-  }
-  body.wiki-page .wiki-toc-header-icon {
-    width: 14px; height: 14px; flex-shrink: 0;
-  }
   body.wiki-page .wiki-group-label {
     font-family: 'JetBrains Mono', monospace;
     font-size: 9.5px; font-weight: 600;
     letter-spacing: .22em; text-transform: uppercase;
     color: var(--wiki-muted);
-    margin: 18px 0 4px 18px;
+    margin: 14px 0 4px 22px;
   }
   body.wiki-page .wiki-group-label:first-child { margin-top: 0; }
   body.wiki-page .wiki-section-item {
-    display: flex; align-items: baseline; gap: 12px;
-    padding: 7px 14px 7px 16px;
+    display: flex; align-items: baseline; gap: 14px;
+    padding: 10px 20px;
     border-left: 2px solid transparent;
     color: var(--wiki-fg); text-decoration: none;
     font-family: 'Fraunces', Georgia, serif;
-    font-size: 15px; font-weight: 400; line-height: 1.3;
+    font-size: 16px; font-weight: 400; line-height: 1.3;
     transition: background .15s ease;
   }
   body.wiki-page .wiki-section-item:hover {
@@ -1467,7 +1493,7 @@
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px; font-weight: 500;
     color: var(--wiki-muted);
-    min-width: 20px; font-variant-numeric: tabular-nums;
+    min-width: 22px; font-variant-numeric: tabular-nums;
   }
   body.wiki-page .wiki-section-item.active {
     border-left-color: var(--wiki-accent);
@@ -1486,7 +1512,7 @@
     body.wiki-page .wiki-bar { display: none; }
   }
 
-  /* ── MOBILE: bar visible, drawer slides in via .drawer-open ── */
+  /* ── MOBILE: bar visible, drawer covers FULL WIDTH below the bars ── */
   @media (max-width: 720px) {
     body.wiki-page {
       padding-top: calc(var(--main-h) + var(--wiki-bar-h));
@@ -1494,6 +1520,8 @@
     body.wiki-page .wiki-bar { display: flex; }
     body.wiki-page .wiki-toc {
       top: calc(var(--main-h) + var(--wiki-bar-h));
+      width: 100vw;        /* full-width takeover */
+      border-right: none;
       transform: translateX(-100%);
       transition: transform .32s cubic-bezier(.4, 0, .2, 1);
       box-shadow: 4px 0 24px rgba(42, 31, 21, .08);
@@ -1501,6 +1529,13 @@
     body.wiki-page.drawer-open .wiki-toc {
       transform: translateX(0);
     }
+    /* Bigger hero and section type on mobile (more breathing room) */
+    body.wiki-page .wiki-toc-hero { padding: 28px 24px 22px; }
+    body.wiki-page .wiki-toc-hero-logo { width: 32px; height: 32px; }
+    body.wiki-page .wiki-toc-hero-title { font-size: 24px; }
+    body.wiki-page .wiki-toc-contents-label { padding: 22px 24px 12px; }
+    body.wiki-page .wiki-back-tile { padding: 20px 24px; font-size: 12px; }
+    body.wiki-page .wiki-section-item { padding: 12px 24px; font-size: 17px; }
   }
 
   /* ═══════════════════════════════ JOURNEYS MODAL ═══════════════════════════
@@ -1964,25 +1999,30 @@
 </header>
 
 <nav class="wiki-toc" id="wiki-toc" aria-label="Wiki contents">
-  <a class="wiki-back" id="wiki-back" href="#" hidden>
-    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+
+  <!-- ── Large back tile (top) ── -->
+  <a class="wiki-back-tile" id="wiki-back" href="#" hidden>
+    <svg class="wiki-back-tile-arrow" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
       <polyline points="6,3 2,7 6,11"/>
       <line x1="2" y1="7" x2="12" y2="7"/>
     </svg>
     <span class="wiki-back-label">Back</span>
   </a>
-  <div class="wiki-toc-header">
-    <svg class="wiki-toc-header-icon" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
-      <line x1="2" y1="3.5" x2="5" y2="3.5"/>
-      <line x1="7" y1="3.5" x2="12" y2="3.5"/>
-      <line x1="2" y1="7" x2="5" y2="7"/>
-      <line x1="7" y1="7" x2="12" y2="7"/>
-      <line x1="2" y1="10.5" x2="5" y2="10.5"/>
-      <line x1="7" y1="10.5" x2="12" y2="10.5"/>
-    </svg>
-    <span>Index · <span id="wiki-toc-count">0</span> sections</span>
+
+  <!-- ── Hero: page logo + name ── -->
+  <div class="wiki-toc-hero">
+    <span class="wiki-toc-hero-logo" id="wiki-toc-hero-logo" aria-hidden="true"></span>
+    <span class="wiki-toc-hero-title" id="wiki-toc-hero-title"></span>
   </div>
+
+  <!-- ── Contents label ── -->
+  <div class="wiki-toc-contents-label">Contents</div>
+
+  <!-- ── Section list ── -->
   <div class="wiki-toc-inner" id="wiki-toc-inner"></div>
+
+  <!-- Hidden — kept for backward compatibility if any script references it -->
+  <span id="wiki-toc-count" hidden>0</span>
 </nav>
 
   <!-- ────────── Page-specific content goes here ────────── -->
@@ -2694,7 +2734,13 @@ let lastY = window.scrollY;
     const logoHost = document.getElementById('wiki-bar-logo-host');
     if (logoHost && toc.pageLogo) logoHost.innerHTML = toc.pageLogo;
 
-    // STEP 2 · Back link in the drawer (only if both parent fields set)
+    // STEP 2 · Drawer hero (same logo + title as the bar, just bigger)
+    const heroLogo = document.getElementById('wiki-toc-hero-logo');
+    if (heroLogo && toc.pageLogo) heroLogo.innerHTML = toc.pageLogo;
+    const heroTitle = document.getElementById('wiki-toc-hero-title');
+    if (heroTitle && toc.pageTitle) heroTitle.textContent = toc.pageTitle;
+
+    // STEP 3 · Back tile — only shown if both parent URL and title set
     const backEl = document.getElementById('wiki-back');
     if (backEl && toc.parentUrl && toc.parentTitle) {
       backEl.href = toc.parentUrl;
@@ -2703,7 +2749,7 @@ let lastY = window.scrollY;
       backEl.hidden = false;
     }
 
-    // STEP 3 · Section list — only if drawer markup + sections both exist
+    // STEP 4 · Section list — only if drawer markup + sections both exist
     const inner = document.getElementById('wiki-toc-inner');
     if (!inner || !Array.isArray(toc.sections)) return;
 
