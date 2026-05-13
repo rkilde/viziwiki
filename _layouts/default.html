@@ -1395,27 +1395,53 @@
     border-right: 1px solid var(--wiki-faint);
     z-index: 110;  /* must beat backdrop (108–109) so mobile drawer shows */
     overflow-y: auto;
-    padding: 0;
+    padding: 22px 20px;
     display: block;
   }
 
-  /* ── LARGE BACK TILE (top of drawer) — hidden until WIKI_TOC.parentUrl is set ── */
+  /* ── X CLOSE BUTTON — top right of drawer, above back tile ── */
+  body.wiki-page .wiki-toc-close {
+    position: absolute;
+    top: 18px; right: 18px;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    background: transparent;
+    border: 1px solid var(--wiki-faint);
+    border-radius: 5px;
+    color: var(--wiki-fg);
+    cursor: pointer;
+    padding: 0;
+    transition: background .15s ease, border-color .15s ease;
+  }
+  body.wiki-page .wiki-toc-close:hover {
+    background: rgba(42, 31, 21, .04);
+    border-color: rgba(42, 31, 21, .25);
+  }
+  body.wiki-page .wiki-toc-close svg {
+    width: 14px; height: 14px;
+  }
+
+  /* ── BACK TILE — bordered button below the X ── */
   body.wiki-page .wiki-back-tile {
-    display: flex; align-items: center; gap: 12px;
-    padding: 18px 20px;
+    display: flex; align-items: center; gap: 10px;
+    padding: 13px 14px;
+    margin-top: 48px;  /* leave room for X above */
+    margin-bottom: 28px;
+    border: 1px solid var(--wiki-faint);
+    border-radius: 6px;
     color: var(--wiki-fg);
     text-decoration: none;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11.5px;
-    font-weight: 600;
-    letter-spacing: .18em;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .2em;
     text-transform: uppercase;
-    background: rgba(42, 31, 21, .03);
-    border-bottom: 1px solid var(--wiki-faint);
-    transition: background .15s ease;
+    background: transparent;
+    transition: background .15s ease, border-color .15s ease;
   }
   body.wiki-page .wiki-back-tile:hover {
-    background: rgba(42, 31, 21, .07);
+    background: rgba(42, 31, 21, .04);
+    border-color: rgba(42, 31, 21, .25);
   }
   body.wiki-page .wiki-back-tile-arrow {
     width: 14px; height: 14px; flex-shrink: 0;
@@ -1426,14 +1452,13 @@
   }
   body.wiki-page .wiki-back-tile[hidden] { display: none; }
 
-  /* ── HERO: page logo + page name ── */
+  /* ── HERO: logo + page name, side by side, larger ── */
   body.wiki-page .wiki-toc-hero {
     display: flex; align-items: center; gap: 12px;
-    padding: 22px 20px 18px;
-    border-bottom: 1px solid var(--wiki-faint);
+    margin-bottom: 4px;
   }
   body.wiki-page .wiki-toc-hero-logo {
-    width: 28px; height: 28px; flex-shrink: 0;
+    width: 36px; height: 36px; flex-shrink: 0;
     display: inline-flex; align-items: center; justify-content: center;
   }
   body.wiki-page .wiki-toc-hero-logo svg,
@@ -1443,19 +1468,23 @@
   body.wiki-page .wiki-toc-hero-logo:empty { display: none; }
   body.wiki-page .wiki-toc-hero-title {
     font-family: 'Fraunces', Georgia, serif;
-    font-size: 20px;
+    font-size: 28px;
     font-weight: 500;
     letter-spacing: -.01em;
     color: var(--wiki-fg);
+    line-height: 1.05;
   }
 
-  /* ── CONTENTS LABEL ── */
+  /* ── "Contents:" label — italic serif, with divider beneath ── */
   body.wiki-page .wiki-toc-contents-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10.5px; font-weight: 600;
-    letter-spacing: .22em; text-transform: uppercase;
-    color: var(--wiki-muted);
-    padding: 18px 20px 10px;
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--wiki-fg);
+    padding: 18px 0 10px;
+    border-bottom: 1px solid var(--wiki-faint);
+    margin-bottom: 18px;
   }
 
   /* ── LOGO slot in wiki-bar — sits to the left of the page title ── */
@@ -1469,17 +1498,20 @@
   }
   body.wiki-page .wiki-bar-logo:empty { display: none; }
 
+  /* ── GROUP LABEL (only renders when WIKI_TOC sections have `group`) ── */
   body.wiki-page .wiki-group-label {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 9.5px; font-weight: 600;
+    font-size: 10px; font-weight: 600;
     letter-spacing: .22em; text-transform: uppercase;
     color: var(--wiki-muted);
-    margin: 14px 0 4px 22px;
+    margin: 16px 0 4px 22px;
   }
   body.wiki-page .wiki-group-label:first-child { margin-top: 0; }
+
+  /* ── SECTION ITEMS — numbered, with accent border on active ── */
   body.wiki-page .wiki-section-item {
     display: flex; align-items: baseline; gap: 14px;
-    padding: 10px 20px;
+    padding: 8px 0 8px 14px;
     border-left: 2px solid transparent;
     color: var(--wiki-fg); text-decoration: none;
     font-family: 'Fraunces', Georgia, serif;
@@ -1512,7 +1544,7 @@
     body.wiki-page .wiki-bar { display: none; }
   }
 
-  /* ── MOBILE: bar visible, drawer covers FULL WIDTH below the bars ── */
+  /* ── MOBILE: bar visible, drawer is PARTIAL WIDTH (matches CompuServe) ── */
   @media (max-width: 720px) {
     body.wiki-page {
       padding-top: calc(var(--main-h) + var(--wiki-bar-h));
@@ -1520,8 +1552,7 @@
     body.wiki-page .wiki-bar { display: flex; }
     body.wiki-page .wiki-toc {
       top: calc(var(--main-h) + var(--wiki-bar-h));
-      width: 100vw;        /* full-width takeover */
-      border-right: none;
+      width: var(--wiki-rail-w);  /* 280px — leaves page content visible on the right */
       transform: translateX(-100%);
       transition: transform .32s cubic-bezier(.4, 0, .2, 1);
       box-shadow: 4px 0 24px rgba(42, 31, 21, .08);
@@ -1529,13 +1560,6 @@
     body.wiki-page.drawer-open .wiki-toc {
       transform: translateX(0);
     }
-    /* Bigger hero and section type on mobile (more breathing room) */
-    body.wiki-page .wiki-toc-hero { padding: 28px 24px 22px; }
-    body.wiki-page .wiki-toc-hero-logo { width: 32px; height: 32px; }
-    body.wiki-page .wiki-toc-hero-title { font-size: 24px; }
-    body.wiki-page .wiki-toc-contents-label { padding: 22px 24px 12px; }
-    body.wiki-page .wiki-back-tile { padding: 20px 24px; font-size: 12px; }
-    body.wiki-page .wiki-section-item { padding: 12px 24px; font-size: 17px; }
   }
 
   /* ═══════════════════════════════ JOURNEYS MODAL ═══════════════════════════
@@ -1785,7 +1809,7 @@
   <nav class="main-nav">
     <a href="index.html"{% if page.nav_active == "home" %} class="active"{% endif %}>Home</a>
     <a href="browse.html"{% if page.nav_active == "browse" %} class="active"{% endif %}>Browse</a>
-    <a href="#" class="has-vlogo">
+    <a href="index.html" class="has-vlogo">
       <svg class="vlogo-icon" viewBox="0 0 48 48" fill="none" aria-hidden="true">
         <ellipse cx="24" cy="24" rx="20" ry="6" stroke="#7dd3fc" stroke-width="2.2"/>
         <ellipse cx="24" cy="24" rx="18" ry="9" stroke="#b794d4" stroke-width="1.8" transform="rotate(38 24 24)"/>
@@ -1817,7 +1841,7 @@
 <div class="main-nav-panel" id="main-nav-panel">
   <a href="index.html"{% if page.nav_active == "home" %} class="active"{% endif %} data-nav="home">Home</a>
   <a href="browse.html"{% if page.nav_active == "browse" %} class="active"{% endif %} data-nav="browse">Browse</a>
-  <a href="#" data-nav="verses" class="has-vlogo">
+  <a href="index.html" data-nav="verses" class="has-vlogo">
     Vizi-verses
     <svg class="vlogo-icon" viewBox="0 0 48 48" fill="none" aria-hidden="true">
         <ellipse cx="24" cy="24" rx="20" ry="6" stroke="#7dd3fc" stroke-width="2.2"/>
@@ -2000,7 +2024,15 @@
 
 <nav class="wiki-toc" id="wiki-toc" aria-label="Wiki contents">
 
-  <!-- ── Large back tile (top) ── -->
+  <!-- ── X close button (top right of drawer, above back tile) ── -->
+  <button class="wiki-toc-close" id="wiki-toc-close" aria-label="Close contents drawer">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+      <line x1="3.5" y1="3.5" x2="10.5" y2="10.5"/>
+      <line x1="10.5" y1="3.5" x2="3.5" y2="10.5"/>
+    </svg>
+  </button>
+
+  <!-- ── Large back tile (below X) ── -->
   <a class="wiki-back-tile" id="wiki-back" href="#" hidden>
     <svg class="wiki-back-tile-arrow" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
       <polyline points="6,3 2,7 6,11"/>
@@ -2015,8 +2047,8 @@
     <span class="wiki-toc-hero-title" id="wiki-toc-hero-title"></span>
   </div>
 
-  <!-- ── Contents label ── -->
-  <div class="wiki-toc-contents-label">Contents</div>
+  <!-- ── "Contents:" label (italic serif, divider below) ── -->
+  <div class="wiki-toc-contents-label">Contents:</div>
 
   <!-- ── Section list ── -->
   <div class="wiki-toc-inner" id="wiki-toc-inner"></div>
@@ -2348,6 +2380,16 @@ let lastY = window.scrollY;
     let ticking = false;
     function update() {
       const y = window.scrollY;
+      // Top-level pages (home, browse, vizi-verses — all carry the
+      // body.no-facet-chrome class) pin the main nav permanently. They're
+      // navigational hubs, not reading surfaces, so the user doesn't need
+      // the extra vertical space gained by hiding the bar.
+      if (document.body.classList.contains('no-facet-chrome')) {
+        document.body.classList.remove('nav-scrolled');
+        lastY = y;
+        ticking = false;
+        return;
+      }
       // If the global nav panel is open, pause Pattern B — keep the main bar
       // in place so the dropdown doesn't get orphaned in mid-air
       if (document.body.classList.contains('main-nav-open')) {
@@ -2645,6 +2687,13 @@ let lastY = window.scrollY;
       e.preventDefault();
       e.stopPropagation();
       toggleWikiDrawer();
+      return;
+    }
+    // X close button inside the drawer — closes the drawer
+    if (e.target && e.target.closest && e.target.closest('#wiki-toc-close')) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.body.classList.remove('drawer-open');
       return;
     }
     closeWikiDrawerIfSectionTap(e);
