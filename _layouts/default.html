@@ -1399,7 +1399,11 @@
     display: block;
   }
 
-  /* ── X CLOSE BUTTON — top right of drawer, above back tile ── */
+  /* ── CLOSE / TOGGLE BUTTON — top right of drawer.
+       3 SVGs share this button:
+         .wiki-close-x         → mobile (always): dismiss drawer
+         .wiki-close-collapse  → desktop expanded: collapse rail
+         .wiki-close-expand    → desktop collapsed: expand rail   ── */
   body.wiki-page .wiki-toc-close {
     position: absolute;
     top: 18px; right: 18px;
@@ -1411,6 +1415,7 @@
     color: var(--wiki-fg);
     cursor: pointer;
     padding: 0;
+    z-index: 50;
     transition: background .15s ease, border-color .15s ease;
   }
   body.wiki-page .wiki-toc-close:hover {
@@ -1419,6 +1424,51 @@
   }
   body.wiki-page .wiki-toc-close svg {
     width: 14px; height: 14px;
+  }
+  /* Default: all 3 SVGs hidden; media queries below pick the right one */
+  body.wiki-page .wiki-toc-close .wiki-close-x,
+  body.wiki-page .wiki-toc-close .wiki-close-collapse,
+  body.wiki-page .wiki-toc-close .wiki-close-expand { display: none; }
+  /* Mobile: always show X */
+  @media (max-width: 720px) {
+    body.wiki-page .wiki-toc-close .wiki-close-x { display: block; }
+  }
+  /* Desktop expanded: show collapse chevron (←) */
+  @media (min-width: 721px) {
+    body.wiki-page:not(.toc-collapsed) .wiki-toc-close .wiki-close-collapse { display: block; }
+    body.wiki-page.toc-collapsed .wiki-toc-close .wiki-close-expand { display: block; }
+  }
+
+  /* ── SAVE BUTTON — top right, to the LEFT of close in expanded view,
+       stacked BELOW close in collapsed view ── */
+  body.wiki-page .wiki-toc-save {
+    position: absolute;
+    top: 18px; right: 58px;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    background: transparent;
+    border: 1px solid var(--wiki-faint);
+    border-radius: 5px;
+    color: var(--wiki-fg);
+    cursor: pointer;
+    padding: 0;
+    z-index: 50;
+    transition: background .15s ease, border-color .15s ease, color .15s ease;
+  }
+  body.wiki-page .wiki-toc-save:hover {
+    background: rgba(42, 31, 21, .04);
+    border-color: rgba(42, 31, 21, .25);
+  }
+  body.wiki-page .wiki-toc-save.saved {
+    color: var(--wiki-accent);
+    border-color: var(--wiki-accent);
+    background: color-mix(in srgb, var(--wiki-accent) 8%, transparent);
+  }
+  body.wiki-page .wiki-toc-save svg {
+    width: 14px; height: 14px;
+  }
+  body.wiki-page .wiki-toc-save.saved svg {
+    fill: currentColor;
   }
 
   /* ── BACK TILE — bordered button below the X ── */
@@ -1542,6 +1592,45 @@
       padding-left: var(--wiki-rail-w);
     }
     body.wiki-page .wiki-bar { display: none; }
+
+    /* ── COLLAPSED RAIL (chevron toggle) — desktop only ──
+       Rail shrinks to 36px. Chevron at top, save below, back-tile (as icon)
+       below that. Hero, contents label, divider, sections all hidden. */
+    body.wiki-page.toc-collapsed {
+      padding-left: 36px;
+    }
+    body.wiki-page.toc-collapsed .wiki-toc {
+      width: 36px;
+      padding: 14px 0 0;
+      overflow: visible;
+    }
+    body.wiki-page.toc-collapsed .wiki-toc-close {
+      top: 8px; right: auto;
+      left: 50%; transform: translateX(-50%);
+      width: 24px; height: 24px;
+    }
+    body.wiki-page.toc-collapsed .wiki-toc-save {
+      top: 42px; right: auto;
+      left: 50%; transform: translateX(-50%);
+      width: 24px; height: 24px;
+    }
+    body.wiki-page.toc-collapsed .wiki-back-tile {
+      position: absolute;
+      top: 76px; left: 50%; right: auto;
+      transform: translateX(-50%);
+      margin: 0;
+      width: 24px; height: 24px;
+      padding: 0; gap: 0;
+      justify-content: center;
+      border-radius: 4px;
+    }
+    body.wiki-page.toc-collapsed .wiki-back-label { display: none; }
+    body.wiki-page.toc-collapsed .wiki-toc-hero,
+    body.wiki-page.toc-collapsed .wiki-toc-contents-label,
+    body.wiki-page.toc-collapsed .wiki-toc-inner {
+      opacity: 0;
+      pointer-events: none;
+    }
   }
 
   /* ── MOBILE: bar visible, drawer is PARTIAL WIDTH (matches CompuServe) ── */
@@ -1563,7 +1652,7 @@
     /* When drawer is open, hide the wiki-bar so the drawer can occupy the
        full vertical extent below the main nav (matches CompuServe layout) */
     body.wiki-page.drawer-open .wiki-bar {
-      display: none;
+      display: none !important;
     }
   }
 
@@ -2029,11 +2118,27 @@
 
 <nav class="wiki-toc" id="wiki-toc" aria-label="Wiki contents">
 
-  <!-- ── X close button (top right of drawer, above back tile) ── -->
-  <button class="wiki-toc-close" id="wiki-toc-close" aria-label="Close contents drawer">
-    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+  <!-- ── SAVE button (top right, left of close) ── -->
+  <button class="wiki-toc-save" id="wiki-toc-save" aria-label="Save page">
+    <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M 3.5 2 L 10.5 2 L 10.5 12 L 7 9.5 L 3.5 12 Z"/>
+    </svg>
+  </button>
+
+  <!-- ── CLOSE / TOGGLE button (top right). 3 SVGs:
+       - X        → mobile: closes drawer
+       - chevron-left  → desktop expanded: collapses rail
+       - chevron-right → desktop collapsed: expands rail ── -->
+  <button class="wiki-toc-close" id="wiki-toc-close" aria-label="Toggle contents drawer">
+    <svg class="wiki-close-x" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
       <line x1="3.5" y1="3.5" x2="10.5" y2="10.5"/>
       <line x1="10.5" y1="3.5" x2="3.5" y2="10.5"/>
+    </svg>
+    <svg class="wiki-close-collapse" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="9,3 5,7 9,11"/>
+    </svg>
+    <svg class="wiki-close-expand" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="5,3 9,7 5,11"/>
     </svg>
   </button>
 
@@ -2694,11 +2799,25 @@ let lastY = window.scrollY;
       toggleWikiDrawer();
       return;
     }
-    // X close button inside the drawer — closes the drawer
+    // Close / toggle button inside the drawer.
+    // Mobile (≤720px): closes the drawer.
+    // Desktop (>720px): toggles between collapsed and expanded rail.
     if (e.target && e.target.closest && e.target.closest('#wiki-toc-close')) {
       e.preventDefault();
       e.stopPropagation();
-      document.body.classList.remove('drawer-open');
+      if (window.matchMedia('(max-width: 720px)').matches) {
+        document.body.classList.remove('drawer-open');
+      } else {
+        document.body.classList.toggle('toc-collapsed');
+      }
+      return;
+    }
+    // Save button — toggles a saved state on the button (visual demo)
+    if (e.target && e.target.closest && e.target.closest('#wiki-toc-save')) {
+      e.preventDefault();
+      e.stopPropagation();
+      const btn = e.target.closest('#wiki-toc-save');
+      btn.classList.toggle('saved');
       return;
     }
     closeWikiDrawerIfSectionTap(e);
