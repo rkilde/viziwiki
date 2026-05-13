@@ -2415,12 +2415,19 @@ let lastY = window.scrollY;
         window.history.replaceState(null, '', 'index.html');
       });
     });
-    // Save button toggle (visual demo only)
-    document.querySelector('.page-save').addEventListener('click', e => {
-      const btn = e.currentTarget;
-      btn.classList.toggle('saved');
-      btn.style.color = btn.classList.contains('saved') ? 'var(--verse)' : '';
-    });
+    // Save button toggle (visual demo only). Wrapped in a null check
+    // because .page-save only exists on facet pages (it's part of the
+    // facet chrome that wiki pages suppress). Without this guard the
+    // IIFE throws here on every wiki page, killing the wiki-hamburger
+    // handler and populateWiki() that come later.
+    const pageSave = document.querySelector('.page-save');
+    if (pageSave) {
+      pageSave.addEventListener('click', e => {
+        const btn = e.currentTarget;
+        btn.classList.toggle('saved');
+        btn.style.color = btn.classList.contains('saved') ? 'var(--verse)' : '';
+      });
+    }
 
     // Left-rail toggle (web)
     const tocClose = document.getElementById('toc-close');
