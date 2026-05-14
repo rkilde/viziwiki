@@ -1633,29 +1633,210 @@
     }
   }
 
-  /* ── MOBILE: bar visible, drawer is PARTIAL WIDTH (matches CompuServe) ── */
+  /* ── MOBILE: bar visible, drawer is PARTIAL WIDTH ── */
   @media (max-width: 720px) {
     body.wiki-page {
       padding-top: calc(var(--main-h) + var(--wiki-bar-h));
     }
     body.wiki-page .wiki-bar { display: flex; }
     body.wiki-page .wiki-toc {
-      top: 0;                        /* drawer covers the full vertical, including main nav */
-      width: var(--wiki-rail-w);     /* 280px — partial width */
+      top: 0;
+      width: var(--wiki-rail-w);
+      padding: 0;                    /* reset desktop padding — new elements handle their own */
       transform: translateX(-100%);
       transition: transform .32s cubic-bezier(.4, 0, .2, 1);
       box-shadow: 4px 0 24px rgba(42, 31, 21, .08);
     }
-    body.wiki-page.drawer-open .wiki-toc {
-      transform: translateX(0);
-    }
-    /* When drawer is open, hide the wiki-bar so the drawer can occupy the
-       full vertical extent below the main nav (matches CompuServe layout) */
-    body.wiki-page.drawer-open .wiki-bar {
-      display: none !important;
-    }
-    /* Save is already in the wiki-bar on the right — redundant in the drawer on mobile */
+    body.wiki-page.drawer-open .wiki-toc { transform: translateX(0); }
+    body.wiki-page.drawer-open .wiki-bar { display: none !important; }
     body.wiki-page .wiki-toc-save { display: none; }
+
+    /* X close button: shift up to sit inside the mob-head row */
+    body.wiki-page .wiki-toc-close {
+      top: 14px; right: 12px;
+      width: 28px; height: 28px;
+    }
+
+    /* ── Hide desktop-only drawer elements on mobile ── */
+    body.wiki-page .wiki-back-tile,
+    body.wiki-page .wiki-toc-hero,
+    body.wiki-page .wiki-toc-contents-label,
+    body.wiki-page .wiki-group-label { display: none !important; }
+
+    /* ── MOBILE DRAWER HEADER ─────────────────────────────── */
+    body.wiki-page .wiki-mob-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 48px 11px 14px; /* right pad leaves room for X button */
+      border-bottom: none;
+      flex-shrink: 0;
+    }
+    body.wiki-page .wiki-mob-head-logo {
+      width: 26px; height: 26px; flex-shrink: 0;
+      border-radius: 3px; overflow: hidden;
+      box-shadow: 2px 2px 0 #0284c7;
+    }
+    body.wiki-page .wiki-mob-head-logo svg,
+    body.wiki-page .wiki-mob-head-logo img { width: 100%; height: 100%; display: block; }
+    body.wiki-page .wiki-mob-head-text {
+      display: flex; flex-direction: column; gap: 1px;
+    }
+    body.wiki-page .wiki-mob-head-name {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 16px; font-weight: 400;
+      letter-spacing: -.02em; line-height: 1.05;
+      color: var(--wiki-fg);
+    }
+    body.wiki-page .wiki-mob-head-vw {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 12px; font-weight: 500;
+      letter-spacing: -.01em; line-height: 1.2;
+      color: var(--wiki-fg);
+    }
+    body.wiki-page .wiki-mob-vizi { color: #0284c7; }
+
+    /* ── WIKI HOME CHIP ───────────────────────────────────── */
+    body.wiki-page .wiki-home-chip {
+      display: flex;
+      align-items: center; justify-content: center;
+      gap: 8px;
+      margin: 0 12px 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--wiki-faint);
+      border-radius: 6px;
+      color: var(--wiki-fg); text-decoration: none;
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 13px; font-weight: 400;
+      letter-spacing: -.01em;
+      transition: background .15s ease, border-color .15s ease;
+    }
+    body.wiki-page .wiki-home-chip:hover {
+      background: rgba(42,31,21,.04);
+      border-color: rgba(42,31,21,.25);
+    }
+    body.wiki-page .wiki-home-chip svg {
+      width: 14px; height: 14px; flex-shrink: 0;
+      fill: none; stroke: currentColor;
+      stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+      opacity: .55;
+    }
+
+    /* ── EXPANDABLE PILLS (Wiki Categories + Page Contents) ── */
+    body.wiki-page .wiki-wpill {
+      display: flex;
+      align-items: center; justify-content: space-between;
+      margin: 0 12px 3px;
+      padding: 10px 12px;
+      background: rgba(42,31,21,.055);
+      border: 1px solid rgba(42,31,21,.10);
+      border-radius: 7px;
+      cursor: pointer;
+      user-select: none;
+      transition: background .15s ease;
+    }
+    body.wiki-page .wiki-wpill:hover { background: rgba(42,31,21,.085); }
+    body.wiki-page .wiki-wpill-lbl-d {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 13px; font-weight: 500;
+      letter-spacing: -.01em; color: var(--wiki-fg);
+      display: flex; align-items: center; gap: 6px;
+    }
+    body.wiki-page .wiki-wpill-lbl-m {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px; font-weight: 600;
+      letter-spacing: .11em; text-transform: uppercase;
+      color: var(--wiki-fg);
+      display: flex; align-items: center; gap: 6px;
+    }
+    body.wiki-page .wiki-wpill-chev {
+      width: 14px; height: 14px; flex-shrink: 0;
+      color: var(--wiki-muted);
+      transition: transform .2s ease;
+    }
+    body.wiki-page .wiki-wpill-chev svg {
+      width: 14px; height: 14px;
+      fill: none; stroke: currentColor;
+      stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+      display: block;
+    }
+    body.wiki-page .wiki-wpill[aria-expanded="true"] .wiki-wpill-chev {
+      transform: rotate(180deg);
+    }
+    /* pill body: collapse/expand via max-height */
+    body.wiki-page .wiki-wpill-body {
+      overflow: hidden;
+      margin: 0 12px 4px;
+      transition: max-height .25s ease;
+    }
+    body.wiki-page .wiki-wpill-body[aria-hidden="true"] { max-height: 0; }
+    body.wiki-page .wiki-wpill-body[aria-hidden="false"] { max-height: 800px; }
+
+    /* Category rows inside Wiki Categories */
+    body.wiki-page .wiki-cat-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 10px;
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 11px; font-weight: 400; letter-spacing: -.01em;
+      color: var(--wiki-muted); text-decoration: none;
+      border-radius: 4px;
+      transition: background .12s ease;
+    }
+    body.wiki-page .wiki-cat-item:hover { background: rgba(42,31,21,.04); }
+    body.wiki-page .wiki-cat-dot {
+      width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+    }
+
+    /* ── Section divider between categories and page contents ── */
+    body.wiki-page .wiki-mob-divider {
+      display: block;
+      height: 1px;
+      background: var(--wiki-faint);
+      margin: 5px 12px 9px;
+    }
+
+    /* Page Contents icon (reuses page logo from wiki-bar) */
+    body.wiki-page .wiki-cont-icon {
+      width: 14px; height: 14px; flex-shrink: 0;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 2px; overflow: hidden;
+    }
+    body.wiki-page .wiki-cont-icon svg,
+    body.wiki-page .wiki-cont-icon img { width: 100%; height: 100%; display: block; }
+
+    /* ── wiki-toc-inner on mobile: Page Contents pill body ── */
+    body.wiki-page .wiki-toc-inner {
+      overflow: hidden;
+      margin: 0 12px 12px;
+      transition: max-height .25s ease;
+    }
+    body.wiki-page .wiki-toc-inner.wiki-toc-collapsed { max-height: 0; }
+    body.wiki-page .wiki-toc-inner.wiki-toc-expanded { max-height: 800px; }
+
+    /* Override desktop Fraunces TOC items with mono on mobile */
+    body.wiki-page .wiki-toc-inner .wiki-section-item {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px; font-weight: 400;
+      letter-spacing: .03em; line-height: 1.4;
+      padding: 6px 10px 6px 10px;
+      border-left: none;
+      color: var(--wiki-muted);
+    }
+    body.wiki-page .wiki-toc-inner .wiki-section-item .num {
+      font-size: 7.5px; font-weight: 600;
+      color: rgba(42,31,21,.28);
+      min-width: 14px;
+    }
+    body.wiki-page .wiki-toc-inner .wiki-section-item.active {
+      background: rgba(2,132,199,.08);
+      color: #0284c7;
+      border-left: none;
+      font-weight: 600;
+    }
+    body.wiki-page .wiki-toc-inner .wiki-section-item.active .num {
+      color: rgba(2,132,199,.45);
+      font-weight: 600;
+    }
   }
 
   /* ═══════════════════════════════ JOURNEYS MODAL ═══════════════════════════
@@ -2120,17 +2301,15 @@
 
 <nav class="wiki-toc" id="wiki-toc" aria-label="Wiki contents">
 
-  <!-- ── SAVE button (top right, left of close) ── -->
+  <!-- ── SAVE button (top right, desktop only) ── -->
   <button class="wiki-toc-save" id="wiki-toc-save" aria-label="Save page">
     <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
       <path d="M 3.5 2 L 10.5 2 L 10.5 12 L 7 9.5 L 3.5 12 Z"/>
     </svg>
   </button>
 
-  <!-- ── CLOSE / TOGGLE button (top right). 3 SVGs:
-       - X        → mobile: closes drawer
-       - chevron-left  → desktop expanded: collapses rail
-       - chevron-right → desktop collapsed: expands rail ── -->
+  <!-- ── CLOSE / TOGGLE button (absolute top-right).
+       Mobile: X dismiss. Desktop: collapse/expand rail chevron. ── -->
   <button class="wiki-toc-close" id="wiki-toc-close" aria-label="Toggle contents drawer">
     <svg class="wiki-close-x" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
       <line x1="3.5" y1="3.5" x2="10.5" y2="10.5"/>
@@ -2144,7 +2323,56 @@
     </svg>
   </button>
 
-  <!-- ── Large back tile (below X) ── -->
+  <!-- ═══════════════════════════════════════════════════════════════════
+       MOBILE-ONLY DRAWER ELEMENTS
+       Hidden on desktop via CSS. Populated by populateWiki().
+       ═══════════════════════════════════════════════════════════════════ -->
+
+  <!-- Drawer header: page logo + "Taco Bell / Visual Wiki" | X sits above via position:absolute -->
+  <div class="wiki-mob-head" aria-hidden="true">
+    <div class="wiki-mob-head-logo" id="wiki-mob-head-logo"></div>
+    <div class="wiki-mob-head-text">
+      <div class="wiki-mob-head-name" id="wiki-mob-head-name"></div>
+      <div class="wiki-mob-head-vw"><span class="wiki-mob-vizi">Visual</span> Wiki</div>
+    </div>
+  </div>
+
+  <!-- Wiki Home chip — Fraunces, centered, links to wiki home -->
+  <a class="wiki-home-chip" id="wiki-home-link" href="#">
+    <svg viewBox="0 0 14 14"><path d="M2 6.5L7 2L12 6.5V12H9V9H5V12H2V6.5Z"/></svg>
+    Wiki Home
+  </a>
+
+  <!-- Wiki Categories pill (Fraunces title, starts collapsed) -->
+  <div class="wiki-wpill" id="wiki-cats-pill" aria-expanded="false" role="button" tabindex="0">
+    <span class="wiki-wpill-lbl-d">Wiki Categories</span>
+    <span class="wiki-wpill-chev">
+      <svg viewBox="0 0 16 16"><polyline points="4,6 8,10 12,6"/></svg>
+    </span>
+  </div>
+  <div class="wiki-wpill-body" id="wiki-cats-body" aria-hidden="true">
+    <!-- populated by populateWiki() from WIKI_TOC.categories -->
+  </div>
+
+  <!-- Hairline divider: separates wiki-navigation from page-navigation -->
+  <div class="wiki-mob-divider" aria-hidden="true"></div>
+
+  <!-- Page Contents pill (mono title, starts expanded; icon = current page logo) -->
+  <div class="wiki-wpill wiki-wpill-cont" id="wiki-cont-pill" aria-expanded="true" role="button" tabindex="0">
+    <span class="wiki-wpill-lbl-m">
+      <span class="wiki-cont-icon" id="wiki-cont-icon"></span>
+      Page Contents
+    </span>
+    <span class="wiki-wpill-chev">
+      <svg viewBox="0 0 16 16"><polyline points="4,6 8,10 12,6"/></svg>
+    </span>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       SHARED / DESKTOP-ONLY ELEMENTS
+       ═══════════════════════════════════════════════════════════════════ -->
+
+  <!-- Back tile (desktop rail only) -->
   <a class="wiki-back-tile" id="wiki-back" href="#" hidden>
     <svg class="wiki-back-tile-arrow" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
       <polyline points="6,3 2,7 6,11"/>
@@ -2153,19 +2381,18 @@
     <span class="wiki-back-label">Back</span>
   </a>
 
-  <!-- ── Hero: page logo + name ── -->
+  <!-- Hero: page logo + name (desktop rail only) -->
   <div class="wiki-toc-hero">
     <span class="wiki-toc-hero-logo" id="wiki-toc-hero-logo" aria-hidden="true"></span>
     <span class="wiki-toc-hero-title" id="wiki-toc-hero-title"></span>
   </div>
 
-  <!-- ── "Contents:" label (italic serif, divider below) ── -->
+  <!-- "Contents:" label (desktop rail only) -->
   <div class="wiki-toc-contents-label">Contents:</div>
 
-  <!-- ── Section list ── -->
+  <!-- Section list — shared: desktop TOC / mobile Page Contents body -->
   <div class="wiki-toc-inner" id="wiki-toc-inner"></div>
 
-  <!-- Hidden — kept for backward compatibility if any script references it -->
   <span id="wiki-toc-count" hidden>0</span>
 </nav>
 
@@ -2898,78 +3125,145 @@ let lastY = window.scrollY;
   // Wiki pages define WIKI_TOC = { pageTitle, sections:[{group,id,label}] }
   // ════════════════════════════════════════════════════════════════════
   function populateWiki() {
-    const toc = window.WIKI_TOC;
+    var toc = window.WIKI_TOC;
     if (!toc) return;
     if (!document.body.classList.contains('wiki-page')) return;
 
-    // STEP 1 · Top bar slots — fill these FIRST so they always render,
-    // even if the side drawer markup is somehow missing or wrong.
-    const barTitle = document.getElementById('wiki-bar-title-host');
+    // ── STEP 1: Wiki bar — icon + page title (no "Visual Wiki" here) ──
+    var barTitle = document.getElementById('wiki-bar-title-host');
     if (barTitle && toc.pageTitle) barTitle.textContent = toc.pageTitle;
-    const logoHost = document.getElementById('wiki-bar-logo-host');
-    if (logoHost && toc.pageLogo) logoHost.innerHTML = toc.pageLogo;
+    var barLogo = document.getElementById('wiki-bar-logo-host');
+    if (barLogo && toc.pageLogo) barLogo.innerHTML = toc.pageLogo;
 
-    // STEP 2 · Drawer hero (same logo + title as the bar, just bigger)
-    const heroLogo = document.getElementById('wiki-toc-hero-logo');
+    // ── STEP 2: Desktop rail — hero logo + title ──
+    var heroLogo = document.getElementById('wiki-toc-hero-logo');
     if (heroLogo && toc.pageLogo) heroLogo.innerHTML = toc.pageLogo;
-    const heroTitle = document.getElementById('wiki-toc-hero-title');
+    var heroTitle = document.getElementById('wiki-toc-hero-title');
     if (heroTitle && toc.pageTitle) heroTitle.textContent = toc.pageTitle;
 
-    // STEP 3 · Back tile — only shown if both parent URL and title set
-    const backEl = document.getElementById('wiki-back');
+    // ── STEP 3: Desktop back tile ──
+    var backEl = document.getElementById('wiki-back');
     if (backEl && toc.parentUrl && toc.parentTitle) {
       backEl.href = toc.parentUrl;
-      const lbl = backEl.querySelector('.wiki-back-label');
+      var lbl = backEl.querySelector('.wiki-back-label');
       if (lbl) lbl.textContent = 'Back to ' + toc.parentTitle;
       backEl.hidden = false;
     }
 
-    // STEP 4 · Section list — only if drawer markup + sections both exist
-    const inner = document.getElementById('wiki-toc-inner');
+    // ── STEP 4: Mobile drawer header — logo + page name ──
+    var mobLogo = document.getElementById('wiki-mob-head-logo');
+    if (mobLogo && toc.pageLogo) mobLogo.innerHTML = toc.pageLogo;
+    var mobName = document.getElementById('wiki-mob-head-name');
+    if (mobName && toc.pageTitle) mobName.textContent = toc.pageTitle;
+
+    // ── STEP 5: Wiki Home chip — wikiHome URL, fallback to parentUrl ──
+    var homeLink = document.getElementById('wiki-home-link');
+    if (homeLink) homeLink.href = toc.wikiHome || toc.parentUrl || '#';
+
+    // ── STEP 6: Wiki Categories — populate from toc.categories ──
+    var catsPill = document.getElementById('wiki-cats-pill');
+    var catsBody = document.getElementById('wiki-cats-body');
+    if (catsPill && catsBody && Array.isArray(toc.categories) && toc.categories.length) {
+      catsBody.innerHTML = toc.categories.map(function(cat) {
+        return '<a class="wiki-cat-item" href="' + (cat.url || '#') + '">' +
+               '<span class="wiki-cat-dot" style="background:' + (cat.color || 'var(--wiki-muted)') + '"></span>' +
+               cat.name +
+               '</a>';
+      }).join('');
+    } else if (catsPill) {
+      // No categories defined — hide the pill entirely
+      catsPill.style.display = 'none';
+      document.querySelector('.wiki-mob-divider') &&
+        (document.querySelector('.wiki-mob-divider').style.marginTop = '0');
+    }
+
+    // ── STEP 7: Page Contents icon — same logo as wiki bar ──
+    var contIcon = document.getElementById('wiki-cont-icon');
+    if (contIcon && toc.pageLogo) contIcon.innerHTML = toc.pageLogo;
+
+    // ── STEP 8: Section list (shared desktop + mobile) ──
+    var inner = document.getElementById('wiki-toc-inner');
     if (!inner || !Array.isArray(toc.sections)) return;
 
-    const count = document.getElementById('wiki-toc-count');
+    var count = document.getElementById('wiki-toc-count');
     if (count) count.textContent = toc.sections.length;
 
-    // Group sections by their `group` label (preserving order).
-    // Sections without a group property still group together correctly.
-    const groups = [];
-    let cur = null;
-    toc.sections.forEach(function (s, i) {
-      if (s.group !== cur) {
-        groups.push({ group: s.group, items: [] });
-        cur = s.group;
-      }
+    // Group sections by their `group` label
+    var groups = [];
+    var cur = null;
+    toc.sections.forEach(function(s, i) {
+      if (s.group !== cur) { groups.push({ group: s.group, items: [] }); cur = s.group; }
       groups[groups.length - 1].items.push(Object.assign({}, s, { num: i + 1 }));
     });
 
-    // Render markup. Group label only renders when group is defined.
-    inner.innerHTML = groups.map(function (g) {
-      const items = g.items.map(function (item) {
+    inner.innerHTML = groups.map(function(g) {
+      var items = g.items.map(function(item) {
         return '<a class="wiki-section-item" href="#' + item.id + '" data-section="' + item.id + '">' +
-                 '<span class="num">' + String(item.num).padStart(2, '0') + '</span>' +
-                 '<span class="label">' + item.label + '</span>' +
+               '<span class="num">' + String(item.num).padStart(2, '0') + '</span>' +
+               '<span class="label">' + item.label + '</span>' +
                '</a>';
       }).join('');
-      const groupLabel = g.group ? '<div class="wiki-group-label">' + g.group + '</div>' : '';
+      var groupLabel = g.group ? '<div class="wiki-group-label">' + g.group + '</div>' : '';
       return groupLabel + items;
     }).join('');
 
-    // Scroll-spy: mark whichever section's top is just above viewport-top
-    const sectionEls = toc.sections
-      .map(function (s) { return document.getElementById(s.id); })
+    // Mobile: start Page Contents expanded
+    inner.classList.add('wiki-toc-expanded');
+
+    // ── STEP 9: Pill toggle handlers ──
+    function bindPill(pillId, bodyEl, isExpanded) {
+      var pill = document.getElementById(pillId);
+      if (!pill || !bodyEl) return;
+      pill.addEventListener('click', function() {
+        var open = pill.getAttribute('aria-expanded') === 'true';
+        pill.setAttribute('aria-expanded', String(!open));
+        bodyEl.setAttribute('aria-hidden', String(open));
+        // For wiki-toc-inner we use class toggles
+        if (bodyEl === inner) {
+          inner.classList.toggle('wiki-toc-expanded', !open);
+          inner.classList.toggle('wiki-toc-collapsed', open);
+        }
+      });
+      pill.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pill.click(); }
+      });
+    }
+    bindPill('wiki-cats-pill', catsBody, false);
+    bindPill('wiki-cont-pill', inner, true);
+
+    // Close drawer on section-item tap (mobile)
+    inner.addEventListener('click', function(e) {
+      var hit = e.target && e.target.closest && e.target.closest('.wiki-section-item');
+      if (hit && window.matchMedia('(max-width: 720px)').matches) {
+        document.body.classList.remove('drawer-open');
+      }
+    });
+
+    // Close drawer on category-item tap (mobile)
+    if (catsBody) {
+      catsBody.addEventListener('click', function(e) {
+        var hit = e.target && e.target.closest && e.target.closest('.wiki-cat-item');
+        if (hit && window.matchMedia('(max-width: 720px)').matches) {
+          document.body.classList.remove('drawer-open');
+        }
+      });
+    }
+
+    // ── STEP 10: Scroll-spy — mark active section ──
+    var sectionEls = toc.sections
+      .map(function(s) { return document.getElementById(s.id); })
       .filter(Boolean);
-    const items = inner.querySelectorAll('.wiki-section-item');
+    var sectionItems = inner.querySelectorAll('.wiki-section-item');
 
     function updateActive() {
-      const mainH = parseInt(getComputedStyle(document.documentElement)
+      var mainH = parseInt(getComputedStyle(document.documentElement)
         .getPropertyValue('--main-h')) || 56;
-      const offset = mainH + 80;
-      let activeId = sectionEls[0] && sectionEls[0].id;
-      sectionEls.forEach(function (el) {
+      var offset = mainH + 80;
+      var activeId = sectionEls[0] && sectionEls[0].id;
+      sectionEls.forEach(function(el) {
         if (el.getBoundingClientRect().top <= offset) activeId = el.id;
       });
-      items.forEach(function (item) {
+      sectionItems.forEach(function(item) {
         item.classList.toggle('active', item.dataset.section === activeId);
       });
     }
