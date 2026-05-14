@@ -1801,21 +1801,23 @@
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
     }
+    /* Bump cap from 3→4 items (4 × 36px = 144px) */
+    body.wiki-page .wiki-wpill-body[aria-hidden="false"] { max-height: 144px; }
 
-    /* Fade-out overlay: signals scrollable overflow beneath the cap.
-       JS adds .scroll-end when user reaches bottom, .no-overflow when content fits. */
-    body.wiki-page .wiki-wpill-body[aria-hidden="false"]::after {
-      content: '';
-      position: absolute;
-      left: 0; right: 0; bottom: 0;
+    /* ── Categories scroll-affordance: sibling div, NOT a ::after pseudo ──
+       ::after inside overflow-y:auto scrolls with content and disappears.
+       This sibling sits OUTSIDE the scroll container and always stays fixed
+       at the bottom edge of the list. JS toggles opacity via updateCatsGradient(). */
+    body.wiki-page .wiki-cats-fade {
       height: 38px;
+      margin: -38px 12px 0; /* pull up 38px, match cats-body horizontal margins */
+      position: relative;
+      z-index: 2;
       background: linear-gradient(to bottom, transparent, var(--wiki-bg));
       pointer-events: none;
-      opacity: 1;
+      opacity: 0;
       transition: opacity .15s ease;
     }
-    body.wiki-page .wiki-wpill-body[aria-hidden="false"].scroll-end::after    { opacity: 0; }
-    body.wiki-page .wiki-wpill-body[aria-hidden="false"].no-overflow::after   { opacity: 0; }
 
     /* Category rows inside Wiki Categories */
     body.wiki-page .wiki-cat-item {
@@ -1876,8 +1878,8 @@
       position: sticky;
       top: 0;
       display: block;
-      height: 28px;
-      margin-bottom: -28px; /* overlap first item, don't push content down */
+      height: 44px;
+      margin-bottom: -44px; /* overlap first item, don't push content down */
       background: linear-gradient(to bottom, var(--wiki-bg), transparent);
       pointer-events: none;
       z-index: 1;
@@ -2429,6 +2431,8 @@
   <div class="wiki-wpill-body" id="wiki-cats-body" aria-hidden="true">
     <!-- populated by populateWiki() from WIKI_TOC.categories -->
   </div>
+  <!-- Gradient affordance: sibling of cats-body, not inside it, so it doesn't scroll -->
+  <div class="wiki-cats-fade" aria-hidden="true"></div>
 
   <!-- Hairline divider: separates wiki-navigation from page-navigation -->
   <div class="wiki-mob-divider" aria-hidden="true"></div>
@@ -3088,45 +3092,41 @@ let lastY = window.scrollY;
   // DOMContentLoaded. Every click that lands on or inside #wiki-hamburger
   // toggles the drawer. Robust across iOS Safari, Chrome, Firefox.
   // ════════════════════════════════════════════════════════════════════
-  // ── Drawer state keys (sessionStorage — persists across opens on same page) ──
-  var SS_CATS_OPEN   = 'vw-cats-open';
-  var SS_CATS_SCROLL = 'vw-cats-scroll';
-  var SS_CONT_OPEN   = 'vw-cont-open';
+  // ── Drawer state: in-memory only — resets on every page load/reload/navigation ──
+  var drawerState = { catsOpen: false, catsScroll: 0, contOpen: true };
 
-  // Restore pill collapse states and categories scroll from sessionStorage.
-  // Called each time the drawer opens so the user's last interaction is remembered.
+  // Restore pill collapse states and categories scroll from in-memory state.
+  // Called each time the drawer opens so the user's last interaction is remembered
+  // within the same page visit. Resets to defaults on any reload or navigation.
   function restoreDrawerState() {
     try {
       var catsPill = document.getElementById('wiki-cats-pill');
       var catsBody = document.getElementById('wiki-cats-body');
+      var catsFade = document.querySelector('.wiki-cats-fade');
       var contPill = document.getElementById('wiki-cont-pill');
       var inner    = document.getElementById('wiki-toc-inner');
 
-      // Categories pill: default collapsed, restore if previously expanded
-      var catsOpen = sessionStorage.getItem(SS_CATS_OPEN) === 'true';
+      // Categories pill
       if (catsPill && catsBody) {
-        catsPill.setAttribute('aria-expanded', String(catsOpen));
-        catsBody.setAttribute('aria-hidden',   String(!catsOpen));
-        if (catsOpen) {
-          catsBody.scrollTop = parseInt(sessionStorage.getItem(SS_CATS_SCROLL) || '0');
-          // Trigger gradient check after a frame so scrollHeight is settled
+        catsPill.setAttribute('aria-expanded', String(drawerState.catsOpen));
+        catsBody.setAttribute('aria-hidden',   String(!drawerState.catsOpen));
+        if (drawerState.catsOpen) {
+          catsBody.scrollTop = drawerState.catsScroll;
           requestAnimationFrame(function() {
-            var atEnd = catsBody.scrollTop + catsBody.clientHeight >= catsBody.scrollHeight - 4;
             var noOverflow = catsBody.scrollHeight <= catsBody.clientHeight + 4;
-            catsBody.classList.toggle('scroll-end',  atEnd);
-            catsBody.classList.toggle('no-overflow', noOverflow);
+            var atEnd = noOverflow || (catsBody.scrollTop + catsBody.clientHeight >= catsBody.scrollHeight - 4);
+            if (catsFade) catsFade.style.opacity = (noOverflow || atEnd) ? '0' : '1';
           });
         }
       }
 
-      // Page Contents pill: default expanded, restore if previously collapsed
-      var contOpen = sessionStorage.getItem(SS_CONT_OPEN) !== 'false';
+      // Page Contents pill
       if (contPill && inner) {
-        contPill.setAttribute('aria-expanded', String(contOpen));
-        inner.classList.toggle('wiki-toc-expanded', contOpen);
-        inner.classList.toggle('wiki-toc-collapsed', !contOpen);
+        contPill.setAttribute('aria-expanded', String(drawerState.contOpen));
+        inner.classList.toggle('wiki-toc-expanded', drawerState.contOpen);
+        inner.classList.toggle('wiki-toc-collapsed', !drawerState.contOpen);
       }
-    } catch (e) { /* sessionStorage unavailable (private mode etc.) */ }
+    } catch (e) {}
   }
 
   function toggleWikiDrawer() {
@@ -3362,26 +3362,25 @@ let lastY = window.scrollY;
     inner.classList.add('wiki-toc-expanded');
 
     // ── Gradient helpers ──
+    var catsFade = document.querySelector('.wiki-cats-fade');
+
     function updateCatsGradient() {
-      if (!catsBody) return;
+      if (!catsBody || !catsFade) return;
       var noOverflow = catsBody.scrollHeight <= catsBody.clientHeight + 4;
       var atEnd = noOverflow || (catsBody.scrollTop + catsBody.clientHeight >= catsBody.scrollHeight - 4);
-      catsBody.classList.toggle('no-overflow', noOverflow);
-      catsBody.classList.toggle('scroll-end',  atEnd);
+      catsFade.style.opacity = (noOverflow || atEnd) ? '0' : '1';
     }
     function updateInnerGradient() {
       inner.classList.toggle('scroll-above', inner.scrollTop > 4);
     }
 
-    // ── Save drawer state to sessionStorage ──
+    // ── Save drawer state to in-memory object ──
     function saveDrawerState() {
-      try {
-        var cpEl = document.getElementById('wiki-cats-pill');
-        var ccEl = document.getElementById('wiki-cont-pill');
-        if (cpEl)     sessionStorage.setItem(SS_CATS_OPEN,   cpEl.getAttribute('aria-expanded'));
-        if (catsBody) sessionStorage.setItem(SS_CATS_SCROLL, String(catsBody.scrollTop));
-        if (ccEl)     sessionStorage.setItem(SS_CONT_OPEN,   ccEl.getAttribute('aria-expanded'));
-      } catch (e) {}
+      var cpEl = document.getElementById('wiki-cats-pill');
+      var ccEl = document.getElementById('wiki-cont-pill');
+      if (cpEl) drawerState.catsOpen = cpEl.getAttribute('aria-expanded') === 'true';
+      if (catsBody) drawerState.catsScroll = catsBody.scrollTop;
+      if (ccEl) drawerState.contOpen = ccEl.getAttribute('aria-expanded') === 'true';
     }
 
     // ── STEP 9: Pill toggle handlers ──
