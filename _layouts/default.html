@@ -1782,6 +1782,8 @@
     /* ── STICKY LOCK ZONE: header · home · categories · divider · contents pill ── */
     body.wiki-page .wiki-mob-sticky {
       flex-shrink: 0;   /* never shrinks — TOC scrolls in remaining space */
+      position: relative;
+      z-index: 2;       /* always paints above wiki-toc-inner::before gradient */
     }
 
     body.wiki-page .wiki-wpill-body {
@@ -3142,16 +3144,18 @@ let lastY = window.scrollY;
       // Restore pill states from last session
       restoreDrawerState();
 
-      // After the drawer slide-in transition (320ms), scroll active TOC item into view
-      setTimeout(function() {
-        var inner = document.getElementById('wiki-toc-inner');
-        if (!inner || inner.classList.contains('wiki-toc-collapsed')) return;
+      // Set scrollTop SYNCHRONOUSLY — the drawer is still at translateX(-100%)
+      // so no paint has happened yet. The position is set before first render,
+      // meaning the drawer slides in already showing the correct section. No jump.
+      var inner = document.getElementById('wiki-toc-inner');
+      if (inner && inner.classList.contains('wiki-toc-expanded')) {
         var activeItem = inner.querySelector('.wiki-section-item.active');
-        if (!activeItem) return;
-        var top = 0, el = activeItem;
-        while (el && el !== inner) { top += el.offsetTop; el = el.offsetParent; }
-        inner.scrollTop = Math.max(0, top - 20);
-      }, 360);
+        if (activeItem) {
+          var top = 0, el = activeItem;
+          while (el && el !== inner) { top += el.offsetTop; el = el.offsetParent; }
+          inner.scrollTop = Math.max(0, top - 20);
+        }
+      }
     }
   }
 
@@ -3391,11 +3395,36 @@ let lastY = window.scrollY;
         var open = pill.getAttribute('aria-expanded') === 'true';
         pill.setAttribute('aria-expanded', String(!open));
         bodyEl.setAttribute('aria-hidden', String(open));
+
         if (bodyEl === inner) {
-          inner.classList.toggle('wiki-toc-expanded', !open);
-          inner.classList.toggle('wiki-toc-collapsed', open);
+          if (open) {
+            // ── Collapse with animation ──
+            inner.style.overflow = 'hidden';
+            inner.style.maxHeight = inner.scrollHeight + 'px';
+            inner.offsetHeight; // force reflow
+            inner.style.transition = 'max-height .25s ease';
+            inner.style.maxHeight = '0';
+            setTimeout(function() {
+              inner.classList.add('wiki-toc-collapsed');
+              inner.classList.remove('wiki-toc-expanded');
+              inner.style.overflow = inner.style.maxHeight = inner.style.transition = '';
+            }, 260);
+          } else {
+            // ── Expand with animation ──
+            // Add class first (enables display:block + flex:1), clamp to 0 before paint
+            inner.classList.remove('wiki-toc-collapsed');
+            inner.classList.add('wiki-toc-expanded');
+            inner.style.overflow = 'hidden';
+            inner.style.maxHeight = '0';
+            var targetH = inner.scrollHeight; // triggers style calc
+            inner.style.transition = 'max-height .25s ease';
+            inner.style.maxHeight = targetH + 'px';
+            setTimeout(function() {
+              inner.style.overflow = inner.style.maxHeight = inner.style.transition = '';
+            }, 260);
+          }
         }
-        // When expanding categories, check gradient after layout settles
+
         if (bodyEl === catsBody && !open) {
           setTimeout(updateCatsGradient, 30);
         }
