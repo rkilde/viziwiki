@@ -1691,13 +1691,13 @@
     }
     body.wiki-page .wiki-mob-head-name {
       font-family: 'Fraunces', Georgia, serif;
-      font-size: 18px; font-weight: 400;
+      font-size: 20px; font-weight: 400;
       letter-spacing: -.02em; line-height: 1.05;
       color: var(--wiki-fg);
     }
     body.wiki-page .wiki-mob-head-vw {
       font-family: 'Fraunces', Georgia, serif;
-      font-size: 14px; font-weight: 500;
+      font-size: 15px; font-weight: 500;
       letter-spacing: -.01em; line-height: 1.2;
       color: var(--wiki-fg);
     }
@@ -1714,7 +1714,7 @@
       border-radius: 6px;
       color: var(--wiki-fg); text-decoration: none;
       font-family: 'Fraunces', Georgia, serif;
-      font-size: 15px; font-weight: 400;
+      font-size: 16px; font-weight: 400;
       letter-spacing: -.01em;
       transition: background .15s ease, border-color .15s ease;
     }
@@ -1745,13 +1745,13 @@
     body.wiki-page .wiki-wpill:hover { background: rgba(42,31,21,.085); }
     body.wiki-page .wiki-wpill-lbl-d {
       font-family: 'Fraunces', Georgia, serif;
-      font-size: 15px; font-weight: 500;
+      font-size: 16px; font-weight: 500;
       letter-spacing: -.01em; color: var(--wiki-fg);
       display: flex; align-items: center; gap: 7px;
     }
     body.wiki-page .wiki-wpill-lbl-m {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11px; font-weight: 600;
+      font-size: 12px; font-weight: 600;
       letter-spacing: .11em; text-transform: uppercase;
       color: var(--wiki-fg);
       display: flex; align-items: center; gap: 7px;
@@ -1772,6 +1772,7 @@
     }
     /* pill body: collapse/expand via max-height */
     body.wiki-page .wiki-wpill-body {
+      display: block;
       overflow: hidden;
       margin: 0 12px 5px;
       transition: max-height .25s ease;
@@ -1782,9 +1783,9 @@
     /* Category rows inside Wiki Categories */
     body.wiki-page .wiki-cat-item {
       display: flex; align-items: center; gap: 9px;
-      padding: 8px 12px;
+      padding: 8px 13px;
       font-family: 'Fraunces', Georgia, serif;
-      font-size: 13px; font-weight: 400; letter-spacing: -.01em;
+      font-size: 14px; font-weight: 400; letter-spacing: -.01em;
       color: var(--wiki-muted); text-decoration: none;
       border-radius: 4px;
       transition: background .12s ease;
@@ -1798,7 +1799,7 @@
     body.wiki-page .wiki-mob-divider {
       display: block;
       height: 1px;
-      background: var(--wiki-faint);
+      background: rgba(42,31,21,.28);
       margin: 6px 12px 10px;
     }
 
@@ -1823,16 +1824,16 @@
     /* Override desktop Fraunces TOC items with mono on mobile */
     body.wiki-page .wiki-toc-inner .wiki-section-item {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 10.5px; font-weight: 400;
-      letter-spacing: .03em; line-height: 1.4;
-      padding: 8px 12px;
+      font-size: 13px; font-weight: 400;
+      letter-spacing: .02em; line-height: 1.45;
+      padding: 9px 13px;
       border-left: none;
       color: var(--wiki-muted);
     }
     body.wiki-page .wiki-toc-inner .wiki-section-item .num {
-      font-size: 9px; font-weight: 600;
+      font-size: 10.5px; font-weight: 600;
       color: rgba(42,31,21,.28);
-      min-width: 17px;
+      min-width: 20px;
     }
     body.wiki-page .wiki-toc-inner .wiki-section-item.active {
       background: rgba(2,132,199,.08);
