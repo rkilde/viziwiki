@@ -1646,6 +1646,7 @@
       padding-top: calc(var(--main-h) + var(--wiki-bar-h));
     }
     body.wiki-page .wiki-bar { display: flex; }
+    /* Drawer itself: contain scroll so it never chains to the body */
     body.wiki-page .wiki-toc {
       top: 0;
       width: var(--wiki-rail-w);
@@ -1657,9 +1658,12 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      overscroll-behavior: contain;
     }
     body.wiki-page.drawer-open .wiki-toc { transform: translateX(0); }
     body.wiki-page.drawer-open .wiki-bar { display: none !important; }
+    /* Lock page scroll while drawer is open so touches don't reach the document */
+    body.wiki-page.drawer-open { overflow: hidden; }
     body.wiki-page .wiki-toc-save { display: none; }
 
     /* X close button: shift up to sit inside the mob-head row */
@@ -1788,10 +1792,15 @@
       /* Needed for ::after fade overlay */
       position: relative;
     }
-    body.wiki-page .wiki-wpill-body[aria-hidden="true"] { max-height: 0; }
+    body.wiki-page .wiki-wpill-body[aria-hidden="true"] { max-height: 0; overflow: hidden; }
     /* Cap at ~3 items (108px) so the list never consumes the whole sticky zone.
        The ::after gradient signals "more to scroll" below the visible cutoff. */
-    body.wiki-page .wiki-wpill-body[aria-hidden="false"] { max-height: 108px; }
+    body.wiki-page .wiki-wpill-body[aria-hidden="false"] {
+      max-height: 108px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
 
     /* Fade-out overlay: signals scrollable overflow beneath the cap */
     body.wiki-page .wiki-wpill-body[aria-hidden="false"]::after {
@@ -3062,27 +3071,45 @@ let lastY = window.scrollY;
     var wasOpen = document.body.classList.contains('drawer-open');
     document.body.classList.toggle('drawer-open');
 
-    // Only run setup logic when opening (not closing)
     if (!wasOpen && document.body.classList.contains('drawer-open')) {
+      // Lock scroll on both body and html for iOS Safari
+      document.documentElement.style.overflow = 'hidden';
+
       // 1. Always collapse categories pill so the sticky zone starts compact
       var catsPill = document.getElementById('wiki-cats-pill');
       var catsBody = document.getElementById('wiki-cats-body');
       if (catsPill) catsPill.setAttribute('aria-expanded', 'false');
       if (catsBody) catsBody.setAttribute('aria-hidden', 'true');
 
-      // 2. Scroll active TOC item into view within its own scroll zone
-      //    Use rAF so the drawer's slide-in transition has started first
-      requestAnimationFrame(function() {
+      // 2. After the drawer slide-in transition completes (320ms), scroll
+      //    the active TOC item into view within its own scroll zone.
+      //    rAF alone fires before the transition settles — use 360ms timeout.
+      setTimeout(function() {
         var inner = document.getElementById('wiki-toc-inner');
         if (!inner) return;
         var activeItem = inner.querySelector('.wiki-section-item.active');
-        if (activeItem) {
-          // Place active item near top of scroll zone with a small breathing gap
-          inner.scrollTop = Math.max(0, activeItem.offsetTop - 20);
+        if (!activeItem) return;
+        // Walk offsetParent chain to get position relative to the scroll container
+        var top = 0;
+        var el = activeItem;
+        while (el && el !== inner) {
+          top += el.offsetTop;
+          el = el.offsetParent;
         }
-      });
+        inner.scrollTop = Math.max(0, top - 20);
+      }, 360);
     }
   }
+
+  // Restore page scroll whenever drawer-open is removed by ANY code path
+  (new MutationObserver(function(mutations) {
+    mutations.forEach(function(m) {
+      if (m.attributeName === 'class' &&
+          !document.body.classList.contains('drawer-open')) {
+        document.documentElement.style.overflow = '';
+      }
+    });
+  })).observe(document.body, { attributes: true, attributeFilter: ['class'] });
   function closeWikiDrawerIfSectionTap(e) {
     const sectionHit = e.target && e.target.closest && e.target.closest('.wiki-section-item');
     if (sectionHit && window.matchMedia('(max-width: 720px)').matches) {
