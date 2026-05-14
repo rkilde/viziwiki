@@ -1661,7 +1661,7 @@
     /* X close button: shift up to sit inside the mob-head row */
     body.wiki-page .wiki-toc-close {
       top: 14px; right: 12px;
-      width: 28px; height: 28px;
+      width: 30px; height: 30px;
     }
 
     /* ── Hide desktop-only drawer elements on mobile ── */
@@ -1675,29 +1675,29 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 13px 48px 11px 14px; /* right pad leaves room for X button */
+      padding: 15px 52px 13px 16px; /* right pad leaves room for X button */
       border-bottom: none;
       flex-shrink: 0;
     }
     body.wiki-page .wiki-mob-head-logo {
-      width: 26px; height: 26px; flex-shrink: 0;
+      width: 30px; height: 30px; flex-shrink: 0;
       border-radius: 3px; overflow: hidden;
       box-shadow: 2px 2px 0 #0284c7;
     }
     body.wiki-page .wiki-mob-head-logo svg,
     body.wiki-page .wiki-mob-head-logo img { width: 100%; height: 100%; display: block; }
     body.wiki-page .wiki-mob-head-text {
-      display: flex; flex-direction: column; gap: 1px;
+      display: flex; flex-direction: column; gap: 2px;
     }
     body.wiki-page .wiki-mob-head-name {
       font-family: 'Fraunces', Georgia, serif;
-      font-size: 16px; font-weight: 400;
+      font-size: 18px; font-weight: 400;
       letter-spacing: -.02em; line-height: 1.05;
       color: var(--wiki-fg);
     }
     body.wiki-page .wiki-mob-head-vw {
       font-family: 'Fraunces', Georgia, serif;
-      font-size: 12px; font-weight: 500;
+      font-size: 14px; font-weight: 500;
       letter-spacing: -.01em; line-height: 1.2;
       color: var(--wiki-fg);
     }
@@ -1708,13 +1708,13 @@
       display: flex;
       align-items: center; justify-content: center;
       gap: 8px;
-      margin: 0 12px 10px;
-      padding: 10px 12px;
+      margin: 0 12px 12px;
+      padding: 12px 14px;
       border: 1px solid var(--wiki-faint);
       border-radius: 6px;
       color: var(--wiki-fg); text-decoration: none;
       font-family: 'Fraunces', Georgia, serif;
-      font-size: 13px; font-weight: 400;
+      font-size: 15px; font-weight: 400;
       letter-spacing: -.01em;
       transition: background .15s ease, border-color .15s ease;
     }
@@ -1723,7 +1723,7 @@
       border-color: rgba(42,31,21,.25);
     }
     body.wiki-page .wiki-home-chip svg {
-      width: 14px; height: 14px; flex-shrink: 0;
+      width: 16px; height: 16px; flex-shrink: 0;
       fill: none; stroke: currentColor;
       stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
       opacity: .55;
@@ -1733,8 +1733,8 @@
     body.wiki-page .wiki-wpill {
       display: flex;
       align-items: center; justify-content: space-between;
-      margin: 0 12px 3px;
-      padding: 10px 12px;
+      margin: 0 12px 4px;
+      padding: 12px 14px;
       background: rgba(42,31,21,.055);
       border: 1px solid rgba(42,31,21,.10);
       border-radius: 7px;
@@ -1745,24 +1745,24 @@
     body.wiki-page .wiki-wpill:hover { background: rgba(42,31,21,.085); }
     body.wiki-page .wiki-wpill-lbl-d {
       font-family: 'Fraunces', Georgia, serif;
-      font-size: 13px; font-weight: 500;
+      font-size: 15px; font-weight: 500;
       letter-spacing: -.01em; color: var(--wiki-fg);
-      display: flex; align-items: center; gap: 6px;
+      display: flex; align-items: center; gap: 7px;
     }
     body.wiki-page .wiki-wpill-lbl-m {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 9.5px; font-weight: 600;
+      font-size: 11px; font-weight: 600;
       letter-spacing: .11em; text-transform: uppercase;
       color: var(--wiki-fg);
-      display: flex; align-items: center; gap: 6px;
+      display: flex; align-items: center; gap: 7px;
     }
     body.wiki-page .wiki-wpill-chev {
-      width: 14px; height: 14px; flex-shrink: 0;
+      width: 16px; height: 16px; flex-shrink: 0;
       color: var(--wiki-muted);
       transition: transform .2s ease;
     }
     body.wiki-page .wiki-wpill-chev svg {
-      width: 14px; height: 14px;
+      width: 16px; height: 16px;
       fill: none; stroke: currentColor;
       stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
       display: block;
@@ -1773,7 +1773,7 @@
     /* pill body: collapse/expand via max-height */
     body.wiki-page .wiki-wpill-body {
       overflow: hidden;
-      margin: 0 12px 4px;
+      margin: 0 12px 5px;
       transition: max-height .25s ease;
     }
     body.wiki-page .wiki-wpill-body[aria-hidden="true"] { max-height: 0; }
@@ -1781,17 +1781,17 @@
 
     /* Category rows inside Wiki Categories */
     body.wiki-page .wiki-cat-item {
-      display: flex; align-items: center; gap: 8px;
-      padding: 7px 10px;
+      display: flex; align-items: center; gap: 9px;
+      padding: 8px 12px;
       font-family: 'Fraunces', Georgia, serif;
-      font-size: 11px; font-weight: 400; letter-spacing: -.01em;
+      font-size: 13px; font-weight: 400; letter-spacing: -.01em;
       color: var(--wiki-muted); text-decoration: none;
       border-radius: 4px;
       transition: background .12s ease;
     }
     body.wiki-page .wiki-cat-item:hover { background: rgba(42,31,21,.04); }
     body.wiki-page .wiki-cat-dot {
-      width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+      width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
     }
 
     /* ── Section divider between categories and page contents ── */
@@ -1799,12 +1799,12 @@
       display: block;
       height: 1px;
       background: var(--wiki-faint);
-      margin: 5px 12px 9px;
+      margin: 6px 12px 10px;
     }
 
     /* Page Contents icon (reuses page logo from wiki-bar) */
     body.wiki-page .wiki-cont-icon {
-      width: 14px; height: 14px; flex-shrink: 0;
+      width: 16px; height: 16px; flex-shrink: 0;
       display: inline-flex; align-items: center; justify-content: center;
       border-radius: 2px; overflow: hidden;
     }
@@ -1814,7 +1814,7 @@
     /* ── wiki-toc-inner on mobile: Page Contents pill body ── */
     body.wiki-page .wiki-toc-inner {
       overflow: hidden;
-      margin: 0 12px 12px;
+      margin: 0 12px 14px;
       transition: max-height .25s ease;
     }
     body.wiki-page .wiki-toc-inner.wiki-toc-collapsed { max-height: 0; }
@@ -1823,16 +1823,16 @@
     /* Override desktop Fraunces TOC items with mono on mobile */
     body.wiki-page .wiki-toc-inner .wiki-section-item {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 9px; font-weight: 400;
+      font-size: 10.5px; font-weight: 400;
       letter-spacing: .03em; line-height: 1.4;
-      padding: 6px 10px 6px 10px;
+      padding: 8px 12px;
       border-left: none;
       color: var(--wiki-muted);
     }
     body.wiki-page .wiki-toc-inner .wiki-section-item .num {
-      font-size: 7.5px; font-weight: 600;
+      font-size: 9px; font-weight: 600;
       color: rgba(42,31,21,.28);
-      min-width: 14px;
+      min-width: 17px;
     }
     body.wiki-page .wiki-toc-inner .wiki-section-item.active {
       background: rgba(2,132,199,.08);
