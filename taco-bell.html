@@ -463,7 +463,7 @@ body_class: "wiki-page"
     <h2 id="global" class="mt-1 font-display text-3xl font-semibold">A purple sign in 31 countries.</h2>
     <p class="mt-2 max-w-3xl text-[15px] leading-relaxed text-foreground/85">Taco Bell operates more than 7,200 restaurants worldwide, the vast majority in the United States. International expansion has been famously bumpy — Mexico’s launch lasted just two years — but the chain has found steady growth across the UK, Spain, India, and the Middle East.</p>
   </div>
-  <div class="grid gap-6 lg:grid-cols-[1fr_260px]">
+  <div class="grid gap-6 lg:grid-cols-[1fr_340px]">
     <div>
       <div id="fp-stats-map" class="grid grid-cols-4 gap-px border border-foreground/15 rounded-md overflow-hidden mb-3"></div>
       <div class="flex gap-2 mb-3">
@@ -480,7 +480,7 @@ body_class: "wiki-page"
         </div>
         <div class="fp-view" id="fp-globe">
           <div class="p-3 flex flex-col items-center">
-            <svg id="fp-glob-svg" viewBox="0 0 480 480" style="width:100%;max-width:420px;height:auto;display:block;cursor:grab;touch-action:none"></svg>
+            <svg id="fp-glob-svg" viewBox="0 0 480 480" style="width:100%;max-width:380px;height:auto;display:block;cursor:grab;touch-action:none"></svg>
             <div class="mt-2 font-mono-acc text-[9px] uppercase tracking-wider text-muted-foreground text-center">Drag or swipe to rotate · auto-spins when idle</div>
           </div>
         </div>
@@ -784,7 +784,7 @@ function _renderStats(id,data){
   el.innerHTML=data.map(function(d,i){
     var bdr=i<data.length-1?'border-right:.5px solid rgba(42,31,21,.08)':'';
     return '<div style="background:var(--card,#fff);padding:10px 14px;'+bdr+'">'+
-      '<div class="font-display" style="font-size:clamp(14px,2vw,20px);font-weight:700;letter-spacing:-.015em;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+d.v+'</div>'+
+      '<div class="font-display" style="font-size:clamp(12px,1.5vw,16px);font-weight:700;letter-spacing:-.01em;line-height:1.2;overflow-wrap:anywhere">'+d.v+'</div>'+
       '<div class="font-mono-acc" style="font-size:8.5px;letter-spacing:.13em;text-transform:uppercase;color:rgba(42,31,21,.52);margin-top:3px;line-height:1.3">'+d.l+'</div>'+
     '</div>';
   }).join('');
@@ -908,8 +908,19 @@ window.WIKI_TOC = {
             '<path d="M 12 10 Q 12 9.1 13 9.1 L 19 9.1 Q 20 9.1 20 10 L 21 18.5 Q 22 19 22 19.7 L 10 19.7 Q 10 19 11 18.5 Z" fill="#FED141"/>' +
             '<circle cx="16" cy="21" r="1" fill="#FED141"/>' +
             '</svg>',
+  wikiHome: 'taco-bell.html',
   parentUrl: 'browse.html',
   parentTitle: 'Browse',
+  categories: [
+    { name: 'Tacos',          url: 'taco-bell-tacos.html',      color: '#e07b22' },
+    { name: 'Burritos',       url: 'taco-bell-burritos.html',   color: '#a855f7' },
+    { name: 'Tacos & Sides',  url: 'taco-bell-tacos-sides.html',color: '#7c3aed' },
+    { name: 'Drinks',         url: 'taco-bell-drinks.html',     color: '#0ea5e9' },
+    { name: 'Sauces',         url: 'taco-bell-sauces.html',     color: '#dc2626' },
+    { name: 'Late Night',     url: 'taco-bell-late-night.html', color: '#1e1b4b' },
+    { name: 'Breakfast',      url: 'taco-bell-breakfast.html',  color: '#ca8a04' },
+    { name: 'Desserts',       url: 'taco-bell-desserts.html',   color: '#c2410c' }
+  ],
   sections: [
     { id: 'overview',      label: 'Overview' },
     { id: 'browse',        label: 'Browse the wiki' },
