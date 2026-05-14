@@ -1330,6 +1330,13 @@
   /* Hidden by default — page-level chrome must opt in via body.wiki-page */
   .wiki-bar, .wiki-toc { display: none; }
 
+  /* Mobile-only drawer elements: hidden at base, shown inside @media (max-width:720px) */
+  .wiki-mob-head,
+  .wiki-home-chip,
+  .wiki-wpill,
+  .wiki-wpill-body,
+  .wiki-mob-divider { display: none; }
+
   /* When wiki chrome is active, suppress the facet chrome */
   body.wiki-page .page-bar,
   body.wiki-page .page-toc { display: none !important; }
@@ -3150,11 +3157,13 @@ let lastY = window.scrollY;
       backEl.hidden = false;
     }
 
-    // ── STEP 4: Mobile drawer header — logo + page name ──
+    // ── STEP 4: Mobile drawer header — ALWAYS the root wiki identity ──
+    // wikiTitle/wikiLogo = the top-level wiki (Taco Bell), constant across all sub-pages.
+    // Falls back to pageTitle/pageLogo on the root page (where they are the same).
     var mobLogo = document.getElementById('wiki-mob-head-logo');
-    if (mobLogo && toc.pageLogo) mobLogo.innerHTML = toc.pageLogo;
+    if (mobLogo) mobLogo.innerHTML = toc.wikiLogo || toc.pageLogo || '';
     var mobName = document.getElementById('wiki-mob-head-name');
-    if (mobName && toc.pageTitle) mobName.textContent = toc.pageTitle;
+    if (mobName) mobName.textContent = toc.wikiTitle || toc.pageTitle || '';
 
     // ── STEP 5: Wiki Home chip — wikiHome URL, fallback to parentUrl ──
     var homeLink = document.getElementById('wiki-home-link');
