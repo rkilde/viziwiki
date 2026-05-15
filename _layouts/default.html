@@ -1718,23 +1718,25 @@
       gap: 8px;
       margin: 0 12px 12px;
       padding: 12px 14px;
-      border: 1px solid var(--wiki-faint);
+      /* Taco Bell branded: purple bg, white text + icon */
+      background: #702082;
+      border: 1px solid #702082;
       border-radius: 6px;
-      color: var(--wiki-fg); text-decoration: none;
+      color: #ffffff; text-decoration: none;
       font-family: 'Fraunces', Georgia, serif;
       font-size: 16px; font-weight: 400;
       letter-spacing: -.01em;
       transition: background .15s ease, border-color .15s ease;
     }
     body.wiki-page .wiki-home-chip:hover {
-      background: rgba(42,31,21,.04);
-      border-color: rgba(42,31,21,.25);
+      background: #5e1a6e;
+      border-color: #5e1a6e;
     }
     body.wiki-page .wiki-home-chip svg {
       width: 16px; height: 16px; flex-shrink: 0;
-      fill: none; stroke: currentColor;
+      fill: none; stroke: #ffffff;
       stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
-      opacity: .55;
+      opacity: 1;
     }
 
     /* ── EXPANDABLE PILLS (Wiki Categories + Page Contents) ── */
@@ -1804,7 +1806,7 @@
       overscroll-behavior: contain;
     }
     /* Bump cap from 3→4 items (4 × 36px = 144px) */
-    body.wiki-page .wiki-wpill-body[aria-hidden="false"] { max-height: 144px; }
+    body.wiki-page .wiki-wpill-body[aria-hidden="false"] { max-height: 180px; }
 
     /* ── Categories scroll-affordance: sibling div, NOT a ::after pseudo ──
        ::after inside overflow-y:auto scrolls with content and disappears.
@@ -3151,9 +3153,15 @@ let lastY = window.scrollY;
       if (inner && inner.classList.contains('wiki-toc-expanded')) {
         var activeItem = inner.querySelector('.wiki-section-item.active');
         if (activeItem) {
-          var top = 0, el = activeItem;
-          while (el && el !== inner) { top += el.offsetTop; el = el.offsetParent; }
-          inner.scrollTop = Math.max(0, top - 20);
+          // Find the item to show at the TOP of the scroll zone:
+          // scroll so up to 3 sections above the active one are visible.
+          var allItems = Array.from(inner.querySelectorAll('.wiki-section-item'));
+          var activeIdx = allItems.indexOf(activeItem);
+          var topItemIdx = Math.max(0, activeIdx - 3);
+          var topItem = allItems[topItemIdx];
+          var topOffset = 0, el = topItem;
+          while (el && el !== inner) { topOffset += el.offsetTop; el = el.offsetParent; }
+          inner.scrollTop = Math.max(0, topOffset - 8);
         }
       }
     }
@@ -3370,6 +3378,11 @@ let lastY = window.scrollY;
 
     function updateCatsGradient() {
       if (!catsBody || !catsFade) return;
+      // Never show gradient when categories are collapsed
+      if (catsBody.getAttribute('aria-hidden') !== 'false') {
+        catsFade.style.opacity = '0';
+        return;
+      }
       var noOverflow = catsBody.scrollHeight <= catsBody.clientHeight + 4;
       var atEnd = noOverflow || (catsBody.scrollTop + catsBody.clientHeight >= catsBody.scrollHeight - 4);
       catsFade.style.opacity = (noOverflow || atEnd) ? '0' : '1';
@@ -3398,9 +3411,10 @@ let lastY = window.scrollY;
 
         if (bodyEl === inner) {
           if (open) {
-            // ── Collapse with animation ──
+            // ── Collapse: start from actual rendered height (offsetHeight, not scrollHeight) ──
+            var collapseFrom = inner.offsetHeight;
             inner.style.overflow = 'hidden';
-            inner.style.maxHeight = inner.scrollHeight + 'px';
+            inner.style.maxHeight = collapseFrom + 'px';
             inner.offsetHeight; // force reflow
             inner.style.transition = 'max-height .25s ease';
             inner.style.maxHeight = '0';
@@ -3410,13 +3424,18 @@ let lastY = window.scrollY;
               inner.style.overflow = inner.style.maxHeight = inner.style.transition = '';
             }, 260);
           } else {
-            // ── Expand with animation ──
-            // Add class first (enables display:block + flex:1), clamp to 0 before paint
+            // ── Expand: target is available drawer space, not full scrollHeight ──
+            // scrollHeight overshoots because flex:1 constrains the real rendered height.
             inner.classList.remove('wiki-toc-collapsed');
             inner.classList.add('wiki-toc-expanded');
             inner.style.overflow = 'hidden';
             inner.style.maxHeight = '0';
-            var targetH = inner.scrollHeight; // triggers style calc
+            // Measure: drawer height minus the locked sticky zone above
+            var drawerEl = inner.closest('nav') || inner.parentElement;
+            var stickyEl = document.querySelector('.wiki-mob-sticky');
+            var drawerH = drawerEl ? drawerEl.offsetHeight : window.innerHeight;
+            var stickyH = stickyEl ? stickyEl.offsetHeight : 0;
+            var targetH = Math.min(inner.scrollHeight, drawerH - stickyH);
             inner.style.transition = 'max-height .25s ease';
             inner.style.maxHeight = targetH + 'px';
             setTimeout(function() {
