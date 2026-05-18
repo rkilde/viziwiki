@@ -1,19 +1,12 @@
-
-      <div style="padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
-        <div style="display:inline-flex;align-items:center;gap:7px;background:color-mix(in oklab,var(--secondary) 80%,transparent);border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);border-radius:6px;padding:6px 12px;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted-foreground);flex-shrink:0;"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-          <span class="font-mono-acc" style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted-foreground);">Overview &middot; All 7 categories &middot; 1962&ndash;2025</span>
-        </div>
-        <span class="font-mono-acc" style="font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted-foreground);opacity:0.5;">Click rows to expand</span>
-      </div>---
-layout: default
-title: "Discontinued Drinks — From the Vault · ViziWiki"
-body_class: "wiki-page"
----
-{% raw %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Discontinued Drinks · Taco Bell · ViziWiki</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Spectral:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
 :root{--background:oklch(0.972 0.012 85);--foreground:oklch(0.18 0.02 60);--card:oklch(1 0 0);--secondary:oklch(0.93 0.02 80);--muted-foreground:oklch(0.45 0.03 60);--neon:oklch(0.65 0.26 5);--hot-pink:oklch(0.70 0.27 350);}
@@ -59,7 +52,7 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
 
 /* ── MACRO OVERVIEW CARD ────────────────────────────── */
 .disc-macro-wrap{margin:0 48px 0;padding:0 0 8px;}
-.disc-macro-eyebrow{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-foreground);margin-bottom:12px;}
+.disc-macro-eyebrow{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-foreground);margin-bottom:0;padding:4px 10px;display:flex;align-items:center;}
 
 /* ── CATEGORIES CONTAINER ───────────────────────────── */
 .disc-cats{padding:0 0 56px;}
@@ -160,29 +153,27 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
 .dtv-yc-pill{display:block;padding:5px 7px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:8.5px;margin-bottom:5px;white-space:normal;overflow-wrap:break-word;word-break:break-word;line-height:1.35;box-shadow:0 1px 2px rgba(0,0,0,.1);cursor:pointer;position:relative;transition:transform .1s,box-shadow .1s;}
 .dtv-yc-pill:hover{transform:scale(1.05);box-shadow:0 3px 8px rgba(0,0,0,.18);z-index:1;}
 /* item card modal */
+/* ── ITEM CARD — Option A Editorial ── */
 #dtv-item-overlay{position:fixed;inset:0;background:rgba(42,31,21,.52);z-index:400;display:none;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;}
 #dtv-item-overlay.open{display:flex;}
-#dtv-item-card{background:var(--background);border-radius:8px;max-width:460px;width:100%;border:0.5px solid color-mix(in oklab,var(--foreground) 18%,transparent);overflow:hidden;max-height:88vh;overflow-y:auto;font-family:'Spectral',Georgia,serif;box-shadow:0 8px 32px rgba(0,0,0,.18);}
-.dtv-card-accent{height:5px;}
-.dtv-card-head{padding:18px 20px 10px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
-.dtv-card-name{font-family:'Fraunces',Georgia,serif;font-size:21px;font-weight:700;letter-spacing:-.02em;color:var(--foreground);line-height:1.1;margin-bottom:5px;}
-.dtv-card-type{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.13em;text-transform:uppercase;margin-bottom:3px;}
-.dtv-card-dates{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted-foreground);}
-.dtv-card-close{background:none;border:none;cursor:pointer;font-size:20px;color:rgba(42,31,21,.35);padding:0;line-height:1;flex-shrink:0;margin-top:-2px;}
-.dtv-card-close:hover{color:var(--foreground);}
-.dtv-card-div{height:0.5px;background:rgba(42,31,21,.1);}
-.dtv-card-body{padding:14px 20px 16px;}
-.dtv-card-desc{font-size:13.5px;line-height:1.68;color:color-mix(in oklab,var(--foreground) 82%,transparent);margin:0 0 10px;}
-.dtv-card-section{border-top:1px solid color-mix(in oklab,var(--foreground) 6%,transparent);padding-top:12px;margin-top:12px;}
-.dtv-card-section:first-child{border-top:none;margin-top:0;padding-top:2px;}
-.dtv-card-section-label{font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in oklab,var(--foreground) 32%,transparent);margin-bottom:5px;}
-.dtv-card-section-text{font-size:12px;line-height:1.72;color:color-mix(in oklab,var(--foreground) 68%,transparent);}
-.dtv-card-notes{font-size:12px;font-style:italic;color:var(--muted-foreground);margin:0;}
-.dtv-card-foot{padding:11px 20px;display:flex;align-items:center;justify-content:space-between;border-top:0.5px solid rgba(42,31,21,.1);}
-.dtv-card-link{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;opacity:.72;}
-.dtv-card-link:hover{opacity:1;}
-.dtv-card-link svg{flex-shrink:0;}
-.dtv-card-soon{font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:.06em;color:var(--muted-foreground);}
+#dtv-item-card{background:var(--background,#faf8f3);border-radius:12px;max-width:480px;width:100%;overflow:hidden;max-height:88vh;overflow-y:auto;font-family:'Spectral',Georgia,serif;box-shadow:0 8px 32px rgba(0,0,0,.15);border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);}
+.dtv-card-inner{padding:28px 28px 24px;}
+.dtv-card-close{width:28px;height:28px;border-radius:50%;border:1px solid rgba(42,31,21,0.1);background:none;display:flex;align-items:center;justify-content:center;font-size:18px;color:rgba(42,31,21,0.35);cursor:pointer;transition:background .15s;}
+.dtv-card-close:hover{background:rgba(42,31,21,0.05);}
+.dtv-card-name{font-family:'Fraunces',Georgia,serif;font-size:26px;font-weight:700;line-height:1.1;letter-spacing:-0.02em;color:var(--foreground,rgba(42,31,21,0.9));}
+.dtv-card-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:10px;}
+.dtv-card-chip{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;border-radius:4px;}
+.dtv-card-dates{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.06em;color:rgba(42,31,21,0.4);}
+.dtv-card-desc{margin-top:20px;font-size:14px;line-height:1.65;color:rgba(42,31,21,0.7);}
+.dtv-card-callout{margin-top:14px;padding:14px 16px;border-radius:8px;border-left:3px solid;}
+.dtv-card-callout-label{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-bottom:4px;}
+.dtv-card-callout-text{font-size:13px;line-height:1.5;color:rgba(42,31,21,0.65);}
+.dtv-card-block{margin-top:14px;padding:14px 16px;background:rgba(42,31,21,0.02);border-radius:8px;border:1px solid rgba(42,31,21,0.05);}
+.dtv-card-notes{margin-top:16px;font-size:12px;line-height:1.5;font-style:italic;color:rgba(42,31,21,0.4);}
+.dtv-card-foot{margin-top:20px;padding-top:14px;border-top:1px solid rgba(42,31,21,0.06);}
+.dtv-card-foot a{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;display:inline-flex;align-items:center;gap:4px;}
+
+
 .dtv-clickable{cursor:pointer;}
 .dtv-clickable:hover{filter:brightness(1.15);}
 .dtv-mini-bar.dtv-clickable:hover{filter:brightness(1.1);outline:1.5px solid rgba(255,255,255,.5);}
@@ -287,10 +278,8 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
 
 /* Content collapse */
 .layout-a .disc-content{
-  max-height:0;
-  overflow:hidden;
-  transition:max-height .4s ease;
-  padding:0 !important;
+  max-height:none;
+  overflow:visible;
   display:block !important;
 }
 .layout-a .disc-content.card-open{
@@ -327,7 +316,7 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
   .dtv-mini-hdr-lbl{position:sticky;left:0;z-index:7;background:color-mix(in oklab,var(--chart-color,var(--foreground)) 5%,var(--card));width:140px !important;font-size:8px !important;}
   /* Collapsible cards — mobile */
   .layout-a .disc-cat-meta{width:100% !important;padding-left:36px !important;}
-  .layout-a .disc-content{display:block !important;padding:0 !important;max-height:0 !important;overflow:hidden !important;}
+  .layout-a .disc-content{display:block !important;padding:0 !important;max-height:none !important;overflow:visible !important;}
   .layout-a .disc-content.card-open{max-height:none !important;overflow:visible !important;padding:12px !important;}
   /* Overview chart — mobile scroll + sticky */
   #dtv-macro-wrap{overflow-x:auto !important;-webkit-overflow-scrolling:touch;}
@@ -365,7 +354,7 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
   background:transparent !important;
   border:none !important;border-radius:0 !important;border-left:none !important;
   box-shadow:none !important;padding:0 !important;
-  margin-bottom:24px !important;overflow:visible !important;
+  margin-bottom:48px !important;overflow:visible !important;
 }
 .layout-a .disc-cat:last-child{margin-bottom:0 !important;}
 
@@ -429,24 +418,33 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
 
 <style>
 /* Mobile: overview chart full-width */
+
+</style>
+<style>
+/* ── MOBILE RESPONSIVE ── */
 @media(max-width:768px){
-  /* Unified mobile side padding: 14px */
-  #overview .mx-auto,
-  .mx-auto.max-w-\[1500px\]{
-    padding-left:14px !important;
-    padding-right:14px !important;
-  }
-  /* Overview chart: match the 14px side padding */
-  .disc-macro-wrap{
-    margin-left:0 !important;
-    margin-right:0 !important;
-    border-radius:8px !important;
-  }
-  /* Category chart content: slight inner padding */
-  .disc-content{
-    padding-left:2px !important;
-    padding-right:2px !important;
-  }
+  /* Side padding */
+  .mx-auto.max-w-\[1500px\]{padding-left:14px !important;padding-right:14px !important;}
+  #overview .mx-auto{padding-left:14px !important;padding-right:14px !important;}
+  #catalogue .mx-auto{padding-left:14px !important;padding-right:14px !important;}
+  #freeze-collabs .mx-auto{padding-left:14px !important;padding-right:14px !important;}
+  
+  /* Catalogue: single column */
+  .disc-catalogue-grid{columns:1 !important;}
+  
+  /* Freeze collabs: stack grids and rows */
+  .freeze-collab-grid{grid-template-columns:1fr !important;}
+  .freeze-collab-row{flex-direction:column !important;}
+  
+  /* Swim charts: horizontal scroll */
+  .disc-macro-wrap{margin-left:0 !important;margin-right:0 !important;border-radius:8px !important;overflow-x:auto !important;}
+  .disc-content{padding-left:2px !important;padding-right:2px !important;}
+  
+  /* Hero: tighten padding */
+  .disc-hero-content{padding-left:16px !important;padding-right:16px !important;}
+  
+  /* Frutista grid: horizontal scroll on mobile */
+  .dtv-sg-hdr,.dtv-sg-row{min-width:600px;}
 }
 </style>
 <!-- Breadcrumb -->
@@ -515,44 +513,209 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
 <!-- OVERVIEW + CHART -->
 <section id="overview" class="border-b" style="background:var(--card);border-color:color-mix(in oklab,var(--foreground) 15%,transparent);">
   <div class="mx-auto max-w-[1500px] px-6 py-12">
-    <div class="mb-6 flex flex-wrap items-baseline justify-between gap-2">
-      <div>
-        <div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-          Overview
-        </div>
-        <h2 class="mt-1 font-display text-3xl font-semibold leading-tight sm:text-4xl">Five decades of drinks that didn&rsquo;t make it</h2>
-      </div>
-      <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">7 categories &middot; 1962&ndash;2025</span>
-    </div>
+    
 
-    <div class="space-y-4 text-[15px] leading-relaxed" style="color:color-mix(in oklab,var(--foreground) 85%,transparent);">
-
-      <p>Taco Bell&rsquo;s fountain has been rebuilt from the ground up at least three times. The first version was a standard Coca-Cola setup &mdash; Coke, Diet Coke, Sprite, and the calorie-free cola TAB &mdash; installed when Glen Bell opened his early restaurants in the 1960s and maintained for over three decades. That entire lineup vanished overnight in October 1997 when PepsiCo spun out its restaurant chains as Tricon Global Restaurants (later Yum! Brands). The spinoff came with a perpetual contract: every Taco Bell fountain, worldwide, would pour Pepsi products exclusively. In a single corporate transaction, four drinks disappeared and four replacements took their places. No customer was consulted. No petition was filed. The Coke era simply ended.</p>
-
-      <p>The Pepsi fountain ran more or less unchanged for seven years. Then, in February 2004, a tropical-lime Mountain Dew variant called Baja Blast appeared on a single dedicated valve &mdash; the first soda PepsiCo had ever manufactured exclusively for one restaurant chain. Baja Blast proved that a proprietary drink could drive foot traffic on its own, and what followed was two decades of experimentation: PepsiCo and Taco Bell cycling exclusive flavors, premium formats, and licensed brand partnerships through the fountain, the freezer wall, and the cooler. Most of those experiments failed. This page is the record of their failures.</p>
-
-      <p>The most ambitious was the Frutista Freeze program, launched in May 2008 as a permanent line of premium blended beverages topped with real strawberry slices and made with natural sucrose instead of high-fructose corn syrup. Frutista was Taco Bell&rsquo;s bid to compete with Starbucks-tier frozen drinks &mdash; ten flavors rotated across nine seasonal windows, each hand-built per order with fruit pur&eacute;e and syrup pumps. It was delicious, slow to make, expensive to staff, and operationally miserable at scale. In January 2013, every Frutista machine was pulled and replaced with automated Taylor Company granita units that could dispense a Baja Blast Freeze in four seconds. The Frutista era was over. The modern Freeze wall was born.</p>
-
-      <p>That same Taylor rollout killed or displaced a cascade of other products. Mountain Dew Sangrita Blast, a cherry-citrus exclusive that had held the second dedicated Dew valve since 2010, lost its slot. The Limeade Sparklers &mdash; a hand-mixed Sierra Mist and lime program designed to compete with Sonic &mdash; couldn&rsquo;t survive alongside the new frozen infrastructure. Hot beverages, already marginal, were absorbed into the 2014 breakfast coffee program. And the fountain itself kept churning: Sierra Mist became Mist Twist in 2016, reverted in 2018, and was killed entirely in January 2023 when PepsiCo replaced it with Starry. Brisk Lemon Iced Tea, which had held the same valve since the late 1990s &mdash; a quiet 21-year run &mdash; was swapped for Brisk Raspberry in 2020, a decision that still generates active petitions.</p>
-
-      <p>What emerges from the full timeline is a pattern. Drinks at Taco Bell almost never die because customers stop ordering them. They die because something upstream changes: a corporate parent rebrands a product line, an operational format gets replaced by a faster one, a fountain valve gets reassigned to make room for an exclusive, or a PepsiCo brand decision ripples through every Yum! restaurant simultaneously. The drinks themselves are collateral. The decisions happen in boardrooms and supply-chain spreadsheets, and the first sign at the restaurant level is usually a new syrup box where the old one used to be.</p>
-
-      
-
-    </div>
-
-    <div style="margin-top:32px;">
-<div class="disc-macro-wrap">
-      <div class="disc-macro-eyebrow"><span class="disc-macro-eyebrow-inner" style="display:inline-flex;align-items:center;gap:8px;background:color-mix(in oklab,var(--secondary,#e8e4d8) 80%,transparent);border:1px solid color-mix(in oklab,var(--foreground,#2a1f15) 8%,transparent);border-radius:6px;padding:6px 14px;">Overview &middot; all 7 categories &middot; 1962&ndash;2025</span></div>
-      <div class="dtv-mini" id="dtv-macro-wrap"></div>
+    <div class="space-y-4 text-[15px] leading-relaxed" style="color:color-mix(in oklab,var(--foreground) 76%,transparent);">
+      <p>Taco Bell has discontinued more than sixty beverages since the chain first opened in 1962. Some lasted decades. Others survived a single summer. A few were killed before most customers knew they existed. This archive documents every one of them.</p>
+      <p>What makes Taco Bell's drink history unusual isn't the number of casualties — any fast-food chain cycles through products. It's that nearly all of these drinks died for reasons that had nothing to do with customer demand. They died because a corporate parent changed its soda portfolio overnight. Because a machine was replaced and the old recipes didn't fit the new hardware. Because a brand partnership expired and the valve was reassigned to the next exclusive. The drinks themselves were often popular right up until the moment they vanished.</p>
+      <p>The archive spans seven categories: Mountain Dew exclusives created specifically for Taco Bell fountains, the entire Frutista Freeze program that ran from 2008 to 2013, more than two dozen Freeze machine LTOs and brand collaborations, hand-mixed Limeade Sparklers, hot beverages from the chain's brief coffee experiments, iced teas and lemonades that quietly rotated off the menu, and a handful of defunct fountain sodas dating back to the original Coca-Cola era.</p>
+      <p>Below, you'll find a full catalogue of every item by category, a dedicated section on the Freeze machine's brand collaborations, and then the deep-dive swim-lane charts that map each drink's lifespan on a shared timeline. Every item is clickable — tap any pill or card for the full story.</p>
     </div>
 
     
+</section>
+
+<div id="dtv-macro-wrap" class="disc-macro-wrap" style="display:none;"></div>
+<!-- CATALOGUE (JS-driven from ITEM_DB) -->
+<section id="catalogue" style="background:color-mix(in oklab,var(--secondary) 40%,transparent);border-bottom:1px solid color-mix(in oklab,var(--foreground) 15%,transparent);">
+  <div class="mx-auto max-w-[1500px] px-6 py-12">
+    <div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" x2="21" y1="6" y2="6"/><line x1="10" x2="21" y1="12" y2="12"/><line x1="10" x2="21" y1="18" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+      Full Catalogue &middot; 7 categories
+    </div>
+    <h2 class="mt-1 mb-6 font-display text-3xl font-semibold leading-tight sm:text-4xl">Every discontinued drink</h2>
+    <div id="catalogue-container" class="disc-catalogue-grid" style="columns:2;column-gap:16px;"></div>
+  </div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+  if(typeof ITEM_DB==="undefined") return;
+  var CM={"#3B6D11":"Mountain Dew","#993556":"Frutista","#7b2445":"Frutista","#5c1a33":"Frutista","#C44B78":"Frutista","#5C1A33":"Frutista","#0F6E56":"Freezes","#5A8A1A":"Sparklers","#993C1D":"Hot Beverages & Coffee","#854F0B":"Iced Teas","#185FA5":"Fountain Sodas"};
+  var CC={"Mountain Dew":"#5a8a1b","Frutista":"#c24a8e","Freezes":"#1a9e7a","Sparklers":"#7ab82a","Hot Beverages & Coffee":"#c05028","Iced Teas":"#b06a12","Fountain Sodas":"#2a7ecd"};
+  var order=["Mountain Dew","Frutista","Freezes","Sparklers","Hot Beverages & Coffee","Iced Teas","Fountain Sodas"];
+  var cats={};order.forEach(function(c){cats[c]=[];});
+  var seen={};
+  for(var key in ITEM_DB){
+    var it=ITEM_DB[key];var cat=CM[it.color];if(!cat) continue;
+    var lc=it.name.toLowerCase();
+    if(lc.indexOf("frutista")<0 && lc.indexOf("freeze")>=0) cat="Freezes";
+    if(!seen[it.name]){seen[it.name]=true;cats[cat].push({name:it.name,key:key});}
+  }
+  var container=document.getElementById("catalogue-container");
+  if(!container) return;
+  order.forEach(function(cat){
+    var items=cats[cat];if(!items||!items.length) return;
+    var g=CC[cat];
+    var card=document.createElement("div");
+    card.style.cssText="background:var(--card,#fff);border-radius:12px;border:1px solid color-mix(in oklab,var(--foreground,#2a1f15) 6%,transparent);border-left:4px solid "+g+";padding:20px;break-inside:avoid;margin-bottom:16px";
+    card.innerHTML='<div style="font-family:Fraunces,Georgia,serif;font-size:24px;font-weight:700;color:'+g+';text-transform:uppercase;letter-spacing:0.02em">'+cat+'</div><div style="font-family:JetBrains Mono,monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted-foreground,rgba(42,31,21,0.35));margin-top:2px">'+items.length+' discontinued items</div><div style="height:1px;background:color-mix(in oklab,var(--foreground,#2a1f15) 15%,transparent);margin:12px 0"></div>';
+    var pw=document.createElement("div");pw.style.cssText="display:flex;flex-wrap:wrap;gap:6px";
+    items.forEach(function(item){
+      var sp=document.createElement("span");sp.textContent=item.name;sp.dataset.key=item.key;
+      sp.style.cssText="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:JetBrains Mono,monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;transition:background .15s ease,border-color .15s ease;cursor:pointer";
+      sp.addEventListener("mouseenter",function(){sp.style.background="color-mix(in srgb,"+g+" 18%,white)";sp.style.borderColor="color-mix(in srgb,"+g+" 28%,transparent)";});
+      sp.addEventListener("mouseleave",function(){sp.style.background="#fff";sp.style.borderColor="rgba(42,31,21,0.1)";});
+      sp.addEventListener("click",function(){if(typeof showItemCard==="function") showItemCard(item.key);});
+      pw.appendChild(sp);
+    });
+    card.appendChild(pw);container.appendChild(card);
+  });
+});
+</script>
+
+<!-- CATEGORIES — full sections with thin gradient header bars -->
+
+<!-- FREEZE COLLABORATIONS -->
+<section id="freeze-collabs" style="background:var(--card);border-bottom:1px solid color-mix(in oklab,var(--foreground) 15%,transparent);">
+  <div class="mx-auto max-w-[1500px] px-6 py-12">
+
+    <!-- Eyebrow with freeze cup icon -->
+    <div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 8h12l-1.5 12a2 2 0 0 1-2 1.8h-5a2 2 0 0 1-2-1.8L6 8z"/>
+        <path d="M5 8h14"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>
+        <line x1="12" y1="11" x2="12" y2="13"/><line x1="11" y1="12" x2="13" y2="12"/>
+        <line x1="10" y1="15" x2="10" y2="17"/><line x1="9" y1="16" x2="11" y2="16"/>
+        <line x1="14" y1="14" x2="14" y2="16"/><line x1="13" y1="15" x2="15" y2="15"/>
+      </svg>
+      The Freeze Collaborations
+    </div>
+    <h2 class="mt-1 font-display text-3xl font-semibold leading-tight sm:text-4xl">Brand partnerships on the Freeze machine</h2>
+
+    <!-- Section intro -->
+    <p style="margin-top:12px;margin-bottom:32px;font-size:15px;line-height:1.7;color:var(--muted-foreground);">The Freeze machine replaced the Frutista blender in 2013 and became Taco Bell's primary platform for limited-time frozen collaborations. Two brand partnerships dominated: Mountain Dew contributed nine exclusive frozen variants over a decade, and three candy brands — Starburst, Airheads, and Jolly Rancher — each brought their signature flavors to the lineup.</p>
+
+    
+
+    <!-- ── MOUNTAIN DEW × FREEZE ── -->
+    <p style="margin-bottom:16px;font-size:14px;line-height:1.6;color:var(--muted-foreground);">Mountain Dew's partnership with Taco Bell's Freeze machine produced nine exclusive frozen variants between 2013 and 2022. The Baja Blast Freeze came first in March 2013, followed by the Distortion and Typhoon duo that September — frozen takes on retail flavors from PepsiCo's 2010 DEWmocracy II promotion. None of the nine survived more than two years on the menu.</p>
+
+    <div style="border-radius:14px;overflow:hidden;margin-bottom:32px;border:1px solid color-mix(in oklab,var(--foreground) 6%,transparent);">
+      <div style="position:relative;background:linear-gradient(135deg,#1a472a,#0d2818);padding:28px 28px 20px;color:#fff;">
+        <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(90,138,27,0.4) 1px,transparent 1.2px);background-size:8px 8px;opacity:.15;"></div>
+        <div style="position:relative;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:6px;">Brand Partnership</div>
+          <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
+            <div style="font-family:'Fraunces',Georgia,serif;font-size:28px;font-weight:700;">Mountain Dew × Freeze</div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:3px 8px;color:rgba(255,255,255,0.7);">9 variants · 2013–2022</span>
+          </div>
+        </div>
+      </div>
+      <div style="padding:20px 24px;background:var(--card);">
+        <div class="freeze-collab-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+          <div style="border:1px solid rgba(90,138,27,0.15);border-radius:8px;padding:12px 14px;background:color-mix(in srgb,#5a8a1b 4%,white);transition:background .15s;cursor:pointer;" onmouseover="this.style.background='color-mix(in srgb,#5a8a1b 12%,white)'" onmouseout="this.style.background='color-mix(in srgb,#5a8a1b 4%,white)'" onclick="showItemCard('Mtn Dew Distortion (DEWmocracy II)')">
+            <div style="font-family:'Fraunces',Georgia,serif;font-size:14px;font-weight:700;">Mtn Dew Distortion Freeze</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.08em;color:var(--muted-foreground);margin-top:2px;">Sep 2013 – Mar 2014</div>
+          </div>
+          <div style="border:1px solid rgba(90,138,27,0.15);border-radius:8px;padding:12px 14px;background:color-mix(in srgb,#5a8a1b 4%,white);transition:background .15s;cursor:pointer;" onmouseover="this.style.background='color-mix(in srgb,#5a8a1b 12%,white)'" onmouseout="this.style.background='color-mix(in srgb,#5a8a1b 4%,white)'" onclick="showItemCard('Mtn Dew Typhoon (DEWmocracy II)')">
+            <div style="font-family:'Fraunces',Georgia,serif;font-size:14px;font-weight:700;">Mtn Dew Typhoon Freeze</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.08em;color:var(--muted-foreground);margin-top:2px;">Sep 2013 – Jun 2014</div>
+          </div>
+          <div style="border:1px solid rgba(90,138,27,0.15);border-radius:8px;padding:12px 14px;background:color-mix(in srgb,#5a8a1b 4%,white);transition:background .15s;cursor:pointer;" onmouseover="this.style.background='color-mix(in srgb,#5a8a1b 12%,white)'" onmouseout="this.style.background='color-mix(in srgb,#5a8a1b 4%,white)'" onclick="showItemCard('Mtn Dew Kickstart Black Cherry')">
+            <div style="font-family:'Fraunces',Georgia,serif;font-size:14px;font-weight:700;">Mtn Dew Kickstart Black Cherry Freeze</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.08em;color:var(--muted-foreground);margin-top:2px;">Mar – Jun 2014</div>
+          </div>
+          <div style="border:1px solid rgba(90,138,27,0.15);border-radius:8px;padding:12px 14px;background:color-mix(in srgb,#5a8a1b 4%,white);transition:background .15s;cursor:pointer;" onmouseover="this.style.background='color-mix(in srgb,#5a8a1b 12%,white)'" onmouseout="this.style.background='color-mix(in srgb,#5a8a1b 4%,white)'" onclick="showItemCard('Mtn Dew Sangrita Blast')">
+            <div style="font-family:'Fraunces',Georgia,serif;font-size:14px;font-weight:700;">Mtn Dew Sangrita Blast Freeze</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.08em;color:var(--muted-foreground);margin-top:2px;">May – Sep 2015</div>
+          </div>
+          <div style="border:1px solid rgba(90,138,27,0.15);border-radius:8px;padding:12px 14px;background:color-mix(in srgb,#5a8a1b 4%,white);transition:background .15s;cursor:pointer;" onmouseover="this.style.background='color-mix(in srgb,#5a8a1b 12%,white)'" onmouseout="this.style.background='color-mix(in srgb,#5a8a1b 4%,white)'" onclick="showItemCard('Mtn Dew Spiked Lemonade Freeze')">
+            <div style="font-family:'Fraunces',Georgia,serif;font-size:14px;font-weight:700;">Mtn Dew Spiked Lemonade Freeze</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.08em;color:var(--muted-foreground);margin-top:2px;">Early – Sep 2017</div>
+          </div>
+          <div style="border:1px solid rgba(90,138,27,0.15);border-radius:8px;padding:12px 14px;background:color-mix(in srgb,#5a8a1b 4%,white);transition:background .15s;cursor:pointer;" onmouseover="this.style.background='color-mix(in srgb,#5a8a1b 12%,white)'" onmouseout="this.style.background='color-mix(in srgb,#5a8a1b 4%,white)'" onclick="showItemCard('Mtn Dew Frostbite')">
+            <div style="font-family:'Fraunces',Georgia,serif;font-size:14px;font-weight:700;">Mtn Dew Frostbite Freeze</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.08em;color:var(--muted-foreground);margin-top:2px;">2020</div>
+          </div>
+          <div style="border:1px solid rgba(90,138,27,0.15);border-radius:8px;padding:12px 14px;background:color-mix(in srgb,#5a8a1b 4%,white);transition:background .15s;cursor:pointer;" onmouseover="this.style.background='color-mix(in srgb,#5a8a1b 12%,white)'" onmouseout="this.style.background='color-mix(in srgb,#5a8a1b 4%,white)'" onclick="showItemCard('Mtn Dew Birthday Baja Blast')">
+            <div style="font-family:'Fraunces',Georgia,serif;font-size:14px;font-weight:700;">Mtn Dew Birthday Baja Blast Freeze</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.08em;color:var(--muted-foreground);margin-top:2px;">2019</div>
+          </div>
+          <div style="border:1px solid rgba(90,138,27,0.15);border-radius:8px;padding:12px 14px;background:color-mix(in srgb,#5a8a1b 4%,white);transition:background .15s;cursor:pointer;" onmouseover="this.style.background='color-mix(in srgb,#5a8a1b 12%,white)'" onmouseout="this.style.background='color-mix(in srgb,#5a8a1b 4%,white)'" onclick="showItemCard('Mtn Dew Spark')">
+            <div style="font-family:'Fraunces',Georgia,serif;font-size:14px;font-weight:700;">Mtn Dew Spark Freeze</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.08em;color:var(--muted-foreground);margin-top:2px;">2021 – 2022</div>
+          </div>
+          <div style="border:1px solid rgba(90,138,27,0.15);border-radius:8px;padding:12px 14px;background:color-mix(in srgb,#5a8a1b 4%,white);transition:background .15s;cursor:pointer;" onmouseover="this.style.background='color-mix(in srgb,#5a8a1b 12%,white)'" onmouseout="this.style.background='color-mix(in srgb,#5a8a1b 4%,white)'" onclick="showItemCard('Mtn Dew Baja Blast Colada')">
+            <div style="font-family:'Fraunces',Georgia,serif;font-size:14px;font-weight:700;">Mtn Dew Baja Blast Colada Freeze</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.08em;color:var(--muted-foreground);margin-top:2px;">2021</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CANDY × FREEZE ── -->
+    <p style="margin-bottom:16px;font-size:14px;line-height:1.6;color:var(--muted-foreground);">Between 2014 and 2021, three candy brands licensed their flavors as limited-time Freeze exclusives. Starburst led the way with a Strawberry variant that returned three separate times, followed by Airheads and Jolly Rancher with two flavors each. Every candy collab was a one-off or seasonal run — none became permanent.</p>
+
+    <div style="border-radius:14px;overflow:hidden;border:1px solid color-mix(in oklab,var(--foreground) 6%,transparent);">
+      <div style="position:relative;background:linear-gradient(135deg,#8b1a4a,#4a0e2a);padding:28px 28px 20px;color:#fff;">
+        <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(194,74,142,0.4) 1px,transparent 1.2px);background-size:8px 8px;opacity:.15;"></div>
+        <div style="position:relative;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:6px;">Brand Partnerships</div>
+          <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
+            <div style="font-family:'Fraunces',Georgia,serif;font-size:28px;font-weight:700;">Candy × Freeze</div>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:3px 8px;color:rgba(255,255,255,0.7);">3 brands · 6 variants · 2014–2021</span>
+          </div>
+        </div>
+      </div>
+      <div style="padding:20px 24px;background:var(--card);">
+        <!-- Starburst -->
+        <div style="margin-bottom:16px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted-foreground);margin-bottom:8px;display:flex;align-items:center;gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background:#e24a4a;"></span> Starburst</div>
+          <div class="freeze-collab-row" style="display:flex;gap:10px;">
+            <div style="flex:1;border:1px solid rgba(226,74,74,0.15);border-radius:8px;padding:12px 14px;background:color-mix(in srgb,#e24a4a 4%,white);transition:background .15s;cursor:pointer;" onmouseover="this.style.background='color-mix(in srgb,#e24a4a 12%,white)'" onmouseout="this.style.background='color-mix(in srgb,#e24a4a 4%,white)'" onclick="showItemCard('Starburst Strawberry')">
+              <div style="font-family:'Fraunces',Georgia,serif;font-size:14px;font-weight:700;">Starburst Strawberry</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted-foreground);margin-top:2px;">Oct 2014 · returned 2016 · 2019</div>
+            </div>
+            <div style="flex:1;border:1px solid rgba(226,74,74,0.15);border-radius:8px;padding:12px 14px;background:color-mix(in srgb,#e24a4a 4%,white);transition:background .15s;cursor:pointer;" onmouseover="this.style.background='color-mix(in srgb,#e24a4a 12%,white)'" onmouseout="this.style.background='color-mix(in srgb,#e24a4a 4%,white)'" onclick="showItemCard('Starburst Cherry')">
+              <div style="font-family:'Fraunces',Georgia,serif;font-size:14px;font-weight:700;">Starburst Cherry</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted-foreground);margin-top:2px;">September 2015</div>
+            </div>
+          </div>
+        </div>
+        <!-- Airheads -->
+        <div style="margin-bottom:16px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted-foreground);margin-bottom:8px;display:flex;align-items:center;gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background:#3b8fd4;"></span> Airheads</div>
+          <div class="freeze-collab-row" style="display:flex;gap:10px;">
+            <div style="flex:1;border:1px solid rgba(59,143,212,0.15);border-radius:8px;padding:12px 14px;background:color-mix(in srgb,#3b8fd4 4%,white);transition:background .15s;cursor:pointer;" onmouseover="this.style.background='color-mix(in srgb,#3b8fd4 12%,white)'" onmouseout="this.style.background='color-mix(in srgb,#3b8fd4 4%,white)'" onclick="showItemCard('Airheads White Mystery')">
+              <div style="font-family:'Fraunces',Georgia,serif;font-size:14px;font-weight:700;">Airheads White Mystery</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted-foreground);margin-top:2px;">September 2016</div>
+            </div>
+            <div style="flex:1;border:1px solid rgba(59,143,212,0.15);border-radius:8px;padding:12px 14px;background:color-mix(in srgb,#3b8fd4 4%,white);transition:background .15s;cursor:pointer;" onmouseover="this.style.background='color-mix(in srgb,#3b8fd4 12%,white)'" onmouseout="this.style.background='color-mix(in srgb,#3b8fd4 4%,white)'" onclick="showItemCard('Airheads Blue Raspberry')">
+              <div style="font-family:'Fraunces',Georgia,serif;font-size:14px;font-weight:700;">Airheads Blue Raspberry</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted-foreground);margin-top:2px;">Late 2016 – 2017</div>
+            </div>
+          </div>
+        </div>
+        <!-- Jolly Rancher -->
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted-foreground);margin-bottom:8px;display:flex;align-items:center;gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background:#2d8c2d;"></span> Jolly Rancher</div>
+          <div class="freeze-collab-row" style="display:flex;gap:10px;">
+            <div style="flex:1;border:1px solid rgba(45,140,45,0.15);border-radius:8px;padding:12px 14px;background:color-mix(in srgb,#2d8c2d 4%,white);transition:background .15s;cursor:pointer;" onmouseover="this.style.background='color-mix(in srgb,#2d8c2d 12%,white)'" onmouseout="this.style.background='color-mix(in srgb,#2d8c2d 4%,white)'" onclick="showItemCard('Jolly Rancher Watermelon')">
+              <div style="font-family:'Fraunces',Georgia,serif;font-size:14px;font-weight:700;">Jolly Rancher Watermelon</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted-foreground);margin-top:2px;">2020</div>
+            </div>
+            <div style="flex:1;border:1px solid rgba(45,140,45,0.15);border-radius:8px;padding:12px 14px;background:color-mix(in srgb,#2d8c2d 4%,white);transition:background .15s;cursor:pointer;" onmouseover="this.style.background='color-mix(in srgb,#2d8c2d 12%,white)'" onmouseout="this.style.background='color-mix(in srgb,#2d8c2d 4%,white)'" onclick="showItemCard('Jolly Rancher Green Apple')">
+              <div style="font-family:'Fraunces',Georgia,serif;font-size:14px;font-weight:700;">Jolly Rancher Green Apple</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted-foreground);margin-top:2px;">2021</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
-<!-- CATEGORIES — full sections with thin gradient header bars -->
 <section class="mx-auto max-w-[1500px] px-6 py-12">
   <div class="mb-4 flex flex-wrap items-baseline justify-between gap-2">
     <div>
@@ -562,8 +725,10 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
       </div>
       <h2 class="font-display text-3xl font-semibold">Seven categories, charted</h2>
     </div>
-    <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">scroll or use the sidebar to jump</span>
+    
   </div>
+
+  <p style="margin-top:12px;margin-bottom:24px;font-size:15px;line-height:1.7;color:var(--muted-foreground);">The sections below chart every discontinued drink on a shared timeline spanning 1962 to 2025. Each swim lane maps one category's items from introduction to discontinuation — the length of the bar is the length of the run. Some bars span decades. Most are barely visible. Click any pill to open the full detail card for that item.</p>
 
 <!-- CATEGORIES -->
 
@@ -704,7 +869,7 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
     <div class="disc-sidebar" style="background:linear-gradient(135deg,#c05028,#5a2210);position:relative;overflow:hidden;border-radius:8px;">
       <div class="halftone" style="position:absolute;inset:0;opacity:.15;mix-blend-mode:overlay;pointer-events:none;"></div>
       <div class="disc-cat-num" style="color:#993C1D">05</div>
-      <h3 class="disc-cat-name">Hot beverages</h3>
+      <h3 class="disc-cat-name">Hot Beverages & Coffee</h3>
       <div class="disc-cat-meta">
         <span class="disc-cat-badge" style="background:color-mix(in oklab,#993C1D 10%,transparent);color:#993C1D;border:1px solid color-mix(in oklab,#993C1D 22%,transparent)">5 drinks</span>
         <div class="disc-cat-dates">2004–2020</div>
@@ -786,6 +951,7 @@ var chartReposFns=[];
 function repositionAllCharts(){chartReposFns.forEach(function(fn){fn();});}
 </script>
 <script>
+
 (function(){
 var S=1975,E=2027,R=E-S;
 function p(y){return((y-S)/R*100).toFixed(2)+'%';}
@@ -795,9 +961,9 @@ function w(a,b){return((b-a)/R*100).toFixed(2)+'%';}
 var CATS=[
   {n:'Mtn Dew casualties',c:'#3B6D11',s:2012,e:2022},
   {n:'Frutista Freezes',c:'#993556',s:2008,e:2013},
-  {n:'Freezes \u2014 LTO & collab',c:'#0F6E56',s:2013,e:2025},
+  {n:'Freezes — LTO & collab',c:'#0F6E56',s:2013,e:2025},
   {n:'Limeade Sparklers',c:'#5A8A1A',s:2010,e:2012},
-  {n:'Hot beverages',c:'#993C1D',s:2004,e:2020},
+  {n:'Hot Beverages & Coffee',c:'#993C1D',s:2004,e:2020},
   {n:'Iced teas & lemonades',c:'#854F0B',s:1978,e:2020},
   {n:'Defunct fountain sodas',c:'#185FA5',s:2003,e:2025}
 ];
@@ -805,11 +971,12 @@ var CATS=[
 var GRID=[1975,1980,1985,1990,1995,2000,2005,2010,2015,2020,2025];
 var TICKS=[1975,1980,1985,1990,1995,2000,2005,2010,2015,2020,2025];
 
-function abbr(s,e){return Math.floor(s/100)===Math.floor(e/100)?s+'\u2013'+String(e).slice(-2):s+'\u2013'+e;}
-function fmtRange(s,e,bwPct){return bwPct>12?s+'\u2013'+e:abbr(s,e);}
+function abbr(s,e){return Math.floor(s/100)===Math.floor(e/100)?s+'–'+String(e).slice(-2):s+'–'+e;}
+function fmtRange(s,e,bwPct){return bwPct>12?s+'–'+e:abbr(s,e);}
 
 /* Build macro chart using same mini swim lane pattern */
 var wrap=document.getElementById('dtv-macro-wrap');
+
 wrap.style.setProperty('--chart-color','#2A1F15');
 var macroHdr=document.createElement('div');macroHdr.className='dtv-mini-hdr';
 var macroLbl=document.createElement('div');macroLbl.className='dtv-mini-hdr-lbl';macroLbl.textContent='Category';
@@ -829,7 +996,7 @@ CATS.forEach(function(cat,ci){
   var bar=document.createElement('div');bar.className='dtv-mini-bar';
   bar.dataset.s=cat.s;bar.dataset.e=cat.e;
   bar.style.cssText='left:'+p(cat.s)+';width:'+w(cat.s,cat.e)+';background:'+cat.c+';';
-  bar.title=cat.n+' ('+cat.s+'\u2013'+cat.e+')';
+  bar.title=cat.n+' ('+cat.s+'–'+cat.e+')';
   if(bwPct>3){var rl=document.createElement('div');rl.className='dtv-mini-blbl';rl.textContent=fmtRange(cat.s,cat.e,bwPct);bar.appendChild(rl);}
   trk.appendChild(bar);row.appendChild(nm);row.appendChild(trk);wrap.appendChild(row);
 });
@@ -877,6 +1044,8 @@ macroRepos();
 chartReposFns.push(macroRepos);
 
 /* ── ACCORDION — expandable detail rows in overview chart ── */
+
+
 var ACC_DATA={
   'Mtn Dew casualties':{type:'swim',c:'#3B6D11',items:[
     {n:'Sangrita Blast',s:2013,e:2017},{n:'Diet Baja Blast',s:2013,e:2015},
@@ -884,17 +1053,17 @@ var ACC_DATA={
     {n:'Mtn Dew Spiked Lemonade',s:2017,e:2019}
   ]},
   'Frutista Freezes':{type:'frutista',c:'#993556',items:[
-    {n:'Strawberry',y:"Sum '08"},{n:'Strawberries \u2019n Cr\u00e8me',y:"Fall '08"},
-    {n:'Pi\u00f1a Colada',y:"Spr '09"},{n:'Berry Pomegranate',y:"Fall '10"},
-    {n:'Strawberry Mango',y:"Sum '08"},{n:'Mango \u2019n Cr\u00e8me',y:"Fall '08"},
+    {n:'Strawberry',y:"Sum '08"},{n:'Strawberries ’n Crème',y:"Fall '08"},
+    {n:'Piña Colada',y:"Spr '09"},{n:'Berry Pomegranate',y:"Fall '10"},
+    {n:'Strawberry Mango',y:"Sum '08"},{n:'Mango ’n Crème',y:"Fall '08"},
     {n:'Strawberry Colada',y:"Spr '09"},{n:'Classic Margarita',y:"Spr '10"},
-    {n:'Triple Berries \u2019n Cr\u00e8me',y:"Fall '08"},{n:'Strawberry Margarita',y:"Spr '10"}
+    {n:'Triple Berries ’n Crème',y:"Fall '08"},{n:'Strawberry Margarita',y:"Spr '10"}
   ]},
-  'Freezes \u2014 LTO & collab':{type:'calendar',c:'#0F6E56'},
+  'Freezes — LTO & collab':{type:'calendar',c:'#0F6E56'},
   'Limeade Sparklers':{type:'swim',c:'#5A8A1A',items:[
     {n:'Classic Limeade Sparkler',s:2010,e:2012},{n:'Cherry Limeade Sparkler',s:2010,e:2012}
   ]},
-  'Hot beverages':{type:'swim',c:'#993C1D',items:[
+  'Hot Beverages & Coffee':{type:'swim',c:'#993C1D',items:[
     {n:'Folgers Coffee',s:2004,e:2014},{n:'Hot Chocolate',s:2008,e:2016},
     {n:'Hot Tea',s:2014,e:2020},{n:'Starbucks test',s:2015,e:2016},
     {n:'Iced Coffee',s:2018,e:2021}
@@ -915,7 +1084,7 @@ var ACC_FREEZE={
   2014:['Mtn Dew Typhoon','Dr Pepper Vanilla Float','Starburst Strawberry'],
   2015:['Mtn Dew Sangrita Blast','Starburst Cherry'],
   2016:['Watermelon','Airheads Blue Raspberry'],
-  2017:['Mtn Dew Spiked Lemonade','Strawberry Poppin\u2019 Candy'],
+  2017:['Mtn Dew Spiked Lemonade','Strawberry Poppin’ Candy'],
   2018:['Watermelon','Lemonade'],
   2019:['Mtn Dew Frostbite','Starburst Strawberry'],
   2020:['Jolly Rancher Watermelon'],
@@ -938,7 +1107,7 @@ var ACC_FREEZE={
     nm.style.cssText+=';display:flex;align-items:center;';
     var chev=document.createElement('span');chev.className='dtv-macro-chev';
     chev.style.cssText='margin-left:auto;flex-shrink:0;';
-    chev.textContent='\u25B8';
+    chev.textContent='▸';
     nm.appendChild(chev);
     /* Create detail panel (hidden) */
     var panel=document.createElement('div');panel.className='dtv-acc';panel.id='acc-'+ri;
@@ -953,9 +1122,9 @@ var ACC_FREEZE={
         var bar=document.createElement('div');bar.className='dtv-acc-bar';
         bar.dataset.s=d.s;bar.dataset.e=d.e;
         bar.style.background=accData.c;
-        bar.title=d.n+' ('+d.s+'\u2013'+d.e+')';
+        bar.title=d.n+' ('+d.s+'–'+d.e+')';
         var bw=(d.e-d.s)/R*100;
-        if(bw>8){var bl=document.createElement('span');bl.className='dtv-acc-blbl';bl.textContent=d.s+'\u2013'+d.e;bar.appendChild(bl);}
+        if(bw>8){var bl=document.createElement('span');bl.className='dtv-acc-blbl';bl.textContent=d.s+'–'+d.e;bar.appendChild(bl);}
         dtrk.appendChild(bar);dr.appendChild(dnm);dr.appendChild(dtrk);inner.appendChild(dr);
       });
     } else if(accData.type==='frutista'){
@@ -1052,9 +1221,9 @@ function buildMini(id,items,color,startY,endY){
     var bar=document.createElement('div');bar.className='dtv-mini-bar';
     bar.dataset.s=d.s;bar.dataset.e=d.e;
     bar.style.cssText='left:'+p2(d.s)+';width:'+w2(d.s,d.e)+';background:'+color+';';
-    bar.title=d.n+' ('+d.s+'\u2013'+d.e+')';
+    bar.title=d.n+' ('+d.s+'–'+d.e+')';
     var endA=Math.floor(d.e/100)===Math.floor(d.s/100)?String(d.e).slice(-2):d.e;
-    var rangeStr=bw>15?(d.s+'\u2013'+d.e):(d.s+'\u2013'+endA);
+    var rangeStr=bw>15?(d.s+'–'+d.e):(d.s+'–'+endA);
     if(bw>8){var rl=document.createElement('div');rl.className='dtv-mini-blbl';rl.textContent=rangeStr;bar.appendChild(rl);}
     else if(bw>4){var rl=document.createElement('div');rl.className='dtv-mini-blbl';rl.textContent=d.s;bar.appendChild(rl);}
     bar.classList.add('dtv-clickable');
@@ -1245,13 +1414,13 @@ FREEZE_YEARS.forEach(function(y){
     (function(key){pill.addEventListener('click',function(){if(typeof showItemCard==='function')showItemCard(key);});})(item.n);
     col.appendChild(pill);
   });
-  if(!items.length){var em=document.createElement('div');em.style.cssText='font-size:9px;color:rgba(42,31,21,.2);padding:2px 4px;';em.textContent='\u2014';col.appendChild(em);}
+  if(!items.length){var em=document.createElement('div');em.style.cssText='font-size:9px;color:rgba(42,31,21,.2);padding:2px 4px;';em.textContent='—';col.appendChild(em);}
   cal.appendChild(col);
 });
 /* Note row */
 var note=document.createElement('div');
 note.style.cssText='padding:10px 2px 4px;font-family:JetBrains Mono,monospace;font-size:8px;line-height:1.6;color:rgba(42,31,21,.4);letter-spacing:.04em;max-width:100%;';
-note.textContent='* Blue Raspberry was LTO before becoming permanent. \u2020 Wild Cherry held slot 2 as semi-permanent; phasing out at many locations as of 2024\u201325. Active seasonals (Sweet Lightning, Baja Flash, Baja Punch) are excluded \u2014 they still return annually. Baja Blast Freeze (slot 1, permanent since 2013) is not shown.';
+note.textContent='* Blue Raspberry was LTO before becoming permanent. † Wild Cherry held slot 2 as semi-permanent; phasing out at many locations as of 2024–25. Active seasonals (Sweet Lightning, Baja Flash, Baja Punch) are excluded — they still return annually. Baja Blast Freeze (slot 1, permanent since 2013) is not shown.';
 var calWrap=cal.closest('.dtv-year-cal');
 if(calWrap)calWrap.after(note);else cal.parentNode.appendChild(note);
 })();
@@ -1261,348 +1430,348 @@ if(calWrap)calWrap.after(note);else cal.parentNode.appendChild(note);
    ITEM CARDS — globals (must load after main IIFE)
    ============================================================ */
 var ITEM_DB={
-  'Sangrita Blast (fountain)':{name:'Sangrita Blast',dates:'December 2013 \u2013 2017',type:'Mountain Dew exclusive \u00b7 fountain',color:'#3B6D11',
+  'Sangrita Blast (fountain)':{name:'Sangrita Blast',dates:'December 2013 – 2017',type:'Mountain Dew exclusive · fountain',color:'#3B6D11',
     desc:'A dark red, citrus-punch Mountain Dew created exclusively for Taco Bell fountains. PepsiCo described the flavor as cherry and pomegranate. Launched December 2013 alongside Diet Baja Blast as the first TB-exclusive Dew flavor beyond Baja Blast. Briefly released in retail cans and bottles in summer 2015. Replaced by Spiked Lemonade in 2017.',
     notes:'Never brought back despite a vocal fanbase. The closest analog was Baja Midnight, released August 2025.',
     replaced:'Sweet Lightning took over the dedicated Dew valve at many locations.',
     avail:'No. Never sold at retail. Existed only as a Taco Bell fountain exclusive.'},
-  'Diet Baja Blast':{name:'Diet Baja Blast',dates:'December 2013 \u2013 early 2015',type:'Mountain Dew exclusive \u00b7 fountain',color:'#3B6D11',
+  'Diet Baja Blast':{name:'Diet Baja Blast',dates:'December 2013 – early 2015',type:'Mountain Dew exclusive · fountain',color:'#3B6D11',
     desc:'The zero-calorie counterpart to Baja Blast, launched December 2013 alongside Sangrita Blast. Held a TB fountain valve for roughly 15 months before Kickstart Orange Citrus replaced it in March 2015. Returned in 2019 as Baja Blast Zero Sugar, which is currently active.',
-    notes:'The drink survived the discontinuation \u2014 only the "Diet Baja Blast" brand name was retired.',
+    notes:'The drink survived the discontinuation — only the "Diet Baja Blast" brand name was retired.',
     replaced:'The diet valve was reallocated.',
     avail:'Partially. Baja Blast Zero Sugar appears in seasonal retail cans, but the fountain version is gone.'},
-  'Mountain Dew AM':{name:'Mountain Dew AM',dates:'May 2012 \u2013 ~2013',type:'Mountain Dew exclusive \u00b7 fountain \u00b7 breakfast policy',color:'#3B6D11',
-    desc:'A fountain blend of Mountain Dew and orange juice, launched May 2012 as a breakfast exclusive \u2014 two years before Taco Bell\'s national breakfast rollout. Physically on the fountain all day but restricted to morning hours by menu policy. Disappeared within a year without announcement.',
+  'Mountain Dew AM':{name:'Mountain Dew AM',dates:'May 2012 – ~2013',type:'Mountain Dew exclusive · fountain · breakfast policy',color:'#3B6D11',
+    desc:'A fountain blend of Mountain Dew and orange juice, launched May 2012 as a breakfast exclusive — two years before Taco Bell\'s national breakfast rollout. Physically on the fountain all day but restricted to morning hours by menu policy. Disappeared within a year without announcement.',
     notes:'The "AM-only" restriction was a menu rule, not a hardware limitation. The syrup ran continuously.',
     replaced:'Discontinued with the breakfast menu overhaul. The flavor slot was eliminated.',
     avail:'No. A one-year test product, never sold at retail.'},
-  'Kickstart Orange Citrus':{name:'Kickstart Orange Citrus',dates:'March 2015 \u2013 mid-2022',type:'Mountain Dew exclusive \u00b7 fountain',color:'#3B6D11',
-    desc:'The longest-running Mountain Dew TB fountain exclusive after Baja Blast \u2014 seven years on the fountain. Part of the Kickstart line (5% juice, added caffeine). Replaced Diet Baja Blast in March 2015, outlasting two full exclusive flavor cycles before Brisk Dragon Paradise ended its run.',
+  'Kickstart Orange Citrus':{name:'Kickstart Orange Citrus',dates:'March 2015 – mid-2022',type:'Mountain Dew exclusive · fountain',color:'#3B6D11',
+    desc:'The longest-running Mountain Dew TB fountain exclusive after Baja Blast — seven years on the fountain. Part of the Kickstart line (5% juice, added caffeine). Replaced Diet Baja Blast in March 2015, outlasting two full exclusive flavor cycles before Brisk Dragon Paradise ended its run.',
     notes:'Seven years is remarkable for a rotating slot. Most TB exclusive Dew flavors lasted one to two.',
     replaced:'The fountain valve was reassigned to other Dew promotional flavors.',
     avail:'Yes. Kickstart is still sold in cans at gas stations and grocery stores.'},
-  'Mtn Dew Spiked Lemonade':{name:'Mtn Dew Spiked Lemonade',dates:'2017 \u2013 March 2019',type:'Mountain Dew exclusive \u00b7 fountain',color:'#3B6D11',
-    desc:'Entirely non-alcoholic \u2014 "spiked" referred to prickly pear cactus juice. Replaced Sangrita Blast on the fountain in 2017. Also had a brief Freeze run in early 2017 before Strawberry Poppin\' Candy Freeze replaced it in September. The misleading name contributed to consumer confusion and is cited among reasons for its poor performance.',
+  'Mtn Dew Spiked Lemonade':{name:'Mtn Dew Spiked Lemonade',dates:'2017 – March 2019',type:'Mountain Dew exclusive · fountain',color:'#3B6D11',
+    desc:'Entirely non-alcoholic — "spiked" referred to prickly pear cactus juice. Replaced Sangrita Blast on the fountain in 2017. Also had a brief Freeze run in early 2017 before Strawberry Poppin\' Candy Freeze replaced it in September. The misleading name contributed to consumer confusion and is cited among reasons for its poor performance.',
     notes:'The fountain version outlasted retail cans by over a year, finally replaced by Baja Blast Zero Sugar in March 2019.',
     replaced:'Replaced by the next rotating Dew flavor in the dedicated valve cycle.',
     avail:'No. Briefly in retail cans, now discontinued everywhere.'},
-  'Classic Limeade Sparkler':{name:'Classic Limeade Sparkler',dates:'~2010 \u2013 2012',type:'Custom fountain drink \u00b7 handmade',color:'#5A8A1A',
-    desc:'A made-to-order drink built from Sierra Mist, lime juice concentrate, and a real lime wedge in a clear plastic cup so the carbonation was visible. Taco Bell\'s attempt at a Sonic-style handcrafted fountain drink \u2014 required staff to build each order individually rather than pour from a valve.',
+  'Classic Limeade Sparkler':{name:'Classic Limeade Sparkler',dates:'~2010 – 2012',type:'Custom fountain drink · handmade',color:'#5A8A1A',
+    desc:'A made-to-order drink built from Sierra Mist, lime juice concentrate, and a real lime wedge in a clear plastic cup so the carbonation was visible. Taco Bell\'s attempt at a Sonic-style handcrafted fountain drink — required staff to build each order individually rather than pour from a valve.',
     notes:'Priced at $1.69 for 16 oz. The "sparkler" name referred to the visible carbonation rising through the lime syrup.',
     replaced:'The Freeze machine rollout in 2013 ended the Sparkler program.',
     avail:'No. Unique to Taco Bell, never sold at retail.'},
-  'Cherry Limeade Sparkler':{name:'Cherry Limeade Sparkler',dates:'~2010 \u2013 2012',type:'Custom fountain drink \u00b7 handmade',color:'#5A8A1A',
-    desc:'The signature variant. Cherry syrup pooled beneath the Sierra Mist and lime base, creating a two-tone red-green gradient visible through the clear cup. More visually striking than the Classic \u2014 and far more remembered. TikTok tributes years after its discontinuation regularly hit millions of views.',
+  'Cherry Limeade Sparkler':{name:'Cherry Limeade Sparkler',dates:'~2010 – 2012',type:'Custom fountain drink · handmade',color:'#5A8A1A',
+    desc:'The signature variant. Cherry syrup pooled beneath the Sierra Mist and lime base, creating a two-tone red-green gradient visible through the clear cup. More visually striking than the Classic — and far more remembered. TikTok tributes years after its discontinuation regularly hit millions of views.',
     notes:'Of all items in this archive, the Cherry Limeade Sparkler may have the highest nostalgia-to-quantity-sold ratio of any Taco Bell drink.',
-    replaced:'Same \u2014 the entire Sparkler program ended with the Freeze machine arrival.',
+    replaced:'Same — the entire Sparkler program ended with the Freeze machine arrival.',
     avail:'No. TikTok mourning videos still surface, but the product is completely gone.'},
-  'Strawberry':{name:'Strawberry Frutista Freeze',dates:'Summer 2008',type:'Frutista Freeze \u00b7 Slot 1 \u00b7 launch',color:'#993556',
-    desc:'The flagship of the Frutista line at its May 2008 launch. A blended strawberry drink topped with real strawberry slices \u2014 the actual fruit garnish was the differentiator from standard frozen sodas.',
+  'Strawberry':{name:'Strawberry Frutista Freeze',dates:'Summer 2008',type:'Frutista Freeze · Slot 1 · launch',color:'#993556',
+    desc:'The flagship of the Frutista line at its May 2008 launch. A blended strawberry drink topped with real strawberry slices — the actual fruit garnish was the differentiator from standard frozen sodas.',
     replaced:'Rotated out as part of the Frutista seasonal cycle.',
     avail:'No. The entire Frutista Freeze program was discontinued by 2013.'},
-  'Strawberry Mango':{name:'Strawberry Mango Frutista Freeze',dates:'Summer 2008',type:'Frutista Freeze \u00b7 Slot 2 \u00b7 launch',color:'#7b2445',
+  'Strawberry Mango':{name:'Strawberry Mango Frutista Freeze',dates:'Summer 2008',type:'Frutista Freeze · Slot 2 · launch',color:'#7b2445',
     desc:'The second launch flavor, running alongside Strawberry. A blended strawberry-mango combination that established the tropical-fruit identity of the Frutista line from its first season.',
     replaced:'Rotated out as part of the Frutista seasonal cycle.',
     avail:'No. The entire Frutista Freeze program was discontinued by 2013.'},
-  'Strawberries \'n Cr\u00e8me':{name:'Strawberries \'n Cr\u00e8me Frutista Freeze',dates:'Fall 2008',type:'Frutista Freeze \u00b7 Slot 1',color:'#993556',
-    desc:'First seasonal rotation for Slot 1, swapping plain Strawberry for a cream-layered version. Part of a Fall 2008 trio that introduced the cr\u00e8me concept to the Frutista line.',
+  'Strawberries \'n Crème':{name:'Strawberries \'n Crème Frutista Freeze',dates:'Fall 2008',type:'Frutista Freeze · Slot 1',color:'#993556',
+    desc:'First seasonal rotation for Slot 1, swapping plain Strawberry for a cream-layered version. Part of a Fall 2008 trio that introduced the crème concept to the Frutista line.',
     replaced:'Rotated out as part of the Frutista seasonal cycle.',
     avail:'No. The entire Frutista Freeze program was discontinued by 2013.'},
-  'Mango \'n Cr\u00e8me':{name:'Mango \'n Cr\u00e8me Frutista Freeze',dates:'Fall 2008',type:'Frutista Freeze \u00b7 Slot 2',color:'#7b2445',
-    desc:'The cream variant in Slot 2 during the Fall 2008 rotation. Ran alongside Strawberries \'n Cr\u00e8me and Triple Berries \'n Cr\u00e8me as the first Frutista cr\u00e8me push.',
+  'Mango \'n Crème':{name:'Mango \'n Crème Frutista Freeze',dates:'Fall 2008',type:'Frutista Freeze · Slot 2',color:'#7b2445',
+    desc:'The cream variant in Slot 2 during the Fall 2008 rotation. Ran alongside Strawberries \'n Crème and Triple Berries \'n Crème as the first Frutista crème push.',
     replaced:'Rotated out as part of the Frutista seasonal cycle.',
     avail:'No. The entire Frutista Freeze program was discontinued by 2013.'},
-  'Triple Berries \'n Cr\u00e8me':{name:'Triple Berries \'n Cr\u00e8me Frutista Freeze',dates:'Fall 2008',type:'Frutista Freeze \u00b7 Slot 3',color:'#5c1a33',
-    desc:'A three-berry blend in cr\u00e8me format \u2014 the first documented occupant of Slot 3. Ran as part of the full three-position cr\u00e8me rotation in Fall 2008.',
+  'Triple Berries \'n Crème':{name:'Triple Berries \'n Crème Frutista Freeze',dates:'Fall 2008',type:'Frutista Freeze · Slot 3',color:'#5c1a33',
+    desc:'A three-berry blend in crème format — the first documented occupant of Slot 3. Ran as part of the full three-position crème rotation in Fall 2008.',
     replaced:'Rotated out as part of the Frutista seasonal cycle.',
     avail:'No. The entire Frutista Freeze program was discontinued by 2013.'},
-  'Pi\u00f1a Colada':{name:'Pi\u00f1a Colada Frutista Freeze',dates:'Spring 2009',type:'Frutista Freeze \u00b7 Slot 1',color:'#993556',
+  'Piña Colada':{name:'Piña Colada Frutista Freeze',dates:'Spring 2009',type:'Frutista Freeze · Slot 1',color:'#993556',
     desc:'The spring rotation that shifted the Frutista line into tropical territory. Notable circular history: it reappeared as one of the two original launch flavors when the modern Freeze program began in January 2013.',
     replaced:'Rotated out as part of the Frutista seasonal cycle.',
     avail:'No. The entire Frutista Freeze program was discontinued by 2013.'},
-  'Strawberry Colada':{name:'Strawberry Colada Frutista Freeze',dates:'Spring 2009',type:'Frutista Freeze \u00b7 Slot 2',color:'#7b2445',
-    desc:'A hybrid of the Strawberry line and the colada direction, run alongside Pi\u00f1a Colada in Spring 2009.',
+  'Strawberry Colada':{name:'Strawberry Colada Frutista Freeze',dates:'Spring 2009',type:'Frutista Freeze · Slot 2',color:'#7b2445',
+    desc:'A hybrid of the Strawberry line and the colada direction, run alongside Piña Colada in Spring 2009.',
     replaced:'Rotated out as part of the Frutista seasonal cycle.',
     avail:'No. The entire Frutista Freeze program was discontinued by 2013.'},
-  'Classic Margarita':{name:'Classic Margarita Frutista Freeze',dates:'Spring 2010 \u00b7 Spring 2011',type:'Frutista Freeze \u00b7 Slot 2',color:'#7b2445',
-    desc:'A non-alcoholic margarita-inspired lime blend that appeared across multiple spring rotations \u2014 suggesting it performed well enough to return. Part of the 2010 margarita push that also included Strawberry Margarita.',
+  'Classic Margarita':{name:'Classic Margarita Frutista Freeze',dates:'Spring 2010 · Spring 2011',type:'Frutista Freeze · Slot 2',color:'#7b2445',
+    desc:'A non-alcoholic margarita-inspired lime blend that appeared across multiple spring rotations — suggesting it performed well enough to return. Part of the 2010 margarita push that also included Strawberry Margarita.',
     replaced:'Rotated out as part of the Frutista seasonal cycle.',
     avail:'No. The entire Frutista Freeze program was discontinued by 2013.'},
-  'Berry Pomegranate':{name:'Berry Pomegranate Frutista Freeze',dates:'Fall 2010',type:'Frutista Freeze \u00b7 Slot 1',color:'#993556',
-    desc:'One of the more ambitious Frutista flavors \u2014 pomegranate was an unusual choice for a Taco Bell drink. Appeared in Fall 2010, one of the last new flavor additions before the line wound down.',
+  'Berry Pomegranate':{name:'Berry Pomegranate Frutista Freeze',dates:'Fall 2010',type:'Frutista Freeze · Slot 1',color:'#993556',
+    desc:'One of the more ambitious Frutista flavors — pomegranate was an unusual choice for a Taco Bell drink. Appeared in Fall 2010, one of the last new flavor additions before the line wound down.',
     replaced:'Rotated out as part of the Frutista seasonal cycle.',
     avail:'No. The entire Frutista Freeze program was discontinued by 2013.'},
-  'Strawberry Margarita':{name:'Strawberry Margarita Frutista Freeze',dates:'Spring 2010',type:'Frutista Freeze \u00b7 Slot 3',color:'#5c1a33',
+  'Strawberry Margarita':{name:'Strawberry Margarita Frutista Freeze',dates:'Spring 2010',type:'Frutista Freeze · Slot 3',color:'#5c1a33',
     desc:'The strawberry variant of the margarita concept, run alongside Classic Margarita in Spring 2010. One of the last documented new flavors before the Frutista line ended ahead of the 2013 Freeze launch.',
     replaced:'Rotated out as part of the Frutista seasonal cycle.',
     avail:'No. The entire Frutista Freeze program was discontinued by 2013.'},
-  'Pink Lemonade':{name:'Pink Lemonade Freeze',dates:'January \u2013 September 2013',type:'House flavor \u00b7 original Freeze launch',color:'#0F6E56',
-    desc:'One of the two original launch flavors when the modern Freeze program began in January 2013. Co-ran with Pi\u00f1a Colada until the House of Dew expansion in September 2013 replaced both.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
+  'Pink Lemonade':{name:'Pink Lemonade Freeze',dates:'January – September 2013',type:'House flavor · original Freeze launch',color:'#0F6E56',
+    desc:'One of the two original launch flavors when the modern Freeze program began in January 2013. Co-ran with Piña Colada until the House of Dew expansion in September 2013 replaced both.',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:''},
-  'Pi\u00f1a Colada':{name:'Pi\u00f1a Colada Freeze',dates:'January \u2013 September 2013',type:'House flavor \u00b7 original Freeze launch',color:'#0F6E56',
+  'Piña Colada':{name:'Piña Colada Freeze',dates:'January – September 2013',type:'House flavor · original Freeze launch',color:'#0F6E56',
     desc:'Co-launched with Pink Lemonade in January 2013. Previously appeared as a Frutista Freeze in Spring 2009. Replaced by Typhoon when the House of Dew flavors launched in September 2013.',
     replaced:'Rotated out as part of the Frutista seasonal cycle.',
     avail:''},
-  'Mtn Dew Distortion (DEWmocracy II)':{name:'Mtn Dew Distortion Freeze',dates:'September 2013 \u2013 March 2014',type:'Mountain Dew variant \u00b7 House of Dew',color:'#3B6D11',
+  'Mtn Dew Distortion (DEWmocracy II)':{name:'Mtn Dew Distortion Freeze',dates:'September 2013 – March 2014',type:'Mountain Dew variant · House of Dew',color:'#3B6D11',
     desc:'A sour lime Mountain Dew from the 2010 DEWmocracy II retail vote. Selected via Taco Bell fan vote for the House of Dew launch, ranking first among new LTO candidates. Replaced by Kickstart Black Cherry in March 2014.',
     notes:'DEWmocracy II (2010) pitted Distortion, Typhoon, and White Shark against each other in a retail vote. White Shark won. Both Distortion and Typhoon were revived here three years later.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
-    avail:'No. Produced exclusively for TB\u2019s Freeze machine in limited seasonal batches. Not sold at retail.'},
-  'Mtn Dew Typhoon (DEWmocracy II)':{name:'Mtn Dew Typhoon Freeze',dates:'September 2013 \u2013 June 2014',type:'Mountain Dew variant \u00b7 House of Dew',color:'#3B6D11',
-    desc:'A tropical punch Mountain Dew from the same DEWmocracy II retail run. Ranked third overall in the House of Dew fan vote \u2014 second among new LTO candidates, with Baja Blast (already permanent) holding the #2 slot. Ran slightly longer than Distortion.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
-    avail:'No. Produced exclusively for TB\u2019s Freeze machine in limited seasonal batches. Not sold at retail.'},
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
+    avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
+  'Mtn Dew Typhoon (DEWmocracy II)':{name:'Mtn Dew Typhoon Freeze',dates:'September 2013 – June 2014',type:'Mountain Dew variant · House of Dew',color:'#3B6D11',
+    desc:'A tropical punch Mountain Dew from the same DEWmocracy II retail run. Ranked third overall in the House of Dew fan vote — second among new LTO candidates, with Baja Blast (already permanent) holding the #2 slot. Ran slightly longer than Distortion.',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
+    avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
   'Mtn Dew Typhoon':{name:'Mtn Dew Typhoon Freeze',dates:'Into 2014',type:'Mountain Dew variant',color:'#3B6D11',
     desc:'Continuation of the Typhoon Freeze into early 2014. Ran the longest of the two original DEWmocracy flavors before Dr Pepper Vanilla Float Freeze replaced it in June 2014.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
-    avail:'No. Produced exclusively for TB\u2019s Freeze machine in limited seasonal batches. Not sold at retail.'},
-  'Mtn Dew Kickstart Black Cherry':{name:'Kickstart Black Cherry Freeze',dates:'March \u2013 ~June 2014',type:'Mountain Dew variant \u00b7 brief run',color:'#3B6D11',
-    desc:'A brief run from the Kickstart line \u2014 the black cherry energy variant. Replaced Distortion in March 2014 but lasted only a few months. Among the shortest documented runs in the LTO calendar.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
-    avail:'No. Produced exclusively for TB\u2019s Freeze machine in limited seasonal batches. Not sold at retail.'},
-  'Dr Pepper Vanilla Float':{name:'Dr Pepper Vanilla Float Freeze',dates:'June 2014 \u2013 ~early 2015',type:'Soda brand collab \u00b7 cross-brand',color:'#854F0B',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
+    avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
+  'Mtn Dew Kickstart Black Cherry':{name:'Kickstart Black Cherry Freeze',dates:'March – ~June 2014',type:'Mountain Dew variant · brief run',color:'#3B6D11',
+    desc:'A brief run from the Kickstart line — the black cherry energy variant. Replaced Distortion in March 2014 but lasted only a few months. Among the shortest documented runs in the LTO calendar.',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
+    avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
+  'Dr Pepper Vanilla Float':{name:'Dr Pepper Vanilla Float Freeze',dates:'June 2014 – ~early 2015',type:'Soda brand collab · cross-brand',color:'#854F0B',
     desc:'A notable cross-brand move: Dr Pepper is a Keurig Dr Pepper product, not PepsiCo. The vanilla float format paired Dr Pepper flavor with a cream note. One of the few non-Pepsi brand collaborations in the Freeze program.',
-    notes:'First of two documented Dr Pepper partnerships \u2014 the second came nearly a decade later in 2023.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
-    avail:'No. Produced exclusively for TB\u2019s Freeze machine in limited seasonal batches. Not sold at retail.'},
-  'Starburst Strawberry':{name:'Starburst Strawberry Freeze',dates:'October 2014 \u00b7 returned 2016 \u00b7 2019',type:'Candy brand collab \u00b7 recurring',color:'#993556',
+    notes:'First of two documented Dr Pepper partnerships — the second came nearly a decade later in 2023.',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
+    avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
+  'Starburst Strawberry':{name:'Starburst Strawberry Freeze',dates:'October 2014 · returned 2016 · 2019',type:'Candy brand collab · recurring',color:'#993556',
     desc:'One of the most frequently returning candy collabs. Launched October 2014 and came back at least twice. Its recurring success made candy collabs a defining strategy for the LTO slot going forward.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
-    avail:'No. Produced exclusively for TB\u2019s Freeze machine in limited seasonal batches. Not sold at retail.'},
-  'Starburst Strawberry (return)':{name:'Starburst Strawberry Freeze',dates:'August 2016 (return)',type:'Candy brand collab \u00b7 seasonal return',color:'#993556',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
+    avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
+  'Starburst Strawberry (return)':{name:'Starburst Strawberry Freeze',dates:'August 2016 (return)',type:'Candy brand collab · seasonal return',color:'#993556',
     desc:'Second run of the Starburst Strawberry Freeze, returning in August 2016 after its October 2014 debut. Part of the extended Starburst collab strategy alongside other candy rotations in 2016.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
-    avail:'No. Produced exclusively for TB\u2019s Freeze machine in limited seasonal batches. Not sold at retail.'},
-  'Snapple Lemonade':{name:'Snapple Lemonade Freeze',dates:'~early 2015',type:'Soda brand collab \u00b7 brief',color:'#854F0B',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
+    avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
+  'Snapple Lemonade':{name:'Snapple Lemonade Freeze',dates:'~early 2015',type:'Soda brand collab · brief',color:'#854F0B',
     desc:'A short-lived cross-brand Freeze tied to the Snapple lemonade product. Bridged the Starburst Cherry era and the Sangrita Blast Freeze launch in mid-2015.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
-    avail:'No. Produced exclusively for TB\u2019s Freeze machine in limited seasonal batches. Not sold at retail.'},
-  'Mtn Dew Sangrita Blast':{name:'Sangrita Blast Freeze',dates:'May \u2013 September 2015',type:'Mountain Dew variant \u00b7 Freeze form only',color:'#3B6D11',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
+    avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
+  'Mtn Dew Sangrita Blast':{name:'Sangrita Blast Freeze',dates:'May – September 2015',type:'Mountain Dew variant · Freeze form only',color:'#3B6D11',
     desc:'The Freeze companion to the Sangrita Blast fountain exclusive. Launched May 2015 and ran one season before Starburst Cherry Freeze took the slot.',
-    notes:'The only time Sangrita Blast existed in Freeze format. The fountain flavor ran 2013\u20132017; this Freeze appeared and disappeared in four months.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
-    avail:'No. Produced exclusively for TB\u2019s Freeze machine in limited seasonal batches. Not sold at retail.'},
+    notes:'The only time Sangrita Blast existed in Freeze format. The fountain flavor ran 2013–2017; this Freeze appeared and disappeared in four months.',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
+    avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
   'Starburst Cherry':{name:'Starburst Cherry Freeze',dates:'September 2015',type:'Candy brand collab',color:'#993556',
     desc:'The cherry variant of the Starburst collab format. Followed the successful Starburst Strawberry run from 2014 and extended the candy collab strategy into a second distinct Starburst flavor.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
-    avail:'No. Produced exclusively for TB\u2019s Freeze machine in limited seasonal batches. Not sold at retail.'},
-  'Watermelon':{name:'Watermelon Freeze',dates:'2016, 2017, 2018, 2020, 2021 (seasonal)',type:'House flavor \u00b7 summer seasonal',color:'#0F6E56',
-    desc:'One of the most reliably returning seasonal Freezes \u2014 appeared across at least five summers before stopping its rotation. Functioned almost like an unofficial seasonal permanent before being discontinued.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
+    avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
+  'Watermelon':{name:'Watermelon Freeze',dates:'2016, 2017, 2018, 2020, 2021 (seasonal)',type:'House flavor · summer seasonal',color:'#0F6E56',
+    desc:'One of the most reliably returning seasonal Freezes — appeared across at least five summers before stopping its rotation. Functioned almost like an unofficial seasonal permanent before being discontinued.',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:''},
-  'Airheads White Mystery':{name:'Airheads White Mystery Freeze',dates:'September 2016',type:'Candy brand collab \u00b7 novelty',color:'#993556',
-    desc:'Flavored after Airheads\' famous unidentified "White Mystery" candy \u2014 the flavor was intentionally withheld as a social media engagement play. Replaced by Airheads Blue Raspberry, ending the mystery.',
+  'Airheads White Mystery':{name:'Airheads White Mystery Freeze',dates:'September 2016',type:'Candy brand collab · novelty',color:'#993556',
+    desc:'Flavored after Airheads\' famous unidentified "White Mystery" candy — the flavor was intentionally withheld as a social media engagement play. Replaced by Airheads Blue Raspberry, ending the mystery.',
     notes:'One of the few Taco Bell Freezes designed around consumer mystery and social engagement rather than a named flavor.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
-    avail:'No. Produced exclusively for TB\u2019s Freeze machine in limited seasonal batches. Not sold at retail.'},
-  'Airheads Blue Raspberry':{name:'Airheads Blue Raspberry Freeze',dates:'Late 2016 \u2013 2017',type:'Candy brand collab',color:'#993556',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
+    avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
+  'Airheads Blue Raspberry':{name:'Airheads Blue Raspberry Freeze',dates:'Late 2016 – 2017',type:'Candy brand collab',color:'#993556',
     desc:'Followed White Mystery with a definitive named flavor. Ran across late 2016 and into 2017 as part of the Airheads collab series.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
-    avail:'No. Produced exclusively for TB\u2019s Freeze machine in limited seasonal batches. Not sold at retail.'},
-  'Mtn Dew Spiked Lemonade Freeze':{name:'Spiked Lemonade Freeze',dates:'Early \u2013 September 2017',type:'Mountain Dew variant \u00b7 brief',color:'#3B6D11',
-    desc:'The Freeze companion to the Spiked Lemonade fountain flavor \u2014 non-alcoholic, prickly pear cactus juice. Ran briefly in early 2017 before Strawberry Poppin\' Candy Freeze replaced it in September. A much shorter run than the fountain version, which continued until March 2019.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
-    avail:'No. Produced exclusively for TB\u2019s Freeze machine in limited seasonal batches. Not sold at retail.'},
-  'Strawberry Poppin\' Candy':{name:'Strawberry Poppin\' Candy Freeze',dates:'September 2017',type:'Candy brand collab \u00b7 texture novelty',color:'#993556',
-    desc:'A strawberry Freeze with Pop Rocks-style popping candy mixed in \u2014 the drink crackled on the tongue. One of a brief era of texture-focused Freeze experiments.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
-    avail:'No. Produced exclusively for TB\u2019s Freeze machine in limited seasonal batches. Not sold at retail.'},
-  'Wild Strawberry':{name:'Wild Strawberry Freeze',dates:'2017 \u2013 2023 (seasonal returns)',type:'House flavor \u00b7 recurring',color:'#0F6E56',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
+    avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
+  'Mtn Dew Spiked Lemonade Freeze':{name:'Spiked Lemonade Freeze',dates:'Early – September 2017',type:'Mountain Dew variant · brief',color:'#3B6D11',
+    desc:'The Freeze companion to the Spiked Lemonade fountain flavor — non-alcoholic, prickly pear cactus juice. Ran briefly in early 2017 before Strawberry Poppin\' Candy Freeze replaced it in September. A much shorter run than the fountain version, which continued until March 2019.',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
+    avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
+  'Strawberry Poppin\' Candy':{name:'Strawberry Poppin\' Candy Freeze',dates:'September 2017',type:'Candy brand collab · texture novelty',color:'#993556',
+    desc:'A strawberry Freeze with Pop Rocks-style popping candy mixed in — the drink crackled on the tongue. One of a brief era of texture-focused Freeze experiments.',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
+    avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
+  'Wild Strawberry':{name:'Wild Strawberry Freeze',dates:'2017 – 2023 (seasonal returns)',type:'House flavor · recurring',color:'#0F6E56',
     desc:'Taco Bell\'s own house strawberry Freeze, distinct from the Starburst candy collabs. One of the most common recurring entries in the third-slot rotation, appearing across multiple years.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:''},
   'Lemonade':{name:'Lemonade Freeze',dates:'~2018',type:'House flavor',color:'#0F6E56',
     desc:'A straightforward lemonade Freeze from 2018, one of several house-flavor experiments during a period between candy and Dew collab cycles.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:''},
-  'Mtn Dew Frostbite':{name:'Mtn Dew Frostbite Freeze',dates:'2019',type:'Mountain Dew variant \u00b7 Freeze-only',color:'#3B6D11',
-    desc:'A coconut-lime Mountain Dew available only as a Freeze \u2014 no retail soda version. Blue-green in color. Appeared one season in 2019 and did not return.',
+  'Mtn Dew Frostbite':{name:'Mtn Dew Frostbite Freeze',dates:'2020',type:'Mountain Dew variant · Freeze-only',color:'#3B6D11',
+    desc:'A coconut-lime Mountain Dew available only as a Freeze — no retail soda version. Blue-green in color. Appeared one season in 2019 and did not return.',
     notes:'One of the few Dew flavors created specifically for the Freeze machine rather than adapted from a retail product.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
-    avail:'No. Produced exclusively for TB\u2019s Freeze machine in limited seasonal batches. Not sold at retail.'},
-  'Mtn Dew Birthday Baja Blast':{name:'Birthday Baja Blast Freeze',dates:'2019',type:'Mountain Dew variant \u00b7 anniversary',color:'#3B6D11',
-    desc:'Released in 2019 to mark Baja Blast\'s 15th anniversary. A variation on the permanent Baja Blast Freeze with birthday cake flavoring \u2014 a rare spin-off of the first permanent slot.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
-    avail:'No. Produced exclusively for TB\u2019s Freeze machine in limited seasonal batches. Not sold at retail.'},
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
+    avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
+  'Mtn Dew Birthday Baja Blast':{name:'Birthday Baja Blast Freeze',dates:'2019',type:'Mountain Dew variant · anniversary',color:'#3B6D11',
+    desc:'Released in 2019 to mark Baja Blast\'s 15th anniversary. A variation on the permanent Baja Blast Freeze with birthday cake flavoring — a rare spin-off of the first permanent slot.',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
+    avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
   'Jolly Rancher Watermelon':{name:'Jolly Rancher Watermelon Freeze',dates:'2020',type:'Candy brand collab',color:'#993556',
     desc:'Extended the candy collab strategy into the Jolly Rancher brand family, adding a second candy partner alongside the recurring Starburst collabs.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
-    avail:'No. Produced exclusively for TB\u2019s Freeze machine in limited seasonal batches. Not sold at retail.'},
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
+    avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
   'Jolly Rancher Green Apple':{name:'Jolly Rancher Green Apple Freeze',dates:'2021',type:'Candy brand collab',color:'#993556',
     desc:'The green apple variant of the Jolly Rancher collab, running alongside Jolly Rancher Watermelon in 2021. Extended the partnership into a second distinct flavor.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
-    avail:'No. Produced exclusively for TB\u2019s Freeze machine in limited seasonal batches. Not sold at retail.'},
-  'Mtn Dew Spark':{name:'Mtn Dew Spark Freeze',dates:'2021 \u2013 ~2022',type:'Mountain Dew variant',color:'#3B6D11',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
+    avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
+  'Mtn Dew Spark':{name:'Mtn Dew Spark Freeze',dates:'2021 – ~2022',type:'Mountain Dew variant',color:'#3B6D11',
     desc:'A pink lemonade-flavored Mountain Dew in Freeze form. Part of the broader Spark product line. Ran in the LTO slot across 2021 and into 2022.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
-    avail:'No. Produced exclusively for TB\u2019s Freeze machine in limited seasonal batches. Not sold at retail.'},
-  'Mtn Dew Baja Blast Colada':{name:'Baja Blast Colada Freeze',dates:'2021',type:'Mountain Dew variant \u00b7 Baja spin-off',color:'#3B6D11',
-    desc:'A colada-flavored variation on Baja Blast \u2014 tropical-lime with coconut cream. Part of the 2021 Summer of Baja promotional push alongside retail Baja Punch and Baja Flash cans.',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
+    avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
+  'Mtn Dew Baja Blast Colada':{name:'Baja Blast Colada Freeze',dates:'2021',type:'Mountain Dew variant · Baja spin-off',color:'#3B6D11',
+    desc:'A colada-flavored variation on Baja Blast — tropical-lime with coconut cream. Part of the 2021 Summer of Baja promotional push alongside retail Baja Punch and Baja Flash cans.',
     notes:'One of very few times the Baja Blast formula was modified for a seasonal LTO spin-off.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
-    avail:'No. Produced exclusively for TB\u2019s Freeze machine in limited seasonal batches. Not sold at retail.'},
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
+    avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
   'Dragonfruit':{name:'Dragonfruit Freeze',dates:'2022',type:'House flavor',color:'#0F6E56',
     desc:'Discontinued mid-run when the syrup supply ended, stranding customers without warning. One of the more abrupt discontinuations in the LTO calendar.',
     notes:'The syrup supply issue, rather than poor performance, appears to have ended this one early.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:''},
   'Tropical Mango':{name:'Tropical Mango Freeze',dates:'2022',type:'House flavor',color:'#0F6E56',
     desc:'A mango-forward tropical Freeze from 2022, part of a period when Taco Bell was testing fruit-forward flavors alongside the Agua Refresca line expansion.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:''},
-  'Blue Raspberry*':{name:'Blue Raspberry Freeze',dates:'2022 (LTO) \u2192 permanent',type:'House flavor \u00b7 LTO then permanent',color:'#0F6E56',
+  'Blue Raspberry*':{name:'Blue Raspberry Freeze',dates:'2022 (LTO) → permanent',type:'House flavor · LTO then permanent',color:'#0F6E56',
     desc:'Began as a rotating LTO in 2022 before being elevated to a permanent slot. The asterisk marks its transition from the rotating third slot to a consistent fixture.',
     notes:'One of the rare cases of an LTO flavor graduating out of the rotating slot entirely.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:''},
-  'Strawberry Refresca':{name:'Strawberry Refresca Freeze',dates:'2023',type:'House flavor \u00b7 Refresca line',color:'#0F6E56',
-    desc:'A Freeze tied to Taco Bell\'s 2023 Agua Refresca launch \u2014 part of the chain\'s push toward fruit-infused, lower-carbonation drink options.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
+  'Strawberry Refresca':{name:'Strawberry Refresca Freeze',dates:'2023',type:'House flavor · Refresca line',color:'#0F6E56',
+    desc:'A Freeze tied to Taco Bell\'s 2023 Agua Refresca launch — part of the chain\'s push toward fruit-infused, lower-carbonation drink options.',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:''},
   'Dr Pepper Vanilla':{name:'Dr Pepper Vanilla Freeze',dates:'2023',type:'Soda brand collab',color:'#854F0B',
     desc:'A return to the Dr Pepper vanilla format. The second documented Keurig Dr Pepper collaboration in the Freeze program, nearly a decade after the Dr Pepper Vanilla Float Freeze in 2014.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
-    avail:'No. Produced exclusively for TB\u2019s Freeze machine in limited seasonal batches. Not sold at retail.'},
-  'Vanilla Cream Soda':{name:'Vanilla Cream Soda Freeze',dates:'2023 \u2013 2024',type:'House flavor \u00b7 cream soda direction',color:'#0F6E56',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
+    avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
+  'Vanilla Cream Soda':{name:'Vanilla Cream Soda Freeze',dates:'2023 – 2024',type:'House flavor · cream soda direction',color:'#0F6E56',
     desc:'One of Taco Bell\'s most widely discussed drink launches of 2023. Opened a cream soda flavor direction for the LTO slot that spawned multiple variants across 2023 and 2024.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:''},
-  'Orange Vanilla Cream Soda':{name:'Orange Vanilla Cream Soda Freeze',dates:'2023 \u2013 2024',type:'House flavor \u00b7 cream soda direction',color:'#0F6E56',
-    desc:'The citrus companion to the Vanilla Cream Soda Freeze \u2014 an orange-vanilla hybrid that ran alongside the plain vanilla version across 2023 and 2024.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
+  'Orange Vanilla Cream Soda':{name:'Orange Vanilla Cream Soda Freeze',dates:'2023 – 2024',type:'House flavor · cream soda direction',color:'#0F6E56',
+    desc:'The citrus companion to the Vanilla Cream Soda Freeze — an orange-vanilla hybrid that ran alongside the plain vanilla version across 2023 and 2024.',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:''},
-  'Strawberry Vanilla Cream Soda':{name:'Strawberry Vanilla Cream Soda Freeze',dates:'2024',type:'House flavor \u00b7 cream soda direction',color:'#0F6E56',
+  'Strawberry Vanilla Cream Soda':{name:'Strawberry Vanilla Cream Soda Freeze',dates:'2024',type:'House flavor · cream soda direction',color:'#0F6E56',
     desc:'Extension of the cream soda Freeze direction into strawberry flavor, part of the 2024 rotation continuing the vanilla cream soda line introduced in 2023.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:''},
-  'Confetti Cookie':{name:'Confetti Cookie Freeze',dates:'2024',type:'House flavor \u00b7 dessert direction',color:'#0F6E56',
-    desc:'A dessert-inspired Freeze with funfetti and cookie flavoring. Available partly as an app rewards exclusive \u2014 part of Taco Bell\'s growing strategy of soft-launching new Freeze flavors through the loyalty program.',
+  'Confetti Cookie':{name:'Confetti Cookie Freeze',dates:'2024',type:'House flavor · dessert direction',color:'#0F6E56',
+    desc:'A dessert-inspired Freeze with funfetti and cookie flavoring. Available partly as an app rewards exclusive — part of Taco Bell\'s growing strategy of soft-launching new Freeze flavors through the loyalty program.',
     notes:'Represents the app-first rollout strategy where select new items reach rewards members before general availability.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:''},
-  'Wild Cherry\u2020':{name:'Wild Cherry Freeze',dates:'~2013 \u2013 2024/2025 (phasing out)',type:'Slot 2 semi-permanent \u00b7 in phase-out',color:'#0F6E56',
+  'Wild Cherry†':{name:'Wild Cherry Freeze',dates:'~2013 – 2024/2025 (phasing out)',type:'Slot 2 semi-permanent · in phase-out',color:'#0F6E56',
     desc:'The long-running second-slot Freeze fixture for nearly a decade, running quietly alongside Baja Blast before Blue Raspberry took over the permanent second slot.',
     notes:'The dagger symbol marks its transition from semi-permanent to actively phasing out. May still be available at some locations.',
-    replaced:'Rotated out at the end of its LTO window. The Freeze machine\u2019s third slot cycles to the next seasonal flavor.',
+    replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:''},
   /* ── Defunct fountain sodas ── */
-  'Sierra Mist':{name:'Sierra Mist',dates:'2003 \u2013 2023',type:'PepsiCo fountain soda',color:'#185FA5',
-    desc:'PepsiCo\u2019s lemon-lime soda, distributed nationally through Taco Bell fountains from 2003 until its discontinuation in 2023. Replaced systemwide by Starry, PepsiCo\u2019s new lemon-lime brand.',
-    notes:'Sierra Mist had been reformulated multiple times during its run, including a brief rebrand as "Mist Twst" in 2016\u20132018.',
+  'Sierra Mist':{name:'Sierra Mist',dates:'2003 – 2023',type:'PepsiCo fountain soda',color:'#185FA5',
+    desc:'PepsiCo’s lemon-lime soda, distributed nationally through Taco Bell fountains from 2003 until its discontinuation in 2023. Replaced systemwide by Starry, PepsiCo’s new lemon-lime brand.',
+    notes:'Sierra Mist had been reformulated multiple times during its run, including a brief rebrand as "Mist Twst" in 2016–2018.',
     replaced:'Starry replaced Sierra Mist on all PepsiCo fountain accounts.',
     avail:'No. The brand was permanently killed by PepsiCo. Starry is the replacement.'},
-  'Pepsi Max \u2192 Zero Sugar (renamed)':{name:'Pepsi Max / Zero Sugar',dates:'2008 \u2013 2016',type:'PepsiCo fountain soda',color:'#185FA5',
-    desc:'A zero-calorie Pepsi variant available on Taco Bell fountains. Originally branded as Pepsi Max, later rebranded to Pepsi Zero Sugar at retail \u2014 but the fountain version was removed from most Taco Bell locations around 2016.',
-    notes:'Pepsi Zero Sugar continued at retail and at other fountain chains; the discontinuation was specific to Taco Bell\u2019s fountain configuration.',
-    replaced:'The zero-calorie valve was dropped from TB\u2019s fountain config.',
-    avail:'Yes. Pepsi Zero Sugar is widely available at retail and other fountains \u2014 just not at TB.'},
-  'Tropicana Twister':{name:'Tropicana Twister',dates:'2003 \u2013 ~2010',type:'PepsiCo juice drink \u00b7 fountain',color:'#185FA5',
-    desc:'A fruit-flavored juice drink from PepsiCo\u2019s Tropicana line, available at Taco Bell fountains during the 2000s. Occupied the non-carbonated juice slot before being phased out around 2010.',
+  'Pepsi Max → Zero Sugar (renamed)':{name:'Pepsi Max / Zero Sugar',dates:'2008 – 2016',type:'PepsiCo fountain soda',color:'#185FA5',
+    desc:'A zero-calorie Pepsi variant available on Taco Bell fountains. Originally branded as Pepsi Max, later rebranded to Pepsi Zero Sugar at retail — but the fountain version was removed from most Taco Bell locations around 2016.',
+    notes:'Pepsi Zero Sugar continued at retail and at other fountain chains; the discontinuation was specific to Taco Bell’s fountain configuration.',
+    replaced:'The zero-calorie valve was dropped from TB’s fountain config.',
+    avail:'Yes. Pepsi Zero Sugar is widely available at retail and other fountains — just not at TB.'},
+  'Tropicana Twister':{name:'Tropicana Twister',dates:'2003 – ~2010',type:'PepsiCo juice drink · fountain',color:'#185FA5',
+    desc:'A fruit-flavored juice drink from PepsiCo’s Tropicana line, available at Taco Bell fountains during the 2000s. Occupied the non-carbonated juice slot before being phased out around 2010.',
     notes:'The Tropicana Twister brand was eventually discontinued at retail as well.',
     replaced:'The non-carbonated juice slot was phased out entirely.',
     avail:'No. The Tropicana Twister brand was discontinued at retail too.'},
-  'Brisk Dragon Paradise':{name:'Brisk Dragon Paradise',dates:'2022 \u2013 2025',type:'PepsiCo/Unilever iced tea \u00b7 fountain',color:'#185FA5',
+  'Brisk Dragon Paradise':{name:'Brisk Dragon Paradise',dates:'2022 – 2025',type:'PepsiCo/Unilever iced tea · fountain',color:'#185FA5',
     desc:'A dragonfruit-flavored iced tea from the Brisk line, added to Taco Bell fountains in 2022. One of the more recent fountain additions before being removed in 2025.',
-    notes:'Part of Taco Bell\u2019s effort to expand the iced tea valve beyond standard lemon.',
+    notes:'Part of Taco Bell’s effort to expand the iced tea valve beyond standard lemon.',
     replaced:'Removed from the fountain tea valve in 2025.',
     avail:'No. A fountain-only product with no retail equivalent.'},
   /* ── Iced teas & lemonades ── */
-  'Minute Maid Lemonade':{name:'Minute Maid Lemonade',dates:'1978 \u2013 ~1998',type:'Fountain lemonade',color:'#854F0B',
-    desc:'A lemonade option available on Taco Bell\u2019s non-carbonated dispenser through the 1980s and 1990s. The brand attribution to Minute Maid (a Coca-Cola property) at a Pepsi house is not fully verified \u2014 it may have been a generic or Tropicana-sourced lemonade.',
+  'Minute Maid Lemonade':{name:'Minute Maid Lemonade',dates:'1978 – ~1998',type:'Fountain lemonade',color:'#854F0B',
+    desc:'A lemonade option available on Taco Bell’s non-carbonated dispenser through the 1980s and 1990s. The brand attribution to Minute Maid (a Coca-Cola property) at a Pepsi house is not fully verified — it may have been a generic or Tropicana-sourced lemonade.',
     notes:'Brand attribution uncertain. Listed as documented but flagged for verification.',
     replaced:'Transitioned to PepsiCo-aligned lemonade sources.',
     avail:'Minute Maid exists at Coca-Cola accounts, but not at Pepsi-house TB.'},
-  'Lipton Brisk Lemon':{name:'Lipton Brisk Lemon',dates:'1999 \u2013 2020',type:'PepsiCo/Unilever \u00b7 fountain iced tea',color:'#854F0B',
-    desc:'Standard lemon iced tea from the Brisk line, a PepsiCo/Unilever joint venture. Held the iced tea fountain valve at Taco Bell for twenty-one years \u2014 longer than most food items last on the menu. Replaced by Brisk Raspberry in 2020.',
+  'Lipton Brisk Lemon':{name:'Lipton Brisk Lemon',dates:'1999 – 2020',type:'PepsiCo/Unilever · fountain iced tea',color:'#854F0B',
+    desc:'Standard lemon iced tea from the Brisk line, a PepsiCo/Unilever joint venture. Held the iced tea fountain valve at Taco Bell for twenty-one years — longer than most food items last on the menu. Replaced by Brisk Raspberry in 2020.',
     notes:'Twenty-one years is an exceptionally long run for a non-core beverage.',
     replaced:'Brisk Raspberry took the iced tea valve in 2020.',
     avail:'Yes. Brisk Lemon is widely available in cans and bottles at retail.'},
-  'Dole Strawberry Lemonade':{name:'Dole Strawberry Lemonade',dates:'~2010 \u2013 2016',type:'Fountain lemonade',color:'#854F0B',
+  'Dole Strawberry Lemonade':{name:'Dole Strawberry Lemonade',dates:'~2010 – 2016',type:'Fountain lemonade',color:'#854F0B',
     desc:'A strawberry lemonade product appearing at select Taco Bell markets during the early-to-mid 2010s. Whether this was a fountain dispenser item or a bottled product is not fully confirmed.',
     notes:'Regional availability. Brand partnership details unverified.',
     replaced:'The lemonade slot cycled to other brands.',
     avail:'May exist at retail in limited markets.'},
-  'Snapple Lemonade (fountain)':{name:'Snapple Lemonade',dates:'~2014 \u2013 2015',type:'Fountain lemonade',color:'#854F0B',
+  'Snapple Lemonade (fountain)':{name:'Snapple Lemonade',dates:'~2014 – 2015',type:'Fountain lemonade',color:'#854F0B',
     desc:'A Snapple-branded lemonade that held a fountain valve at Taco Bell for approximately one year. Snapple is a Keurig Dr Pepper brand, making this an unusual non-PepsiCo product on a Pepsi house fountain.',
     notes:'The fountain vs. bottled format is flagged for verification.',
     replaced:'Removed after roughly one year. The valve cycled to the next brand.',
     avail:'Snapple Lemonade exists at retail as a bottled product (Keurig Dr Pepper).'},
-  /* ── Hot beverages ── */
-  'Folgers Coffee program':{name:'Folgers Coffee',dates:'2004 \u2013 2014',type:'Hot beverage \u00b7 brewed coffee',color:'#993C1D',
-    desc:'Taco Bell\u2019s first dedicated coffee program, using Folgers-branded beans in standard drip brewers. Ran for a decade before being replaced by proprietary coffee blends during the 2014\u20132015 breakfast menu expansion.',
-    notes:'The Folgers partnership predated Taco Bell\u2019s national breakfast launch by nearly a decade.',
+  /* ── Hot Beverages & Coffee ── */
+  'Folgers Coffee program':{name:'Folgers Coffee',dates:'2004 – 2014',type:'Hot beverage · brewed coffee',color:'#993C1D',
+    desc:'Taco Bell’s first dedicated coffee program, using Folgers-branded beans in standard drip brewers. Ran for a decade before being replaced by proprietary coffee blends during the 2014–2015 breakfast menu expansion.',
+    notes:'The Folgers partnership predated Taco Bell’s national breakfast launch by nearly a decade.',
     replaced:'Proprietary TB-branded coffee blends, launched with the 2014 breakfast expansion.',
     avail:'Folgers is ubiquitous at retail. Only the TB-specific program ended.'},
-  'Hot Chocolate (seasonal)':{name:'Hot Chocolate',dates:'2008 \u2013 2016',type:'Hot beverage \u00b7 seasonal',color:'#993C1D',
+  'Hot Chocolate (seasonal)':{name:'Hot Chocolate',dates:'2008 – 2016',type:'Hot beverage · seasonal',color:'#993C1D',
     desc:'A seasonal hot chocolate offering available during winter months at participating Taco Bell locations. Made from a powdered mix dispensed through a hot beverage machine.',
     notes:'Availability varied significantly by market and season.',
     replaced:'The seasonal hot beverage slot was not refilled.',
     avail:'Not as a TB product. Generic hot chocolate is available everywhere.'},
-  'Hot Tea (select markets)':{name:'Hot Tea',dates:'2014 \u2013 2020',type:'Hot beverage \u00b7 select markets',color:'#993C1D',
+  'Hot Tea (select markets)':{name:'Hot Tea',dates:'2014 – 2020',type:'Hot beverage · select markets',color:'#993C1D',
     desc:'Hot tea service available at a subset of Taco Bell locations, typically those with full hot beverage stations installed during the breakfast expansion. Never achieved national distribution.',
     notes:'Limited to markets with breakfast-capable hot beverage equipment.',
     replaced:'Quietly removed as hot beverage equipment was simplified.',
     avail:'No TB-specific tea product.'},
-  'Starbucks test partnership':{name:'Starbucks Test Partnership',dates:'2015 \u2013 2016',type:'Hot beverage \u00b7 test market',color:'#993C1D',
+  'Starbucks test partnership':{name:'Starbucks Test Partnership',dates:'2015 – 2016',type:'Hot beverage · test market',color:'#993C1D',
     desc:'A brief test partnership with Starbucks to serve branded coffee at select Taco Bell locations. The test lasted approximately one year before being discontinued without national rollout.',
-    notes:'One of the few instances of a non-PepsiCo brand partnership in Taco Bell\u2019s beverage program.',
+    notes:'One of the few instances of a non-PepsiCo brand partnership in Taco Bell’s beverage program.',
     replaced:'Test ended without national rollout. TB continued with its own branded coffee.',
-    avail:'Starbucks is widely available \u2014 just not inside a Taco Bell.'},
-  'Iced Coffee (select markets)':{name:'Iced Coffee',dates:'2018 \u2013 2021',type:'Cold beverage \u00b7 select markets',color:'#993C1D',
-    desc:'An iced coffee product available at select Taco Bell locations during the late 2010s. Part of Taco Bell\u2019s broader efforts to compete in the coffee-adjacent beverage space.',
+    avail:'Starbucks is widely available — just not inside a Taco Bell.'},
+  'Iced Coffee (select markets)':{name:'Iced Coffee',dates:'2018 – 2021',type:'Cold beverage · select markets',color:'#993C1D',
+    desc:'An iced coffee product available at select Taco Bell locations during the late 2010s. Part of Taco Bell’s broader efforts to compete in the coffee-adjacent beverage space.',
     notes:'Never achieved the distribution scale needed for national permanence.',
     replaced:'Never achieved national scale. TB refocused on Freeze-based cold beverages.',
     avail:'No TB-specific iced coffee product.'},
   /* ── Frutista Freezes ── */
-  'Strawberry':{name:'Strawberry Frutista Freeze',dates:'Summer 2008',type:'Frutista Freeze \u00b7 Slot 1',color:'#C44B78',
+  'Strawberry':{name:'Strawberry Frutista Freeze',dates:'Summer 2008',type:'Frutista Freeze · Slot 1',color:'#C44B78',
     desc:'The original Frutista Freeze flavor. A blended fruit drink made with real strawberry puree, the Strawberry Frutista was one of two launch flavors when the Frutista line debuted in summer 2008.',
-    notes:'The Frutista line was Taco Bell\u2019s first blended frozen fruit drink program, predating the Freeze machine by five years.',
+    notes:'The Frutista line was Taco Bell’s first blended frozen fruit drink program, predating the Freeze machine by five years.',
     replaced:'Rotated out as part of the Frutista seasonal cycle.',
     avail:'No. The entire Frutista Freeze program was discontinued by 2013.'},
-  'Strawberries \u2019n Cr\u00e8me':{name:'Strawberries \u2019n Cr\u00e8me Frutista',dates:'Fall 2008',type:'Frutista Freeze \u00b7 Slot 1',color:'#C44B78',
-    desc:'A cream-blended strawberry variant that replaced the original Strawberry in Slot 1 for the fall 2008 season. The \u201ccr\u00e8me\u201d formulation added a dairy-based component to the fruit puree blend.',
+  'Strawberries ’n Crème':{name:'Strawberries ’n Crème Frutista',dates:'Fall 2008',type:'Frutista Freeze · Slot 1',color:'#C44B78',
+    desc:'A cream-blended strawberry variant that replaced the original Strawberry in Slot 1 for the fall 2008 season. The “crème” formulation added a dairy-based component to the fruit puree blend.',
     notes:'The cream variants were among the more complex Frutista formulations.',
     replaced:'Rotated out as part of the Frutista seasonal cycle.',
     avail:'No. The entire Frutista Freeze program was discontinued by 2013.'},
-  'Pi\u00f1a Colada':{name:'Pi\u00f1a Colada Frutista',dates:'Spring 2009',type:'Frutista Freeze \u00b7 Slot 1',color:'#C44B78',
+  'Piña Colada':{name:'Piña Colada Frutista',dates:'Spring 2009',type:'Frutista Freeze · Slot 1',color:'#C44B78',
     desc:'A pineapple-coconut Frutista Freeze that held Slot 1 during spring 2009. Non-alcoholic despite the cocktail name.',
     notes:'One of the tropical-themed Frutista flavors.',
     replaced:'Rotated out as part of the Frutista seasonal cycle.',
     avail:'No. The entire Frutista Freeze program was discontinued by 2013.'},
-  'Berry Pomegranate':{name:'Berry Pomegranate Frutista',dates:'Fall 2010',type:'Frutista Freeze \u00b7 Slot 1',color:'#C44B78',
+  'Berry Pomegranate':{name:'Berry Pomegranate Frutista',dates:'Fall 2010',type:'Frutista Freeze · Slot 1',color:'#C44B78',
     desc:'A berry and pomegranate blended Frutista appearing in fall 2010. One of the last documented Slot 1 flavors before the Frutista program wound down.',
-    notes:'By late 2010, the Frutista program was contracting \u2014 fewer positions were being filled each season.',
+    notes:'By late 2010, the Frutista program was contracting — fewer positions were being filled each season.',
     replaced:'Rotated out as part of the Frutista seasonal cycle.',
     avail:'No. The entire Frutista Freeze program was discontinued by 2013.'},
-  'Strawberry Mango':{name:'Strawberry Mango Frutista',dates:'Summer 2008',type:'Frutista Freeze \u00b7 Slot 2',color:'#993556',
+  'Strawberry Mango':{name:'Strawberry Mango Frutista',dates:'Summer 2008',type:'Frutista Freeze · Slot 2',color:'#993556',
     desc:'One of the two launch flavors for Slot 2. A tropical blend of strawberry and mango puree, debuting alongside the original Strawberry in summer 2008.',
     notes:'Slot 2 used a slightly different color formulation than Slot 1.',
     replaced:'Rotated out as part of the Frutista seasonal cycle.',
     avail:'No. The entire Frutista Freeze program was discontinued by 2013.'},
-  'Mango \u2019n Cr\u00e8me':{name:'Mango \u2019n Cr\u00e8me Frutista',dates:'Fall 2008',type:'Frutista Freeze \u00b7 Slot 2',color:'#993556',
-    desc:'A cream-blended mango variant for fall 2008, mirroring the cr\u00e8me treatment applied to Slot 1\u2019s Strawberries \u2019n Cr\u00e8me in the same season.',
-    notes:'Both positions received cr\u00e8me variants simultaneously in fall 2008.',
+  'Mango ’n Crème':{name:'Mango ’n Crème Frutista',dates:'Fall 2008',type:'Frutista Freeze · Slot 2',color:'#993556',
+    desc:'A cream-blended mango variant for fall 2008, mirroring the crème treatment applied to Slot 1’s Strawberries ’n Crème in the same season.',
+    notes:'Both positions received crème variants simultaneously in fall 2008.',
     replaced:'Rotated out as part of the Frutista seasonal cycle.',
     avail:'No. The entire Frutista Freeze program was discontinued by 2013.'},
-  'Strawberry Colada':{name:'Strawberry Colada Frutista',dates:'Spring 2009',type:'Frutista Freeze \u00b7 Slot 2',color:'#993556',
-    desc:'A strawberry-coconut blend for Slot 2 during spring 2009, running alongside the Pi\u00f1a Colada in Slot 1. Both positions had tropical themes that season.',
+  'Strawberry Colada':{name:'Strawberry Colada Frutista',dates:'Spring 2009',type:'Frutista Freeze · Slot 2',color:'#993556',
+    desc:'A strawberry-coconut blend for Slot 2 during spring 2009, running alongside the Piña Colada in Slot 1. Both positions had tropical themes that season.',
     notes:'Spring 2009 was the last season where both Slot 1 and Slot 2 were simultaneously filled.',
     replaced:'Rotated out as part of the Frutista seasonal cycle.',
     avail:'No. The entire Frutista Freeze program was discontinued by 2013.'},
-  'Classic Margarita':{name:'Classic Margarita Frutista',dates:'Spring 2010',type:'Frutista Freeze \u00b7 Slot 2',color:'#993556',
+  'Classic Margarita':{name:'Classic Margarita Frutista',dates:'Spring 2010',type:'Frutista Freeze · Slot 2',color:'#993556',
     desc:'A lime-based margarita-flavored Frutista for Slot 2 in spring 2010. Non-alcoholic. One of the last Slot 2 entries before the program contracted.',
     notes:'The margarita flavors were cocktail-inspired but entirely non-alcoholic.',
     replaced:'Rotated out as part of the Frutista seasonal cycle.',
     avail:'No. The entire Frutista Freeze program was discontinued by 2013.'},
-  'Triple Berries \u2019n Cr\u00e8me':{name:'Triple Berries \u2019n Cr\u00e8me Frutista',dates:'Fall 2008',type:'Frutista Freeze \u00b7 Slot 3',color:'#5C1A33',
-    desc:'A three-berry cream blend that was one of only two documented Slot 3 flavors. Slot 3 was used sparingly \u2014 only during seasons with sufficient demand to justify running a third blender.',
+  'Triple Berries ’n Crème':{name:'Triple Berries ’n Crème Frutista',dates:'Fall 2008',type:'Frutista Freeze · Slot 3',color:'#5C1A33',
+    desc:'A three-berry cream blend that was one of only two documented Slot 3 flavors. Slot 3 was used sparingly — only during seasons with sufficient demand to justify running a third blender.',
     notes:'Slot 3 was active in only two of the nine documented seasons.',
     replaced:'Rotated out as part of the Frutista seasonal cycle.',
     avail:'No. The entire Frutista Freeze program was discontinued by 2013.'},
-  'Strawberry Margarita':{name:'Strawberry Margarita Frutista',dates:'Spring 2010',type:'Frutista Freeze \u00b7 Slot 3',color:'#5C1A33',
+  'Strawberry Margarita':{name:'Strawberry Margarita Frutista',dates:'Spring 2010',type:'Frutista Freeze · Slot 3',color:'#5C1A33',
     desc:'A strawberry margarita-flavored Frutista for Slot 3 in spring 2010, running alongside the Classic Margarita in Slot 2. The last documented Slot 3 entry.',
-    notes:'After spring 2010, Slot 3 was never filled again \u2014 the program was winding down.',
+    notes:'After spring 2010, Slot 3 was never filled again — the program was winding down.',
     replaced:'Rotated out as part of the Frutista seasonal cycle.',
     avail:'No. The entire Frutista Freeze program was discontinued by 2013.'}
 };
@@ -1618,38 +1787,75 @@ function buildItemModal(){
 
 function showItemCard(key){
   var d=ITEM_DB[key];
-  if(!d){return;}
+  if(!d) return;
   buildItemModal();
   var card=document.getElementById('dtv-item-card');
   var ov=document.getElementById('dtv-item-overlay');
-  var slug=key.toLowerCase().replace(/[^\w\u00e0-\u024f]+/g,'-').replace(/^-|-$/g,'');
-  card.innerHTML=
-    '<div class="dtv-card-accent" style="background:'+d.color+'"></div>'+
-    '<div class="dtv-card-head">'+
-      '<div>'+
-        '<div class="dtv-card-name">'+d.name+'</div>'+
-        '<div class="dtv-card-type" style="color:'+d.color+'">'+d.type+'</div>'+
-        '<div class="dtv-card-dates">'+d.dates+'</div>'+
-      '</div>'+
-      '<button class="dtv-card-close" id="dtv-close-btn">&times;</button>'+
-    '</div>'+
-    '<div class="dtv-card-div"></div>'+
-    '<div class="dtv-card-body">'+
-      '<div class="dtv-card-section"><div class="dtv-card-section-label">What it was</div><div class="dtv-card-section-text">'+d.desc+'</div></div>'+
-      (d.replaced?'<div class="dtv-card-section"><div class="dtv-card-section-label">Replaced by</div><div class="dtv-card-section-text">'+d.replaced+'</div></div>':'')+
-      (d.avail?'<div class="dtv-card-section"><div class="dtv-card-section-label">Available elsewhere?</div><div class="dtv-card-section-text">'+d.avail+'</div></div>':'')+
-      (d.notes?'<div class="dtv-card-section"><div class="dtv-card-section-label">Notes</div><div class="dtv-card-section-text" style="font-style:italic;opacity:.8;">'+d.notes+'</div></div>':'')+
-    '</div>'+
-    '<div class="dtv-card-foot">'+
-      '<a class="dtv-card-link" href="/wiki/taco-bell/drinks/'+slug+'" style="color:'+d.color+'" title="Individual pages coming soon">'+
-        'See full entry '+
-        '<svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M5 2.5H2.5v8h8V8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.5 1.5H11.5V5.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.5 1.5L6.5 6.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>'+
-      '</a>'+
-      '<span class="dtv-card-soon">Pages in progress</span>'+
-    '</div>';
-  document.getElementById('dtv-close-btn').addEventListener('click',closeItemCard);
+  var g=d.color;
+
+  /* Full name: prepend category for Mtn Dew items if not already there */
+  var fullName=d.name;
+  var lc=fullName.toLowerCase();
+  if(g==='#3B6D11' && lc.indexOf('mtn dew')<0 && lc.indexOf('mountain dew')<0 && lc.indexOf('kickstart')<0){
+    fullName='Mtn Dew '+fullName;
+  }
+
+  /* Fix type: "Mountain Dew exclusive" → "Taco Bell exclusive" */
+  var typeText=(d.type||'').replace(/Mountain Dew exclusive/gi,'Taco Bell exclusive').replace(/Mtn Dew exclusive/gi,'Taco Bell exclusive');
+
+  /* Is this a freeze item? If so, hide "Available elsewhere" */
+  var isFreeze=lc.indexOf('freeze')>=0;
+
+  var slug=key.toLowerCase().replace(/[^\w\u00C0-\u024F]+/g,'-').replace(/^-|-$/g,'');
+  var chipBg='color-mix(in srgb,'+g+' 10%,transparent)';
+  var calloutBg='color-mix(in srgb,'+g+' 5%,var(--background,#faf8f3))';
+  var calloutBorder='color-mix(in srgb,'+g+' 30%,transparent)';
+
+  var html='<div style="border-left:5px solid '+g+'">';
+  html+='<div class="dtv-card-inner">';
+  /* Close button */
+  html+='<div style="display:flex;justify-content:flex-end;margin-bottom:4px"><button class="dtv-card-close" id="dtv-close-btn">&times;</button></div>';
+  /* Name */
+  html+='<div class="dtv-card-name">'+fullName+'</div>';
+  /* Meta row */
+  html+='<div class="dtv-card-meta">';
+  if(typeText) html+='<span class="dtv-card-chip" style="color:'+g+';background:'+chipBg+'">'+typeText+'</span>';
+  if(d.dates) html+='<span class="dtv-card-dates">'+d.dates+'</span>';
+  html+='</div>';
+  /* Description */
+  if(d.desc) html+='<div class="dtv-card-desc">'+d.desc+'</div>';
+  /* Replaced by */
+  if(d.replaced){
+    html+='<div class="dtv-card-callout" style="background:'+calloutBg+';border-left-color:'+calloutBorder+'">';
+    html+='<div class="dtv-card-callout-label">Replaced by</div>';
+    html+='<div class="dtv-card-callout-text">'+d.replaced+'</div></div>';
+  }
+  /* Available elsewhere — hidden for freeze items */
+  if(d.avail && !isFreeze){
+    html+='<div class="dtv-card-block">';
+    html+='<div class="dtv-card-callout-label">Available elsewhere?</div>';
+    html+='<div class="dtv-card-callout-text">'+d.avail+'</div></div>';
+  }
+  /* Notes */
+  if(d.notes) html+='<div class="dtv-card-notes">'+d.notes+'</div>';
+  /* Footer */
+  html+='<div class="dtv-card-foot">';
+  html+='<a href="/wiki/taco-bell/drinks/'+slug+'" style="color:'+g+'" title="Individual pages coming soon">';
+  html+='See full entry <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>';
+  html+='</div>';
+  html+='</div></div>';
+
+  card.innerHTML=html;
+  card.style.borderLeft='none';
   ov.classList.add('open');
+  document.body.style.overflow='hidden';
+
+  function close(){ov.classList.remove('open');document.body.style.overflow='';}
+  document.getElementById('dtv-close-btn').addEventListener('click',close);
+  ov.addEventListener('click',function(e){if(e.target===ov) close();});
+  document.addEventListener('keydown',function handler(e){if(e.key==='Escape'){close();document.removeEventListener('keydown',handler);}});
 }
+
 
 function closeItemCard(){
   var ov=document.getElementById('dtv-item-overlay');
@@ -1671,17 +1877,20 @@ document.addEventListener('DOMContentLoaded',function(){
 window.WIKI_TOC = {
   pageTitle: 'Discontinued Drinks',
   pageLogo: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none"><rect width="64" height="64" rx="10" fill="#172554"/><line x1="36" y1="8" x2="35" y2="18" stroke="rgba(255,255,255,.4)" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="3 3"/><line x1="18" y1="19" x2="46" y2="19" stroke="rgba(255,255,255,.4)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="18" y1="19" x2="21" y2="23.5" stroke="rgba(255,255,255,.4)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="46" y1="19" x2="43" y2="23.5" stroke="rgba(255,255,255,.4)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="21" y1="23.5" x2="43" y2="23.5" stroke="rgba(255,255,255,.4)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="21" y1="23.5" x2="26" y2="54" stroke="rgba(255,255,255,.4)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="43" y1="23.5" x2="38" y2="54" stroke="rgba(255,255,255,.4)" stroke-width="1.2" stroke-dasharray="3 3"/><path d="M26 54 C26 56 29 57.5 32 57.5 C35 57.5 38 56 38 54" stroke="rgba(255,255,255,.4)" stroke-width="1.2" stroke-dasharray="3 3" fill="none"/></svg>',
+  pageLogo: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none"><rect width="64" height="64" rx="10" fill="#172554"/><line x1="36" y1="8" x2="35" y2="18" stroke="rgba(255,255,255,.4)" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="3 3"/><line x1="18" y1="19" x2="46" y2="19" stroke="rgba(255,255,255,.4)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="18" y1="19" x2="21" y2="23.5" stroke="rgba(255,255,255,.4)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="46" y1="19" x2="43" y2="23.5" stroke="rgba(255,255,255,.4)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="21" y1="23.5" x2="43" y2="23.5" stroke="rgba(255,255,255,.4)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="21" y1="23.5" x2="26" y2="54" stroke="rgba(255,255,255,.4)" stroke-width="1.2" stroke-dasharray="3 3"/><line x1="43" y1="23.5" x2="38" y2="54" stroke="rgba(255,255,255,.4)" stroke-width="1.2" stroke-dasharray="3 3"/><path d="M26 54 C26 56 29 57.5 32 57.5 C35 57.5 38 56 38 54" stroke="rgba(255,255,255,.4)" stroke-width="1.2" stroke-dasharray="3 3" fill="none"/></svg>',
   wikiHome: 'taco-bell.html',
   wikiTitle: 'Taco Bell',
   parentUrl: 'taco-bell-drinks.html',
   parentTitle: 'Drinks',
   sections: [
     { group: 'OVERVIEW', id: 'overview', label: 'Overview' },
+    { group: 'OVERVIEW', id: 'catalogue', label: 'Full Catalogue' },
+    { group: 'OVERVIEW', id: 'freeze-collabs', label: 'Freeze Collaborations' },
     { group: 'CATEGORIES', id: 'cat-01', label: 'Mtn Dew casualties' },
     { group: 'CATEGORIES', id: 'cat-02', label: 'Frutista Freezes' },
     { group: 'CATEGORIES', id: 'cat-03', label: 'Freezes — LTO' },
     { group: 'CATEGORIES', id: 'cat-04', label: 'Sparklers' },
-    { group: 'CATEGORIES', id: 'cat-05', label: 'Hot beverages' },
+    { group: 'CATEGORIES', id: 'cat-05', label: 'Hot Beverages & Coffee' },
     { group: 'CATEGORIES', id: 'cat-06', label: 'Iced teas' },
     { group: 'CATEGORIES', id: 'cat-07', label: 'Defunct sodas' },
   ]
