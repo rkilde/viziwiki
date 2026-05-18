@@ -1,0 +1,661 @@
+---
+layout: default
+title: "Taco Bell Drinks — Baja Blast & The Freezer Wall · ViziWiki"
+body_class: "wiki-page"
+---
+{% raw %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Spectral:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- lucide inlined -->
+<style>
+:root{--background:oklch(0.972 0.012 85);--foreground:oklch(0.18 0.02 60);--card:oklch(1 0 0);--secondary:oklch(0.93 0.02 80);--muted-foreground:oklch(0.45 0.03 60);--neon:oklch(0.65 0.26 5);--hot-pink:oklch(0.70 0.27 350);}
+html,body{background:var(--background);color:var(--foreground);}
+body{font-family:'Spectral',Georgia,serif;}
+.font-display{font-family:'Fraunces','Spectral',Georgia,serif;font-optical-sizing:auto;font-variation-settings:"SOFT" 30,"WONK" 0;letter-spacing:-0.02em;}
+.font-mono-acc{font-family:'JetBrains Mono',ui-monospace,monospace;letter-spacing:.05em;}
+.halftone{background-image:radial-gradient(var(--hot-pink) 1.4px, transparent 1.6px);background-size:10px 10px;}
+.bg-background{background:var(--background);}
+.bg-card{background:var(--card);}
+.bg-secondary{background:var(--secondary);}
+.bg-secondary\/40{background:color-mix(in oklab,var(--secondary) 40%, transparent);}
+.bg-secondary\/60{background:color-mix(in oklab,var(--secondary) 60%, transparent);}
+.text-foreground{color:var(--foreground);}
+.text-muted-foreground{color:var(--muted-foreground);}
+.border-foreground\/10{border-color:color-mix(in oklab,var(--foreground) 10%, transparent);}
+.border-foreground\/15{border-color:color-mix(in oklab,var(--foreground) 15%, transparent);}
+.border-foreground\/20{border-color:color-mix(in oklab,var(--foreground) 20%, transparent);}
+.divide-foreground\/10>*+*{border-color:color-mix(in oklab,var(--foreground) 10%, transparent);}
+.text-rose-600{color:#e11d48;}
+
+/* ── MOBILE FIXES ───────────────────────────────────────
+   All table sections that use fixed-fraction multi-col grids
+   are wrapped in .mob-scroll containers that scroll horizontally
+   on narrow viewports. Inner content has min-width to preserve layout.
+──────────────────────────────────────────────────────── */
+.mob-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.mob-inner{min-width:520px;}
+.mob-inner-lg{min-width:680px;}
+.mob-inner-xl{min-width:760px;}
+
+/* Ladder rows: name | bar | number.
+   On mobile: 2-col (name + number); bar col collapses.
+   On sm+: full 3-col. */
+.ladder-row{
+  display:grid;
+  grid-template-columns:1fr 68px;
+  align-items:center;
+  gap:10px;
+  border-bottom:1px solid color-mix(in oklab,var(--foreground) 10%, transparent);
+  padding:12px 16px;
+}
+.ladder-row:last-child{border-bottom:none;}
+.ladder-bar-col{display:none;}
+.ladder-val{text-align:right;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted-foreground);}
+@media(min-width:640px){
+  .ladder-row{grid-template-columns:1.6fr 1fr 120px;gap:16px;}
+  .ladder-bar-col{display:block;}
+}
+
+/* Baja lineage rows: on mobile, stack vertically */
+.lineage-row{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  border-radius:6px;
+  border:1px solid rgba(255,255,255,.15);
+  background:rgba(255,255,255,.05);
+  padding:12px 16px;
+  backdrop-filter:blur(8px);
+}
+.lineage-row-year{font-family:'Fraunces',Georgia,serif;font-size:14px;font-weight:700;color:#67e8f9;}
+.lineage-row-tag{font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:rgba(255,255,255,.6);margin-bottom:2px;}
+.lineage-row-event{font-size:14px;line-height:1.55;color:rgba(255,255,255,.88);}
+@media(min-width:640px){
+  .lineage-row{flex-direction:row;align-items:baseline;gap:16px;padding:12px 16px;}
+  .lineage-row-year{font-size:18px;min-width:110px;}
+  .lineage-row-tag{min-width:120px;margin-bottom:0;}
+  .lineage-row-event{font-size:15px;}
+}
+
+/* Rankings: 2-col on mobile, 4-col on sm+ */
+.ranking-row{
+  display:grid;
+  grid-template-columns:48px 1fr;
+  gap:10px;
+  align-items:start;
+  border-bottom:1px solid color-mix(in oklab,var(--foreground) 10%, transparent);
+  padding:14px 20px;
+}
+.ranking-row:last-child{border-bottom:none;}
+.ranking-row:hover{background:color-mix(in oklab,var(--secondary) 40%, transparent);}
+.ranking-source{grid-column:2;}
+.ranking-year{display:none;}
+.ranking-verdict{grid-column:2;font-size:13px;line-height:1.5;color:color-mix(in oklab,var(--foreground) 85%, transparent);margin-top:2px;}
+@media(min-width:640px){
+  .ranking-row{grid-template-columns:60px 1.6fr 1fr 3fr;align-items:baseline;}
+  .ranking-source{grid-column:auto;}
+  .ranking-year{display:block;}
+  .ranking-verdict{grid-column:auto;font-size:15px;margin-top:0;}
+}
+
+/* References: 2-col on mobile */
+.ref-row{
+  display:grid;
+  grid-template-columns:40px 1fr;
+  gap:10px;
+  align-items:baseline;
+  border-bottom:1px solid color-mix(in oklab,var(--foreground) 10%, transparent);
+  padding:8px 0;
+}
+.ref-title{font-size:14px;color:color-mix(in oklab,var(--foreground) 90%, transparent);}
+.ref-pub{display:none;}
+.ref-year{display:none;}
+@media(min-width:640px){
+  .ref-row{grid-template-columns:40px 1fr 120px 80px;}
+  .ref-pub{display:block;}
+  .ref-year{display:block;}
+  .ref-title{font-size:15px;}
+}
+
+/* Hero text scaling */
+.hero-h1{font-size:clamp(52px,12vw,96px);font-weight:700;line-height:.95;letter-spacing:-0.03em;}
+</style>
+<style>.sticky.top-0{top:var(--main-h);}</style>
+
+<!-- Breadcrumb -->
+<div class="border-b border-foreground/15 bg-secondary/40">
+  <div class="mx-auto flex max-w-[1500px] items-center gap-2 px-6 py-2 font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+    <a href="index.html" class="hover:text-foreground">ViziWiki</a><svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+    <a href="browse.html" class="hover:text-foreground">Browse</a><svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+    <a href="taco-bell.html" class="hover:text-foreground">Taco Bell</a><svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+    <span class="text-foreground">Drinks</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="relative overflow-hidden border-b border-foreground/20 text-white" style="background:linear-gradient(to bottom right,#22d3ee,#0f766e,#172554)">
+  <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(to bottom right,rgba(6,182,212,.65),rgba(15,118,110,.7),rgba(23,37,84,.85));mix-blend-mode:multiply"></div>
+  <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(to right,rgba(23,37,84,.7),rgba(30,58,138,.25),transparent)"></div>
+  <svg class="pointer-events-none absolute -right-12 -top-10 rotate-12 text-white/10" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 8 1.75 12.28a2 2 0 0 0 2 1.72h4.54a2 2 0 0 0 2-1.72L18 8"/><path d="M5 8h14"/><path d="M7 15a6.47 6.47 0 0 1 5 0 6.47 6.47 0 0 0 5 0"/><path d="m12 8 1-6h2"/></svg>
+  <div class="relative mx-auto grid max-w-[1500px] gap-8 px-6 py-14 md:grid-cols-[1.4fr_1fr]">
+    <div>
+      <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-3 py-1 font-mono-acc text-[10px] uppercase tracking-[0.25em] backdrop-blur">
+        <span class="h-1.5 w-1.5 rounded-full bg-cyan-300"></span> Beverage · Fountain · Freeze
+      </div>
+      <h1 class="font-display hero-h1">Drinks<span class="text-cyan-300">.</span></h1>
+      <div class="mt-3 flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.2em] text-white/70">
+        <a href="taco-bell.html" class="hover:text-white">Taco Bell</a>
+        <svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        <span class="text-white">Drinks</span>
+      </div>
+      <p class="mt-4 max-w-xl text-lg text-white/85">One Mountain Dew exclusive that became a cult, three Freeze valves, four Pepsi standards, and roughly 24 million tropical-lime cups poured each year. Indexed, charted, and pour-tested.</p>
+      <!-- Stats grid: 2-col on mobile, 3-col on sm+ -->
+      <div class="mt-8 grid max-w-2xl grid-cols-2 gap-px overflow-hidden rounded-sm border border-white/20 bg-white/10 font-mono-acc text-[10px] uppercase tracking-wider sm:grid-cols-3">
+        <div class="px-3 py-3" style="background:rgba(23,37,84,.55)"><div class="font-display text-xl font-semibold normal-case tracking-tight text-white">~24M</div><div class="text-white/65">Baja Blast cups / yr</div></div>
+        <div class="px-3 py-3" style="background:rgba(23,37,84,.55)"><div class="font-display text-xl font-semibold normal-case tracking-tight text-white">2004</div><div class="text-white/65">Baja Blast debut</div></div>
+        <div class="px-3 py-3" style="background:rgba(23,37,84,.55)"><div class="font-display text-xl font-semibold normal-case tracking-tight text-white">77 g</div><div class="text-white/65">sugar · 20oz Baja</div></div>
+        <div class="px-3 py-3" style="background:rgba(23,37,84,.55)"><div class="font-display text-xl font-semibold normal-case tracking-tight text-white">7-Eleven</div><div class="text-white/65">only off-menu seller</div></div>
+        <div class="px-3 py-3" style="background:rgba(23,37,84,.55)"><div class="font-display text-xl font-semibold normal-case tracking-tight text-white">3</div><div class="text-white/65">active Freeze flavors</div></div>
+        <div class="px-3 py-3" style="background:rgba(23,37,84,.55)"><div class="font-display text-xl font-semibold normal-case tracking-tight text-white">1997</div><div class="text-white/65">Pepsi exclusivity</div></div>
+      </div>
+    </div>
+    <!-- Spotlight: Baja Blast — halftone style (matching Lovable) -->
+    <aside class="relative">
+      <div class="relative overflow-hidden rounded-md border border-white/20 p-5" style="background:linear-gradient(to bottom right,#22d3ee,#065f46)">
+        <div class="absolute inset-0 halftone opacity-25 mix-blend-overlay"></div>
+        <div class="relative">
+          <div class="mb-3 flex items-center justify-between font-mono-acc text-[10px] uppercase tracking-[0.2em] text-white/85">
+            <span>★ Flagship · Spotlight</span><span>Est. 2004</span>
+          </div>
+          <div class="font-display text-5xl font-bold leading-none">Baja Blast</div>
+          <p class="mt-3 text-sm text-white/90">The Mountain Dew variant engineered specifically to pair with Taco Bell food. Tropical lime, fluorescent cyan, exclusive to the chain at the fountain since launch.</p>
+          <div class="mt-4 grid grid-cols-3 gap-2 font-mono-acc text-[9px] uppercase tracking-wider">
+            <div class="rounded-sm border border-white/30 bg-white/10 px-2 py-1.5"><div class="text-white/65">Cal</div><div class="text-white">290</div></div>
+            <div class="rounded-sm border border-white/30 bg-white/10 px-2 py-1.5"><div class="text-white/65">Sugar</div><div class="text-white">77 g</div></div>
+            <div class="rounded-sm border border-white/30 bg-white/10 px-2 py-1.5"><div class="text-white/65">Caffeine</div><div class="text-white">92 mg</div></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- OVERVIEW + INFOBOX -->
+<section id="overview" class="border-b border-foreground/15 bg-card">
+  <div class="mx-auto grid max-w-[1500px] gap-10 px-6 py-12 lg:grid-cols-[1.7fr_1fr]">
+    <div>
+      <div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> Overview</div>
+      <h2 class="mt-1 font-display text-3xl font-semibold leading-tight sm:text-4xl">The only fast-food chain whose drink is its own brand.</h2>
+      <div class="mt-4 space-y-4 text-[15px] leading-relaxed text-foreground/85">
+        <p><strong>Taco Bell's beverage program</strong> is anchored by a single product nobody else can sell: <strong>Mountain Dew Baja Blast</strong>. Co-developed by PepsiCo and Taco Bell flavor R&amp;D in 2003 and launched in February 2004, it is the only Mountain Dew variant manufactured exclusively for a single restaurant chain — and it transformed Taco Bell from a Pepsi licensee into a beverage destination in its own right.</p>
+        <p>The full lineup divides into six families: the <strong>Baja</strong> products (carbonated, freeze, and the growing retail bottle line), the <strong>Freeze wall</strong> (slushed Mountain Dew variants — currently Baja, Wild Cherry, and a rotating third valve), <strong>fountain Pepsi</strong> standards, the <strong>Brisk × Taco Bell</strong> juice and tea pairings, the <strong>breakfast coffee</strong> program introduced in 2014, and a small slate of bottled cooler drinks. The fountain has been all-Pepsi since the 1997 Tricon spinoff that created what is now <em>Yum! Brands</em>.</p>
+        <p>Taken together, drinks generate roughly 18% of an average store's revenue and a disproportionate share of its margin — Baja Blast alone has been credited with carrying entire product launches (notably the Crunchwrap and Mexican Pizza relaunches), and the freezer-aisle bottle release has become its own annual cultural event.</p>
+      </div>
+      <div class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div class="rounded-sm border border-foreground/15 bg-secondary/40 p-3"><div class="font-mono-acc text-[9px] uppercase tracking-[0.2em] text-muted-foreground">Beverage partner</div><div class="mt-0.5 font-display text-lg font-semibold leading-tight">PepsiCo</div></div>
+        <div class="rounded-sm border border-foreground/15 bg-secondary/40 p-3"><div class="font-mono-acc text-[9px] uppercase tracking-[0.2em] text-muted-foreground">Fountain since</div><div class="mt-0.5 font-display text-lg font-semibold leading-tight">1997</div></div>
+        <div class="rounded-sm border border-foreground/15 bg-secondary/40 p-3"><div class="font-mono-acc text-[9px] uppercase tracking-[0.2em] text-muted-foreground">Hero product</div><div class="mt-0.5 font-display text-lg font-semibold leading-tight">Baja Blast</div></div>
+        <div class="rounded-sm border border-foreground/15 bg-secondary/40 p-3"><div class="font-mono-acc text-[9px] uppercase tracking-[0.2em] text-muted-foreground">Coffee program</div><div class="mt-0.5 font-display text-lg font-semibold leading-tight">Since 2014</div></div>
+      </div>
+    </div>
+    <aside class="rounded-md border border-foreground/20 bg-secondary/40">
+      <div class="border-b border-foreground/15 px-4 py-3 text-white" style="background:linear-gradient(to bottom right,#0891b2,#1e3a8a)">
+        <div class="font-mono-acc text-[9px] uppercase tracking-[0.25em] text-white/70">Infobox</div>
+        <div class="font-display text-xl font-semibold leading-tight">Drinks Program</div>
+        <div class="mt-1 font-mono-acc text-[10px] uppercase tracking-wider text-white/70">Beverage · Foodservice · Pepsi</div>
+      </div>
+      <dl class="divide-y divide-foreground/10 px-4 py-2 text-sm">
+        <div class="grid grid-cols-[1fr_1.4fr] gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Categories</dt><dd class="font-medium">6 families</dd></div>
+        <div class="grid grid-cols-[1fr_1.4fr] gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Active SKUs</dt><dd class="font-medium">14 on menu</dd></div>
+        <div class="grid grid-cols-[1fr_1.4fr] gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Hero product</dt><dd class="font-medium">Baja Blast (since 2004)</dd></div>
+        <div class="grid grid-cols-[1fr_1.4fr] gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Pepsi exclusive</dt><dd class="font-medium">1997–present</dd></div>
+        <div class="grid grid-cols-[1fr_1.4fr] gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Freeze supplier</dt><dd class="font-medium">Taylor Company</dd></div>
+        <div class="grid grid-cols-[1fr_1.4fr] gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Coffee certif.</dt><dd class="font-medium">Rainforest Alliance</dd></div>
+        <div class="grid grid-cols-[1fr_1.4fr] gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Retail bottle</dt><dd class="font-medium">Permanent (2020)</dd></div>
+        <div class="grid grid-cols-[1fr_1.4fr] gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Annual Baja vol.</dt><dd class="font-medium">≈ 24M cups, U.S.</dd></div>
+        <div class="grid grid-cols-[1fr_1.4fr] gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Discontinued</dt><dd class="font-medium">6 known SKUs</dd></div>
+        <div class="grid grid-cols-[1fr_1.4fr] gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">See also</dt><dd class="font-medium">Mountain Dew, Yum! Brands</dd></div>
+      </dl>
+    </aside>
+  </div>
+</section>
+
+<!-- SIX FAMILIES -->
+<section id="families" class="mx-auto max-w-[1500px] px-6 py-12">
+  <div class="mb-6 flex flex-wrap items-baseline justify-between gap-2">
+    <div>
+      <div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></svg> The six families</div>
+      <h2 class="font-display text-3xl font-semibold">How the menu is organized</h2>
+    </div>
+    <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">6 families · 14 active SKUs</span>
+  </div>
+  <div class="grid grid-cols-2 gap-3 md:grid-cols-3">
+    <div class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#22d3ee,#065f46)"><div class="absolute inset-0 halftone opacity-20 mix-blend-overlay"></div><div class="relative"><div class="font-mono-acc text-[10px] uppercase tracking-[0.25em] text-white/80">2 entries</div><div class="mt-1 font-display text-xl font-bold leading-tight drop-shadow sm:text-2xl">The Baja family</div><p class="mt-2 text-sm text-white/85">The Mountain Dew exclusive that became Taco Bell's drink.</p></div></div>
+    <div class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#e879f9,#9f1239)"><div class="absolute inset-0 halftone opacity-20 mix-blend-overlay"></div><div class="relative"><div class="font-mono-acc text-[10px] uppercase tracking-[0.25em] text-white/80">2 entries</div><div class="mt-1 font-display text-xl font-bold leading-tight drop-shadow sm:text-2xl">The Freeze wall</div><p class="mt-2 text-sm text-white/85">Slushed variants. The frozen-cup bar that anchors every modern store.</p></div></div>
+    <div class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#1d4ed8,#172554)"><div class="absolute inset-0 halftone opacity-20 mix-blend-overlay"></div><div class="relative"><div class="font-mono-acc text-[10px] uppercase tracking-[0.25em] text-white/80">4 entries</div><div class="mt-1 font-display text-xl font-bold leading-tight drop-shadow sm:text-2xl">Fountain Pepsi</div><p class="mt-2 text-sm text-white/85">The standard valves: Pepsi, Diet, Mtn Dew, Code Red.</p></div></div>
+    <div class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#fb923c,#b91c1c)"><div class="absolute inset-0 halftone opacity-20 mix-blend-overlay"></div><div class="relative"><div class="font-mono-acc text-[10px] uppercase tracking-[0.25em] text-white/80">2 entries</div><div class="mt-1 font-display text-xl font-bold leading-tight drop-shadow sm:text-2xl">Brisk × Taco Bell</div><p class="mt-2 text-sm text-white/85">Lipton-Brisk juices and teas tuned for the menu.</p></div></div>
+    <div class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#b45309,#1c1917)"><div class="absolute inset-0 halftone opacity-20 mix-blend-overlay"></div><div class="relative"><div class="font-mono-acc text-[10px] uppercase tracking-[0.25em] text-white/80">2 entries</div><div class="mt-1 font-display text-xl font-bold leading-tight drop-shadow sm:text-2xl">Breakfast coffee</div><p class="mt-2 text-sm text-white/85">Rainforest Alliance hot coffee + Cinnabon Delights coffee. AM only.</p></div></div>
+    <div class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#7dd3fc,#0369a1)"><div class="absolute inset-0 halftone opacity-20 mix-blend-overlay"></div><div class="relative"><div class="font-mono-acc text-[10px] uppercase tracking-[0.25em] text-white/80">2 entries</div><div class="mt-1 font-display text-xl font-bold leading-tight drop-shadow sm:text-2xl">Bottled &amp; cartons</div><p class="mt-2 text-sm text-white/85">Cooler-pulled stills: Aquafina, Tropicana.</p></div></div>
+  </div>
+</section>
+
+<!-- SUGAR LADDER -->
+<!-- MOBILE FIX: .ladder-row CSS class handles 2-col (name+number) on mobile, 3-col with bar on sm+ -->
+<section id="sugar-ladder" class="border-y border-foreground/15 bg-secondary/40">
+  <div class="mx-auto max-w-[1500px] px-6 py-12">
+    <div class="mb-6 flex flex-wrap items-baseline justify-between gap-2">
+      <div><div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg> Sugar ladder</div><h2 class="font-display text-3xl font-semibold">Sweetness, charted</h2></div>
+      <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">grams per 20 oz / 16 oz</span>
+    </div>
+    <div class="overflow-hidden rounded-md border border-foreground/15 bg-card">
+      <div class="ladder-row"><div class="font-display text-base font-semibold leading-tight">Mountain Dew / Baja Blast / Code Red</div><div class="ladder-bar-col relative h-3 overflow-hidden rounded-full bg-secondary"><div class="absolute inset-y-0 left-0" style="width:96%;background:linear-gradient(to right,#22d3ee,#0f766e)"></div></div><div class="ladder-val">77 g</div></div>
+      <div class="ladder-row"><div class="font-display text-base font-semibold leading-tight">Pepsi</div><div class="ladder-bar-col relative h-3 overflow-hidden rounded-full bg-secondary"><div class="absolute inset-y-0 left-0" style="width:86%;background:linear-gradient(to right,#1d4ed8,#172554)"></div></div><div class="ladder-val">69 g</div></div>
+      <div class="ladder-row"><div class="font-display text-base font-semibold leading-tight">Brisk Mango Fiesta</div><div class="ladder-bar-col relative h-3 overflow-hidden rounded-full bg-secondary"><div class="absolute inset-y-0 left-0" style="width:80%;background:linear-gradient(to right,#fb923c,#dc2626)"></div></div><div class="ladder-val">64 g</div></div>
+      <div class="ladder-row"><div class="font-display text-base font-semibold leading-tight">Wild Cherry Freeze</div><div class="ladder-bar-col relative h-3 overflow-hidden rounded-full bg-secondary"><div class="absolute inset-y-0 left-0" style="width:72%;background:linear-gradient(to right,#ef4444,#9f1239)"></div></div><div class="ladder-val">58 g</div></div>
+      <div class="ladder-row"><div class="font-display text-base font-semibold leading-tight">Baja Blast Freeze</div><div class="ladder-bar-col relative h-3 overflow-hidden rounded-full bg-secondary"><div class="absolute inset-y-0 left-0" style="width:70%;background:linear-gradient(to right,#67e8f9,#0e7490)"></div></div><div class="ladder-val">56 g</div></div>
+      <div class="ladder-row"><div class="font-display text-base font-semibold leading-tight">Mtn Dew Sweet Lightning Freeze</div><div class="ladder-bar-col relative h-3 overflow-hidden rounded-full bg-secondary"><div class="absolute inset-y-0 left-0" style="width:69%;background:linear-gradient(to right,#fcd34d,#ea580c)"></div></div><div class="ladder-val">55 g</div></div>
+      <div class="ladder-row"><div class="font-display text-base font-semibold leading-tight">Brisk Raspberry Iced Tea</div><div class="ladder-bar-col relative h-3 overflow-hidden rounded-full bg-secondary"><div class="absolute inset-y-0 left-0" style="width:66%;background:linear-gradient(to right,#fb7185,#be185d)"></div></div><div class="ladder-val">53 g</div></div>
+      <div class="ladder-row"><div class="font-display text-base font-semibold leading-tight">Cinnabon Delights Coffee</div><div class="ladder-bar-col relative h-3 overflow-hidden rounded-full bg-secondary"><div class="absolute inset-y-0 left-0" style="width:40%;background:linear-gradient(to right,#fbbf24,#92400e)"></div></div><div class="ladder-val">32 g</div></div>
+      <div class="ladder-row"><div class="font-display text-base font-semibold leading-tight">Tropicana Orange Juice</div><div class="ladder-bar-col relative h-3 overflow-hidden rounded-full bg-secondary"><div class="absolute inset-y-0 left-0" style="width:32%;background:linear-gradient(to right,#fdba74,#ea580c)"></div></div><div class="ladder-val">26 g</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CAFFEINE LADDER -->
+<!-- MOBILE FIX: same .ladder-row responsive approach -->
+<section id="caffeine-ladder" class="mx-auto max-w-[1500px] px-6 py-12">
+  <div class="mb-6 flex flex-wrap items-baseline justify-between gap-2">
+    <div><div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h15"/><path d="M6 3v16a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V3"/><path d="M6 14h12"/></svg> Caffeine ladder</div><h2 class="font-display text-3xl font-semibold">From decaf to a hot coffee wall</h2></div>
+    <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">mg per serving</span>
+  </div>
+  <div class="overflow-hidden rounded-md border border-foreground/15 bg-card">
+    <div class="ladder-row"><div class="font-display text-base font-semibold leading-tight">Premium Hot Coffee</div><div class="ladder-bar-col relative h-3 overflow-hidden rounded-full bg-secondary"><div class="absolute inset-y-0 left-0" style="width:82%;background:linear-gradient(to right,#b45309,#1c1917)"></div></div><div class="ladder-val">165 mg</div></div>
+    <div class="ladder-row"><div class="font-display text-base font-semibold leading-tight">Cinnabon Delights Coffee</div><div class="ladder-bar-col relative h-3 overflow-hidden rounded-full bg-secondary"><div class="absolute inset-y-0 left-0" style="width:72%;background:linear-gradient(to right,#fbbf24,#92400e)"></div></div><div class="ladder-val">145 mg</div></div>
+    <div class="ladder-row"><div class="font-display text-base font-semibold leading-tight">Mountain Dew Baja Blast</div><div class="ladder-bar-col relative h-3 overflow-hidden rounded-full bg-secondary"><div class="absolute inset-y-0 left-0" style="width:46%;background:linear-gradient(to right,#22d3ee,#0f766e)"></div></div><div class="ladder-val">92 mg</div></div>
+    <div class="ladder-row"><div class="font-display text-base font-semibold leading-tight">Mountain Dew / Code Red</div><div class="ladder-bar-col relative h-3 overflow-hidden rounded-full bg-secondary"><div class="absolute inset-y-0 left-0" style="width:45%;background:linear-gradient(to right,#facc15,#4d7c0f)"></div></div><div class="ladder-val">91 mg</div></div>
+    <div class="ladder-row"><div class="font-display text-base font-semibold leading-tight">Baja Blast Freeze / Wild Cherry / Sweet Lightning</div><div class="ladder-bar-col relative h-3 overflow-hidden rounded-full bg-secondary"><div class="absolute inset-y-0 left-0" style="width:35%;background:linear-gradient(to right,#67e8f9,#0e7490)"></div></div><div class="ladder-val">70 mg</div></div>
+    <div class="ladder-row"><div class="font-display text-base font-semibold leading-tight">Pepsi</div><div class="ladder-bar-col relative h-3 overflow-hidden rounded-full bg-secondary"><div class="absolute inset-y-0 left-0" style="width:31%;background:linear-gradient(to right,#1d4ed8,#172554)"></div></div><div class="ladder-val">63 mg</div></div>
+    <div class="ladder-row"><div class="font-display text-base font-semibold leading-tight">Diet Pepsi</div><div class="ladder-bar-col relative h-3 overflow-hidden rounded-full bg-secondary"><div class="absolute inset-y-0 left-0" style="width:30%;background:linear-gradient(to right,#64748b,#0f172a)"></div></div><div class="ladder-val">60 mg</div></div>
+    <div class="ladder-row"><div class="font-display text-base font-semibold leading-tight">Brisk Raspberry Iced Tea</div><div class="ladder-bar-col relative h-3 overflow-hidden rounded-full bg-secondary"><div class="absolute inset-y-0 left-0" style="width:12%;background:linear-gradient(to right,#fb7185,#be185d)"></div></div><div class="ladder-val">25 mg</div></div>
+    <div class="ladder-row"><div class="font-display text-base font-semibold leading-tight">Aquafina / Brisk Mango / OJ</div><div class="ladder-bar-col relative h-3 overflow-hidden rounded-full bg-secondary"><div class="absolute inset-y-0 left-0" style="width:0%"></div></div><div class="ladder-val">0 mg</div></div>
+  </div>
+</section>
+
+<!-- DRINK CARDS CATALOG -->
+<!-- MOBILE FIX: grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 already mobile-friendly -->
+<section id="catalog" class="border-y border-foreground/15 bg-secondary/40">
+  <div class="mx-auto max-w-[1500px] px-6 py-12">
+    <div class="mb-6 flex flex-wrap items-baseline justify-between gap-2">
+      <div><div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 8 1.75 12.28a2 2 0 0 0 2 1.72h4.54a2 2 0 0 0 2-1.72L18 8"/><path d="M5 8h14"/><path d="M7 15a6.47 6.47 0 0 1 5 0 6.47 6.47 0 0 0 5 0"/><path d="m12 8 1-6h2"/></svg> Catalog</div><h2 class="font-display text-3xl font-semibold">Every active SKU</h2></div>
+      <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">14 entries</span>
+    </div>
+    <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <article class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#22d3ee,#0f766e)"><div class="absolute inset-0 halftone opacity-15 mix-blend-overlay"></div><div class="relative"><div class="flex flex-wrap items-center justify-between gap-1 font-mono-acc text-[10px] uppercase tracking-[0.25em] opacity-80"><span>Baja · Permanent</span><span>Feb 2004</span></div><h3 class="mt-2 font-display text-2xl font-bold leading-tight drop-shadow">Mountain Dew Baja Blast</h3><p class="mt-2 text-sm opacity-90">The flagship. Tropical lime green, exclusive to Taco Bell since 2004.</p><p class="mt-3 text-[13px] leading-relaxed opacity-80">Developed by PepsiCo and Taco Bell flavor R&amp;D as a 'food-pairing' soda — engineered to cut through cheese.</p><div class="mt-4 grid grid-cols-3 gap-1.5 font-mono-acc text-[9px] uppercase tracking-wider"><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Cal</div><div class="opacity-95">290</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Sugar</div><div class="opacity-95">77g</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Caf</div><div class="opacity-95">92mg</div></div></div></div></article>
+      <article class="relative overflow-hidden rounded-md border border-foreground/15 p-5" style="background:linear-gradient(to bottom right,#67e8f9,#0e7490);color:#083344"><div class="absolute inset-0 halftone opacity-15 mix-blend-overlay"></div><div class="relative"><div class="flex flex-wrap items-center justify-between gap-1 font-mono-acc text-[10px] uppercase tracking-[0.25em] opacity-80"><span>Baja · Permanent</span><span>2014</span></div><h3 class="mt-2 font-display text-2xl font-bold leading-tight drop-shadow">Baja Blast Freeze</h3><p class="mt-2 text-sm opacity-90">The slushed version. Same flavor, half the carbonation, three times the cult.</p><p class="mt-3 text-[13px] leading-relaxed opacity-80">Introduced as a limited-time item; demand made it permanent within 18 months.</p><div class="mt-4 grid grid-cols-3 gap-1.5 font-mono-acc text-[9px] uppercase tracking-wider"><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Cal</div><div class="opacity-95">220</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Sugar</div><div class="opacity-95">56g</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Caf</div><div class="opacity-95">70mg</div></div></div></div></article>
+      <article class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#ef4444,#9f1239)"><div class="absolute inset-0 halftone opacity-15 mix-blend-overlay"></div><div class="relative"><div class="flex flex-wrap items-center justify-between gap-1 font-mono-acc text-[10px] uppercase tracking-[0.25em] opacity-80"><span>Freeze · Permanent</span><span>2010</span></div><h3 class="mt-2 font-display text-2xl font-bold leading-tight drop-shadow">Wild Cherry Freeze</h3><p class="mt-2 text-sm opacity-90">Cherry-red sibling to the Baja Freeze. Mountain Dew base.</p><p class="mt-3 text-[13px] leading-relaxed opacity-80">Outsells the original Mtn Dew Code Red on the Taco Bell platform 3:1.</p><div class="mt-4 grid grid-cols-3 gap-1.5 font-mono-acc text-[9px] uppercase tracking-wider"><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Cal</div><div class="opacity-95">230</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Sugar</div><div class="opacity-95">58g</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Caf</div><div class="opacity-95">70mg</div></div></div></div></article>
+      <article class="relative overflow-hidden rounded-md border border-foreground/15 p-5" style="background:linear-gradient(to bottom right,#fcd34d,#ea580c);color:#431407"><div class="absolute inset-0 halftone opacity-15 mix-blend-overlay"></div><div class="relative"><div class="flex flex-wrap items-center justify-between gap-1 font-mono-acc text-[10px] uppercase tracking-[0.25em] opacity-80"><span>Freeze · Limited</span><span>2014</span></div><h3 class="mt-2 font-display text-2xl font-bold leading-tight drop-shadow">Mtn Dew Sweet Lightning</h3><p class="mt-2 text-sm opacity-90">Peach-honey. Limited revival in 2023 after a 7-year sleep.</p><p class="mt-3 text-[13px] leading-relaxed opacity-80">Originally tied to the launch of the Cantina Power Bowls. Returns most summers.</p><div class="mt-4 grid grid-cols-3 gap-1.5 font-mono-acc text-[9px] uppercase tracking-wider"><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Cal</div><div class="opacity-95">220</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Sugar</div><div class="opacity-95">55g</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Caf</div><div class="opacity-95">70mg</div></div></div></div></article>
+      <article class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#1d4ed8,#172554)"><div class="absolute inset-0 halftone opacity-15 mix-blend-overlay"></div><div class="relative"><div class="flex flex-wrap items-center justify-between gap-1 font-mono-acc text-[10px] uppercase tracking-[0.25em] opacity-80"><span>Fountain · Permanent</span><span>1997</span></div><h3 class="mt-2 font-display text-2xl font-bold leading-tight drop-shadow">Pepsi</h3><p class="mt-2 text-sm opacity-90">The default cola. Has anchored every Taco Bell fountain since the Yum! era.</p><p class="mt-3 text-[13px] leading-relaxed opacity-80">Taco Bell switched from Coca-Cola when Pepsi-owned Yum! Brands (then Tricon) was spun off in 1997.</p><div class="mt-4 grid grid-cols-3 gap-1.5 font-mono-acc text-[9px] uppercase tracking-wider"><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Cal</div><div class="opacity-95">250</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Sugar</div><div class="opacity-95">69g</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Caf</div><div class="opacity-95">63mg</div></div></div></div></article>
+      <article class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#64748b,#0f172a)"><div class="absolute inset-0 halftone opacity-15 mix-blend-overlay"></div><div class="relative"><div class="flex flex-wrap items-center justify-between gap-1 font-mono-acc text-[10px] uppercase tracking-[0.25em] opacity-80"><span>Fountain · Permanent</span><span>1997</span></div><h3 class="mt-2 font-display text-2xl font-bold leading-tight drop-shadow">Diet Pepsi</h3><p class="mt-2 text-sm opacity-90">Aspartame, no calories, the same fountain valve since the late '90s.</p><p class="mt-3 text-[13px] leading-relaxed opacity-80">Rumored 2020 reformulation to sucralose was ultimately scrapped; Diet Pepsi at Taco Bell still tastes like Diet Pepsi.</p><div class="mt-4 grid grid-cols-3 gap-1.5 font-mono-acc text-[9px] uppercase tracking-wider"><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Cal</div><div class="opacity-95">0</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Sugar</div><div class="opacity-95">0g</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Caf</div><div class="opacity-95">60mg</div></div></div></div></article>
+      <article class="relative overflow-hidden rounded-md border border-foreground/15 p-5" style="background:linear-gradient(to bottom right,#facc15,#4d7c0f);color:#1a2e05"><div class="absolute inset-0 halftone opacity-15 mix-blend-overlay"></div><div class="relative"><div class="flex flex-wrap items-center justify-between gap-1 font-mono-acc text-[10px] uppercase tracking-[0.25em] opacity-80"><span>Fountain · Permanent</span><span>1997</span></div><h3 class="mt-2 font-display text-2xl font-bold leading-tight drop-shadow">Mountain Dew</h3><p class="mt-2 text-sm opacity-90">The yellow-green standard. The reason Baja Blast was even possible.</p><p class="mt-3 text-[13px] leading-relaxed opacity-80">Taco Bell is one of the top three Mtn Dew accounts in U.S. foodservice.</p><div class="mt-4 grid grid-cols-3 gap-1.5 font-mono-acc text-[9px] uppercase tracking-wider"><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Cal</div><div class="opacity-95">290</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Sugar</div><div class="opacity-95">77g</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Caf</div><div class="opacity-95">91mg</div></div></div></div></article>
+      <article class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#dc2626,#7f1d1d)"><div class="absolute inset-0 halftone opacity-15 mix-blend-overlay"></div><div class="relative"><div class="flex flex-wrap items-center justify-between gap-1 font-mono-acc text-[10px] uppercase tracking-[0.25em] opacity-80"><span>Fountain · Limited</span><span>2005</span></div><h3 class="mt-2 font-display text-2xl font-bold leading-tight drop-shadow">Mtn Dew Code Red</h3><p class="mt-2 text-sm opacity-90">Cherry Mtn Dew. On-and-off the menu since 2005.</p><p class="mt-3 text-[13px] leading-relaxed opacity-80">Currently rotated regionally; pulled from many fountains during the 2014 Freeze expansion.</p><div class="mt-4 grid grid-cols-3 gap-1.5 font-mono-acc text-[9px] uppercase tracking-wider"><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Cal</div><div class="opacity-95">290</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Sugar</div><div class="opacity-95">77g</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Caf</div><div class="opacity-95">91mg</div></div></div></div></article>
+      <article class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#fb923c,#dc2626)"><div class="absolute inset-0 halftone opacity-15 mix-blend-overlay"></div><div class="relative"><div class="flex flex-wrap items-center justify-between gap-1 font-mono-acc text-[10px] uppercase tracking-[0.25em] opacity-80"><span>Brisk · Permanent</span><span>2019</span></div><h3 class="mt-2 font-display text-2xl font-bold leading-tight drop-shadow">Brisk Mango Fiesta</h3><p class="mt-2 text-sm opacity-90">A Lipton-Brisk fruit punch sold only at Taco Bell. Closer to candy than tea.</p><p class="mt-3 text-[13px] leading-relaxed opacity-80">Quietly the second-most-ordered non-Baja drink under 25.</p><div class="mt-4 grid grid-cols-3 gap-1.5 font-mono-acc text-[9px] uppercase tracking-wider"><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Cal</div><div class="opacity-95">240</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Sugar</div><div class="opacity-95">64g</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Caf</div><div class="opacity-95">0mg</div></div></div></div></article>
+      <article class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#fb7185,#be185d)"><div class="absolute inset-0 halftone opacity-15 mix-blend-overlay"></div><div class="relative"><div class="flex flex-wrap items-center justify-between gap-1 font-mono-acc text-[10px] uppercase tracking-[0.25em] opacity-80"><span>Brisk · Permanent</span><span>2020</span></div><h3 class="mt-2 font-display text-2xl font-bold leading-tight drop-shadow">Brisk Raspberry</h3><p class="mt-2 text-sm opacity-90">Sweetened iced tea, raspberry-forward. Replaced Lipton Brisk Lemon in 2020.</p><p class="mt-3 text-[13px] leading-relaxed opacity-80">The lemon variant is still available in select Texas and Florida markets.</p><div class="mt-4 grid grid-cols-3 gap-1.5 font-mono-acc text-[9px] uppercase tracking-wider"><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Cal</div><div class="opacity-95">200</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Sugar</div><div class="opacity-95">53g</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Caf</div><div class="opacity-95">25mg</div></div></div></div></article>
+      <article class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#b45309,#1c1917)"><div class="absolute inset-0 halftone opacity-15 mix-blend-overlay"></div><div class="relative"><div class="flex flex-wrap items-center justify-between gap-1 font-mono-acc text-[10px] uppercase tracking-[0.25em] opacity-80"><span>Coffee · Permanent</span><span>Mar 2014</span></div><h3 class="mt-2 font-display text-2xl font-bold leading-tight drop-shadow">Premium Hot Coffee</h3><p class="mt-2 text-sm opacity-90">Rainforest Alliance-certified, served only during breakfast hours.</p><p class="mt-3 text-[13px] leading-relaxed opacity-80">Launched alongside the Waffle Taco breakfast menu. Replaced an earlier Folgers-based program.</p><div class="mt-4 grid grid-cols-3 gap-1.5 font-mono-acc text-[9px] uppercase tracking-wider"><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Cal</div><div class="opacity-95">5</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Sugar</div><div class="opacity-95">0g</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Caf</div><div class="opacity-95">165mg</div></div></div></div></article>
+      <article class="relative overflow-hidden rounded-md border border-foreground/15 p-5" style="background:linear-gradient(to bottom right,#fbbf24,#92400e);color:#431407"><div class="absolute inset-0 halftone opacity-15 mix-blend-overlay"></div><div class="relative"><div class="flex flex-wrap items-center justify-between gap-1 font-mono-acc text-[10px] uppercase tracking-[0.25em] opacity-80"><span>Coffee · Permanent</span><span>2014</span></div><h3 class="mt-2 font-display text-2xl font-bold leading-tight drop-shadow">Cinnabon Delights Coffee</h3><p class="mt-2 text-sm opacity-90">Sweet, creamed coffee tied to the Cinnabon Delights pastry. Breakfast only.</p><p class="mt-3 text-[13px] leading-relaxed opacity-80">Frequently outsells regular hot coffee 2:1 despite being a flavored variant.</p><div class="mt-4 grid grid-cols-3 gap-1.5 font-mono-acc text-[9px] uppercase tracking-wider"><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Cal</div><div class="opacity-95">220</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Sugar</div><div class="opacity-95">32g</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Caf</div><div class="opacity-95">145mg</div></div></div></div></article>
+      <article class="relative overflow-hidden rounded-md border border-foreground/15 p-5" style="background:linear-gradient(to bottom right,#bae6fd,#0ea5e9);color:#082f49"><div class="absolute inset-0 halftone opacity-15 mix-blend-overlay"></div><div class="relative"><div class="flex flex-wrap items-center justify-between gap-1 font-mono-acc text-[10px] uppercase tracking-[0.25em] opacity-80"><span>Other · Permanent</span><span>1999</span></div><h3 class="mt-2 font-display text-2xl font-bold leading-tight drop-shadow">Aquafina Bottled Water</h3><p class="mt-2 text-sm opacity-90">20 oz Pepsi-owned bottled water — the only non-fountain still option.</p><p class="mt-3 text-[13px] leading-relaxed opacity-80">Listed under 'Drinks' on the menu but fulfilled from the cooler, not the fountain.</p><div class="mt-4 grid grid-cols-3 gap-1.5 font-mono-acc text-[9px] uppercase tracking-wider"><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Cal</div><div class="opacity-95">0</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Sugar</div><div class="opacity-95">0g</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Caf</div><div class="opacity-95">0mg</div></div></div></div></article>
+      <article class="relative overflow-hidden rounded-md border border-foreground/15 p-5" style="background:linear-gradient(to bottom right,#fdba74,#ea580c);color:#431407"><div class="absolute inset-0 halftone opacity-15 mix-blend-overlay"></div><div class="relative"><div class="flex flex-wrap items-center justify-between gap-1 font-mono-acc text-[10px] uppercase tracking-[0.25em] opacity-80"><span>Other · Permanent</span><span>Mar 2014</span></div><h3 class="mt-2 font-display text-2xl font-bold leading-tight drop-shadow">Tropicana Orange Juice</h3><p class="mt-2 text-sm opacity-90">10 oz carton. Breakfast menu only.</p><p class="mt-3 text-[13px] leading-relaxed opacity-80">Pasteurized, not from concentrate; supplied by PepsiCo via the breakfast distribution chain.</p><div class="mt-4 grid grid-cols-3 gap-1.5 font-mono-acc text-[9px] uppercase tracking-wider"><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Cal</div><div class="opacity-95">130</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Sugar</div><div class="opacity-95">26g</div></div><div class="rounded-sm border border-current/30 bg-current/10 px-2 py-1.5"><div class="opacity-60">Caf</div><div class="opacity-95">0mg</div></div></div></div></article>
+    </div>
+  </div>
+</section>
+
+<!-- BAJA BLAST DEEP DIVE -->
+<!-- MOBILE FIX: .lineage-row CSS handles vertical stack on mobile, 3-col on sm+ -->
+<section id="baja-lineage" class="relative overflow-hidden border-b border-foreground/15 text-white" style="background:linear-gradient(to bottom right,#22d3ee,#0f766e,#172554)">
+  <div class="absolute inset-0 halftone opacity-10"></div>
+  <div class="relative mx-auto max-w-[1500px] px-6 py-14">
+    <div class="mb-6 flex flex-wrap items-baseline justify-between gap-2">
+      <div><div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-cyan-200"><svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg> Hero entry</div><h2 class="font-display text-3xl font-semibold sm:text-4xl">The Baja Blast lineage</h2></div>
+      <span class="font-mono-acc text-[10px] uppercase tracking-wider text-cyan-200">2003 → today</span>
+    </div>
+    <p class="max-w-3xl text-[15px] leading-relaxed text-white/85">Baja Blast is the only soda PepsiCo manufactures for a single chain. Below: every meaningful event in its 20-year run, from the internal R&amp;D codename to the 2024 sports tie-ins.</p>
+    <ol class="mt-8 space-y-3">
+      <li class="lineage-row"><span class="lineage-row-year">2003</span><span class="lineage-row-tag">R&amp;D</span><span class="lineage-row-event">PepsiCo and Taco Bell R&amp;D begin work on a custom Mtn Dew flavor — internal codename 'Project Caribbean.'</span></li>
+      <li class="lineage-row"><span class="lineage-row-year">Feb 2004</span><span class="lineage-row-tag">Launch</span><span class="lineage-row-event">Baja Blast launches at U.S. Taco Bell fountains. Marketed as 'tropical lime' and exclusive forever.</span></li>
+      <li class="lineage-row"><span class="lineage-row-year">2010</span><span class="lineage-row-tag">Spinoff</span><span class="lineage-row-event">Mtn Dew Sangrita Blast (cherry-citrus) introduced; quietly retired in 2012.</span></li>
+      <li class="lineage-row"><span class="lineage-row-year">2014</span><span class="lineage-row-tag">+ Freeze</span><span class="lineage-row-event">Baja Blast Freeze debuts. Same year, the freezer wall expands across most stores.</span></li>
+      <li class="lineage-row"><span class="lineage-row-year">2014</span><span class="lineage-row-tag">Bottle</span><span class="lineage-row-event">Limited bottled run hits grocery shelves for summer. Sells out in weeks; spawns 'Baja Blast Day' (July 8).</span></li>
+      <li class="lineage-row"><span class="lineage-row-year">2018</span><span class="lineage-row-tag">Test</span><span class="lineage-row-event">Pineapple-flavor Baja Blast Tropical Lime Splash tested in Pacific Northwest; never expands.</span></li>
+      <li class="lineage-row"><span class="lineage-row-year">2020</span><span class="lineage-row-tag">Permanent</span><span class="lineage-row-event">Bottled Baja Blast becomes a permanent grocery SKU sold by PepsiCo.</span></li>
+      <li class="lineage-row"><span class="lineage-row-year">2024</span><span class="lineage-row-tag">Crossover</span><span class="lineage-row-event">Baja Blast Gel Energy (a hydration gel) launches in partnership with Mtn Dew × Live Más.</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- RETAIL SKUs -->
+<!-- MOBILE FIX: overflow-x scroll wrapper with min-width on inner grid -->
+<section id="retail" class="mx-auto max-w-[1500px] px-6 py-12">
+  <div class="mb-6 flex flex-wrap items-baseline justify-between gap-2">
+    <div><div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg> Off-menu</div><h2 class="font-display text-3xl font-semibold">Bottled &amp; retail SKUs</h2></div>
+    <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">7 in market</span>
+  </div>
+  <div class="mob-scroll overflow-hidden rounded-md border border-foreground/15 bg-card">
+    <div class="mob-inner-lg">
+      <div class="grid grid-cols-[1.6fr_1fr_1.6fr_2.4fr] gap-4 border-b border-foreground/15 bg-secondary/60 px-4 py-3 font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground"><div>Product</div><div>Year</div><div>Channel</div><div>Note</div></div>
+      <div class="grid grid-cols-[1.6fr_1fr_1.6fr_2.4fr] gap-4 border-b border-foreground/10 px-4 py-3 text-sm"><div class="font-display text-base font-semibold">Baja Blast (20 oz bottle)</div><div class="font-mono-acc text-muted-foreground">2014 · 2020 (perm.)</div><div class="text-muted-foreground">Walmart, Target, 7-Eleven</div><div class="text-foreground/85">The first off-menu retail SKU. Slightly less carbonation than the fountain pour.</div></div>
+      <div class="grid grid-cols-[1.6fr_1fr_1.6fr_2.4fr] gap-4 border-b border-foreground/10 px-4 py-3 text-sm"><div class="font-display text-base font-semibold">Baja Blast (12-pack cans)</div><div class="font-mono-acc text-muted-foreground">2021</div><div class="text-muted-foreground">Grocery, Sam's Club</div><div class="text-foreground/85">Cans run sweeter than bottles by ~3 g sugar.</div></div>
+      <div class="grid grid-cols-[1.6fr_1fr_1.6fr_2.4fr] gap-4 border-b border-foreground/10 px-4 py-3 text-sm"><div class="font-display text-base font-semibold">Baja Blast Zero Sugar</div><div class="font-mono-acc text-muted-foreground">2022</div><div class="text-muted-foreground">Walmart, grocery</div><div class="text-foreground/85">Sucralose + ace-K. Kept the tropical lime profile remarkably intact.</div></div>
+      <div class="grid grid-cols-[1.6fr_1fr_1.6fr_2.4fr] gap-4 border-b border-foreground/10 px-4 py-3 text-sm"><div class="font-display text-base font-semibold">Baja Flash (Mango)</div><div class="font-mono-acc text-muted-foreground">2023</div><div class="text-muted-foreground">Limited grocery</div><div class="text-foreground/85">Mango-pineapple sibling. Promoted as a summer LTO; pulled in October.</div></div>
+      <div class="grid grid-cols-[1.6fr_1fr_1.6fr_2.4fr] gap-4 border-b border-foreground/10 px-4 py-3 text-sm"><div class="font-display text-base font-semibold">Baja Punch (Strawberry)</div><div class="font-mono-acc text-muted-foreground">2023</div><div class="text-muted-foreground">Limited grocery</div><div class="text-foreground/85">Polled second-best in the 2023 'pick the next Blast' fan vote.</div></div>
+      <div class="grid grid-cols-[1.6fr_1fr_1.6fr_2.4fr] gap-4 border-b border-foreground/10 px-4 py-3 text-sm"><div class="font-display text-base font-semibold">Baja Midnight (Berry-Pomegranate)</div><div class="font-mono-acc text-muted-foreground">2024</div><div class="text-muted-foreground">Limited grocery</div><div class="text-foreground/85">Dark purple. Launched alongside the 2024 NBA Finals tie-in.</div></div>
+      <div class="grid grid-cols-[1.6fr_1fr_1.6fr_2.4fr] gap-4 border-b border-foreground/10 px-4 py-3 text-sm"><div class="font-display text-base font-semibold">Baja Blast Energy Drink</div><div class="font-mono-acc text-muted-foreground">2025</div><div class="text-muted-foreground">Convenience nationwide</div><div class="text-foreground/85">16 oz can, 200 mg caffeine. Co-developed with Rockstar (also PepsiCo).</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- NUTRITION TABLE -->
+<!-- MOBILE FIX: overflow-x scroll with min-width -->
+<section id="nutrition" class="border-y border-foreground/15 bg-secondary/40">
+  <div class="mx-auto max-w-[1500px] px-6 py-12">
+    <div class="mb-6"><div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3h15"/><path d="M6 3v16a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V3"/><path d="M6 14h12"/></svg> Lab notes</div><h2 class="font-display text-3xl font-semibold">Nutrition at a glance</h2></div>
+    <div class="mob-scroll overflow-hidden rounded-md border border-foreground/15 bg-card">
+      <div class="mob-inner-xl">
+        <div class="grid grid-cols-[1.6fr_1fr_0.7fr_0.7fr_0.7fr_1.4fr] gap-4 border-b border-foreground/15 bg-secondary/60 px-4 py-3 font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground"><div>Drink</div><div>Size</div><div>Cal</div><div>Sugar</div><div>Caf</div><div>Allergens</div></div>
+        <div class="grid grid-cols-[1.6fr_1fr_0.7fr_0.7fr_0.7fr_1.4fr] gap-4 border-b border-foreground/10 px-4 py-3 text-sm"><div class="font-display text-base font-semibold">Baja Blast</div><div class="font-mono-acc text-muted-foreground">20 oz</div><div class="font-mono-acc tabular-nums text-muted-foreground">290</div><div class="font-mono-acc tabular-nums text-muted-foreground">77 g</div><div class="font-mono-acc tabular-nums text-muted-foreground">92 mg</div><div class="text-muted-foreground">None</div></div>
+        <div class="grid grid-cols-[1.6fr_1fr_0.7fr_0.7fr_0.7fr_1.4fr] gap-4 border-b border-foreground/10 px-4 py-3 text-sm"><div class="font-display text-base font-semibold">Baja Blast Freeze</div><div class="font-mono-acc text-muted-foreground">16 oz</div><div class="font-mono-acc tabular-nums text-muted-foreground">220</div><div class="font-mono-acc tabular-nums text-muted-foreground">56 g</div><div class="font-mono-acc tabular-nums text-muted-foreground">70 mg</div><div class="text-muted-foreground">None</div></div>
+        <div class="grid grid-cols-[1.6fr_1fr_0.7fr_0.7fr_0.7fr_1.4fr] gap-4 border-b border-foreground/10 px-4 py-3 text-sm"><div class="font-display text-base font-semibold">Wild Cherry Freeze</div><div class="font-mono-acc text-muted-foreground">16 oz</div><div class="font-mono-acc tabular-nums text-muted-foreground">230</div><div class="font-mono-acc tabular-nums text-muted-foreground">58 g</div><div class="font-mono-acc tabular-nums text-muted-foreground">70 mg</div><div class="text-muted-foreground">None</div></div>
+        <div class="grid grid-cols-[1.6fr_1fr_0.7fr_0.7fr_0.7fr_1.4fr] gap-4 border-b border-foreground/10 px-4 py-3 text-sm"><div class="font-display text-base font-semibold">Pepsi</div><div class="font-mono-acc text-muted-foreground">20 oz</div><div class="font-mono-acc tabular-nums text-muted-foreground">250</div><div class="font-mono-acc tabular-nums text-muted-foreground">69 g</div><div class="font-mono-acc tabular-nums text-muted-foreground">63 mg</div><div class="text-muted-foreground">None</div></div>
+        <div class="grid grid-cols-[1.6fr_1fr_0.7fr_0.7fr_0.7fr_1.4fr] gap-4 border-b border-foreground/10 px-4 py-3 text-sm"><div class="font-display text-base font-semibold">Diet Pepsi</div><div class="font-mono-acc text-muted-foreground">20 oz</div><div class="font-mono-acc tabular-nums text-muted-foreground">0</div><div class="font-mono-acc tabular-nums text-muted-foreground">0 g</div><div class="font-mono-acc tabular-nums text-muted-foreground">60 mg</div><div class="text-muted-foreground">Phenylalanine</div></div>
+        <div class="grid grid-cols-[1.6fr_1fr_0.7fr_0.7fr_0.7fr_1.4fr] gap-4 border-b border-foreground/10 px-4 py-3 text-sm"><div class="font-display text-base font-semibold">Brisk Raspberry</div><div class="font-mono-acc text-muted-foreground">20 oz</div><div class="font-mono-acc tabular-nums text-muted-foreground">200</div><div class="font-mono-acc tabular-nums text-muted-foreground">53 g</div><div class="font-mono-acc tabular-nums text-muted-foreground">25 mg</div><div class="text-muted-foreground">None</div></div>
+        <div class="grid grid-cols-[1.6fr_1fr_0.7fr_0.7fr_0.7fr_1.4fr] gap-4 border-b border-foreground/10 px-4 py-3 text-sm"><div class="font-display text-base font-semibold">Premium Hot Coffee</div><div class="font-mono-acc text-muted-foreground">12 oz</div><div class="font-mono-acc tabular-nums text-muted-foreground">5</div><div class="font-mono-acc tabular-nums text-muted-foreground">0 g</div><div class="font-mono-acc tabular-nums text-muted-foreground">165 mg</div><div class="text-muted-foreground">None</div></div>
+        <div class="grid grid-cols-[1.6fr_1fr_0.7fr_0.7fr_0.7fr_1.4fr] gap-4 border-b border-foreground/10 px-4 py-3 text-sm"><div class="font-display text-base font-semibold">Cinnabon Coffee</div><div class="font-mono-acc text-muted-foreground">12 oz</div><div class="font-mono-acc tabular-nums text-muted-foreground">220</div><div class="font-mono-acc tabular-nums text-muted-foreground">32 g</div><div class="font-mono-acc tabular-nums text-muted-foreground">145 mg</div><div class="text-muted-foreground">Milk</div></div>
+        <div class="grid grid-cols-[1.6fr_1fr_0.7fr_0.7fr_0.7fr_1.4fr] gap-4 border-b border-foreground/10 px-4 py-3 text-sm"><div class="font-display text-base font-semibold">Tropicana OJ</div><div class="font-mono-acc text-muted-foreground">10 oz</div><div class="font-mono-acc tabular-nums text-muted-foreground">130</div><div class="font-mono-acc tabular-nums text-muted-foreground">26 g</div><div class="font-mono-acc tabular-nums text-muted-foreground">0 mg</div><div class="text-muted-foreground">None</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAIRINGS -->
+<!-- MOBILE FIX: overflow-x scroll -->
+<section id="pairings" class="mx-auto max-w-[1500px] px-6 py-12">
+  <div class="mb-6"><div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg> Pairing guide</div><h2 class="font-display text-3xl font-semibold">What to drink with what</h2></div>
+  <div class="mob-scroll overflow-hidden rounded-md border border-foreground/15 bg-card">
+    <div class="mob-inner">
+      <div class="grid grid-cols-[1.4fr_1fr_1fr_1.4fr] gap-4 border-b border-foreground/15 bg-secondary/60 px-4 py-3 font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground"><div>Menu item</div><div>Best</div><div>Second</div><div>Avoid</div></div>
+      <div class="grid grid-cols-[1.4fr_1fr_1fr_1.4fr] gap-4 border-b border-foreground/10 px-4 py-3 text-sm"><div class="font-display text-base font-semibold">Crunchwrap Supreme</div><div class="text-foreground/90">Baja Blast</div><div class="text-muted-foreground">Pepsi</div><div class="text-rose-600">Hot Coffee</div></div>
+      <div class="grid grid-cols-[1.4fr_1fr_1fr_1.4fr] gap-4 border-b border-foreground/10 px-4 py-3 text-sm"><div class="font-display text-base font-semibold">Doritos Locos Taco</div><div class="text-foreground/90">Mtn Dew</div><div class="text-muted-foreground">Baja Blast</div><div class="text-rose-600">Brisk Raspberry</div></div>
+      <div class="grid grid-cols-[1.4fr_1fr_1fr_1.4fr] gap-4 border-b border-foreground/10 px-4 py-3 text-sm"><div class="font-display text-base font-semibold">Bean Burrito</div><div class="text-foreground/90">Pepsi</div><div class="text-muted-foreground">Diet Pepsi</div><div class="text-rose-600">Cinnabon Coffee</div></div>
+      <div class="grid grid-cols-[1.4fr_1fr_1fr_1.4fr] gap-4 border-b border-foreground/10 px-4 py-3 text-sm"><div class="font-display text-base font-semibold">Nachos BellGrande</div><div class="text-foreground/90">Baja Blast Freeze</div><div class="text-muted-foreground">Mtn Dew</div><div class="text-rose-600">OJ</div></div>
+      <div class="grid grid-cols-[1.4fr_1fr_1fr_1.4fr] gap-4 border-b border-foreground/10 px-4 py-3 text-sm"><div class="font-display text-base font-semibold">Cinnabon Delights</div><div class="text-foreground/90">Cinnabon Coffee</div><div class="text-muted-foreground">Hot Coffee</div><div class="text-rose-600">Baja Blast (clashes)</div></div>
+      <div class="grid grid-cols-[1.4fr_1fr_1fr_1.4fr] gap-4 border-b border-foreground/10 px-4 py-3 text-sm"><div class="font-display text-base font-semibold">Cantina Chicken Bowl</div><div class="text-foreground/90">Brisk Raspberry</div><div class="text-muted-foreground">Baja Blast</div><div class="text-rose-600">Code Red</div></div>
+      <div class="grid grid-cols-[1.4fr_1fr_1fr_1.4fr] gap-4 border-b border-foreground/10 px-4 py-3 text-sm"><div class="font-display text-base font-semibold">Breakfast Crunchwrap</div><div class="text-foreground/90">Hot Coffee</div><div class="text-muted-foreground">OJ</div><div class="text-rose-600">Wild Cherry Freeze</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DISCONTINUED -->
+<section id="discontinued" class="border-y border-foreground/15 bg-secondary/40" style="border-color:color-mix(in oklab,var(--foreground) 15%,transparent);">
+  <div class="mx-auto max-w-[1500px] px-6 py-12">
+<section>
+  <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:20px;">
+    <div>
+      <div style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(42,31,21,0.45);">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+        Discontinued Drinks
+      </div>
+      <h2 style="font-family:'Fraunces',Georgia,serif;font-size:clamp(24px,5vw,32px);font-weight:600;letter-spacing:-0.02em;margin-top:4px;">Retired from the lineup</h2>
+    </div>
+    <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(42,31,21,0.4);">60+ entries · 1962–2025</span>
+  </div>
+
+  <p style="margin-bottom:24px;max-width:720px;font-size:15px;line-height:1.7;color:rgba(42,31,21,0.75);">Taco Bell has cycled through more than sixty beverages since the 1960s. The fountain started as a standard Coca-Cola setup — Coke, Sprite, TAB — until PepsiCo's 1997 spinoff replaced the entire lineup overnight. What followed was two decades of experimentation: exclusive Mountain Dew variants, a premium blended fruit program, hand-mixed limeade sparklers, and a rotating wall of frozen collaborations. Most didn't fail because customers stopped ordering them — they died when something upstream changed.</p>
+
+  <div style="overflow:hidden;border-radius:12px;border:1px solid rgba(42,31,21,0.1);cursor:pointer;" onclick="window.location.href='taco-bell-discontinued-drinks.html'">
+    <div style="position:relative;color:#fff;background:linear-gradient(to bottom right,#22d3ee,#0f766e,#172554);">
+      <div style="position:absolute;inset:0;background:linear-gradient(to bottom right,rgba(6,182,212,.65),rgba(15,118,110,.7),rgba(23,37,84,.85));mix-blend-mode:multiply;"></div>
+      <div style="position:absolute;inset:0;background:rgba(8,8,20,.55);"></div>
+      <div style="position:relative;padding:28px;">
+
+        <!-- Stats inline -->
+        <div style="display:flex;align-items:baseline;gap:28px;margin-bottom:24px;">
+          <div style="display:flex;align-items:baseline;gap:6px;">
+            <span style="font-family:'Fraunces',Georgia,serif;font-size:44px;font-weight:700;line-height:1;color:#fff;">60<span style="font-size:24px;color:rgba(255,255,255,0.45);">+</span></span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.4);">discontinued</span>
+          </div>
+          <div style="width:1px;height:28px;background:rgba(255,255,255,0.12);"></div>
+          <div style="display:flex;align-items:baseline;gap:6px;">
+            <span style="font-family:'Fraunces',Georgia,serif;font-size:44px;font-weight:700;line-height:1;color:#fff;">12</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.4);">Mtn Dew variants</span>
+          </div>
+        </div>
+
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:10px;">Notable drinks</div>
+
+        <!-- Top row: 3 drink cards -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px;">
+          <!-- Sangrita Blast -->
+          <div style="position:relative;overflow:hidden;border-radius:8px;border:1px solid rgba(255,255,255,0.1);padding:16px 18px;background:linear-gradient(135deg,rgba(140,30,50,.8),rgba(80,15,30,.85));">
+            <div style="position:absolute;inset:0;background-image:radial-gradient(oklch(0.70 0.27 350) 1.4px,transparent 1.6px);background-size:10px 10px;opacity:.08;mix-blend-mode:overlay;"></div>
+            <div style="position:relative;">
+              <div style="font-family:'Fraunces',Georgia,serif;font-size:17px;font-weight:700;line-height:1.15;color:#fff;">Mtn Dew Sangrita Blast</div>
+              <div style="margin-top:3px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.4);">2013–2017</div>
+              <p style="margin-top:6px;font-size:12px;line-height:1.45;color:rgba(255,255,255,0.7);">Cherry-citrus Dew exclusive. Baja Blast's only sibling. Fans still petition for its return.</p>
+            </div>
+          </div>
+          <!-- Frutista Freeze -->
+          <div style="position:relative;overflow:hidden;border-radius:8px;border:1px solid rgba(255,255,255,0.1);padding:16px 18px;background:linear-gradient(135deg,rgba(194,74,142,.8),rgba(107,29,78,.85));">
+            <div style="position:absolute;inset:0;background-image:radial-gradient(oklch(0.70 0.27 350) 1.4px,transparent 1.6px);background-size:10px 10px;opacity:.08;mix-blend-mode:overlay;"></div>
+            <div style="position:relative;">
+              <div style="font-family:'Fraunces',Georgia,serif;font-size:17px;font-weight:700;line-height:1.15;color:#fff;">Frutista Freeze</div>
+              <div style="margin-top:3px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.4);">2008–2013</div>
+              <p style="margin-top:6px;font-size:12px;line-height:1.45;color:rgba(255,255,255,0.7);">Premium blended line with real strawberry slices. Ten flavors. Replaced when Baja Blast Freeze took over.</p>
+            </div>
+          </div>
+          <!-- Kickstart -->
+          <div style="position:relative;overflow:hidden;border-radius:8px;border:1px solid rgba(255,255,255,0.1);padding:16px 18px;background:linear-gradient(135deg,rgba(240,140,30,.85),rgba(180,80,10,.85));">
+            <div style="position:absolute;inset:0;background-image:radial-gradient(oklch(0.70 0.27 350) 1.4px,transparent 1.6px);background-size:10px 10px;opacity:.08;mix-blend-mode:overlay;"></div>
+            <div style="position:relative;">
+              <div style="font-family:'Fraunces',Georgia,serif;font-size:17px;font-weight:700;line-height:1.15;color:#fff;">Mtn Dew Kickstart</div>
+              <div style="margin-top:3px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.4);">Orange · 2014–2022</div>
+              <p style="margin-top:6px;font-size:12px;line-height:1.45;color:rgba(255,255,255,0.7);">Orange citrus energy drink. Held a dedicated fountain valve before being quietly pulled.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom row: Mtn Dew AM + White CTA card -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <!-- Mtn Dew AM -->
+          <div style="position:relative;overflow:hidden;border-radius:8px;border:1px solid rgba(255,255,255,0.1);padding:16px 18px;background:linear-gradient(135deg,rgba(120,180,40,.85),rgba(55,95,15,.9));">
+            <div style="position:absolute;inset:0;background-image:radial-gradient(oklch(0.70 0.27 350) 1.4px,transparent 1.6px);background-size:10px 10px;opacity:.1;mix-blend-mode:overlay;"></div>
+            <div style="position:relative;">
+              <div style="font-family:'Fraunces',Georgia,serif;font-size:17px;font-weight:700;line-height:1.15;color:#fff;">Mtn Dew AM</div>
+              <div style="margin-top:3px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,0.4);">Breakfast Dew · 2012–2013</div>
+              <p style="margin-top:6px;font-size:12px;line-height:1.45;color:rgba(255,255,255,0.7);">Dew mixed with orange juice for the breakfast menu launch. Gone in under a year.</p>
+            </div>
+          </div>
+
+          <!-- White CTA card -->
+          <div style="border-radius:8px;background:#fff;padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between;color:#2a1f15;">
+            <div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(42,31,21,0.35);">Interactive archive</div>
+              <div style="margin-top:4px;font-family:'Fraunces',Georgia,serif;font-size:17px;font-weight:700;line-height:1.2;color:#2a1f15;">Full timeline &amp; history</div>
+              <p style="margin-top:5px;font-size:11px;line-height:1.4;color:rgba(42,31,21,0.5);">A comprehensive record of every drink Taco Bell has ever discontinued, from 1962 to today.</p>
+              <!-- Category chips -->
+              <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:4px;">
+                <div style="display:inline-flex;align-items:center;gap:3px;border:1px solid rgba(42,31,21,0.08);padding:2px 6px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.45);"><div style="width:5px;height:5px;border-radius:50%;background:#5a8a1b;"></div>Mtn Dew</div>
+                <div style="display:inline-flex;align-items:center;gap:3px;border:1px solid rgba(42,31,21,0.08);padding:2px 6px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.45);"><div style="width:5px;height:5px;border-radius:50%;background:#c24a8e;"></div>Frutista</div>
+                <div style="display:inline-flex;align-items:center;gap:3px;border:1px solid rgba(42,31,21,0.08);padding:2px 6px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.45);"><div style="width:5px;height:5px;border-radius:50%;background:#1a9e7a;"></div>Freezes</div>
+                <div style="display:inline-flex;align-items:center;gap:3px;border:1px solid rgba(42,31,21,0.08);padding:2px 6px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.45);"><div style="width:5px;height:5px;border-radius:50%;background:#7ab82a;"></div>Sparklers</div>
+                <div style="display:inline-flex;align-items:center;gap:3px;border:1px solid rgba(42,31,21,0.08);padding:2px 6px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.45);"><div style="width:5px;height:5px;border-radius:50%;background:#c05028;"></div>Hot bev.</div>
+                <div style="display:inline-flex;align-items:center;gap:3px;border:1px solid rgba(42,31,21,0.08);padding:2px 6px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.45);"><div style="width:5px;height:5px;border-radius:50%;background:#b06a12;"></div>Iced tea</div>
+                <div style="display:inline-flex;align-items:center;gap:3px;border:1px solid rgba(42,31,21,0.08);padding:2px 6px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.45);"><div style="width:5px;height:5px;border-radius:50%;background:#2a7ecd;"></div>Sodas</div>
+              </div>
+            </div>
+            <!-- Explore CTA -->
+            <div
+              style="margin-top:14px;display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#2a1f15;padding:8px 14px;border-radius:5px;border:1px solid rgba(42,31,21,0.15);transition:all 0.15s ease;cursor:pointer;align-self:flex-start;"
+              onmouseover="this.style.background='rgba(42,31,21,0.07)';this.style.borderColor='rgba(42,31,21,0.3)';this.querySelector('svg').style.transform='translateX(3px)';"
+              onmouseout="this.style.background='transparent';this.style.borderColor='rgba(42,31,21,0.15)';this.querySelector('svg').style.transform='translateX(0)';"
+            >
+              Explore
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2a1f15" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 0.15s ease;"><path d="m9 18 6-6-6-6"/></svg>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+  </div>
+</section>
+
+
+
+<!-- TRIVIA -->
+<section id="trivia" class="mx-auto max-w-[1500px] px-6 py-12">
+  <div class="mb-5 flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg> Did you know</div>
+  <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="relative overflow-hidden rounded-md border border-foreground/15 bg-card p-5"><div class="absolute inset-0 halftone opacity-[0.06]"></div><div class="relative"><div class="flex items-center justify-between font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><span style="color:#0e7490">Drink fact</span><span class="tabular-nums">№ 01</span></div><p class="mt-3 text-[15px] leading-relaxed text-foreground/85">Baja Blast is the only soda PepsiCo manufactures exclusively for a single restaurant chain.</p></div></div>
+    <div class="relative overflow-hidden rounded-md border border-foreground/15 bg-card p-5"><div class="absolute inset-0 halftone opacity-[0.06]"></div><div class="relative"><div class="flex items-center justify-between font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><span style="color:#0e7490">Drink fact</span><span class="tabular-nums">№ 02</span></div><p class="mt-3 text-[15px] leading-relaxed text-foreground/85">The Freeze machines in Taco Bell are made by Taylor Company — the same supplier behind McDonald's notorious McFlurry machines.</p></div></div>
+    <div class="relative overflow-hidden rounded-md border border-foreground/15 bg-card p-5"><div class="absolute inset-0 halftone opacity-[0.06]"></div><div class="relative"><div class="flex items-center justify-between font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><span style="color:#0e7490">Drink fact</span><span class="tabular-nums">№ 03</span></div><p class="mt-3 text-[15px] leading-relaxed text-foreground/85">The 'Baja' name is a marketing reference to Baja California, Mexico — though no part of the recipe is Mexican.</p></div></div>
+    <div class="relative overflow-hidden rounded-md border border-foreground/15 bg-card p-5"><div class="absolute inset-0 halftone opacity-[0.06]"></div><div class="relative"><div class="flex items-center justify-between font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><span style="color:#0e7490">Drink fact</span><span class="tabular-nums">№ 04</span></div><p class="mt-3 text-[15px] leading-relaxed text-foreground/85">Bottled Baja Blast was originally a 12-week LTO in 2014; demand caused PepsiCo to extend it three times before going permanent.</p></div></div>
+    <div class="relative overflow-hidden rounded-md border border-foreground/15 bg-card p-5"><div class="absolute inset-0 halftone opacity-[0.06]"></div><div class="relative"><div class="flex items-center justify-between font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><span style="color:#0e7490">Drink fact</span><span class="tabular-nums">№ 05</span></div><p class="mt-3 text-[15px] leading-relaxed text-foreground/85">Cinnabon Delights Coffee uses a syrup co-developed with Cinnabon's flavor lab in Atlanta — not a generic cinnamon dolce.</p></div></div>
+    <div class="relative overflow-hidden rounded-md border border-foreground/15 bg-card p-5"><div class="absolute inset-0 halftone opacity-[0.06]"></div><div class="relative"><div class="flex items-center justify-between font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><span style="color:#0e7490">Drink fact</span><span class="tabular-nums">№ 06</span></div><p class="mt-3 text-[15px] leading-relaxed text-foreground/85">Taco Bell's only nationally rolled-back beverage decision is the 2020 Lipton Brisk Lemon → Raspberry swap, which still gets petitions.</p></div></div>
+    <div class="relative overflow-hidden rounded-md border border-foreground/15 bg-card p-5"><div class="absolute inset-0 halftone opacity-[0.06]"></div><div class="relative"><div class="flex items-center justify-between font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><span style="color:#0e7490">Drink fact</span><span class="tabular-nums">№ 07</span></div><p class="mt-3 text-[15px] leading-relaxed text-foreground/85">A 30 oz Baja Blast Freeze contains roughly 110 g of sugar — more than two standard Snickers bars.</p></div></div>
+  </div>
+</section>
+
+<!-- QUOTES -->
+<section id="quotes" class="border-y border-foreground/15 bg-secondary/40">
+  <div class="mx-auto max-w-[1500px] px-6 py-12">
+    <div class="mb-6"><div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg> On the record</div><h2 class="font-display text-3xl font-semibold">What people have said about it</h2></div>
+    <div class="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+      <div class="relative overflow-hidden rounded-md border border-foreground/15 bg-card p-5"><svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg><div class="mt-2 font-display text-lg font-semibold leading-snug">"It's the only soda I associate with a building."</div><div class="mt-3 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground">— Eater roundtable, 2019</div></div>
+      <div class="relative overflow-hidden rounded-md border border-foreground/15 bg-card p-5"><svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg><div class="mt-2 font-display text-lg font-semibold leading-snug">"Baja Blast is what Mountain Dew tastes like in a parallel universe where soda is good for you."</div><div class="mt-3 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground">— Bon Appétit, 2017</div></div>
+      <div class="relative overflow-hidden rounded-md border border-foreground/15 bg-card p-5"><svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg><div class="mt-2 font-display text-lg font-semibold leading-snug">"We didn't predict the freezer-aisle launch would feel like a Beanie Baby drop."</div><div class="mt-3 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground">— PepsiCo brand manager, 2014</div></div>
+      <div class="relative overflow-hidden rounded-md border border-foreground/15 bg-card p-5"><svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg><div class="mt-2 font-display text-lg font-semibold leading-snug">"If you order Pepsi at Taco Bell, you're missing the entire point."</div><div class="mt-3 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground">— r/tacobell, top-voted 2022</div></div>
+      <div class="relative overflow-hidden rounded-md border border-foreground/15 bg-card p-5"><svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg><div class="mt-2 font-display text-lg font-semibold leading-snug">"The Wild Cherry Freeze tastes like a slurpee that finished college."</div><div class="mt-3 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground">— Thrillist, 2021</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- POP CULTURE -->
+<section id="pop-culture" class="mx-auto max-w-[1500px] px-6 py-12">
+  <div class="mb-6"><div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg> Beyond the cup</div><h2 class="font-display text-3xl font-semibold">Pop culture footprint</h2></div>
+  <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <article class="rounded-md border border-foreground/15 bg-card p-5"><div class="font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Fan holiday · July 8</div><h3 class="mt-1 font-display text-lg font-semibold leading-tight">"Baja Blast Day"</h3><p class="mt-2 text-sm text-foreground/80">Marks the 2014 freezer-aisle bottle release. Trends every year.</p></article>
+    <article class="rounded-md border border-foreground/15 bg-card p-5"><div class="font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Film · 1993</div><h3 class="mt-1 font-display text-lg font-semibold leading-tight">Demolition Man</h3><p class="mt-2 text-sm text-foreground/80">Predates Baja Blast but cemented Taco Bell as the cinematic future of food. Baja Blast is the franchise's unofficial drink.</p></article>
+    <article class="rounded-md border border-foreground/15 bg-card p-5"><div class="font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Music · 2021</div><h3 class="mt-1 font-display text-lg font-semibold leading-tight">Bo Burnham — "Bezos I"</h3><p class="mt-2 text-sm text-foreground/80">Background prop: a sweating Baja Blast cup in the empty room.</p></article>
+    <article class="rounded-md border border-foreground/15 bg-card p-5"><div class="font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground">TikTok · 2020–</div><h3 class="mt-1 font-display text-lg font-semibold leading-tight">TikTok Baja DIY</h3><p class="mt-2 text-sm text-foreground/80">Pre-bottle era hack: Mtn Dew + lime sherbet + pineapple juice. Spawned 400M+ views.</p></article>
+    <article class="rounded-md border border-foreground/15 bg-card p-5"><div class="font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Reddit</div><h3 class="mt-1 font-display text-lg font-semibold leading-tight">r/tacobell freeze rankings</h3><p class="mt-2 text-sm text-foreground/80">Weekly threads ranking Freeze flavors and lamenting regional pulls.</p></article>
+    <article class="rounded-md border border-foreground/15 bg-card p-5"><div class="font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground">TV · 2024</div><h3 class="mt-1 font-display text-lg font-semibold leading-tight">Mtn Dew × NBA Finals</h3><p class="mt-2 text-sm text-foreground/80">Baja Midnight launched mid-finals as a shared brand moment with the league.</p></article>
+  </div>
+</section>
+
+<!-- RANKINGS -->
+<!-- MOBILE FIX: .ranking-row CSS handles 2-col on mobile, 4-col on sm+ -->
+<section id="rankings" class="border-y border-foreground/15 bg-secondary/40">
+  <div class="mx-auto max-w-[1500px] px-6 py-12">
+    <div class="mb-6"><div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg> Critics &amp; community</div><h2 class="font-display text-3xl font-semibold">How it ranks</h2></div>
+    <ol class="overflow-hidden rounded-md border border-foreground/15 bg-card">
+      <li class="ranking-row"><span class="font-display text-2xl font-bold tabular-nums" style="color:var(--neon)">01</span><span class="ranking-source font-display text-base font-semibold">Thrillist soda tier list</span><span class="ranking-year font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">2022</span><span class="ranking-verdict">Baja Blast S-tier, the only 'restaurant soda' to crack the top.</span></li>
+      <li class="ranking-row"><span class="font-display text-2xl font-bold tabular-nums" style="color:var(--neon)">02</span><span class="ranking-source font-display text-base font-semibold">Eater readers' poll</span><span class="ranking-year font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">2021</span><span class="ranking-verdict">Baja Blast Freeze edged out the carbonated original by 4%.</span></li>
+      <li class="ranking-row"><span class="font-display text-2xl font-bold tabular-nums" style="color:var(--neon)">03</span><span class="ranking-source font-display text-base font-semibold">r/tacobell flavor bracket</span><span class="ranking-year font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">2023</span><span class="ranking-verdict">Wild Cherry Freeze beat Sweet Lightning in the final.</span></li>
+      <li class="ranking-row"><span class="font-display text-2xl font-bold tabular-nums" style="color:var(--neon)">04</span><span class="ranking-source font-display text-base font-semibold">Bon Appétit blind ranking</span><span class="ranking-year font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">2019</span><span class="ranking-verdict">Cinnabon Coffee called 'shockingly competent' — placed above Dunkin's Caramel Swirl.</span></li>
+      <li class="ranking-row"><span class="font-display text-2xl font-bold tabular-nums" style="color:var(--neon)">05</span><span class="ranking-source font-display text-base font-semibold">vs. Mtn Dew Code Red</span><span class="ranking-year font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Ongoing</span><span class="ranking-verdict">Baja Blast outsells every other Mtn Dew exclusive 2:1 by volume.</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- SAYINGS -->
+<section id="sayings" class="mx-auto max-w-[1500px] px-6 py-12">
+  <div class="mb-6"><div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.54 15H17a2 2 0 0 0-2 2v4.54"/><path d="M7 3.34V5a3 3 0 0 0 3 3v0a2 2 0 0 1 2 2v0c0 1.1.9 2 2 2v0a2 2 0 0 0 2-2v0c0-1.1.9-2 2-2h3.17"/><path d="M11 21.95V18a2 2 0 0 0-2-2v0a2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05"/><circle cx="12" cy="12" r="10"/></svg> Tagline archive</div><h2 class="font-display text-3xl font-semibold">Lines from the marketing</h2></div>
+  <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#06b6d4,#1e3a8a)"><div class="absolute inset-0 halftone opacity-15 mix-blend-overlay"></div><div class="relative"><div class="font-display text-xl font-semibold leading-snug">"Live Más, Drink Más."</div><div class="mt-3 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-cyan-200">Baja Blast Freeze launch · 2014</div></div></div>
+    <div class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#06b6d4,#1e3a8a)"><div class="absolute inset-0 halftone opacity-15 mix-blend-overlay"></div><div class="relative"><div class="font-display text-xl font-semibold leading-snug">"It's not a soda. It's a souvenir."</div><div class="mt-3 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-cyan-200">Bottled Baja Day · 2020</div></div></div>
+    <div class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#06b6d4,#1e3a8a)"><div class="absolute inset-0 halftone opacity-15 mix-blend-overlay"></div><div class="relative"><div class="font-display text-xl font-semibold leading-snug">"Made for the Crunchwrap."</div><div class="mt-3 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-cyan-200">Pairing campaign · 2018</div></div></div>
+    <div class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#06b6d4,#1e3a8a)"><div class="absolute inset-0 halftone opacity-15 mix-blend-overlay"></div><div class="relative"><div class="font-display text-xl font-semibold leading-snug">"The only Mountain Dew with a passport."</div><div class="mt-3 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-cyan-200">Baja Bottled launch · 2014</div></div></div>
+    <div class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#06b6d4,#1e3a8a)"><div class="absolute inset-0 halftone opacity-15 mix-blend-overlay"></div><div class="relative"><div class="font-display text-xl font-semibold leading-snug">"Tropical lime. Definitely not lime-flavored."</div><div class="mt-3 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-cyan-200">TikTok response · 2022</div></div></div>
+  </div>
+</section>
+
+<!-- REFERENCES -->
+<!-- MOBILE FIX: .ref-row CSS handles 2-col on mobile, 4-col on sm+ -->
+<section id="references" class="border-y border-foreground/15 bg-secondary/40">
+  <div class="mx-auto max-w-[1500px] px-6 py-12">
+    <div class="mb-6"><div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" x2="21" y1="6" y2="6"/><line x1="10" x2="21" y1="12" y2="12"/><line x1="10" x2="21" y1="18" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg> Sources</div><h2 class="font-display text-3xl font-semibold">References</h2></div>
+    <ol class="space-y-2">
+      <li class="ref-row"><span class="font-display text-base font-bold tabular-nums" style="color:var(--neon)">01</span><span class="ref-title">"The Strange Forever Romance Between Taco Bell and Baja Blast"</span><span class="ref-pub font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Eater</span><span class="ref-year font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">2019</span></li>
+      <li class="ref-row"><span class="font-display text-base font-bold tabular-nums" style="color:var(--neon)">02</span><span class="ref-title">PepsiCo Annual Foodservice Report — fountain volume tables</span><span class="ref-pub font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">PepsiCo</span><span class="ref-year font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">2023</span></li>
+      <li class="ref-row"><span class="font-display text-base font-bold tabular-nums" style="color:var(--neon)">03</span><span class="ref-title">"Bottled Baja Blast Sold Out in Days"</span><span class="ref-pub font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Adweek</span><span class="ref-year font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">2014</span></li>
+      <li class="ref-row"><span class="font-display text-base font-bold tabular-nums" style="color:var(--neon)">04</span><span class="ref-title">"Inside the Cinnabon Delights Coffee Recipe"</span><span class="ref-pub font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Bon Appétit</span><span class="ref-year font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">2018</span></li>
+      <li class="ref-row"><span class="font-display text-base font-bold tabular-nums" style="color:var(--neon)">05</span><span class="ref-title">r/tacobell — Drinks megathreads</span><span class="ref-pub font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Reddit</span><span class="ref-year font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Ongoing</span></li>
+      <li class="ref-row"><span class="font-display text-base font-bold tabular-nums" style="color:var(--neon)">06</span><span class="ref-title">Taco Bell Newsroom — drink launches index</span><span class="ref-pub font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">tacobell.com</span><span class="ref-year font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Updated yearly</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- SEE ALSO -->
+<section id="see-also" class="mx-auto max-w-[1500px] px-6 py-12">
+  <div class="mb-6"><div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><line x1="8" x2="16" y1="12" y2="12"/></svg> Cross-reference</div><h2 class="font-display text-3xl font-semibold">See also</h2></div>
+  <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <article class="rounded-md border border-foreground/15 bg-card p-5"><h3 class="font-display text-lg font-semibold leading-tight">Sauce Packets</h3><p class="mt-2 text-sm text-foreground/80">The Mild→Diablo packet ladder pairs across the entire drink lineup.</p></article>
+    <article class="rounded-md border border-foreground/15 bg-card p-5"><h3 class="font-display text-lg font-semibold leading-tight">Crunchwrap Supreme</h3><p class="mt-2 text-sm text-foreground/80">The dish Baja Blast was effectively engineered to drink with.</p></article>
+    <article class="rounded-md border border-foreground/15 bg-card p-5"><h3 class="font-display text-lg font-semibold leading-tight">Cinnabon Delights</h3><p class="mt-2 text-sm text-foreground/80">Why Cinnabon Coffee exists in the first place.</p></article>
+    <article class="rounded-md border border-foreground/15 bg-card p-5"><h3 class="font-display text-lg font-semibold leading-tight">Mountain Dew</h3><p class="mt-2 text-sm text-foreground/80">The parent brand that made Baja exclusivity possible.</p></article>
+    <article class="rounded-md border border-foreground/15 bg-card p-5"><h3 class="font-display text-lg font-semibold leading-tight">Yum! Brands</h3><p class="mt-2 text-sm text-foreground/80">The 1997 Tricon spinoff is the reason every fountain is Pepsi.</p></article>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="border-t border-foreground/15 bg-card">
+  <div class="mx-auto flex max-w-[1500px] flex-col items-start gap-3 px-6 py-8 sm:flex-row sm:items-center sm:justify-between">
+    <a href="taco-bell.html" class="inline-flex items-center gap-2 font-mono-acc text-[11px] uppercase tracking-[0.25em] text-muted-foreground hover:text-foreground"><svg class="h-3 w-3 rotate-180" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg> Back to Taco Bell</a>
+    <div class="font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground">ViziWiki · Drinks · last updated 2025</div>
+  </div>
+</footer>
+
+<script>
+window.WIKI_TOC = {
+  pageTitle: 'Drinks',
+  pageLogo: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none"><path d="M20 22L23 52C23.2 54.5 25 56.5 27.5 56.5H36.5C39 56.5 40.8 54.5 41 52L44 22Z" fill="#c8c4ba"/><rect x="35" y="7" width="2.6" height="36" rx="1.3" fill="#dc2626" transform="rotate(-7 36.3 25)"/><path d="M22.5 30 C25 31.5 28 28.5 32 30 C36 31.5 39.5 29 41.5 30 L39 51 C38.85 52.8 37.4 54 35.7 54 L28.3 54 C26.6 54 25.15 52.8 25 51 Z" fill="#22d3ee"/><path d="M21.5 22.5 L25 51 C25.15 52.8 26.6 54 28.3 54 L35.7 54 C37.4 54 38.85 52.8 39 51 L42.5 22.5 Z" fill="rgba(210,208,200,.55)"/><rect x="19" y="18" width="26" height="4.5" rx="2.25" fill="rgba(200,198,192,.8)"/></svg>',
+  wikiHome: 'taco-bell.html',
+  wikiTitle: 'Taco Bell',
+  wikiLogo: '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="28" height="28" rx="2.5" fill="#ffffff"/><rect x="4" y="4" width="24" height="24" rx="0.8" fill="#702082"/><rect x="14.7" y="8.5" width="2.6" height="1.3" rx="0.6" fill="#FED141"/><path d="M 12 10 Q 12 9.1 13 9.1 L 19 9.1 Q 20 9.1 20 10 L 21 18.5 Q 22 19 22 19.7 L 10 19.7 Q 10 19 11 18.5 Z" fill="#FED141"/><circle cx="16" cy="21" r="1" fill="#FED141"/></svg>',
+  parentUrl: 'taco-bell.html',
+  parentTitle: 'Taco Bell wiki',
+  categories: [
+    { name: 'Tacos',         url: 'taco-bell-tacos.html',       color: '#e07b22' },
+    { name: 'Burritos',      url: 'taco-bell-burritos.html',    color: '#a855f7' },
+    { name: 'Tacos & Sides', url: 'taco-bell-tacos-sides.html', color: '#7c3aed' },
+    { name: 'Drinks',        url: 'taco-bell-drinks.html',      color: '#0ea5e9' },
+    { name: 'Sauces',        url: 'taco-bell-sauces.html',      color: '#dc2626' },
+    { name: 'Late Night',    url: 'taco-bell-late-night.html',  color: '#1e1b4b' },
+    { name: 'Breakfast',     url: 'taco-bell-breakfast.html',   color: '#ca8a04' },
+    { name: 'Desserts',      url: 'taco-bell-desserts.html',    color: '#c2410c' }
+  ],
+  sections: [
+    { group: 'INTRO',          id: 'overview',       label: 'Overview' },
+    { group: 'THE MENU',       id: 'families',       label: 'Six families' },
+    { group: 'THE MENU',       id: 'sugar-ladder',   label: 'Sugar ladder' },
+    { group: 'THE MENU',       id: 'caffeine-ladder', label: 'Caffeine ladder' },
+    { group: 'THE MENU',       id: 'catalog',        label: 'Catalog' },
+    { group: 'BAJA DEEP DIVE', id: 'baja-lineage',   label: 'Baja lineage' },
+    { group: 'BAJA DEEP DIVE', id: 'retail',         label: 'Retail SKUs' },
+    { group: 'DATA',           id: 'nutrition',      label: 'Nutrition' },
+    { group: 'DATA',           id: 'pairings',       label: 'Pairings' },
+    { group: 'HISTORY',        id: 'discontinued',   label: 'Discontinued' },
+    { group: 'LORE',           id: 'trivia',         label: 'Trivia' },
+    { group: 'LORE',           id: 'quotes',         label: 'Quotes' },
+    { group: 'LORE',           id: 'pop-culture',    label: 'Pop culture' },
+    { group: 'LORE',           id: 'rankings',       label: 'Rankings' },
+    { group: 'LORE',           id: 'sayings',        label: 'Sayings' },
+    { group: 'SOURCES',        id: 'references',     label: 'References' },
+    { group: 'SOURCES',        id: 'see-also',       label: 'See also' }
+  ]
+};
+</script>
+<!-- icons inline -->
+{% endraw %}
