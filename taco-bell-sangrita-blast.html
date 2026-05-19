@@ -1,0 +1,349 @@
+---
+layout: default
+title: "Mtn Dew Sangrita Blast — ViziWiki"
+body_class: "wiki-page"
+---
+{% raw %}
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#9f1239;--accent-light:#fb7185;--accent-dark:#4c0519;
+  --background:oklch(0.972 0.012 85);--foreground:oklch(0.18 0.02 60);--card:oklch(1 0 0);
+  --secondary:oklch(0.93 0.02 80);--muted-foreground:oklch(0.45 0.03 60);
+}
+body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var(--background);}
+.fra{font-family:'Fraunces',Georgia,serif;}.mono{font-family:'JetBrains Mono',monospace;}
+
+.de-hero{position:relative;overflow:hidden;color:#fff;padding:clamp(48px,10vw,96px) 24px clamp(40px,8vw,72px);}
+.de-hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(color-mix(in srgb,var(--accent-light) 70%,white) 1.4px,transparent 1.6px);background-size:10px 10px;opacity:.12;mix-blend-mode:overlay;}
+.de-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(to top,rgba(0,0,0,.35),transparent);}
+.de-hero-inner{position:relative;z-index:1;max-width:1500px;margin:0 auto;}
+
+.de-section{padding:clamp(32px,6vw,64px) 24px;}
+.de-section-inner{max-width:1500px;margin:0 auto;}
+.de-section:nth-child(even){background:color-mix(in oklab,var(--secondary) 40%,transparent);}
+.de-section:nth-child(odd){background:var(--card);}
+.de-section + .de-section{border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);}
+
+.de-eye{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--muted-foreground);display:flex;align-items:center;gap:8px;}
+.de-eye::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--accent);}
+.de-h2{margin-top:4px;font-family:'Fraunces',Georgia,serif;font-size:28px;font-weight:600;}
+
+.de-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:20px;}
+.de-stat{background:var(--card);border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);border-radius:10px;padding:16px;border-top:3px solid var(--accent);}
+.de-stat-val{font-family:'Fraunces',Georgia,serif;font-size:24px;font-weight:700;color:var(--accent);}
+.de-stat-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted-foreground);margin-top:2px;}
+
+.de-prose{font-size:15px;line-height:1.75;color:color-mix(in oklab,var(--foreground) 80%,transparent);}
+.de-prose p+p{margin-top:12px;}
+.de-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:16px;}
+
+.de-tl{position:relative;padding-left:28px;margin-top:24px;}
+.de-tl::before{content:'';position:absolute;left:8px;top:4px;bottom:4px;width:2px;background:color-mix(in oklab,var(--accent) 25%,transparent);border-radius:1px;}
+.de-tl-item{position:relative;margin-bottom:24px;}
+.de-tl-item::before{content:'';position:absolute;left:-24px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid var(--card);}
+.de-tl-item:last-child{margin-bottom:0;}
+.de-tl-date{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);font-weight:600;}
+.de-tl-title{font-family:'Fraunces',Georgia,serif;font-size:17px;font-weight:600;margin-top:2px;}
+.de-tl-desc{margin-top:4px;font-size:14px;line-height:1.6;color:color-mix(in oklab,var(--foreground) 70%,transparent);}
+
+.de-quote{position:relative;background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:12px;padding:28px 28px 28px 44px;margin:24px 0;overflow:hidden;}
+.de-quote::before{content:'\201c';position:absolute;top:12px;left:16px;font-family:'Fraunces',Georgia,serif;font-size:48px;font-weight:700;color:rgba(255,255,255,0.15);line-height:1;}
+.de-quote::after{content:'';position:absolute;inset:0;background-image:radial-gradient(color-mix(in srgb,var(--accent-light) 70%,white) 1.4px,transparent 1.6px);background-size:10px 10px;opacity:.08;mix-blend-mode:overlay;pointer-events:none;}
+.de-quote p{position:relative;font-style:italic;font-size:15px;line-height:1.6;}
+.de-quote cite{position:relative;display:block;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);font-style:normal;}
+
+.de-callout{background:color-mix(in oklab,var(--accent) 6%,transparent);border:1px solid color-mix(in oklab,var(--accent) 15%,transparent);border-radius:10px;padding:20px;margin:24px 0;}
+
+.de-flavor-bar{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.de-flavor-name{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted-foreground);width:90px;text-align:right;flex-shrink:0;}
+.de-flavor-fill{height:8px;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));}
+
+.de-pill{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:5px 12px;border-radius:4px;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);}
+
+.de-back{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);text-decoration:none;border:1px solid color-mix(in oklab,var(--accent) 25%,transparent);padding:10px 20px;border-radius:6px;}
+
+@media(max-width:768px){.de-stats{grid-template-columns:1fr 1fr;}.de-grid{grid-template-columns:1fr !important;}}
+
+</style>
+
+<!-- HERO -->
+<div class="de-hero" style="background:linear-gradient(135deg,#881337,#9f1239,#4c0519,#0f172a);">
+  <div class="de-hero-inner">
+    <div class="mono" style="font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.45);display:flex;align-items:center;gap:8px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+      Mountain Dew · PepsiCo · 2013–2017
+    </div>
+    <h1 class="fra" style="font-size:clamp(40px,8vw,72px);font-weight:700;letter-spacing:-0.03em;line-height:.95;margin-top:8px;">Mtn Dew<br>Sangrita Blast</h1>
+    <p style="margin-top:16px;font-size:clamp(14px,2vw,17px);line-height:1.6;color:rgba(255,255,255,0.7);max-width:560px;">A cherry-citrus punch soda produced by PepsiCo under the Mountain Dew brand. Introduced in December 2013 and discontinued in 2017.</p>
+    <div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:8px;">
+      <span class="de-pill">Discontinued</span><span class="de-pill">Taco Bell exclusive</span><span class="de-pill">PepsiCo · Mountain Dew</span>
+    </div>
+  </div>
+</div>
+
+<!-- AT A GLANCE -->
+<div class="de-section">
+  <div class="de-section-inner">
+    <div class="de-eye">At a glance</div>
+    <h2 id="glance" class="de-h2">Product summary</h2>
+    <div class="de-stats">
+      <div class="de-stat"><div class="de-stat-val">Dec 2013</div><div class="de-stat-label">Launched</div></div>
+      <div class="de-stat"><div class="de-stat-val">2017</div><div class="de-stat-label">Discontinued</div></div>
+      <div class="de-stat"><div class="de-stat-val">~4 years</div><div class="de-stat-label">On the market</div></div>
+      <div class="de-stat"><div class="de-stat-val">Citrus Punch</div><div class="de-stat-label">Official flavor</div></div>
+      <div class="de-stat"><div class="de-stat-val">Maroon</div><div class="de-stat-label">Color</div></div>
+      <div class="de-stat"><div class="de-stat-val">Fountain + Retail</div><div class="de-stat-label">Formats</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<div class="de-section">
+  <div class="de-section-inner">
+    <div class="de-eye">Overview</div>
+    <h2 id="story" class="de-h2">Background</h2>
+    <div class="de-grid">
+      <div class="de-prose"><p>Mtn Dew Sangrita Blast was a franchise-exclusive Mountain Dew flavor produced by PepsiCo for Taco Bell restaurants. It launched in December 2013 as part of a six-drink PepsiCo fountain expansion that also included Diet Baja Blast, Brisk Iced Tea and Lemonade, Brisk Mango Fiesta, SoBe Lifewater Yumberry Pomegranate, and Kickstart Orange Citrus.</p><p>The drink was maroon in color, achieved through a combination of Red 40 and Blue 1 dyes. PepsiCo’s official flavor descriptor was “citrus punch,” though consumer descriptions frequently referenced cherry, pomegranate, cranberry, and raspberry notes.</p></div>
+      <div class="de-prose"><p>In April 2015, PepsiCo released Sangrita Blast in cans and bottles alongside Baja Blast’s second retail run. This remains the only retail release of Sangrita Blast. A frozen Freeze variant was also available at Taco Bell from May to September 2015.</p><p>Sangrita Blast was discontinued from Taco Bell fountains in 2017 and replaced by Mtn Dew Spiked (Lemonade). No official reason was given for the discontinuation. PepsiCo has not re-released the flavor in any format since.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- FLAVOR PROFILE -->
+<div class="de-section">
+  <div class="de-section-inner">
+    <div class="de-eye">Flavor profile</div>
+    <h2 id="flavor" class="de-h2">Flavor characteristics</h2>
+    <div class="de-prose" style="max-width:680px;margin-top:16px;"><p>The official label described Sangrita Blast as “DEW with a Blast of Natural & Artificial Citrus Punch Flavor.” Consumer reviews consistently noted a tart, pomegranate-forward profile with cherry undertones and higher acidity than most Mountain Dew variants. Unlike Code Red’s candy-sweet cherry profile, Sangrita Blast leaned toward a cranberry-juice mouthfeel with a sour finish.</p></div>
+    <div style="margin-top:24px;max-width:500px;">
+      <div class="de-flavor-bar"><span class="de-flavor-name">Cherry</span><div style="flex:1;height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 6%,transparent);"><div class="de-flavor-fill" style="width:85%;"></div></div></div>
+      <div class="de-flavor-bar"><span class="de-flavor-name">Pomegranate</span><div style="flex:1;height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 6%,transparent);"><div class="de-flavor-fill" style="width:75%;"></div></div></div>
+      <div class="de-flavor-bar"><span class="de-flavor-name">Citrus</span><div style="flex:1;height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 6%,transparent);"><div class="de-flavor-fill" style="width:60%;"></div></div></div>
+      <div class="de-flavor-bar"><span class="de-flavor-name">Tartness</span><div style="flex:1;height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 6%,transparent);"><div class="de-flavor-fill" style="width:90%;"></div></div></div>
+      <div class="de-flavor-bar"><span class="de-flavor-name">Sweetness</span><div style="flex:1;height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 6%,transparent);"><div class="de-flavor-fill" style="width:50%;"></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DISTRIBUTION -->
+
+
+<!-- NUTRITION -->
+<div class="de-section">
+  <div class="de-section-inner">
+    <div class="de-eye">Nutrition</div>
+    <h2 id="nutrition" class="de-h2">Nutrition facts</h2>
+    <div style="margin-top:20px;max-width:500px;">
+      <div style="background:var(--card);border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);border-radius:12px;padding:24px;">
+        <div class="mono" style="font-size:9px;color:var(--muted-foreground);margin-bottom:16px;">Per 20 fl oz (591 mL)</div>
+
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);">
+          <span class="fra" style="font-size:48px;font-weight:700;color:var(--accent);">170</span>
+          <span class="mono" style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted-foreground);">Calories</span>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;">
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+          <span class="mono" style="font-size:9px;color:var(--foreground);">Total Sugar</span>
+          <span class="mono" style="font-size:9px;color:var(--muted-foreground);">46g</span>
+        </div>
+        <div style="height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 5%,transparent);">
+          <div style="height:100%;width:92%;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));"></div>
+        </div>
+        <div class="mono" style="font-size:7px;color:var(--muted-foreground);margin-top:2px;">92% Daily Value</div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+          <span class="mono" style="font-size:9px;color:var(--foreground);">Caffeine</span>
+          <span class="mono" style="font-size:9px;color:var(--muted-foreground);">68mg</span>
+        </div>
+        <div style="height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 5%,transparent);">
+          <div style="height:100%;width:17%;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));"></div>
+        </div>
+        <div class="mono" style="font-size:7px;color:var(--muted-foreground);margin-top:2px;">17% Daily Value</div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+          <span class="mono" style="font-size:9px;color:var(--foreground);">Total Carbs</span>
+          <span class="mono" style="font-size:9px;color:var(--muted-foreground);">46g</span>
+        </div>
+        <div style="height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 5%,transparent);">
+          <div style="height:100%;width:17%;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));"></div>
+        </div>
+        <div class="mono" style="font-size:7px;color:var(--muted-foreground);margin-top:2px;">17% Daily Value</div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+          <span class="mono" style="font-size:9px;color:var(--foreground);">Sodium</span>
+          <span class="mono" style="font-size:9px;color:var(--muted-foreground);">85mg</span>
+        </div>
+        <div style="height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 5%,transparent);">
+          <div style="height:100%;width:4%;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));"></div>
+        </div>
+        <div class="mono" style="font-size:7px;color:var(--muted-foreground);margin-top:2px;">4% Daily Value</div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+          <span class="mono" style="font-size:9px;color:var(--foreground);">Protein</span>
+          <span class="mono" style="font-size:9px;color:var(--muted-foreground);">0g</span>
+        </div>
+        <div style="height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 5%,transparent);">
+          <div style="height:100%;width:0%;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));"></div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+          <span class="mono" style="font-size:9px;color:var(--foreground);">Total Fat</span>
+          <span class="mono" style="font-size:9px;color:var(--muted-foreground);">0g</span>
+        </div>
+        <div style="height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 5%,transparent);">
+          <div style="height:100%;width:0%;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));"></div>
+        </div>
+      </div>
+        </div>
+
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);">
+          <div class="mono" style="font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted-foreground);margin-bottom:6px;">Ingredients</div>
+          <p style="font-size:12px;line-height:1.5;color:color-mix(in oklab,var(--foreground) 60%,transparent);">Carbonated Water, High Fructose Corn Syrup, Citric Acid, Natural Flavor, Sodium Benzoate (Preserves Freshness), Caffeine, Sodium Citrate, Gum Arabic, Red 40, Calcium Disodium EDTA, Blue 1</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="de-section">
+  <div class="de-section-inner">
+    <div class="de-eye">Distribution</div>
+    <h2 id="distribution" class="de-h2">Channel availability</h2>
+    <div class="de-prose" style="max-width:680px;margin-top:16px;"><p>Sangrita Blast was distributed across three channels during its lifetime: Taco Bell fountain (December 2013–2017), retail cans and bottles (April–October 2015), and the Taco Bell Freeze machine (May–September 2015). All three channels were active simultaneously only during the summer of 2015.</p></div>
+        <div style="margin-top:24px;background:var(--card);border-radius:12px;border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);padding:20px;">
+      <div style="position:relative;">
+        <div style="display:flex;margin-left:80px;margin-bottom:6px;"><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:left;">2012</span><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:center;">2013</span><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:center;">2014</span><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:center;">2015</span><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:center;">2016</span><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:center;">2017</span><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:right;">2018</span></div>
+        <div style="margin-left:80px;height:1px;background:color-mix(in oklab,var(--foreground) 8%,transparent);margin-bottom:8px;"></div>
+        <div style="display:flex;align-items:center;margin-bottom:6px;">
+          <div class="mono" style="width:80px;flex-shrink:0;font-size:8px;text-align:right;padding-right:10px;color:var(--foreground);">Fountain</div>
+          <div style="flex:1;height:24px;position:relative;background:color-mix(in oklab,var(--foreground) 3%,transparent);border-radius:4px;">
+            <div style="position:absolute;left:16%;width:72%;height:100%;background:linear-gradient(90deg,var(--accent-light),var(--accent),var(--accent-dark));border-radius:4px;display:flex;align-items:center;padding-left:10px;">
+              <span class="mono" style="font-size:7px;color:rgba(255,255,255,0.85);">Dec 2013 – 2017 · Taco Bell exclusive</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;margin-bottom:6px;">
+          <div class="mono" style="width:80px;flex-shrink:0;font-size:8px;text-align:right;padding-right:10px;color:var(--foreground);">Retail</div>
+          <div style="flex:1;height:24px;position:relative;background:color-mix(in oklab,var(--foreground) 3%,transparent);border-radius:4px;">
+            <div style="position:absolute;left:48%;width:12%;height:100%;background:linear-gradient(90deg,var(--accent-light),var(--accent));border-radius:4px;display:flex;align-items:center;justify-content:center;">
+              <span class="mono" style="font-size:7px;color:rgba(255,255,255,0.85);">Apr–Oct 2015</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;margin-bottom:6px;">
+          <div class="mono" style="width:80px;flex-shrink:0;font-size:8px;text-align:right;padding-right:10px;color:var(--foreground);">Freeze</div>
+          <div style="flex:1;height:24px;position:relative;background:color-mix(in oklab,var(--foreground) 3%,transparent);border-radius:4px;">
+            <div style="position:absolute;left:50%;width:8%;height:100%;background:linear-gradient(90deg,var(--accent-light),var(--accent));border-radius:4px;"></div>
+            <span class="mono" style="position:absolute;left:calc(50% + 8% + 6px);top:50%;transform:translateY(-50%);font-size:7px;color:var(--muted-foreground);">May–Sep 2015</span>
+          </div>
+        </div>
+        <div style="margin-top:12px;margin-left:80px;display:flex;gap:14px;flex-wrap:wrap;"><div style="display:flex;align-items:center;gap:4px;"><div style="width:10px;height:6px;border-radius:2px;background:linear-gradient(90deg,var(--accent-light),var(--accent))"></div><span class="mono" style="font-size:7px;color:var(--muted-foreground);">Active</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TIMELINE -->
+<div class="de-section">
+  <div class="de-section-inner">
+    <div class="de-eye">Timeline</div>
+    <h2 id="timeline" class="de-h2">Key dates</h2>
+    <div class="de-tl">
+      <div class="de-tl-item">
+        <div class="de-tl-date">December 2013</div>
+        <div class="de-tl-title">Fountain launch</div>
+        <div class="de-tl-desc">Introduced at Taco Bell as part of a six-drink PepsiCo fountain expansion. Occupied the second dedicated Mountain Dew valve.</div>
+      </div>
+      <div class="de-tl-item">
+        <div class="de-tl-date">April 20, 2015</div>
+        <div class="de-tl-title">Retail release</div>
+        <div class="de-tl-desc">Released in cans and bottles alongside Baja Blast. Available at grocery stores for one summer window.</div>
+      </div>
+      <div class="de-tl-item">
+        <div class="de-tl-date">May 2015</div>
+        <div class="de-tl-title">Freeze variant</div>
+        <div class="de-tl-desc">Frozen Freeze version introduced at Taco Bell, replacing the Snapple Lemonade Freeze in the third machine slot.</div>
+      </div>
+      <div class="de-tl-item">
+        <div class="de-tl-date">2016</div>
+        <div class="de-tl-title">DEWcision 2016</div>
+        <div class="de-tl-desc">PepsiCo staged a fan vote between Baja Blast and Pitch Black for permanent retail status. Sangrita Blast was not included in the competition. Pitch Black won with 2.9 million votes.</div>
+      </div>
+      <div class="de-tl-item">
+        <div class="de-tl-date">2017</div>
+        <div class="de-tl-title">Discontinued</div>
+        <div class="de-tl-desc">Removed from Taco Bell fountains and replaced by Mtn Dew Spiked (Lemonade).</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TACO BELL RELATIONSHIP -->
+<div class="de-section">
+  <div class="de-section-inner">
+    <div class="de-eye">Taco Bell</div>
+    <h2 id="partner-taco-bell" class="de-h2">Relationship with Taco Bell</h2>
+    <div class="de-prose" style="max-width:680px;margin-top:16px;"><p>Sangrita Blast was designed exclusively for Taco Bell’s fountain system and was never available at other restaurant chains or convenience stores. It occupied the second dedicated Mountain Dew valve alongside Baja Blast, which has held the primary valve since 2004.</p><p>The drink was part of the December 2013 six-drink PepsiCo expansion—the largest beverage shakeup in Taco Bell’s history. When Sangrita Blast was discontinued in 2017, its valve was reassigned to Mtn Dew Spiked (Lemonade), which was itself discontinued by 2019. The second Dew valve has now cycled through three tenants: Sangrita Blast (2013–2017), Spiked Lemonade (2017–2019), and Baja Blast Zero Sugar (2019–present).</p></div>
+
+  </div>
+</div>
+
+<!-- LEGACY -->
+<div class="de-section">
+  <div class="de-section-inner">
+    <div class="de-eye">Legacy</div>
+    <h2 id="legacy" class="de-h2">Reception and afterlife</h2>
+    <div class="de-prose" style="max-width:680px;margin-top:16px;"><p>Sangrita Blast has maintained a dedicated following since its discontinuation. A Change.org petition requesting its return has circulated among fans. Reddit threads on r/tacobell and r/mountaindew periodically surface, with users comparing the flavor to Mtn Dew Cyclone, a maroon citrus-punch flavor available at Speedway gas stations. PepsiCo has not confirmed or denied a connection between the two formulas.</p><p>The drink’s most common fan-created recreation uses approximately 70% Original Mountain Dew mixed with 30% sugar-free pomegranate juice and a splash of lime.</p></div>
+
+  </div>
+</div>
+
+<!-- BACK LINK -->
+<div class="de-section" style="text-align:center;padding:32px 24px;">
+  <a href="taco-bell-discontinued-drinks.html" class="de-back vw-back-link">← Back to Discontinued Drinks</a>
+</div>
+
+<script>
+window.WIKI_TOC = {
+  pageTitle: 'Mtn Dew Sangrita Blast',
+  pageLogo: '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="none"><rect width="64" height="64" rx="10" fill="#4c0519"/><circle cx="32" cy="30" r="16" fill="#9f1239" opacity=".5"/><circle cx="32" cy="30" r="10" fill="#fb7185" opacity=".3"/><text x="32" y="50" text-anchor="middle" font-family="monospace" font-size="8" fill="rgba(255,255,255,.6)">SB</text></svg>',
+  wikiHome: 'taco-bell.html',wikiTitle: 'Taco Bell',
+  wikiLogo: '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="28" height="28" rx="2.5" fill="#ffffff"/><rect x="4" y="4" width="24" height="24" rx="0.8" fill="#702082"/><rect x="14.7" y="8.5" width="2.6" height="1.3" rx="0.6" fill="#FED141"/><path d="M 12 10 Q 12 9.1 13 9.1 L 19 9.1 Q 20 9.1 20 10 L 21 18.5 Q 22 19 22 19.7 L 10 19.7 Q 10 19 11 18.5 Z" fill="#FED141"/><circle cx="16" cy="21" r="1" fill="#FED141"/></svg>',
+  parentUrl: 'taco-bell-discontinued-drinks.html',parentTitle: 'Discontinued Drinks',
+  categories: [
+    { name:'Tacos',url:'taco-bell-tacos.html',color:'#e07b22' },{ name:'Burritos',url:'taco-bell-burritos.html',color:'#a855f7' },
+    { name:'Nachos & Sides',url:'taco-bell-nachos.html',color:'#7c3aed' },{ name:'Drinks',url:'taco-bell-drinks.html',color:'#0ea5e9' },
+    { name:'Sauces',url:'taco-bell-sauces.html',color:'#dc2626' },{ name:'Late Night',url:'taco-bell-late-night.html',color:'#1e1b4b' },
+    { name:'Breakfast',url:'taco-bell-breakfast.html',color:'#ca8a04' },{ name:'Desserts',url:'taco-bell-desserts.html',color:'#c2410c' }
+  ],
+  sections: [
+    { group:'PROFILE',id:'glance',label:'At a glance' },{ group:'PROFILE',id:'story',label:'Overview' },
+    { group:'PROFILE',id:'flavor',label:'Flavor profile' },{ group:'PROFILE',id:'nutrition',label:'Nutrition' },{ group:'HISTORY',id:'distribution',label:'Distribution' },
+    { group:'HISTORY',id:'timeline',label:'Timeline' },{ group:'CONTEXT',id:'partner-taco-bell',label:'Taco Bell' },
+    { group:'CONTEXT',id:'legacy',label:'Legacy' }
+  ]
+};
+</script>
+<script>
+(function(){
+  var link=document.querySelector('.vw-back-link');if(!link)return;
+  var ref=document.referrer,params=new URLSearchParams(window.location.search),from=params.get('from');
+  var pages={'taco-bell-discontinued-drinks':'Discontinued Drinks','taco-bell-drinks':'Drinks','taco-bell':'Taco Bell Wiki'};
+  var label='Discontinued Drinks',url='taco-bell-discontinued-drinks.html';
+  if(from&&pages[from]){label=pages[from];url=from+'.html';}
+  else if(ref){for(var k in pages){if(ref.indexOf(k)>-1){label=pages[k];url=k+'.html';break;}}}
+  link.href=url;link.innerHTML='\u2190 Back to '+label;
+})();
+</script>
+{% endraw %}
