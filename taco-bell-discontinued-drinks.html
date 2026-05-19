@@ -1,95 +1,30 @@
+---
+layout: default
+title: "Discontinued Drinks — Taco Bell"
+body_class: "wiki-page"
+---
+{% raw %}
 <!DOCTYP
 
-<!-- VIZIWIKI TOP BAR -->
-<style>
-#vw-topbar{position:sticky;top:0;z-index:200;background:var(--background,#faf8f3);border-bottom:1px solid color-mix(in oklab,var(--foreground,#2a1f15) 12%,transparent);padding:0 16px;height:48px;display:flex;align-items:center;gap:10px;}
-#vw-topbar-logo{width:28px;height:28px;flex-shrink:0;}
-#vw-topbar-title{font-family:'Fraunces',Georgia,serif;font-size:15px;font-weight:600;color:var(--foreground,rgba(42,31,21,0.85));white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;}
-#vw-topbar-crumbs{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted-foreground,rgba(42,31,21,0.4));display:none;align-items:center;gap:4px;flex:1;}
-#vw-topbar-crumbs a{color:inherit;text-decoration:none;}
-#vw-topbar-crumbs a:hover{text-decoration:underline;}
-#vw-hamburger{width:36px;height:36px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);border-radius:6px;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;flex-shrink:0;}
-#vw-hamburger span{display:block;width:16px;height:1.5px;background:var(--foreground,rgba(42,31,21,0.6));border-radius:1px;transition:all .2s;}
-#vw-sidebar{position:fixed;top:0;right:-300px;width:280px;height:100vh;background:var(--background,#faf8f3);border-left:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);z-index:300;transition:right .25s ease;overflow-y:auto;padding:16px 0;box-shadow:-4px 0 20px rgba(0,0,0,0.08);}
-#vw-sidebar.open{right:0;}
-#vw-overlay{position:fixed;inset:0;background:rgba(42,31,21,0.3);z-index:299;display:none;}
-#vw-overlay.open{display:block;}
-#vw-sidebar-header{display:flex;align-items:center;justify-content:space-between;padding:4px 16px 14px;border-bottom:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);margin-bottom:8px;}
-#vw-sidebar-close{width:28px;height:28px;border-radius:50%;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:none;font-size:16px;color:var(--muted-foreground);cursor:pointer;display:flex;align-items:center;justify-content:center;}
-.vw-sidebar-group{padding:4px 16px;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted-foreground,rgba(42,31,21,0.35));margin-top:8px;}
-.vw-sidebar-link{display:block;padding:8px 16px;font-family:'Spectral',Georgia,serif;font-size:14px;color:var(--foreground,rgba(42,31,21,0.7));text-decoration:none;transition:background .1s;}
-.vw-sidebar-link:hover{background:color-mix(in oklab,var(--foreground) 4%,transparent);}
-@media(min-width:769px){
-  #vw-topbar-crumbs{display:flex;}
-  #vw-topbar-title{display:none;}
-}
-</style>
-
-<div id="vw-topbar">
-  <div id="vw-topbar-logo"></div>
-  <div id="vw-topbar-title"></div>
-  <div id="vw-topbar-crumbs"></div>
-  <button id="vw-hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
-</div>
-<div id="vw-overlay"></div>
-<div id="vw-sidebar">
-  <div id="vw-sidebar-header">
-    <span style="font-family:'Fraunces',Georgia,serif;font-size:14px;font-weight:600;"></span>
-    <button id="vw-sidebar-close">&times;</button>
-  </div>
-  <div id="vw-sidebar-sections"></div>
-</div>
-
-<script>
-(function(){
-  function initNav(){
-    var toc=window.WIKI_TOC;if(!toc) return;
-    var logo=document.getElementById('vw-topbar-logo');
-    if(toc.pageLogo) logo.innerHTML=toc.pageLogo;
-    logo.querySelector('svg').style.width='28px';
-    logo.querySelector('svg').style.height='28px';
-    var title=document.getElementById('vw-topbar-title');
-    title.textContent=toc.pageTitle||'';
-    var crumbs=document.getElementById('vw-topbar-crumbs');
-    var parts=[];
-    if(toc.wikiTitle) parts.push('<a href="'+(toc.wikiHome||'#')+'">'+toc.wikiTitle+'</a>');
-    if(toc.parentTitle) parts.push('<a href="'+(toc.parentUrl||'#')+'">'+toc.parentTitle+'</a>');
-    parts.push('<span style="color:var(--foreground);font-weight:600;">'+(toc.pageTitle||'')+'</span>');
-    crumbs.innerHTML=parts.join(' <span style="opacity:0.3;">/</span> ');
-    var hdr=document.querySelector('#vw-sidebar-header span');
-    hdr.textContent=toc.pageTitle||'';
-    var sc=document.getElementById('vw-sidebar-sections');
-    var html='';var lastGroup='';
-    (toc.sections||[]).forEach(function(s){
-      if(s.group&&s.group!==lastGroup){html+='<div class="vw-sidebar-group">'+s.group+'</div>';lastGroup=s.group;}
-      html+='<a class="vw-sidebar-link" href="#'+s.id+'">'+s.label+'</a>';
-    });
-    sc.innerHTML=html;
-    var sidebar=document.getElementById('vw-sidebar');
-    var overlay=document.getElementById('vw-overlay');
-    document.getElementById('vw-hamburger').addEventListener('click',function(){sidebar.classList.add('open');overlay.classList.add('open');});
-    document.getElementById('vw-sidebar-close').addEventListener('click',close);
-    overlay.addEventListener('click',close);
-    sc.querySelectorAll('a').forEach(function(a){a.addEventListener('click',close);});
-    function close(){sidebar.classList.remove('open');overlay.classList.remove('open');}
-  }
-  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',initNav);}
-  else{setTimeout(initNav,0);}
-})();
-</script>
 
 E html>
-<html lang="en">
-<head>
+
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Discontinued Drinks · Taco Bell · ViziWiki</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
 :root{--background:oklch(0.972 0.012 85);--foreground:oklch(0.18 0.02 60);--card:oklch(1 0 0);--secondary:oklch(0.93 0.02 80);--muted-foreground:oklch(0.45 0.03 60);--neon:oklch(0.65 0.26 5);--hot-pink:oklch(0.70 0.27 350);}
+  .dark{
+    --background:oklch(0.129 0.042 264.695);
+    --foreground:oklch(0.984 0.003 247.858);
+    --card:oklch(0.208 0.042 265.755);
+    --secondary:oklch(0.279 0.041 260.031);
+    --muted-foreground:oklch(0.704 0.04 256.788);
+  }
+
 html,body{background:var(--background);color:var(--foreground);}
 body{font-family:'Spectral',Georgia,serif;}
 .font-display{font-family:'Fraunces','Spectral',Georgia,serif;font-optical-sizing:auto;font-variation-settings:"SOFT" 30,"WONK" 0;letter-spacing:-0.02em;}
@@ -122,7 +57,7 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
 .disc-stat-sub{font-family:'JetBrains Mono',monospace;font-size:8.5px;font-weight:600;color:color-mix(in oklab,var(--foreground) 55%,transparent);margin-top:2px;line-height:1.3;}
 .disc-hero{background:var(--card);border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.05);padding:32px 36px;}
 
-.disc-title{font-family:'Fraunces',Georgia,serif;font-size:clamp(28px,3vw,42px);font-weight:700;letter-spacing:-.02em;line-height:.95;color:var(--foreground);margin:0 0 12px;}
+.disc-title{font-family:'Fraunces',Georgia,serif;font-size:clamp(48px,6vw,72px);font-weight:700;letter-spacing:-.02em;line-height:.95;color:var(--foreground);margin:0 0 12px;}
 .disc-sub{font-family:'Spectral',Georgia,serif;font-style:italic;font-size:13.5px;line-height:1.7;color:color-mix(in oklab,var(--foreground) 50%,transparent);max-width:620px;}
 .disc-hero-divider{height:1px;background:color-mix(in oklab,var(--foreground) 7%,transparent);margin:20px 0;}
 .disc-hero-prose p{font-size:14px;line-height:1.82;color:color-mix(in oklab,var(--foreground) 76%,transparent);margin:0 0 12px;}
@@ -140,7 +75,9 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
 /* ── INDIVIDUAL CATEGORY ─────────────────────────────
    Two-column grid: sidebar (220px) + content (1fr)
    No border-top — rhythm via padding only             */
-.disc-cat{display:grid;grid-template-columns:220px 1fr;gap:0 48px;padding:44px 48px;}
+.disc-cat{background:var(--card);border-bottom:1px solid color-mix(in oklab,var(--foreground,#2a1f15) 12%,transparent);padding-bottom:24px;margin-bottom:24px;display:grid;grid-template-columns:220px 1fr;gap:0 48px;padding:44px 48px;}
+.disc-cat:nth-child(even){background:color-mix(in oklab,var(--secondary) 40%,transparent);}
+
 .disc-cat:nth-child(even){background:color-mix(in oklab,var(--card) 45%,transparent);}
 
 /* ── SIDEBAR ─────────────────────────────────────────── */
@@ -223,7 +160,7 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
 /* freeze calendar */
 .dtv-year-cal{background:var(--card);border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);border-radius:10px;overflow-x:auto;box-shadow:0 2px 8px rgba(0,0,0,.06);}
 .dtv-yc-inner{min-width:1040px;border-radius:6px;}
-.dtv-yc-hdr{display:flex;border-bottom:1px solid rgba(42,31,21,.12);background:rgba(42,31,21,.03);}
+.dtv-yc-hdr{display:flex;border-bottom:1px solid color-mix(in oklab,var(--foreground,#2a1f15) 12%,transparent);background:color-mix(in oklab,var(--foreground,#2a1f15) 3%,transparent);}
 .dtv-yc-yr{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:color-mix(in oklab,var(--foreground) 55%,transparent);padding:10px 6px;text-align:center;border-right:1px solid color-mix(in oklab,var(--foreground) 6%,transparent);border-bottom:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:color-mix(in oklab,var(--foreground) 3%,transparent);}
 .dtv-yc-yr:last-of-type{border-right:none;}
 .dtv-yc-body{display:flex;align-items:flex-start;}
@@ -238,19 +175,19 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
 #dtv-item-overlay.open{display:flex;}
 #dtv-item-card{background:var(--background,#faf8f3);border-radius:12px;max-width:480px;width:100%;overflow:hidden;max-height:88vh;overflow-y:auto;font-family:'Spectral',Georgia,serif;box-shadow:0 8px 32px rgba(0,0,0,.15);border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);}
 .dtv-card-inner{padding:28px 28px 24px;}
-.dtv-card-close{width:28px;height:28px;border-radius:50%;border:1px solid rgba(42,31,21,0.1);background:none;display:flex;align-items:center;justify-content:center;font-size:18px;color:rgba(42,31,21,0.35);cursor:pointer;transition:background .15s;}
-.dtv-card-close:hover{background:rgba(42,31,21,0.05);}
+.dtv-card-close{width:28px;height:28px;border-radius:50%;border:1px solid color-mix(in oklab,var(--foreground,#2a1f15) 10%,transparent);background:none;display:flex;align-items:center;justify-content:center;font-size:18px;color:color-mix(in oklab,var(--foreground,#2a1f15) 35%,transparent);cursor:pointer;transition:background .15s;}
+.dtv-card-close:hover{background:color-mix(in oklab,var(--foreground,#2a1f15) 5%,transparent);}
 .dtv-card-name{font-family:'Fraunces',Georgia,serif;font-size:26px;font-weight:700;line-height:1.1;letter-spacing:-0.02em;color:var(--foreground,rgba(42,31,21,0.9));}
 .dtv-card-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:10px;}
 .dtv-card-chip{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;border-radius:4px;}
-.dtv-card-dates{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.06em;color:rgba(42,31,21,0.4);}
-.dtv-card-desc{margin-top:20px;font-size:14px;line-height:1.65;color:rgba(42,31,21,0.7);}
+.dtv-card-dates{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.06em;color:color-mix(in oklab,var(--foreground,#2a1f15) 40%,transparent);}
+.dtv-card-desc{margin-top:20px;font-size:14px;line-height:1.65;color:color-mix(in oklab,var(--foreground,#2a1f15) 70%,transparent);}
 .dtv-card-callout{margin-top:14px;padding:14px 16px;border-radius:8px;border-left:3px solid;}
-.dtv-card-callout-label{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-bottom:4px;}
-.dtv-card-callout-text{font-size:13px;line-height:1.5;color:rgba(42,31,21,0.65);}
-.dtv-card-block{margin-top:14px;padding:14px 16px;background:rgba(42,31,21,0.02);border-radius:8px;border:1px solid rgba(42,31,21,0.05);}
-.dtv-card-notes{margin-top:16px;font-size:12px;line-height:1.5;font-style:italic;color:rgba(42,31,21,0.4);}
-.dtv-card-foot{margin-top:20px;padding-top:14px;border-top:1px solid rgba(42,31,21,0.06);}
+.dtv-card-callout-label{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:color-mix(in oklab,var(--foreground,#2a1f15) 35%,transparent);margin-bottom:4px;}
+.dtv-card-callout-text{font-size:13px;line-height:1.5;color:color-mix(in oklab,var(--foreground,#2a1f15) 65%,transparent);}
+.dtv-card-block{margin-top:14px;padding:14px 16px;background:color-mix(in oklab,var(--foreground,#2a1f15) 2%,transparent);border-radius:8px;border:1px solid color-mix(in oklab,var(--foreground,#2a1f15) 5%,transparent);}
+.dtv-card-notes{margin-top:16px;font-size:12px;line-height:1.5;font-style:italic;color:color-mix(in oklab,var(--foreground,#2a1f15) 40%,transparent);}
+.dtv-card-foot{margin-top:20px;padding-top:14px;border-top:1px solid color-mix(in oklab,var(--foreground,#2a1f15) 6%,transparent);}
 .dtv-card-foot a{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;display:inline-flex;align-items:center;gap:4px;}
 
 
@@ -265,7 +202,7 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
 /* Final tab styling */
 
 /* ── COLLAPSIBLE CATEGORY CARDS ──────────────────── */
-.layout-a .disc-cat{
+.layout-a .disc-cat{background:var(--card);border-bottom:1px solid color-mix(in oklab,var(--foreground,#2a1f15) 12%,transparent);padding-bottom:24px;margin-bottom:24px;
   display:block !important;
   background:var(--card) !important;
   border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent) !important;
@@ -295,16 +232,7 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
 }
 /* original sidebar hover bg removed — gradient stays */
 /* chev hover removed — chevrons hidden */
-.layout-a .disc-cat-num{
-  font-family:'Fraunces',Georgia,serif !important;
-  font-size:22px !important;
-  font-weight:300 !important;
-  color:var(--cat-color) !important;
-  opacity:.3;
-  margin:0 !important;
-  line-height:1;
-  flex-shrink:0;
-}
+
 .layout-a .disc-cat-name{
   font-family:'Fraunces',Georgia,serif !important;
   font-size:16px !important;
@@ -423,13 +351,12 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
 }
 
 
-
 /* ══════════════════════════════════════════════════════
    VIZIWIKI — Full sections with thin gradient header bars
    ══════════════════════════════════════════════════════ */
 .disc-header{display:none !important;}
 
-.layout-a .disc-cat{
+.layout-a .disc-cat{background:var(--card);border-bottom:1px solid color-mix(in oklab,var(--foreground,#2a1f15) 12%,transparent);padding-bottom:24px;margin-bottom:24px;
   display:block !important;
   background:transparent !important;
   border:none !important;border-radius:0 !important;border-left:none !important;
@@ -445,25 +372,11 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
   cursor:default !important;user-select:auto !important;
   flex-wrap:nowrap !important;min-height:0 !important;width:auto !important;
 }
-.layout-a .disc-sidebar .disc-cat-num{
-  font-size:18px !important;font-weight:700 !important;letter-spacing:.05em !important;
-  color:rgba(255,255,255,.75) !important;min-width:auto !important;
-  margin:0 !important;padding:0 !important;
-}
-.layout-a .disc-sidebar .disc-cat-name{
-  font-size:15px !important;font-weight:700 !important;color:#fff !important;
-  text-shadow:0 1px 2px rgba(0,0,0,.25);margin:0 !important;padding:0 !important;
-  white-space:nowrap;
-}
-.layout-a .disc-sidebar .disc-cat-meta{
-  margin-left:auto !important;display:flex !important;align-items:center !important;
-  gap:10px !important;flex-direction:row !important;
-}
-.layout-a .disc-sidebar .disc-cat-dates{color:rgba(255,255,255,.65) !important;font-size:10px !important;}
-.layout-a .disc-sidebar .disc-cat-badge{
-  background:rgba(255,255,255,.15) !important;color:rgba(255,255,255,.9) !important;
-  border-color:rgba(255,255,255,.2) !important;font-size:9px !important;
-}
+
+
+
+
+
 .disc-card-chev{display:none !important;}
 
 /* hover flicker fixed by removing original hover bg rule above */
@@ -526,6 +439,22 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
   /* Frutista grid: horizontal scroll on mobile */
   .dtv-sg-hdr,.dtv-sg-row{min-width:600px;}
 }
+
+/* ═══ DEEP DIVE — Clean section headers (Option A) ═══ */
+.layout-a .disc-cat{display:block!important;padding:32px 0!important;margin-bottom:0!important;border-bottom:1px solid color-mix(in oklab,var(--foreground,#2a1f15) 10%,transparent)!important;}
+.layout-a .disc-cat:nth-child(even){background:color-mix(in oklab,var(--secondary,oklch(0.93 0.02 80)) 40%,transparent)!important;margin:0 -24px!important;padding:32px 24px!important;}
+.layout-a .disc-sidebar{background:none!important;border-radius:0!important;position:static!important;padding:0!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:0!important;cursor:default!important;overflow:visible!important;}
+.layout-a .disc-sidebar .halftone{display:none!important;}
+.layout-a .disc-cat-num{font-family:'JetBrains Mono',monospace!important;font-size:10px!important;font-weight:400!important;letter-spacing:0.25em!important;text-transform:uppercase!important;color:var(--muted-foreground)!important;background:none!important;width:auto!important;height:auto!important;border-radius:0!important;display:flex!important;align-items:center!important;gap:8px!important;margin:0!important;padding:0!important;position:relative!important;line-height:1.4!important;text-shadow:none!important;}
+.layout-a .disc-cat-num::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--cat-color);flex-shrink:0;}
+.layout-a .disc-cat-name{font-family:'Fraunces',Georgia,serif!important;font-size:28px!important;font-weight:700!important;letter-spacing:-0.02em!important;line-height:1.1!important;color:var(--foreground)!important;text-shadow:none!important;margin:4px 0 0!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;flex:none!important;min-width:0!important;}
+.layout-a .disc-cat-meta{display:flex!important;flex-direction:row!important;align-items:center!important;gap:10px!important;margin:8px 0 0!important;padding:0!important;width:auto!important;}
+.layout-a .disc-cat-badge{font-family:'JetBrains Mono',monospace!important;font-size:9px!important;letter-spacing:0.1em!important;text-transform:uppercase!important;padding:3px 10px!important;border-radius:4px!important;}
+.layout-a .disc-cat-dates{font-family:'JetBrains Mono',monospace!important;font-size:9px!important;letter-spacing:0.06em!important;color:var(--muted-foreground)!important;}
+.layout-a .disc-content{padding:16px 0 0!important;max-height:none!important;overflow:visible!important;display:block!important;}
+.layout-a .disc-prose{font-size:14px!important;line-height:1.7!important;color:color-mix(in oklab,var(--foreground) 75%,transparent)!important;margin:0 0 16px!important;max-width:none!important;}
+@media(max-width:768px){.layout-a .disc-cat-name{font-size:22px!important;}.layout-a .disc-cat:nth-child(even){margin:0 -14px!important;padding:32px 14px!important;}}
+
 </style>
 <!-- Breadcrumb -->
 <div class="border-b bg-secondary/40" style="border-color:color-mix(in oklab,var(--foreground) 15%,transparent);">
@@ -541,6 +470,7 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
     <span class="text-foreground">Discontinued</span>
   </div>
 </div>
+
 
 <!-- HERO -->
 <section class="relative overflow-hidden border-b text-white" style="background:linear-gradient(to bottom right,#22d3ee,#0f766e,#172554);border-color:rgba(255,255,255,.1);">
@@ -591,11 +521,17 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
 </section>
 
 <!-- OVERVIEW + CHART -->
-<section id="overview" class="border-b" style="background:var(--card);border-color:color-mix(in oklab,var(--foreground) 15%,transparent);">
+<section id="overview" style="background:var(--card);border-bottom:1px solid color-mix(in oklab,var(--foreground) 15%,transparent);">
   <div class="mx-auto max-w-[1500px] px-6 py-12">
     
 
-    <div class="space-y-4 text-[15px] leading-relaxed" style="color:color-mix(in oklab,var(--foreground) 76%,transparent);">
+    <div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      Overview
+    </div>
+    <h2 class="mt-1 font-display text-3xl font-semibold leading-tight sm:text-4xl">60+ discontinued drinks</h2>
+    
+    <div class="mt-4 space-y-4 text-[15px] leading-relaxed" style="color:color-mix(in oklab,var(--foreground) 76%,transparent);">
       <p>Taco Bell has discontinued more than sixty beverages since the chain first opened in 1962. Some lasted decades. Others survived a single summer. A few were killed before most customers knew they existed. This archive documents every one of them.</p>
       <p>What makes Taco Bell's drink history unusual isn't the number of casualties — any fast-food chain cycles through products. It's that nearly all of these drinks died for reasons that had nothing to do with customer demand. They died because a corporate parent changed its soda portfolio overnight. Because a machine was replaced and the old recipes didn't fit the new hardware. Because a brand partnership expired and the valve was reassigned to the next exclusive. The drinks themselves were often popular right up until the moment they vanished.</p>
       <p>The archive spans seven categories: Mountain Dew exclusives created specifically for Taco Bell fountains, the entire Frutista Freeze program that ran from 2008 to 2013, more than two dozen Freeze machine LTOs and brand collaborations, hand-mixed Limeade Sparklers, hot beverages from the chain's brief coffee experiments, iced teas and lemonades that quietly rotated off the menu, and a handful of defunct fountain sodas dating back to the original Coca-Cola era.</p>
@@ -613,7 +549,7 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
       <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" x2="21" y1="6" y2="6"/><line x1="10" x2="21" y1="12" y2="12"/><line x1="10" x2="21" y1="18" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
       Full Catalogue &middot; 7 categories
     </div>
-    <h2 class="mt-1 mb-6 font-display text-3xl font-semibold leading-tight sm:text-4xl">Every discontinued drink</h2>
+    <h2 class="mt-1 font-display text-3xl font-semibold leading-tight sm:text-4xl">Every discontinued drink</h2>
     <div id="catalogue-container" class="disc-catalogue-grid" style="columns:2;column-gap:16px;"></div>
   </div>
 </section>
@@ -642,7 +578,7 @@ document.addEventListener("DOMContentLoaded",function(){
     var pw=document.createElement("div");pw.style.cssText="display:flex;flex-wrap:wrap;gap:6px";
     items.forEach(function(item){
       var sp=document.createElement("span");sp.textContent=item.name;sp.dataset.key=item.key;
-      sp.style.cssText="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:JetBrains Mono,monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;transition:background .15s ease,border-color .15s ease;cursor:pointer";
+      sp.style.cssText="display:inline-block;padding:5px 12px;border:1px solid color-mix(in oklab,var(--foreground,#2a1f15) 10%,transparent);border-radius:4px;font-family:JetBrains Mono,monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:color-mix(in oklab,var(--foreground,#2a1f15) 85%,transparent);white-space:nowrap;background:var(--card,#fff);transition:background .15s ease,border-color .15s ease;cursor:pointer";
       sp.addEventListener("mouseenter",function(){sp.style.background="color-mix(in srgb,"+g+" 18%,white)";sp.style.borderColor="color-mix(in srgb,"+g+" 28%,transparent)";});
       sp.addEventListener("mouseleave",function(){sp.style.background="#fff";sp.style.borderColor="rgba(42,31,21,0.1)";});
       sp.addEventListener("click",function(){if(typeof showItemCard==="function") showItemCard(item.key);});
@@ -670,10 +606,10 @@ document.addEventListener("DOMContentLoaded",function(){
       </svg>
       The Freeze Collaborations
     </div>
-    <h2 class="mt-1 font-display text-3xl font-semibold leading-tight sm:text-4xl">Brand partnerships on the Freeze machine</h2>
+    <h2 class="mt-1 mt-1 font-display text-3xl font-semibold leading-tight sm:text-4xl">Brand partnerships on the Freeze machine</h2>
 
     <!-- Section intro -->
-    <p style="margin-top:12px;margin-bottom:32px;font-size:15px;line-height:1.7;color:var(--muted-foreground);">The Freeze machine replaced the Frutista blender in 2013 and became Taco Bell's primary platform for limited-time frozen collaborations. Two brand partnerships dominated: Mountain Dew contributed nine exclusive frozen variants over a decade, and three candy brands — Starburst, Airheads, and Jolly Rancher — each brought their signature flavors to the lineup.</p>
+    <p class="mt-4" style="margin-bottom:32px;font-size:15px;line-height:1.7;color:var(--muted-foreground);">The Freeze machine replaced the Frutista blender in 2013 and became Taco Bell's primary platform for limited-time frozen collaborations. Two brand partnerships dominated: Mountain Dew contributed nine exclusive frozen variants over a decade, and three candy brands — Starburst, Airheads, and Jolly Rancher — each brought their signature flavors to the lineup.</p>
 
     
 
@@ -803,12 +739,12 @@ document.addEventListener("DOMContentLoaded",function(){
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></svg>
         Deep dive
       </div>
-      <h2 class="font-display text-3xl font-semibold">Seven categories, charted</h2>
+      <h2 class="mt-1 font-display text-3xl font-semibold">Seven categories, charted</h2>
     </div>
     
   </div>
 
-  <p style="margin-top:12px;margin-bottom:24px;font-size:15px;line-height:1.7;color:var(--muted-foreground);">The sections below chart every discontinued drink on a shared timeline spanning 1962 to 2025. Each swim lane maps one category's items from introduction to discontinuation — the length of the bar is the length of the run. Some bars span decades. Most are barely visible. Click any pill to open the full detail card for that item.</p>
+  <p class="mt-4" style="margin-bottom:24px;font-size:15px;line-height:1.7;color:var(--muted-foreground);">The sections below chart every discontinued drink on a shared timeline spanning 1962 to 2025. Each swim lane maps one category's items from introduction to discontinuation — the length of the bar is the length of the run. Some bars span decades. Most are barely visible. Click any pill to open the full detail card for that item.</p>
 
 <!-- CATEGORIES -->
 
@@ -819,7 +755,7 @@ document.addEventListener("DOMContentLoaded",function(){
   <div class="disc-cat" style="--cat-color:#3B6D11">
     <div class="disc-sidebar" style="background:linear-gradient(135deg,#5a8a1b,#2d4a0e);position:relative;overflow:hidden;border-radius:8px;">
       <div class="halftone" style="position:absolute;inset:0;opacity:.15;mix-blend-mode:overlay;pointer-events:none;"></div>
-      <div class="disc-cat-num" style="color:#3B6D11">01</div>
+      <div class="disc-cat-num" style="color:#3B6D11">Category 01</div>
       <h3 class="disc-cat-name">Mountain Dew casualties</h3>
       <div class="disc-cat-meta">
         <span class="disc-cat-badge" style="background:color-mix(in oklab,#3B6D11 10%,transparent);color:#3B6D11;border:1px solid color-mix(in oklab,#3B6D11 22%,transparent)">5 fountain flavors</span>
@@ -840,7 +776,7 @@ document.addEventListener("DOMContentLoaded",function(){
   <div class="disc-cat" style="--cat-color:#993556">
     <div class="disc-sidebar" style="background:linear-gradient(135deg,#c24a8e,#6b1d4e);position:relative;overflow:hidden;border-radius:8px;">
       <div class="halftone" style="position:absolute;inset:0;opacity:.15;mix-blend-mode:overlay;pointer-events:none;"></div>
-      <div class="disc-cat-num" style="color:#993556">02</div>
+      <div class="disc-cat-num" style="color:#993556">Category 02</div>
       <h3 class="disc-cat-name">Frutista Freezes</h3>
       <div class="disc-cat-meta">
         <span class="disc-cat-badge" style="background:color-mix(in oklab,#993556 10%,transparent);color:#993556;border:1px solid color-mix(in oklab,#993556 22%,transparent)">10 flavors</span>
@@ -859,7 +795,7 @@ document.addEventListener("DOMContentLoaded",function(){
 <div class="dtv-season-grid">
     <div class="dtv-sg-inner">
       <div class="dtv-sg-hdr" style="grid-template-columns:120px repeat(7,1fr)">
-        <div class="dtv-sg-hdr-cell" style="font-weight:600;color:rgba(42,31,21,.6)">Blender position</div>
+        <div class="dtv-sg-hdr-cell" style="font-weight:600;color:color-mix(in oklab,var(--foreground,#2a1f15) 60%,transparent)">Blender position</div>
         <div class="dtv-sg-hdr-cell">Summer '08</div><div class="dtv-sg-hdr-cell">Fall '08</div><div class="dtv-sg-hdr-cell">Spring '09</div><div class="dtv-sg-hdr-cell">Fall '09</div><div class="dtv-sg-hdr-cell">Spring '10</div><div class="dtv-sg-hdr-cell">Fall '10</div><div class="dtv-sg-hdr-cell">Spring '11</div>
       </div>
       <div class="dtv-sg-row" style="grid-template-columns:120px repeat(7,1fr)">
@@ -903,7 +839,7 @@ document.addEventListener("DOMContentLoaded",function(){
   <div class="disc-cat" style="--cat-color:#0F6E56">
     <div class="disc-sidebar" style="background:linear-gradient(135deg,#1a9e7a,#0a4a3a);position:relative;overflow:hidden;border-radius:8px;">
       <div class="halftone" style="position:absolute;inset:0;opacity:.15;mix-blend-mode:overlay;pointer-events:none;"></div>
-      <div class="disc-cat-num" style="color:#0F6E56">03</div>
+      <div class="disc-cat-num" style="color:#0F6E56">Category 03</div>
       <h3 class="disc-cat-name">Freezes — LTO & collab</h3>
       <div class="disc-cat-meta">
         <span class="disc-cat-badge" style="background:color-mix(in oklab,#0F6E56 10%,transparent);color:#0F6E56;border:1px solid color-mix(in oklab,#0F6E56 22%,transparent)">40+ flavors</span>
@@ -918,7 +854,7 @@ document.addEventListener("DOMContentLoaded",function(){
         <span class="dtv-hint-icon"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M5.5 1.5L5.5 8.5L8 6.5L10 10.5L11.5 9.8L9.5 6L11.5 5.5L5.5 1.5Z" stroke="#185FA5" stroke-width="1.1" stroke-linejoin="round"/><line x1="2.5" y1="1.5" x2="2.5" y2="3.5" stroke="#185FA5" stroke-width="0.9" stroke-linecap="round"/><line x1="1.5" y1="2.5" x2="3.5" y2="2.5" stroke="#185FA5" stroke-width="0.9" stroke-linecap="round"/><circle cx="2" cy="5.5" r="0.6" fill="#185FA5"/></svg></span>
         <span class="dtv-hint-text">Each item is expandable — click any pill for details</span>
       </div>
-<div id="freeze-legend" style="display:flex;flex-wrap:wrap;gap:8px 18px;margin-bottom:12px;padding:10px 14px;background:var(--card);border:0.5px solid rgba(42,31,21,.1);border-radius:5px;box-shadow:0 1px 3px rgba(0,0,0,.05);"></div>
+<div id="freeze-legend" style="display:flex;flex-wrap:wrap;gap:8px 18px;margin-bottom:12px;padding:10px 14px;background:var(--card);border:0.5px solid color-mix(in oklab,var(--foreground,#2a1f15) 10%,transparent);border-radius:5px;box-shadow:0 1px 3px rgba(0,0,0,.05);"></div>
   <div class="dtv-year-cal">
     <div class="dtv-yc-inner" id="freeze-cal"></div>
   </div>
@@ -927,7 +863,7 @@ document.addEventListener("DOMContentLoaded",function(){
   <div class="disc-cat" style="--cat-color:#5A8A1A">
     <div class="disc-sidebar" style="background:linear-gradient(135deg,#7ab82a,#3a5a0e);position:relative;overflow:hidden;border-radius:8px;">
       <div class="halftone" style="position:absolute;inset:0;opacity:.15;mix-blend-mode:overlay;pointer-events:none;"></div>
-      <div class="disc-cat-num" style="color:#5A8A1A">04</div>
+      <div class="disc-cat-num" style="color:#5A8A1A">Category 04</div>
       <h3 class="disc-cat-name">Limeade Sparklers</h3>
       <div class="disc-cat-meta">
         <span class="disc-cat-badge" style="background:color-mix(in oklab,#5A8A1A 10%,transparent);color:#5A8A1A;border:1px solid color-mix(in oklab,#5A8A1A 22%,transparent)">2 drinks</span>
@@ -948,7 +884,7 @@ document.addEventListener("DOMContentLoaded",function(){
   <div class="disc-cat" style="--cat-color:#993C1D">
     <div class="disc-sidebar" style="background:linear-gradient(135deg,#c05028,#5a2210);position:relative;overflow:hidden;border-radius:8px;">
       <div class="halftone" style="position:absolute;inset:0;opacity:.15;mix-blend-mode:overlay;pointer-events:none;"></div>
-      <div class="disc-cat-num" style="color:#993C1D">05</div>
+      <div class="disc-cat-num" style="color:#993C1D">Category 05</div>
       <h3 class="disc-cat-name">Hot Beverages & Coffee</h3>
       <div class="disc-cat-meta">
         <span class="disc-cat-badge" style="background:color-mix(in oklab,#993C1D 10%,transparent);color:#993C1D;border:1px solid color-mix(in oklab,#993C1D 22%,transparent)">5 drinks</span>
@@ -969,7 +905,7 @@ document.addEventListener("DOMContentLoaded",function(){
   <div class="disc-cat" style="--cat-color:#854F0B">
     <div class="disc-sidebar" style="background:linear-gradient(135deg,#b06a12,#5a3508);position:relative;overflow:hidden;border-radius:8px;">
       <div class="halftone" style="position:absolute;inset:0;opacity:.15;mix-blend-mode:overlay;pointer-events:none;"></div>
-      <div class="disc-cat-num" style="color:#854F0B">06</div>
+      <div class="disc-cat-num" style="color:#854F0B">Category 06</div>
       <h3 class="disc-cat-name">Iced teas &amp; lemonades</h3>
       <div class="disc-cat-meta">
         <span class="disc-cat-badge" style="background:color-mix(in oklab,#854F0B 10%,transparent);color:#854F0B;border:1px solid color-mix(in oklab,#854F0B 22%,transparent)">4 drinks</span>
@@ -990,7 +926,7 @@ document.addEventListener("DOMContentLoaded",function(){
   <div class="disc-cat" style="--cat-color:#185FA5">
     <div class="disc-sidebar" style="background:linear-gradient(135deg,#2a7ecd,#0e3a6a);position:relative;overflow:hidden;border-radius:8px;">
       <div class="halftone" style="position:absolute;inset:0;opacity:.15;mix-blend-mode:overlay;pointer-events:none;"></div>
-      <div class="disc-cat-num" style="color:#185FA5">07</div>
+      <div class="disc-cat-num" style="color:#185FA5">Category 07</div>
       <h3 class="disc-cat-name">Defunct fountain sodas</h3>
       <div class="disc-cat-meta">
         <span class="disc-cat-badge" style="background:color-mix(in oklab,#185FA5 10%,transparent);color:#185FA5;border:1px solid color-mix(in oklab,#185FA5 22%,transparent)">4 brands</span>
@@ -1105,7 +1041,7 @@ var macroRepos=(function(hdrEl,wrapEl){
         if(i===0)return;
         var gl=document.createElement('div');
         gl.className='dtv-ovl dtv-gl';
-        gl.style.cssText='position:absolute;left:'+(nameW+(y-S)/R*trackW).toFixed(1)+'px;top:'+hdrH+'px;bottom:16px;width:1px;background:rgba(42,31,21,.08);pointer-events:none;z-index:0;';
+        gl.style.cssText='position:absolute;left:'+(nameW+(y-S)/R*trackW).toFixed(1)+'px;top:'+hdrH+'px;bottom:16px;width:1px;background:color-mix(in oklab,var(--foreground,#2a1f15) 8%,transparent);pointer-events:none;z-index:0;';
         wrapEl.appendChild(gl);
       });
       /* Reposition macro bars */
@@ -1886,7 +1822,7 @@ function showItemCard(key){
   /* Is this a freeze item? If so, hide "Available elsewhere" */
   var isFreeze=lc.indexOf('freeze')>=0;
 
-  var slug=key.toLowerCase().replace(/[^\w\u00C0-\u024F]+/g,'-').replace(/^-|-$/g,'');
+  var slug=key.toLowerCase().replace(/[^\wÀ-ɏ]+/g,'-').replace(/^-|-$/g,'');
   var chipBg='color-mix(in srgb,'+g+' 10%,transparent)';
   var calloutBg='color-mix(in srgb,'+g+' 5%,var(--background,#faf8f3))';
   var calloutBorder='color-mix(in srgb,'+g+' 30%,transparent)';
