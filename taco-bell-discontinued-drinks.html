@@ -78,18 +78,25 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
 .disc-macro-eyebrow{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-foreground);margin-bottom:0;padding:4px 10px;display:flex;align-items:center;}
 
 /* ── CATEGORIES CONTAINER ───────────────────────────── */
-.disc-cats{padding:0 0 56px;}
 
-/* ── INDIVIDUAL CATEGORY ─────────────────────────────
-   Two-column grid: sidebar (220px) + content (1fr)
-   No border-top — rhythm via padding only             */
-.disc-cat{background:var(--card);border-bottom:1px solid color-mix(in oklab,var(--foreground,#2a1f15) 12%,transparent);padding-bottom:24px;margin-bottom:24px;display:grid;grid-template-columns:220px 1fr;gap:0 48px;padding:44px 48px;}
+
 .disc-cat:nth-child(even){background:color-mix(in oklab,var(--secondary) 40%,transparent);}
 
 .disc-cat:nth-child(even){background:color-mix(in oklab,var(--card) 45%,transparent);}
 
 /* ── SIDEBAR ─────────────────────────────────────────── */
-.disc-sidebar{align-self:start;position:sticky;top:28px;padding-left:18px;}
+.disc-sidebar{position:static;padding:0;}
+
+.disc-sidebar{position:static!important;padding:0!important;background:none!important;border-radius:0!important;}
+.disc-sidebar .halftone{display:none!important;}
+.disc-cat-num{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;color:var(--muted-foreground,rgba(42,31,21,0.4));margin-bottom:4px;}
+.disc-cat-name{font-family:'Fraunces',Georgia,serif;font-size:24px;font-weight:700;letter-spacing:-0.02em;line-height:1.1;color:var(--foreground,#2a1f15);margin-bottom:4px;}
+.disc-cat-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:8px;}
+.disc-cat-badge{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 10px;border-radius:4px;}
+.disc-cat-dates{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.06em;color:var(--muted-foreground,rgba(42,31,21,0.4));}
+.disc-content{padding-top:16px;}
+.disc-prose{font-size:14px;line-height:1.7;color:rgba(42,31,21,0.75);margin-bottom:16px;}
+
 .disc-cat-num{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px;font-weight:500;}
 .disc-cat-name{font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.05;color:var(--foreground);margin:0 0 14px;}
 .disc-cat-meta{display:flex;flex-direction:column;gap:7px;}
@@ -216,7 +223,7 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
 .dtv-mini-dnm{width:140px !important;font-size:9px !important;position:sticky;left:0;z-index:4;background:var(--card);box-shadow:2px 0 4px rgba(0,0,0,.04);}
 .dtv-mini-dr:nth-child(even) .dtv-mini-dnm{background:color-mix(in oklab,var(--foreground) 2%,var(--card));}
 .dtv-mini-hdr{z-index:6 !important;}
-.dtv-mini-hdr-lbl{position:sticky;left:0;z-index:7;background:color-mix(in oklab,var(--chart-color,var(--foreground)) 5%,var(--card));}
+.dtv-mini-hdr-lbl{width:140px !important;position:sticky;left:0;z-index:7;background:color-mix(in oklab,var(--chart-color,var(--foreground)) 5%,var(--card));}
 
 /* Frutista grid: horizontal scroll on mobile */
 @media(max-width:768px){
@@ -227,23 +234,18 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
 .disc-header{display:none !important;}
 
 /* ═══ DEEP DIVE — Clean section headers (Option A) ═══ */
-.layout-a .disc-cat{display:block!important;padding:32px 0!important;margin-bottom:0!important;border-bottom:1px solid color-mix(in oklab,var(--foreground,#2a1f15) 10%,transparent)!important;}
-.layout-a .disc-cat:nth-child(even){background:color-mix(in oklab,var(--secondary,oklch(0.93 0.02 80)) 40%,transparent)!important;margin:0 -24px!important;padding:32px 24px!important;}
-.layout-a .disc-sidebar{background:none!important;border-radius:0!important;position:static!important;padding:0!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:0!important;cursor:default!important;overflow:visible!important;}
-.layout-a .disc-sidebar .halftone{display:none!important;}
-.layout-a .disc-cat-num{font-family:'JetBrains Mono',monospace!important;font-size:10px!important;font-weight:400!important;letter-spacing:0.25em!important;text-transform:uppercase!important;color:var(--muted-foreground)!important;background:none!important;width:auto!important;height:auto!important;border-radius:0!important;display:flex!important;align-items:center!important;gap:8px!important;margin:0!important;padding:0!important;position:relative!important;line-height:1.4!important;text-shadow:none!important;}
-.layout-a .disc-cat-num::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--cat-color);flex-shrink:0;}
-.layout-a .disc-cat-name{font-family:'Fraunces',Georgia,serif!important;font-size:28px!important;font-weight:700!important;letter-spacing:-0.02em!important;line-height:1.1!important;color:var(--foreground)!important;text-shadow:none!important;margin:4px 0 0!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;flex:none!important;min-width:0!important;}
-.layout-a .disc-cat-meta{display:flex!important;flex-direction:row!important;align-items:center!important;gap:10px!important;margin:8px 0 0!important;padding:0!important;width:auto!important;}
-.layout-a .disc-cat-badge{font-family:'JetBrains Mono',monospace!important;font-size:9px!important;letter-spacing:0.1em!important;text-transform:uppercase!important;padding:3px 10px!important;border-radius:4px!important;}
-.layout-a .disc-cat-dates{font-family:'JetBrains Mono',monospace!important;font-size:9px!important;letter-spacing:0.06em!important;color:var(--muted-foreground)!important;}
-.layout-a .disc-content{padding:16px 0 0!important;max-height:none!important;overflow:visible!important;display:block!important;}
-.layout-a .disc-prose{font-size:14px!important;line-height:1.7!important;color:color-mix(in oklab,var(--foreground) 75%,transparent)!important;margin:0 0 16px!important;max-width:none!important;}
-.layout-a .disc-sidebar .disc-cat-num,.layout-a .disc-sidebar .disc-cat-name,.layout-a .disc-sidebar .disc-cat-dates,.layout-a .disc-sidebar .disc-cat-badge,.layout-a .disc-sidebar .disc-cat-meta{color:inherit!important;}
-.layout-a .disc-sidebar .disc-cat-num{color:var(--muted-foreground)!important;}
-.layout-a .disc-sidebar .disc-cat-name{color:var(--foreground)!important;}
-.layout-a .disc-sidebar .disc-cat-dates{color:var(--muted-foreground)!important;}
-@media(max-width:768px){.layout-a .disc-cat-name{font-size:22px!important;}.layout-a .disc-cat:nth-child(even){margin:0 -14px!important;padding:32px 14px!important;}}
+
+
+@media(max-width:768px){}
+
+
+@media(max-width:640px){[style*="columns:2"]{columns:1!important;}}
+@media(max-width:640px){
+  
+  
+  
+  
+}
 
 </style>
 <!-- Breadcrumb -->
@@ -528,8 +530,9 @@ document.addEventListener("DOMContentLoaded",function(){
 <!-- FREEZE COLLABORATIONS -->
 
 
-<section class="mx-auto max-w-[1500px] px-6 py-12">
-  <div class="mb-4 flex flex-wrap items-baseline justify-between gap-2">
+<section style="background:var(--card,#fff);border-top:1px solid rgba(42,31,21,0.10);border-bottom:1px solid rgba(42,31,21,0.10);">
+<div style="max-width:1500px;margin:0 auto;padding:48px 24px;">
+<div style="margin-bottom:16px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;">
     <div>
       <div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></svg>
@@ -542,22 +545,25 @@ document.addEventListener("DOMContentLoaded",function(){
 
   <p class="mt-4" style="margin-bottom:24px;font-size:15px;line-height:1.7;color:var(--muted-foreground);">The sections below chart every discontinued drink on a shared timeline spanning 1962 to 2025. Each swim lane maps one category's items from introduction to discontinuation — the length of the bar is the length of the run. Some bars span decades. Most are barely visible. Click any pill to open the full detail card for that item.</p>
   </div>
+</div>
 </section>
 
+
+<section style="max-width:1500px;margin:0 auto;padding:0 24px 48px;">
 <!-- CATEGORIES -->
 
     <!-- LAYOUT TABS -->
 
-    <div class="disc-cats layout-a">
-
-  <div class="disc-cat" id="cat-01" style="--cat-color:#3B6D11">
-    <div class="disc-sidebar">
-      <div class="halftone" style="position:absolute;inset:0;opacity:.15;mix-blend-mode:overlay;pointer-events:none;"></div>
-      <div class="disc-cat-num">Category 01</div>
-      <h3 class="disc-cat-name">Mountain Dew casualties</h3>
-      <div class="disc-cat-meta">
-        <span class="disc-cat-badge">5 fountain flavors</span>
-        <div class="disc-cat-dates">2012–2022</div>
+  <div id="cat-01" style="--cat-color:#3B6D11;border-bottom:1px solid rgba(42,31,21,0.10);max-width:1500px;margin:0 auto;padding:32px 24px;">
+<div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(42,31,21,0.08);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <div style="width:8px;height:8px;border-radius:50%;background:#3B6D11;flex-shrink:0;"></div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(42,31,21,0.4);">Category 01</span>
+      </div>
+      <h3 style="font-family:'Fraunces',Georgia,serif;font-size:26px;font-weight:700;letter-spacing:-0.02em;line-height:1.1;color:#2a1f15;margin:0 0 10px;">Mountain Dew casualties</h3>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:4px 12px;border-radius:4px;background:color-mix(in srgb,#3B6D11 10%,transparent);color:#3B6D11;border:1px solid color-mix(in srgb,#3B6D11 20%,transparent);">5 fountain flavors</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.06em;color:rgba(42,31,21,0.4);">2012–2022</span>
       </div>
     </div>
     <div class="disc-content">
@@ -577,14 +583,17 @@ document.addEventListener("DOMContentLoaded",function(){
     </div>
     <div class="dtv-mini" id="cat3-mini"></div>
     </div>
-  <div class="disc-cat" id="cat-02" style="--cat-color:#993556">
-    <div class="disc-sidebar">
-      <div class="halftone" style="position:absolute;inset:0;opacity:.15;mix-blend-mode:overlay;pointer-events:none;"></div>
-      <div class="disc-cat-num">Category 02</div>
-      <h3 class="disc-cat-name">Frutista Freezes</h3>
-      <div class="disc-cat-meta">
-        <span class="disc-cat-badge">10 flavors</span>
-        <div class="disc-cat-dates">2008–2013</div>
+
+  <div id="cat-02" style="--cat-color:#993556;background:rgba(42,31,21,0.03);border-bottom:1px solid rgba(42,31,21,0.10);max-width:1500px;margin:0 auto;padding:32px 24px;">
+<div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(42,31,21,0.08);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <div style="width:8px;height:8px;border-radius:50%;background:#993556;flex-shrink:0;"></div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(42,31,21,0.4);">Category 02</span>
+      </div>
+      <h3 style="font-family:'Fraunces',Georgia,serif;font-size:26px;font-weight:700;letter-spacing:-0.02em;line-height:1.1;color:#2a1f15;margin:0 0 10px;">Frutista Freezes</h3>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:4px 12px;border-radius:4px;background:color-mix(in srgb,#993556 10%,transparent);color:#993556;border:1px solid color-mix(in srgb,#993556 20%,transparent);">10 flavors</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.06em;color:rgba(42,31,21,0.4);">2008–2013</span>
       </div>
     </div>
     <div class="disc-content">
@@ -608,14 +617,17 @@ document.addEventListener("DOMContentLoaded",function(){
 
 
     </div>
-  <div class="disc-cat" id="cat-03" style="--cat-color:#0F6E56">
-    <div class="disc-sidebar">
-      <div class="halftone" style="position:absolute;inset:0;opacity:.15;mix-blend-mode:overlay;pointer-events:none;"></div>
-      <div class="disc-cat-num">Category 03</div>
-      <h3 class="disc-cat-name">Freezes — LTO & collab</h3>
-      <div class="disc-cat-meta">
-        <span class="disc-cat-badge">40+ flavors</span>
-        <div class="disc-cat-dates">2013–present</div>
+
+  <div id="cat-03" style="--cat-color:#0F6E56;border-bottom:1px solid rgba(42,31,21,0.10);max-width:1500px;margin:0 auto;padding:32px 24px;">
+<div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(42,31,21,0.08);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <div style="width:8px;height:8px;border-radius:50%;background:#0F6E56;flex-shrink:0;"></div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(42,31,21,0.4);">Category 03</span>
+      </div>
+      <h3 style="font-family:'Fraunces',Georgia,serif;font-size:26px;font-weight:700;letter-spacing:-0.02em;line-height:1.1;color:#2a1f15;margin:0 0 10px;">Freezes — LTO & collab</h3>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:4px 12px;border-radius:4px;background:color-mix(in srgb,#0F6E56 10%,transparent);color:#0F6E56;border:1px solid color-mix(in srgb,#0F6E56 20%,transparent);">40+ flavors</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.06em;color:rgba(42,31,21,0.4);">2013–present</span>
       </div>
     </div>
     <div class="disc-content">
@@ -644,62 +656,24 @@ document.addEventListener("DOMContentLoaded",function(){
 
 <div id="freeze-legend" style="display:flex;flex-wrap:wrap;gap:8px 18px;margin-bottom:12px;padding:10px 14px;background:var(--card);border:0.5px solid color-mix(in oklab,var(--foreground,#2a1f15) 10%,transparent);border-radius:5px;box-shadow:0 1px 3px rgba(0,0,0,.05);"></div>
 
-<div style="margin-top:24px;">
-      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted-foreground,rgba(42,31,21,0.35));margin-bottom:12px;display:flex;align-items:center;gap:6px;">
-        <span style="width:6px;height:6px;border-radius:50%;background:#0F6E56;"></span>
-        Brand partnerships on the Freeze machine
-      </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-        <!-- Mountain Dew × Freeze -->
-        <div style="background:color-mix(in oklab,#3B6D11 4%,transparent);border:1px solid color-mix(in oklab,#3B6D11 15%,transparent);border-radius:10px;padding:16px;">
-          <div style="font-family:'Fraunces',Georgia,serif;font-size:15px;font-weight:700;color:#3B6D11;">Mountain Dew × Freeze</div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted-foreground,rgba(42,31,21,0.35));margin-top:2px;">9 variants · 2013–2022</div>
-          <div style="margin-top:10px;display:flex;flex-direction:column;gap:3px;">
-            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dotted rgba(42,31,21,0.08);"><span>Distortion Freeze</span><span style="color:rgba(42,31,21,0.35);">Sep 2013</span></div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dotted rgba(42,31,21,0.08);"><span>Typhoon Freeze</span><span style="color:rgba(42,31,21,0.35);">Sep 2013</span></div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dotted rgba(42,31,21,0.08);"><span>Kickstart Black Cherry</span><span style="color:rgba(42,31,21,0.35);">Mar 2014</span></div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dotted rgba(42,31,21,0.08);"><span>Sangrita Blast Freeze</span><span style="color:rgba(42,31,21,0.35);">May 2015</span></div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dotted rgba(42,31,21,0.08);"><span>Spiked Lemonade Freeze</span><span style="color:rgba(42,31,21,0.35);">Early 2017</span></div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dotted rgba(42,31,21,0.08);"><span>Birthday Baja Blast</span><span style="color:rgba(42,31,21,0.35);">2019</span></div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dotted rgba(42,31,21,0.08);"><span>Frostbite Freeze</span><span style="color:rgba(42,31,21,0.35);">2020</span></div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dotted rgba(42,31,21,0.08);"><span>Baja Blast Colada</span><span style="color:rgba(42,31,21,0.35);">2021</span></div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;display:flex;justify-content:space-between;padding:4px 0;"><span>Spark Freeze</span><span style="color:rgba(42,31,21,0.35);">2021–2022</span></div>
-          </div>
-        </div>
-
-        <!-- Candy × Freeze -->
-        <div style="background:color-mix(in oklab,#c24a8e 4%,transparent);border:1px solid color-mix(in oklab,#c24a8e 15%,transparent);border-radius:10px;padding:16px;">
-          <div style="font-family:'Fraunces',Georgia,serif;font-size:15px;font-weight:700;color:#c24a8e;">Candy × Freeze</div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted-foreground,rgba(42,31,21,0.35));margin-top:2px;">3 brands · 6 variants · 2014–2022</div>
-          <div style="margin-top:10px;">
-            <div style="font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:0.1em;text-transform:uppercase;color:#c24a8e;margin-bottom:4px;">Starburst</div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dotted rgba(42,31,21,0.08);"><span>Strawberry</span><span style="color:rgba(42,31,21,0.35);">2014, 2016, 2019</span></div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dotted rgba(42,31,21,0.08);"><span>Cherry</span><span style="color:rgba(42,31,21,0.35);">Sep 2015</span></div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:0.1em;text-transform:uppercase;color:#c24a8e;margin:8px 0 4px;">Airheads</div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dotted rgba(42,31,21,0.08);"><span>White Mystery</span><span style="color:rgba(42,31,21,0.35);">Sep 2016</span></div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dotted rgba(42,31,21,0.08);"><span>Blue Raspberry</span><span style="color:rgba(42,31,21,0.35);">Late 2016</span></div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:0.1em;text-transform:uppercase;color:#c24a8e;margin:8px 0 4px;">Jolly Rancher</div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dotted rgba(42,31,21,0.08);"><span>Watermelon</span><span style="color:rgba(42,31,21,0.35);">2020</span></div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;display:flex;justify-content:space-between;padding:4px 0;"><span>Green Apple</span><span style="color:rgba(42,31,21,0.35);">2021</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
 
   <div class="dtv-year-cal">
     <div class="dtv-yc-inner" id="freeze-cal"></div>
   </div>
     </div>
   </div>
-  <div class="disc-cat" id="cat-04" style="--cat-color:#5A8A1A">
-    <div class="disc-sidebar">
-      <div class="halftone" style="position:absolute;inset:0;opacity:.15;mix-blend-mode:overlay;pointer-events:none;"></div>
-      <div class="disc-cat-num">Category 04</div>
-      <h3 class="disc-cat-name">Limeade Sparklers</h3>
-      <div class="disc-cat-meta">
-        <span class="disc-cat-badge">2 drinks</span>
-        <div class="disc-cat-dates">~2010–2012</div>
+
+  <div id="cat-04" style="--cat-color:#5A8A1A;background:rgba(42,31,21,0.03);border-bottom:1px solid rgba(42,31,21,0.10);max-width:1500px;margin:0 auto;padding:32px 24px;">
+<div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(42,31,21,0.08);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <div style="width:8px;height:8px;border-radius:50%;background:#5A8A1A;flex-shrink:0;"></div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(42,31,21,0.4);">Category 04</span>
+      </div>
+      <h3 style="font-family:'Fraunces',Georgia,serif;font-size:26px;font-weight:700;letter-spacing:-0.02em;line-height:1.1;color:#2a1f15;margin:0 0 10px;">Limeade Sparklers</h3>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:4px 12px;border-radius:4px;background:color-mix(in srgb,#5A8A1A 10%,transparent);color:#5A8A1A;border:1px solid color-mix(in srgb,#5A8A1A 20%,transparent);">2 drinks</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.06em;color:rgba(42,31,21,0.4);">~2010–2012</span>
       </div>
     </div>
     <div class="disc-content">
@@ -713,14 +687,17 @@ document.addEventListener("DOMContentLoaded",function(){
       <div class="dtv-mini" id="cat-sparkler-mini"></div>
     </div>
   </div>
-  <div class="disc-cat" id="cat-05" style="--cat-color:#854F0B">
-    <div class="disc-sidebar">
-      <div class="halftone" style="position:absolute;inset:0;opacity:.15;mix-blend-mode:overlay;pointer-events:none;"></div>
-      <div class="disc-cat-num">Category 05</div>
-      <h3 class="disc-cat-name">Non-Carbonated Fountain Drinks</h3>
-      <div class="disc-cat-meta">
-        <span class="disc-cat-badge">4 drinks</span>
-        <div class="disc-cat-dates">1978–2020</div>
+
+  <div id="cat-05" style="--cat-color:#854F0B;border-bottom:1px solid rgba(42,31,21,0.10);max-width:1500px;margin:0 auto;padding:32px 24px;">
+<div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(42,31,21,0.08);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <div style="width:8px;height:8px;border-radius:50%;background:#854F0B;flex-shrink:0;"></div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(42,31,21,0.4);">Category 05</span>
+      </div>
+      <h3 style="font-family:'Fraunces',Georgia,serif;font-size:26px;font-weight:700;letter-spacing:-0.02em;line-height:1.1;color:#2a1f15;margin:0 0 10px;">Non-Carbonated Fountain Drinks</h3>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:4px 12px;border-radius:4px;background:color-mix(in srgb,#854F0B 10%,transparent);color:#854F0B;border:1px solid color-mix(in srgb,#854F0B 20%,transparent);">4 drinks</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.06em;color:rgba(42,31,21,0.4);">1978–2020</span>
       </div>
     </div>
     <div class="disc-content">
@@ -734,14 +711,17 @@ document.addEventListener("DOMContentLoaded",function(){
       <div class="dtv-mini" id="cat6-mini"></div>
     </div>
   </div>
-  <div class="disc-cat" id="cat-06" style="--cat-color:#185FA5">
-    <div class="disc-sidebar">
-      <div class="halftone" style="position:absolute;inset:0;opacity:.15;mix-blend-mode:overlay;pointer-events:none;"></div>
-      <div class="disc-cat-num">Category 06</div>
-      <h3 class="disc-cat-name">Defunct fountain sodas</h3>
-      <div class="disc-cat-meta">
-        <span class="disc-cat-badge">4 brands</span>
-        <div class="disc-cat-dates">2003–2025</div>
+
+  <div id="cat-06" style="--cat-color:#185FA5;background:rgba(42,31,21,0.03);max-width:1500px;margin:0 auto;padding:32px 24px;">
+<div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(42,31,21,0.08);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <div style="width:8px;height:8px;border-radius:50%;background:#185FA5;flex-shrink:0;"></div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(42,31,21,0.4);">Category 06</span>
+      </div>
+      <h3 style="font-family:'Fraunces',Georgia,serif;font-size:26px;font-weight:700;letter-spacing:-0.02em;line-height:1.1;color:#2a1f15;margin:0 0 10px;">Defunct fountain sodas</h3>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:4px 12px;border-radius:4px;background:color-mix(in srgb,#185FA5 10%,transparent);color:#185FA5;border:1px solid color-mix(in srgb,#185FA5 20%,transparent);">4 brands</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.06em;color:rgba(42,31,21,0.4);">2003–2025</span>
       </div>
     </div>
     <div class="disc-content">
@@ -756,7 +736,9 @@ document.addEventListener("DOMContentLoaded",function(){
       
     </div>
   </div>
+
 </section>
+
 
 <!-- FOOTER -->
 <footer class="border-t" style="background:var(--card);border-color:color-mix(in oklab,var(--foreground) 15%,transparent);">
@@ -1024,12 +1006,12 @@ function buildMini(id,items,color,startY,endY){
   var dataSpan=maxE-minS;
   var step=dataSpan<=6?1:dataSpan<=14?2:5;
   var firstTick=Math.floor(minS/step)*step-step;
-  var lastTick=Math.ceil(maxE/step)*step+step;
+  var lastTick=Math.ceil(maxE/step)*step;
   if(lastTick>2025)lastTick=Math.max(Math.ceil(maxE/step)*step,2025);
   var ticks=[];
   for(var y=firstTick;y<=lastTick;y+=step)ticks.push(y);
   if(maxE>=2018&&ticks[ticks.length-1]<2025)ticks.push(2025);
-  var S2=ticks[0],E2=Math.min(ticks[ticks.length-1]+step,2027),R2=E2-S2;
+  var S2=ticks[0],E2=ticks[ticks.length-1],R2=E2-S2;
   function p2(y){return((y-S2)/R2*100).toFixed(2)+'%';}
   function w2(a,b){return((b-a)/R2*100).toFixed(2)+'%';}
 
@@ -1181,7 +1163,6 @@ buildMini('cat-freeze-mini',[
   {n:'Strawberry Vanilla Cream Soda',s:2024,e:2025},
   {n:'Confetti Cookie Freeze',s:2024,e:2025}
 ],'#0F6E56',2012,2026);
-
 
 
 /* FREEZE YEAR CALENDAR — CSS grid, type-coded */
@@ -1339,7 +1320,7 @@ var ITEM_DB={
     desc:'One of the two original launch flavors when the modern Freeze program began in January 2013. Co-ran with Piña Colada until the House of Dew expansion in September 2013 replaced both.',
     replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:''},
-  'Piña Colada':{name:'Piña Colada Freeze',dates:'January – September 2013',type:'House flavor · original Freeze launch',color:'#0F6E56',
+  'Piña Colada':{url:'taco-bell-pina-colada-frutista.html',name:'Piña Colada Freeze',dates:'January – September 2013',type:'House flavor · original Freeze launch',color:'#0F6E56',
     desc:'Co-launched with Pink Lemonade in January 2013. Previously appeared as a Frutista Freeze in Spring 2009. Replaced by Typhoon when the House of Dew flavors launched in September 2013.',
     replaced:'Rotated out as part of the Frutista seasonal cycle.',
     avail:''},
@@ -1627,8 +1608,9 @@ function showItemCard(key){
   if(d.notes) html+='<div class="dtv-card-notes">'+d.notes+'</div>';
   /* Footer */
   html+='<div class="dtv-card-foot">';
-  html+='<a href="/wiki/taco-bell/drinks/'+slug+'" style="color:'+g+'" title="Individual pages coming soon">';
-  html+='See full entry <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>';
+  var entryUrl=d.url||('/wiki/taco-bell/drinks/'+slug);
+  html+='<a href="'+entryUrl+'" style="color:'+g+'">';
+  html+='Read full entry <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>';
   html+='</div>';
   html+='</div></div>';
 
