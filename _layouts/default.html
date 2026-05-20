@@ -1638,6 +1638,55 @@
       opacity: 0;
       pointer-events: none;
     }
+
+    /* Hide new mobile-style elements in collapsed state */
+    body.wiki-page.toc-collapsed .wiki-mob-sticky,
+    body.wiki-page.toc-collapsed .wiki-home-chip,
+    body.wiki-page.toc-collapsed .wiki-wpill,
+    body.wiki-page.toc-collapsed .wiki-wpill-body,
+    body.wiki-page.toc-collapsed .wiki-mob-divider { display: none; }
+
+    /* ── REPLACE back-tile + contents-label with mobile-style nav ── */
+
+    /* Hide desktop-only elements being replaced */
+    body.wiki-page .wiki-back-tile { display: none; }
+    body.wiki-page .wiki-toc-contents-label { display: none; }
+
+    /* mob-sticky: top margin clears the absolute save/chevron buttons */
+    body.wiki-page .wiki-mob-sticky { margin-top: 48px; }
+
+    /* Wiki Home chip — same visual as mobile, strip mobile side margins */
+    body.wiki-page .wiki-home-chip {
+      display: flex;
+      margin-left: 0;
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+
+    /* Wiki Categories pill */
+    body.wiki-page .wiki-wpill {
+      display: flex;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    /* Categories body */
+    body.wiki-page .wiki-wpill-body {
+      display: block;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    /* Hairline divider */
+    body.wiki-page .wiki-mob-divider {
+      display: block;
+      height: 1px;
+      background: rgba(42,31,21,.20);
+      margin: 6px 0 10px;
+    }
+
+    /* cats-fade gradient not needed on desktop */
+    body.wiki-page .wiki-cats-fade { display: none; }
   }
 
   /* ── MOBILE: bar visible, drawer is PARTIAL WIDTH ── */
