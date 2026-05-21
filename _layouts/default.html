@@ -1638,55 +1638,150 @@
       opacity: 0;
       pointer-events: none;
     }
+  }
 
-    /* Hide new mobile-style elements in collapsed state */
-    body.wiki-page.toc-collapsed .wiki-mob-sticky,
-    body.wiki-page.toc-collapsed .wiki-home-chip,
-    body.wiki-page.toc-collapsed .wiki-wpill,
-    body.wiki-page.toc-collapsed .wiki-wpill-body,
-    body.wiki-page.toc-collapsed .wiki-mob-divider { display: none; }
+  /* ══════════════════════════════════════════════════════════════════
+     DESKTOP RAIL — wiki navigation elements
+     All the home-chip, wpill, cat-item styles live only in the mobile
+     block above. This block mirrors them for the desktop rail (≥721px)
+     and reorders elements so hero comes first via flexbox order.
+  ══════════════════════════════════════════════════════════════════ */
+  @media (min-width: 721px) {
 
-    /* ── REPLACE back-tile + contents-label with mobile-style nav ── */
+    /* Make wiki-toc a flex column so we can reorder with CSS order */
+    body.wiki-page .wiki-toc {
+      display: flex;
+      flex-direction: column;
+      padding: 14px 0 22px;
+    }
 
-    /* Hide desktop-only elements being replaced */
-    body.wiki-page .wiki-back-tile { display: none; }
-    body.wiki-page .wiki-toc-contents-label { display: none; }
+    /* ── Reorder: hero before mob-sticky ── */
+    body.wiki-page .wiki-toc-hero            { order: 1; padding: 12px 20px 10px; }
+    body.wiki-page .wiki-mob-sticky          { order: 2; display: flex; flex-direction: column; }
+    body.wiki-page .wiki-toc-contents-label  { display: none; } /* cont-pill replaces this */
+    body.wiki-page .wiki-toc-inner           { order: 3; padding: 0 0 0; }
 
-    /* mob-sticky: top margin clears the absolute save/chevron buttons */
-    body.wiki-page .wiki-mob-sticky { margin-top: 48px; }
+    /* ── Hide mobile-only header (main bar handles ViziWiki branding) ── */
+    body.wiki-page .wiki-mob-head { display: none !important; }
 
-    /* Wiki Home chip — same visual as mobile, strip mobile side margins */
+    /* ── Wiki Home chip ── */
     body.wiki-page .wiki-home-chip {
       display: flex;
-      margin-left: 0;
-      margin-right: 0;
-      margin-bottom: 10px;
+      align-items: center; justify-content: center;
+      gap: 8px;
+      margin: 0 12px 10px;
+      padding: 10px 14px;
+      background: transparent;
+      border: 1px solid color-mix(in oklab, var(--foreground, #2a1f15) 15%, transparent);
+      border-radius: 6px;
+      color: var(--foreground, #2a1f15); text-decoration: none;
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 15px; font-weight: 400;
+      letter-spacing: -.01em;
+      transition: background .15s ease, border-color .15s ease;
+    }
+    body.wiki-page .wiki-home-chip svg {
+      width: 14px; height: 14px; flex-shrink: 0;
+      fill: currentColor;
+    }
+    body.wiki-page .wiki-home-chip:hover {
+      background: rgba(42,31,21,.04);
+      border-color: color-mix(in oklab, var(--foreground, #2a1f15) 28%, transparent);
     }
 
-    /* Wiki Categories pill */
+    /* ── Wiki Categories + Page Contents pills ── */
     body.wiki-page .wiki-wpill {
       display: flex;
-      margin-left: 0;
-      margin-right: 0;
+      align-items: center; justify-content: space-between;
+      margin: 0 12px 4px;
+      padding: 10px 14px;
+      background: rgba(42,31,21,.055);
+      border: 1px solid rgba(42,31,21,.10);
+      border-radius: 7px;
+      cursor: pointer;
+      user-select: none;
+      transition: background .15s ease;
+    }
+    body.wiki-page .wiki-wpill:hover { background: rgba(42,31,21,.085); }
+    body.wiki-page .wiki-wpill[aria-expanded="true"] .wiki-wpill-chev {
+      transform: rotate(180deg);
     }
 
-    /* Categories body */
+    body.wiki-page .wiki-wpill-lbl-d {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 15px; font-weight: 500;
+      letter-spacing: -.01em; color: var(--wiki-fg);
+      display: flex; align-items: center; gap: 7px;
+    }
+    body.wiki-page .wiki-wpill-lbl-m {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: .11em; text-transform: uppercase;
+      color: var(--wiki-fg);
+      display: flex; align-items: center; gap: 7px;
+    }
+    body.wiki-page .wiki-wpill-chev {
+      width: 16px; height: 16px; flex-shrink: 0;
+      color: var(--wiki-muted);
+      transition: transform .2s ease;
+    }
+    body.wiki-page .wiki-wpill-chev svg { width: 100%; height: 100%; }
+
+    /* ── Categories dropdown body ── */
     body.wiki-page .wiki-wpill-body {
       display: block;
-      margin-left: 0;
-      margin-right: 0;
+      overflow: hidden;
+      margin: 0 12px 5px;
+      transition: max-height .25s ease;
+      position: relative;
+    }
+    body.wiki-page .wiki-wpill-body[aria-hidden="true"]  { max-height: 0; overflow: hidden; }
+    body.wiki-page .wiki-wpill-body[aria-hidden="false"] { max-height: 300px; overflow-y: auto; }
+
+    /* ── Category items ── */
+    body.wiki-page .wiki-cat-item {
+      display: flex; align-items: center; gap: 9px;
+      padding: 7px 13px;
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 13.5px; font-weight: 400; letter-spacing: -.01em;
+      color: rgba(42,31,21,.65); text-decoration: none;
+      border-radius: 4px;
+      transition: background .12s ease;
+    }
+    body.wiki-page .wiki-cat-item:hover { background: rgba(42,31,21,.04); }
+    body.wiki-page .wiki-cat-dot {
+      width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
     }
 
-    /* Hairline divider */
+    /* ── Fade gradient on cats overflow ── */
+    body.wiki-page .wiki-cats-fade {
+      height: 30px;
+      margin: -30px 12px 0;
+      position: relative; z-index: 2;
+      background: linear-gradient(to bottom, transparent, var(--wiki-bg));
+      pointer-events: none; opacity: 0;
+      transition: opacity .15s ease;
+    }
+
+    /* ── Divider between categories and page contents ── */
     body.wiki-page .wiki-mob-divider {
       display: block;
       height: 1px;
-      background: rgba(42,31,21,.20);
-      margin: 6px 0 10px;
+      background: rgba(42,31,21,.12);
+      margin: 6px 12px 8px;
     }
 
-    /* cats-fade gradient not needed on desktop */
-    body.wiki-page .wiki-cats-fade { display: none; }
+    /* ── Page contents icon (mini page logo) ── */
+    body.wiki-page .wiki-cont-icon {
+      width: 15px; height: 15px; flex-shrink: 0;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 2px; overflow: hidden;
+    }
+    body.wiki-page .wiki-cont-icon svg,
+    body.wiki-page .wiki-cont-icon img { width: 100%; height: 100%; display: block; }
+
+    /* ── Section list inherits correct padding ── */
+    body.wiki-page .wiki-toc-inner { padding: 2px 0 0; }
   }
 
   /* ── MOBILE: bar visible, drawer is PARTIAL WIDTH ── */
