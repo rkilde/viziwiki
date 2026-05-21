@@ -1634,9 +1634,11 @@
     body.wiki-page.toc-collapsed .wiki-back-label { display: none; }
     body.wiki-page.toc-collapsed .wiki-toc-hero,
     body.wiki-page.toc-collapsed .wiki-toc-contents-label,
-    body.wiki-page.toc-collapsed .wiki-toc-inner {
+    body.wiki-page.toc-collapsed .wiki-toc-inner,
+    body.wiki-page.toc-collapsed .wiki-mob-sticky {
       opacity: 0;
       pointer-events: none;
+      overflow: hidden;
     }
   }
 
@@ -1648,6 +1650,9 @@
   ══════════════════════════════════════════════════════════════════ */
   @media (min-width: 721px) {
 
+    /* Back tile redundant on desktop — Wiki Home chip covers it */
+    body.wiki-page .wiki-back-tile { display: none !important; }
+
     /* Make wiki-toc a flex column so we can reorder with CSS order */
     body.wiki-page .wiki-toc {
       display: flex;
@@ -1656,13 +1661,44 @@
     }
 
     /* ── Reorder: hero before mob-sticky ── */
-    body.wiki-page .wiki-toc-hero            { order: 1; padding: 12px 20px 10px; }
-    body.wiki-page .wiki-mob-sticky          { order: 2; display: flex; flex-direction: column; }
+    body.wiki-page .wiki-toc-hero            { display: none; } /* mob-head covers wiki identity on desktop */
+    body.wiki-page .wiki-mob-sticky          { order: 1; display: flex; flex-direction: column; }
     body.wiki-page .wiki-toc-contents-label  { display: none; } /* cont-pill replaces this */
     body.wiki-page .wiki-toc-inner           { order: 3; padding: 0 0 0; }
 
-    /* ── Hide mobile-only header (main bar handles ViziWiki branding) ── */
-    body.wiki-page .wiki-mob-head { display: none !important; }
+    /* ── Wiki mob-head: wiki branding header (shown on desktop too) ── */
+    body.wiki-page .wiki-mob-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 20px 16px 14px;
+      border-bottom: 1px solid var(--wiki-faint);
+      margin-bottom: 10px;
+      flex-shrink: 0;
+    }
+    body.wiki-page .wiki-mob-head-logo {
+      width: 30px; height: 30px; flex-shrink: 0;
+      border-radius: 3px; overflow: hidden;
+      box-shadow: 2px 2px 0 #0284c7;
+    }
+    body.wiki-page .wiki-mob-head-logo svg,
+    body.wiki-page .wiki-mob-head-logo img { width: 100%; height: 100%; display: block; }
+    body.wiki-page .wiki-mob-head-text {
+      display: flex; flex-direction: column; gap: 1px;
+    }
+    body.wiki-page .wiki-mob-head-name {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 18px; font-weight: 400;
+      letter-spacing: -.02em; line-height: 1.05;
+      color: var(--wiki-fg);
+    }
+    body.wiki-page .wiki-mob-head-vw {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 13px; font-weight: 500;
+      letter-spacing: -.01em; line-height: 1.2;
+      color: var(--wiki-muted);
+    }
+    body.wiki-page .wiki-mob-vizi { color: #0284c7; }
 
     /* ── Wiki Home chip ── */
     body.wiki-page .wiki-home-chip {
@@ -1780,8 +1816,38 @@
     body.wiki-page .wiki-cont-icon svg,
     body.wiki-page .wiki-cont-icon img { width: 100%; height: 100%; display: block; }
 
-    /* ── Section list inherits correct padding ── */
-    body.wiki-page .wiki-toc-inner { padding: 2px 0 0; }
+    /* ── Section list ── */
+    body.wiki-page .wiki-toc-inner { padding: 2px 0 0; overflow-y: auto; }
+    /* Page Contents collapse/expand end-states — JS animates maxHeight then clears it */
+    body.wiki-page .wiki-toc-inner.wiki-toc-collapsed { display: none; }
+    body.wiki-page .wiki-toc-inner.wiki-toc-expanded  { display: block; }
+
+    /* ── TOC items: JetBrains Mono to match mobile — overrides Fraunces base rule ── */
+    body.wiki-page .wiki-toc-inner .wiki-section-item {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px; font-weight: 400;
+      letter-spacing: .02em; line-height: 1.45;
+      padding: 8px 16px;
+      border-left: none;
+      color: rgba(42,31,21,.6);
+    }
+    body.wiki-page .wiki-toc-inner .wiki-section-item .num {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: .06em;
+      color: rgba(42,31,21,.35);
+      min-width: 22px; flex-shrink: 0;
+    }
+    body.wiki-page .wiki-toc-inner .wiki-section-item:hover {
+      background: rgba(42,31,21,.04);
+      color: var(--wiki-fg);
+    }
+    body.wiki-page .wiki-toc-inner .wiki-section-item.active {
+      background: rgba(2,132,199,.08);
+      color: #0284c7; font-weight: 600;
+    }
+    body.wiki-page .wiki-toc-inner .wiki-section-item.active .num {
+      color: rgba(2,132,199,.45); font-weight: 600;
+    }
   }
 
   /* ── MOBILE: bar visible, drawer is PARTIAL WIDTH ── */
