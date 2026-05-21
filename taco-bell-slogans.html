@@ -1,0 +1,1608 @@
+---
+layout: default
+title: "Taco Bell Slogans — Through the Ages · ViziWiki"
+body_class: "wiki-page"
+---
+{% raw %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Spectral:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+<style>
+:root{--background:oklch(0.972 0.012 85);--foreground:oklch(0.18 0.02 60);--card:oklch(1 0 0);--secondary:oklch(0.93 0.02 80);--muted-foreground:oklch(0.45 0.03 60);}
+.font-display{font-family:'Fraunces',Georgia,serif;font-optical-sizing:auto;font-variation-settings:"SOFT" 30,"WONK" 0;letter-spacing:-0.02em;}
+.font-mono-acc{font-family:'JetBrains Mono',ui-monospace,monospace;letter-spacing:.05em;}
+.hero-h1{font-size:clamp(48px,10vw,88px);font-weight:700;line-height:.95;letter-spacing:-0.03em;}
+.halftone{background-image:radial-gradient(rgba(214,80,148,.9) 1.4px,transparent 1.6px);background-size:10px 10px;}
+
+.tile{position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:28px 32px;color:#fff;min-height:260px;}
+.tile .t-om{position:absolute;inset:0;mix-blend-mode:multiply;pointer-events:none;}
+.tile .t-os{position:absolute;inset:0;background:rgba(0,0,8,.35);pointer-events:none;}
+.tile .t-oh{position:absolute;inset:0;background-image:radial-gradient(rgba(214,80,148,.9) 1.4px,transparent 1.6px);background-size:10px 10px;mix-blend-mode:overlay;opacity:.25;pointer-events:none;}
+.tile .t-in{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:space-between;}
+.tile .t-pill{display:inline-flex;align-items:center;gap:6px;border-radius:30px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.10);padding:4px 12px;font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.22em;color:rgba(255,255,255,.85);width:fit-content;}
+.tile .t-pill .td{width:5px;height:5px;border-radius:50%;}
+.tile .t-slo{font-family:'Fraunces',Georgia,serif;font-weight:700;line-height:.96;letter-spacing:-.03em;color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.15);}
+.tile .t-dates{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.55);}
+.info{background:var(--card);padding:28px 32px;display:flex;flex-direction:column;}
+.info .i-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px;}
+.info .i-era{font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.28em;color:var(--muted-foreground);}
+.info .i-badge{font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.2em;padding:2px 8px;border-radius:2px;border:1px solid color-mix(in oklab,var(--foreground) 18%, transparent);color:var(--muted-foreground);}
+.info .i-badge.live{border-color:rgba(155,63,176,.45);color:#9B3FB0;background:rgba(155,63,176,.07);}
+@media(max-width:720px){
+  .ov-grid{grid-template-columns:1fr!important;}
+  .ov-sticky{position:static!important;}
+}
+@media(max-width:700px){
+  .ov-prose-grid{grid-template-columns:1fr!important;gap:14px!important;}
+}
+@media(max-width:760px){
+  /* Swim chart header: stack on mobile */
+  #timeline > div:first-child {
+    grid-template-columns:1fr!important;
+    gap:8px!important;
+  }
+  #timeline > div:first-child p {
+    padding-top:0!important;
+  }
+  /* Lawsuit header: stack on mobile */
+  #lawsuit > div:first-child {
+    grid-template-columns:1fr!important;
+    gap:16px!important;
+  }
+  /* Overview grid: stack on mobile */
+  #lawsuit .ov-grid, div[style*="grid-template-columns:1fr 1.6fr"] {
+    grid-template-columns:1fr!important;
+    gap:16px!important;
+  }
+}
+.info .i-slo{font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:22px;letter-spacing:-.02em;line-height:1.06;color:var(--foreground);margin-bottom:14px;}
+.info .i-rule{height:1px;background:color-mix(in oklab,var(--foreground) 10%, transparent);margin-bottom:16px;}
+.info .i-desc{font-family:'Spectral',Georgia,serif;font-size:14px;line-height:1.62;color:var(--foreground);margin-bottom:20px;}
+.info .i-desc strong{color:var(--foreground);font-weight:600;}
+.info .i-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:18px;}
+.info .i-sc{border-radius:4px;border:1px solid color-mix(in oklab,var(--foreground) 12%, transparent);background:var(--secondary);padding:9px 12px;}
+.info .i-sc .ssv{font-family:'Fraunces',Georgia,serif;font-size:15px;font-weight:400;color:var(--foreground);line-height:1;}
+.info .i-sc .ssk{font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.22em;color:var(--muted-foreground);margin-top:3px;}
+.info .i-ctx{display:flex;flex-direction:column;gap:7px;}
+.info .i-cc{border-radius:4px;border:1px solid color-mix(in oklab,var(--foreground) 10%, transparent);background:var(--secondary);padding:11px 14px;}
+.info .i-cc .ccl{font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.28em;color:var(--muted-foreground);margin-bottom:5px;}
+.info .i-cc .ccb{font-family:'Spectral',Georgia,serif;font-size:13px;line-height:1.55;color:var(--foreground);}
+.info .i-cc .ccb strong{color:var(--foreground);font-weight:600;}
+@media(max-width:720px){.card{grid-template-columns:1fr;}.tile{min-height:180px;}}
+</style>
+
+<script>
+window.WIKI_TOC = {
+  pageTitle: 'Slogans',
+  pageLogo: '<svg viewBox=\"0 0 32 32\" xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"32\" height=\"32\" rx=\"6\" fill=\"#702082\"/><path d=\"M6 8 C6 6.9 6.9 6 8 6 L24 6 C25.1 6 26 6.9 26 8 L26 19 C26 20.1 25.1 21 24 21 L12 21 L8 26 L8 21 C6.9 21 6 20.1 6 19 Z\" fill=\"#FED141\"/><text x=\"13\" y=\"17\" font-family=\"Georgia,serif\" font-size=\"9\" font-style=\"italic\" font-weight=\"700\" fill=\"#702082\" text-anchor=\"middle\">\"</text></svg>',
+  wikiHome: 'taco-bell.html',
+  wikiTitle: 'Taco Bell',
+  wikiLogo: '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="28" height="28" rx="2.5" fill="#ffffff"/><rect x="4" y="4" width="24" height="24" rx="0.8" fill="#702082"/><rect x="14.7" y="8.5" width="2.6" height="1.3" rx="0.6" fill="#FED141"/><path d="M 12 10 Q 12 9.1 13 9.1 L 19 9.1 Q 20 9.1 20 10 L 21 18.5 Q 22 19 22 19.7 L 10 19.7 Q 10 19 11 18.5 Z" fill="#FED141"/><circle cx="16" cy="21" r="1" fill="#FED141"/></svg>',
+  sections: [
+    { id: "era-00", label: "Pre-tagline era · 1962" },
+    { id: "fresh-food", label: "The Fresh Food Place · 1977" },
+    { id: "what-a-difference", label: "What a Difference! · 1982" },
+    { id: "just-made-for-you", label: "It's Just Made for You · 1984" },
+    { id: "hello-taco-bell", label: "Hello, Taco Bell · 1986" },
+    { id: "run-for-the-border", label: "Make a Run for the Border · 1988" },
+    { id: "yo-quiero", label: "Yo Quiero Taco Bell · 1997" },
+    { id: "think-outside", label: "Think Outside the Bun · 2001" },
+    { id: "live-mas", label: "Live Más · 2012" },
+    { id: "timeline", label: "Timeline · 1962–present" },
+    { id: "lawsuit", label: "Wrench LLC v. Taco Bell · 2003" }
+  ]
+};
+</script>
+
+<!-- ── HERO ── -->
+<section class="relative overflow-hidden border-b border-foreground/20 text-white" style="background:linear-gradient(to bottom right,#c026d3,#7c3aed,#1e1b4b)">
+  <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(to bottom right,rgba(192,38,211,.65),rgba(124,58,237,.7),rgba(30,27,75,.85));mix-blend-mode:multiply"></div>
+  <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(to right,rgba(30,27,75,.7),rgba(109,40,217,.25),transparent)"></div>
+  <i data-lucide="message-square-quote" stroke-width="1.25" class="pointer-events-none absolute -right-12 -top-10 rotate-12 text-white/8" style="height:440px;width:440px;opacity:.06;color:#fff;"></i>
+  <div class="relative mx-auto max-w-[1500px] px-6 py-14">
+    <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-3 py-1 font-mono-acc text-[10px] uppercase tracking-[0.25em] backdrop-blur">
+      <span class="h-1.5 w-1.5 rounded-full" style="background:#FED141;"></span> Marketing · From the Archive
+    </div>
+    <h1 class="font-display hero-h1">Taco Bell Slogans<span style="color:#FED141;">.</span></h1>
+    <div class="mt-3 flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.2em] text-white/70">
+      <a href="taco-bell.html" class="hover:text-white">Taco Bell</a>
+      <i data-lucide="chevron-right" class="h-3 w-3"></i>
+      <span class="text-white">Slogans</span>
+    </div>
+    <p class="mt-4 max-w-xl text-lg text-white/85">Eleven taglines across sixty-two years — each one adopted for a reason, each one retired for a reason.</p>
+    <div class="mt-8 grid max-w-2xl grid-cols-3 gap-px overflow-hidden rounded-sm border border-white/20 bg-white/10 font-mono-acc text-[10px] uppercase tracking-wider">
+      <div class="px-4 py-3" style="background:rgba(30,27,75,.55)"><div class="font-display text-xl font-semibold normal-case tracking-tight text-white">11</div><div class="text-white/65">Slogans</div></div>
+      <div class="px-4 py-3" style="background:rgba(30,27,75,.55)"><div class="font-display text-xl font-semibold normal-case tracking-tight text-white">62 yr</div><div class="text-white/65">Span</div></div>
+      <div class="px-4 py-3" style="background:rgba(30,27,75,.55)"><div class="font-display text-xl font-semibold normal-case tracking-tight text-white">1962</div><div class="text-white/65">Founded</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── OVERVIEW ── -->
+<div style="background:var(--card);">
+<div style="padding:48px 32px 0;max-width:1304px;margin:0 auto;">
+  <div class="flex items-center gap-2 font-mono-acc" style="font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-foreground);margin-bottom:10px;"><i data-lucide="book-open" style="width:11px;height:11px;flex-shrink:0;"></i>Overview</div>
+  <h2 class="font-display" style="font-size:clamp(22px,3vw,40px);font-weight:400;color:var(--foreground);line-height:1.05;margin-bottom:24px;">From no tagline to <em style="font-style:italic;">Live Más.</em></h2>
+  <div class="ov-prose-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px 48px;padding-bottom:40px;border-bottom:1px solid color-mix(in oklab,var(--foreground) 10%, transparent);">
+<p style="font-family:'Spectral',Georgia,serif;font-size:15px;line-height:1.7;color:var(--foreground);">Taco Bell was founded by Glen Bell in Downey, California in 1962 and operated for fifteen years without a national advertising tagline, growing to more than a thousand locations on the strength of its menu and price point alone. That changed in 1977 when PepsiCo — which had acquired the chain the previous year — brought the marketing infrastructure required to push a coordinated national voice. <strong>The Fresh Food Place</strong> became the first tagline with genuine national reach.</p>
+    <p style="font-family:'Spectral',Georgia,serif;font-size:15px;line-height:1.7;color:var(--foreground);">What followed was a forty-year search for the right register. The 1980s moved quickly through four slogans in roughly a decade, each attempting to land on a differentiator — freshness, customisation, friendliness — before the chain discovered in 1988 that its most powerful advertising asset was atmosphere rather than product. <strong>Make a Run for the Border</strong> ran for six years and embedded itself in American vernacular, particularly among the late-night college audience that would remain a core demographic for decades.</p>
+    <p style="font-family:'Spectral',Georgia,serif;font-size:15px;line-height:1.7;color:var(--foreground);">The 1990s produced Taco Bell's most studied campaign: <strong>Yo Quiero Taco Bell</strong> and Gidget the Chihuahua. Brand awareness hit record highs while same-store sales declined — a real-world demonstration that recognition and purchase intent are distinct quantities. The campaign was retired in 2001 and the subject of a $42 million lawsuit over creative ownership.</p>
+    <p style="font-family:'Spectral',Georgia,serif;font-size:15px;line-height:1.7;color:var(--foreground);"><strong>Think Outside the Bun</strong> then ran for eleven years, the longest primary slogan in the chain's history. It reframed the taco as a direct competitive alternative to the hamburger, and found its clearest product expression in the Crunchwrap Supreme (2005) and the Fourthmeal late-night sub-brand (2006). In 2012, at the 50th anniversary mark, the chain replaced it with two words: <strong>Live Más.</strong> Launched alongside Doritos Locos Tacos — the best-selling product launch in fast-food history — the tagline repositioned Taco Bell from a food destination to a lifestyle brand. It is still active today.</p>
+  </div>
+  </div>
+</div>
+</div><!-- /overview-bg -->
+
+<!-- ── ERA CARDS ── -->
+<div style="background:color-mix(in oklab,var(--secondary) 40%, transparent);">
+<div style="max-width:1304px;margin:0 auto;padding:40px 32px 80px;">
+
+  <!-- Section header -->
+  <div style="margin-bottom:18px;">
+    <div class="flex items-center gap-2" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-foreground);margin-bottom:6px;"><i data-lucide="list" style="width:11px;height:11px;flex-shrink:0;"></i>Slogan index · 1962 – present</div>
+    <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <h2 style="font-family:'Fraunces',Georgia,serif;font-size:clamp(18px,2.5vw,26px);font-weight:400;letter-spacing:-.02em;color:var(--foreground);">All eleven eras, in order.</h2>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;color:var(--muted-foreground);opacity:.7;">↓ click any row to expand</span>
+    </div>
+  </div>
+
+<style>
+.ccc-wrap{background:var(--card);border:1px solid color-mix(in oklab,var(--foreground) 11%, transparent);border-radius:12px;overflow:hidden;}
+.ccc-thead{display:grid;grid-template-columns:1fr 94px 56px 100px;border-bottom:1.5px solid color-mix(in oklab,var(--foreground) 11%, transparent);padding:10px 24px 10px 32px;background:rgba(42,31,21,.03);}
+.ccc-thead span{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted-foreground);}
+.ccc-row{border-bottom:1px solid rgba(42,31,21,.07);border-left:3px solid transparent;transition:background .15s;}
+.ccc-row:last-child{border-bottom:none;}
+.ccc-row.open{background:rgba(42,31,21,.02);}
+.ccc-head{display:grid;grid-template-columns:1fr 94px 56px 100px;padding:16px 24px 16px 0;cursor:pointer;user-select:none;}
+.ccc-head:hover .ccc-slo{opacity:.7;}
+.ccc-slo{font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:clamp(15px,2.2vw,20px);letter-spacing:-.02em;color:var(--foreground);padding-left:28px;line-height:1.1;transition:opacity .15s;}
+.ccc-era{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-foreground);margin-top:3px;padding-left:28px;}
+
+.ccc-row.open .chev-icon{transform:rotate(90deg);}
+.ccc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted-foreground);text-align:center;align-self:center;}
+.ccc-body{display:none;padding:0 28px 26px 32px;}
+.ccc-row.open .ccc-body{display:block;}
+.ccc-body-inner{border-top:1px solid rgba(42,31,21,.08);padding-top:22px;}
+.ccc-quote{font-family:'Fraunces',Georgia,serif;font-weight:700;font-style:italic;line-height:.92;letter-spacing:-.035em;margin-bottom:16px;}
+.ccc-rule{height:1px;background:rgba(42,31,21,.09);margin-bottom:16px;}
+.ccc-desc{font-family:'Spectral',Georgia,serif;font-size:14px;line-height:1.7;color:var(--foreground);margin-bottom:16px;}
+.ccc-desc strong{font-weight:600;}
+.ccc-stats{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.ccc-stat{padding:7px 14px;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%, transparent);background:var(--secondary);}
+.ccc-stat .v{font-family:'Fraunces',Georgia,serif;font-size:15px;font-weight:400;color:var(--foreground);line-height:1;}
+.ccc-stat .k{font-family:'JetBrains Mono',monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted-foreground);margin-top:3px;}
+.ccc-ctx{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;}
+.ccc-cb{padding:12px 14px;border-radius:6px;background:var(--secondary);border:1px solid color-mix(in oklab,var(--foreground) 8%, transparent);}
+.ccc-cb .cl{font-family:'JetBrains Mono',monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.22em;color:var(--muted-foreground);margin-bottom:5px;}
+.ccc-cb .ct{font-family:'Spectral',Georgia,serif;font-size:13px;line-height:1.6;color:var(--foreground);}
+.i-badge{font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.2em;padding:2px 8px;border-radius:2px;border:1px solid color-mix(in oklab,var(--foreground) 18%, transparent);color:var(--muted-foreground);}
+.i-badge.live{border-color:rgba(155,63,176,.45);color:#9B3FB0;background:rgba(155,63,176,.07);}
+@media(max-width:640px){.ccc-thead{display:none;}.ccc-head{grid-template-columns:1fr auto;padding:18px 16px 18px 0;}.ccc-num{display:none;}.ccc-slo{padding-left:20px;font-size:17px;}.ccc-era{padding-left:20px;}.ccc-body{padding:0 16px 22px 20px;}.ccc-ctx{grid-template-columns:1fr;}}
+</style>
+
+<div class="ccc-wrap">
+  <div class="ccc-thead">
+    <span>Slogan</span>
+    <span style="text-align:center;">Years</span>
+    <span style="text-align:center;">Span</span>
+    <span style="text-align:right;">Status</span>
+  </div>
+  <div id="era-00" class="ccc-row" style="border-left-color:#6d28d9;">
+    <div class="ccc-head">
+      <div>
+        <div class="ccc-slo">The pre-tagline era</div>
+        <div class="ccc-era">Era 00 · Pre-tagline</div>
+      </div>
+      <div class="ccc-num">1962–1977</div>
+      <div class="ccc-num">15 yr</div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:5px;align-self:center;"><span style="font-family:var(--fm);font-size:10px;color:var(--muted-foreground);">No slogan</span><span class="chev-icon" style="font-size:12px;color:var(--muted-foreground);display:inline-block;transition:transform .2s;">›</span></div>
+    </div>
+    <div class="ccc-body"><div class="ccc-body-inner">
+      <div style="font-family:'Spectral',Georgia,serif;font-size:14px;font-style:italic;color:var(--muted-foreground);margin-bottom:14px;">No formal tagline during this period — the chain grew on menu and price alone.</div>
+      <div class="ccc-rule"></div>
+      <p class="ccc-desc">Glen Bell opens the first Taco Bell in Downey, California in 1962. For fifteen years the food is the entire argument — no national tagline, no slogan, just the menu. The chain grows to over 1,000 locations on word of mouth and price alone. PepsiCo's 1978 acquisition brings corporate marketing infrastructure and ends the era by necessity.</p>
+      <div class="ccc-stats">
+<div class="ccc-stat"><div class="v">1962</div><div class="k">Founded</div></div>
+<div class="ccc-stat"><div class="v">1,000+</div><div class="k">Locations</div></div>
+<div class="ccc-stat"><div class="v">1978</div><div class="k">PepsiCo</div></div>
+      </div>
+      <div class="ccc-ctx">
+<div class="ccc-cb"><div class="cl">The trigger</div><div class="ct">PepsiCo's acquisition demanded a scalable national voice. The pre-tagline era ended by necessity, not desire.</div></div>
+<div class="ccc-cb"><div class="cl">In culture</div><div class="ct">Fast food itself was still new. McDonald's was just going national. The idea that a chain needed a slogan was itself becoming obvious.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div id="fresh-food" class="ccc-row" style="border-left-color:#c084fc;">
+    <div class="ccc-head">
+      <div>
+        <div class="ccc-slo">The Fresh Food Place</div>
+        <div class="ccc-era">Slogan 01</div>
+      </div>
+      <div class="ccc-num">1977–1982</div>
+      <div class="ccc-num">5 yr</div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:5px;align-self:center;"><span style="font-family:var(--fm);font-size:10px;color:var(--muted-foreground);">Retired</span><span class="chev-icon" style="font-size:12px;color:var(--muted-foreground);display:inline-block;transition:transform .2s;">›</span></div>
+    </div>
+    <div class="ccc-body"><div class="ccc-body-inner">
+      <div class="ccc-quote" style="font-size:clamp(24px,4vw,42px);color:#7c3aed;">"The Fresh Food Place"</div>
+      <div class="ccc-rule"></div>
+      <p class="ccc-desc">Taco Bell's first nationally-pushed tagline leaned into <strong>"fresh"</strong> as a differentiator at a time when competitors were mostly frozen and microwaved. In the late '70s fast-food context, the claim was genuinely counterintuitive — which is exactly why it worked as positioning.</p>
+      <div class="ccc-stats">
+<div class="ccc-stat"><div class="v">No. 01</div><div class="k">Slogan</div></div>
+<div class="ccc-stat"><div class="v">5 yr</div><div class="k">Run</div></div>
+<div class="ccc-stat"><div class="v">1982</div><div class="k">Retired</div></div>
+      </div>
+      <div class="ccc-ctx">
+<div class="ccc-cb"><div class="cl">At Taco Bell</div><div class="ct">First tagline with national reach. PepsiCo scaled it across 1,000+ locations. "Fresh" was the first positioning the new ownership could anchor to.</div></div>
+<div class="ccc-cb"><div class="cl">In culture</div><div class="ct">Late '70s America. A "fresh food" claim from a fast-food chain felt counterintuitive — competitors weren't saying it, which gave Taco Bell clear air.</div></div>
+<div class="ccc-cb"><div class="cl">Why it ended</div><div class="ct">PepsiCo's 1982 redesign push wanted energy and boldness over earnestness. "The Fresh Food Place" felt too quiet for what the brand was becoming.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div id="what-a-difference" class="ccc-row" style="border-left-color:#6d28d9;">
+    <div class="ccc-head">
+      <div>
+        <div class="ccc-slo">What a Difference!</div>
+        <div class="ccc-era">Slogan 02</div>
+      </div>
+      <div class="ccc-num">1982–1984</div>
+      <div class="ccc-num">2 yr</div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:5px;align-self:center;"><span style="font-family:var(--fm);font-size:10px;color:var(--muted-foreground);">Retired</span><span class="chev-icon" style="font-size:12px;color:var(--muted-foreground);display:inline-block;transition:transform .2s;">›</span></div>
+    </div>
+    <div class="ccc-body"><div class="ccc-body-inner">
+      <div class="ccc-quote" style="font-size:clamp(24px,4vw,42px);color:#4c1d95;">"What a Difference!"</div>
+      <div class="ccc-rule"></div>
+      <p class="ccc-desc">Often phrased as <strong>"Ooh! What a Difference!"</strong> — an exclamation-mark era. PepsiCo's redesign push wanted louder, more declarative messaging. The tagline lasted two years before the brand pivoted toward something with a product hook. It could have belonged to any chain, which was the problem.</p>
+      <div class="ccc-stats">
+<div class="ccc-stat"><div class="v">No. 02</div><div class="k">Slogan</div></div>
+<div class="ccc-stat"><div class="v">2 yr</div><div class="k">Run</div></div>
+<div class="ccc-stat"><div class="v">1984</div><div class="k">Retired</div></div>
+      </div>
+      <div class="ccc-ctx">
+<div class="ccc-cb"><div class="cl">At Taco Bell</div><div class="ct">PepsiCo's first full redesign cycle. Everything got louder, including the tagline. Came and went in two years.</div></div>
+<div class="ccc-cb"><div class="cl">In culture</div><div class="ct">MTV launched 1981. The '80s advertising decade was starting. Bold, simple declarations were the currency.</div></div>
+<div class="ccc-cb"><div class="cl">Why it ended</div><div class="ct">No cultural footprint, no product hook. Could have belonged to any chain. A more specific pivot came quickly.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div id="just-made-for-you" class="ccc-row" style="border-left-color:#c084fc;">
+    <div class="ccc-head">
+      <div>
+        <div class="ccc-slo">It's Just Made for You</div>
+        <div class="ccc-era">Slogan 03</div>
+      </div>
+      <div class="ccc-num">1984–1986</div>
+      <div class="ccc-num">2 yr</div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:5px;align-self:center;"><span style="font-family:var(--fm);font-size:10px;color:var(--muted-foreground);">Retired</span><span class="chev-icon" style="font-size:12px;color:var(--muted-foreground);display:inline-block;transition:transform .2s;">›</span></div>
+    </div>
+    <div class="ccc-body"><div class="ccc-body-inner">
+      <div class="ccc-quote" style="font-size:clamp(24px,4vw,42px);color:#7c3aed;">"It's Just Made for You"</div>
+      <div class="ccc-rule"></div>
+      <p class="ccc-desc">A real operational claim — Taco Bell's assemble-to-order model contrasted with burger chains that pre-made items under heat lamps. <strong>"It's Just Made for You"</strong> marketed customization a decade before Chipotle would make it the entire concept. The messaging was accurate before efficiency became the priority.</p>
+      <div class="ccc-stats">
+<div class="ccc-stat"><div class="v">No. 03</div><div class="k">Slogan</div></div>
+<div class="ccc-stat"><div class="v">2 yr</div><div class="k">Run</div></div>
+<div class="ccc-stat"><div class="v">1986</div><div class="k">Retired</div></div>
+      </div>
+      <div class="ccc-ctx">
+<div class="ccc-cb"><div class="cl">At Taco Bell</div><div class="ct">Assemble-to-order was a genuine differentiator in 1984. The claim was accurate before throughput pressures made it impossible to sustain.</div></div>
+<div class="ccc-cb"><div class="cl">In culture</div><div class="ct">Fast-casual was taking shape. Consumers were discovering customization. The demand signal was there — Chipotle was just 11 years away.</div></div>
+<div class="ccc-cb"><div class="cl">Why it ended</div><div class="ct">The 25th anniversary in 1986 became a reset. A friendlier, celebratory tone was chosen. The customization message was shelved.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div id="hello-taco-bell" class="ccc-row" style="border-left-color:#6d28d9;">
+    <div class="ccc-head">
+      <div>
+        <div class="ccc-slo">Hello, Taco Bell</div>
+        <div class="ccc-era">Slogan 04</div>
+      </div>
+      <div class="ccc-num">1986–1988</div>
+      <div class="ccc-num">2 yr</div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:5px;align-self:center;"><span style="font-family:var(--fm);font-size:10px;color:var(--muted-foreground);">Retired</span><span class="chev-icon" style="font-size:12px;color:var(--muted-foreground);display:inline-block;transition:transform .2s;">›</span></div>
+    </div>
+    <div class="ccc-body"><div class="ccc-body-inner">
+      <div class="ccc-quote" style="font-size:clamp(24px,4vw,42px);color:#4c1d95;">"Hello, Taco Bell"</div>
+      <div class="ccc-rule"></div>
+      <p class="ccc-desc">The brand's friendliest tone ever, wrapped around the 25th anniversary. No competitive positioning, no product claim — just a greeting. Coexisted briefly with <strong>"The Cure for the Common Meal"</strong> (1986–87), a punchier sub-campaign aimed at suburban dinner occasions that lasted one year and barely registered.</p>
+      <div class="ccc-stats">
+<div class="ccc-stat"><div class="v">No. 04</div><div class="k">Slogan</div></div>
+<div class="ccc-stat"><div class="v">2 yr</div><div class="k">Run</div></div>
+<div class="ccc-stat"><div class="v">1988</div><div class="k">Retired</div></div>
+      </div>
+      <div class="ccc-ctx">
+<div class="ccc-cb"><div class="cl">At Taco Bell</div><div class="ct">25th anniversary rebrand. The friendliest tone the brand ever struck, before three decades of aggressive competitive positioning.</div></div>
+<div class="ccc-cb"><div class="cl">In culture</div><div class="ct">McDonald's McNuggets and BK's flame-broiling dominated ad spend. Taco Bell responded with warmth — a tone it quickly outgrew.</div></div>
+<div class="ccc-cb"><div class="cl">Why it ended</div><div class="ct">Friendly wasn't working at scale. The 1988 decision: go on offense, build a destination, leave the greeting behind.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div id="run-for-the-border" class="ccc-row" style="border-left-color:#c084fc;">
+    <div class="ccc-head">
+      <div>
+        <div class="ccc-slo">Make a Run for the Border</div>
+        <div class="ccc-era">Slogan 05 · First era-defining tagline</div>
+      </div>
+      <div class="ccc-num">1988–1994</div>
+      <div class="ccc-num">6 yr</div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:5px;align-self:center;"><span style="font-family:var(--fm);font-size:10px;color:var(--muted-foreground);">Retired</span><span class="chev-icon" style="font-size:12px;color:var(--muted-foreground);display:inline-block;transition:transform .2s;">›</span></div>
+    </div>
+    <div class="ccc-body"><div class="ccc-body-inner">
+      <div class="ccc-quote" style="font-size:clamp(24px,4vw,42px);color:#7c3aed;">"Make a Run for the Border"</div>
+      <div class="ccc-rule"></div>
+      <p class="ccc-desc">The first era-defining tagline. <strong>"The Border"</strong> became a brand asset — a mythologized place that turned Taco Bell from a food stop to a destination. Late-night college culture adopted it organically and it entered everyday speech. It did what Budweiser and Marlboro had figured out earlier: sell the feeling, not the product.</p>
+      <div class="ccc-stats">
+<div class="ccc-stat"><div class="v">No. 05</div><div class="k">Slogan</div></div>
+<div class="ccc-stat"><div class="v">6 yr</div><div class="k">Run</div></div>
+<div class="ccc-stat"><div class="v">1994</div><div class="k">Retired</div></div>
+      </div>
+      <div class="ccc-ctx">
+<div class="ccc-cb"><div class="cl">At Taco Bell</div><div class="ct">Six years, the longest reign to that point. Invented the brand's late-night identity — a footprint that outlasted the slogan itself. "Cross the Border" (1993–95) was the transitional exit.</div></div>
+<div class="ccc-cb"><div class="cl">In culture</div><div class="ct">Late '80s bravado, fast food as nightlife. "Make a Run" implied motion and urgency — it entered everyday speech, the true measure of slogan success.</div></div>
+<div class="ccc-cb"><div class="cl">Why it ended</div><div class="ct">Cultural criticism from Hispanic advocacy groups mounted through the early '90s. The brand exited gradually before dropping the Border concept entirely.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div id="yo-quiero" class="ccc-row" style="border-left-color:#6d28d9;">
+    <div class="ccc-head">
+      <div>
+        <div class="ccc-slo">Yo Quiero Taco Bell</div>
+        <div class="ccc-era">Slogan 07 · Chihuahua era</div>
+      </div>
+      <div class="ccc-num">1997–2001</div>
+      <div class="ccc-num">4 yr</div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:5px;align-self:center;"><span style="font-family:var(--fm);font-size:10px;color:var(--muted-foreground);">Retired</span><span class="chev-icon" style="font-size:12px;color:var(--muted-foreground);display:inline-block;transition:transform .2s;">›</span></div>
+    </div>
+    <div class="ccc-body"><div class="ccc-body-inner">
+      <div class="ccc-quote" style="font-size:clamp(24px,4vw,42px);color:#4c1d95;">"Yo Quiero Taco Bell"</div>
+      <div class="ccc-rule"></div>
+      <p class="ccc-desc">Gidget the chihuahua was everywhere — plush toys, late-night TV, the cultural conversation. Brand awareness hit all-time highs. <strong>Sales went down.</strong> The dog was famous. The food wasn't ordered. Business schools still teach it as a landmark case study in the gap between brand awareness and purchase conversion.</p>
+      <div class="ccc-stats">
+<div class="ccc-stat"><div class="v">No. 07</div><div class="k">Slogan</div></div>
+<div class="ccc-stat"><div class="v">4 yr</div><div class="k">Run</div></div>
+<div class="ccc-stat"><div class="v">$42M</div><div class="k">Lawsuit</div></div>
+      </div>
+      <div class="ccc-ctx">
+<div class="ccc-cb"><div class="cl">At Taco Bell</div><div class="ct">Peak awareness, declining sales. The campaign made people love the dog, not crave the food. A textbook awareness-without-conversion failure.</div></div>
+<div class="ccc-cb"><div class="cl">In culture</div><div class="ct">Peak mascot era — Aflac duck, GEICO gecko, Budweiser frogs. Taco Bell had the decade's biggest mascot. It still wasn't enough to close the sale.</div></div>
+<div class="ccc-cb"><div class="cl">Why it ended</div><div class="ct">Two lawsuits: cultural stereotyping claims, and a $42M payout to the campaign's original creators. Sales declining. Everything ended at once.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div id="think-outside" class="ccc-row" style="border-left-color:#c084fc;">
+    <div class="ccc-head">
+      <div>
+        <div class="ccc-slo">Think Outside the Bun</div>
+        <div class="ccc-era">Slogan 08 · Longest reign</div>
+      </div>
+      <div class="ccc-num">2001–2012</div>
+      <div class="ccc-num">11 yr</div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:5px;align-self:center;"><span style="font-family:var(--fm);font-size:10px;color:var(--muted-foreground);">Retired</span><span class="chev-icon" style="font-size:12px;color:var(--muted-foreground);display:inline-block;transition:transform .2s;">›</span></div>
+    </div>
+    <div class="ccc-body"><div class="ccc-body-inner">
+      <div class="ccc-quote" style="font-size:clamp(24px,4vw,42px);color:#7c3aed;">"Think Outside the Bun"</div>
+      <div class="ccc-rule"></div>
+      <p class="ccc-desc">The longest-running primary slogan in Taco Bell history — <strong>11 years.</strong> A direct competitive attack on McDonald's and Burger King: the taco as the smarter alternative to the boring burger. The Crunchwrap (2005) gave it a product to point at. The <strong>Fourthmeal</strong> sub-brand (2006–12) ran concurrently, codifying the late-night economy.</p>
+      <div class="ccc-stats">
+<div class="ccc-stat"><div class="v">No. 08</div><div class="k">Slogan</div></div>
+<div class="ccc-stat"><div class="v">11 yr</div><div class="k">Run</div></div>
+<div class="ccc-stat"><div class="v">2012</div><div class="k">Retired</div></div>
+      </div>
+      <div class="ccc-ctx">
+<div class="ccc-cb"><div class="cl">At Taco Bell</div><div class="ct">11 years, one coherent idea. The Crunchwrap gave it something to point at. Fourthmeal ran alongside it giving Taco Bell its post-midnight identity.</div></div>
+<div class="ccc-cb"><div class="cl">In culture</div><div class="ct">Post-9/11 Gen Y rejected conformity. Anti-establishment positioning, counterintuitively pitched by the chain itself. It named something real in its audience.</div></div>
+<div class="ccc-cb"><div class="cl">Why it ended</div><div class="ct">By the 50th anniversary in 2012, leadership wanted to transcend competitive positioning. Not "not a burger" — a full lifestyle. Two words replaced eleven.</div></div>
+      </div>
+    </div></div>
+  </div>
+  <div id="live-mas" class="ccc-row" style="border-left-color:#6d28d9;">
+    <div class="ccc-head">
+      <div>
+        <div class="ccc-slo">Live Más</div>
+        <div class="ccc-era">Slogan 09 · Active</div>
+      </div>
+      <div class="ccc-num">2012–</div>
+      <div class="ccc-num">14+ yr</div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:5px;align-self:center;"><span style="font-family:var(--fm);font-size:10px;color:#9B3FB0;">Active</span><span class="chev-icon" style="font-size:12px;color:var(--muted-foreground);display:inline-block;transition:transform .2s;">›</span></div>
+    </div>
+    <div class="ccc-body"><div class="ccc-body-inner">
+      <div class="ccc-quote" style="font-size:clamp(24px,4vw,42px);color:#4c1d95;">"Live Más"</div>
+      <div class="ccc-rule"></div>
+      <p class="ccc-desc">Two words. Fourteen years. Launched at the 2012 NBA All-Star Saturday Night alongside <strong>Doritos Locos Tacos</strong> — the best-selling product launch in Taco Bell history. Repositioned the brand from fast food to lifestyle. It now hosts weddings, has built a hotel, and staged a musical with Doja Cat. The two words are elastic enough to hold all of it.</p>
+      <div class="ccc-stats">
+<div class="ccc-stat" style="border-color:rgba(155,63,176,.3);background:rgba(155,63,176,.06);"><div class="v" style="color:#9B3FB0;">No. 09</div><div class="k">Slogan</div></div>
+<div class="ccc-stat" style="border-color:rgba(155,63,176,.3);background:rgba(155,63,176,.06);"><div class="v" style="color:#9B3FB0;">14+ yr</div><div class="k">Run</div></div>
+      </div>
+      <div class="ccc-ctx">
+<div class="ccc-cb"><div class="cl">At Taco Bell</div><div class="ct">Launched with Cantina Bell (targeting Chipotle), Doritos Locos Tacos (targeting culture), and a full design overhaul. Three simultaneous brand statements pointing the same direction.</div></div>
+<div class="ccc-cb"><div class="cl">In culture</div><div class="ct">2012: Instagram was two years old, experiences were currency. "Live Más" landed as food became a lifestyle signal. Perfectly timed.</div></div>
+<div class="ccc-cb"><div class="cl">Why it's lasting</div><div class="ct">The two words are elastic enough to hold anything. In 2026, after a pandemic, Doja Cat, and the TikTok era, it's still standing — on pace to outlast every prior slogan.</div></div>
+      </div>
+    </div></div>
+  </div>
+</div>
+
+<script>
+// Standard accordion toggle
+document.querySelectorAll('.ccc-row').forEach(function(row){
+  row.querySelector('.ccc-head').addEventListener('click', function(){
+    row.classList.toggle('open');
+  });
+});
+
+// TOC nav: clicking a rail section link scrolls to the row AND expands it
+function expandAndScroll(id){
+  var row = document.getElementById(id);
+  if(!row || !row.classList.contains('ccc-row')) return;
+  row.classList.add('open');
+  setTimeout(function(){
+    row.scrollIntoView({behavior:'smooth', block:'start'});
+  }, 40);
+}
+
+// Intercept hash changes (fired by the wiki rail TOC links)
+window.addEventListener('hashchange', function(){
+  expandAndScroll(location.hash.slice(1));
+});
+
+// Handle if page loaded with a hash (e.g. deep link)
+if(location.hash){
+  setTimeout(function(){ expandAndScroll(location.hash.slice(1)); }, 350);
+}
+
+// Also intercept clicks on rail TOC <a> links directly for same-page nav
+document.addEventListener('click', function(e){
+  var a = e.target.closest('a[href^="#"]');
+  if(!a) return;
+  var id = a.getAttribute('href').slice(1);
+  var row = document.getElementById(id);
+  if(row && row.classList.contains('ccc-row')){
+    e.preventDefault();
+    expandAndScroll(id);
+    history.pushState(null, '', '#' + id);
+  }
+});
+</script>
+
+</div></div>
+
+
+</div>
+</div><!-- /accordion-bg -->
+
+<!-- ── TIMELINE SECTION ── -->
+<div style="background:var(--background);">
+<div id="timeline" style="max-width:1304px;margin:0 auto;padding:32px 32px 80px;">
+
+  <!-- Section header -->
+  <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:40px;align-items:start;margin-bottom:20px;">
+    <div>
+      <div class="flex items-center gap-2" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-foreground);margin-bottom:6px;">
+        <i data-lucide="bar-chart-horizontal" style="width:11px;height:11px;flex-shrink:0;"></i>Timeline · comparative view
+      </div>
+      <h2 style="font-family:'Fraunces',Georgia,serif;font-size:clamp(18px,2.5vw,28px);font-weight:400;letter-spacing:-.02em;color:var(--foreground);">Sixty-two years, nine slogans.</h2>
+    </div>
+    <p style="font-family:'Spectral',Georgia,serif;font-size:14px;font-style:italic;line-height:1.7;color:var(--muted-foreground);padding-top:28px;">Each bar is proportional to its run. The gap between Make a Run for the Border and Yo Quiero (1994–1997) reflects a transitional period with no primary national tagline.</p>
+  </div>
+
+  <!-- Chart card -->
+  <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;background:#ffffff;border-radius:12px;overflow:hidden;"><div style="background:var(--card);border:1px solid color-mix(in oklab,var(--foreground) 11%, transparent);border-radius:12px;overflow:visible;" id="tl-chart">
+  <div id="tl-inner" style="position:relative;min-width:600px;background:#ffffff;">
+
+    <!-- Header -->
+    <div style="display:flex;align-items:stretch;background:#ffffff;border-bottom:1.5px solid color-mix(in oklab,var(--foreground) 11%, transparent);">
+      <div id="tl-name-hdr" style="flex-shrink:0;padding:10px 16px 10px 20px;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted-foreground);border-right:1.5px solid rgba(42,31,21,.08);position:sticky;left:0;z-index:3;background:#ffffff;">Slogan</div>
+      <!-- Year tick labels -->
+      <div id="tl-axis" style="flex:1;position:relative;min-height:34px;"><span style="position:absolute;left:0.000%;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted-foreground);bottom:6px;transform:;white-space:nowrap;">1962</span><span style="position:absolute;left:12.500%;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted-foreground);bottom:6px;transform:translateX(-50%);white-space:nowrap;">1970</span><span style="position:absolute;left:28.125%;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted-foreground);bottom:6px;transform:translateX(-50%);white-space:nowrap;">1980</span><span style="position:absolute;left:43.750%;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted-foreground);bottom:6px;transform:translateX(-50%);white-space:nowrap;">1990</span><span style="position:absolute;left:59.375%;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted-foreground);bottom:6px;transform:translateX(-50%);white-space:nowrap;">2000</span><span style="position:absolute;left:75.000%;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted-foreground);bottom:6px;transform:translateX(-50%);white-space:nowrap;">2010</span><span style="position:absolute;left:90.625%;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted-foreground);bottom:6px;transform:translateX(-50%);white-space:nowrap;">2020</span><span style="position:absolute;left:100.000%;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted-foreground);bottom:6px;transform:translateX(-100%);white-space:nowrap;">now</span></div>
+    </div>
+
+    <!-- Gridlines layer -->
+    <div id="tl-gl-layer" style="position:absolute;left:0;right:0;top:0;bottom:0;pointer-events:none;z-index:0;overflow:hidden;"></div>
+
+    <!-- Rows -->
+    
+    <div class="tl-row" style="display:flex;align-items:center;border-bottom:1px solid rgba(42,31,21,.06);padding:0;">
+      <div class="tl-name" style="flex-shrink:0;padding:12px 16px 12px 20px;border-right:1px solid rgba(42,31,21,.07);">
+        <div style="font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:13px;letter-spacing:-.01em;line-height:1.15;color:var(--foreground);">No tagline</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-foreground);margin-top:3px;">Pre-tagline era</div>
+      </div>
+      <div class="tl-track" style="flex:1;height:32px;position:relative;background:transparent;overflow:visible;">
+        <div class="tl-bar" data-s="1962" data-e="1977"
+             style="position:absolute;top:6px;bottom:6px;border-radius:4px;background:#6d28d9;box-shadow:0 1px 4px rgba(0,0,0,.12);display:flex;align-items:center;overflow:hidden;">
+          <span class="tl-lbl" style="font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(255,255,255,.9);white-space:nowrap;padding:0 8px;pointer-events:none;"></span>
+        </div>
+      </div>
+    </div>
+    <div class="tl-row" style="display:flex;align-items:center;border-bottom:1px solid rgba(42,31,21,.06);padding:0;">
+      <div class="tl-name" style="flex-shrink:0;padding:12px 16px 12px 20px;border-right:1px solid rgba(42,31,21,.07);">
+        <div style="font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:13px;letter-spacing:-.01em;line-height:1.15;color:var(--foreground);">The Fresh Food Place</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-foreground);margin-top:3px;">Slogan 01</div>
+      </div>
+      <div class="tl-track" style="flex:1;height:32px;position:relative;background:transparent;overflow:visible;">
+        <div class="tl-bar" data-s="1977" data-e="1982"
+             style="position:absolute;top:6px;bottom:6px;border-radius:4px;background:#c084fc;box-shadow:0 1px 4px rgba(0,0,0,.12);display:flex;align-items:center;overflow:hidden;">
+          <span class="tl-lbl" style="font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(255,255,255,.9);white-space:nowrap;padding:0 8px;pointer-events:none;"></span>
+        </div>
+      </div>
+    </div>
+    <div class="tl-row" style="display:flex;align-items:center;border-bottom:1px solid rgba(42,31,21,.06);padding:0;">
+      <div class="tl-name" style="flex-shrink:0;padding:12px 16px 12px 20px;border-right:1px solid rgba(42,31,21,.07);">
+        <div style="font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:13px;letter-spacing:-.01em;line-height:1.15;color:var(--foreground);">What a Difference!</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-foreground);margin-top:3px;">Slogan 02</div>
+      </div>
+      <div class="tl-track" style="flex:1;height:32px;position:relative;background:transparent;overflow:visible;">
+        <div class="tl-bar" data-s="1982" data-e="1984"
+             style="position:absolute;top:6px;bottom:6px;border-radius:4px;background:#6d28d9;box-shadow:0 1px 4px rgba(0,0,0,.12);display:flex;align-items:center;overflow:hidden;">
+          <span class="tl-lbl" style="font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(255,255,255,.9);white-space:nowrap;padding:0 8px;pointer-events:none;"></span>
+        </div>
+      </div>
+    </div>
+    <div class="tl-row" style="display:flex;align-items:center;border-bottom:1px solid rgba(42,31,21,.06);padding:0;">
+      <div class="tl-name" style="flex-shrink:0;padding:12px 16px 12px 20px;border-right:1px solid rgba(42,31,21,.07);">
+        <div style="font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:13px;letter-spacing:-.01em;line-height:1.15;color:var(--foreground);">It's Just Made for You</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-foreground);margin-top:3px;">Slogan 03</div>
+      </div>
+      <div class="tl-track" style="flex:1;height:32px;position:relative;background:transparent;overflow:visible;">
+        <div class="tl-bar" data-s="1984" data-e="1986"
+             style="position:absolute;top:6px;bottom:6px;border-radius:4px;background:#c084fc;box-shadow:0 1px 4px rgba(0,0,0,.12);display:flex;align-items:center;overflow:hidden;">
+          <span class="tl-lbl" style="font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(255,255,255,.9);white-space:nowrap;padding:0 8px;pointer-events:none;"></span>
+        </div>
+      </div>
+    </div>
+    <div class="tl-row" style="display:flex;align-items:center;border-bottom:1px solid rgba(42,31,21,.06);padding:0;">
+      <div class="tl-name" style="flex-shrink:0;padding:12px 16px 12px 20px;border-right:1px solid rgba(42,31,21,.07);">
+        <div style="font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:13px;letter-spacing:-.01em;line-height:1.15;color:var(--foreground);">Hello, Taco Bell</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-foreground);margin-top:3px;">Slogan 04</div>
+      </div>
+      <div class="tl-track" style="flex:1;height:32px;position:relative;background:transparent;overflow:visible;">
+        <div class="tl-bar" data-s="1986" data-e="1988"
+             style="position:absolute;top:6px;bottom:6px;border-radius:4px;background:#6d28d9;box-shadow:0 1px 4px rgba(0,0,0,.12);display:flex;align-items:center;overflow:hidden;">
+          <span class="tl-lbl" style="font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(255,255,255,.9);white-space:nowrap;padding:0 8px;pointer-events:none;"></span>
+        </div>
+      </div>
+    </div>
+    <div class="tl-row" style="display:flex;align-items:center;border-bottom:1px solid rgba(42,31,21,.06);padding:0;">
+      <div class="tl-name" style="flex-shrink:0;padding:12px 16px 12px 20px;border-right:1px solid rgba(42,31,21,.07);">
+        <div style="font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:13px;letter-spacing:-.01em;line-height:1.15;color:var(--foreground);">Make a Run for the Border</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-foreground);margin-top:3px;">Slogan 05</div>
+      </div>
+      <div class="tl-track" style="flex:1;height:32px;position:relative;background:transparent;overflow:visible;">
+        <div class="tl-bar" data-s="1988" data-e="1994"
+             style="position:absolute;top:6px;bottom:6px;border-radius:4px;background:#c084fc;box-shadow:0 1px 4px rgba(0,0,0,.12);display:flex;align-items:center;overflow:hidden;">
+          <span class="tl-lbl" style="font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(255,255,255,.9);white-space:nowrap;padding:0 8px;pointer-events:none;"></span>
+        </div>
+      </div>
+    </div>
+    <div class="tl-row" style="display:flex;align-items:center;border-bottom:1px solid rgba(42,31,21,.06);padding:0;">
+      <div class="tl-name" style="flex-shrink:0;padding:12px 16px 12px 20px;border-right:1px solid rgba(42,31,21,.07);">
+        <div style="font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:13px;letter-spacing:-.01em;line-height:1.15;color:var(--foreground);">Yo Quiero Taco Bell</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-foreground);margin-top:3px;">Slogan 07</div>
+      </div>
+      <div class="tl-track" style="flex:1;height:32px;position:relative;background:transparent;overflow:visible;">
+        <div class="tl-bar" data-s="1997" data-e="2001"
+             style="position:absolute;top:6px;bottom:6px;border-radius:4px;background:#6d28d9;box-shadow:0 1px 4px rgba(0,0,0,.12);display:flex;align-items:center;overflow:hidden;">
+          <span class="tl-lbl" style="font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(255,255,255,.9);white-space:nowrap;padding:0 8px;pointer-events:none;"></span>
+        </div>
+      </div>
+    </div>
+    <div class="tl-row" style="display:flex;align-items:center;border-bottom:1px solid rgba(42,31,21,.06);padding:0;">
+      <div class="tl-name" style="flex-shrink:0;padding:12px 16px 12px 20px;border-right:1px solid rgba(42,31,21,.07);">
+        <div style="font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:13px;letter-spacing:-.01em;line-height:1.15;color:var(--foreground);">Think Outside the Bun</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-foreground);margin-top:3px;">Slogan 08</div>
+      </div>
+      <div class="tl-track" style="flex:1;height:32px;position:relative;background:transparent;overflow:visible;">
+        <div class="tl-bar" data-s="2001" data-e="2012"
+             style="position:absolute;top:6px;bottom:6px;border-radius:4px;background:#c084fc;box-shadow:0 1px 4px rgba(0,0,0,.12);display:flex;align-items:center;overflow:hidden;">
+          <span class="tl-lbl" style="font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(255,255,255,.9);white-space:nowrap;padding:0 8px;pointer-events:none;"></span>
+        </div>
+      </div>
+    </div>
+    <div class="tl-row" style="display:flex;align-items:center;border-bottom:1px solid rgba(42,31,21,.06);padding:0;">
+      <div class="tl-name" style="flex-shrink:0;padding:12px 16px 12px 20px;border-right:1px solid rgba(42,31,21,.07);">
+        <div style="font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:13px;letter-spacing:-.01em;line-height:1.15;color:var(--foreground);">Live Más</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:7.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-foreground);margin-top:3px;">Slogan 09 · Active</div>
+      </div>
+      <div class="tl-track" style="flex:1;height:32px;position:relative;background:transparent;overflow:visible;">
+        <div class="tl-bar" data-s="2012" data-e="2026"
+             style="position:absolute;top:6px;bottom:6px;border-radius:4px;background:#6d28d9;box-shadow:0 1px 4px rgba(0,0,0,.12);display:flex;align-items:center;overflow:hidden;">
+          <span class="tl-lbl" style="font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(255,255,255,.9);white-space:nowrap;padding:0 8px;pointer-events:none;"></span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /tl-inner -->
+  </div><!-- /tl-chart --></div><!-- /scroll-wrapper -->
+
+
+
+</div>
+
+<script>
+(function(){
+  var S=1962,E=2026,R=64;
+  function pct(y){return(((y-S)/R)*100).toFixed(3)+'%';}
+
+  /* Tick sets — chosen based on track pixel width */
+  var TICK_SETS=[
+    {minPx:640, ticks:[1962,1970,1980,1990,2000,2010,2020,2026]},
+    {minPx:400, ticks:[1962,1980,2000,2010,2020,2026]},
+    {minPx:240, ticks:[1962,1980,2000,2020,2026]},
+    {minPx:0,   ticks:[1962,2000,2026]}
+  ];
+  var TICK_LABELS={1962:'1962',1970:'1970',1980:'1980',1990:'1990',
+                   2000:'2000',2010:'2010',2020:'2020',2026:'now'};
+
+  function run(){
+    var inner=document.getElementById('tl-inner');
+    if(!inner)return;
+
+    /* ── 1. Uniform name column width, capped at 28% ── */
+    var containerW=inner.offsetWidth;
+    var maxNameW=Math.max(70, containerW*0.28);
+    var nameW=0;
+    document.querySelectorAll('.tl-name').forEach(function(n){
+      n.style.width='';
+      nameW=Math.max(nameW,n.scrollWidth);
+    });
+    nameW=Math.min(nameW,maxNameW);
+    document.querySelectorAll('.tl-name').forEach(function(n){
+      n.style.width=nameW+'px';
+      n.style.overflow='hidden';
+      n.style.whiteSpace='nowrap';
+      n.style.textOverflow='ellipsis';
+    });
+    document.getElementById('tl-name-hdr').style.width=nameW+'px';
+    var trackW=containerW-nameW;
+
+    /* ── 2. Position bars (percentages — CSS resolves at paint) ── */
+    document.querySelectorAll('#tl-chart .tl-bar').forEach(function(bar){
+      bar.style.left=pct(parseFloat(bar.dataset.s));
+      bar.style.width=(((parseFloat(bar.dataset.e)-parseFloat(bar.dataset.s))/R)*100).toFixed(3)+'%';
+    });
+
+    /* ── 3. Adaptive tick marks + axis labels ── */
+    var ticks=TICK_SETS[TICK_SETS.length-1].ticks;
+    for(var i=0;i<TICK_SETS.length;i++){
+      if(trackW>=TICK_SETS[i].minPx){ticks=TICK_SETS[i].ticks;break;}
+    }
+    var axis=document.getElementById('tl-axis');
+    axis.innerHTML='';
+    ticks.forEach(function(yr,idx){
+      var lbl=document.createElement('span');
+      var fs=Math.max(7,Math.min(8,trackW/80));
+      lbl.style.cssText='position:absolute;font-family:\'JetBrains Mono\',monospace;'+
+        'font-size:'+fs+'px;color:var(--muted-foreground);bottom:6px;white-space:nowrap;'+
+        'left:'+(((yr-S)/R)*100).toFixed(3)+'%;'+
+        'transform:'+(idx===0?'none':(idx===ticks.length-1?'translateX(-100%)':'translateX(-50%)'));
+      lbl.textContent=TICK_LABELS[yr]||yr;
+      axis.appendChild(lbl);
+    });
+
+    /* ── 4. Gridlines ── */
+    var gl=document.getElementById('tl-gl-layer');
+    gl.innerHTML='';
+    var hdrH=inner.querySelector('div').offsetHeight;
+    ticks.forEach(function(yr){
+      var line=document.createElement('div');
+      line.style.cssText='position:absolute;top:'+hdrH+'px;bottom:0;width:1px;'+
+        'background:rgba(42,31,21,.08);pointer-events:none;z-index:0;'+
+        'left:'+(nameW+(yr-S)/R*trackW).toFixed(1)+'px;';
+      gl.appendChild(line);
+    });
+
+    /* ── 5. Bar labels — binary snap, span stays in bar ── */
+    var MIN_BAR=Math.max(50,trackW*0.14);
+    document.querySelectorAll('#tl-chart .tl-bar').forEach(function(bar){
+      var span=bar.querySelector('.tl-lbl');
+      if(!span)return;
+      if(span.parentElement!==bar)bar.appendChild(span);
+      var bw=bar.getBoundingClientRect().width;
+      var track=bar.parentElement;
+      var barLeftPct=parseFloat(bar.style.left);
+      var barLeftPx=barLeftPct/100*trackW;
+      var spaceRight=trackW-barLeftPx-bw;
+      var s=parseFloat(bar.dataset.s),e=parseFloat(bar.dataset.e);
+      var lbl=e<2026?(s+'–'+e):(s+'–now');
+      var fs=Math.max(6,Math.min(7,trackW/80))+'px';
+      span.textContent=lbl;
+      if(bw>=MIN_BAR){
+        span.style.cssText='font-family:var(--fm);font-size:'+fs+';color:rgba(255,255,255,.92);'+
+          'white-space:nowrap;padding:0 7px;pointer-events:none;position:static;';
+        bar.style.overflow='hidden';
+        bar.style.alignItems='center';
+      } else if(spaceRight>=36){
+        span.style.cssText='font-family:var(--fm);font-size:'+fs+';color:rgba(42,31,21,.5);'+
+          'white-space:nowrap;pointer-events:none;position:absolute;top:50%;'+
+          'left:calc(100% + 4px);transform:translateY(-50%);';
+        bar.style.overflow='visible';
+        bar.style.alignItems='';
+      } else {
+        span.style.cssText='font-family:var(--fm);font-size:'+fs+';color:rgba(42,31,21,.5);'+
+          'white-space:nowrap;pointer-events:none;position:absolute;top:50%;'+
+          'right:calc(100% + 4px);transform:translateY(-50%);';
+        bar.style.overflow='visible';
+        bar.style.alignItems='';
+      }
+    });
+  }
+
+  if(document.readyState==='complete'){setTimeout(run,0);}
+  else{window.addEventListener('load',function(){setTimeout(run,40);});}
+  var ro=window.ResizeObserver?new ResizeObserver(function(){setTimeout(run,0);}):null;
+  if(ro){ro.observe(document.getElementById('tl-inner'));}
+  else{window.addEventListener('resize',run);}
+})();
+</script>
+
+</div><!-- /timeline-bg -->
+
+
+<!-- ── LAWSUIT SECTION ── -->
+<div style="background:color-mix(in oklab,var(--secondary) 40%, transparent);">
+<div id="lawsuit" style="max-width:1304px;margin:0 auto;padding:40px 32px 80px;">
+
+  <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:48px;align-items:start;margin-bottom:28px;">
+    <div>
+      <div class="flex items-center gap-2" style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted-foreground);margin-bottom:6px;">
+        <i data-lucide="scale" style="width:11px;height:11px;flex-shrink:0;"></i>Legal deep dive · Wrench LLC v. Taco Bell Corp.
+      </div>
+      <h2 style="font-family:'Fraunces',Georgia,serif;font-size:clamp(20px,2.8vw,36px);font-weight:400;letter-spacing:-.02em;color:var(--foreground);margin-bottom:0;">The lawsuit behind the campaign.</h2>
+    </div>
+    <div>
+    <p style="font-family:'Spectral',Georgia,serif;font-size:15px;line-height:1.72;color:var(--foreground);max-width:72ch;">Taco Bell's most culturally dominant campaign ended not with a creative refresh but with a federal lawsuit. The Chihuahua era — which ran from 1997 to 2001 under the "Yo Quiero Taco Bell" tagline — was built on a concept that two Michigan designers, Thomas Rinks and Joseph Shields of Wrench LLC, had pitched to Taco Bell executives in 1996 under an informal understanding that they would be paid if the idea was used. That understanding was never put in writing. Eight years of litigation followed, ending in a $42 million jury verdict — one of the largest in advertising history.</p>
+    <p style="font-family:'Spectral',Georgia,serif;font-size:14px;font-style:italic;color:var(--muted-foreground);margin-top:8px;">Scroll the timeline — click any card for the full story.</p>
+    </div>
+  </div>
+
+  <style>
+  #lawsuit {
+    --wiki-accent:oklch(0.58 0.20 305);
+    --border:rgba(42,31,21,.11);   /* dividers in court record */
+    --faint:rgba(42,31,21,.07);    /* subtle hairlines */
+    --card:#ffffff;
+    --muted:rgba(42,31,21,.38);
+  }
+  /* ── Section header ── */
+.sec-eye{font-family:var(--fm);font-size:9px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:7px;display:flex;align-items:center;gap:6px;}
+.sec-h2{font-family:var(--fd);font-size:clamp(22px,3vw,32px);font-weight:400;
+  letter-spacing:-.025em;color:var(--fg);margin-bottom:5px;}
+.sec-sub{font-family:var(--fs);font-size:14px;font-style:italic;color:var(--muted);
+  line-height:1.55;max-width:56ch;margin-bottom:28px;}
+
+/* ══════════════════════════════════════
+   SCROLLABLE TIMELINE
+═══════════════════════════════════════ */
+.tl-scroll{
+  overflow-x:auto;overflow-y:visible;
+  -webkit-overflow-scrolling:touch;
+  padding:0 28px 28px;
+  cursor:grab;
+  /* fade edges to hint scrollability */
+  mask-image:linear-gradient(to right, transparent 0, black 40px, black calc(100% - 40px), transparent 100%);
+  -webkit-mask-image:linear-gradient(to right, transparent 0, black 40px, black calc(100% - 40px), transparent 100%);
+}
+.tl-scroll:active{cursor:grabbing;}
+.tl-scroll::-webkit-scrollbar{height:3px;}
+.tl-scroll::-webkit-scrollbar-track{background:transparent;}
+.tl-scroll::-webkit-scrollbar-thumb{background:rgba(42,31,21,.14);border-radius:2px;}
+
+/* Inner track — never wraps */
+/* Three-row layout: cards / spine+dots / years */
+.tl-track{
+  display:grid;
+  grid-template-rows:auto 20px auto;
+  min-width:max-content;
+  padding:0 20px;
+  overflow:visible;
+}
+.tl-cards-row,.tl-spine-row,.tl-years-row{
+  display:flex;
+  align-items:center;
+}
+.tl-cards-row{ align-items:flex-end; overflow:visible; padding-top:6px; }
+.tl-years-row{ align-items:flex-start; }
+.tl-spine-row{ position:relative; overflow:visible; }
+/* Spine line lives inside the spine row — runs through every dot */
+.tl-spine{
+  position:absolute;
+  left:0;right:0;top:50%;
+  height:1px;
+  transform:translateY(-50%);
+  background:rgba(42,31,21,.18);
+  pointer-events:none;
+  z-index:0;
+}
+/* Column slots: same width in every row keeps everything aligned */
+.tl-col{
+  flex-shrink:0;
+  width:182px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  overflow:visible;
+}
+
+/* The physical card — two-zone layout */
+.ev-card{
+  width:182px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:box-shadow .18s,transform .14s;
+  user-select:none;
+  display:flex;
+  flex-direction:column;
+}
+.ev-card:hover{
+  box-shadow:0 6px 24px rgba(42,31,21,.13);
+  transform:translateY(-3px);
+}
+.ev-card.active{
+  box-shadow:0 8px 28px rgba(42,31,21,.16);
+  transform:translateY(-4px);
+}
+/* Coloured top zone */
+.ev-card .ec-top{
+  padding:13px 15px 12px;
+  position:relative;
+  overflow:hidden;
+  flex-shrink:0;
+}
+.ev-card .ec-label{
+  font-family:var(--fm);font-size:7px;letter-spacing:.18em;
+  text-transform:uppercase;color:rgba(255,255,255,.72);
+  margin-bottom:7px;position:relative;z-index:1;
+}
+.ev-card .ec-year{
+  font-family:var(--fd);font-size:22px;font-weight:400;
+  letter-spacing:-.03em;line-height:1;color:#fff;
+  position:relative;z-index:1;
+}
+/* White body zone */
+.ev-card .ec-body{
+  padding:12px 15px 11px;
+  flex:1;display:flex;flex-direction:column;
+}
+.ev-card .ec-title{
+  font-family:var(--fd);font-size:13px;font-weight:400;
+  letter-spacing:-.015em;line-height:1.25;color:var(--fg);
+  margin-bottom:6px;
+}
+.ev-card .ec-desc{
+  font-family:var(--fs);font-size:11px;line-height:1.6;
+  color:rgba(42,31,21,.62);flex:1;
+}
+.ev-card .ec-cta{
+  font-family:var(--fm);font-size:7px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);margin-top:9px;padding-top:8px;
+  border-top:1px solid var(--faint);
+  display:flex;align-items:center;gap:3px;
+  transition:color .12s;
+}
+.ev-card:hover .ec-cta,.ev-card.active .ec-cta{color:var(--fg);}
+
+
+.ev-connector{
+  width:1px;height:14px;
+  background:rgba(42,31,21,.12);
+  flex-shrink:0;
+}
+
+/* Dot sitting on the spine */
+.ev-dot-wrap{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  z-index:2;
+  /* no fixed width/height — wraps naturally around the dot */
+}
+/* Radar rings — anchored to dot center via top/left + translate */
+.ev-dot-wrap::before,
+.ev-dot-wrap::after{
+  content:'';
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:11px;
+  height:11px;
+  border-radius:50%;
+  background:var(--wiki-accent);
+  opacity:0;
+  animation:radar 2.4s ease-out infinite;
+  /* base delay comes from JS-set --pulse-delay, unique per dot */
+  animation-delay:var(--pulse-delay, 0s);
+}
+.ev-dot-wrap::after{
+  /* second ring always 1.2s behind the first ring of the same dot */
+  animation-delay:calc(var(--pulse-delay, 0s) + 1.2s);
+}
+@keyframes radar{
+  0%  { transform:translate(-50%,-50%) scale(1);   opacity:.55; }
+  100%{ transform:translate(-50%,-50%) scale(3.2); opacity:0;   }
+}
+.ev-dot{
+  width:11px;height:11px;
+  border-radius:50%;
+  border:2px solid var(--card);
+  flex-shrink:0;
+  position:relative;
+  z-index:2;
+  cursor:pointer;
+  transition:transform .15s;
+  box-shadow:0 0 0 1px rgba(42,31,21,.12);
+}
+.ev-dot-wrap:hover .ev-dot,
+.ev-dot.active{
+  transform:scale(1.25);
+}
+
+/* Year label below dot */
+.ev-year{
+  font-family:var(--fm);font-size:8px;color:var(--muted);
+  margin-top:7px;white-space:nowrap;
+}
+
+/* ══════════════════════════════════════
+   MODAL
+═══════════════════════════════════════ */
+.modal-bg{
+  position:fixed;inset:0;
+  background:rgba(30,20,12,.4);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+  z-index:200;
+  display:none;
+  align-items:center;justify-content:center;
+  padding:20px;
+}
+.modal-bg.open{display:flex;animation:bgIn .16s ease;}
+@keyframes bgIn{from{opacity:0;}to{opacity:1;}}
+
+.modal{
+  background:var(--card);
+  border-radius:12px;
+  width:100%;max-width:540px;
+  max-height:88vh;
+  overflow-y:auto;
+  box-shadow:0 32px 80px rgba(30,20,12,.24),0 4px 16px rgba(30,20,12,.08);
+  animation:cardIn .2s cubic-bezier(.22,.61,.36,1);
+  position:relative;
+}
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(10px) scale(.98);}
+  to{opacity:1;transform:none;}
+}
+
+/* Colored top bar on modal matching card accent */
+.modal-accent{height:3px;border-radius:12px 12px 0 0;}
+
+/* Sticky header */
+.modal-hdr{
+  padding:18px 22px 16px;
+  border-bottom:1px solid var(--faint);
+  position:sticky;top:0;background:var(--card);
+  border-radius:0;z-index:1;
+  display:flex;align-items:flex-start;gap:12px;
+}
+.modal-hdr-text{flex:1;}
+.modal-eye{
+  font-family:var(--fm);font-size:8px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:5px;
+}
+.modal-title{
+  font-family:var(--fd);font-size:clamp(17px,2.5vw,21px);
+  font-weight:400;letter-spacing:-.02em;line-height:1.15;color:var(--fg);
+}
+.modal-x{
+  width:26px;height:26px;border-radius:50%;
+  border:1px solid var(--border);background:none;
+  cursor:pointer;font-size:13px;color:var(--muted);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:background .12s,color .12s;
+  margin-top:1px;
+}
+.modal-x:hover{background:var(--faint);color:var(--fg);}
+
+/* Body */
+.modal-body{padding:18px 22px 0;}
+.modal-short{
+  font-family:var(--fs);font-size:14px;font-style:italic;
+  line-height:1.6;color:var(--muted);margin-bottom:14px;
+}
+.modal-rule{height:1px;background:var(--faint);margin-bottom:16px;}
+.modal-prose{display:flex;flex-direction:column;gap:12px;margin-bottom:20px;}
+.modal-prose p{
+  font-family:var(--fs);font-size:14.5px;line-height:1.72;color:var(--fg);
+}
+.modal-callout{
+  background:rgba(42,31,21,.04);
+  border-left:2px solid var(--fg);
+  border-radius:0 6px 6px 0;
+  padding:11px 15px;
+  font-family:var(--fs);font-size:13.5px;font-style:italic;
+  line-height:1.6;color:rgba(42,31,21,.7);
+  margin-bottom:20px;
+}
+
+/* Nav */
+.modal-nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 22px 16px;
+  border-top:1px solid var(--faint);
+  position:sticky;bottom:0;background:var(--card);
+}
+.m-btn{
+  font-family:var(--fm);font-size:8px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);background:none;border:none;cursor:pointer;
+  padding:6px 10px;border-radius:4px;display:flex;align-items:center;gap:4px;
+  transition:background .12s,color .12s;
+}
+.m-btn:hover:not(:disabled){background:var(--faint);color:var(--fg);}
+.m-btn:disabled{opacity:.28;cursor:default;}
+.m-counter{font-family:var(--fm);font-size:8px;color:var(--muted);}
+
+/* ══════════════════════════════════════
+   COURT RECORD (unchanged)
+═══════════════════════════════════════ */
+.proc{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-top:28px;}
+.proc-hdr{padding:15px 22px 13px;border-bottom:1px solid var(--faint);}
+.ph-eye{font-family:var(--fm);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.ph-title{font-family:var(--fd);font-size:17px;font-weight:400;letter-spacing:-.015em;color:var(--fg);}
+.court-path{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--faint);}
+.cs{padding:15px 16px 13px;border-right:1px solid var(--faint);position:relative;}
+.cs:last-child{border-right:none;}
+.cs-court{font-family:var(--fm);font-size:7.5px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:5px;}
+.cs-yr{font-family:var(--fd);font-size:21px;font-weight:400;line-height:1;color:var(--fg);margin-bottom:4px;}
+.cs-out{font-family:var(--fm);font-size:8.5px;letter-spacing:.06em;margin-bottom:5px;}
+.cs-desc{font-family:var(--fs);font-size:12px;line-height:1.55;color:rgba(42,31,21,.68);}
+.cs:not(:last-child)::after{content:'›';position:absolute;right:-8px;top:46%;font-size:14px;color:rgba(42,31,21,.2);z-index:1;}
+.ol{color:#b91c1c;}.ow{color:#16a34a;}.or{color:#1d4ed8;}.of{color:#7c3aed;}
+.jury{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--faint);}
+.jq{padding:14px 16px;border-right:1px solid var(--faint);}
+.jq:last-child{border-right:none;}
+.jq-n{font-family:var(--fm);font-size:7.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.jq-q{font-family:var(--fs);font-size:12.5px;line-height:1.55;color:var(--fg);margin-bottom:8px;}
+.jq-a{font-family:var(--fd);font-size:15px;font-weight:400;color:#16a34a;}
+.verdict{display:grid;grid-template-columns:auto 1fr;}
+.vn{padding:20px 24px;border-right:1px solid var(--faint);}
+.vn-big{font-family:var(--fd);font-size:clamp(30px,5vw,48px);font-weight:300;letter-spacing:-.03em;line-height:1;color:var(--fg);}
+.vn-lbl{font-family:var(--fm);font-size:8px;text-transform:uppercase;letter-spacing:.16em;color:var(--muted);margin-top:4px;}
+.vd{padding:20px 24px;}
+.vd p{font-family:var(--fs);font-size:14px;line-height:1.7;color:var(--fg);}
+.vd .cite{font-family:var(--fm);font-size:8px;color:var(--muted);margin-top:10px;letter-spacing:.04em;}
+@media(max-width:640px){
+  .court-path{grid-template-columns:1fr 1fr;}
+  .cs::after{display:none;}
+  .jury{grid-template-columns:1fr;}
+  .jq{border-right:none;border-bottom:1px solid var(--faint);}
+  .verdict{grid-template-columns:1fr;}
+  .vn{border-right:none;border-bottom:1px solid var(--faint);}
+}
+
+
+  /* ════════════════════════
+   Direction B — Editorial infographic
+════════════════════════ */
+.infog{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.infog-hdr{padding:16px 24px 14px;border-bottom:1px solid var(--faint);}
+.sub-eye{font-family:var(--fm);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.sub-title{font-family:var(--fd);font-size:17px;font-weight:400;letter-spacing:-.015em;color:var(--fg);}
+
+/* Court journey: connected nodes */
+.court-journey{display:flex;align-items:flex-start;justify-content:center;padding:28px 24px;gap:0;border-bottom:1px solid var(--faint);overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;}
+.cj-step{display:flex;flex-direction:column;align-items:center;flex:0 0 140px;min-width:140px;position:relative;}
+.cj-step:not(:last-child)::after{content:'';position:absolute;top:18px;left:50%;right:-50%;height:2px;background:var(--faint);z-index:0;}
+.cj-node{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:13px;border:2px solid;position:relative;z-index:1;background:var(--card);margin-bottom:12px;}
+.cj-node.loss{color:#b91c1c;border-color:#fecaca;background:#fef2f2;}
+.cj-node.rev{color:#1d4ed8;border-color:#bfdbfe;background:#eff6ff;}
+.cj-node.win{color:#16a34a;border-color:#bbf7d0;background:#f0fdf4;}
+.cj-node.sole{color:#7c3aed;border-color:#e9d5ff;background:#fdf4ff;}
+.cj-yr{font-family:var(--fd);font-size:14px;font-weight:400;color:var(--fg);margin-bottom:3px;text-align:center;}
+.cj-court{font-family:var(--fm);font-size:7.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);text-align:center;margin-bottom:5px;}
+.cj-verdict{font-family:var(--fm);font-size:8px;letter-spacing:.06em;text-align:center;margin-bottom:8px;}
+.cj-desc{font-family:var(--fs);font-size:11.5px;line-height:1.5;color:rgba(42,31,21,.65);text-align:center;max-width:130px;}
+
+/* Jury questions */
+.infog-qs{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--faint);}
+.iq{padding:20px;border-right:1px solid var(--faint);}
+.iq:last-child{border-right:none;}
+.iq-n{font-family:var(--fm);font-size:7.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.iq-q{font-family:var(--fs);font-size:12.5px;line-height:1.55;color:var(--fg);margin-bottom:10px;}
+.iq-ans{font-family:var(--fd);font-size:42px;font-weight:400;line-height:1;letter-spacing:-.03em;color:#16a34a;}
+
+/* Judgment bar */
+.infog-verdict{padding:24px;}
+.iv-label-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;}
+.iv-big{font-family:var(--fd);font-size:clamp(32px,5vw,52px);font-weight:300;letter-spacing:-.04em;line-height:1;color:var(--fg);}
+.iv-sub{font-family:var(--fm);font-size:8px;text-transform:uppercase;letter-spacing:.16em;color:var(--muted);}
+.iv-bar-wrap{margin-bottom:16px;}
+.iv-bar-track{height:10px;border-radius:5px;background:rgba(42,31,21,.07);overflow:hidden;position:relative;}
+.iv-bar-base{position:absolute;left:0;top:0;bottom:0;background:#16a34a;border-radius:5px;width:71.8%;}
+.iv-bar-interest{position:absolute;top:0;bottom:0;left:71.8%;right:0;background:rgba(22,163,74,.35);border-radius:0 5px 5px 0;}
+.iv-bar-labels{display:flex;justify-content:space-between;margin-top:5px;}
+.iv-bar-lbl{font-family:var(--fm);font-size:7.5px;color:var(--muted);}
+.iv-desc{font-family:var(--fs);font-size:13.5px;line-height:1.65;color:var(--fg);}
+.iv-cite{font-family:var(--fm);font-size:8px;color:var(--muted);margin-top:10px;letter-spacing:.04em;}
+
+@media(max-width:640px){
+  .infog-qs{grid-template-columns:1fr;}
+  .iq{border-right:none;border-bottom:1px solid var(--faint);}
+  .infog-verdict{padding:16px;}
+  /* court-journey stays horizontal + scrolls on mobile */
+}
+  .tl-scroll { padding:0 0 20px; mask-image:linear-gradient(to right,transparent 0,black 24px,black calc(100% - 24px),transparent 100%); -webkit-mask-image:linear-gradient(to right,transparent 0,black 24px,black calc(100% - 24px),transparent 100%); }
+  #tl-inner { padding:0 8px; }
+  .infog { border-radius:10px; }
+  /* ── Sticky name column ── */
+  #tl-chart { overflow:visible; }
+  .tl-name {
+    position:sticky;
+    left:0;
+    z-index:2;
+    background:#ffffff;
+  }
+  </style>
+
+  <!-- TIMELINE -->
+<div class="tl-scroll" id="tlScroll">
+  <div class="tl-track" id="tlTrack">
+    <!-- rows injected by JS -->
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal" id="modalCard">
+    <div class="modal-accent" id="mAccent"></div>
+    <div class="modal-hdr">
+      <div class="modal-hdr-text">
+        <div class="modal-eye" id="mEye"></div>
+        <div class="modal-title" id="mTitle"></div>
+      </div>
+      <button class="modal-x" id="mClose">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-short" id="mShort"></p>
+      <div class="modal-rule"></div>
+      <div class="modal-prose" id="mProse"></div>
+      <div class="modal-callout" id="mCallout" style="display:none;"></div>
+    </div>
+    <div class="modal-nav">
+      <button class="m-btn" id="mPrev">‹ Prev</button>
+      <span class="m-counter" id="mCounter"></span>
+      <button class="m-btn" id="mNext">Next ›</button>
+    </div>
+  </div>
+</div>
+
+
+  <div style="margin-top:24px;">
+  <div class="infog">
+    <div class="infog-hdr">
+      <div class="sub-eye">Court record · visual breakdown</div>
+      <div class="sub-title">Eight years in federal court — one verdict.</div>
+    </div>
+    <!-- Court journey: connected nodes -->
+    <div class="court-journey">
+      <div class="cj-step">
+        <div class="cj-node loss">✗</div>
+        <div class="cj-yr">1999</div>
+        <div class="cj-court">W.D. Michigan</div>
+        <div class="cj-verdict" style="color:#b91c1c;">Dismissed</div>
+        <div class="cj-desc">All claims preempted by Copyright Act. Summary judgment for Taco Bell.</div>
+      </div>
+      <div class="cj-step">
+        <div class="cj-node rev">↑</div>
+        <div class="cj-yr">2001</div>
+        <div class="cj-court">6th Circuit</div>
+        <div class="cj-verdict" style="color:#1d4ed8;">Reversed</div>
+        <div class="cj-desc">Implied contract ≠ copyright claim. Not preempted. Landmark ruling. Remanded.</div>
+      </div>
+      <div class="cj-step">
+        <div class="cj-node win">✓</div>
+        <div class="cj-yr">Jun 2003</div>
+        <div class="cj-court">Jury · W.D. Mich.</div>
+        <div class="cj-verdict" style="color:#16a34a;">For Wrench</div>
+        <div class="cj-desc">3 of 3 questions answered yes. $30.2M base award.</div>
+      </div>
+      <div class="cj-step">
+        <div class="cj-node sole">⚖</div>
+        <div class="cj-yr">2009</div>
+        <div class="cj-court">9th Circuit</div>
+        <div class="cj-verdict" style="color:#7c3aed;">TB alone</div>
+        <div class="cj-desc">TBWA cleared. Taco Bell bears the full $42M+ alone.</div>
+      </div>
+    </div>
+    <!-- Jury questions — giant YES -->
+    <div class="infog-qs">
+      <div class="iq">
+        <div class="iq-n">Question 01 · Mutual understanding</div>
+        <div class="iq-q">Did Taco Bell and Wrench mutually understand that use of the concept required payment?</div>
+        <div class="iq-ans">Yes.</div>
+      </div>
+      <div class="iq">
+        <div class="iq-n">Question 02 · Original concept</div>
+        <div class="iq-q">Did Taco Bell use the concept, and was it not independently created by TBWA?</div>
+        <div class="iq-ans">Yes.</div>
+      </div>
+      <div class="iq">
+        <div class="iq-n">Question 03 · Damages</div>
+        <div class="iq-q">Did Wrench suffer proven damages from Taco Bell's failure to pay?</div>
+        <div class="iq-ans">Yes.</div>
+      </div>
+    </div>
+    <!-- Judgment with proportion bar -->
+    <div class="infog-verdict">
+      <div class="iv-label-row">
+        <div class="iv-big">$42,000,000+</div>
+        <div class="iv-sub">Total judgment</div>
+      </div>
+      <div class="iv-bar-wrap">
+        <div class="iv-bar-track">
+          <div class="iv-bar-base"></div>
+          <div class="iv-bar-interest"></div>
+        </div>
+        <div class="iv-bar-labels">
+          <span class="iv-bar-lbl" style="color:#16a34a;">$30,174,031 base award (71.8%)</span>
+          <span class="iv-bar-lbl">$11.8M+ interest (28.2%)</span>
+        </div>
+      </div>
+      <p class="iv-desc">Base award entered June 4, 2003. Interest amended the total to over $42 million. Taco Bell's indemnification bid against TBWA denied by the Ninth Circuit in 2009 — sole liability confirmed.</p>
+      <p class="iv-cite">Wrench LLC v. Taco Bell Corp., 256 F.3d 446 (6th Cir. 2001) · W.D. Mich. No. 1:98-CV-45 · Taco Bell Corp. v. TBWA Chiat/Day Inc., 9th Cir. 2009</p>
+    </div>
+  </div>
+</div>
+</div>
+  </div>
+
+</div>
+</div><!-- /lawsuit-bg -->
+
+<script>
+const EVENTS = [
+  {
+    color:'var(--wiki-accent)', label:'1995 · Origin', year:'1995',
+    gap:'18 mo',
+    title:'Psycho Chihuahua is born',
+    short:'Thomas Rinks and Joseph Shields, Grand Rapids designers, create a cartoon character — a feisty, self-confident chihuahua with what the court record calls "a big dog\'s attitude in a small dog\'s body." They license it through Wrench LLC.',
+    eye:'1995 · Grand Rapids, Michigan',
+    prose:[
+      'Thomas Rinks and Joseph Shields, two designers based in Grand Rapids, Michigan, create a cartoon character they call Psycho Chihuahua in early 1995. The character is described in court filings as a feisty, self-confident, edgy dog with "a big dog\'s attitude in a small dog\'s body" — cool, clever, and impossible to push around.',
+      'Rinks and Shields promote and license Psycho Chihuahua through their wholly-owned limited liability company, Wrench LLC, initially on T-shirts and small merchandise. By 1996 they are exhibiting at national licensing trade shows, seeking a major corporate partner for the character.'
+    ]
+  },
+  {
+    color:'var(--wiki-accent)', label:'Jun 1996 · Meeting', year:'Jun 1996',
+    gap:'3 mo',
+    title:'Taco Bell approaches Wrench at a trade show',
+    short:'At a New York licensing trade show, Taco Bell VP Rudy Pollak and creative manager Ed Alfaro seek out the Wrench booth. They believe Psycho Chihuahua will connect with Taco Bell\'s 18–24 male demographic.',
+    eye:'June 1996 · New York City',
+    prose:[
+      'At a licensing trade show in New York City, two Taco Bell employees approach the Wrench booth: Rudy Pollak, a vice president, and Ed Alfaro, the creative services manager. Both express strong interest in Psycho Chihuahua as a marketing vehicle, believing the character\'s attitude will resonate with Taco Bell\'s core demographic of men aged eighteen to twenty-four.',
+      'Discussions continue over the following months. During these conversations, Rinks specifically proposes using a live chihuahua with computer-generated imaging to bring the character\'s personality to television — the exact execution Taco Bell will later adopt. Alfaro acknowledges that if Taco Bell uses the concept, Wrench will need to be compensated. No written contract is signed.'
+    ],
+    callout:'This verbal acknowledgment — that Wrench would need to be compensated if Taco Bell used the concept — will become the legal fulcrum of the entire case.'
+  },
+  {
+    color:'var(--wiki-accent)', label:'Sep 1996 · Agent hired', year:'Sep 1996',
+    gap:'6 mo',
+    title:'Wrench retains a licensing agent',
+    short:'Wrench engages Strategy Licensing to formally represent them with Taco Bell. Strategy submits additional Psycho Chihuahua materials to Alfaro for presentation to the advertising team.',
+    eye:'September 1996',
+    prose:[
+      'In September 1996, Rinks and Shields retain Strategy Licensing to act as their formal representative in dealings with Taco Bell. Strategy contacts Alfaro directly and submits a package of additional Psycho Chihuahua materials for presentation to Taco Bell\'s marketing and advertising teams.',
+      'At this stage both parties understand that a formal licensing agreement will be required before any commercial use of the character. That agreement is never executed. The relationship continues informally as Taco Bell\'s internal process moves forward.'
+    ]
+  },
+  {
+    color:'var(--wiki-accent)', label:'Mar 1997 · TBWA', year:'Mar 1997',
+    gap:'10 mo',
+    title:'New ad agency hired · materials forwarded',
+    short:'Taco Bell replaces its ad agency with TBWA Chiat/Day. A box of Psycho Chihuahua materials is forwarded to the new agency. Three months later, from 30 proposals, TBWA presents a chihuahua concept. Taco Bell selects it.',
+    eye:'March – June 1997',
+    prose:[
+      'In March 1997, Taco Bell replaces its existing advertising agency with TBWA Chiat/Day. In the transition, a box containing Psycho Chihuahua materials is forwarded to the new agency. Three months later, TBWA presents Taco Bell with a package of thirty campaign proposals. One features a chihuahua character. Taco Bell selects it.',
+      'TBWA later maintains that their chihuahua concept was independently conceived before they received the Wrench materials — a claim the Ninth Circuit will eventually credit. But Taco Bell\'s liability does not hinge on what TBWA knew or did. It hinges on the implied contract formed in 1996, before TBWA entered the picture.'
+    ],
+    callout:'Taco Bell\'s liability is not about what TBWA did — it\'s about an implied contract that predated TBWA\'s involvement by more than a year.'
+  },
+  {
+    color:'var(--wiki-accent)', label:'Jan 1998 · Launch', year:'Jan 1998',
+    gap:'1 yr',
+    title:'"Yo Quiero Taco Bell" airs — Wrench files suit',
+    short:'Gidget the chihuahua debuts. Over 40 commercials air through June 2000. Brand awareness hits record highs. No agreement with Wrench. No payment. Wrench files suit.',
+    eye:'January 1998 · Campaign launch',
+    prose:[
+      'The "Yo Quiero Taco Bell" campaign debuts in January 1998. Gidget — a live female chihuahua voiced as male — becomes one of the most recognised brand mascots of the decade. Over forty television commercials air between January 1998 and June 2000. Brand awareness hits all-time highs.',
+      'No licensing agreement is reached with Wrench. No payment is made. In 1998, Wrench LLC, Thomas Rinks, and Joseph Shields file suit in the U.S. District Court for the Western District of Michigan, Case No. 1:98-CV-45, alleging breach of implied-in-fact contract and related state-law tort claims.'
+    ]
+  },
+  {
+    color:'var(--wiki-accent)', label:'1999–2001 · Appeals', year:'1999–2001',
+    gap:'2 yr',
+    title:'Dismissed — then reversed in a landmark ruling',
+    short:'The district court dismisses all claims as preempted by the Copyright Act. The Sixth Circuit reverses in 2001: implied contract claims are not copyright claims. A precedent is set. The case goes back to trial.',
+    eye:'1999 → 2001 · Appellate phase',
+    prose:[
+      'In June 1999, the district court grants summary judgment for Taco Bell. Judge Quist rules that all of Wrench\'s claims — including the implied contract claim — are preempted by the Copyright Act, 17 U.S.C. § 301, which broadly displaces state law claims equivalent to copyright rights.',
+      'Wrench appeals. In July 2001 the Sixth Circuit reverses in full. The court holds that an implied-in-fact contract claim is fundamentally distinct from a copyright claim. It arises from a mutual understanding about compensation — not from rights in a creative work itself. The Copyright Act does not preempt it. The decision, Wrench LLC v. Taco Bell Corp., 256 F.3d 446 (6th Cir. 2001), becomes a cited precedent in intellectual property law across multiple federal circuits.'
+    ],
+    callout:'The ruling establishes that creators who pitch ideas under an implicit understanding of payment retain contractual rights — regardless of whether those ideas are also copyrightable.'
+  },
+  {
+    color:'var(--wiki-accent)', label:'Jun 2003 · Verdict', year:'Jun 2003',
+    title:'Jury awards $30,174,031 to Wrench',
+    short:'A federal jury answers all three questions on the verdict sheet affirmatively. Yes to mutual understanding. Yes to Taco Bell\'s use of the concept. Yes to damages. Award: $30,174,031, growing to $42M+ with interest.',
+    eye:'June 2003 · W.D. Michigan',
+    prose:[
+      'On June 4, 2003, a federal jury returns its verdict. The verdict sheet poses three direct questions and the jury answers all three affirmatively: that a mutual understanding existed between Wrench and Taco Bell that the concept would be paid for; that Taco Bell used the Psycho Chihuahua concept and that character was not independently created by TBWA; and that Wrench suffered damages as a result.',
+      'The jury awards $30,174,031. The court subsequently amends the judgment to include pre- and post-judgment interest, bringing the total to over $42 million. Parent company Yum! Brands takes a $0.06 per-share special charge in Q2 2003 and announces intent to appeal. Taco Bell simultaneously sues TBWA Chiat/Day for indemnification — the Ninth Circuit denies that claim in 2009. Taco Bell bears the liability alone.'
+    ],
+    callout:'Yum! Brands\' SEC 8-K filing on June 4, 2003: "Taco Bell continues to strongly believe that the chihuahua character was created by the Chiat Day Advertising Agency, not the plaintiffs."'
+  }
+];
+
+// ── Build timeline — three parallel rows ────────────────────────────
+const track = document.getElementById('tlTrack');
+
+// Create the three rows
+const cardsRow = document.createElement('div');
+cardsRow.className = 'tl-cards-row';
+
+const spineRow = document.createElement('div');
+spineRow.className = 'tl-spine-row';
+// Spine line sits inside the spine row — runs through every dot
+const spineLine = document.createElement('div');
+spineLine.className = 'tl-spine';
+spineRow.appendChild(spineLine);
+
+const yearsRow = document.createElement('div');
+yearsRow.className = 'tl-years-row';
+
+EVENTS.forEach(function(ev, i) {
+  // ── Card column (row 1) ──
+  const cardCol = document.createElement('div');
+  cardCol.className = 'tl-col';
+  /* no marginLeft — gap div handles spacing */
+
+  const card = document.createElement('div');
+  card.className = 'ev-card';
+  card.style.borderTopColor = ev.color;
+  // Strip leading year/date from label so only one date shows in the card
+  var cleanLabel = ev.label.replace(/^[\d]{4}[\s··\-–·]+/,'').trim();
+  card.innerHTML =
+    '<div class="ec-top" style="background:' + ev.color + ';">' +
+      '<div class="ec-label">' + cleanLabel + '</div>' +
+      '<div class="ec-year">' + ev.year + '</div>' +
+    '</div>' +
+    '<div class="ec-body">' +
+      '<div class="ec-title">' + ev.title + '</div>' +
+      '<div class="ec-desc">' + ev.short + '</div>' +
+      '<div class="ec-cta"><span>Read more</span> <span>›</span></div>' +
+    '</div>';
+
+  const connector = document.createElement('div');
+  connector.className = 'ev-connector';
+
+  cardCol.appendChild(card);
+  cardCol.appendChild(connector);
+  cardsRow.appendChild(cardCol);
+  // Gap between cards — contains the duration pill, centered
+  if (i < EVENTS.length - 1) {
+    const gapDiv = document.createElement('div');
+    gapDiv.style.cssText = [
+      'width:72px',
+      'flex-shrink:0',
+      'display:flex',
+      'align-items:center',   // vertically centers pill within the gap col
+      'justify-content:center',
+      'align-self:stretch'    // stretch full height of the cards row
+    ].join(';');
+
+    if (ev.gap) {
+      const pill = document.createElement('div');
+      pill.style.cssText = [
+        'font-family:var(--fm)',
+        'font-size:7px',
+        'letter-spacing:.06em',
+        'color:var(--muted)',
+        'background:var(--card)',
+        'border:1px solid var(--border)',
+        'border-radius:4px',
+        'padding:4px 7px',
+        'white-space:nowrap',
+        'line-height:1'
+      ].join(';');
+      pill.textContent = ev.gap;
+      gapDiv.appendChild(pill);
+    }
+
+    cardsRow.appendChild(gapDiv);
+  }
+
+  // ── Dot column (row 2 — spine row) ──
+  const dotCol = document.createElement('div');
+  dotCol.className = 'tl-col';
+  /* no marginLeft — spacer handles spacing */
+
+  const dotWrap = document.createElement('div');
+  dotWrap.className = 'ev-dot-wrap';
+  // Stagger each dot's pulse offset evenly across the 2.4s cycle
+  var baseDelay = (i * (2.4 / EVENTS.length)).toFixed(2) + 's';
+  dotWrap.style.setProperty('--pulse-delay', baseDelay);
+
+  const dot = document.createElement('div');
+  dot.className = 'ev-dot';
+  dot.style.background = ev.color;
+
+  dotWrap.appendChild(dot);
+  dotCol.appendChild(dotWrap);
+  spineRow.appendChild(dotCol);
+
+  // Spacer in spine row — must match gap width in cards/years rows exactly
+  if (i < EVENTS.length - 1) {
+    const spacerS = document.createElement('div');
+    spacerS.style.cssText = 'width:72px;flex-shrink:0;';
+    spineRow.appendChild(spacerS);
+  }
+
+
+  // ── Year column (row 3) ──
+  const yearCol = document.createElement('div');
+  yearCol.className = 'tl-col';
+  /* no marginLeft — spacer handles spacing */
+
+  const tick = document.createElement('div');
+  tick.className = 'ev-connector'; // reuse same 1px line style
+
+  const yearLbl = document.createElement('div');
+  yearLbl.className = 'ev-year';
+  yearLbl.textContent = ev.year;
+
+  yearCol.appendChild(tick);
+  yearCol.appendChild(yearLbl);
+  yearsRow.appendChild(yearCol);
+  // Spacer in years row to match pill gap
+  if (i < EVENTS.length - 1) {
+    const spacerY = document.createElement('div');
+    spacerY.style.cssText = 'width:72px;flex-shrink:0;';
+    yearsRow.appendChild(spacerY);
+  }
+
+  // ── Click handler — ignored if user was dragging ──
+  function handleClick() {
+    if (hasDragged) return;
+    openModal(i);
+  }
+  card.addEventListener('click', handleClick);
+  dot.addEventListener('click', handleClick);
+
+  // ── Track active state across rows ──
+  card._eventIdx = i;
+  dot._eventIdx  = i;
+});
+
+track.appendChild(cardsRow);
+track.appendChild(spineRow);
+track.appendChild(yearsRow);
+
+// ── Equalize card heights so all cards are uniform ──────────────────
+function equalizeCards() {
+  const cards = document.querySelectorAll('.ev-card');
+  // Reset first so we measure natural height
+  cards.forEach(function(c){ c.style.height = ''; });
+  let maxH = 0;
+  cards.forEach(function(c){ maxH = Math.max(maxH, c.offsetHeight); });
+  cards.forEach(function(c){ c.style.height = maxH + 'px'; });
+}
+// Run after layout + fonts load
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(equalizeCards);
+} else {
+  window.addEventListener('load', equalizeCards);
+}
+
+// ── Drag-to-scroll + click vs drag detection ────────────────────────
+const scroller = document.getElementById('tlScroll');
+let dragging = false, sx, sl;
+// hasDragged: true if mouse moved >5px during this press — suppresses click
+let hasDragged = false;
+const DRAG_THRESHOLD = 5;
+
+scroller.addEventListener('mousedown', function(e) {
+  dragging   = true;
+  hasDragged = false;
+  sx = e.pageX;
+  sl = scroller.scrollLeft;
+  scroller.style.cursor = 'grabbing';
+});
+window.addEventListener('mouseup', function() {
+  dragging = false;
+  scroller.style.cursor = 'grab';
+  // Reset hasDragged after a brief delay so the click event
+  // (which fires after mouseup) can still read the flag
+  setTimeout(function(){ hasDragged = false; }, 50);
+});
+window.addEventListener('mousemove', function(e) {
+  if (!dragging) return;
+  const dx = Math.abs(e.pageX - sx);
+  if (dx > DRAG_THRESHOLD) hasDragged = true;
+  e.preventDefault();
+  scroller.scrollLeft = sl - (e.pageX - sx) * 1.1;
+});
+
+// ── Modal ───────────────────────────────────────────────────────────
+let cur = -1;
+const bg     = document.getElementById('modalBg');
+const accent = document.getElementById('mAccent');
+const eye    = document.getElementById('mEye');
+const title  = document.getElementById('mTitle');
+const short  = document.getElementById('mShort');
+const prose  = document.getElementById('mProse');
+const callout= document.getElementById('mCallout');
+const counter= document.getElementById('mCounter');
+const prev   = document.getElementById('mPrev');
+const next   = document.getElementById('mNext');
+
+function render(idx) {
+  const ev = EVENTS[idx];
+  accent.style.background = ev.color;
+  eye.textContent    = ev.eye;
+  title.textContent  = ev.title;
+  short.textContent  = ev.short;
+  prose.innerHTML    = ev.prose.map(function(p){ return '<p>' + p + '</p>'; }).join('');
+  if (ev.callout) {
+    callout.textContent = ev.callout;
+    callout.style.display = 'block';
+  } else {
+    callout.style.display = 'none';
+  }
+  counter.textContent = (idx + 1) + ' of ' + EVENTS.length;
+  prev.disabled = idx === 0;
+  next.disabled = idx === EVENTS.length - 1;
+  document.getElementById('modalCard').scrollTop = 0;
+
+  // Mark active on cards and dots
+  document.querySelectorAll('.ev-card').forEach(function(c) {
+    c.classList.toggle('active', c._eventIdx === idx);
+  });
+  document.querySelectorAll('.ev-dot').forEach(function(d) {
+    d.classList.toggle('active', d._eventIdx === idx);
+  });
+}
+
+function openModal(idx) {
+  cur = idx;
+  render(idx);
+  bg.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  bg.classList.remove('open');
+  document.body.style.overflow = '';
+  document.querySelectorAll('.ev-card').forEach(function(c){ c.classList.remove('active'); });
+  document.querySelectorAll('.ev-dot').forEach(function(d){ d.classList.remove('active'); });
+}
+
+document.getElementById('mClose').addEventListener('click', closeModal);
+bg.addEventListener('click', function(e){ if (e.target === bg) closeModal(); });
+prev.addEventListener('click', function(){ if (cur > 0) render(--cur); });
+next.addEventListener('click', function(){ if (cur < EVENTS.length-1) render(++cur); });
+document.addEventListener('keydown', function(e){
+  if (!bg.classList.contains('open')) return;
+  if (e.key === 'Escape') closeModal();
+  if (e.key === 'ArrowLeft'  && cur > 0)              render(--cur);
+  if (e.key === 'ArrowRight' && cur < EVENTS.length-1) render(++cur);
+});
+</script>
+
+<script>if(window.lucide){lucide.createIcons();}</script>
+{% endraw %}
