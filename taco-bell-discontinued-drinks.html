@@ -111,17 +111,17 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
 
 /* ── CHART CONTAINERS ───────────────────────────────── */
 /* ── MINI SWIM LANE (redesigned) ───────────────────── */
-.dtv-mini{background:var(--card);border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);border-radius:10px;position:relative;overflow:hidden;margin-top:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.dtv-mini{background:var(--card);border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);border-radius:10px;position:relative;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;margin-top:10px;box-shadow:0 2px 8px rgba(0,0,0,.06);}
 /* expand hint banner */
 .dtv-hint{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding:9px 14px;background:color-mix(in oklab,#185FA5 8%,transparent);border-radius:6px;border:1px solid color-mix(in oklab,#185FA5 16%,transparent);}
 .dtv-hint-icon{width:18px;height:18px;border-radius:4px;background:color-mix(in oklab,#185FA5 14%,transparent);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .dtv-hint-text{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.06em;color:color-mix(in oklab,#185FA5 70%,var(--foreground));}
 .dtv-mini-hdr{display:flex;align-items:stretch;background:color-mix(in oklab,var(--chart-color,var(--foreground)) 5%,transparent);border-bottom:2px solid color-mix(in oklab,var(--chart-color,var(--foreground)) 18%,transparent);position:relative;z-index:2;}
-.dtv-mini-hdr-lbl{width:180px;flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in oklab,var(--chart-color,var(--foreground)) 65%,transparent);font-weight:600;padding:10px 12px 10px 16px;display:flex;align-items:flex-end;}
+.dtv-mini-hdr-lbl{width:180px;flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in oklab,var(--chart-color,var(--foreground)) 65%,transparent);font-weight:600;padding:10px 12px 10px 16px;display:flex;align-items:flex-end;position:sticky;left:0;z-index:5;background:inherit;}
 /* year labels + grid lines both positioned by JS in rAF for perfect alignment */
 .dtv-mini-dr{display:flex;align-items:stretch;min-height:36px;}
 .dtv-mini-dr:nth-child(even){background:color-mix(in oklab,var(--foreground) 2%,transparent);}
-.dtv-mini-dnm{width:180px;flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.02em;color:color-mix(in oklab,var(--foreground) 68%,transparent);padding:8px 12px 8px 16px;text-align:left;display:flex;align-items:center;white-space:normal;overflow-wrap:break-word;line-height:1.3;border-right:2px solid color-mix(in oklab,var(--chart-color,var(--foreground)) 22%,transparent);}
+.dtv-mini-dnm{width:180px;flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.02em;color:color-mix(in oklab,var(--foreground) 68%,transparent);padding:8px 12px 8px 16px;text-align:left;display:flex;align-items:center;white-space:normal;overflow-wrap:break-word;line-height:1.3;border-right:2px solid color-mix(in oklab,var(--chart-color,var(--foreground)) 22%,transparent);position:sticky;left:0;z-index:4;background:var(--card,#fff);}
 .dtv-mini-dtrk{flex:1;position:relative;align-self:stretch;}
 .dtv-mini-dr{transition:box-shadow .12s;}
 .dtv-mini-dr:hover{box-shadow:inset 0 0 0 200px color-mix(in oklab,var(--chart-color,var(--foreground)) 5%,transparent);}
@@ -360,16 +360,16 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
             <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Mountain Dew AM')" onmouseover="this.style.background='#3B6D111a';this.style.borderColor='#3B6D1144'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Mountain Dew AM</span>
             <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Kickstart Orange Citrus')" onmouseover="this.style.background='#3B6D111a';this.style.borderColor='#3B6D1144'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Kickstart Orange Citrus</span>
             <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Mtn Dew Spiked Lemonade')" onmouseover="this.style.background='#3B6D111a';this.style.borderColor='#3B6D1144'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Mtn Dew Spiked Lemonade</span>
-            <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Mtn Dew Distortion (DEWmocracy II)')" onmouseover="this.style.background='#3B6D111a';this.style.borderColor='#3B6D1144'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Mtn Dew Distortion (DEWmocracy II)</span>
-            <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Mtn Dew Typhoon (DEWmocracy II)')" onmouseover="this.style.background='#3B6D111a';this.style.borderColor='#3B6D1144'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Mtn Dew Typhoon (DEWmocracy II)</span>
-            <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Mtn Dew Typhoon')" onmouseover="this.style.background='#3B6D111a';this.style.borderColor='#3B6D1144'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Mtn Dew Typhoon</span>
-            <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Mtn Dew Kickstart Black Cherry')" onmouseover="this.style.background='#3B6D111a';this.style.borderColor='#3B6D1144'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Mtn Dew Kickstart Black Cherry</span>
-            <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Mtn Dew Sangrita Blast')" onmouseover="this.style.background='#3B6D111a';this.style.borderColor='#3B6D1144'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Mtn Dew Sangrita Blast</span>
-            <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Mtn Dew Spiked Lemonade Freeze')" onmouseover="this.style.background='#3B6D111a';this.style.borderColor='#3B6D1144'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Mtn Dew Spiked Lemonade Freeze</span>
-            <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Mtn Dew Frostbite')" onmouseover="this.style.background='#3B6D111a';this.style.borderColor='#3B6D1144'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Mtn Dew Frostbite</span>
-            <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Mtn Dew Birthday Baja Blast')" onmouseover="this.style.background='#3B6D111a';this.style.borderColor='#3B6D1144'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Mtn Dew Birthday Baja Blast</span>
-            <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Mtn Dew Spark')" onmouseover="this.style.background='#3B6D111a';this.style.borderColor='#3B6D1144'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Mtn Dew Spark</span>
-            <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Mtn Dew Baja Blast Colada')" onmouseover="this.style.background='#3B6D111a';this.style.borderColor='#3B6D1144'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Mtn Dew Baja Blast Colada</span>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             
           </div>
         </div>
@@ -401,7 +401,7 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
         <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #0F6E56;padding:20px;break-inside:avoid;margin-bottom:16px;position:relative;overflow:hidden;">
           <!-- Discontinued ribbon -->
           <div style="position:absolute;top:-1px;right:-1px;width:85px;height:85px;overflow:hidden;z-index:2;pointer-events:none;"><span style="position:absolute;display:block;width:120px;padding:5px 0;background:rgba(42,31,21,0.72);color:#fff;font-family:'JetBrains Mono',monospace;font-size:6.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;text-align:center;transform:rotate(45deg);top:20px;right:-28px;box-shadow:0 2px 4px rgba(0,0,0,.15);">Discontinued</span></div>
-          <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#0F6E56;padding-right:48px;">Freezes — LTO & Collab</div>
+          <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#0F6E56;padding-right:48px;">Freezes</div>
           <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">20 items</div>
           <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
           <div style="display:flex;flex-wrap:wrap;gap:6px;">
@@ -425,6 +425,16 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
             <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Airheads Blue Raspberry Freeze')" onmouseover="this.style.background='#0F6E561a';this.style.borderColor='#0F6E5644'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Airheads Blue Raspberry Freeze</span>
             <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Jolly Rancher Watermelon Freeze')" onmouseover="this.style.background='#0F6E561a';this.style.borderColor='#0F6E5644'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Jolly Rancher Watermelon Freeze</span>
             <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Jolly Rancher Green Apple Freeze')" onmouseover="this.style.background='#0F6E561a';this.style.borderColor='#0F6E5644'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Jolly Rancher Green Apple Freeze</span>
+            <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Mtn Dew Distortion (DEWmocracy II)')" onmouseover="this.style.background='#0F6E561a';this.style.borderColor='#0F6E5644'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Mtn Dew Distortion (DEWmocracy II)</span>
+            <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Mtn Dew Typhoon (DEWmocracy II)')" onmouseover="this.style.background='#0F6E561a';this.style.borderColor='#0F6E5644'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Mtn Dew Typhoon (DEWmocracy II)</span>
+            <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Mtn Dew Typhoon')" onmouseover="this.style.background='#0F6E561a';this.style.borderColor='#0F6E5644'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Mtn Dew Typhoon</span>
+            <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Mtn Dew Kickstart Black Cherry')" onmouseover="this.style.background='#0F6E561a';this.style.borderColor='#0F6E5644'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Mtn Dew Kickstart Black Cherry</span>
+            <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Mtn Dew Sangrita Blast')" onmouseover="this.style.background='#0F6E561a';this.style.borderColor='#0F6E5644'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Mtn Dew Sangrita Blast</span>
+            <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Mtn Dew Spiked Lemonade Freeze')" onmouseover="this.style.background='#0F6E561a';this.style.borderColor='#0F6E5644'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Mtn Dew Spiked Lemonade Freeze</span>
+            <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Mtn Dew Frostbite')" onmouseover="this.style.background='#0F6E561a';this.style.borderColor='#0F6E5644'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Mtn Dew Frostbite</span>
+            <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Mtn Dew Birthday Baja Blast')" onmouseover="this.style.background='#0F6E561a';this.style.borderColor='#0F6E5644'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Mtn Dew Birthday Baja Blast</span>
+            <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Mtn Dew Spark')" onmouseover="this.style.background='#0F6E561a';this.style.borderColor='#0F6E5644'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Mtn Dew Spark</span>
+            <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Mtn Dew Baja Blast Colada')" onmouseover="this.style.background='#0F6E561a';this.style.borderColor='#0F6E5644'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Mtn Dew Baja Blast Colada</span>
             
           </div>
         </div>
@@ -449,8 +459,6 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
           <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">8 items</div>
           <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
           <div style="display:flex;flex-wrap:wrap;gap:6px;">
-            <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Dr Pepper Vanilla Float')" onmouseover="this.style.background='#854F0B1a';this.style.borderColor='#854F0B44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Dr Pepper Vanilla Float</span>
-            <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Dr Pepper Vanilla')" onmouseover="this.style.background='#854F0B1a';this.style.borderColor='#854F0B44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Dr Pepper Vanilla</span>
             <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Lipton Brisk Lemon')" onmouseover="this.style.background='#854F0B1a';this.style.borderColor='#854F0B44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Lipton Brisk Lemon</span>
             <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Hot Tea (select markets)')" onmouseover="this.style.background='#854F0B1a';this.style.borderColor='#854F0B44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Hot Tea (select markets)</span>
             <span style="display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;cursor:pointer;transition:background .15s,border-color .15s;" onclick="if(typeof showItemCard==='function')showItemCard('Tropicana Pink Lemonade')" onmouseover="this.style.background='#854F0B1a';this.style.borderColor='#854F0B44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Tropicana Pink Lemonade</span>
@@ -530,7 +538,7 @@ document.addEventListener("DOMContentLoaded",function(){
 <!-- FREEZE COLLABORATIONS -->
 
 
-<section style="background:var(--card,#fff);border-top:1px solid rgba(42,31,21,0.10);border-bottom:1px solid rgba(42,31,21,0.10);">
+<section style="background:color-mix(in oklab,var(--secondary) 60%,transparent);border-top:1px solid rgba(42,31,21,0.10);border-bottom:1px solid rgba(42,31,21,0.10);">
 <div style="max-width:1500px;margin:0 auto;padding:48px 24px;">
 <div style="margin-bottom:16px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;">
     <div>
@@ -549,13 +557,13 @@ document.addEventListener("DOMContentLoaded",function(){
 </section>
 
 
-<section style="max-width:1500px;margin:0 auto;padding:0 24px 48px;">
+<section style="padding-bottom:48px;">
 <!-- CATEGORIES -->
 
     <!-- LAYOUT TABS -->
 
-  <div id="cat-01" style="--cat-color:#3B6D11;border-bottom:1px solid rgba(42,31,21,0.10);max-width:1500px;margin:0 auto;padding:32px 24px;">
-<div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(42,31,21,0.08);">
+  <div id="cat-01" style="--cat-color:#3B6D11;border-bottom:1px solid rgba(42,31,21,0.10)"><div style="max-width:1500px;margin:0 auto;padding:32px 24px">
+<div style="margin-bottom:12px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
         <div style="width:8px;height:8px;border-radius:50%;background:#3B6D11;flex-shrink:0;"></div>
         <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(42,31,21,0.4);">Category 01</span>
@@ -582,10 +590,10 @@ document.addEventListener("DOMContentLoaded",function(){
       </div>
     </div>
     <div class="dtv-mini" id="cat3-mini"></div>
-    </div>
+    </div></div>
 
-  <div id="cat-02" style="--cat-color:#993556;background:rgba(42,31,21,0.03);border-bottom:1px solid rgba(42,31,21,0.10);max-width:1500px;margin:0 auto;padding:32px 24px;">
-<div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(42,31,21,0.08);">
+  <div id="cat-02" style="--cat-color:#993556;background:rgba(42,31,21,0.03);border-bottom:1px solid rgba(42,31,21,0.10)"><div style="max-width:1500px;margin:0 auto;padding:32px 24px">
+<div style="margin-bottom:12px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
         <div style="width:8px;height:8px;border-radius:50%;background:#993556;flex-shrink:0;"></div>
         <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(42,31,21,0.4);">Category 02</span>
@@ -616,15 +624,15 @@ document.addEventListener("DOMContentLoaded",function(){
       </div>
 
 
-    </div>
+    </div></div>
 
-  <div id="cat-03" style="--cat-color:#0F6E56;border-bottom:1px solid rgba(42,31,21,0.10);max-width:1500px;margin:0 auto;padding:32px 24px;">
-<div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(42,31,21,0.08);">
+  <div id="cat-03" style="--cat-color:#0F6E56;border-bottom:1px solid rgba(42,31,21,0.10)"><div style="max-width:1500px;margin:0 auto;padding:32px 24px">
+<div style="margin-bottom:12px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
         <div style="width:8px;height:8px;border-radius:50%;background:#0F6E56;flex-shrink:0;"></div>
         <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(42,31,21,0.4);">Category 03</span>
       </div>
-      <h3 style="font-family:'Fraunces',Georgia,serif;font-size:26px;font-weight:700;letter-spacing:-0.02em;line-height:1.1;color:#2a1f15;margin:0 0 10px;">Freezes — LTO & collab</h3>
+      <h3 style="font-family:'Fraunces',Georgia,serif;font-size:26px;font-weight:700;letter-spacing:-0.02em;line-height:1.1;color:#2a1f15;margin:0 0 10px;">Freezes</h3>
       <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;">
         <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:4px 12px;border-radius:4px;background:color-mix(in srgb,#0F6E56 10%,transparent);color:#0F6E56;border:1px solid color-mix(in srgb,#0F6E56 20%,transparent);">40+ flavors</span>
         <span style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.06em;color:rgba(42,31,21,0.4);">2013–present</span>
@@ -662,10 +670,10 @@ document.addEventListener("DOMContentLoaded",function(){
     <div class="dtv-yc-inner" id="freeze-cal"></div>
   </div>
     </div>
-  </div>
+  </div></div>
 
-  <div id="cat-04" style="--cat-color:#5A8A1A;background:rgba(42,31,21,0.03);border-bottom:1px solid rgba(42,31,21,0.10);max-width:1500px;margin:0 auto;padding:32px 24px;">
-<div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(42,31,21,0.08);">
+  <div id="cat-04" style="--cat-color:#5A8A1A;background:rgba(42,31,21,0.03);border-bottom:1px solid rgba(42,31,21,0.10)"><div style="max-width:1500px;margin:0 auto;padding:32px 24px">
+<div style="margin-bottom:12px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
         <div style="width:8px;height:8px;border-radius:50%;background:#5A8A1A;flex-shrink:0;"></div>
         <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(42,31,21,0.4);">Category 04</span>
@@ -686,10 +694,10 @@ document.addEventListener("DOMContentLoaded",function(){
       </div>
       <div class="dtv-mini" id="cat-sparkler-mini"></div>
     </div>
-  </div>
+  </div></div>
 
-  <div id="cat-05" style="--cat-color:#854F0B;border-bottom:1px solid rgba(42,31,21,0.10);max-width:1500px;margin:0 auto;padding:32px 24px;">
-<div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(42,31,21,0.08);">
+  <div id="cat-05" style="--cat-color:#854F0B;border-bottom:1px solid rgba(42,31,21,0.10)"><div style="max-width:1500px;margin:0 auto;padding:32px 24px">
+<div style="margin-bottom:12px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
         <div style="width:8px;height:8px;border-radius:50%;background:#854F0B;flex-shrink:0;"></div>
         <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(42,31,21,0.4);">Category 05</span>
@@ -710,10 +718,10 @@ document.addEventListener("DOMContentLoaded",function(){
       </div>
       <div class="dtv-mini" id="cat6-mini"></div>
     </div>
-  </div>
+  </div></div>
 
-  <div id="cat-06" style="--cat-color:#185FA5;background:rgba(42,31,21,0.03);max-width:1500px;margin:0 auto;padding:32px 24px;">
-<div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(42,31,21,0.08);">
+  <div id="cat-06" style="--cat-color:#185FA5;background:rgba(42,31,21,0.03)"><div style="max-width:1500px;margin:0 auto;padding:32px 24px">
+<div style="margin-bottom:12px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
         <div style="width:8px;height:8px;border-radius:50%;background:#185FA5;flex-shrink:0;"></div>
         <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(42,31,21,0.4);">Category 06</span>
@@ -735,7 +743,7 @@ document.addEventListener("DOMContentLoaded",function(){
       </div>
       
     </div>
-  </div>
+  </div></div>
 
 </section>
 
@@ -767,7 +775,7 @@ function w(a,b){return((b-a)/R*100).toFixed(2)+'%';}
 var CATS=[
   {n:'Mtn Dew casualties',s:2012,e:2022},
   {n:'Frutista Freezes',s:2008,e:2013},
-  {n:'Freezes — LTO & collab',s:2013,e:2025},
+  {n:'Freezes',s:2013,e:2025},
   {n:'Limeade Sparklers',s:2010,e:2012},
   {n:'Non-Carbonated Fountain Drinks',s:1978,e:2020},
   {n:'Defunct fountain sodas',s:2003,e:2025}
@@ -822,7 +830,7 @@ var macroRepos=(function(hdrEl,wrapEl){
         var xPx=(nameW+(y-S)/R*trackW).toFixed(1);
         var lbl=document.createElement('div');
         lbl.className='dtv-ovl dtv-yr'+(i%2===0?' dtv-yr-hide':'');
-        lbl.style.cssText='position:absolute;left:'+xPx+'px;top:'+(hdrH+2)+'px;transform:translateX(-70%);font-family:JetBrains Mono,monospace;font-size:9px;font-weight:500;color:color-mix(in oklab,var(--foreground) 45%,transparent);pointer-events:none;z-index:3;white-space:nowrap;';
+        lbl.style.cssText='position:absolute;left:'+xPx+'px;top:'+(hdrH+2)+'px;transform:translateX(-70%);font-family:JetBrains Mono,monospace;font-size:9px;font-weight:500;color:color-mix(in oklab,var(--foreground) 45%,transparent);pointer-events:none;z-index:2;white-space:nowrap;';
         lbl.textContent=y;
         wrapEl.appendChild(lbl);
       });
@@ -874,7 +882,7 @@ var ACC_DATA={
     {n:'Strawberry Colada',y:"Spr '09"},{n:'Classic Margarita',y:"Spr '10"},
     {n:'Triple Berries ’n Crème',y:"Fall '08"},{n:'Strawberry Margarita',y:"Spr '10"}
   ]},
-  'Freezes — LTO & collab':{type:'calendar'},
+  'Freezes':{type:'calendar'},
   'Limeade Sparklers':{type:'swim',items:[
     {n:'Classic Limeade Sparkler',s:2010,e:2012},{n:'Cherry Limeade Sparkler',s:2010,e:2012}
   ]},
@@ -1064,7 +1072,7 @@ function buildMini(id,items,color,startY,endY){
           var xPx=(nameW+(y-rangeS)/rangeR*trackW).toFixed(1);
           var lbl=document.createElement('div');
           lbl.className='dtv-ovl dtv-yr'+(i%2===0?' dtv-yr-hide':'');
-          lbl.style.cssText='position:absolute;left:'+xPx+'px;top:'+(hdrH+2)+'px;transform:translateX(-70%);font-family:JetBrains Mono,monospace;font-size:9px;font-weight:500;color:color-mix(in oklab,var(--foreground) 45%,transparent);pointer-events:none;z-index:3;white-space:nowrap;';
+          lbl.style.cssText='position:absolute;left:'+xPx+'px;top:'+(hdrH+2)+'px;transform:translateX(-70%);font-family:JetBrains Mono,monospace;font-size:9px;font-weight:500;color:color-mix(in oklab,var(--foreground) 45%,transparent);pointer-events:none;z-index:2;white-space:nowrap;';
           lbl.textContent=y;
           rootEl.appendChild(lbl);
           var gl=document.createElement('div');
@@ -1324,29 +1332,29 @@ var ITEM_DB={
     desc:'Co-launched with Pink Lemonade in January 2013. Previously appeared as a Frutista Freeze in Spring 2009. Replaced by Typhoon when the House of Dew flavors launched in September 2013.',
     replaced:'Rotated out as part of the Frutista seasonal cycle.',
     avail:''},
-  'Mtn Dew Distortion (DEWmocracy II)':{name:'Mtn Dew Distortion Freeze',dates:'September 2013 – March 2014',type:'Mountain Dew variant · House of Dew',color:'#3B6D11',
+  'Mtn Dew Distortion (DEWmocracy II)':{name:'Mtn Dew Distortion Freeze',dates:'September 2013 – March 2014',type:'Mountain Dew variant · House of Dew',color:'#2d5a0e',
     desc:'A sour lime Mountain Dew from the 2010 DEWmocracy II retail vote. Selected via Taco Bell fan vote for the House of Dew launch, ranking first among new LTO candidates. Replaced by Kickstart Black Cherry in March 2014.',
     notes:'DEWmocracy II (2010) pitted Distortion, Typhoon, and White Shark against each other in a retail vote. White Shark won. Both Distortion and Typhoon were revived here three years later.',
     replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
-  'Mtn Dew Typhoon (DEWmocracy II)':{name:'Mtn Dew Typhoon Freeze',dates:'September 2013 – June 2014',type:'Mountain Dew variant · House of Dew',color:'#3B6D11',
+  'Mtn Dew Typhoon (DEWmocracy II)':{name:'Mtn Dew Typhoon Freeze',dates:'September 2013 – June 2014',type:'Mountain Dew variant · House of Dew',color:'#2d5a0e',
     desc:'A tropical punch Mountain Dew from the same DEWmocracy II retail run. Ranked third overall in the House of Dew fan vote — second among new LTO candidates, with Baja Blast (already permanent) holding the #2 slot. Ran slightly longer than Distortion.',
     replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
-  'Mtn Dew Typhoon':{name:'Mtn Dew Typhoon Freeze',dates:'Into 2014',type:'Mountain Dew variant',color:'#3B6D11',
+  'Mtn Dew Typhoon':{name:'Mtn Dew Typhoon Freeze',dates:'Into 2014',type:'Mountain Dew variant',color:'#2d5a0e',
     desc:'Continuation of the Typhoon Freeze into early 2014. Ran the longest of the two original DEWmocracy flavors before Dr Pepper Vanilla Float Freeze replaced it in June 2014.',
     replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
-  'Mtn Dew Kickstart Black Cherry':{name:'Kickstart Black Cherry Freeze',dates:'March – ~June 2014',type:'Mountain Dew variant · brief run',color:'#3B6D11',
+  'Mtn Dew Kickstart Black Cherry':{name:'Kickstart Black Cherry Freeze',dates:'March – ~June 2014',type:'Mountain Dew variant · brief run',color:'#2d5a0e',
     desc:'A brief run from the Kickstart line — the black cherry energy variant. Replaced Distortion in March 2014 but lasted only a few months. Among the shortest documented runs in the LTO calendar.',
     replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
-  'Dr Pepper Vanilla Float':{name:'Dr Pepper Vanilla Float Freeze',dates:'June 2014 – ~early 2015',type:'Soda brand collab · cross-brand',color:'#854F0B',
+  'Dr Pepper Vanilla Float':{name:'Dr Pepper Vanilla Float Freeze',dates:'June 2014 – ~early 2015',type:'Soda brand collab · cross-brand',color:'#2d5a0e',
     desc:'A notable cross-brand move: Dr Pepper is a Keurig Dr Pepper product, not PepsiCo. The vanilla float format paired Dr Pepper flavor with a cream note. One of the few non-Pepsi brand collaborations in the Freeze program.',
     notes:'First of two documented Dr Pepper partnerships — the second came nearly a decade later in 2023.',
     replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
-  'Mtn Dew Sangrita Blast':{url:'taco-bell-sangrita-blast.html',name:'Sangrita Blast Freeze',dates:'May – September 2015',type:'Mountain Dew variant · Freeze form only',color:'#3B6D11',
+  'Mtn Dew Sangrita Blast':{url:'taco-bell-sangrita-blast.html',name:'Sangrita Blast Freeze',dates:'May – September 2015',type:'Mountain Dew variant · Freeze form only',color:'#2d5a0e',
     desc:'The Freeze companion to the Sangrita Blast fountain exclusive. Launched May 2015 and ran one season before Starburst Cherry Freeze took the slot.',
     notes:'The only time Sangrita Blast existed in Freeze format. The fountain flavor ran 2013–2017; this Freeze appeared and disappeared in four months.',
     replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
@@ -1355,7 +1363,7 @@ var ITEM_DB={
     desc:'One of the most reliably returning seasonal Freezes — appeared across at least five summers before stopping its rotation. Functioned almost like an unofficial seasonal permanent before being discontinued.',
     replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:''},
-  'Mtn Dew Spiked Lemonade Freeze':{name:'Spiked Lemonade Freeze',dates:'Early – September 2017',type:'Mountain Dew variant · brief',color:'#3B6D11',
+  'Mtn Dew Spiked Lemonade Freeze':{name:'Spiked Lemonade Freeze',dates:'Early – September 2017',type:'Mountain Dew variant · brief',color:'#2d5a0e',
     desc:'The Freeze companion to the Spiked Lemonade fountain flavor — non-alcoholic, prickly pear cactus juice. Ran briefly in early 2017 before Strawberry Poppin\' Candy Freeze replaced it in September. A much shorter run than the fountain version, which continued until March 2019.',
     replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
@@ -1367,20 +1375,20 @@ var ITEM_DB={
     desc:'A straightforward lemonade Freeze from 2018, one of several house-flavor experiments during a period between candy and Dew collab cycles.',
     replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:''},
-  'Mtn Dew Frostbite':{name:'Mtn Dew Frostbite Freeze',dates:'2020',type:'Mountain Dew variant · Freeze-only',color:'#3B6D11',
+  'Mtn Dew Frostbite':{name:'Mtn Dew Frostbite Freeze',dates:'2020',type:'Mountain Dew variant · Freeze-only',color:'#2d5a0e',
     desc:'A coconut-lime Mountain Dew available only as a Freeze — no retail soda version. Blue-green in color. Appeared one season in 2019 and did not return.',
     notes:'One of the few Dew flavors created specifically for the Freeze machine rather than adapted from a retail product.',
     replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
-  'Mtn Dew Birthday Baja Blast':{name:'Birthday Baja Blast Freeze',dates:'2019',type:'Mountain Dew variant · anniversary',color:'#3B6D11',
+  'Mtn Dew Birthday Baja Blast':{name:'Birthday Baja Blast Freeze',dates:'2019',type:'Mountain Dew variant · anniversary',color:'#2d5a0e',
     desc:'Released in 2019 to mark Baja Blast\'s 15th anniversary. A variation on the permanent Baja Blast Freeze with birthday cake flavoring — a rare spin-off of the first permanent slot.',
     replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
-  'Mtn Dew Spark':{name:'Mtn Dew Spark Freeze',dates:'2021 – ~2022',type:'Mountain Dew variant',color:'#3B6D11',
+  'Mtn Dew Spark':{name:'Mtn Dew Spark Freeze',dates:'2021 – ~2022',type:'Mountain Dew variant',color:'#2d5a0e',
     desc:'A pink lemonade-flavored Mountain Dew in Freeze form. Part of the broader Spark product line. Ran in the LTO slot across 2021 and into 2022.',
     replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
-  'Mtn Dew Baja Blast Colada':{name:'Baja Blast Colada Freeze',dates:'2021',type:'Mountain Dew variant · Baja spin-off',color:'#3B6D11',
+  'Mtn Dew Baja Blast Colada':{name:'Baja Blast Colada Freeze',dates:'2021',type:'Mountain Dew variant · Baja spin-off',color:'#2d5a0e',
     desc:'A colada-flavored variation on Baja Blast — tropical-lime with coconut cream. Part of the 2021 Summer of Baja promotional push alongside retail Baja Punch and Baja Flash cans.',
     notes:'One of very few times the Baja Blast formula was modified for a seasonal LTO spin-off.',
     replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
@@ -1403,7 +1411,7 @@ var ITEM_DB={
     desc:'A Freeze tied to Taco Bell’s 2023 Agua Refresca launch — part of the chain\'s push toward fruit-infused, lower-carbonation drink options.',
     replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:''},
-  'Dr Pepper Vanilla':{name:'Dr Pepper Vanilla Freeze',dates:'2023',type:'Soda brand collab',color:'#854F0B',
+  'Dr Pepper Vanilla':{name:'Dr Pepper Vanilla Freeze',dates:'2023',type:'Soda brand collab',color:'#2d5a0e',
     desc:'A return to the Dr Pepper vanilla format. The second documented Keurig Dr Pepper collaboration in the Freeze program, nearly a decade after the Dr Pepper Vanilla Float Freeze in 2014.',
     replaced:'Rotated out at the end of its LTO window. The Freeze machine’s third slot cycles to the next seasonal flavor.',
     avail:'No. Produced exclusively for TB’s Freeze machine in limited seasonal batches. Not sold at retail.'},
@@ -1532,16 +1540,7 @@ var ITEM_DB={
   'Jolly Rancher Green Apple Freeze':{name:'Jolly Rancher Green Apple Freeze',dates:'2021',type:'Freeze · candy collab',color:'#0F6E56',
     desc:'A green apple Jolly Rancher Freeze LTO.',
     replaced:'Rotated out.',avail:'No.',notes:''},
-  'Strawberries n Creme Frutista Freeze':{name:'Strawberries ’n Crème Frutista Freeze',dates:'Fall 2008',type:'Frutista Freeze · Crème line',color:'#993556',
-    desc:'Part of the three-flavor Crème expansion in fall 2008. Strawberry base blended with a vanilla crème swirl.',
-    replaced:'Rotated out as part of the Frutista seasonal cycle.',avail:'No.',notes:'The Crème line was the first seasonal rotation within the Frutista program.'},
-  'Mango n Creme Frutista Freeze':{name:'Mango ’n Crème Frutista Freeze',dates:'Fall 2008',type:'Frutista Freeze · Crème line',color:'#993556',
-    desc:'Mango base with the same vanilla crème treatment. Part of the fall 2008 Crème trio.',
-    replaced:'Rotated out seasonally.',avail:'No.',notes:''},
-  'Triple Berries n Creme Frutista Freeze':{name:'Triple Berries ’n Crème Frutista Freeze',dates:'Fall 2008',type:'Frutista Freeze · Crème line',color:'#993556',
-    desc:'A three-berry blend (strawberry, blueberry, raspberry) with vanilla crème. The most complex flavor in the original Crème lineup.',
-    replaced:'Rotated out seasonally.',avail:'No.',notes:''},
-
+      
 };
 
 function buildItemModal(){
@@ -1667,7 +1666,7 @@ window.WIKI_TOC = {
     { group: 'OVERVIEW', id: 'freeze-collabs', label: 'Freeze Collaborations' },
     { group: 'CATEGORIES', id: 'cat-01', label: 'Mtn Dew casualties' },
     { group: 'CATEGORIES', id: 'cat-02', label: 'Frutista Freezes' },
-    { group: 'CATEGORIES', id: 'cat-03', label: 'Freezes — LTO' },
+    { group: 'CATEGORIES', id: 'cat-03', label: 'Freezes' },
     { group: 'CATEGORIES', id: 'cat-04', label: 'Sparklers' },
     { group: 'CATEGORIES', id: 'cat-05', label: 'Non-Carbonated' },
     { group: 'CATEGORIES', id: 'cat-06', label: 'Defunct sodas' }
