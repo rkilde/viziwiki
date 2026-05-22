@@ -1,0 +1,918 @@
+---
+layout: default
+title: "Cantina Chicken Menu · Taco Bell · ViziWiki"
+body_class: "wiki-page"
+---
+{% raw %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,300;9..144,0,600;9..144,0,700;9..144,1,300;9..144,1,400;9..144,1,600&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --background: oklch(0.972 0.012 85);
+    --foreground: oklch(0.18 0.02 60);
+    --card: oklch(1 0 0);
+    --secondary: oklch(0.93 0.02 80);
+    --muted-foreground: oklch(0.45 0.03 60);
+    --hot-pink: rgba(255,100,180,.55);
+    --tb-purple: #702082;
+    --tb-yellow: #FED141;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { background: var(--background); color: var(--foreground); }
+  body { font-family: 'Spectral', Georgia, serif; }
+  .font-display { font-family: 'Fraunces', Georgia, serif; font-optical-sizing: auto; font-variation-settings: "SOFT" 30, "WONK" 0; letter-spacing: -.02em; }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+  .halftone { background-image: radial-gradient(var(--hot-pink) 1.4px, transparent 1.6px); background-size: 10px 10px; }
+  .text-muted { color: var(--muted-foreground); }
+  .bg-card { background: var(--card); }
+
+  /* Section */
+  .page-section { max-width: 1500px; margin: 0 auto; padding: 3.5rem 1.5rem; }
+  .eyebrow { display: flex; align-items: center; gap: .5rem; font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .25em; color: var(--muted-foreground); margin-bottom: .5rem; }
+
+  /* ── Category header ────────────────────────────────────── */
+  .cat-header {
+    display: flex; align-items: center; gap: 1rem;
+    padding: .875rem 1.25rem;
+    border-radius: 6px 6px 0 0;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .cat-header-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.15); flex-shrink: 0; }
+  .cat-header-icon svg { width: 16px; height: 16px; color: #fff; }
+  .cat-title { font-family: 'Fraunces', Georgia, serif; font-size: 1.0625rem; font-weight: 600; color: #fff; letter-spacing: -.01em; }
+  .cat-count { font-family: 'JetBrains Mono', monospace; font-size: 8px; text-transform: uppercase; letter-spacing: .2em; color: rgba(255,255,255,.65); margin-left: auto; }
+
+  /* ── Item card ──────────────────────────────────────────── */
+  .item-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: .75rem; }
+  .item-card {
+    background: var(--card); border-radius: 5px;
+    border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);
+    overflow: hidden; transition: border-color .12s, box-shadow .12s;
+    display: flex; flex-direction: column;
+  }
+  .item-card:hover {
+    border-color: color-mix(in oklab, var(--foreground) 25%, transparent);
+    box-shadow: 0 2px 10px rgba(0,0,0,.08);
+  }
+  .item-card-accent { height: 3px; flex-shrink: 0; }
+  .item-card-body { padding: .875rem 1rem 1rem; flex: 1; display: flex; flex-direction: column; }
+  .item-cat-eye { font-family: 'JetBrains Mono', monospace; font-size: 7.5px; text-transform: uppercase; letter-spacing: .2em; margin-bottom: .3rem; }
+  .item-name { font-family: 'Fraunces', Georgia, serif; font-size: 1.0625rem; font-weight: 600; line-height: 1.2; }
+  .item-desc { font-size: 12.5px; line-height: 1.55; color: color-mix(in oklab, var(--foreground) 72%, transparent); margin-top: .4rem; flex: 1; }
+  .item-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: .75rem; }
+  .item-tag { font-family: 'JetBrains Mono', monospace; font-size: 7px; text-transform: uppercase; letter-spacing: .12em; padding: 2px 7px; border-radius: 999px; border: 1px solid color-mix(in oklab, var(--foreground) 12%, transparent); background: color-mix(in oklab, var(--secondary) 60%, transparent); color: var(--muted-foreground); }
+  .item-badge { font-family: 'JetBrains Mono', monospace; font-size: 7px; text-transform: uppercase; letter-spacing: .12em; padding: 2px 7px; border-radius: 999px; color: #fff; }
+
+  /* Category block wrapper */
+  .cat-block { border-radius: 6px; overflow: hidden; border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent); margin-bottom: 2rem; }
+  .cat-body { padding: 1rem; background: color-mix(in oklab, var(--secondary) 30%, transparent); }
+
+  /* Stat row */
+  .stat-row { display: flex; flex-wrap: wrap; gap: 1.5rem; padding: 1.25rem 1.5rem; border-radius: 6px; background: color-mix(in oklab, var(--secondary) 50%, transparent); border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent); margin-bottom: 2.5rem; }
+  .stat-v { font-family: 'Fraunces', Georgia, serif; font-size: 1.5rem; font-weight: 600; letter-spacing: -.02em; line-height: 1; }
+  .stat-k { font-family: 'JetBrains Mono', monospace; font-size: 8px; text-transform: uppercase; letter-spacing: .2em; color: var(--muted-foreground); margin-top: .2rem; }
+
+  /* Mobile */
+  @media (max-width: 767px) {
+    .cat-columns { columns: 1 !important; }
+    .hero-grid { display: block !important; padding: 2.5rem 1.25rem !important; }
+    .hero-grid > div:last-child { margin-top: 1.5rem; }
+    .overview-prose { grid-template-columns: 1fr !important; }
+    .item-grid { grid-template-columns: 1fr 1fr; }
+    .cat-header { position: relative; }
+  }
+  @media (max-width: 480px) {
+    .item-grid { grid-template-columns: 1fr; }
+  }
+.ob-pill{display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;transition:background .15s,border-color .15s;}
+  /* Catalogue: single column on mobile */
+  @media (max-width: 639px) {
+    .cat-columns { columns: 1 !important; }
+  }
+</style>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section id="overview" class="relative overflow-hidden border-b border-foreground/20 text-white"
+  style="background:linear-gradient(135deg,#6d28d9 0%,#4a044e 50%,#0d0015 100%)">
+  <div class="halftone pointer-events-none absolute inset-0 mix-blend-overlay opacity-20"></div>
+  <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(to right,rgba(13,0,21,.55),rgba(74,4,78,.12),transparent)"></div>
+  <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(to bottom,rgba(0,0,0,.2) 0%,transparent 50%)"></div>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" class="pointer-events-none absolute -right-10 -bottom-10 opacity-[.06] rotate-12" style="width:420px;height:420px;color:#fff"><path d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 0A5.11 5.11 0 0 1 16.59 6 4 4 0 0 1 18 13.87V21H6Z"/><line x1="6" x2="18" y1="17" y2="17"/></svg>
+
+  <div class="hero-grid relative mx-auto" style="display:grid;grid-template-columns:1.6fr 1fr;gap:2rem;max-width:1500px;padding:3.5rem 1.5rem">
+    <div>
+      <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[.25em]" style="backdrop-filter:blur(4px)">
+        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#c084fc;flex-shrink:0"></span>
+        Sub-brand · Active · Est. 2024
+      </div>
+      <h1 class="font-display" style="font-size:clamp(2.75rem,7vw,4.75rem);font-weight:700;line-height:.95;color:#fff;margin-top:.75rem">
+        Cantina Chicken Menu<span style="color:#c084fc">.</span>
+      </h1>
+      <p style="font-family:'Spectral',Georgia,serif;font-size:1.05rem;line-height:1.7;max-width:36rem;margin-top:1rem;color:rgba(255,255,255,.85)">
+        Slow-roasted chicken in garlic, onions, and Mexican chilies — across tacos, burritos, quesadillas, and bowls. Launched nationwide March 21, 2024.
+      </p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;overflow:hidden;border-radius:3px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);align-self:center">
+      <div style="background:rgba(13,0,21,.55);padding:.75rem 1rem"><div class="font-display" style="font-size:1.5rem;font-weight:600;color:#fff;letter-spacing:-.02em">9</div><div class="font-mono" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">Menu items</div></div>
+      <div style="background:rgba(13,0,21,.55);padding:.75rem 1rem"><div class="font-display" style="font-size:1.5rem;font-weight:600;color:#fff;letter-spacing:-.02em">5</div><div class="font-mono" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">Categories</div></div>
+      <div style="background:rgba(13,0,21,.55);padding:.75rem 1rem"><div class="font-display" style="font-size:1.5rem;font-weight:600;color:#fff;letter-spacing:-.02em">2024</div><div class="font-mono" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">Launched</div></div>
+      <div style="background:rgba(13,0,21,.55);padding:.75rem 1rem"><div class="font-display" style="font-size:1.5rem;font-weight:600;color:#c084fc;letter-spacing:-.02em">Active</div><div class="font-mono" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">Status</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ OVERVIEW ═══════════════════ -->
+<section style="background:var(--card);border-bottom:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
+  <div class="page-section">
+    <div class="eyebrow">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      Overview
+    </div>
+    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:1.5rem">A protein pivot, not a variety play.</h2>
+    <div class="overview-prose" style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem 3rem;border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);padding-top:2rem">
+      <p style="font-size:15px;line-height:1.7">Launched nationwide on <strong>March 21, 2024</strong>, the Cantina Chicken Menu is Taco Bell's most deliberate bid yet to compete at the fast-casual tier — not on price, but on ingredient quality. The strategic target was explicit: Chipotle, CAVA, and the broader daytime fast-casual segment that has eroded legacy QSR market share through the 2010s and early 2020s. The line debuted at Taco Bell's inaugural <em>Live Más LIVE</em> event in Las Vegas in February 2024, followed by a Taco Bell Rewards early-access window on March 14 and 18 before the full nationwide roll-out one week later.</p>
+      <p style="font-size:15px;line-height:1.7">The entire line is built around a single new protein: slow-roasted chicken prepared in a savory blend of garlic, onions, and authentic Mexican chilies. This is a distinct offering from the chain's standard shredded or grilled chicken — a separate preparation with its own seasoning profile and supply chain. Taco Bell deploys it across every major format in its menu architecture (tacos, burritos, quesadillas, bowls), which is the vertical logic of the sub-line: one elevated protein, maximum menu surface area.</p>
+      <p style="font-size:15px;line-height:1.7">To distinguish the line visually and texturally from standard builds, Taco Bell introduced a suite of fresh ingredients not previously deployed at scale: <strong>shredded purple cabbage</strong> for crunch and color, <strong>pico de gallo</strong> prepared fresh daily, <strong>white corn tortilla shells</strong> fried in-house daily for the crispy items, and the <strong>Avocado Verde Salsa</strong> — a new packet-based sauce formulated with real avocado pulp, tomatillos, and green chili peppers, included automatically with every Cantina order. The fresh-produce commitment alone projected 2.5 million additional pounds of usage in the first year.</p>
+      <p style="font-size:15px;line-height:1.7">The precedent is <strong>Cantina Bell</strong> (2012–2014), which attempted the same fast-casual pivot through a broader ingredient overhaul with chef Lorena Garcia. It lasted two years. Cantina Chicken narrows the bet to a single protein and owns the preparation rather than overhauling the entire ingredient stack. Consumer response to the initial five-item launch was strong enough that the culinary team permanently expanded the line — adding the <strong>Cantina Chicken Rolled Quesadilla</strong> and the <strong>Cantina Chicken Mexican Pizza</strong> to the permanent roster, raising the item count above the launch configuration catalogued here.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ MENU CATALOGUE ═══════════════════ -->
+<section id="catalogue" style="border-top:1px solid rgba(42,31,21,0.15);border-bottom:1px solid rgba(42,31,21,0.15);background:color-mix(in oklab,var(--secondary) 40%,transparent);">
+  <div style="max-width:1500px;margin:0 auto;padding:48px 24px;">
+    <div style="margin-bottom:24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(42,31,21,0.35);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" x2="21" y1="6" y2="6"/><line x1="10" x2="21" y1="12" y2="12"/><line x1="10" x2="21" y1="18" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+          Full Catalogue
+        </div>
+        <h2 style="font-family:'Fraunces',Georgia,serif;font-size:30px;font-weight:600;letter-spacing:-0.02em;">Every menu item</h2>
+      </div>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(42,31,21,0.35);">14 items &middot; 7 categories</span>
+    </div>
+
+    <div class="cat-columns" style="columns:2;column-gap:16px;">
+
+      <!-- TACOS -->
+      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #b45309;padding:20px;break-inside:avoid;margin-bottom:16px;">
+        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#b45309;">Tacos</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">2 items</div>
+        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Cantina Chicken Crispy Taco')" onmouseover="this.style.background='#b453091a';this.style.borderColor='#b4530944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Cantina Chicken Crispy Taco</span>
+          <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Cantina Chicken Soft Taco')" onmouseover="this.style.background='#b453091a';this.style.borderColor='#b4530944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Cantina Chicken Soft Taco</span>
+        </div>
+      </div>
+
+      <!-- BURRITOS -->
+      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #6d28d9;padding:20px;break-inside:avoid;margin-bottom:16px;">
+        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#6d28d9;">Burritos</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">1 item</div>
+        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Cantina Chicken Burrito')" onmouseover="this.style.background='#6d28d91a';this.style.borderColor='#6d28d944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Cantina Chicken Burrito</span>
+        </div>
+      </div>
+
+      <!-- QUESADILLAS -->
+      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #a16207;padding:20px;break-inside:avoid;margin-bottom:16px;">
+        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#a16207;">Quesadillas</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">2 items</div>
+        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Cantina Chicken Quesadilla')" onmouseover="this.style.background='#a162071a';this.style.borderColor='#a1620744'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Cantina Chicken Quesadilla</span>
+          <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Cantina Chicken Rolled Quesadilla')" onmouseover="this.style.background='#a162071a';this.style.borderColor='#a1620744'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Cantina Chicken Rolled Quesadilla</span>
+        </div>
+      </div>
+
+      <!-- BOWLS -->
+      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #0c4a6e;padding:20px;break-inside:avoid;margin-bottom:16px;">
+        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#0c4a6e;">Bowls</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">1 item</div>
+        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Cantina Chicken Bowl')" onmouseover="this.style.background='#0c4a6e1a';this.style.borderColor='#0c4a6e44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Cantina Chicken Bowl</span>
+        </div>
+      </div>
+
+      <!-- PIZZA -->
+      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #991b1b;padding:20px;break-inside:avoid;margin-bottom:16px;">
+        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#991b1b;">Mexican Pizza</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">1 item</div>
+        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Cantina Chicken Mexican Pizza')" onmouseover="this.style.background='#991b1b1a';this.style.borderColor='#991b1b44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Cantina Chicken Mexican Pizza</span>
+        </div>
+      </div>
+
+      <!-- NACHOS -->
+      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #4d7c0f;padding:20px;break-inside:avoid;margin-bottom:16px;">
+        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#4d7c0f;">Nachos</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">1 item</div>
+        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Cantina Chicken Verde Nachos')" onmouseover="this.style.background='#4d7c0f1a';this.style.borderColor='#4d7c0f44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Cantina Chicken Verde Nachos</span>
+        </div>
+      </div>
+
+            <!-- DISCONTINUED — Caliente line -->
+      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #44403c;padding:20px;break-inside:avoid;margin-bottom:16px;position:relative;overflow:hidden;">
+        <!-- Discontinued ribbon -->
+        <div style="position:absolute;top:-1px;right:-1px;width:85px;height:85px;overflow:hidden;z-index:2;pointer-events:none;"><span style="position:absolute;display:block;width:120px;padding:5px 0;background:rgba(42,31,21,0.72);color:#fff;font-family:'JetBrains Mono',monospace;font-size:6.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;text-align:center;transform:rotate(45deg);top:20px;right:-28px;box-shadow:0 2px 4px rgba(0,0,0,.15);">Discontinued</span></div>
+        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#44403c;">Caliente Line</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">6 items &middot; limited run</div>
+        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Caliente Cantina Chicken Crispy Taco')" onmouseover="this.style.background='#44403c1a';this.style.borderColor='#44403c44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Caliente Cantina Chicken Crispy Taco</span>
+          <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Caliente Cantina Chicken Soft Taco')" onmouseover="this.style.background='#44403c1a';this.style.borderColor='#44403c44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Caliente Cantina Chicken Soft Taco</span>
+          <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Caliente Cantina Chicken Burrito')" onmouseover="this.style.background='#44403c1a';this.style.borderColor='#44403c44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Caliente Cantina Chicken Burrito</span>
+          <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Caliente Cantina Chicken Quesadilla')" onmouseover="this.style.background='#44403c1a';this.style.borderColor='#44403c44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Caliente Cantina Chicken Quesadilla</span>
+          <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Caliente Cantina Chicken Bowl')" onmouseover="this.style.background='#44403c1a';this.style.borderColor='#44403c44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Caliente Cantina Chicken Bowl</span>
+          <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Caliente Cantina Chicken Nacho Fries')" onmouseover="this.style.background='#44403c1a';this.style.borderColor='#44403c44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Caliente Cantina Chicken Nacho Fries</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Item detail modal ── -->
+<div id="item-ov" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:1rem;" onclick="if(event.target===this){closeItemModal();}">
+  <div id="item-card" style="background:#fff;border-radius:14px;max-width:460px;width:100%;max-height:85vh;overflow-y:auto;position:relative;box-shadow:0 24px 64px rgba(42,31,21,.22);"></div>
+</div>
+
+<script>
+var ITEMS_DATA = {
+  'Cantina Chicken Crispy Taco': {
+    cat:'Taco · Crispy shell', color:'#b45309', status:'Active',
+    desc:'A freshly fried white corn shell filled with slow-roasted chicken, creamy jalapeño sauce, and a three-cheese blend — with a signature grilled cheese crust on the outside of the shell.',
+    ingredients:['Freshly fried white corn shell','Slow-roasted chicken','Creamy jalapeño sauce','Three-cheese blend','Grilled cheese crust (exterior)'],
+    slug:'cantina-chicken-crispy-taco'
+  },
+  'Cantina Chicken Soft Taco': {
+    cat:'Taco · Soft flour', color:'#b45309', status:'Active',
+    desc:'A warm flour tortilla containing slow-roasted chicken, iceberg lettuce, shredded purple cabbage, avocado ranch sauce, cheddar cheese, and fresh pico de gallo.',
+    ingredients:['Flour tortilla','Slow-roasted chicken','Iceberg lettuce','Shredded purple cabbage','Avocado ranch sauce','Cheddar cheese','Fresh pico de gallo'],
+    slug:'cantina-chicken-soft-taco'
+  },
+  'Cantina Chicken Burrito': {
+    cat:'Burrito', color:'#6d28d9', status:'Active',
+    desc:'A grilled flour tortilla packed with a double portion of slow-roasted chicken, lettuce, purple cabbage, avocado ranch, cheddar cheese, and fresh pico de gallo.',
+    ingredients:['Grilled flour tortilla','Double slow-roasted chicken','Iceberg lettuce','Shredded purple cabbage','Avocado ranch sauce','Cheddar cheese','Fresh pico de gallo'],
+    slug:'cantina-chicken-burrito'
+  },
+  'Cantina Chicken Quesadilla': {
+    cat:'Quesadilla · Grilled', color:'#a16207', status:'Active',
+    desc:'A flour tortilla filled with slow-roasted chicken, a three-cheese blend, and creamy chipotle sauce — built with a grilled cheese layer on the outside.',
+    ingredients:['Flour tortilla','Slow-roasted chicken','Three-cheese blend','Creamy chipotle sauce','Grilled cheese crust (exterior)'],
+    slug:'cantina-chicken-quesadilla'
+  },
+  'Cantina Chicken Bowl': {
+    cat:'Bowl', color:'#0c4a6e', status:'Active',
+    desc:'A base of seasoned rice and black beans topped with slow-roasted chicken, iceberg lettuce, purple cabbage, cheddar cheese, sour cream, fresh guacamole, pico de gallo, and avocado ranch sauce.',
+    ingredients:['Seasoned rice','Black beans','Slow-roasted chicken','Iceberg lettuce','Shredded purple cabbage','Cheddar cheese','Sour cream','Fresh guacamole','Fresh pico de gallo','Avocado ranch sauce'],
+    slug:'cantina-chicken-bowl'
+  },
+  'Cantina Chicken Rolled Quesadilla': {
+    cat:'Quesadilla · Rolled', color:'#a16207', status:'Active',
+    desc:'A permanent expansion item — slow-roasted chicken layered with a three-cheese blend and creamy chipotle sauce, tightly rolled and grilled until the exterior is crisp.',
+    ingredients:['Flour tortilla (rolled)','Slow-roasted chicken','Three-cheese blend','Creamy chipotle sauce'],
+    slug:'cantina-chicken-rolled-quesadilla'
+  },
+  'Cantina Chicken Mexican Pizza': {
+    cat:'Pizza', color:'#991b1b', status:'Active',
+    desc:'A Cantina Chicken twist on the classic Mexican Pizza — slow-roasted chicken, black beans, green chile sauce, a three-cheese blend, purple cabbage, and pico de gallo layered between two crispy pizza shells.',
+    ingredients:['Two crispy pizza shells','Slow-roasted chicken','Black beans','Green chile sauce','Three-cheese blend','Shredded purple cabbage','Fresh pico de gallo'],
+    slug:'cantina-chicken-mexican-pizza'
+  },
+  'Caliente Cantina Chicken Crispy Taco': {
+    cat:'Taco · Limited · Caliente line', color:'#44403c', status:'Discontinued',
+    desc:'A limited-edition variant of the Cantina Chicken Crispy Taco drizzled with a spicy, red-jalapeño-based Caliente Sauce in place of the standard creamy jalapeño sauce.',
+    ingredients:['Freshly fried white corn shell','Slow-roasted chicken','Caliente Sauce (spicy red jalapeño)','Three-cheese blend','Grilled cheese crust (exterior)'],
+    slug:'caliente-cantina-chicken-crispy-taco'
+  },
+  'Caliente Cantina Chicken Soft Taco': {
+    cat:'Taco · Limited · Caliente line', color:'#44403c', status:'Discontinued',
+    desc:'A limited-edition variant of the Cantina Chicken Soft Taco with an added layer of Caliente Sauce over the standard build.',
+    ingredients:['Flour tortilla','Slow-roasted chicken','Caliente Sauce (spicy)','Iceberg lettuce','Shredded purple cabbage','Cheddar cheese','Fresh pico de gallo'],
+    slug:'caliente-cantina-chicken-soft-taco'
+  },
+  'Caliente Cantina Chicken Burrito': {
+    cat:'Burrito · Limited · Caliente line', color:'#44403c', status:'Discontinued',
+    desc:'The double-chicken burrito built with Caliente Sauce in place of the standard avocado ranch — a spicier, hotter profile across the same base build.',
+    ingredients:['Grilled flour tortilla','Double slow-roasted chicken','Caliente Sauce (spicy red jalapeño)','Iceberg lettuce','Shredded purple cabbage','Cheddar cheese','Fresh pico de gallo'],
+    slug:'caliente-cantina-chicken-burrito'
+  },
+  'Caliente Cantina Chicken Quesadilla': {
+    cat:'Quesadilla · Limited · Caliente line', color:'#44403c', status:'Discontinued',
+    desc:'The grilled-cheese exterior quesadilla variant utilizing the spicy Caliente Sauce formulation in place of creamy chipotle.',
+    ingredients:['Flour tortilla','Slow-roasted chicken','Three-cheese blend','Caliente Sauce (spicy)','Grilled cheese crust (exterior)'],
+    slug:'caliente-cantina-chicken-quesadilla'
+  },
+  'Caliente Cantina Chicken Bowl': {
+    cat:'Bowl · Limited · Caliente line', color:'#44403c', status:'Discontinued',
+    desc:'The full Cantina Chicken protein bowl topped with a heavy drizzle of Caliente Sauce over the standard bowl build.',
+    ingredients:['Seasoned rice','Black beans','Slow-roasted chicken','Iceberg lettuce','Shredded purple cabbage','Cheddar cheese','Sour cream','Fresh guacamole','Fresh pico de gallo','Caliente Sauce (heavy drizzle)'],
+    slug:'caliente-cantina-chicken-bowl'
+  },
+  'Cantina Chicken Verde Nachos': {
+    cat:'Nachos · Permanent expansion', color:'#4d7c0f', status:'Active',
+    desc:'A permanent addition to the Cantina Chicken line — slow-roasted chicken layered over crispy tortilla chips with Avocado Verde Salsa, a three-cheese blend, shredded purple cabbage, and fresh pico de gallo. The verde sauce ties the nachos directly to the sub-line\'s signature sauce, distinguishing them from the chain\'s standard nacho builds.',
+    ingredients:['Crispy tortilla chips','Slow-roasted chicken','Avocado Verde Salsa','Three-cheese blend','Shredded purple cabbage','Fresh pico de gallo'],
+    slug:'cantina-chicken-verde-nachos'
+  },
+  'Caliente Cantina Chicken Nacho Fries': {
+    cat:'Nacho Fries · Limited · Caliente line', color:'#44403c', status:'Discontinued',
+    desc:'A limited mashup — crispy seasoned fries loaded with slow-roasted chicken, warm nacho cheese sauce, cheddar cheese, fiesta strips, sour cream, and a drizzle of Caliente Sauce.',
+    ingredients:['Seasoned Nacho Fries','Slow-roasted chicken','Warm nacho cheese sauce','Cheddar cheese','Fiesta strips','Sour cream','Caliente Sauce'],
+    slug:'caliente-cantina-chicken-nacho-fries'
+  }
+};
+
+function closeItemModal() {
+  document.getElementById('item-ov').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function showItem(name) {
+  var d = ITEMS_DATA[name]; if (!d) return;
+  var discontinued = d.status === 'Discontinued';
+  var accentColor = discontinued ? '#44403c' : d.color;
+  var card = document.getElementById('item-card');
+
+  card.innerHTML =
+    /* Purple/color top bar */
+    '<div style="height:4px;border-radius:14px 14px 0 0;background:' + accentColor + '"></div>' +
+    /* Sticky header */
+    '<div style="position:sticky;top:0;z-index:5;background:#fff;padding:20px 24px 16px;border-bottom:1px solid rgba(42,31,21,0.08)">' +
+      '<button onclick="closeItemModal()" style="position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:50%;border:1px solid rgba(42,31,21,0.12);background:transparent;cursor:pointer;font-size:16px;color:rgba(42,31,21,0.4);display:flex;align-items:center;justify-content:center;line-height:1;pointer-events:auto">&times;</button>' +
+      '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-right:36px">' +
+        '<span style="font-family:\'JetBrains Mono\',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:' + accentColor + '">' + d.cat + '</span>' +
+        (discontinued
+          ? '<span style="font-family:\'JetBrains Mono\',monospace;font-size:7px;text-transform:uppercase;letter-spacing:.15em;padding:2px 7px;border-radius:999px;background:rgba(42,31,21,0.08);color:rgba(42,31,21,0.45)">Discontinued</span>'
+          : '<span style="font-family:\'JetBrains Mono\',monospace;font-size:7px;text-transform:uppercase;letter-spacing:.15em;padding:2px 7px;border-radius:999px;background:#dcfce7;color:#16a34a">Active</span>') +
+      '</div>' +
+      '<div style="font-family:Fraunces,Georgia,serif;font-size:22px;font-weight:600;letter-spacing:-.02em;margin-top:6px;line-height:1.15">' + name + '</div>' +
+    '</div>' +
+    /* Body */
+    '<div style="padding:20px 24px">' +
+      '<p style="font-family:\'Spectral\',Georgia,serif;font-size:14px;line-height:1.75;color:rgba(42,31,21,.8)">' + d.desc + '</p>' +
+      '<div style="margin-top:16px">' +
+        '<div style="font-family:\'JetBrains Mono\',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:rgba(42,31,21,.35);margin-bottom:8px">Ingredients</div>' +
+        '<div style="display:flex;flex-wrap:wrap;gap:5px">' +
+          d.ingredients.map(function(i) {
+            return '<span style="font-family:\'JetBrains Mono\',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:3px 9px;border-radius:3px;border:1px solid ' + accentColor + '33;background:' + accentColor + '0d;color:' + accentColor + '">' + i + '</span>';
+          }).join('') +
+        '</div>' +
+      '</div>' +
+      /* See full entry link */
+      '<div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(42,31,21,0.08)">' +
+        '<a href="taco-bell-item-' + d.slug + '.html" style="display:inline-flex;align-items:center;gap:6px;font-family:\'JetBrains Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:' + accentColor + ';text-decoration:none;border-bottom:1px solid ' + accentColor + '33;padding-bottom:1px;transition:border-color .15s" onmouseover="this.style.borderColor=\'' + accentColor + '\'" onmouseout="this.style.borderColor=\'' + accentColor + '33\'">' +
+          'See full item entry' +
+          '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events:none"><polyline points="9 18 15 12 9 6"/></svg>' +
+        '</a>' +
+        (discontinued ? '<div style="margin-top:8px;font-family:\'JetBrains Mono\',monospace;font-size:9px;color:rgba(42,31,21,.35);letter-spacing:.04em">Item no longer on the menu — full page coming soon.</div>' : '') +
+      '</div>' +
+    '</div>';
+
+  var ov = document.getElementById('item-ov');
+  ov.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeItemModal();
+});
+</script>
+
+
+<!-- ═══════════════════ HISTORY & DEVELOPMENT ═══════════════════ -->
+<section id="history" style="background:var(--card);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
+  <div style="max-width:1500px;margin:0 auto;padding:3.5rem 1.5rem">
+    <div class="eyebrow">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      History &amp; Development
+    </div>
+    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:.625rem">From test kitchen to nationwide.</h2>
+    <p style="font-size:14px;color:var(--muted-foreground);font-family:'JetBrains Mono',monospace;letter-spacing:.02em;margin-bottom:2.5rem">Six weeks from public debut to full US rollout — one of the faster premium menu launches in QSR history.</p>
+
+    <!-- Timeline -->
+    <div style="position:relative;padding-left:2rem">
+      <div style="position:absolute;left:7px;top:0;bottom:0;width:1px;background:color-mix(in oklab,var(--foreground) 15%,transparent)"></div>
+
+      <!-- Event 1 -->
+      <div style="position:relative;margin-bottom:2rem">
+        <div style="position:absolute;left:-2rem;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid #6d28d9;background:#fff;z-index:1"></div>
+        <div style="display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:.375rem">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:#6d28d9;flex-shrink:0">Feb 2024</span>
+          <h3 class="font-display" style="font-size:1.0625rem;font-weight:600">Live Más LIVE — Las Vegas debut</h3>
+        </div>
+        <p style="font-size:14px;line-height:1.7;max-width:56rem">Taco Bell unveils the Cantina Chicken Menu at its inaugural <em>Live Más LIVE</em> event at the Palms Casino Resort in Las Vegas — the brand's first dedicated live broadcast event, streamed nationally. The show introduces the slow-roasted chicken protein, the Avocado Verde Salsa, and the full five-item lineup to media, influencers, and the Rewards member audience before any public availability. The format mirrors the Super Bowl halftime announcement strategy that competitors like McDonald's have used for McRib; Taco Bell deploys it here as a permanent menu launch vehicle.</p>
+      </div>
+
+      <!-- Event 2 -->
+      <div style="position:relative;margin-bottom:2rem">
+        <div style="position:absolute;left:-2rem;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid #6d28d9;background:#fff;z-index:1"></div>
+        <div style="display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:.375rem">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:#6d28d9;flex-shrink:0">Mar 14, 2024</span>
+          <h3 class="font-display" style="font-size:1.0625rem;font-weight:600">Rewards member early access — Window 1</h3>
+        </div>
+        <p style="font-size:14px;line-height:1.7;max-width:56rem">Taco Bell Rewards members gain exclusive access to the Cantina Chicken Menu a full week before the nationwide rollout. The early-access strategy serves two purposes: it rewards the loyalty program base that Taco Bell has invested heavily in building since 2020, and it generates organic social content and word-of-mouth ahead of the official launch. Point multipliers on Cantina Chicken purchases are offered to incentivize app-based ordering during the window.</p>
+      </div>
+
+      <!-- Event 3 -->
+      <div style="position:relative;margin-bottom:2rem">
+        <div style="position:absolute;left:-2rem;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid #6d28d9;background:#fff;z-index:1"></div>
+        <div style="display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:.375rem">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:#6d28d9;flex-shrink:0">Mar 18, 2024</span>
+          <h3 class="font-display" style="font-size:1.0625rem;font-weight:600">Rewards member early access — Window 2</h3>
+        </div>
+        <p style="font-size:14px;line-height:1.7;max-width:56rem">A second early-access window opens for Taco Bell Rewards members, broadening pre-launch availability and extending the social moment across an additional news cycle. By this point the Jason Sudeikis national TV campaign has begun airing, creating simultaneous awareness-plus-availability in the Rewards segment.</p>
+      </div>
+
+      <!-- Event 4 -->
+      <div style="position:relative;margin-bottom:2rem">
+        <div style="position:absolute;left:-2rem;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid #c084fc;background:#6d28d9;z-index:1"></div>
+        <div style="display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:.375rem">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:#6d28d9;flex-shrink:0">Mar 21, 2024</span>
+          <h3 class="font-display" style="font-size:1.0625rem;font-weight:600">Nationwide launch — five core items</h3>
+        </div>
+        <p style="font-size:14px;line-height:1.7;max-width:56rem">The Cantina Chicken Menu rolls out to all participating US Taco Bell locations. The five original items — Crispy Taco, Soft Taco, Burrito, Quesadilla, and Bowl — are available from day one. Taco Bell projects 2.5 million additional pounds of fresh produce usage in the first year alone, signalling the scale of the operational commitment behind the launch. The menu is positioned specifically at the daytime fast-casual segment, with marketing framing it as an "unethical daytime meal upgrade" — a direct shot at the Chipotle and CAVA lunch occasion.</p>
+      </div>
+
+      <!-- Event 5 -->
+      <div style="position:relative">
+        <div style="position:absolute;left:-2rem;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid #6d28d9;background:#fff;z-index:1"></div>
+        <div style="display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:.375rem">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:#6d28d9;flex-shrink:0">2024 onwards</span>
+          <h3 class="font-display" style="font-size:1.0625rem;font-weight:600">Permanent roster expansion</h3>
+        </div>
+        <p style="font-size:14px;line-height:1.7;max-width:56rem">Consumer response to the initial five-item launch is strong enough to prompt permanent expansion. The corporate culinary team adds the <strong>Cantina Chicken Rolled Quesadilla</strong>, <strong>Cantina Chicken Verde Nachos</strong>, and the <strong>Cantina Chicken Mexican Pizza</strong> to the permanent lineup. The Mexican Pizza addition is particularly significant — the item had been retired (2020), returned (2022), and retired again before being brought back in a Cantina Chicken variant, signalling Taco Bell's intent to use the sub-line as a vehicle for rehabilitating legacy items.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SIGNATURE COMPONENTS ═══════════════════ -->
+<section id="ingredients" style="background:var(--card);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
+  <div style="max-width:1500px;margin:0 auto;padding:3.5rem 1.5rem">
+    <div class="eyebrow">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+      Signature Components &amp; Ingredients
+    </div>
+    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:2rem">Four ingredients new to the assembly line.</h2>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem">
+
+      <!-- Slow-roasted chicken -->
+      <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);border-top:3px solid #6d28d9;overflow:hidden">
+        <div style="padding:1.125rem 1.25rem;border-bottom:1px solid color-mix(in oklab,var(--foreground) 8%,transparent)">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#6d28d9;margin-bottom:.3rem">Core protein</div>
+          <div class="font-display" style="font-size:1.125rem;font-weight:600">Slow-Roasted Chicken</div>
+        </div>
+        <div style="padding:1rem 1.25rem">
+          <p style="font-size:13.5px;line-height:1.65">Marinated in a blend of garlic, onions, and authentic Mexican chilies before oven-roasting. The slow-roast method produces a fundamentally different texture from Taco Bell's standard grilled chicken — pulled and tender rather than griddled and seared, with deeper flavour penetration from the marinade. It is listed separately on menu boards from standard chicken to signal the distinction.</p>
+          <div style="margin-top:.875rem;display:flex;flex-wrap:wrap;gap:4px">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.1em;padding:3px 8px;border-radius:3px;border:1px solid #6d28d933;background:#6d28d90a;color:#6d28d9">Garlic</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.1em;padding:3px 8px;border-radius:3px;border:1px solid #6d28d933;background:#6d28d90a;color:#6d28d9">Onions</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.1em;padding:3px 8px;border-radius:3px;border:1px solid #6d28d933;background:#6d28d90a;color:#6d28d9">Mexican chilies</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.1em;padding:3px 8px;border-radius:3px;border:1px solid #6d28d933;background:#6d28d90a;color:#6d28d9">Oven-roasted</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fresh produce -->
+      <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);border-top:3px solid #16a34a;overflow:hidden">
+        <div style="padding:1.125rem 1.25rem;border-bottom:1px solid color-mix(in oklab,var(--foreground) 8%,transparent)">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#16a34a;margin-bottom:.3rem">Fresh produce</div>
+          <div class="font-display" style="font-size:1.125rem;font-weight:600">Shredded Purple Cabbage &amp; Pico de Gallo</div>
+        </div>
+        <div style="padding:1rem 1.25rem">
+          <p style="font-size:13.5px;line-height:1.65">Two fresh components new to the Taco Bell assembly line. <strong>Shredded purple cabbage</strong> adds a distinct crunch factor and visible color contrast against the warm chicken — a fast-casual visual cue (Chipotle uses cabbage variants; CAVA does not) that signals premium build quality at a glance. <strong>Fresh pico de gallo</strong> — diced tomatoes, onions, cilantro — is prepared daily in-location, marking a major operational shift from the shelf-stable salsa that previously served this role.</p>
+          <div style="margin-top:.875rem;display:flex;flex-wrap:wrap;gap:4px">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.1em;padding:3px 8px;border-radius:3px;border:1px solid #16a34a33;background:#16a34a0a;color:#16a34a">Purple cabbage</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.1em;padding:3px 8px;border-radius:3px;border:1px solid #16a34a33;background:#16a34a0a;color:#16a34a">Diced tomato</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.1em;padding:3px 8px;border-radius:3px;border:1px solid #16a34a33;background:#16a34a0a;color:#16a34a">Onion</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.1em;padding:3px 8px;border-radius:3px;border:1px solid #16a34a33;background:#16a34a0a;color:#16a34a">Cilantro</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.1em;padding:3px 8px;border-radius:3px;border:1px solid #16a34a33;background:#16a34a0a;color:#16a34a">Prepared daily</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Avocado Verde Salsa -->
+      <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);border-top:3px solid #4d7c0f;overflow:hidden">
+        <div style="padding:1.125rem 1.25rem;border-bottom:1px solid color-mix(in oklab,var(--foreground) 8%,transparent)">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#4d7c0f;margin-bottom:.3rem">Signature sauce</div>
+          <div class="font-display" style="font-size:1.125rem;font-weight:600">Avocado Verde Salsa</div>
+        </div>
+        <div style="padding:1rem 1.25rem">
+          <p style="font-size:13.5px;line-height:1.65">A new entry into the Taco Bell sauce packet ecosystem. Formulated with real avocado pulp, tomatillos, and green chili peppers — cool, bright, and mildly tangy rather than hot. Unlike standard sauce packets which are optional condiments, the Avocado Verde Salsa ships automatically with every Cantina Chicken order — one packet per item, included by default without the customer having to request it. This positions it as part of the item, not a condiment choice.</p>
+          <div style="margin-top:.875rem;display:flex;flex-wrap:wrap;gap:4px">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.1em;padding:3px 8px;border-radius:3px;border:1px solid #4d7c0f33;background:#4d7c0f0a;color:#4d7c0f">Real avocado pulp</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.1em;padding:3px 8px;border-radius:3px;border:1px solid #4d7c0f33;background:#4d7c0f0a;color:#4d7c0f">Tomatillos</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.1em;padding:3px 8px;border-radius:3px;border:1px solid #4d7c0f33;background:#4d7c0f0a;color:#4d7c0f">Green chili</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.1em;padding:3px 8px;border-radius:3px;border:1px solid #4d7c0f33;background:#4d7c0f0a;color:#4d7c0f">Auto-included per order</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- White corn shells -->
+      <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);border-top:3px solid #b45309;overflow:hidden">
+        <div style="padding:1.125rem 1.25rem;border-bottom:1px solid color-mix(in oklab,var(--foreground) 8%,transparent)">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#b45309;margin-bottom:.3rem">In-house preparation</div>
+          <div class="font-display" style="font-size:1.125rem;font-weight:600">White Corn Tortilla Shells</div>
+        </div>
+        <div style="padding:1rem 1.25rem">
+          <p style="font-size:13.5px;line-height:1.65">For the crispy taco items, Taco Bell introduced white corn tortilla shells fried fresh in-location daily — rather than shipped pre-fried from a central supplier. This is an operationally significant commitment: in-house frying requires daily timing, temperature management, and equipment dedicated to the task. It mirrors the in-house avocado guacamole preparation that Chipotle uses as a quality signal, deployed at the shell level rather than the topping level.</p>
+          <div style="margin-top:.875rem;display:flex;flex-wrap:wrap;gap:4px">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.1em;padding:3px 8px;border-radius:3px;border:1px solid #b4530933;background:#b453090a;color:#b45309">White corn</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.1em;padding:3px 8px;border-radius:3px;border:1px solid #b4530933;background:#b453090a;color:#b45309">Fried in-house daily</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.1em;padding:3px 8px;border-radius:3px;border:1px solid #b4530933;background:#b453090a;color:#b45309">Crispy items only</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ MENU LINEUP ═══════════════════ -->
+<section id="menu-lineup" style="background:var(--background);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
+  <div style="max-width:1500px;margin:0 auto;padding:3.5rem 1.5rem">
+    <div class="eyebrow">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      Rollout &amp; Expansion
+    </div>
+    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:2rem">Five at launch. Growing since.</h2>
+
+    <div style="display:grid;gap:1.5rem">
+
+      <!-- Core launch items -->
+      <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);overflow:hidden">
+        <div style="padding:.875rem 1.25rem;border-bottom:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);display:flex;align-items:baseline;justify-content:space-between;gap:1rem">
+          <div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground)">Phase 01</div>
+            <div class="font-display" style="font-size:1.0625rem;font-weight:600">Core launch items · March 21, 2024</div>
+          </div>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted-foreground);white-space:nowrap">5 items</span>
+        </div>
+        <div style="padding:1rem 1.25rem;display:flex;flex-wrap:wrap;gap:.5rem">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:4px 10px;border-radius:3px;border:1px solid #6d28d944;background:#6d28d90d;color:#6d28d9;cursor:pointer;" onclick="showItem('Cantina Chicken Crispy Taco')" onmouseover="this.style.background='#6d28d933'" onmouseout="this.style.background='#6d28d90d'">Cantina Chicken Crispy Taco</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:4px 10px;border-radius:3px;border:1px solid #6d28d944;background:#6d28d90d;color:#6d28d9;cursor:pointer;" onclick="showItem('Cantina Chicken Soft Taco')" onmouseover="this.style.background='#6d28d933'" onmouseout="this.style.background='#6d28d90d'">Cantina Chicken Soft Taco</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:4px 10px;border-radius:3px;border:1px solid #6d28d944;background:#6d28d90d;color:#6d28d9;cursor:pointer;" onclick="showItem('Cantina Chicken Burrito')" onmouseover="this.style.background='#6d28d933'" onmouseout="this.style.background='#6d28d90d'">Cantina Chicken Burrito</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:4px 10px;border-radius:3px;border:1px solid #6d28d944;background:#6d28d90d;color:#6d28d9;cursor:pointer;" onclick="showItem('Cantina Chicken Quesadilla')" onmouseover="this.style.background='#6d28d933'" onmouseout="this.style.background='#6d28d90d'">Cantina Chicken Quesadilla</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:4px 10px;border-radius:3px;border:1px solid #6d28d944;background:#6d28d90d;color:#6d28d9;cursor:pointer;" onclick="showItem('Cantina Chicken Bowl')" onmouseover="this.style.background='#6d28d933'" onmouseout="this.style.background='#6d28d90d'">Cantina Chicken Bowl</span>
+        </div>
+      </div>
+
+      <!-- Expansions -->
+      <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);overflow:hidden">
+        <div style="padding:.875rem 1.25rem;border-bottom:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);display:flex;align-items:baseline;justify-content:space-between;gap:1rem">
+          <div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground)">Phase 02</div>
+            <div class="font-display" style="font-size:1.0625rem;font-weight:600">Subsequent roster expansions · 2024–2025</div>
+          </div>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted-foreground);white-space:nowrap">3 items added</span>
+        </div>
+        <div style="padding:1rem 1.25rem">
+          <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.875rem">
+            <span style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:4px 10px;border-radius:3px;border:1px solid #a1620744;background:#a162070d;color:#a16207;cursor:pointer;" onclick="showItem('Cantina Chicken Rolled Quesadilla')" onmouseover="this.style.background='#a1620733'" onmouseout="this.style.background='#a162070d'">Cantina Chicken Rolled Quesadilla</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:4px 10px;border-radius:3px;border:1px solid #a1620744;background:#a162070d;color:#a16207;cursor:pointer;" onclick="showItem('Cantina Chicken Verde Nachos')" onmouseover="this.style.background='#a1620733'" onmouseout="this.style.background='#a162070d'">Cantina Chicken Verde Nachos</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:4px 10px;border-radius:3px;border:1px solid #a1620744;background:#a162070d;color:#a16207;cursor:pointer;" onclick="showItem('Cantina Chicken Mexican Pizza')" onmouseover="this.style.background='#a1620733'" onmouseout="this.style.background='#a162070d'">Cantina Chicken Mexican Pizza</span>
+          </div>
+          <p style="font-size:13px;line-height:1.6;color:var(--muted-foreground)">The Mexican Pizza addition is the most significant — the item had been retired in 2020, returned in 2022, and retired again before reappearing as a Cantina Chicken variant. Its inclusion signals the sub-line's role as a vehicle for legacy item rehabilitation, not just new product creation.</p>
+        </div>
+      </div>
+
+      <!-- Combos -->
+      <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);overflow:hidden">
+        <div style="padding:.875rem 1.25rem;border-bottom:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);display:flex;align-items:baseline;justify-content:space-between;gap:1rem">
+          <div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground)">Bundle format</div>
+            <div class="font-display" style="font-size:1.0625rem;font-weight:600">Combo meals &amp; boxes</div>
+          </div>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted-foreground);white-space:nowrap">3 bundles</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0">
+          <div style="padding:1rem 1.25rem;border-right:1px solid color-mix(in oklab,var(--foreground) 8%,transparent)">
+            <div class="font-display" style="font-size:.9375rem;font-weight:600">Quesadilla Box</div>
+            <p style="font-size:12.5px;line-height:1.55;color:var(--muted-foreground);margin-top:.25rem">Cantina Chicken Quesadilla + side + medium drink. The standard box format — high-value single-SKU ticket for the upsell.</p>
+          </div>
+          <div style="padding:1rem 1.25rem;border-right:1px solid color-mix(in oklab,var(--foreground) 8%,transparent)">
+            <div class="font-display" style="font-size:.9375rem;font-weight:600">Taco Meal</div>
+            <p style="font-size:12.5px;line-height:1.55;color:var(--muted-foreground);margin-top:.25rem">Two Cantina Chicken tacos + <strong>Nacho Fries</strong> (the notable pairing) + medium drink. Nacho Fries as the standard side distinguished this from generic combo architecture.</p>
+          </div>
+          <div style="padding:1rem 1.25rem">
+            <div class="font-display" style="font-size:.9375rem;font-weight:600">Big Box</div>
+            <p style="font-size:12.5px;line-height:1.55;color:var(--muted-foreground);margin-top:.25rem">Two configurable Cantina items + chips &amp; nacho cheese + medium drink. Positioned as the group/sharing-size entry point for the sub-line.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ CALIENTE LINE ═══════════════════ -->
+<section id="caliente-line" style="background:var(--card);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
+  <div style="max-width:1500px;margin:0 auto;padding:3.5rem 1.5rem">
+    <div class="eyebrow">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+      Limited Edition · Caliente Line
+    </div>
+    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:.5rem">The Caliente variant.</h2>
+    <p style="font-size:14px;font-family:'JetBrains Mono',monospace;letter-spacing:.02em;color:var(--muted-foreground);margin-bottom:2.5rem">A limited-run spicy overlay on the Cantina Chicken line — same base builds, same slow-roasted protein, different sauce logic.</p>
+
+    <!-- What it was -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem 3rem;border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);padding-top:2rem;margin-bottom:2.5rem">
+      <p style="font-size:15px;line-height:1.7">The Caliente Cantina Chicken line was a limited-edition extension that applied a single new ingredient — the <strong>Caliente Sauce</strong> — across five of the six core Cantina Chicken items, plus one entirely new mashup item. The concept was simple: take the premium Cantina Chicken build that had already proven itself in the market and offer a spicier version as a seasonal window. Rather than creating a parallel menu, Taco Bell effectively unlocked a heat-forward variant of an existing architecture, reducing development cost while giving heat-seeking customers a distinct reason to re-engage with the sub-line.</p>
+      <p style="font-size:15px;line-height:1.7">The line was marketed as a limited-time offer, not a permanent addition, which served a dual function: it created urgency around purchase and gave Taco Bell the option to retire it without any expectation management. Consumer response informed whether any elements — the sauce, in particular — would reappear. The Caliente Nacho Fries stood apart from the rest of the line as the only entirely new format, combining the Cantina Chicken protein with the separately popular Nacho Fries platform in a way the standard line hadn't explored.</p>
+    </div>
+
+    <!-- Caliente Sauce callout -->
+    <div style="border-radius:6px;overflow:hidden;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);margin-bottom:2rem">
+      <div style="padding:1rem 1.25rem;display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:center;background:linear-gradient(135deg,#991b1b 0%,#7f1d1d 55%,#150404 100%);color:#fff">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:36px;height:36px;color:rgba(255,255,255,.8)"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+        </div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:rgba(255,255,255,.6);margin-bottom:.25rem">The defining ingredient</div>
+          <div class="font-display" style="font-size:1.25rem;font-weight:600">Caliente Sauce</div>
+          <p style="font-family:'Spectral',Georgia,serif;font-size:13.5px;line-height:1.6;margin-top:.375rem;color:rgba(255,255,255,.82)">A spicy red-jalapeño-based sauce formulated specifically for the Caliente line. Hotter and more assertive than the Avocado Verde Salsa it displaces — trading cool, creamy avocado notes for direct jalapeño heat. Applied as a drizzle over the standard Cantina build rather than replacing the structural architecture of each item.</p>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);background:var(--card)">
+        <div style="padding:.875rem 1.25rem;border-right:1px solid color-mix(in oklab,var(--foreground) 8%,transparent)">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted-foreground);margin-bottom:.25rem">Heat profile</div>
+          <div class="font-display" style="font-size:.9375rem;font-weight:600">Spicy — red jalapeño base</div>
+        </div>
+        <div style="padding:.875rem 1.25rem;border-right:1px solid color-mix(in oklab,var(--foreground) 8%,transparent)">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted-foreground);margin-bottom:.25rem">Application</div>
+          <div class="font-display" style="font-size:.9375rem;font-weight:600">Drizzle over standard build</div>
+        </div>
+        <div style="padding:.875rem 1.25rem">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted-foreground);margin-bottom:.25rem">Replaces</div>
+          <div class="font-display" style="font-size:.9375rem;font-weight:600">Avocado Verde Salsa</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Item list -->
+    <div style="margin-bottom:1.5rem">
+      <div class="eyebrow" style="margin-bottom:1rem">6 items in the Caliente run</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.625rem">
+
+        <div style="border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);background:var(--card);padding:.875rem 1rem;border-left:3px solid #991b1b;position:relative;overflow:hidden">
+          <div style="position:absolute;top:-1px;right:-1px;width:56px;height:56px;overflow:hidden;pointer-events:none"><span style="position:absolute;display:block;width:80px;padding:3px 0;background:rgba(42,31,21,0.65);color:#fff;font-family:'JetBrains Mono',monospace;font-size:6px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;text-align:center;transform:rotate(45deg);top:13px;right:-18px;">Limited</span></div>
+          <div class="font-display" style="font-size:.9375rem;font-weight:600;line-height:1.2">Caliente Cantina Chicken Crispy Taco</div>
+          <p style="font-size:12px;line-height:1.5;color:var(--muted-foreground);margin-top:.25rem">Crispy taco variant with Caliente Sauce replacing creamy jalapeño.</p>
+        </div>
+
+        <div style="border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);background:var(--card);padding:.875rem 1rem;border-left:3px solid #991b1b;position:relative;overflow:hidden">
+          <div style="position:absolute;top:-1px;right:-1px;width:56px;height:56px;overflow:hidden;pointer-events:none"><span style="position:absolute;display:block;width:80px;padding:3px 0;background:rgba(42,31,21,0.65);color:#fff;font-family:'JetBrains Mono',monospace;font-size:6px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;text-align:center;transform:rotate(45deg);top:13px;right:-18px;">Limited</span></div>
+          <div class="font-display" style="font-size:.9375rem;font-weight:600;line-height:1.2">Caliente Cantina Chicken Soft Taco</div>
+          <p style="font-size:12px;line-height:1.5;color:var(--muted-foreground);margin-top:.25rem">Soft taco variant with Caliente Sauce layered over the standard build.</p>
+        </div>
+
+        <div style="border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);background:var(--card);padding:.875rem 1rem;border-left:3px solid #991b1b;position:relative;overflow:hidden">
+          <div style="position:absolute;top:-1px;right:-1px;width:56px;height:56px;overflow:hidden;pointer-events:none"><span style="position:absolute;display:block;width:80px;padding:3px 0;background:rgba(42,31,21,0.65);color:#fff;font-family:'JetBrains Mono',monospace;font-size:6px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;text-align:center;transform:rotate(45deg);top:13px;right:-18px;">Limited</span></div>
+          <div class="font-display" style="font-size:.9375rem;font-weight:600;line-height:1.2">Caliente Cantina Chicken Burrito</div>
+          <p style="font-size:12px;line-height:1.5;color:var(--muted-foreground);margin-top:.25rem">Double-chicken burrito with Caliente Sauce substituted for avocado ranch.</p>
+        </div>
+
+        <div style="border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);background:var(--card);padding:.875rem 1rem;border-left:3px solid #991b1b;position:relative;overflow:hidden">
+          <div style="position:absolute;top:-1px;right:-1px;width:56px;height:56px;overflow:hidden;pointer-events:none"><span style="position:absolute;display:block;width:80px;padding:3px 0;background:rgba(42,31,21,0.65);color:#fff;font-family:'JetBrains Mono',monospace;font-size:6px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;text-align:center;transform:rotate(45deg);top:13px;right:-18px;">Limited</span></div>
+          <div class="font-display" style="font-size:.9375rem;font-weight:600;line-height:1.2">Caliente Cantina Chicken Quesadilla</div>
+          <p style="font-size:12px;line-height:1.5;color:var(--muted-foreground);margin-top:.25rem">Grilled-cheese exterior quesadilla with Caliente Sauce formulation.</p>
+        </div>
+
+        <div style="border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);background:var(--card);padding:.875rem 1rem;border-left:3px solid #991b1b;position:relative;overflow:hidden">
+          <div style="position:absolute;top:-1px;right:-1px;width:56px;height:56px;overflow:hidden;pointer-events:none"><span style="position:absolute;display:block;width:80px;padding:3px 0;background:rgba(42,31,21,0.65);color:#fff;font-family:'JetBrains Mono',monospace;font-size:6px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;text-align:center;transform:rotate(45deg);top:13px;right:-18px;">Limited</span></div>
+          <div class="font-display" style="font-size:.9375rem;font-weight:600;line-height:1.2">Caliente Cantina Chicken Bowl</div>
+          <p style="font-size:12px;line-height:1.5;color:var(--muted-foreground);margin-top:.25rem">Full protein bowl with a heavy drizzle of Caliente Sauce over the standard build.</p>
+        </div>
+
+        <div style="border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);background:var(--card);padding:.875rem 1rem;border-left:3px solid #7f1d1d;background:color-mix(in oklab,#991b1b 5%,transparent);position:relative;overflow:hidden">
+          <div style="position:absolute;top:-1px;right:-1px;width:56px;height:56px;overflow:hidden;pointer-events:none"><span style="position:absolute;display:block;width:80px;padding:3px 0;background:rgba(42,31,21,0.65);color:#fff;font-family:'JetBrains Mono',monospace;font-size:6px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;text-align:center;transform:rotate(45deg);top:13px;right:-18px;">Limited</span></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.15em;color:#991b1b;margin-bottom:.25rem">New format — not in core line</div>
+          <div class="font-display" style="font-size:.9375rem;font-weight:600;line-height:1.2">Caliente Cantina Chicken Nacho Fries</div>
+          <p style="font-size:12px;line-height:1.5;color:var(--muted-foreground);margin-top:.25rem">The only entirely new format — seasoned fries loaded with slow-roasted chicken, nacho cheese, cheddar, fiesta strips, sour cream, and Caliente Sauce. A crossover between the Cantina Chicken and Nacho Fries platforms.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Strategic note -->
+    <div style="border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);background:color-mix(in oklab,var(--secondary) 50%,transparent);padding:1rem 1.25rem">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.375rem">Strategic context</div>
+      <p style="font-size:13.5px;line-height:1.65">The Caliente line is textbook LTO strategy applied to a permanent sub-line: introduce a sauce variant, run it for a defined window, retire it, and measure whether customers ask for it back. The five direct variants add minimal operational complexity — same protein, same assembly, one new sauce in the flow. The Nacho Fries crossover is the more interesting move: it tests whether the Cantina Chicken brand has enough equity to carry the Nacho Fries format into premium territory, or whether the reverse is true. That both platforms benefited from the association without either being diluted suggests the answer was yes on both counts.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ MARKETING ═══════════════════ -->
+<section id="marketing" style="background:var(--background);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
+  <div style="max-width:1500px;margin:0 auto;padding:3.5rem 1.5rem">
+    <div class="eyebrow">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      Marketing Campaigns &amp; Media
+    </div>
+    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:2rem">The "unethical daytime meal" campaign.</h2>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1rem">
+
+      <!-- TV Spots -->
+      <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);overflow:hidden">
+        <div style="height:3px;background:linear-gradient(to right,#6d28d9,#4a044e)"></div>
+        <div style="padding:1.25rem">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.5rem">Promotional tie-in · National TV</div>
+          <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.625rem">Jason Sudeikis — "Unethical Daytime Meal"</div>
+          <p style="font-size:13.5px;line-height:1.65">The primary campaign featured <em>Ted Lasso</em> actor Jason Sudeikis in a series of national TV spots framing the Cantina Chicken Menu as an "unethical daytime meal upgrade" — the implication being that the menu is so good it constitutes an unfair advantage over anyone who ordered something inferior for lunch. The campaign ran across national broadcast and streaming, timed to coincide with the Rewards early-access windows and the March 21 launch. Sudeikis's casting — warm, familiar, broadly trusted — directly countered the perception of Taco Bell as a late-night brand by anchoring the menu in the daytime and professional contexts.</p>
+        </div>
+      </div>
+
+      <!-- App exclusives -->
+      <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);overflow:hidden">
+        <div style="height:3px;background:linear-gradient(to right,#4f46e5,#312e81)"></div>
+        <div style="padding:1.25rem">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.5rem">App exclusives · Digital strategy</div>
+          <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.625rem">Rewards-first launch architecture</div>
+          <p style="font-size:13.5px;line-height:1.65">The Cantina Chicken launch was designed to funnel discovery through the Taco Bell app. Early-access windows on March 14 and 18 were available exclusively via the Rewards program — requiring app-based ordering — and were paired with point multipliers on Cantina Chicken purchases. This architecture converts menu curiosity into app installation and Rewards enrollment, tying premium menu access to digital loyalty participation. The strategy mirrors McDonald's Rewards launch playbook, adapted for a single menu release rather than a program launch.</p>
+          <div style="margin-top:1rem;display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
+            <div style="border-radius:4px;border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);background:color-mix(in oklab,var(--secondary) 60%,transparent);padding:.625rem .875rem">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Mar 14</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;margin-top:.1rem">Early access #1</div>
+            </div>
+            <div style="border-radius:4px;border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);background:color-mix(in oklab,var(--secondary) 60%,transparent);padding:.625rem .875rem">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Mar 18</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;margin-top:.1rem">Early access #2</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ NUTRITION ═══════════════════ -->
+<section id="nutrition" style="background:var(--card);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
+  <div style="max-width:1500px;margin:0 auto;padding:3.5rem 1.5rem">
+    <div class="eyebrow">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Nutrition &amp; Dietary Reference
+    </div>
+    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:.625rem">Quick reference — core items.</h2>
+    <p style="font-size:13px;font-family:'JetBrains Mono',monospace;letter-spacing:.02em;color:var(--muted-foreground);margin-bottom:2rem">Values are approximate and reflect standard build without modifications. Verified current figures available at <strong>tacobell.com/nutrition</strong>.</p>
+
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
+      <table style="width:100%;min-width:640px;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:11px">
+        <thead>
+          <tr style="background:color-mix(in oklab,var(--secondary) 50%,transparent)">
+            <th style="text-align:left;padding:.75rem 1rem;font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted-foreground);border-bottom:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);white-space:nowrap;position:sticky;left:0;background:color-mix(in oklab,var(--secondary) 50%,transparent);z-index:2">Item</th>
+            <th style="text-align:right;padding:.75rem 1rem;font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted-foreground);border-bottom:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);white-space:nowrap">Cal</th>
+            <th style="text-align:right;padding:.75rem 1rem;font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted-foreground);border-bottom:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);white-space:nowrap">Protein</th>
+            <th style="text-align:right;padding:.75rem 1rem;font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted-foreground);border-bottom:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);white-space:nowrap">Total Fat</th>
+            <th style="text-align:right;padding:.75rem 1rem;font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted-foreground);border-bottom:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);white-space:nowrap">Carbs</th>
+            <th style="text-align:right;padding:.75rem 1rem;font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted-foreground);border-bottom:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);white-space:nowrap">Sodium</th>
+            <th style="text-align:left;padding:.75rem 1rem;font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted-foreground);border-bottom:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);white-space:nowrap">Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid color-mix(in oklab,var(--foreground) 6%,transparent)" onmouseover="this.style.background='color-mix(in oklab,var(--secondary) 40%,transparent)'" onmouseout="this.style.background=''">
+            <td style="padding:.75rem 1rem;font-weight:600;position:sticky;left:0;background:var(--card);z-index:1;white-space:nowrap" onmouseover="this.style.background='color-mix(in oklab,var(--secondary) 40%,transparent)'" onmouseout="this.style.background='var(--card)'">Crispy Taco</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:var(--muted-foreground)">350</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:#16a34a;font-weight:600">21g</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:var(--muted-foreground)">18g</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:var(--muted-foreground)">26g</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:var(--muted-foreground)">640mg</td>
+            <td style="padding:.75rem 1rem;color:var(--muted-foreground);font-size:10px">Contains gluten (corn shell fried in shared oil)</td>
+          </tr>
+          <tr style="border-bottom:1px solid color-mix(in oklab,var(--foreground) 6%,transparent)" onmouseover="this.style.background='color-mix(in oklab,var(--secondary) 40%,transparent)'" onmouseout="this.style.background=''">
+            <td style="padding:.75rem 1rem;font-weight:600;position:sticky;left:0;background:var(--card);z-index:1;white-space:nowrap" onmouseover="this.style.background='color-mix(in oklab,var(--secondary) 40%,transparent)'" onmouseout="this.style.background='var(--card)'">Soft Taco</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:var(--muted-foreground)">310</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:#16a34a;font-weight:600">20g</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:var(--muted-foreground)">14g</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:var(--muted-foreground)">30g</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:var(--muted-foreground)">580mg</td>
+            <td style="padding:.75rem 1rem;color:var(--muted-foreground);font-size:10px">Contains wheat (flour tortilla)</td>
+          </tr>
+          <tr style="border-bottom:1px solid color-mix(in oklab,var(--foreground) 6%,transparent)" onmouseover="this.style.background='color-mix(in oklab,var(--secondary) 40%,transparent)'" onmouseout="this.style.background=''">
+            <td style="padding:.75rem 1rem;font-weight:600;position:sticky;left:0;background:var(--card);z-index:1;white-space:nowrap" onmouseover="this.style.background='color-mix(in oklab,var(--secondary) 40%,transparent)'" onmouseout="this.style.background='var(--card)'">Burrito</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:var(--muted-foreground)">560</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:#16a34a;font-weight:600">30g</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:var(--muted-foreground)">20g</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:var(--muted-foreground)">62g</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:var(--muted-foreground)">1,190mg</td>
+            <td style="padding:.75rem 1rem;color:var(--muted-foreground);font-size:10px">Contains wheat</td>
+          </tr>
+          <tr style="border-bottom:1px solid color-mix(in oklab,var(--foreground) 6%,transparent)" onmouseover="this.style.background='color-mix(in oklab,var(--secondary) 40%,transparent)'" onmouseout="this.style.background=''">
+            <td style="padding:.75rem 1rem;font-weight:600;position:sticky;left:0;background:var(--card);z-index:1;white-space:nowrap" onmouseover="this.style.background='color-mix(in oklab,var(--secondary) 40%,transparent)'" onmouseout="this.style.background='var(--card)'">Quesadilla</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:var(--muted-foreground)">520</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:#16a34a;font-weight:600">27g</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:var(--muted-foreground)">24g</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:var(--muted-foreground)">45g</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:var(--muted-foreground)">1,040mg</td>
+            <td style="padding:.75rem 1rem;color:var(--muted-foreground);font-size:10px">Contains wheat and dairy</td>
+          </tr>
+          <tr style="border-bottom:1px solid color-mix(in oklab,var(--foreground) 6%,transparent)" onmouseover="this.style.background='color-mix(in oklab,var(--secondary) 40%,transparent)'" onmouseout="this.style.background=''">
+            <td style="padding:.75rem 1rem;font-weight:600;position:sticky;left:0;background:var(--card);z-index:1;white-space:nowrap" onmouseover="this.style.background='color-mix(in oklab,var(--secondary) 40%,transparent)'" onmouseout="this.style.background='var(--card)'">Bowl</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:var(--muted-foreground)">420</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:#16a34a;font-weight:600">24g</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:var(--muted-foreground)">16g</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:var(--muted-foreground)">42g</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:var(--muted-foreground)">960mg</td>
+            <td style="padding:.75rem 1rem;color:var(--muted-foreground);font-size:10px">Gluten-free option available — no wheat ingredients in standard build</td>
+          </tr>
+          <tr onmouseover="this.style.background='color-mix(in oklab,var(--secondary) 40%,transparent)'" onmouseout="this.style.background=''">
+            <td style="padding:.75rem 1rem;font-weight:600;position:sticky;left:0;background:var(--card);z-index:1;white-space:nowrap" onmouseover="this.style.background='color-mix(in oklab,var(--secondary) 40%,transparent)'" onmouseout="this.style.background='var(--card)'">Power Bowl</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:var(--muted-foreground)">470</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:#16a34a;font-weight:600">27g</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:var(--muted-foreground)">19g</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:var(--muted-foreground)">47g</td>
+            <td style="text-align:right;padding:.75rem 1rem;color:var(--muted-foreground)">1,060mg</td>
+            <td style="padding:.75rem 1rem;color:var(--muted-foreground);font-size:10px">Gluten-free; highest protein item in the core line</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:1rem;padding:.875rem 1rem;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);background:color-mix(in oklab,var(--secondary) 40%,transparent);font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted-foreground);letter-spacing:.03em">
+      <strong style="color:var(--foreground)">Allergen note:</strong> The Cantina Chicken Bowl is the primary gluten-free-friendly item in the core lineup — no wheat in the standard build. Customisations removing cheese or sour cream may accommodate dairy-free requirements. Cross-contamination risks apply across all items. Nutritional data reflects standard preparation and may vary by location.
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════ SEE ALSO ═══════════════════ -->
+<section style="border-top:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card)">
+  <div style="max-width:1500px;margin:0 auto;padding:2.5rem 1.5rem">
+    <div class="eyebrow" style="margin-bottom:1rem">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      See also
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem">
+      <a href="taco-bell-menus.html" style="display:block;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card);padding:.875rem 1rem;text-decoration:none;color:inherit;transition:border-color .12s" onmouseover="this.style.borderColor='color-mix(in oklab,var(--foreground) 35%,transparent)'" onmouseout="this.style.borderColor=''">
+        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Parent</div>
+        <div class="font-display" style="font-size:1rem;font-weight:600;margin-top:.2rem;display:flex;align-items:baseline;justify-content:space-between">Taco Bell Menus <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+      <a href="taco-bell-menu-cantina-bell.html" style="display:block;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card);padding:.875rem 1rem;text-decoration:none;color:inherit;transition:border-color .12s" onmouseover="this.style.borderColor='color-mix(in oklab,var(--foreground) 35%,transparent)'" onmouseout="this.style.borderColor=''">
+        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Predecessor</div>
+        <div class="font-display" style="font-size:1rem;font-weight:600;margin-top:.2rem;display:flex;align-items:baseline;justify-content:space-between">Cantina Bell Menu <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+      <a href="taco-bell.html" style="display:block;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card);padding:.875rem 1rem;text-decoration:none;color:inherit;transition:border-color .12s" onmouseover="this.style.borderColor='color-mix(in oklab,var(--foreground) 35%,transparent)'" onmouseout="this.style.borderColor=''">
+        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Wiki home</div>
+        <div class="font-display" style="font-size:1rem;font-weight:600;margin-top:.2rem;display:flex;align-items:baseline;justify-content:space-between">Taco Bell wiki <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer style="border-top:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:color-mix(in oklab,var(--secondary) 40%,transparent)">
+  <div style="max-width:1500px;margin:0 auto;padding:1.5rem;display:flex;align-items:center;gap:.5rem;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-foreground)">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    ViziWiki · Taco Bell · Cantina Chicken Menu · 9 items · Active · 2026
+  </div>
+</footer>
+
+<script>
+window.WIKI_TOC = {
+  pageTitle: 'Cantina Chicken',
+  pageLogo: '<svg viewBox=\"0 0 32 32\" xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"32\" height=\"32\" rx=\"6\" fill=\"#702082\"/><rect x=\"6\" y=\"24\" width=\"20\" height=\"2.5\" rx=\"1.25\" fill=\"#FED141\"/><path d=\"M10 21 Q10 15.5 13 15.5 Q16 15.5 16 10\" stroke=\"#FED141\" stroke-width=\"2.2\" fill=\"none\" stroke-linecap=\"round\"/><path d=\"M16 21 Q16 16 18.5 16 Q21 16 21 11\" stroke=\"#FED141\" stroke-width=\"2.2\" fill=\"none\" stroke-linecap=\"round\" opacity=\".7\"/><path d=\"M21 21 Q21 17.5 23 17.5 Q25 17.5 25 14\" stroke=\"#FED141\" stroke-width=\"2.2\" fill=\"none\" stroke-linecap=\"round\" opacity=\".4\"/></svg>',
+  wikiHome: 'taco-bell.html',
+  wikiTitle: 'Taco Bell',
+  wikiLogo: '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="28" height="28" rx="2.5" fill="#ffffff"/><rect x="4" y="4" width="24" height="24" rx="0.8" fill="#702082"/><rect x="14.7" y="8.5" width="2.6" height="1.3" rx="0.6" fill="#FED141"/><path d="M 12 10 Q 12 9.1 13 9.1 L 19 9.1 Q 20 9.1 20 10 L 21 18.5 Q 22 19 22 19.7 L 10 19.7 Q 10 19 11 18.5 Z" fill="#FED141"/><circle cx="16" cy="21" r="1" fill="#FED141"/></svg>',
+  parentUrl: 'taco-bell-menus.html',
+  parentTitle: 'Taco Bell menus',
+  categories: [
+    { name: 'Tacos',      url: 'taco-bell-tacos.html',     color: '#e07b22' },
+    { name: 'Drinks',     url: 'taco-bell-drinks.html',    color: '#0ea5e9' },
+    { name: 'Sauces',     url: 'taco-bell-sauces.html',    color: '#dc2626' },
+    { name: 'Slogans',    url: 'taco-bell-slogans.html',   color: '#702082' },
+    { name: 'Menus',      url: 'taco-bell-menus.html',     color: '#6d28d9' },
+    { name: 'Breakfast',  url: 'taco-bell-breakfast.html', color: '#ca8a04' },
+    { name: 'Desserts',   url: 'taco-bell-desserts.html',  color: '#c2410c' },
+    { name: 'Burritos',   url: 'taco-bell-burritos.html',  color: '#a855f7' }
+  ],
+  sections: [
+    { id: 'overview',      label: 'Overview' },
+    { id: 'catalogue',     label: 'Menu catalogue' },
+    { id: 'tacos',         label: 'Tacos' },
+    { id: 'burritos',      label: 'Burritos' },
+    { id: 'quesadillas',   label: 'Quesadillas' },
+    { id: 'bowls',         label: 'Bowls' },
+    { id: 'combos',        label: 'Combos & Boxes' },
+    { id: 'history',       label: 'History & Development' },
+    { id: 'menu-lineup',   label: 'Menu lineup' },
+    { id: 'caliente-line', label: 'Caliente line' },
+    { id: 'ingredients',   label: 'Signature ingredients' },
+    { id: 'marketing',     label: 'Marketing' },
+    { id: 'nutrition',     label: 'Nutrition reference' }
+  ]
+};
+</script>
+{% endraw %}

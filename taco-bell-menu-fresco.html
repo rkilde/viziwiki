@@ -1,0 +1,533 @@
+---
+layout: default
+title: "Fresco Menu · Taco Bell · ViziWiki"
+body_class: "wiki-page"
+---
+{% raw %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,300;9..144,0,600;9..144,0,700;9..144,1,400;9..144,1,600&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --background: oklch(0.972 0.012 85);
+    --foreground: oklch(0.18 0.02 60);
+    --card: oklch(1 0 0);
+    --secondary: oklch(0.93 0.02 80);
+    --muted-foreground: oklch(0.45 0.03 60);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { background: var(--background); color: var(--foreground); }
+  body { font-family: 'Spectral', Georgia, serif; }
+  .font-display { font-family: 'Fraunces', Georgia, serif; font-optical-sizing: auto; letter-spacing: -.02em; }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+  .halftone { background-image: radial-gradient(rgba(255,100,180,.55) 1.4px, transparent 1.6px); background-size: 10px 10px; }
+  .eyebrow { display: flex; align-items: center; gap: .5rem; font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .25em; color: var(--muted-foreground); margin-bottom: .5rem; }
+  .page-section { max-width: 1500px; margin: 0 auto; padding: 3.5rem 1.5rem; }
+  .ob-pill { display: inline-block; padding: 5px 12px; border: 1px solid rgba(42,31,21,0.1); border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase; color: rgba(42,31,21,0.85); white-space: nowrap; background: #fff; transition: background .15s, border-color .15s; }
+  @media (max-width: 767px) {
+    .catalogue-cols { columns: 1 !important; }
+    .hero-grid { display: block !important; padding: 2.5rem 1.25rem !important; }
+    .hero-grid > div:last-child { margin-top: 1.5rem; }
+    .overview-prose { grid-template-columns: 1fr !important; }
+  }
+</style>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section id="overview" class="relative overflow-hidden border-b border-white/20 text-white"
+  style="background:linear-gradient(135deg,#166534 0%,#14532d 55%,#020c05 100%)">
+  <div class="halftone pointer-events-none absolute inset-0 mix-blend-overlay opacity-20"></div>
+  <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(to right,rgba(2,12,5,.6),rgba(20,83,45,.1),transparent)"></div>
+  <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(to bottom,rgba(0,0,0,.2) 0%,transparent 55%)"></div>
+
+  <!-- ghost leaf icon -->
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+    class="pointer-events-none absolute -right-8 -bottom-8 opacity-[.07]"
+    style="width:380px;height:380px;color:#fff;transform:rotate(15deg);stroke-width:1.25">
+    <path d="M7 21h10"/>
+    <path d="M12 21a9 9 0 0 0 9-9H3a9 9 0 0 0 9 9z"/>
+    <path d="M11.38 12a2.4 2.4 0 0 1-.4-4.77 2.4 2.4 0 0 1 3.2-3.19 2.4 2.4 0 0 1 3.47-.63 2.4 2.4 0 0 1 3.37 3.37 2.4 2.4 0 0 1-1.1 3.7 2.51 2.51 0 0 1 .03 1.1"/>
+    <path d="m13 12 4-4"/>
+    <path d="M10.9 7.25A3.99 3.99 0 0 0 4 10c0 .73.2 1.41.54 2"/>
+  </svg>
+
+  <div class="hero-grid relative mx-auto" style="display:grid;grid-template-columns:1.6fr 1fr;gap:2rem;max-width:1500px;padding:3.5rem 1.5rem">
+    <div>
+      <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[.25em]" style="backdrop-filter:blur(4px)">
+        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#86efac;flex-shrink:0"></span>
+        Health-Forward · Retired Aug. 2020 · Est. 2003
+      </div>
+      <h1 class="font-display" style="font-size:clamp(2.75rem,7vw,4.75rem);font-weight:700;line-height:.95;color:#fff;margin-top:.75rem">
+        Fresco Menu<span style="color:#86efac">.</span>
+      </h1>
+      <p style="font-family:'Spectral',Georgia,serif;font-size:1.05rem;line-height:1.7;max-width:36rem;margin-top:1rem;color:rgba(255,255,255,.85)">
+        A dedicated sub-menu built around a single substitution: replace cheese and sauce with Fiesta Salsa — Taco Bell's fresh-daily blend of tomatoes, onions, cilantro, and chili. Every item under nine grams of fat. No upcharge.
+      </p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;overflow:hidden;border-radius:3px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);align-self:center">
+      <div style="background:rgba(2,12,5,.55);padding:.75rem 1rem"><div class="font-display" style="font-size:1.5rem;font-weight:600;color:#fff">2003</div><div class="font-mono" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">Launched</div></div>
+      <div style="background:rgba(2,12,5,.55);padding:.75rem 1rem"><div class="font-display" style="font-size:1.5rem;font-weight:600;color:#fff">&lt;9g</div><div class="font-mono" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">Fat per item</div></div>
+      <div style="background:rgba(2,12,5,.55);padding:.75rem 1rem"><div class="font-display" style="font-size:1.5rem;font-weight:600;color:#fff">2010</div><div class="font-mono" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">Drive-Thru Diet</div></div>
+      <div style="background:rgba(2,12,5,.55);padding:.75rem 1rem"><div class="font-display" style="font-size:1.5rem;font-weight:600;color:#9ca3af">Retired</div><div class="font-mono" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">Status</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ OVERVIEW ═══════════════════ -->
+<section style="background:var(--card);border-bottom:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
+  <div class="page-section">
+    <div class="eyebrow">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      Overview
+    </div>
+    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:1.5rem">One swap. Nine items. No upcharge.</h2>
+    <div class="overview-prose" style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem 3rem;border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);padding-top:2rem">
+      <p style="font-size:15px;line-height:1.7">The Fresco Menu launched in 2003 as Taco Bell's first dedicated health-oriented sub-line. The concept was structurally simple: any item served Fresco style had its cheese and sauce components removed and replaced with <strong>Fiesta Salsa</strong> — a fresh-daily preparation of diced tomatoes, white onions, cilantro, and chili seasonings. The result was a calorie and fat reduction of between 20 and 100 calories per item and up to 50% less fat, with no change to price. The Fresco menu was not a separate ordering system — it was a modifier applied to existing items, and kitchen staff were trained to execute it as a standard customisation.</p>
+      <p style="font-size:15px;line-height:1.7">The 2003 launch committed to a specific nutritional threshold: all items on the dedicated Fresco menu would come in under nine grams of fat. This was an unusual move for a QSR brand at the time. Fast food chains had experimented with "lite" or "low-fat" items before, but dedicated sub-menus with publicly enforced nutritional ceilings were rare in the segment. The Fresco Menu predated the broader fast-food health wave that would follow — Subway's Jared campaign had run since 2000, but no major QSR had operationalised a full modifiable sub-line with the same consistency.</p>
+      <p style="font-size:15px;line-height:1.7">The menu gained its highest national profile in January 2010 with the launch of the <strong>Drive-Thru Diet</strong> campaign — Taco Bell's most controversial marketing move in the Fresco line's history. The campaign featured Christine Dougherty, who claimed to have lost 54 pounds over two years by choosing Fresco items as part of a calorie-controlled diet. Taco Bell's own disclaimer acknowledged the results were not typical and that Fresco items were "not a low calorie food" — the campaign's value was in calorie <em>reduction relative to the standard menu</em>, not in positioning Taco Bell as a health food destination.</p>
+      <p style="font-size:15px;line-height:1.7">The standalone Fresco Menu — as a named, dedicated section on physical menu boards and digital drive-thrus — was permanently retired in <strong>August 2020</strong> as part of a sweeping corporate simplification driven by the COVID-19 pandemic. Taco Bell cut roughly 12 menu items and several sub-menu sections to reduce kitchen complexity and speed up service times. However, the <strong>"Fresco Style" modifier itself was not retired</strong>: it remains active today as a button on kitchen registers, digital kiosks, and the mobile app. The ingredient it substitutes changed in the same 2020 cut — Pico de Gallo (Fiesta Salsa) was discontinued, so ordering Fresco Style now replaces cheese and dairy with standard diced tomatoes rather than the original fresh-daily salsa preparation. The no-upcharge policy remains in place.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ CATALOGUE ═══════════════════ -->
+<section id="catalogue" style="border-top:1px solid rgba(42,31,21,0.15);border-bottom:1px solid rgba(42,31,21,0.15);background:color-mix(in oklab,var(--secondary) 40%,transparent);">
+  <div style="max-width:1500px;margin:0 auto;padding:48px 24px;">
+    <div style="margin-bottom:24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(42,31,21,0.35);">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" x2="21" y1="6" y2="6"/><line x1="10" x2="21" y1="12" y2="12"/><line x1="10" x2="21" y1="18" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+          Full Catalogue
+        </div>
+        <h2 style="font-family:'Fraunces',Georgia,serif;font-size:30px;font-weight:600;letter-spacing:-0.02em;">Every Fresco item</h2>
+      </div>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(42,31,21,0.35);">9 items &middot; 3 categories &middot; all under 9g fat</span>
+    </div>
+
+    <div class="catalogue-cols" style="columns:2;column-gap:16px;">
+
+      <!-- TACOS -->
+      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #b45309;padding:20px;break-inside:avoid;margin-bottom:16px;">
+        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#b45309;">Tacos</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">4 items</div>
+        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <span class="ob-pill" style="cursor:pointer;" onclick="showFrescoItem('Fresco Crunchy Taco')" onmouseover="this.style.background='#b453091a';this.style.borderColor='#b4530944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Fresco Crunchy Taco</span>
+          <span class="ob-pill" style="cursor:pointer;" onclick="showFrescoItem('Fresco Soft Taco')" onmouseover="this.style.background='#b453091a';this.style.borderColor='#b4530944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Fresco Soft Taco</span>
+          <span class="ob-pill" style="cursor:pointer;" onclick="showFrescoItem('Fresco Grilled Chicken Soft Taco')" onmouseover="this.style.background='#b453091a';this.style.borderColor='#b4530944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Fresco Grilled Chicken Soft Taco</span>
+          <span class="ob-pill" style="cursor:pointer;" onclick="showFrescoItem('Fresco Grilled Steak Soft Taco')" onmouseover="this.style.background='#b453091a';this.style.borderColor='#b4530944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Fresco Grilled Steak Soft Taco</span>
+        </div>
+      </div>
+
+      <!-- BURRITOS -->
+      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #6d28d9;padding:20px;break-inside:avoid;margin-bottom:16px;">
+        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#6d28d9;">Burritos</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">4 items</div>
+        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <span class="ob-pill" style="cursor:pointer;" onclick="showFrescoItem('Fresco Burrito Supreme')" onmouseover="this.style.background='#6d28d91a';this.style.borderColor='#6d28d944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Fresco Burrito Supreme</span>
+          <span class="ob-pill" style="cursor:pointer;" onclick="showFrescoItem('Fresco Bean Burrito')" onmouseover="this.style.background='#6d28d91a';this.style.borderColor='#6d28d944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Fresco Bean Burrito</span>
+          <span class="ob-pill" style="cursor:pointer;" onclick="showFrescoItem('Fresco Beef Premium Burrito')" onmouseover="this.style.background='#6d28d91a';this.style.borderColor='#6d28d944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Fresco Beef Premium Burrito</span>
+          <span class="ob-pill" style="cursor:pointer;" onclick="showFrescoItem('Fresco Chicken Enchirito')" onmouseover="this.style.background='#6d28d91a';this.style.borderColor='#6d28d944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Fresco Chicken Enchirito</span>
+        </div>
+      </div>
+
+      <!-- SPECIALTIES -->
+      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #0c4a6e;padding:20px;break-inside:avoid;margin-bottom:16px;">
+        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#0c4a6e;">Specialties</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">1 item</div>
+        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          <span class="ob-pill" style="cursor:pointer;" onclick="showFrescoItem('Fresco Fiesta Taco Salad')" onmouseover="this.style.background='#0c4a6e1a';this.style.borderColor='#0c4a6e44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Fresco Fiesta Taco Salad</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Fresco note -->
+    <div style="margin-top:8px;padding:1rem 1.25rem;border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);background:var(--card);font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted-foreground);letter-spacing:.03em">
+      <strong style="color:var(--foreground)">Fresco substitution:</strong> Cheese and sauce components replaced with Fiesta Salsa (fresh-daily tomatoes, onions, cilantro, chili seasonings) for the menu's 2003–2020 run. Red sauce was the only sauce retained — its calorie count was low enough to remain. Following the August 2020 menu cuts, Pico de Gallo was discontinued: ordering "Fresco Style" today replaces dairy with diced tomatoes only. No upcharge applied at any point.
+    </div>
+  </div>
+</section>
+
+<!-- ── Item detail modal ── -->
+<div id="fresco-ov" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:1rem;" onclick="if(event.target===this){closeFrescoModal();}">
+  <div id="fresco-card" style="background:#fff;border-radius:14px;max-width:460px;width:100%;max-height:85vh;overflow-y:auto;position:relative;box-shadow:0 24px 64px rgba(42,31,21,.22);"></div>
+</div>
+
+<script>
+var FRESCO_ITEMS = {
+  'Fresco Crunchy Taco': {
+    cat:'Taco · Crunchy shell', color:'#b45309',
+    calories:'150', fat:'7g',
+    desc:'Seasoned beef, shredded lettuce, and diced tomatoes in a crunchy corn shell. The only change from the standard Crunchy Taco is the removal of shredded cheddar cheese — the shell, beef, and lettuce remain identical.',
+    ingredients:['Crunchy corn shell','Seasoned beef','Shredded lettuce','Diced tomatoes'],
+    replaces:['Shredded cheddar cheese']
+  },
+  'Fresco Soft Taco': {
+    cat:'Taco · Soft flour shell', color:'#b45309',
+    calories:'180', fat:'7g',
+    desc:'Seasoned beef, shredded lettuce, and diced tomatoes in a warm flour tortilla. Cheese removed and replaced with diced tomatoes under the Fresco modifier.',
+    ingredients:['Flour tortilla','Seasoned beef','Shredded lettuce','Diced tomatoes'],
+    replaces:['Shredded cheddar cheese']
+  },
+  'Fresco Grilled Chicken Soft Taco': {
+    cat:'Taco · Chicken · Soft shell', color:'#b45309',
+    calories:'170', fat:'4g',
+    desc:'Grilled chicken breast, shredded lettuce, and diced tomatoes in a warm flour tortilla. At the time of the 2007 Fresco Menu launch, Taco Bell used grilled chicken breast for its chicken soft taco builds — the shredded chicken variant (slow-cooked in a tomato-chile broth) was not introduced to the assembly line until 2011. Both the avocado ranch sauce and the shredded cheese are removed by the Fresco modifier — diced tomatoes replace both. One of the lowest-fat items across the full Fresco line at 4g.',
+    ingredients:['Flour tortilla','Grilled chicken breast','Shredded lettuce','Diced tomatoes'],
+    replaces:['Avocado ranch sauce','Shredded cheese']
+  },
+  'Fresco Grilled Steak Soft Taco': {
+    cat:'Taco · Steak · Soft shell', color:'#b45309',
+    calories:'160', fat:'4.5g',
+    desc:'Grilled steak, shredded lettuce, and diced tomatoes in a warm flour tortilla. At 160 calories, the lowest-calorie item in the Fresco taco tier.',
+    ingredients:['Flour tortilla','Grilled steak','Shredded lettuce','Diced tomatoes'],
+    replaces:['Shredded cheese','Creamy sauce']
+  },
+  'Fresco Burrito Supreme': {
+    cat:'Burrito · Beef', color:'#6d28d9',
+    calories:'330', fat:'8g',
+    desc:'Seasoned beef, refried beans, red sauce, shredded lettuce, onions, and diced tomatoes in a flour tortilla. The Fresco modifier removes only the sour cream and cheddar cheese — the red sauce, shredded lettuce, and onions are all explicitly retained. Refried beans serve as a core structural component alongside the beef. Diced tomatoes replace the two dairy items removed.',
+    ingredients:['Flour tortilla','Seasoned beef','Refried beans','Red sauce','Shredded lettuce','Onions','Diced tomatoes'],
+    replaces:['Sour cream','Cheddar cheese']
+  },
+  'Fresco Bean Burrito': {
+    cat:'Burrito · Beans', color:'#6d28d9',
+    calories:'340', fat:'8g',
+    desc:'Refried beans, red sauce, onions, and diced tomatoes in a flour tortilla. Red sauce is retained — it is the only sauce preserved under the Fresco modifier because its calorie count is low enough to remain across all applicable items.',
+    ingredients:['Flour tortilla','Refried beans','Red sauce','Onions','Diced tomatoes'],
+    replaces:['Shredded cheddar cheese']
+  },
+  'Fresco Beef Premium Burrito': {
+    cat:'Burrito · Beef · Rice', color:'#6d28d9',
+    calories:'340', fat:'9g',
+    desc:'Seasoned beef, seasoned rice, red sauce, and diced tomatoes in a flour tortilla. The Premium Burrito format adds seasoned rice as a filling layer alongside the beef — at 9g fat this sits at the exact ceiling of the Fresco nutritional threshold.',
+    ingredients:['Flour tortilla','Seasoned beef','Seasoned rice','Red sauce','Diced tomatoes'],
+    replaces:['Shredded cheese','Creamy sauce']
+  },
+  'Fresco Chicken Enchirito': {
+    cat:'Enchirito · Chicken', color:'#6d28d9',
+    calories:'250', fat:'6g',
+    desc:'Grilled chicken breast and onions rolled in a soft flour tortilla, smothered in red sauce, and topped with diced tomatoes. During the 2008–2010 Fresco Menu era, Taco Bell used chunky grilled chicken breast across all chicken builds — the slow-cooked shredded chicken variant was not introduced until 2011. The Enchirito format — rolled and sauce-smothered rather than folded — distinguishes it from the burrito items on the Fresco line. Shredded cheese, the standard Enchirito topping, is replaced by diced tomatoes.',
+    ingredients:['Soft flour tortilla (rolled)','Grilled chicken breast','Onions','Red sauce (smothered)','Diced tomatoes (topping)'],
+    replaces:['Shredded cheese']
+  },
+  'Fresco Fiesta Taco Salad': {
+    cat:'Specialty · Salad', color:'#0c4a6e',
+    calories:'420', fat:'8g',
+    desc:'Seasoned beef, seasoned rice, refried beans, shredded lettuce, onions, and diced tomatoes served in a crispy tortilla bowl. The Fresco version omits cheese, sour cream, the salad dressing, and the crispy red tortilla chip strips — the strips were counted as part of the high-fat profile corporate needed to remove to hit the sub-9g-fat threshold. The tortilla bowl itself is retained as the structural container.',
+    ingredients:['Crispy tortilla bowl','Seasoned beef','Seasoned rice','Refried beans','Shredded lettuce','Onions','Diced tomatoes'],
+    replaces:['Shredded cheese','Sour cream','Salad dressing','Crispy red tortilla strips']
+  }
+};
+
+function closeFrescoModal() {
+  document.getElementById('fresco-ov').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function showFrescoItem(name) {
+  var d = FRESCO_ITEMS[name]; if (!d) return;
+  var card = document.getElementById('fresco-card');
+  card.innerHTML =
+    '<div style="height:4px;border-radius:14px 14px 0 0;background:' + d.color + '"></div>' +
+    '<div style="position:sticky;top:0;z-index:5;background:#fff;padding:20px 24px 16px;border-bottom:1px solid rgba(42,31,21,0.08)">' +
+      '<button onclick="closeFrescoModal()" style="position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:50%;border:1px solid rgba(42,31,21,0.12);background:transparent;cursor:pointer;font-size:16px;color:rgba(42,31,21,0.4);display:flex;align-items:center;justify-content:center;line-height:1;pointer-events:auto">&times;</button>' +
+      '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-right:36px">' +
+        '<span style="font-family:\'JetBrains Mono\',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:' + d.color + '">' + d.cat + '</span>' +
+        '<span style="font-family:\'JetBrains Mono\',monospace;font-size:7px;text-transform:uppercase;letter-spacing:.15em;padding:2px 7px;border-radius:999px;background:#dcfce7;color:#166534">' + d.calories + ' cal &middot; ' + d.fat + ' fat</span>' +
+      '</div>' +
+      '<div style="font-family:Fraunces,Georgia,serif;font-size:22px;font-weight:600;letter-spacing:-.02em;margin-top:6px;line-height:1.15">' + name + '</div>' +
+    '</div>' +
+    '<div style="padding:20px 24px">' +
+      '<p style="font-family:\'Spectral\',Georgia,serif;font-size:14px;line-height:1.75;color:rgba(42,31,21,.8)">' + d.desc + '</p>' +
+      '<div style="margin-top:16px">' +
+        '<div style="font-family:\'JetBrains Mono\',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:rgba(42,31,21,.35);margin-bottom:8px">Ingredients</div>' +
+        '<div style="display:flex;flex-wrap:wrap;gap:5px">' +
+          d.ingredients.map(function(i){ return '<span style="font-family:\'JetBrains Mono\',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:3px 9px;border-radius:3px;border:1px solid ' + d.color + '33;background:' + d.color + '0d;color:' + d.color + '">' + i + '</span>'; }).join('') +
+        '</div>' +
+      '</div>' +
+      '<div style="margin-top:12px">' +
+        '<div style="font-family:\'JetBrains Mono\',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:rgba(42,31,21,.35);margin-bottom:8px">Replaced by Fresco modifier</div>' +
+        '<div style="display:flex;flex-wrap:wrap;gap:5px">' +
+          d.replaces.map(function(i){ return '<span style="font-family:\'JetBrains Mono\',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:3px 9px;border-radius:3px;border:1px solid rgba(42,31,21,.15);background:rgba(42,31,21,.04);color:rgba(42,31,21,.5);text-decoration:line-through">' + i + '</span>'; }).join('') +
+        '</div>' +
+      '</div>' +
+      '<div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(42,31,21,0.08)">' +
+        '<a href="taco-bell-item-fresco-' + name.toLowerCase().replace(/[^a-z0-9]+/g,'-') + '.html" style="display:inline-flex;align-items:center;gap:6px;font-family:\'JetBrains Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:' + d.color + ';text-decoration:none;border-bottom:1px solid ' + d.color + '33;padding-bottom:1px">' +
+          'See full item entry' +
+          '<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\' style=\'pointer-events:none\'><polyline points=\'9 18 15 12 9 6\'/></svg>' +
+        '</a>' +
+      '</div>' +
+    '</div>';
+  var ov = document.getElementById('fresco-ov');
+  ov.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeFrescoModal();
+});
+</script>
+
+
+
+<!-- ═══════════════════ CONCEPT & ORIGIN ═══════════════════ -->
+<section id="origin" style="background:var(--card);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
+  <div class="page-section">
+    <div class="eyebrow">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Concept, Origin &amp; Development
+    </div>
+    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:2rem">From regional test to national sub-line.</h2>
+    <div style="position:relative;padding-left:2rem">
+      <div style="position:absolute;left:7px;top:0;bottom:0;width:1px;background:color-mix(in oklab,var(--foreground) 15%,transparent)"></div>
+
+      <!-- Era 1 -->
+      <div style="position:relative;margin-bottom:2rem">
+        <div style="position:absolute;left:-2rem;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid #166534;background:#fff;z-index:1"></div>
+        <div style="display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:.375rem">
+          <span class="font-mono" style="font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:#166534;flex-shrink:0">2003–2006</span>
+          <h3 class="font-display" style="font-size:1.0625rem;font-weight:600">Era I — Background modifier only</h3>
+        </div>
+        <p style="font-size:14px;line-height:1.7;max-width:56rem">Taco Bell introduced Fresco-style items beginning around 2002–2003, emerging from a corporate recognition that health-conscious consumers had no meaningful QSR option. For the first several years, the Fresco build existed primarily as a behind-the-counter ordering modifier — a POS system command that kitchen staff used when customers requested lighter builds. There was no dedicated menu board section, no branded marketing, and no named sub-menu. Health-conscious insiders and regular customers who knew to ask for it could get any taco or burrito made Fresco, but the option was not actively promoted or explained to the general public. Taco Bell published nutritional data on the builds, but the Fresco option lived in the background of the ordering system rather than on the wall.</p>
+      </div>
+
+      <!-- Era 2 -->
+      <div style="position:relative;margin-bottom:2rem">
+        <div style="position:absolute;left:-2rem;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid #166534;background:#166534;z-index:1"></div>
+        <div style="display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:.375rem">
+          <span class="font-mono" style="font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:#166534;flex-shrink:0">New Year's Eve 2008</span>
+          <h3 class="font-display" style="font-size:1.0625rem;font-weight:600">Era II — The official 9-item branded launch</h3>
+        </div>
+        <p style="font-size:14px;line-height:1.7;max-width:56rem">On New Year's Eve 2008, Taco Bell officially consolidated the Fresco modifier items into a branded, named <strong>Fresco Menu</strong> section — nine items given dedicated menu board space and promoted as a coherent health-conscious sub-line. The timing was deliberate: New Year's Eve 2008 launch meant the menu appeared on boards and in advertising precisely as the nation's January 2009 diet resolution cycle peaked. The nine-item lineup represented the items that cleared the sub-9g-fat threshold under the Fresco modifier and could be coherently grouped as a standalone meal destination. This launch marks the transition from background modifier to official product line — the point at which "Fresco" shifted from insider knowledge to a publicly promoted menu position.</p>
+      </div>
+
+      <!-- Era 2b — Dougherty personal start (same year, independent) -->
+      <div style="position:relative;margin-bottom:2rem">
+        <div style="position:absolute;left:-2rem;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid #4d7c0f;background:#fff;z-index:1"></div>
+        <div style="display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:.375rem">
+          <span class="font-mono" style="font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:#4d7c0f;flex-shrink:0">January 2007</span>
+          <h3 class="font-display" style="font-size:1.0625rem;font-weight:600">Christine Dougherty begins her personal Fresco diet</h3>
+        </div>
+        <p style="font-size:14px;line-height:1.7;max-width:56rem">Independently of the corporate relaunch, Christine Dougherty — a 27-year-old from Pensacola, Florida — begins restricting her daily caloric intake to 1,250 calories while replacing her standard fast-food meals with Taco Bell Fresco items, eating them five to eight times per week. Her motivation is personal, not promotional. Over two years she loses 54 pounds. She eventually writes to Taco Bell documenting her results, which initiates the internal process that produces the 2010 campaign. Her January 2007 start date means she had been eating Fresco items for nearly two years before the branded sub-menu even existed on a menu board — a timeline that tracks: Dougherty starts 2007, Taco Bell formalises the menu late 2008, and the Drive-Thru Diet campaign begins 2010, roughly two years after the board launch.</p>
+      </div>
+
+      <!-- Era 3 -->
+      <div style="position:relative">
+        <div style="position:absolute;left:-2rem;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid #6b7280;background:#6b7280;z-index:1"></div>
+        <div style="display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:.375rem">
+          <span class="font-mono" style="font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:#6b7280;flex-shrink:0">Q1 2010</span>
+          <h3 class="font-display" style="font-size:1.0625rem;font-weight:600">Era III — Drive-Thru Diet campaign — Dougherty becomes the public face</h3>
+        </div>
+        <p style="font-size:14px;line-height:1.7;max-width:56rem">Taco Bell launches the Drive-Thru Diet campaign in Q1 2010 — again timed to the New Year resolution window. The campaign reframes the existing branded Fresco Menu as a named diet program and introduces Dougherty as its spokesperson. The advertising ran across national TV and radio (Draftfcb Orange County), in-store signage, web, and social media (R/GA San Francisco), and in Taco Bell's first-ever infomercial — a long-form piece pairing Dougherty's story with commentary from an NBA dietician, Ruth Carey. The campaign structurally mirrors Subway's Jared Fogle playbook, a parallel Taco Bell's own disclaimer implicitly acknowledged: the fine print read "not a low calorie food," and results are "not typical." By November 2010, Dougherty had completed the New York City Marathon in 4 hours 29 minutes — a milestone Taco Bell documented as part of the ongoing campaign.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ MARKETING & SODIUM PARADOX ═══════════════════ -->
+<section id="marketing" style="background:var(--background);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
+  <div class="page-section">
+    <div class="eyebrow">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      Corporate Marketing &amp; The Sodium Paradox
+    </div>
+    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:2rem">Less fat. Same sodium. The number they didn't advertise.</h2>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;margin-bottom:2rem">
+
+      <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);overflow:hidden">
+        <div style="height:3px;background:linear-gradient(to right,#166534,#14532d)"></div>
+        <div style="padding:1.25rem">
+          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.5rem">Campaign · TV, Radio, Print · Q1 2010</div>
+          <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.75rem">Christine Dougherty — the Drive-Thru Diet face</div>
+          <p style="font-size:13.5px;line-height:1.65">The campaign centred on Dougherty's verifiable personal result — 54 pounds over two years — while carefully managing the claim through legal fine print. TV spots showed before-and-after photographs, with Dougherty in a form-fitting dress and later a bikini, explicitly invoking the visual language of weight-loss advertising. The disclosed mechanism — 1,250 calories per day across all food sources, of which Fresco items were a component — made clear that the calorie restriction was doing the work, not the cheese removal specifically.</p>
+          <p style="font-size:13.5px;line-height:1.65;margin-top:.75rem">Taco Bell's own disclaimer, required by FTC standards, read: <em>"Fresco can help with calorie reductions of 20 to 100 per item compared to corresponding products on the regular menu. Not a low calorie food."</em> The campaign drew immediate comparison to Subway's Jared Fogle campaign — a parallel Taco Bell did not attempt to obscure, treating it as a point of competitive legitimacy rather than an accusation of imitation.</p>
+        </div>
+      </div>
+
+      <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);overflow:hidden">
+        <div style="height:3px;background:linear-gradient(to right,#991b1b,#450a0a)"></div>
+        <div style="padding:1.25rem">
+          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.5rem">Dietary analytics · Critical context</div>
+          <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.75rem">The sodium paradox</div>
+          <p style="font-size:13.5px;line-height:1.65">The Fresco substitution removed cheese and sauce — both calorie-dense and fat-dense — and replaced them with diced tomatoes and Fiesta Salsa. The fat and calorie reductions were real: up to 50% less fat, 20–100 fewer calories per item. What the modifier did not touch was the sodium profile. The sodium in a Taco Bell item lives primarily in the flour tortilla, the seasoned beef (sodium-cured during processing), and the red sauce — none of which the Fresco modifier removed or altered.</p>
+          <p style="font-size:13.5px;line-height:1.65;margin-top:.75rem">A Fresco Soft Taco's sodium count remained close to its standard counterpart — in the 500–600mg range — despite the item's fat count dropping significantly. Critics noted that a customer ordering Fresco to "eat healthier" was largely exchanging one risk metric (saturated fat) for an unchanged one (sodium), without being made aware of the distinction. Taco Bell published calorie and fat data but did not prominently feature sodium in its Drive-Thru Diet marketing materials.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Health positioning note -->
+    <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);padding:1.25rem 1.5rem">
+      <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.75rem">Corporate health positioning — verified record</div>
+      <p style="font-size:13.5px;line-height:1.65">Taco Bell pursued several third-party nutrition credibility signals during the Drive-Thru Diet era, commissioning the "America's Drive-Thru Survey" and partnering with NBA nutritionist Ruth Carey for the infomercial. The campaign also carried a broad "better choices" framing — not "healthy food" but "smarter options relative to the rest of the fast-food menu" — a positioning that allowed Taco Bell to avoid direct nutritional claims while still occupying the health-adjacent advertising space. No independent AHA Heart-Check certification for specific Fresco items has been documented in primary sources; the health credential the program relied on was the published calorie and fat data rather than a formal third-party stamp.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ FRESCO STYLE AS MODIFIER ═══════════════════ -->
+<section id="modifier" style="background:var(--card);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
+  <div class="page-section">
+    <div class="eyebrow">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      The "Fresco Style" Customisation Hack
+    </div>
+    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:2rem">The button that outlived the menu.</h2>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem">
+
+      <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);border-top:3px solid #166534;background:var(--card);padding:1.125rem 1.25rem">
+        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#166534;margin-bottom:.375rem">POS system · Systemwide</div>
+        <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.625rem">The permanent register modifier</div>
+        <p style="font-size:13.5px;line-height:1.65">The "Fresco Style" button exists as a persistent, one-tap modifier on Taco Bell's Point-of-Sale kitchen registers, digital ordering kiosks, the mobile app, and drive-thru interface systems. A staff member pressing it does not need to manually remove individual components — the modifier executes the substitution automatically across the item's build. This systemwide integration is why the modifier survived the August 2020 menu simplification that retired the named Fresco sub-menu: it is not a printed menu section but a POS command, and removing it would require a software change rather than a menu-board edit. Taco Bell chose to leave the command active, reducing menu complexity at the board level while preserving the kitchen's ability to execute the build on request.</p>
+      </div>
+
+      <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);border-top:3px solid #6d28d9;background:var(--card);padding:1.125rem 1.25rem">
+        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#6d28d9;margin-bottom:.375rem">Cultural adoption · Vegan &amp; vegetarian</div>
+        <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.625rem">An inadvertent plant-based haven</div>
+        <p style="font-size:13.5px;line-height:1.65">The Fresco modifier's most consequential unintended effect was its adoption by vegan and vegetarian consumers as a reliable dairy-removal tool. Because the modifier strips all cheese and dairy-based sauces in a single command — and because Taco Bell's bean and rice items are otherwise plant-based — ordering Fresco became the standard hack for making most of the Taco Bell menu technically vegan. The chain's willingness to accommodate extensive customisation through its POS system, combined with the Fresco button's systemwide availability, gave plant-based customers a documented, repeatable ordering framework at a QSR that hadn't explicitly marketed itself to them. Taco Bell would later acknowledge and market this positioning directly — its vegetarian and vegan ordering guides emerged from the same structural reality the Fresco modifier had already established in practice.</p>
+      </div>
+
+      <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);border-top:3px solid #b45309;background:var(--card);padding:1.125rem 1.25rem">
+        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#b45309;margin-bottom:.375rem">Cross-menu application · 2012</div>
+        <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.625rem">Fresco × Doritos Locos Tacos</div>
+        <p style="font-size:13.5px;line-height:1.65">When the Doritos Locos Taco launched on March 8, 2012 — becoming the best-selling product launch in Taco Bell history — the Fresco modifier applied to it immediately, as it applied to any standard taco format. A customer could order a Nacho Cheese Doritos Locos Taco Fresco Style, receiving the Doritos shell with seasoned beef, lettuce, and Fiesta Salsa in place of the standard cheddar cheese. The combination is logically paradoxical — the Doritos shell is itself a flavoured, processed corn chip, so removing the cheese while retaining the chip-shell does not change the item's fundamental snack profile — but it illustrated the modifier's scope: it was not item-specific but format-wide, and it adapted to new product launches without any additional configuration.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ RETIREMENT ═══════════════════ -->
+<section id="retirement" style="background:var(--background);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
+  <div class="page-section">
+    <div class="eyebrow">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+      Operational Simplification &amp; Retirement
+    </div>
+    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:2rem">The menu board retired. The button did not.</h2>
+
+    <div style="position:relative;padding-left:2rem;margin-bottom:2rem">
+      <div style="position:absolute;left:7px;top:0;bottom:0;width:1px;background:color-mix(in oklab,var(--foreground) 15%,transparent)"></div>
+
+      <div style="position:relative;margin-bottom:2rem">
+        <div style="position:absolute;left:-2rem;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid #991b1b;background:#fff;z-index:1"></div>
+        <div style="display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:.375rem">
+          <span class="font-mono" style="font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:#991b1b;flex-shrink:0">August 2020</span>
+          <h3 class="font-display" style="font-size:1.0625rem;font-weight:600">Pandemic menu simplification — the Fresco sub-menu retired</h3>
+        </div>
+        <p style="font-size:14px;line-height:1.7;max-width:56rem">In August 2020 — at the peak of the COVID-19 pandemic's operational pressure on QSR drive-thrus — Taco Bell executed one of the largest menu cuts in its history, permanently removing approximately 12 items and several named sub-menu sections from its physical and digital boards. The driving logic was assembly-line velocity: drive-thru wait times had become a critical performance metric as indoor dining closed across the country, and a shorter, simpler menu meant fewer decisions per customer, fewer kitchen training requirements, and faster throughput per order. The dedicated Fresco Menu section was a target because it required menu-board real estate, consumer explanation, and nutritional callouts — overhead that was no longer justified by its contribution to drive-thru speed.</p>
+      </div>
+
+      <div style="position:relative;margin-bottom:2rem">
+        <div style="position:absolute;left:-2rem;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid #991b1b;background:#fff;z-index:1"></div>
+        <div style="display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:.375rem">
+          <span class="font-mono" style="font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:#991b1b;flex-shrink:0">August 2020</span>
+          <h3 class="font-display" style="font-size:1.0625rem;font-weight:600">The death of Pico de Gallo — the original Fresco identity dissolved</h3>
+        </div>
+        <p style="font-size:14px;line-height:1.7;max-width:56rem">In the same August 2020 cut, Taco Bell permanently removed fresh Pico de Gallo (Fiesta Salsa) from the standard prep line. This was the ingredient that had defined the Fresco concept from the beginning — the daily-prepared blend of tomatoes, onions, cilantro, and chili seasonings that distinguished a Fresco item from simply "a taco without cheese." Pico de Gallo required daily fresh prep, dedicated refrigerated storage, and quality-control monitoring that Taco Bell's simplified 2020 operational model could not efficiently support across all locations. Its removal was not a coincidence — it was part of the same simplification logic that retired the Fresco menu section. What had been a qualitatively distinct substitution (fresh salsa replacing processed dairy) became a simple ingredient removal: standard diced tomatoes replacing cheese, at effectively no additional cost or prep complexity.</p>
+      </div>
+
+      <div style="position:relative">
+        <div style="position:absolute;left:-2rem;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid #44403c;background:#44403c;z-index:1"></div>
+        <div style="display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:.375rem">
+          <span class="font-mono" style="font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:#44403c;flex-shrink:0">2020 — present</span>
+          <h3 class="font-display" style="font-size:1.0625rem;font-weight:600">The modern tomato modifier — and the Cantina Chicken footnote</h3>
+        </div>
+        <p style="font-size:14px;line-height:1.7;max-width:56rem">The "Fresco Style" POS modifier remains active across all ordering channels. What it executes has changed: it removes cheese and dairy-based sauces and adds standard diced tomatoes — not the original Fiesta Salsa preparation. The modifier's continued existence is an operational legacy rather than a marketing one; Taco Bell has not prominently promoted "Fresco Style" since the 2020 cuts. In 2024, fresh Pico de Gallo briefly returned to Taco Bell kitchens as a dedicated component of the Cantina Chicken Menu — a separate, permanent ingredient introduced for that sub-line's fresh-produce positioning. Despite fresh pico now being back in some prep lines, Taco Bell left the "Fresco Style" register button mapped to standard diced tomatoes rather than reassigning it to the Cantina Chicken pico, preserving inventory separation and ensuring the modifier's execution remained consistent regardless of whether a location's Cantina Chicken pico supply was in stock on a given day.</p>
+      </div>
+    </div>
+
+    <!-- Status summary card -->
+    <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);overflow:hidden">
+      <div style="padding:.875rem 1.25rem;border-bottom:1px solid color-mix(in oklab,var(--foreground) 8%,transparent)">
+        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground)">Current status summary — as of 2026</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0">
+        <div style="padding:1rem 1.25rem;border-right:1px solid color-mix(in oklab,var(--foreground) 8%,transparent)">
+          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:#991b1b;margin-bottom:.3rem">Retired · Aug 2020</div>
+          <div class="font-display" style="font-size:.9375rem;font-weight:600">Fresco Menu section</div>
+          <p style="font-size:12px;line-height:1.5;color:var(--muted-foreground);margin-top:.25rem">No longer on physical or digital menu boards</p>
+        </div>
+        <div style="padding:1rem 1.25rem;border-right:1px solid color-mix(in oklab,var(--foreground) 8%,transparent)">
+          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:#991b1b;margin-bottom:.3rem">Retired · Aug 2020</div>
+          <div class="font-display" style="font-size:.9375rem;font-weight:600">Fresh Pico de Gallo (Fiesta Salsa)</div>
+          <p style="font-size:12px;line-height:1.5;color:var(--muted-foreground);margin-top:.25rem">Removed from standard prep line; returned in 2024 for Cantina Chicken only</p>
+        </div>
+        <div style="padding:1rem 1.25rem">
+          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:#166534;margin-bottom:.3rem">Active</div>
+          <div class="font-display" style="font-size:.9375rem;font-weight:600">"Fresco Style" POS modifier</div>
+          <p style="font-size:12px;line-height:1.5;color:var(--muted-foreground);margin-top:.25rem">Active on registers, kiosks, and app — substitutes diced tomatoes for cheese and dairy sauces</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SEE ALSO ═══════════════════ -->
+<section style="border-top:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card)">
+  <div style="max-width:1500px;margin:0 auto;padding:2.5rem 1.5rem">
+    <div class="eyebrow" style="margin-bottom:1rem">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      See also
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem">
+      <a href="taco-bell-menus.html" style="display:block;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card);padding:.875rem 1rem;text-decoration:none;color:inherit;transition:border-color .12s" onmouseover="this.style.borderColor='color-mix(in oklab,var(--foreground) 35%,transparent)'" onmouseout="this.style.borderColor=''">
+        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Parent</div>
+        <div class="font-display" style="font-size:1rem;font-weight:600;margin-top:.2rem;display:flex;align-items:baseline;justify-content:space-between">Taco Bell Menus <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+      <a href="taco-bell-menu-cantina-chicken.html" style="display:block;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card);padding:.875rem 1rem;text-decoration:none;color:inherit;transition:border-color .12s" onmouseover="this.style.borderColor='color-mix(in oklab,var(--foreground) 35%,transparent)'" onmouseout="this.style.borderColor=''">
+        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Related</div>
+        <div class="font-display" style="font-size:1rem;font-weight:600;margin-top:.2rem;display:flex;align-items:baseline;justify-content:space-between">Cantina Chicken Menu <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+      <a href="taco-bell-menu-2-dollar-deals.html" style="display:block;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card);padding:.875rem 1rem;text-decoration:none;color:inherit;transition:border-color .12s" onmouseover="this.style.borderColor='color-mix(in oklab,var(--foreground) 35%,transparent)'" onmouseout="this.style.borderColor=''">
+        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Contemporary</div>
+        <div class="font-display" style="font-size:1rem;font-weight:600;margin-top:.2rem;display:flex;align-items:baseline;justify-content:space-between">$2 Meal Deals <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+      <a href="taco-bell.html" style="display:block;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card);padding:.875rem 1rem;text-decoration:none;color:inherit;transition:border-color .12s" onmouseover="this.style.borderColor='color-mix(in oklab,var(--foreground) 35%,transparent)'" onmouseout="this.style.borderColor=''">
+        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Wiki home</div>
+        <div class="font-display" style="font-size:1rem;font-weight:600;margin-top:.2rem;display:flex;align-items:baseline;justify-content:space-between">Taco Bell wiki <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer style="border-top:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:color-mix(in oklab,var(--secondary) 40%,transparent)">
+  <div style="max-width:1500px;margin:0 auto;padding:1.5rem;display:flex;align-items:center;gap:.5rem;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-foreground)">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    ViziWiki · Taco Bell · Fresco Menu · 9 items · 2003–2020 · Fresco Style modifier still active · 2026
+  </div>
+</footer>
+
+<script>
+window.WIKI_TOC = {
+  pageTitle: 'Fresco Menu',
+  pageLogo: '<svg viewBox=\"0 0 32 32\" xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"32\" height=\"32\" rx=\"6\" fill=\"#702082\"/><rect x=\"15\" y=\"13\" width=\"2\" height=\"12\" rx=\"1\" fill=\"#FED141\"/><path d=\"M16 17 Q8 15 8 7 Q16 11 16 17z\" fill=\"#FED141\"/><path d=\"M16 20 Q24 17 25 9 Q17 14 16 20z\" fill=\"#FED141\" opacity=\".75\"/><rect x=\"9\" y=\"26\" width=\"14\" height=\"2\" rx=\"1\" fill=\"#FED141\" opacity=\".45\"/></svg>',
+  wikiHome: 'taco-bell.html',
+  wikiTitle: 'Taco Bell',
+  wikiLogo: '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="28" height="28" rx="2.5" fill="#ffffff"/><rect x="4" y="4" width="24" height="24" rx="0.8" fill="#702082"/><rect x="14.7" y="8.5" width="2.6" height="1.3" rx="0.6" fill="#FED141"/><path d="M 12 10 Q 12 9.1 13 9.1 L 19 9.1 Q 20 9.1 20 10 L 21 18.5 Q 22 19 22 19.7 L 10 19.7 Q 10 19 11 18.5 Z" fill="#FED141"/><circle cx="16" cy="21" r="1" fill="#FED141"/></svg>',
+  parentUrl: 'taco-bell-menus.html',
+  parentTitle: 'Taco Bell menus',
+  categories: [
+    { name: 'Tacos',    url: 'taco-bell-tacos.html',    color: '#e07b22' },
+    { name: 'Drinks',   url: 'taco-bell-drinks.html',   color: '#0ea5e9' },
+    { name: 'Sauces',   url: 'taco-bell-sauces.html',   color: '#dc2626' },
+    { name: 'Slogans',  url: 'taco-bell-slogans.html',  color: '#702082' },
+    { name: 'Menus',    url: 'taco-bell-menus.html',    color: '#6d28d9' }
+  ],
+  sections: [
+    { id: 'overview',  label: 'Overview' },
+    { id: 'catalogue',  label: 'Full catalogue' },
+    { id: 'origin',     label: 'Concept & origin' },
+    { id: 'marketing',  label: 'Marketing & sodium paradox' },
+    { id: 'modifier',   label: 'Fresco Style modifier' },
+    { id: 'retirement', label: 'Retirement' }
+  ]
+};
+</script>
+{% endraw %}
