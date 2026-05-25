@@ -235,11 +235,7 @@
     text-shadow:0 2px 8px rgba(0,0,0,.3);}
   .hm-hero-sub{margin-top:.2rem;font-size:.72rem;color:rgba(255,255,255,.82);}
   /* call-to-action button — replaces the old circle arrow */
-  .hm-hero-btn{position:relative;flex:none;display:inline-flex;align-items:center;
-    gap:.4rem;font-family:'JetBrains Mono',monospace;font-size:10px;
-    letter-spacing:.07em;text-transform:uppercase;white-space:nowrap;
-    color:var(--ink);background:#fff;padding:.6rem .8rem;border-radius:.4rem;
-    box-shadow:0 2px 8px rgba(0,0,0,.22);transition:transform .15s ease;}
+  .hm-hero-btn{position:relative;flex:none;display:inline-flex;align-items:center;gap:.4rem;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.07em;text-transform:uppercase;white-space:nowrap;color:#fff;background:rgba(255,255,255,.12);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.25);border-radius:6px;padding:.35rem .75rem;transition:background .15s;}
   .hm-hero:hover .hm-hero-btn{transform:translateX(3px);}
   .hm-hero-btn svg{width:.85rem;height:.85rem;}
   @media(max-width:639px){
@@ -1699,10 +1695,10 @@ const CATS = [
         grad:["#475569","#0f172a"], accent:"#64748b", icon:"archive",
         pageUrl:"taco-bell-discontinued-drinks.html",
         entries:[
-          {n:"Sangrita Blast",      iconKey:"sangrita", icon:"circle"},
-          {n:"Brisk Raspberry Tea", iconKey:"brisk",    icon:"circle"},
-          {n:"Pina Colada Frutista",iconKey:"pina",     icon:"circle"},
-          {n:"Spiked Lemonade",     iconKey:"spiked",   icon:"circle"},
+          {n:"Sangrita Blast",      iconKey:"sangrita", icon:"circle", pageUrl:"taco-bell-sangrita-blast.html"},
+          {n:"Brisk Raspberry Tea", iconKey:"brisk",    icon:"circle", pageUrl:"taco-bell-brisk-raspberry.html"},
+          {n:"Pina Colada Frutista",iconKey:"pina",     icon:"circle", pageUrl:"taco-bell-pina-colada-frutista.html"},
+          {n:"Spiked Lemonade",     iconKey:"spiked",   icon:"circle", pageUrl:"taco-bell-spiked-lemonade.html"},
         ]},
     ]},
   { name:"Sauces", sub:"Mild, Hot, Fire, Diablo.", icon:"flame", count:9, iconKey:"sauces",
@@ -1842,14 +1838,14 @@ function buildPanel(cat){
     const slide = document.createElement("div");
     slide.className = "hm-slide";
     slide.innerHTML = `
-      <a href="#" class="hm-hero" style="background:linear-gradient(135deg,${grad[0]},${grad[1]})">
+      <a href="${isRoot ? (cat.pageUrl||'#') : (data.pageUrl||'#')}" class="hm-hero" style="background:linear-gradient(135deg,${grad[0]},${grad[1]})">
         <span class="hm-hero-halftone"></span>
         <div class="hm-hero-text">
           <span class="hm-hero-eye">${eyebrow}</span>
           <span class="hm-hero-title">${name}</span>
           <span class="hm-hero-sub">Overview, full catalogue &amp; every entry</span>
         </div>
-        <span class="hm-hero-btn">View parent page <i data-lucide="arrow-up-right"></i></span>
+        <span class="hm-hero-btn">View full parent page <i data-lucide="arrow-right"></i></span>
       </a>
       <div class="hm-stage">
         <button class="hm-arr hm-arr-l" aria-label="Scroll left"><i data-lucide="chevron-left"></i></button>
