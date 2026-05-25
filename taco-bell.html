@@ -1,14 +1,13 @@
----
-layout: default
-title: "Taco Bell — Visual Wiki · ViziWiki"
-body_class: "wiki-page"
----
-{% raw %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Spectral:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>
   :root{
     --background: oklch(0.972 0.012 85);
@@ -75,6 +74,280 @@ body_class: "wiki-page"
   .hover\:text-hp:hover{color:var(--hot-pink);}
   .hover\:border-foreground:hover{border-color:var(--foreground);}
   .hover\:border-foreground\/40:hover{border-color:color-mix(in oklab,var(--foreground) 40%, transparent);}
+
+/* ── Directory ── */
+
+  /* ── tile grid (same as carousel version) ── */
+  .dir-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;}
+  @media(min-width:640px){.dir-grid{grid-template-columns:repeat(3,1fr);}}
+
+  .dir-tile{
+    position:relative;display:block;width:100%;text-align:left;
+    border:0;padding:0;margin:0;cursor:pointer;color:#fff;font-family:inherit;
+    border-radius:.55rem;overflow:hidden;aspect-ratio:4/3;
+    transition:transform .2s ease,box-shadow .2s ease;
+  }
+  .dir-tile:hover{transform:translateY(-4px);}
+  .dir-tile:hover .dir-tile-icon{transform:rotate(6deg) scale(1.1);}
+  .dir-tile:focus-visible{outline:3px solid var(--hot-pink);outline-offset:2px;}
+  .dir-tile.is-open{transform:translateY(0);box-shadow:0 0 0 3px var(--ink),0 10px 24px rgba(0,0,0,.22);}
+  .dir-tile-halftone{position:absolute;inset:0;opacity:.2;mix-blend-mode:overlay;
+    background-image:radial-gradient(var(--hot-pink) 1.4px,transparent 1.6px);background-size:10px 10px;pointer-events:none;}
+  .dir-tile-icon{position:absolute;right:-8px;bottom:-8px;width:4.675rem;height:4.675rem;
+    color:rgba(255,255,255,.9);transform:rotate(12deg);filter:drop-shadow(0 4px 8px rgba(0,0,0,.25));
+    transition:transform .3s ease;pointer-events:none;}
+  .dir-tile:hover .dir-tile-icon{transform:rotate(6deg) scale(1.1);}
+  /* ── D3 tile layout ── */
+  .dir-tile-body{position:absolute;inset:0;padding:.7rem 4.2rem .65rem .75rem;display:flex;flex-direction:column;min-height:0;}
+  .dir-tile-name{font-family:'Fraunces',serif;font-weight:600;font-size:1.35rem;line-height:1.05;letter-spacing:-.02em;}
+  .dir-tile-pill{display:inline-flex;align-items:center;gap:.3rem;margin-top:.28rem;width:fit-content;
+    background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.28);
+    border-radius:999px;padding:2px 8px;
+    font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85);}
+  .dir-tile-pill svg{width:.6rem;height:.6rem;}
+  .dir-tile-divider{height:1px;background:rgba(255,255,255,.22);margin:.42rem 0;flex-shrink:0;}
+  .dir-tile-sub{font-family:'Spectral',Georgia,serif;font-size:.8rem;color:rgba(255,255,255,.82);line-height:1.5;flex:1;}
+  .dir-tile-fold{position:absolute;bottom:0;left:0;width:0;height:0;border-style:solid;
+    border-width:0 3rem 3rem 0;
+    border-color:transparent transparent rgba(0,0,0,.42) transparent;
+    transition:border-color .2s;}
+  .dir-tile.is-open .dir-tile-fold{border-color:transparent transparent var(--ink) transparent;}
+  .dir-tile-fold-chev{position:absolute;bottom:.28rem;left:.28rem;
+    width:1rem;height:1rem;display:grid;place-items:center;color:rgba(255,255,255,.9);}
+  .dir-tile-fold-chev svg{width:.75rem;height:.75rem;transition:transform .3s ease;}
+  .dir-tile.is-open .dir-tile-fold-chev svg{transform:rotate(180deg);}
+  @media(max-width:639px){
+    .dir-tile-name{font-size:.92rem;}
+    .dir-tile-sub{font-size:.64rem;}
+    .dir-tile-fold{border-width:0 2rem 2rem 0;}
+    .dir-tile-fold-chev{bottom:.2rem;left:.2rem;width:.85rem;height:.85rem;}
+    .dir-tile-fold-chev svg{width:.65rem;height:.65rem;}
+    .dir-tile-body{padding:.6rem 3.6rem 3rem .65rem;}
+    .dir-tile-icon{width:3.57rem;height:3.57rem;}
+  }
+
+  /* ── accordion panel wrapper ── */
+  .dir-panelwrap{grid-column:1/-1;position:relative;
+    display:grid;grid-template-rows:0fr;transition:grid-template-rows .34s cubic-bezier(.4,0,.2,1);}
+  .dir-panelwrap.is-open{grid-template-rows:1fr;}
+  .dir-panelwrap.is-fast{transition:grid-template-rows .184s cubic-bezier(.4,0,.2,1);}
+  .dir-clip{overflow:hidden;min-height:0;}
+
+  /* caret pointing up from panel to the clicked tile */
+  .dir-caret{position:absolute;top:-9px;left:50%;transform:translateX(-50%);
+    width:0;height:0;border-left:11px solid transparent;border-right:11px solid transparent;
+    border-bottom:11px solid var(--ink);z-index:2;transition:left .2s ease;}
+  .dir-caret::after{content:"";position:absolute;left:-8px;top:3px;
+    border-left:8px solid transparent;border-right:8px solid transparent;
+    border-bottom:8px solid var(--cat-accent,#000);}
+
+  /* panel card itself */
+  .dir-panel{position:relative;border:2px solid var(--ink);border-radius:.65rem;
+    background:var(--card);overflow:hidden;box-shadow:5px 5px 0 0 var(--ink);}
+  @media(max-width:639px){.dir-panel{box-shadow:3px 3px 0 0 var(--ink);}}
+  .dir-accentbar{height:5px;background:var(--cat-accent,#000);}
+
+  /* panel header */
+  .dir-phead{display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;
+    padding:.85rem 1rem;border-bottom:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);}
+  .dir-pchip{width:2.25rem;height:2.25rem;border-radius:.45rem;display:grid;place-items:center;flex:none;color:#fff;overflow:hidden;} .dir-pchip svg{width:2.25rem !important;height:2.25rem !important;}
+  .dir-pchip svg{width:1.05rem;height:1.05rem;}
+  .dir-ptitle{font-family:'Fraunces',serif;font-weight:600;font-size:1.15rem;line-height:1;letter-spacing:-.02em;}
+  .dir-pmeta{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.13em;
+    text-transform:uppercase;color:var(--muted-foreground);margin-top:.18rem;}
+  .dir-pspacer{flex:1;}
+  .dir-popen{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    text-decoration:none;color:#fff;background:var(--cat-accent,#000);padding:.45rem .7rem;border-radius:.35rem;
+    white-space:nowrap;transition:filter .15s;}
+  .dir-popen:hover{filter:brightness(1.12);}
+  .dir-pclose{width:1.85rem;height:1.85rem;border-radius:.4rem;border:1.5px solid color-mix(in oklab,var(--foreground) 22%,transparent);
+    background:transparent;cursor:pointer;display:grid;place-items:center;color:var(--muted-foreground);
+    transition:background .15s,color .15s;}
+  .dir-pclose:hover{background:var(--secondary);color:var(--foreground);}
+  .dir-pclose svg{width:1rem;height:1rem;}
+
+  /* mobile panel header: open button goes full-width on its own row */
+  @media(max-width:639px){
+    .dir-phead{padding:.65rem .75rem;gap:.4rem .5rem;}
+    .dir-pchip{width:1.75rem;height:1.75rem;border-radius:.38rem;overflow:hidden;}
+    .dir-pchip svg{width:.85rem;height:.85rem;}
+    .dir-ptitle{font-size:.95rem;}
+    .dir-pmeta{font-size:8.5px;}
+    .dir-pspacer{display:none;}
+    .dir-pclose{margin-left:auto;}
+    .dir-popen{order:99;flex-basis:100%;text-align:center;font-size:9px;padding:.38rem .5rem;}
+  }
+
+  /* ── HOME-SCREEN GRID PANEL BODY ── */
+  .hm-body{display:flex;flex-direction:column;overflow:hidden;}
+
+  /* ── slides track: two panes side-by-side; body clips to one ── */
+  .hm-slides{display:flex;width:200%;
+    transition:transform .38s cubic-bezier(.4,0,.2,1);}
+  .hm-slide{flex:0 0 50%;min-width:0;display:flex;flex-direction:column;}
+
+  /* folder (sub-category) icon cell — 2×2 mini icon grid inside the squircle */
+  .hm-folder-btn{border:0;background:transparent;font-family:inherit;cursor:pointer;}
+  .hm-folder-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:3px;
+    padding:10px;width:100%;height:100%;box-sizing:border-box;
+  }
+  .hm-folder-mini{
+    background:rgba(255,255,255,.28);border-radius:3px;
+    display:grid;place-items:center;
+  }
+  .hm-folder-mini svg{width:12px;height:12px;color:#fff;}
+
+  /* back-navigation button in the panel header (shown when in a sub-view) */
+  .dir-pback{
+    width:2rem;height:2rem;flex:none;border-radius:.45rem;cursor:pointer;
+    display:grid;place-items:center;
+    background:color-mix(in oklab,var(--foreground) 8%,transparent);
+    border:1.5px solid color-mix(in oklab,var(--foreground) 20%,transparent);
+    color:var(--foreground);transition:background .15s,border-color .15s;
+  }
+  .dir-pback:hover{
+    background:color-mix(in oklab,var(--foreground) 14%,transparent);
+    border-color:color-mix(in oklab,var(--foreground) 30%,transparent);
+  }
+  .dir-pback svg{width:1rem;height:1rem;}
+
+  /* ── category-page hero banner — anchored at the top of the drawer,
+     reuses the .dir-tile gradient + halftone language ── */
+  .hm-hero{
+    position:relative;display:flex;align-items:center;gap:1rem;
+    margin:16px 16px 6px;min-height:84px;padding:.8rem 1.1rem;
+    border-radius:.55rem;overflow:hidden;text-decoration:none;color:#fff;
+    box-shadow:0 4px 14px rgba(0,0,0,.18);
+    transition:transform .18s ease,box-shadow .18s ease;
+  }
+  .hm-hero:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.24);}
+  .hm-hero:active{transform:translateY(-1px);}
+  .hm-hero:focus-visible{outline:3px solid var(--hot-pink);outline-offset:2px;}
+  .hm-hero-halftone{position:absolute;inset:0;opacity:.22;mix-blend-mode:overlay;
+    background-image:radial-gradient(var(--hot-pink) 1.4px,transparent 1.6px);
+    background-size:10px 10px;pointer-events:none;}
+  .hm-hero-text{position:relative;flex:1;min-width:0;display:flex;flex-direction:column;}
+  .hm-hero-eye{font-family:'JetBrains Mono',monospace;font-size:9px;
+    letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.82);}
+  .hm-hero-title{font-family:'Fraunces',serif;font-weight:600;
+    font-size:1.4rem;line-height:1.05;letter-spacing:-.02em;margin-top:.1rem;
+    text-shadow:0 2px 8px rgba(0,0,0,.3);}
+  .hm-hero-sub{margin-top:.2rem;font-size:.72rem;color:rgba(255,255,255,.82);}
+  /* call-to-action button — replaces the old circle arrow */
+  .hm-hero-btn{position:relative;flex:none;display:inline-flex;align-items:center;
+    gap:.4rem;font-family:'JetBrains Mono',monospace;font-size:10px;
+    letter-spacing:.07em;text-transform:uppercase;white-space:nowrap;
+    color:var(--ink);background:#fff;padding:.6rem .8rem;border-radius:.4rem;
+    box-shadow:0 2px 8px rgba(0,0,0,.22);transition:transform .15s ease;}
+  .hm-hero:hover .hm-hero-btn{transform:translateX(3px);}
+  .hm-hero-btn svg{width:.85rem;height:.85rem;}
+  @media(max-width:639px){
+    .hm-hero{flex-wrap:wrap;margin:12px 12px 4px;min-height:0;padding:.7rem .8rem;}
+    .hm-hero-text{flex-basis:100%;}
+    .hm-hero-title{font-size:1.15rem;}
+    .hm-hero-sub{font-size:.66rem;}
+    .hm-hero-btn{flex-basis:100%;justify-content:center;margin-top:.6rem;padding:.55rem;}
+  }
+
+  /* ── 2-ROW HORIZONTAL-SCROLL ICON STRIP ──
+     every entry flows top→bottom then rightward; the strip scrolls
+     sideways while the hero banner above stays anchored. */
+  .hm-scroll{
+    display:flex;overflow-x:auto;overflow-y:hidden;
+    scroll-behavior:smooth;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none;-ms-overflow-style:none;
+  }
+  .hm-scroll::-webkit-scrollbar{display:none;}
+
+  .hm-strip{
+    flex:none;
+    display:grid;grid-auto-flow:row;grid-auto-rows:auto;
+    grid-template-columns:repeat(1,88px); /* JS overrides this */
+    gap:10px 6px;padding:22px 52px 14px 52px;
+  }
+  @media(max-width:639px){
+    .hm-strip{padding:16px 14px 12px;gap:8px 4px;
+      grid-template-columns:repeat(1,76px); /* JS overrides */
+    }
+  }
+
+  /* individual icon cell (link) */
+  .hm-cell{display:flex;flex-direction:column;align-items:center;gap:6px;
+    text-decoration:none;color:var(--foreground);
+    padding:6px 4px 8px;border-radius:.65rem;
+    transition:background .12s ease;}
+  .hm-cell:hover{background:color-mix(in oklab,var(--foreground) 7%,transparent);}
+  .hm-cell:active{background:color-mix(in oklab,var(--foreground) 11%,transparent);}
+  @media(max-width:639px){.hm-cell{gap:5px;padding:5px 3px 7px;border-radius:.5rem;}}
+
+  /* the icon tile — rounded square, iOS squircle-ish */
+  .hm-icon{
+    width:68px;height:68px;flex:none;border-radius:20px;
+    display:grid;place-items:center;
+    box-shadow:0 3px 10px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.28);
+    transition:transform .12s ease,box-shadow .12s ease;
+  }
+  .hm-cell:hover .hm-icon{transform:scale(1.07);box-shadow:0 6px 18px rgba(0,0,0,.26),inset 0 1px 0 rgba(255,255,255,.28);}
+  .hm-cell:active .hm-icon{transform:scale(.93);}
+  @media(max-width:639px){.hm-icon{width:58px;height:58px;border-radius:17px;} .hm-icon[style*='width:68px']{width:58px !important;height:58px !important;}}
+
+  .hm-icon svg{width:32px;height:32px;color:#fff;stroke-width:1.5;}
+  @media(max-width:639px){.hm-icon svg{width:26px;height:26px;}}
+
+  /* the name label below the icon */
+  .hm-name{
+    font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.02em;
+    text-align:center;line-height:1.3;max-width:84px;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+    color:var(--foreground);
+  }
+  @media(max-width:639px){.hm-name{font-size:8.5px;max-width:72px;}}
+
+  /* ── scroll controls ── */
+  /* stage wraps the strip so the scroll arrows sit outside the scroll clip */
+  .hm-stage{position:relative;}
+
+  /* scroll arrows — desktop only, flank the strip, vertically centred.
+     Shown only when the strip overflows; the spent direction dims.
+     Mobile scrolls by swipe instead. */
+  .hm-arr{position:absolute;top:50%;transform:translateY(-50%);
+    width:2.2rem;height:2.2rem;border-radius:999px;z-index:3;
+    border:2px solid var(--ink);background:var(--card);cursor:pointer;
+    display:grid;place-items:center;box-shadow:2px 2px 0 0 var(--ink);
+    transition:opacity .18s,background .12s,transform .1s;}
+  .hm-arr:hover:not([disabled]){background:var(--secondary);}
+  .hm-arr:active:not([disabled]){transform:translateY(-50%) scale(.9);}
+  .hm-arr[disabled]{opacity:.22;pointer-events:none;box-shadow:none;}
+  .hm-arr svg{width:1rem;height:1rem;color:var(--ink);stroke-width:2.6;}
+  .hm-arr-l{left:6px;}
+  .hm-arr-r{right:6px;}
+  @media(max-width:639px){.hm-arr{display:none;}}  /* use swipe on mobile */
+
+  /* mockup ribbon */
+  .mock-ribbon{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;}
+
+  /* hero stat 4-col → 2-col on mobile */
+  @media(max-width:639px){
+    #heroStats{grid-template-columns:repeat(2,1fr);}
+    #breadcrumbInner{overflow-x:auto;white-space:nowrap;}
+    #dirSection p{font-size:.82rem;}
+  }
+
+
+  /* ── Custom bank icon cells ── */
+  .hm-icon-custom{
+    width:68px;height:68px;flex:none;
+    display:block;overflow:hidden;border-radius:0;
+    transition:transform .12s ease;
+  }
+  .hm-icon-custom img{width:68px;height:68px;display:block;}
+  .hm-cell:hover .hm-icon-custom{transform:scale(1.07);}
+  .hm-cell:active .hm-icon-custom{transform:scale(.93);}
+  @media(max-width:639px){
+    .hm-icon-custom{width:58px;height:58px;}
+    .hm-icon-custom img{width:58px;height:58px;}
+  }
 </style>
 <style>
   /* Keep Loveable's sticky filter row below the main-bar. */
@@ -221,99 +494,17 @@ body_class: "wiki-page"
   </div>
 </section>
 
-<section class="mx-auto max-w-[1500px] px-6 py-12">
+<!-- ── BROWSE THE WIKI — home-screen directory ── -->
+<section id="dirSection" class="mx-auto max-w-[1500px] px-6 py-12">
   <div class="mb-6 flex items-baseline justify-between">
     <div>
-      <div class="font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground">▸ Index</div>
+      <div class="font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground">▸ Directory</div>
       <h2 id="browse" class="font-display text-3xl font-semibold">Browse the wiki</h2>
     </div>
-    <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">9 sections</span>
+    <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">10 sections</span>
   </div>
-  <p class="mb-5 max-w-3xl text-sm text-muted-foreground">Each tile is the doorway into that category's full deep-dive — every variant, every reformulation, every discontinued cousin. Start anywhere.</p>
-
-  <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
-    <a href="#" class="group relative aspect-[16/9] cursor-pointer overflow-hidden rounded-md bg-gradient-to-br from-amber-500 to-orange-700 transition-transform hover:-translate-y-1">
-      <div class="absolute inset-0 halftone opacity-20 mix-blend-overlay"></div>
-      <i data-lucide="beef" class="pointer-events-none absolute -bottom-1 -right-1 sm:-bottom-6 sm:-right-6 h-14 w-14 sm:h-44 sm:w-44 rotate-12 text-white/90 drop-shadow-lg transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110" style="stroke-width:1.25"></i>
-      <div class="absolute left-2 top-2 sm:left-4 sm:top-4 font-mono-acc text-[9px] uppercase tracking-[0.2em] text-white/80">38 entries</div>
-      <div class="absolute bottom-2 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4">
-        <div class="font-display text-lg sm:text-3xl font-semibold leading-tight text-white drop-shadow">Tacos</div>
-        <div class="mt-1 text-[10px] sm:text-sm text-white/80">Crunchy, soft, supreme, Doritos.</div>
-      </div>
-    </a>
-    <a href="#" class="group relative aspect-[16/9] cursor-pointer overflow-hidden rounded-md bg-gradient-to-br from-rose-500 to-fuchsia-800 transition-transform hover:-translate-y-1">
-      <div class="absolute inset-0 halftone opacity-20 mix-blend-overlay"></div>
-      <i data-lucide="soup" class="pointer-events-none absolute -bottom-1 -right-1 sm:-bottom-6 sm:-right-6 h-14 w-14 sm:h-44 sm:w-44 rotate-12 text-white/90 drop-shadow-lg transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110" style="stroke-width:1.25"></i>
-      <div class="absolute left-2 top-2 sm:left-4 sm:top-4 font-mono-acc text-[9px] uppercase tracking-[0.2em] text-white/80">27 entries</div>
-      <div class="absolute bottom-2 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4">
-        <div class="font-display text-lg sm:text-3xl font-semibold leading-tight text-white drop-shadow">Burritos</div>
-        <div class="mt-1 text-[10px] sm:text-sm text-white/80">Bean, beef, 7-Layer, Quesarito.</div>
-      </div>
-    </a>
-    <a href="#" class="group relative aspect-[16/9] cursor-pointer overflow-hidden rounded-md bg-gradient-to-br from-fuchsia-500 to-purple-800 transition-transform hover:-translate-y-1">
-      <div class="absolute inset-0 halftone opacity-20 mix-blend-overlay"></div>
-      <i data-lucide="sparkles" class="pointer-events-none absolute -bottom-1 -right-1 sm:-bottom-6 sm:-right-6 h-14 w-14 sm:h-44 sm:w-44 rotate-12 text-white/90 drop-shadow-lg transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110" style="stroke-width:1.25"></i>
-      <div class="absolute left-2 top-2 sm:left-4 sm:top-4 font-mono-acc text-[9px] uppercase tracking-[0.2em] text-white/80">14 entries</div>
-      <div class="absolute bottom-2 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4">
-        <div class="font-display text-lg sm:text-3xl font-semibold leading-tight text-white drop-shadow">Crunchwraps & Co</div>
-        <div class="mt-1 text-[10px] sm:text-sm text-white/80">Crunchwrap Supreme, Mexican Pizza.</div>
-      </div>
-    </a>
-    <a href="#" class="group relative aspect-[16/9] cursor-pointer overflow-hidden rounded-md bg-gradient-to-br from-yellow-400 to-amber-700 transition-transform hover:-translate-y-1">
-      <div class="absolute inset-0 halftone opacity-20 mix-blend-overlay"></div>
-      <i data-lucide="salad" class="pointer-events-none absolute -bottom-1 -right-1 sm:-bottom-6 sm:-right-6 h-14 w-14 sm:h-44 sm:w-44 rotate-12 text-white/90 drop-shadow-lg transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110" style="stroke-width:1.25"></i>
-      <div class="absolute left-2 top-2 sm:left-4 sm:top-4 font-mono-acc text-[9px] uppercase tracking-[0.2em] text-white/80">19 entries</div>
-      <div class="absolute bottom-2 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4">
-        <div class="font-display text-lg sm:text-3xl font-semibold leading-tight text-white drop-shadow">Nachos & Sides</div>
-        <div class="mt-1 text-[10px] sm:text-sm text-white/80">BellGrande, Fries, Cinnamon Twists.</div>
-      </div>
-    </a>
-    <a href="taco-bell-drinks.html" class="group relative aspect-[16/9] cursor-pointer overflow-hidden rounded-md bg-gradient-to-br from-cyan-400 to-blue-800 transition-transform hover:-translate-y-1">
-      <div class="absolute inset-0 halftone opacity-20 mix-blend-overlay"></div>
-      <i data-lucide="cup-soda" class="pointer-events-none absolute -bottom-1 -right-1 sm:-bottom-6 sm:-right-6 h-14 w-14 sm:h-44 sm:w-44 rotate-12 text-white/90 drop-shadow-lg transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110" style="stroke-width:1.25"></i>
-      <div class="absolute left-2 top-2 sm:left-4 sm:top-4 font-mono-acc text-[9px] uppercase tracking-[0.2em] text-white/80">22 entries</div>
-      <div class="absolute bottom-2 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4">
-        <div class="font-display text-lg sm:text-3xl font-semibold leading-tight text-white drop-shadow">Drinks</div>
-        <div class="mt-1 text-[10px] sm:text-sm text-white/80">Baja Blast, freezes, Pepsi machine.</div>
-      </div>
-    </a>
-    <a href="taco-bell-sauces.html" class="group relative aspect-[16/9] cursor-pointer overflow-hidden rounded-md bg-gradient-to-br from-red-500 to-rose-900 transition-transform hover:-translate-y-1">
-      <div class="absolute inset-0 halftone opacity-20 mix-blend-overlay"></div>
-      <i data-lucide="flame" class="pointer-events-none absolute -bottom-1 -right-1 sm:-bottom-6 sm:-right-6 h-14 w-14 sm:h-44 sm:w-44 rotate-12 text-white/90 drop-shadow-lg transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110" style="stroke-width:1.25"></i>
-      <div class="absolute left-2 top-2 sm:left-4 sm:top-4 font-mono-acc text-[9px] uppercase tracking-[0.2em] text-white/80">9 entries</div>
-      <div class="absolute bottom-2 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4">
-        <div class="font-display text-lg sm:text-3xl font-semibold leading-tight text-white drop-shadow">Sauces</div>
-        <div class="mt-1 text-[10px] sm:text-sm text-white/80">Mild, Hot, Fire, Diablo, the quotes.</div>
-      </div>
-    </a>
-    <a href="#" class="group relative aspect-[16/9] cursor-pointer overflow-hidden rounded-md bg-gradient-to-br from-purple-500 to-indigo-900 transition-transform hover:-translate-y-1">
-      <div class="absolute inset-0 halftone opacity-20 mix-blend-overlay"></div>
-      <i data-lucide="clock" class="pointer-events-none absolute -bottom-1 -right-1 sm:-bottom-6 sm:-right-6 h-14 w-14 sm:h-44 sm:w-44 rotate-12 text-white/90 drop-shadow-lg transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110" style="stroke-width:1.25"></i>
-      <div class="absolute left-2 top-2 sm:left-4 sm:top-4 font-mono-acc text-[9px] uppercase tracking-[0.2em] text-white/80">184 entries</div>
-      <div class="absolute bottom-2 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4">
-        <div class="font-display text-lg sm:text-3xl font-semibold leading-tight text-white drop-shadow">Limited Time</div>
-        <div class="mt-1 text-[10px] sm:text-sm text-white/80">Volcano, Caramel Apple, Lava Sauce.</div>
-      </div>
-    </a>
-    <a href="#" class="group relative aspect-[16/9] cursor-pointer overflow-hidden rounded-md bg-gradient-to-br from-amber-400 to-rose-700 transition-transform hover:-translate-y-1">
-      <div class="absolute inset-0 halftone opacity-20 mix-blend-overlay"></div>
-      <i data-lucide="drumstick" class="pointer-events-none absolute -bottom-1 -right-1 sm:-bottom-6 sm:-right-6 h-14 w-14 sm:h-44 sm:w-44 rotate-12 text-white/90 drop-shadow-lg transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110" style="stroke-width:1.25"></i>
-      <div class="absolute left-2 top-2 sm:left-4 sm:top-4 font-mono-acc text-[9px] uppercase tracking-[0.2em] text-white/80">16 entries</div>
-      <div class="absolute bottom-2 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4">
-        <div class="font-display text-lg sm:text-3xl font-semibold leading-tight text-white drop-shadow">Breakfast</div>
-        <div class="mt-1 text-[10px] sm:text-sm text-white/80">Crunchwrap, Cinnabon Delights.</div>
-      </div>
-    </a>
-    <a href="#" class="group relative aspect-[16/9] cursor-pointer overflow-hidden rounded-md bg-gradient-to-br from-orange-400 to-rose-800 transition-transform hover:-translate-y-1">
-      <div class="absolute inset-0 halftone opacity-20 mix-blend-overlay"></div>
-      <i data-lucide="cookie" class="pointer-events-none absolute -bottom-1 -right-1 sm:-bottom-6 sm:-right-6 h-14 w-14 sm:h-44 sm:w-44 rotate-12 text-white/90 drop-shadow-lg transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110" style="stroke-width:1.25"></i>
-      <div class="absolute left-2 top-2 sm:left-4 sm:top-4 font-mono-acc text-[9px] uppercase tracking-[0.2em] text-white/80">12 entries</div>
-      <div class="absolute bottom-2 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4">
-        <div class="font-display text-lg sm:text-3xl font-semibold leading-tight text-white drop-shadow">Desserts</div>
-        <div class="mt-1 text-[10px] sm:text-sm text-white/80">Cinnamon Twists, Caramel Apple Empanada.</div>
-      </div>
-    </a>
-  </div>
+  <p class="mb-5 max-w-3xl text-sm text-muted-foreground">This wiki has 10 main category pages and 1,284 total entries. Tap any tile to open its drawer and jump straight to an entry, or visit the full category page.</p>
+  <div class="dir-grid" id="dirGrid"></div>
 </section>
 
 <section class="border-y border-foreground/15 bg-secondary/40">
@@ -1388,4 +1579,513 @@ window.WIKI_TOC = {
   ]
 };
 </script>
-{% endraw %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+/* ============================================================
+   CATEGORY + ENTRY DATA
+   icon = lucide icon name for the entry's own page icon
+   (stub entries use "file" as placeholder)
+   Tacos (12 entries) + Limited Time (13 entries) = 2 pages each
+============================================================ */
+
+/* ── Row-first 2-row strip layout ── */
+
+
+/* ── Scroll fade state ── */
+function updateScrollFade(el) {
+  if (!el) return;
+  var atStart = el.scrollLeft <= 2;
+  var atEnd   = el.scrollLeft + el.clientWidth >= el.scrollWidth - 2;
+  el.classList.toggle('at-start', atStart);
+  el.classList.toggle('at-end',   atEnd);
+}
+
+function syncStripColumns(scrollEl) {
+  var stripEl = scrollEl ? scrollEl.querySelector('.hm-strip') : null;
+  if (!stripEl) return;
+  var cells = stripEl.querySelectorAll('.hm-cell');
+  var n = cells.length;
+  if (!n) return;
+  var isMob  = window.matchMedia('(max-width:639px)').matches;
+  var itemW  = isMob ? 76 : 88;
+  var gapW   = isMob ?  4 :  6;
+  var padLR  = isMob ? 28 : 104;
+  var avail  = Math.max(scrollEl.clientWidth - padLR, itemW);
+  var perRow = Math.max(1, Math.floor((avail + gapW) / (itemW + gapW)));
+  var cols   = (n <= perRow) ? n : Math.ceil(n / 2);
+  stripEl.style.gridTemplateColumns = 'repeat(' + cols + ', ' + itemW + 'px)';
+  updateScrollFade(scrollEl);
+  scrollEl.removeEventListener('scroll', scrollEl._fadeHandler);
+  scrollEl._fadeHandler = function() { updateScrollFade(scrollEl); };
+  scrollEl.addEventListener('scroll', scrollEl._fadeHandler);
+}
+
+const ICON_BANK = {
+  sauces: "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTSA3IDcgTCA4IDUgTCA5IDcgTCAxMCA1IEwgMTEgNyBMIDEyIDUgTCAxMyA3IEwgMTQgNSBMIDE1IDcgTCAxNiA1IEwgMTcgNyBMIDE4IDUgTCAxOSA3IEwgMjAgNSBMIDIxIDcgTCAyMiA1IEwgMjMgNyBMIDI0IDUgTCAyNSA3IEwgMjUgMjggTCA3IDI4IFoiIGZpbGw9IiNkODM0MjMiLz48cmVjdCB4PSIxMSIgeT0iMTQiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxLjUiIHJ4PSIwLjciIGZpbGw9IiNmZGY4ZTciLz48cmVjdCB4PSIxMCIgeT0iMTkiIHdpZHRoPSIxMiIgaGVpZ2h0PSIxLjUiIHJ4PSIwLjciIGZpbGw9IiNmZGY4ZTciLz48L3N2Zz4=",
+  drinks: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHJ4PSIxMCIgZmlsbD0iIzE3MjU1NCIvPjxyZWN0IHg9IjM1IiB5PSI3IiB3aWR0aD0iMi42IiBoZWlnaHQ9IjM2IiByeD0iMS4zIiBmaWxsPSIjZGMyNjI2IiB0cmFuc2Zvcm09InJvdGF0ZSgtNyAzNi4zIDI1KSIvPjxwYXRoIGQ9Ik0yMi41IDMwIEMyNSAzMS41IDI4IDI4LjUgMzIgMzAgQzM2IDMxLjUgMzkuNSAyOSA0MS41IDMwIEwzOSA1MSBDMzguODUgNTIuOCAzNy40IDU0IDM1LjcgNTQgTDI4LjMgNTQgQzI2LjYgNTQgMjUuMTUgNTIuOCAyNSA1MSBaIiBmaWxsPSIjMjJkM2VlIi8+PHBhdGggZD0iTTIxLjUgMjIuNSBMMjUgNTEgQzI1LjE1IDUyLjggMjYuNiA1NCAyOC4zIDU0IEwzNS43IDU0IEMzNy40IDU0IDM4Ljg1IDUyLjggMzkgNTEgTDQyLjUgMjIuNSBaIiBmaWxsPSJyZ2JhKDIxMCwyMDgsMjAwLC40NSkiLz48cmVjdCB4PSIxOSIgeT0iMTgiIHdpZHRoPSIyNiIgaGVpZ2h0PSI0LjUiIHJ4PSIyLjI1IiBmaWxsPSJyZ2JhKDE5MCwxODgsMTgwLC43NSkiLz48L3N2Zz4=",
+  disco: "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjQgNjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgZmlsbD0ibm9uZSI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTAiIGZpbGw9IiMxNzI1NTQiLz48bGluZSB4MT0iMzYiIHkxPSI4IiB4Mj0iMzUiIHkyPSIxOCIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LC40KSIgc3Ryb2tlLXdpZHRoPSIxLjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWRhc2hhcnJheT0iMyAzIi8+PGxpbmUgeDE9IjE4IiB5MT0iMTkiIHgyPSI0NiIgeTI9IjE5IiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsLjQpIiBzdHJva2Utd2lkdGg9IjEuMiIgc3Ryb2tlLWRhc2hhcnJheT0iMyAzIi8+PGxpbmUgeDE9IjE4IiB5MT0iMTkiIHgyPSIyMSIgeTI9IjIzLjUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwuNCkiIHN0cm9rZS13aWR0aD0iMS4yIiBzdHJva2UtZGFzaGFycmF5PSIzIDMiLz48bGluZSB4MT0iNDYiIHkxPSIxOSIgeDI9IjQzIiB5Mj0iMjMuNSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LC40KSIgc3Ryb2tlLXdpZHRoPSIxLjIiIHN0cm9rZS1kYXNoYXJyYXk9IjMgMyIvPjxsaW5lIHgxPSIyMSIgeTE9IjIzLjUiIHgyPSI0MyIgeTI9IjIzLjUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwuNCkiIHN0cm9rZS13aWR0aD0iMS4yIiBzdHJva2UtZGFzaGFycmF5PSIzIDMiLz48bGluZSB4MT0iMjEiIHkxPSIyMy41IiB4Mj0iMjYiIHkyPSI1NCIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LC40KSIgc3Ryb2tlLXdpZHRoPSIxLjIiIHN0cm9rZS1kYXNoYXJyYXk9IjMgMyIvPjxsaW5lIHgxPSI0MyIgeTE9IjIzLjUiIHgyPSIzOCIgeTI9IjU0IiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsLjQpIiBzdHJva2Utd2lkdGg9IjEuMiIgc3Ryb2tlLWRhc2hhcnJheT0iMyAzIi8+PHBhdGggZD0iTTI2IDU0IEMyNiA1NiAyOSA1Ny41IDMyIDU3LjUgQzM1IDU3LjUgMzggNTYgMzggNTQiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwuNCkiIHN0cm9rZS13aWR0aD0iMS4yIiBzdHJva2UtZGFzaGFycmF5PSIzIDMiIGZpbGw9Im5vbmUiLz48L3N2Zz4=",
+  slogans: "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzcwMjA4MiIvPjxwYXRoIGQ9Ik02IDggQzYgNi45IDYuOSA2IDggNiBMMjQgNiBDMjUuMSA2IDI2IDYuOSAyNiA4IEwyNiAxOSBDMjYgMjAuMSAyNS4xIDIxIDI0IDIxIEwxMiAyMSBMOCAyNiBMOCAyMSBDNi45IDIxIDYgMjAuMSA2IDE5IFoiIGZpbGw9IiNGRUQxNDEiLz48dGV4dCB4PSIxMyIgeT0iMTciIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLHNlcmlmIiBmb250LXNpemU9IjkiIGZvbnQtc3R5bGU9Iml0YWxpYyIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzcwMjA4MiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+IjwvdGV4dD48L3N2Zz4=",
+  sangrita: "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgODAgODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgZmlsbD0ibm9uZSI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiByeD0iMTIiIGZpbGw9IiM0YzA1MTkiLz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9Imdfc2FuZ3JpdGEiIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZTExZDQ4Ii8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjODgxMzM3Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PGxpbmUgeDE9IjQzIiB5MT0iMTAiIHgyPSI0MSIgeTI9IjI4IiBzdHJva2U9IiNmYjcxODUiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHJlY3QgeD0iMjQiIHk9IjI2IiB3aWR0aD0iMzIiIGhlaWdodD0iNCIgcng9IjIiIGZpbGw9IiNiZTEyM2MiLz48cmVjdCB4PSIyMiIgeT0iMjkiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzIiByeD0iMS41IiBmaWxsPSIjOWYxMjM5Ii8+PHBhdGggZD0iTTI1LDMyTDI5LDY4QzI5LDcwIDM0LDcyIDQwLDcyQzQ2LDcyIDUxLDcwIDUxLDY4TDU1LDMyWiIgZmlsbD0idXJsKCNnX3NhbmdyaXRhKSIvPjxsaW5lIHgxPSIzMCIgeTE9IjM0IiB4Mj0iMzEiIHkyPSI2NiIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LC4xMikiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=",
+  brisk: "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgODAgODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgZmlsbD0ibm9uZSI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiByeD0iMTIiIGZpbGw9IiM1MDA3MjQiLz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImdfYnJpc2siIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZWM0ODk5Ii8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjODMxODQzIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PGxpbmUgeDE9IjQzIiB5MT0iMTAiIHgyPSI0MSIgeTI9IjI4IiBzdHJva2U9IiNmNDcyYjYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHJlY3QgeD0iMjQiIHk9IjI2IiB3aWR0aD0iMzIiIGhlaWdodD0iNCIgcng9IjIiIGZpbGw9IiM5ZDE3NGQiLz48cmVjdCB4PSIyMiIgeT0iMjkiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzIiByeD0iMS41IiBmaWxsPSIjYmUxODVkIi8+PHBhdGggZD0iTTI1LDMyTDI5LDY4QzI5LDcwIDM0LDcyIDQwLDcyQzQ2LDcyIDUxLDcwIDUxLDY4TDU1LDMyWiIgZmlsbD0idXJsKCNnX2JyaXNrKSIvPjxsaW5lIHgxPSIzMCIgeTE9IjM0IiB4Mj0iMzEiIHkyPSI2NiIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LC4xMikiIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=",
+  pina: "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgODAgODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgZmlsbD0ibm9uZSI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiByeD0iMTIiIGZpbGw9IiM3ODM1MGYiLz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImdfcGluYSIgeDE9IjAiIHkxPSIwIiB4Mj0iMCIgeTI9IjEiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmNTllMGIiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM5MjQwMGUiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cGF0aCBkPSJNMjQsMjRMMjgsNjRDMjgsNjcgMzMsNzAgNDAsNzBDNDcsNzAgNTIsNjcgNTIsNjRMNTYsMjRaIiBmaWxsPSJ1cmwoI2dfcGluYSkiLz48cmVjdCB4PSIzMCIgeT0iMTkiIHdpZHRoPSI2IiBoZWlnaHQ9IjYiIHJ4PSIxIiBmaWxsPSIjZmJiZjI0IiBvcGFjaXR5PSIuNyIgdHJhbnNmb3JtPSJyb3RhdGUoMTUgMzMgMjIpIi8+PHJlY3QgeD0iMzgiIHk9IjE3IiB3aWR0aD0iNSIgaGVpZ2h0PSI1IiByeD0iMSIgZmlsbD0iI2Y1OWUwYiIgb3BhY2l0eT0iLjYiLz48cmVjdCB4PSI0NSIgeT0iMjAiIHdpZHRoPSI1IiBoZWlnaHQ9IjUiIHJ4PSIxIiBmaWxsPSIjZmJiZjI0IiBvcGFjaXR5PSIuNSIvPjxsaW5lIHgxPSI0OCIgeTE9IjgiIHgyPSI0NSIgeTI9IjI0IiBzdHJva2U9IiNmYmJmMjQiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIG9wYWNpdHk9Ii43Ii8+PC9zdmc+",
+  spiked: "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgODAgODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgZmlsbD0ibm9uZSI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiByeD0iMTIiIGZpbGw9IiMxYTJlMDUiLz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9Imdfc3Bpa2VkIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzg0Y2MxNiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzM2NTMxNCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxsaW5lIHgxPSI0MyIgeTE9IjEwIiB4Mj0iNDEiIHkyPSIyOCIgc3Ryb2tlPSIjYTNlNjM1IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxyZWN0IHg9IjI0IiB5PSIyNiIgd2lkdGg9IjMyIiBoZWlnaHQ9IjQiIHJ4PSIyIiBmaWxsPSIjNGQ3YzBmIi8+PHJlY3QgeD0iMjIiIHk9IjI5IiB3aWR0aD0iMzYiIGhlaWdodD0iMyIgcng9IjEuNSIgZmlsbD0iIzY1YTMwZCIvPjxwYXRoIGQ9Ik0yNSwzMkwyOSw2OEMyOSw3MCAzNCw3MiA0MCw3MkM0Niw3MiA1MSw3MCA1MSw2OEw1NSwzMloiIGZpbGw9InVybCgjZ19zcGlrZWQpIi8+PGxpbmUgeDE9IjMwIiB5MT0iMzQiIHgyPSIzMSIgeTI9IjY2IiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsLjEyKSIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==",
+  cantina: "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzcwMjA4MiIvPjxyZWN0IHg9IjYiIHk9IjI0IiB3aWR0aD0iMjAiIGhlaWdodD0iMi41IiByeD0iMS4yNSIgZmlsbD0iI0ZFRDE0MSIvPjxwYXRoIGQ9Ik0xMCAyMSBRMTAgMTUuNSAxMyAxNS41IFExNiAxNS41IDE2IDEwIiBzdHJva2U9IiNGRUQxNDEiIHN0cm9rZS13aWR0aD0iMi4yIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMTYgMjEgUTE2IDE2IDE4LjUgMTYgUTIxIDE2IDIxIDExIiBzdHJva2U9IiNGRUQxNDEiIHN0cm9rZS13aWR0aD0iMi4yIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiIG9wYWNpdHk9Ii43Ii8+PHBhdGggZD0iTTIxIDIxIFEyMSAxNy41IDIzIDE3LjUgUTI1IDE3LjUgMjUgMTQiIHN0cm9rZT0iI0ZFRDE0MSIgc3Ryb2tlLXdpZHRoPSIyLjIiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgb3BhY2l0eT0iLjQiLz48L3N2Zz4=",
+  dollar: "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzcwMjA4MiIvPjxyZWN0IHg9IjQiIHk9IjkiIHdpZHRoPSIyNCIgaGVpZ2h0PSIxNCIgcng9IjIiIGZpbGw9IiNGRUQxNDEiLz48cmVjdCB4PSI0IiB5PSI5IiB3aWR0aD0iMjQiIGhlaWdodD0iMi41IiByeD0iMCIgZmlsbD0iI0ZFRDE0MSIgb3BhY2l0eT0iLjU1Ii8+PHJlY3QgeD0iNCIgeT0iMjAuNSIgd2lkdGg9IjI0IiBoZWlnaHQ9IjIuNSIgcng9IjAiIGZpbGw9IiNGRUQxNDEiIG9wYWNpdHk9Ii41NSIvPjxyZWN0IHg9IjYiIHk9IjEwIiB3aWR0aD0iMyIgaGVpZ2h0PSIyIiByeD0iMSIgZmlsbD0iIzcwMjA4MiIgb3BhY2l0eT0iLjQiLz48cmVjdCB4PSIyMyIgeT0iMTAiIHdpZHRoPSIzIiBoZWlnaHQ9IjIiIHJ4PSIxIiBmaWxsPSIjNzAyMDgyIiBvcGFjaXR5PSIuNCIvPjxyZWN0IHg9IjYiIHk9IjIwIiB3aWR0aD0iMyIgaGVpZ2h0PSIyIiByeD0iMSIgZmlsbD0iIzcwMjA4MiIgb3BhY2l0eT0iLjQiLz48cmVjdCB4PSIyMyIgeT0iMjAiIHdpZHRoPSIzIiBoZWlnaHQ9IjIiIHJ4PSIxIiBmaWxsPSIjNzAyMDgyIiBvcGFjaXR5PSIuNCIvPjx0ZXh0IHg9IjE2IiB5PSIxOC41IiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC1zaXplPSI4IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjNzAyMDgyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4kMjwvdGV4dD48L3N2Zz4=",
+  fresco: "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzcwMjA4MiIvPjxyZWN0IHg9IjE1IiB5PSIxMyIgd2lkdGg9IjIiIGhlaWdodD0iMTIiIHJ4PSIxIiBmaWxsPSIjRkVEMTQxIi8+PHBhdGggZD0iTTE2IDE3IFE4IDE1IDggNyBRMTYgMTEgMTYgMTd6IiBmaWxsPSIjRkVEMTQxIi8+PHBhdGggZD0iTTE2IDIwIFEyNCAxNyAyNSA5IFExNyAxNCAxNiAyMHoiIGZpbGw9IiNGRUQxNDEiIG9wYWNpdHk9Ii43NSIvPjxyZWN0IHg9IjkiIHk9IjI2IiB3aWR0aD0iMTQiIGhlaWdodD0iMiIgcng9IjEiIGZpbGw9IiNGRUQxNDEiIG9wYWNpdHk9Ii40NSIvPjwvc3ZnPg==",
+  menus: "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzcwMjA4MiIvPjxyZWN0IHg9IjQiIHk9IjciIHdpZHRoPSIyNCIgaGVpZ2h0PSIxNiIgcng9IjIiIGZpbGw9IiNGRUQxNDEiLz48cmVjdCB4PSI0IiB5PSI3IiB3aWR0aD0iMjQiIGhlaWdodD0iNCIgcng9IjIiIGZpbGw9IiNGRUQxNDEiIG9wYWNpdHk9Ii41NSIvPjxyZWN0IHg9IjciIHk9IjEwIiB3aWR0aD0iNSIgaGVpZ2h0PSIxLjUiIHJ4PSIuNzUiIGZpbGw9IiM3MDIwODIiIG9wYWNpdHk9Ii40Ii8+PHJlY3QgeD0iNyIgeT0iMTMuNSIgd2lkdGg9IjciIGhlaWdodD0iMS41IiByeD0iLjc1IiBmaWxsPSIjNzAyMDgyIiBvcGFjaXR5PSIuMzUiLz48cmVjdCB4PSI3IiB5PSIxNi41IiB3aWR0aD0iNSIgaGVpZ2h0PSIxLjUiIHJ4PSIuNzUiIGZpbGw9IiM3MDIwODIiIG9wYWNpdHk9Ii4zNSIvPjxyZWN0IHg9IjciIHk9IjE5LjUiIHdpZHRoPSI4IiBoZWlnaHQ9IjEuNSIgcng9Ii43NSIgZmlsbD0iIzcwMjA4MiIgb3BhY2l0eT0iLjM1Ii8+PHJlY3QgeD0iMTYiIHk9IjEzLjUiIHdpZHRoPSI2IiBoZWlnaHQ9IjEuNSIgcng9Ii43NSIgZmlsbD0iIzcwMjA4MiIgb3BhY2l0eT0iLjM1Ii8+PHJlY3QgeD0iMTYiIHk9IjE2LjUiIHdpZHRoPSI4IiBoZWlnaHQ9IjEuNSIgcng9Ii43NSIgZmlsbD0iIzcwMjA4MiIgb3BhY2l0eT0iLjM1Ii8+PHJlY3QgeD0iMTYiIHk9IjE5LjUiIHdpZHRoPSI1IiBoZWlnaHQ9IjEuNSIgcng9Ii43NSIgZmlsbD0iIzcwMjA4MiIgb3BhY2l0eT0iLjM1Ii8+PHJlY3QgeD0iMTMiIHk9IjIzIiB3aWR0aD0iNiIgaGVpZ2h0PSIzIiByeD0iMSIgZmlsbD0iI0ZFRDE0MSIgb3BhY2l0eT0iLjUiLz48L3N2Zz4=",
+  bigbell: "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzcwMjA4MiIvPjx0ZXh0IHg9IjE0IiB5PSIyMSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTciIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNGRUQxNDEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPsK9PC90ZXh0Pjx0ZXh0IHg9IjI5IiB5PSIyOCIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNGRUQxNDEiIHRleHQtYW5jaG9yPSJlbmQiPmxiLjwvdGV4dD48L3N2Zz4=",
+};
+
+
+const CATS = [
+  { name:"Tacos", sub:"Crunchy, soft, supreme, Doritos.", icon:"beef", count:38,
+    grad:["#f59e0b","#c2410c"], accent:"#ea580c",
+    entries:[
+      {n:"Crunchy Taco",                icon:"sandwich"},
+      {n:"Soft Taco",                   icon:"scroll"},
+      {n:"Doritos Locos Taco",          icon:"zap"},
+      {n:"Crunchy Taco Supreme",        icon:"star"},
+      {n:"Cantina Chicken Crispy Taco", icon:"leaf"},
+      {n:"Double Decker Taco",          icon:"copy"},
+      {n:"Volcano Taco",                icon:"flame"},
+      {n:"Spicy Potato Soft Taco",      icon:"circle-dot"},
+      {n:"Cheesy Gordita Crunch",    icon:"layers"},
+      {n:"Double Stacked Taco",         icon:"copy"},
+      {n:"Naked Chicken Chalupa",        icon:"drumstick"},
+      {n:"Steak Soft Taco",             icon:"beef"},
+      {n:"Chicken Chipotle Melt",        icon:"flame"},
+      {n:"Crispy Chicken Taco",          icon:"zap"},
+    ]},
+  { name:"Burritos", sub:"Bean, beef, 7-Layer, Quesarito.", icon:"soup", count:27,
+    grad:["#f43f5e","#86198f"], accent:"#e11d48",
+    entries:[
+      {n:"Bean Burrito",          icon:"circle"},
+      {n:"Beefy 5-Layer Burrito", icon:"layers"},
+      {n:"7-Layer Burrito",       icon:"layers"},
+      {n:"Quesarito",             icon:"hexagon"},
+      {n:"Grilled Cheese Burrito",icon:"flame"},
+    ]},
+  { name:"Crunchwraps & Co", sub:"Crunchwrap Supreme, Mexican Pizza.", icon:"sparkles", count:14,
+    grad:["#d946ef","#6b21a8"], accent:"#c026d3",
+    entries:[
+      {n:"Crunchwrap Supreme",  icon:"hexagon"},
+      {n:"Mexican Pizza",       icon:"pizza"},
+      {n:"Breakfast Crunchwrap",icon:"sunrise"},
+      {n:"Spicy Crunchwrap",    icon:"flame"},
+    ]},
+  { name:"Nachos & Sides", sub:"BellGrande, Fries, Twists.", icon:"salad", count:19,
+    grad:["#facc15","#b45309"], accent:"#d97706",
+    entries:[
+      {n:"Nachos BellGrande",     icon:"layers"},
+      {n:"Nacho Fries",           icon:"sparkles"},
+      {n:"Cinnamon Twists",       icon:"wind"},
+      {n:"Cheesy Fiesta Potatoes",icon:"star"},
+    ]},
+  { name:"Drinks", sub:"Baja Blast, freezes, Pepsi.", icon:"cup-soda", count:22, iconKey:"drinks",
+    grad:["#22d3ee","#1e40af"], accent:"#0891b2",
+    pageUrl:"taco-bell-drinks.html",
+    entries:[
+      {n:"Baja Blast",       icon:"droplets"},
+      {n:"Baja Blast Freeze",icon:"snowflake"},
+      {n:"Pepsi",            icon:"circle"},
+      {n:"Wild Strawberry",  icon:"star"},
+      {n:"Baja Blast Zero",      icon:"droplets"},
+      {n:"Wild Berry Frutista",   icon:"star"},
+      {n:"Mtn Dew Baja",          icon:"zap"},
+      {n:"Tropicana Lemonade",    icon:"sun"},
+      {n:"Sierra Mist",           icon:"wind"},
+      { n:"Discontinued Drinks", isFolder:true,
+        grad:["#475569","#0f172a"], accent:"#64748b", icon:"archive",
+        pageUrl:"taco-bell-discontinued-drinks.html",
+        entries:[
+          {n:"Sangrita Blast",      iconKey:"sangrita", icon:"circle"},
+          {n:"Brisk Raspberry Tea", iconKey:"brisk",    icon:"circle"},
+          {n:"Pina Colada Frutista",iconKey:"pina",     icon:"circle"},
+          {n:"Spiked Lemonade",     iconKey:"spiked",   icon:"circle"},
+        ]},
+    ]},
+  { name:"Sauces", sub:"Mild, Hot, Fire, Diablo.", icon:"flame", count:9, iconKey:"sauces",
+    grad:["#ef4444","#881337"], accent:"#dc2626",
+    pageUrl:"taco-bell-sauces.html",
+    entries:[
+      {n:"Mild",                icon:"thermometer"},
+      {n:"Hot",                 icon:"flame"},
+      {n:"Fire",                icon:"flame"},
+      {n:"Diablo",              icon:"skull"},
+      {n:"Verde",               icon:"leaf"},
+      {n:"Lava Sauce",          icon:"flame"},
+      {n:"Sauce-Packet Quotes", icon:"quote"},
+    ]},
+  { name:"Menus", sub:"Value, health, limited eras.", icon:"layout-list", iconKey:"menus", count:15,
+    grad:["#059669","#022c22"], accent:"#059669",
+    pageUrl:"taco-bell-menus.html",
+    entries:[
+      {n:"Menus Index",       iconKey:"menus",   icon:"grid-2x2", pageUrl:"taco-bell-menus.html"},
+      {n:"Cantina Chicken",   iconKey:"cantina", icon:"leaf",     pageUrl:"taco-bell-menu-cantina-chicken.html"},
+      {n:"$2 Meal Deals",     iconKey:"dollar",  icon:"tag",      pageUrl:"taco-bell-menu-2-dollar-deals.html"},
+      {n:"Fresco Menu",       iconKey:"fresco",  icon:"leaf",     pageUrl:"taco-bell-menu-fresco.html"},
+      {n:"Big Bell Value",    iconKey:"bigbell", icon:"tag",      pageUrl:"taco-bell-menu-big-bell-value.html"},
+      {n:"Luxe Value Menu",      icon:"tag",      pageUrl:"taco-bell-menu-luxe-value.html"},
+      {n:"Why Pay More Menu", icon:"circle-help"},
+      {n:"Volcano Menu",      icon:"flame"},
+      {n:"59/79/99 Value Menu",  icon:"tag"},
+      {n:"Border Lights Menu",   icon:"sun"},
+      {n:"Cantina Bell Menu",    icon:"star"},
+    ]},
+  { name:"Slogans", sub:"Live Mas, Think Outside the Bun.", icon:"megaphone", iconKey:"slogans", count:24,
+    grad:["#7c3aed","#3b0764"], accent:"#6d28d9",
+    pageUrl:"taco-bell-slogans.html",
+    entries:[
+      {n:"Live Mas",              icon:"heart"},
+      {n:"Think Outside the Bun", icon:"lightbulb"},
+      {n:"Yo Quiero Taco Bell",   icon:"dog"},
+      {n:"Fourth Meal",           icon:"moon"},
+      {n:"Dollar Cravings",       icon:"tag"},
+    ]},
+  { name:"Breakfast", sub:"Crunchwrap, Cinnabon Delights.", icon:"sunrise", count:16,
+    grad:["#fbbf24","#be123c"], accent:"#db5b1e",
+    entries:[
+      {n:"Breakfast Crunchwrap",icon:"hexagon"},
+      {n:"Cinnabon Delights",   icon:"circle"},
+      {n:"Breakfast Burrito",   icon:"scroll"},
+      {n:"Waffle Taco",         icon:"grid-2x2"},
+    ]},
+  { name:"Miscellaneous", sub:"Lore, mascots, oddities.", icon:"shapes", count:47,
+    grad:["#a21caf","#3b0764"], accent:"#a21caf",
+    entries:[
+      {n:"Glen Bell",         icon:"user"},
+      {n:"Taco Liberty Bell", icon:"bell"},
+      {n:"Taco Bell Hotel",   icon:"hotel"},
+      {n:"TV Commercials",    icon:"tv"},
+    ]},
+];
+
+/* ============================================================
+   ACCORDION STATE
+============================================================ */
+const grid = document.getElementById("dirGrid");
+const tiles = [];
+let panelWrap = null;
+let openIndex = null;
+let busy = false;
+
+function colsNow(){ return window.matchMedia("(min-width:640px)").matches ? 3 : 2; }
+function rowEndIndex(i){ return Math.min(Math.ceil((i+1)/colsNow())*colsNow(), CATS.length) - 1; }
+
+/* ============================================================
+   BUILD TILES
+============================================================ */
+CATS.forEach((cat, i) => {
+  const t = document.createElement("button");
+  t.className = "dir-tile";
+  t.style.background = `linear-gradient(135deg,${cat.grad[0]},${cat.grad[1]})`;
+  t.setAttribute("aria-expanded","false");
+  t.dataset.index = i;
+  t.innerHTML = `
+    <span class="dir-tile-halftone"></span>
+    <i data-lucide="${cat.icon}" class="dir-tile-icon" style="stroke-width:1.25"></i>
+    <div class="dir-tile-body">
+      <span class="dir-tile-name">${cat.name}</span>
+      <span class="dir-tile-pill"><i data-lucide="layers" style="stroke-width:2"></i>${cat.count} entries</span>
+      <div class="dir-tile-divider"></div>
+      <span class="dir-tile-sub">${cat.sub}</span>
+    </div>
+    <span class="dir-tile-fold"></span>
+    <span class="dir-tile-fold-chev"><i data-lucide="chevron-down"></i></span>`;
+  t.addEventListener("click", () => onTileClick(i));
+  grid.appendChild(t);
+  tiles.push(t);
+});
+
+/* ============================================================
+   BUILD PANEL — hero + 2-row scroll strip, with folder sub-views
+============================================================ */
+function buildPanel(cat){
+  const wrap = document.createElement("div");
+  wrap.className = "dir-panelwrap";
+  wrap.style.setProperty("--cat-accent", cat.accent);
+
+  /* ── build one slide pane (hero + scroll strip) ─────────────────────
+     data  = cat (root) or a folder entry (sub)
+     isRoot = true for the category pane, false for a folder pane
+     onFolder(entry) = callback when a folder cell is tapped            */
+  function buildSlide(data, isRoot, onFolder){
+    const grad    = isRoot ? cat.grad   : data.grad;
+    const name    = isRoot ? cat.name   : data.n;
+    const eyebrow = isRoot ? "★ Main category page" : "★ Sub-category page";
+
+    const cellsHTML = data.entries.map((e, i) => {
+      const customSvg = e.iconKey ? ICON_BANK[e.iconKey] : null; /* viewBox string */
+      if(e.isFolder){
+        const folderSvg = e.iconKey ? ICON_BANK[e.iconKey] : null; /* viewBox string */
+        const mini = (e.entries||[]).slice(0,4).map(fe => {
+          const fSvg = fe.iconKey ? ICON_BANK[fe.iconKey] : null;
+          if(fSvg) return '<span class="hm-folder-mini" style="background:none;overflow:hidden"><img src="' + fSvg + '" width="24" height="24" style="display:block"/></span>';
+          return '<span class="hm-folder-mini"><i data-lucide="' + fe.icon + '" style="stroke-width:1.5"></i></span>';
+        }).join("");
+        const iconDiv = folderSvg
+          ? '<div class="hm-icon-custom"><img src="' + folderSvg + '" width="68" height="68" style="display:block"/></div>'
+          : '<div class="hm-icon" style="background:linear-gradient(135deg,' + e.grad[0] + ',' + e.grad[1] + ')">' + '<div class="hm-folder-grid">' + mini + '</div></div>';
+        return '<button class="hm-cell hm-folder-btn" data-ei="' + i + '">' + iconDiv + '<span class="hm-name">' + e.n + '</span></button>';
+      }
+      const href = e.pageUrl || '#';
+      const ghost = '';
+      const iconDiv = customSvg
+        ? '<div class="hm-icon-custom"><img src="' + customSvg + '" width="68" height="68" style="display:block"/></div>'
+        : '<div class="hm-icon" style="background:linear-gradient(135deg,' + grad[0] + ',' + grad[1] + ')">' + '<i data-lucide="' + e.icon + '" style="stroke-width:1.5"></i></div>';
+      return '<a href="' + href + '" class="hm-cell"' + ghost + '>' + iconDiv + '<span class="hm-name">' + e.n + '</span></a>';
+    }).join("");
+
+
+
+    const slide = document.createElement("div");
+    slide.className = "hm-slide";
+    slide.innerHTML = `
+      <a href="#" class="hm-hero" style="background:linear-gradient(135deg,${grad[0]},${grad[1]})">
+        <span class="hm-hero-halftone"></span>
+        <div class="hm-hero-text">
+          <span class="hm-hero-eye">${eyebrow}</span>
+          <span class="hm-hero-title">${name}</span>
+          <span class="hm-hero-sub">Overview, full catalogue &amp; every entry</span>
+        </div>
+        <span class="hm-hero-btn">View parent page <i data-lucide="arrow-up-right"></i></span>
+      </a>
+      <div class="hm-stage">
+        <button class="hm-arr hm-arr-l" aria-label="Scroll left"><i data-lucide="chevron-left"></i></button>
+        <div class="hm-scroll"><div class="hm-strip">${cellsHTML}</div></div>
+        <button class="hm-arr hm-arr-r" aria-label="Scroll right"><i data-lucide="chevron-right"></i></button>
+      </div>`;
+
+    /* scroll arrow wiring */
+    const scroller = slide.querySelector(".hm-scroll");
+    const arrL = slide.querySelector(".hm-arr-l");
+    const arrR = slide.querySelector(".hm-arr-r");
+    function syncScroll(){
+      const max = scroller.scrollWidth - scroller.clientWidth;
+      const ov  = max > 4;
+      arrL.style.display = ov ? "" : "none";
+      arrR.style.display = ov ? "" : "none";
+      if(ov){ arrL.disabled = scroller.scrollLeft <= 2;
+               arrR.disabled = scroller.scrollLeft >= max - 2; }
+    }
+    arrL.addEventListener("click", () => scroller.scrollBy({left:-scroller.clientWidth*.8, behavior:"smooth"}));
+    arrR.addEventListener("click", () => scroller.scrollBy({left: scroller.clientWidth*.8, behavior:"smooth"}));
+    scroller.addEventListener("scroll", syncScroll, {passive:true});
+    slide._syncScroll = syncScroll;
+    setTimeout(function(){ syncStripColumns(scroller); }, 60);
+
+    /* folder button wiring */
+    if(onFolder){
+      slide.querySelectorAll(".hm-folder-btn").forEach(btn => {
+        const entry = data.entries[parseInt(btn.dataset.ei)];
+        btn.addEventListener("click", () => onFolder(entry));
+      });
+    }
+
+    return slide;
+  }
+
+  /* ── outer panel shell (header stays fixed; body holds the slides track) ── */
+  wrap.innerHTML = `
+    <span class="dir-caret"></span>
+    <div class="dir-clip">
+      <div class="dir-panel">
+        <div class="dir-accentbar"></div>
+        <div class="dir-phead">
+          <span class="dir-pchip" style="background:transparent;padding:0;overflow:hidden">${cat.iconKey && ICON_BANK[cat.iconKey] ? '<img src="' + ICON_BANK[cat.iconKey] + '" style="width:100%;height:100%;display:block"/>' : '<span style="display:grid;place-items:center;width:100%;height:100%;background:' + cat.accent + '"><i data-lucide="' + cat.icon + '" style="width:1.05rem;height:1.05rem;stroke-width:1.5;color:#fff"></i></span>'}</span>
+          <span>
+            <span class="dir-ptitle">${cat.name}</span>
+            <span class="dir-pmeta">${cat.count} total</span>
+          </span>
+          <span class="dir-pspacer"></span>
+          <button class="dir-pclose" aria-label="Close"><i data-lucide="x"></i></button>
+        </div>
+        <div class="hm-body"><div class="hm-slides"></div></div>
+      </div>
+    </div>`;
+
+  const slidesEl = wrap.querySelector(".hm-slides");
+  const phead    = wrap.querySelector(".dir-phead");
+  const pchip    = phead.querySelector(".dir-pchip");
+  const ptitle   = phead.querySelector(".dir-ptitle");
+  const pmeta    = phead.querySelector(".dir-pmeta");
+  const popen    = phead.querySelector(".dir-popen") || {textContent:''};
+  let subSlide   = null;
+  let inSub      = false;
+
+  /* ── push into a folder sub-view ── */
+  function pushSubView(folder){
+    subSlide = buildSlide(folder, false, null);
+    slidesEl.appendChild(subSlide);
+    if(window.lucide) lucide.createIcons();
+
+    requestAnimationFrame(() => {
+      slidesEl.style.transform =
+        "translateX(-" + slidesEl.parentElement.offsetWidth + "px)";
+    });
+    inSub = true;
+
+    /* accent follows the folder */
+    wrap.style.setProperty("--cat-accent", folder.accent);
+
+    /* swap chip → back button */
+    pchip.style.display = "none";
+    const back = document.createElement("button");
+    back.className = "dir-pback";
+    back.innerHTML = `<i data-lucide="arrow-left"></i>`;
+    back.setAttribute("aria-label", "Back to " + cat.name);
+    back.addEventListener("click", popSubView);
+    phead.insertBefore(back, phead.firstChild);
+    if(window.lucide) lucide.createIcons();
+
+    ptitle.textContent = folder.n;
+    pmeta.textContent  = folder.entries.length + " entries";
+    popen.textContent  = "See all entries →";
+
+    setTimeout(() => subSlide?._syncScroll?.(), 400);
+  }
+
+  /* ── pop back to the root view ── */
+  function popSubView(){
+    slidesEl.style.transform = "translateX(0)";
+    inSub = false;
+
+    /* restore accent + header */
+    wrap.style.setProperty("--cat-accent", cat.accent);
+    phead.querySelector(".dir-pback")?.remove();
+    pchip.style.display = "";
+    ptitle.textContent = cat.name;
+    pmeta.textContent  = cat.count + " total";
+    popen.textContent  = "See all " + cat.count + " entries →";
+
+    setTimeout(() => { subSlide?.remove(); subSlide = null; }, 380);
+    rootSlide._syncScroll?.();
+  }
+
+  /* ── build and attach the root slide ── */
+  const rootSlide = buildSlide(cat, true, pushSubView);
+  slidesEl.appendChild(rootSlide);
+
+  wrap.querySelector(".dir-pclose").addEventListener("click", () => collapse());
+
+  wrap._syncScroll = () => (inSub ? subSlide : rootSlide)?._syncScroll?.();
+  return wrap;
+}
+
+/* ============================================================
+   OPEN / COLLAPSE / CLICK LOGIC
+============================================================ */
+function alignCaret(catIndex){
+  if(!panelWrap) return;
+  const caret = panelWrap.querySelector(".dir-caret");
+  const tr = tiles[catIndex].getBoundingClientRect();
+  const wr = panelWrap.getBoundingClientRect();
+  caret.style.left = (tr.left + tr.width/2 - wr.left) + "px";
+}
+
+function open(index, fast){
+  panelWrap = buildPanel(CATS[index]);
+  if(fast) panelWrap.classList.add("is-fast");
+  const anchor = tiles[rowEndIndex(index)];
+  grid.insertBefore(panelWrap, anchor.nextSibling);
+
+  tiles[index].classList.add("is-open");
+  tiles[index].setAttribute("aria-expanded","true");
+  openIndex = index;
+
+  if(window.lucide) lucide.createIcons();
+
+  requestAnimationFrame(() => {
+    panelWrap.classList.add("is-open");
+    alignCaret(index);
+    panelWrap._syncScroll?.();
+  });
+
+  busy = true;
+  setTimeout(() => {
+    busy = false;
+    panelWrap?._syncScroll?.();
+    panelWrap?.scrollIntoView({behavior:"smooth", block:"nearest"});
+  }, fast ? 207 : 360);
+}
+
+function collapse(cb, fast){
+  if(openIndex === null){ cb?.(); return; }
+  const wrap = panelWrap, idx = openIndex;
+  tiles[idx].classList.remove("is-open");
+  tiles[idx].setAttribute("aria-expanded","false");
+  if(fast) wrap.classList.add("is-fast");
+  wrap.classList.remove("is-open");
+  openIndex = null;
+  panelWrap = null;
+  busy = true;
+  setTimeout(() => { wrap.remove(); busy = false; cb?.(); }, fast ? 195 : 345);
+}
+
+function onTileClick(index){
+  if(busy) return;
+  if(openIndex === index){ collapse(); return; }
+  if(openIndex !== null){
+    /* same row — swap content in place, just slide the caret over */
+    if(rowEndIndex(openIndex) === rowEndIndex(index)){
+      swapInPlace(index);
+    } else {
+      collapse(() => open(index, true), true);
+    }
+  } else {
+    open(index);
+  }
+}
+
+/* replace panel content without closing/reopening — smooth same-row switch */
+function swapInPlace(index){
+  const newWrap = buildPanel(CATS[index]);
+
+  /* carry over the open state so the accordion stays at full height */
+  newWrap.classList.add("is-open");
+  /* suppress the grid-rows transition for a single frame so there's no flicker */
+  newWrap.style.transition = "none";
+
+  /* swap tiles */
+  tiles[openIndex].classList.remove("is-open");
+  tiles[openIndex].setAttribute("aria-expanded","false");
+  tiles[index].classList.add("is-open");
+  tiles[index].setAttribute("aria-expanded","true");
+
+  /* hot-swap the DOM node (same grid row, no positional change) */
+  grid.insertBefore(newWrap, panelWrap);
+  panelWrap.remove();
+  panelWrap = newWrap;
+  openIndex = index;
+
+  /* re-enable transitions on the next frame */
+  requestAnimationFrame(() => { panelWrap.style.transition = ""; });
+
+  if(window.lucide) lucide.createIcons();
+  alignCaret(index);
+  setTimeout(() => panelWrap._syncScroll?.(), 60);
+}
+
+/* re-anchor on resize */
+let lastCols = colsNow();
+window.addEventListener("resize", () => {
+  if(openIndex === null) return;
+  const cols = colsNow();
+  if(cols !== lastCols){
+    lastCols = cols;
+    grid.insertBefore(panelWrap, tiles[rowEndIndex(openIndex)].nextSibling);
+  }
+  alignCaret(openIndex);
+  panelWrap?._syncScroll?.();
+  if(panelWrap){ panelWrap.querySelectorAll('.hm-scroll').forEach(syncStripColumns); }
+});
+
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape" && openIndex !== null && !busy) collapse();
+});
+
+if(window.lucide) lucide.createIcons();
+});  /* end DOMContentLoaded */
+</script>
+</html>
