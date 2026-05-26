@@ -1,0 +1,261 @@
+/* ====================================================================
+   wiki-fallout-skin.css
+   ViziWiki · Fallout wiki — "Pip-Boy Terminal" chrome skin
+   --------------------------------------------------------------------
+   Layered ON TOP of the shared default.html chrome. Loaded per Fallout
+   page through the `extra_head` front-matter hook.
+
+   EVERY rule is scoped under `body.wiki-fallout`, so nothing in this
+   file can reach the global white ViziWiki main-bar or any other
+   wiki's chrome. This skins the WIKI-LEVEL chrome only:
+     · the wiki-bar      (mobile top bar)
+     · the wiki-toc rail (desktop left rail / mobile drawer)
+   The global ViziWiki main-bar is deliberately left alone — it sits
+   above all of this and stays identical on every wiki.
+
+   Fonts used (Fraunces, JetBrains Mono) are already loaded by
+   default.html — this file adds no <link>s of its own.
+   ==================================================================== */
+
+
+/* --------------------------------------------------------------------
+   1 · PERSONALITY TOKENS
+   Remap the shared --wiki-* group to the Pip-Boy palette. `body.wiki-
+   fallout` outranks default.html's :root, so the whole wiki chrome
+   re-flavors from these five values. Dimension tokens (--wiki-bar-h,
+   --wiki-rail-w) are frozen and intentionally NOT touched.
+   -------------------------------------------------------------------- */
+body.wiki-fallout {
+  --wiki-bg:     #0e150d;               /* CRT surface — bar + rail     */
+  --wiki-fg:     #c6f5be;               /* phosphor-tinted text         */
+  --wiki-muted:  #6f9e6a;               /* dim readout text             */
+  --wiki-faint:  rgba(62,230,61,.22);   /* hairlines / borders          */
+  --wiki-accent: #3ee63d;               /* phosphor — primary accent    */
+
+  /* Pip-Boy extras the texture layer needs (outside the shared set) */
+  --phosphor: #3ee63d;
+  --phos-dim: #2c9b2c;
+  --amber:    #ffb000;
+  --crt-deep: #050805;                  /* deepest screen black         */
+  --crt-glow: 0 0 10px rgba(62,230,61,.45), 0 0 28px rgba(62,230,61,.18);
+}
+
+
+/* ====================================================================
+   2 · FIXED CRT OVERLAY  (immersive mode)
+   Two viewport-fixed layers drawn with body pseudo-elements, so they
+   need ZERO markup. Inset to start at --main-h, so the global white
+   ViziWiki bar (0–56px, z-100) is never covered. z-index 50 keeps the
+   overlay BELOW both bars (wiki-bar / main-bar are 99 / 100) and above
+   page content — content gets the CRT wash, the chrome paints over it.
+   ==================================================================== */
+body.wiki-fallout::before,              /* scanlines + flicker */
+body.wiki-fallout::after {              /* vignette            */
+  content: "";
+  position: fixed;
+  inset: var(--main-h, 56px) 0 0 0;
+  pointer-events: none;
+  z-index: 50;
+}
+body.wiki-fallout::before {
+  background: repeating-linear-gradient(
+    0deg, transparent 0 2px, rgba(0,0,0,.22) 2px 3.5px);
+  animation: fo-flicker 5.5s steps(2, end) infinite;
+}
+body.wiki-fallout::after {
+  background: radial-gradient(
+    120% 90% at 50% 42%, transparent 55%, rgba(0,0,0,.62) 100%);
+}
+@keyframes fo-flicker {
+  0%, 96% { opacity: .70; }
+  97%     { opacity: .55; }
+  98%     { opacity: .82; }
+  100%    { opacity: .70; }
+}
+
+/* Optional moving phosphor sweep + faint green tint. Both ride
+   position:fixed, so DOM location is irrelevant — drop these two divs
+   anywhere inside the Fallout PAGE content:
+     <div class="crt-sweep" aria-hidden="true"></div>
+     <div class="crt-tint"  aria-hidden="true"></div>                */
+body.wiki-fallout .crt-sweep,
+body.wiki-fallout .crt-tint {
+  position: fixed; left: 0; right: 0;
+  pointer-events: none; z-index: 51;
+}
+body.wiki-fallout .crt-sweep {
+  height: 140px;
+  background: linear-gradient(180deg,
+    transparent, rgba(62,230,61,.05), transparent);
+  animation: fo-sweep 9s linear infinite;
+}
+body.wiki-fallout .crt-tint {
+  top: var(--main-h, 56px); bottom: 0;
+  background: rgba(62,230,61,.025);
+}
+@keyframes fo-sweep {
+  0%   { top: var(--main-h, 56px); }
+  100% { top: 100%; }
+}
+
+
+/* ====================================================================
+   3 · WIKI-BAR  — Fallout top chrome (mobile)
+   Structure (hamburger · logo · title · actions) is default.html's.
+   Here it becomes a screen-bezel surface with a phosphor hairline and
+   its own scanline. The scanline ::after is faint + pointer-events:
+   none, so it washes over the whole bar yet stays click-through.
+   ==================================================================== */
+body.wiki-fallout .wiki-bar {
+  background: var(--crt-deep);
+  border-bottom: 1px solid var(--phos-dim);
+  box-shadow: 0 0 22px rgba(62,230,61,.10);
+}
+body.wiki-fallout .wiki-bar::after {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg, transparent 0 2px, rgba(0,0,0,.28) 2px 3.5px);
+}
+
+/* hamburger + save/share — terminal keys */
+body.wiki-fallout .wiki-hamburger,
+body.wiki-fallout .wiki-bar-btn {
+  color: var(--phosphor);
+  background: rgba(62,230,61,.04);
+  border: 1px solid var(--wiki-faint);
+  border-radius: 4px;
+}
+body.wiki-fallout .wiki-hamburger:hover,
+body.wiki-fallout .wiki-bar-btn:hover {
+  border-color: var(--phosphor);
+  background: rgba(62,230,61,.10);
+  box-shadow: 0 0 12px rgba(62,230,61,.25);
+}
+
+/* Wordmark — mobile bar shows just "Fallout", glowing.
+   (The drawer head right below carries the full "· Visual Wiki".)   */
+body.wiki-fallout .wiki-bar-title {
+  font-family: 'Fraunces', Georgia, serif;
+  color: var(--phosphor);
+  text-shadow: var(--crt-glow);
+  letter-spacing: -.01em;
+}
+
+
+/* ====================================================================
+   4 · WIKI-TOC RAIL  — Fallout contents chrome (desktop) / drawer
+   Most of the rail recolors automatically from the --wiki-* remap in
+   §1. The rules below add the CRT surface, a static scanline, and the
+   phosphor accents the token cascade can't express.
+   ==================================================================== */
+body.wiki-fallout .wiki-toc {
+  background: var(--wiki-bg);
+  border-right: 1px solid var(--phos-dim);
+}
+body.wiki-fallout .wiki-toc::after {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg, transparent 0 2px, rgba(0,0,0,.22) 2px 3.5px);
+}
+
+/* ── Rail wordmark · "Fallout / THE VISUAL WIKI" ──────────────────────
+   pageTitle (WIKI_TOC) fills .wiki-toc-hero-title with "Fallout".
+   The second line is a skin-owned ::after suffix — full wordmark, no
+   edit to the shared markup.                                         */
+body.wiki-fallout .wiki-toc-hero-title {
+  font-family: 'Fraunces', Georgia, serif;
+  color: var(--phosphor);
+  text-shadow: var(--crt-glow);
+}
+body.wiki-fallout .wiki-toc-hero-title::after {
+  content: "The Visual Wiki";
+  display: block;
+  margin-top: 3px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--amber);
+  text-shadow: 0 0 10px rgba(255,176,0,.4);
+}
+
+/* "Contents:" label + section list */
+body.wiki-fallout .wiki-toc-contents-label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  color: var(--amber);
+  letter-spacing: .22em;
+}
+body.wiki-fallout .wiki-section-item { color: var(--wiki-muted); }
+body.wiki-fallout .wiki-section-item:hover { color: var(--phosphor); }
+body.wiki-fallout .wiki-section-item.active {
+  color: var(--phosphor);
+  text-shadow: 0 0 8px rgba(62,230,61,.45);
+}
+
+/* Save / collapse buttons + back tile */
+body.wiki-fallout .wiki-toc-save,
+body.wiki-fallout .wiki-toc-close,
+body.wiki-fallout .wiki-back-tile {
+  color: var(--phosphor);
+  border-color: var(--wiki-faint);
+}
+body.wiki-fallout .wiki-toc-save:hover,
+body.wiki-fallout .wiki-toc-close:hover,
+body.wiki-fallout .wiki-back-tile:hover {
+  border-color: var(--phosphor);
+  box-shadow: 0 0 12px rgba(62,230,61,.2);
+}
+body.wiki-fallout .wiki-toc-save.saved { color: var(--amber); }
+
+/* Wiki Home chip + category pills (mobile drawer) */
+body.wiki-fallout .wiki-home-chip {
+  font-family: 'Fraunces', Georgia, serif;
+  color: var(--phosphor);
+  border-color: var(--wiki-faint);
+}
+body.wiki-fallout .wiki-home-chip:hover {
+  border-color: var(--phosphor);
+  background: rgba(62,230,61,.06);
+}
+body.wiki-fallout .wiki-wpill {
+  color: var(--phosphor);
+  border-color: var(--wiki-faint);
+}
+body.wiki-fallout .wiki-wpill-chev { color: var(--amber); }
+body.wiki-fallout .wiki-cat-item:hover { color: var(--phosphor); }
+
+
+/* ====================================================================
+   5 · MOBILE DRAWER HEAD  — "Fallout / Visual Wiki"
+   The structure already exists in default.html; .wiki-mob-vizi ships
+   a HARD-CODED blue (#0284c7) that the token cascade can't reach, so
+   it is overridden explicitly here.
+   ==================================================================== */
+body.wiki-fallout .wiki-mob-head-name {
+  font-family: 'Fraunces', Georgia, serif;
+  color: var(--phosphor);
+  text-shadow: var(--crt-glow);
+}
+body.wiki-fallout .wiki-mob-head-vw {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+body.wiki-fallout .wiki-mob-vizi {        /* overrides hard-coded blue */
+  color: var(--phosphor);
+}
+
+
+/* ====================================================================
+   6 · SELECTION  — keep it on-brand inside Fallout pages
+   ==================================================================== */
+body.wiki-fallout ::selection {
+  background: rgba(62,230,61,.30);
+  color: #eafff0;
+}
