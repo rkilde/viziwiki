@@ -25,7 +25,7 @@ body_class: "no-facet-chrome"
     --rust: oklch(0.55 0.18 35);
     --neon: oklch(0.65 0.26 5);
     --electric: oklch(0.62 0.22 260);
-    --hot-pink: oklch(0.70 0.27 350);
+    --hot-pink: oklch(0.68 0.28 260);
     --acid: oklch(0.88 0.24 130);
     --cyan-pop: oklch(0.78 0.18 210);
   }
@@ -65,10 +65,19 @@ body_class: "no-facet-chrome"
   .tile:hover{transform:translateY(-4px);}
   .tile .icon{transition:transform .3s;}
   .tile:hover .icon{transform:rotate(6deg) scale(1.1);}
+  /* horizontal carousel — hide scrollbar, keep native scroll/swipe */
+  .no-scrollbar{-ms-overflow-style:none;scrollbar-width:none;}
+  .no-scrollbar::-webkit-scrollbar{display:none;}
+  .wiki-card:hover{background:color-mix(in oklab,var(--secondary) 60%,transparent);}
+  .wiki-name{transition:color 150ms ease;}
+  .wiki-card:hover .wiki-name{color:var(--hot-pink);}
+  .scroll-arrow:hover{background:var(--secondary);}
 </style>
 <style>
-  /* Keep Loveable's sticky filter row below the main-bar. */
-  .sticky.top-0 { top: var(--main-h); }
+  /* Keep the sticky filter row parked below the global main-bar.
+     Fallback to 0 so it still sticks where --main-h is undefined
+     (e.g. the standalone artifact preview, with no layout chrome). */
+  .sticky.top-0 { top: var(--main-h, 0px); }
 </style>
 <section class="border-b border-foreground/15 bg-secondary/40">
   <div class="mx-auto flex max-w-[1500px] flex-col gap-2 px-6 py-8">
@@ -87,7 +96,23 @@ body_class: "no-facet-chrome"
     <h2 class="font-display text-2xl font-semibold">Quick jumps</h2>
     <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground" id="genreCount"></span>
   </div>
-  <div id="tiles" class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6"></div>
+  <div class="relative">
+    <div id="tiles" class="no-scrollbar flex gap-3 overflow-x-auto py-2"></div>
+
+    <!-- edge fades — toggled by scroll position -->
+    <div id="fadeL" class="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[var(--background)] to-transparent opacity-0 transition-opacity duration-200"></div>
+    <div id="fadeR" class="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[var(--background)] to-transparent transition-opacity duration-200"></div>
+
+    <!-- desktop scroll arrows — hidden on touch, where swiping is natural -->
+    <button id="scrollL" aria-label="Scroll genres left"
+      class="sticker absolute left-1 top-1/2 z-10 hidden h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-card text-foreground opacity-0 pointer-events-none transition hover:bg-secondary sm:grid">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="13" y1="8" x2="3" y2="8"/><polyline points="7,4 3,8 7,12"/></svg>
+    </button>
+    <button id="scrollR" aria-label="Scroll genres right"
+      class="sticker absolute right-1 top-1/2 z-10 hidden h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-card text-foreground transition hover:bg-secondary sm:grid">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg>
+    </button>
+  </div>
 </section>
 
 <section class="sticky top-0 z-10 border-y border-foreground/15 bg-background/95 backdrop-blur">
@@ -144,7 +169,7 @@ const WIKIS = [
   {name:"Pokémon",category:"games",entries:14002,popularity:96,blurb:"All 1000+ pocket monsters."},
   {name:"Genshin Impact",category:"games",entries:6814,popularity:87,blurb:"Teyvat, characters, weapons, banners."},
   {name:"Kendrick Lamar",category:"music",entries:3210,popularity:94,blurb:"Pulitzer, Compton, GNX."},
-  {name:"Taco Bell",category:"food",entries:1284,popularity:96,blurb:"Crunchwraps, Mexican Pizza revivals, every limited-time menu logged."},
+  {name:"Taco Bell",category:"food",entries:1284,popularity:96,blurb:"Crunchwraps, Mexican Pizza revivals, every limited-time menu logged.",url:"taco-bell.html"},
   {name:"Chick-fil-A",category:"food",entries:488,popularity:75,blurb:"Sauces, secret menu, Sunday rule."},
   {name:"Severance",category:"film",entries:1244,popularity:88,blurb:"Lumon, MDR, the goats."},
   {name:"One Piece",category:"anime",entries:18991,popularity:95,blurb:"1100+ chapters mapped to the Grand Line."},
@@ -163,6 +188,7 @@ const WIKIS = [
   {name:"Vine (rip)",category:"internet",entries:2491,popularity:80,blurb:"Six seconds, eternal."},
   {name:"Streetwear",category:"fashion",entries:4204,popularity:83,blurb:"Supreme drops, Yeezys, Bape archives."},
   {name:"Squid Game",category:"film",entries:1804,popularity:86,blurb:"Pink guards, dalgona, every game."},
+  {name:"Fallout",category:"games",entries:1140,popularity:95,blurb:"Vaults, wastelands, and the war that never changes.",url:"fallout.html"},
 ];
 
 let active = "all", sort = "popular", q = "";
@@ -174,7 +200,7 @@ function renderTiles(){
   el('genreCount').textContent = (CATEGORIES.length-1)+' genres';
   el('totalCount').textContent = WIKIS.length.toLocaleString();
   el('tiles').innerHTML = CATEGORIES.filter(c=>c.key!=="all").map(c=>`
-    <button data-cat="${c.key}" class="tile sticker group relative aspect-[4/5] overflow-hidden rounded-md ${c.grad} text-left">
+    <button data-cat="${c.key}" class="tile sticker group relative aspect-[4/5] w-40 shrink-0 overflow-hidden rounded-md ${c.grad} text-left">
       <div class="absolute inset-0 halftone opacity-20 mix-blend-overlay"></div>
       <div class="absolute left-3 top-3 font-mono-acc text-[9px] uppercase tracking-[0.2em] text-white/80">Genre</div>
       <i data-lucide="${c.icon}" class="icon pointer-events-none absolute -bottom-4 -right-4 h-28 w-28 rotate-12 text-white/90 drop-shadow-lg" stroke-width="1.5"></i>
@@ -220,13 +246,13 @@ function renderList(){
   el('list').innerHTML = `<ul class="grid grid-cols-1 gap-px overflow-hidden rounded-md border border-foreground/20 bg-foreground/20 sm:grid-cols-2 lg:grid-cols-3">${
     list.map(w=>{
       const cat = catBy(w.category);
-      const href = w.name === 'Taco Bell' ? 'taco-bell.html' : '#';
-      return `<li class="group bg-card transition hover:bg-secondary/60"><a href="${href}" class="block p-4">
+      const href = w.url || '#';
+      return `<li class="wiki-card bg-card transition"><a href="${href}" class="block p-4">
         <div class="mb-2 flex items-center justify-between">
           <span class="inline-block rounded-sm ${cat.grad} px-2 py-0.5 font-mono-acc text-[9px] uppercase tracking-wider text-white">${cat.label}</span>
           <span class="font-mono-acc text-[10px] text-muted-foreground">★ ${w.popularity}</span>
         </div>
-        <div class="font-display text-xl font-semibold leading-tight group-hover:text-hp">${w.name}</div>
+        <div class="font-display text-xl font-semibold leading-tight wiki-name">${w.name}</div>
         <p class="mt-1 line-clamp-2 text-sm text-muted-foreground">${w.blurb}</p>
         <div class="mt-3 flex items-center justify-between font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">
           <span>${w.entries.toLocaleString()} entries</span>
@@ -239,6 +265,29 @@ function renderList(){
 
 el('q').addEventListener('input', e=>{ q=e.target.value; renderList(); });
 renderTiles(); renderFilters(); renderList();
+
+/* ── carousel: desktop arrow controls + edge-fade state ── */
+(function(){
+  const track=el('tiles'), aL=el('scrollL'), aR=el('scrollR'), fL=el('fadeL'), fR=el('fadeR');
+  if(!track||!aL||!aR) return;
+  const step=()=>Math.max(track.clientWidth*0.8,200);
+  function update(){
+    const max=track.scrollWidth-track.clientWidth, x=track.scrollLeft;
+    const atStart=x<=2, atEnd=x>=max-2;
+    fL.classList.toggle('opacity-0',atStart);
+    fR.classList.toggle('opacity-0',atEnd);
+    aL.classList.toggle('opacity-0',atStart);
+    aL.classList.toggle('pointer-events-none',atStart);
+    aR.classList.toggle('opacity-0',atEnd);
+    aR.classList.toggle('pointer-events-none',atEnd);
+  }
+  aL.addEventListener('click',()=>track.scrollBy({left:-step(),behavior:'smooth'}));
+  aR.addEventListener('click',()=>track.scrollBy({left: step(),behavior:'smooth'}));
+  track.addEventListener('scroll',update,{passive:true});
+  window.addEventListener('resize',update);
+  update();
+})();
+
 lucide.createIcons();
 </script>
 {% endraw %}

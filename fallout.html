@@ -39,8 +39,9 @@ window.WIKI_TOC = {
     { group: "The Wiki",  id: "browse",   label: "Browse the directory" },
     { group: "The Wiki",  id: "overview", label: "Overview" },
     { group: "Reference", id: "timeline", label: "Release timeline" },
-    { group: "Reference", id: "factions", label: "Factions" },
-    { group: "Reference", id: "numbers",  label: "By the numbers" },
+    { group: "Reference", id: "factions",   label: "Factions" },
+    { group: "Reference", id: "chronology", label: "Wasteland chronology" },
+    { group: "Reference", id: "numbers",    label: "By the numbers" },
     { group: "Beyond",    id: "seealso",  label: "See also" }
   ]
 };
@@ -96,18 +97,16 @@ body.wiki-fallout{ background:#0b0f0a; }
 /* color utilities */
 .fo-page .text-phos{color:var(--phosphor);} .fo-page .text-amber{color:var(--amber);}
 .fo-page .text-ink{color:var(--ink);} .fo-page .text-dim{color:var(--ink-dim);}
+.fo-page .text-bg-dark{color:var(--bg-dark);}
 .fo-page .bg-bg{background:var(--bg);} .fo-page .bg-bg-alt{background:var(--bg-alt);} .fo-page .bg-bg-dark{background:var(--bg-dark);}
 .fo-page .bg-surface{background:var(--surface);} .fo-page .bg-line{background:var(--line);}
 .fo-page .border-line{border-color:var(--line);} .fo-page .border-line-soft{border-color:var(--line-soft);}
 .fo-page .bg-phos{background:var(--phosphor);} .fo-page .bg-amber{background:var(--amber);}
 
-/* faint scanline texture for panels */
+/* .scan is now just a positioning hook. The scanline texture is drawn
+   once, globally, by the content-locked layer in wiki-fallout-skin.css —
+   a second per-panel texture here would moiré against it. */
 .fo-page .scan{position:relative;}
-.fo-page .scan::after{
-  content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
-  background:repeating-linear-gradient(0deg,transparent 0 2px,rgba(0,0,0,.16) 2px 3px);
-  mix-blend-mode:multiply;opacity:.7;
-}
 
 /* blinking terminal cursor */
 .fo-page .cursor{display:inline-block;width:.55em;height:1em;background:var(--amber);
@@ -237,7 +236,7 @@ body.wiki-fallout{ background:#0b0f0a; }
         </span>
       </div>
       <p class="mt-2 max-w-2xl font-mono-acc text-[11px] uppercase tracking-wide text-dim">
-        6 root categories · everything nested beneath its parent
+        7 root categories · everything nested beneath its parent
       </p>
 
       <!-- directory grid -->
@@ -331,6 +330,22 @@ body.wiki-fallout{ background:#0b0f0a; }
   </section>
 
   <!-- ================================================================
+       CHRONOLOGY  (in-universe timeline — a vertical terminal log,
+       deliberately a different shape from the release timeline above
+       so the two never read as duplicates)
+       ================================================================ -->
+  <section id="chronology" class="border-b border-line bg-bg-alt">
+    <div class="mx-auto max-w-[1500px] px-6 py-16">
+      <div class="font-mono-acc text-[10px] uppercase tracking-[0.3em] text-amber">▸ In-universe</div>
+      <h2 class="mt-1 font-display text-4xl font-semibold tracking-tight text-phos glow">Chronology of the wasteland.</h2>
+      <p class="mt-2 max-w-2xl font-mono-acc text-[11px] uppercase tracking-wide text-dim">
+        Not release dates — when each story actually happens inside the timeline.
+      </p>
+      <ol class="mt-10 max-w-3xl" id="chronologyLog"><!-- injected by JS --></ol>
+    </div>
+  </section>
+
+  <!-- ================================================================
        BY THE NUMBERS  (dark large-text ledger)
        ================================================================ -->
   <section id="numbers" class="border-b border-line bg-bg">
@@ -359,12 +374,12 @@ body.wiki-fallout{ background:#0b0f0a; }
    DATA
    ============================================================ */
 const CATEGORIES = [
-  { key:"games", name:"Games", icon:"gamepad-2", count:9,
-    preview:"Fallout, 2, 3, New Vegas, 4, 76, Tactics, Shelter…",
-    children:["Fallout (1997)","Fallout 2","Fallout 3","Fallout: New Vegas","Fallout 4","Fallout 76","Fallout Tactics","Fallout Shelter","Fallout (TV series)"] },
+  { key:"games", name:"Games", icon:"gamepad-2", count:12,
+    preview:"Every mainline game, the spin-offs, the expansions, the show…",
+    children:["Fallout (1997)","Fallout 2","Fallout 3","Fallout: New Vegas","Fallout 4","Fallout 76","Fallout Tactics","Fallout: Brotherhood of Steel","Fallout Shelter","DLC & Expansions","Fallout (TV series)"] },
   { key:"factions", name:"Factions", icon:"shield", count:34,
-    preview:"Brotherhood of Steel, NCR, Legion, Enclave…",
-    children:["Brotherhood of Steel","New California Republic","Caesar's Legion","Enclave","The Institute","Railroad","Minutemen","Raiders"] },
+    preview:"Brotherhood of Steel, NCR, Legion, Enclave, Vault-Tec…",
+    children:["Brotherhood of Steel","New California Republic","Caesar's Legion","Enclave","The Institute","Railroad","Minutemen","Raiders","Pre-war Corporations"] },
   { key:"locations", name:"Locations", icon:"map", count:182,
     preview:"Capital Wasteland, Mojave, Commonwealth, Vaults…",
     children:["Capital Wasteland","Mojave Wasteland","The Commonwealth","Appalachia","New California","Vault network"] },
@@ -377,6 +392,9 @@ const CATEGORIES = [
   { key:"tech", name:"Tech & Gear", icon:"cpu", count:211,
     preview:"Power armor, energy weapons, the Pip-Boy…",
     children:["Power Armor","Energy weapons","Ballistic weapons","The Pip-Boy","Stimpaks & chems","Pre-war robotics"] },
+  { key:"systems", name:"Game Systems", icon:"sliders-horizontal", count:48,
+    preview:"S.P.E.C.I.A.L., perks, survival, crafting, settlements…",
+    children:["S.P.E.C.I.A.L. & Stats","Perks & Traits","Survival & Hardcore Mode","Crafting & Modification","Settlements & Base Building"] },
 ];
 
 const TIMELINE = [
@@ -387,6 +405,21 @@ const TIMELINE = [
   { yr:"2015", mk:"V",   label:"Fallout 4",    note:"The Commonwealth; settlement building." },
   { yr:"2018", mk:"VI",  label:"Fallout 76",   note:"Multiplayer Appalachia." },
   { yr:"2024", mk:"VII", label:"Fallout (TV)", note:"Prime Video adaptation airs." },
+];
+
+/* In-universe dates — verified against Fallout canon. Note this is the
+   STORY timeline, distinct from the release TIMELINE above: Fallout 76
+   is chronologically first (2102) and the TV series last (2296). */
+const CHRONOLOGY = [
+  { yr:"2052", title:"The Resource Wars begin", note:"Europe and the Middle East go to war over the last of the oil. The long collapse starts here." },
+  { yr:"2077", title:"The Great War", note:"October 23 — barely two hours of nuclear exchange ends the old world." },
+  { yr:"2102", title:"Fallout 76", note:"Reclamation Day: Vault 76 opens in Appalachia — the earliest point the series plays." },
+  { yr:"2161", title:"Fallout", note:"The Vault Dweller leaves Vault 13 to find a water chip. Southern California." },
+  { yr:"2241", title:"Fallout 2", note:"The Chosen One hunts for a G.E.C.K. — eighty years after the first game." },
+  { yr:"2277", title:"Fallout 3", note:"The Lone Wanderer steps out into the Capital Wasteland." },
+  { yr:"2281", title:"Fallout: New Vegas", note:"The Courier crosses the Mojave, four years after Fallout 3." },
+  { yr:"2287", title:"Fallout 4", note:"The Sole Survivor thaws out into the Commonwealth." },
+  { yr:"2296", title:"Fallout — the series", note:"Lucy of Vault 33 surfaces. The furthest point the canon has reached." },
 ];
 
 const FACTIONS = [
@@ -456,6 +489,19 @@ document.getElementById("timelineList").innerHTML = TIMELINE.map(t => `
       <p class="text-[12px] leading-snug text-ink">${t.note}</p>
     </div>
   </li>`).join("");
+
+document.getElementById("chronologyLog").innerHTML = CHRONOLOGY.map((c, i) => {
+  const last = i === CHRONOLOGY.length - 1;
+  return `
+  <li class="grid grid-cols-[58px_1fr] gap-4 sm:grid-cols-[88px_1fr] sm:gap-6">
+    <div class="pt-0.5 text-right font-mono-acc text-base font-semibold text-amber glow-amber">${c.yr}</div>
+    <div class="relative border-l border-line pl-6 ${last ? "pb-1" : "pb-8"}">
+      <span class="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full bg-phos" style="box-shadow:0 0 10px var(--phosphor)"></span>
+      <div class="font-display text-xl font-semibold leading-tight text-phos">${c.title}</div>
+      <p class="mt-1.5 text-[14px] leading-relaxed text-ink">${c.note}</p>
+    </div>
+  </li>`;
+}).join("");
 
 document.getElementById("factionGrid").innerHTML = FACTIONS.map(f => `
   <div class="bg-bg-dark p-6">

@@ -42,27 +42,37 @@ body.wiki-fallout {
 
 
 /* ====================================================================
-   2 · FIXED CRT OVERLAY  (immersive mode)
-   Two viewport-fixed layers drawn with body pseudo-elements, so they
-   need ZERO markup. Inset to start at --main-h, so the global white
-   ViziWiki bar (0–56px, z-100) is never covered. z-index 50 keeps the
-   overlay BELOW both bars (wiki-bar / main-bar are 99 / 100) and above
-   page content — content gets the CRT wash, the chrome paints over it.
+   2 · CRT OVERLAY
+   The scanline TEXTURE is content-locked — drawn on .fo-page::before so
+   it scrolls in perfect lockstep with the page. A viewport-fixed overlay
+   can't stay pinned during momentum scroll on mobile; it visibly
+   decouples from the content and the illusion breaks. A content-locked
+   layer never can, because it IS part of the scrolling content —
+   identical behaviour on every device.
+   The vignette stays viewport-fixed: static edge-darkening with no fine
+   detail, so there is nothing for the eye to catch if it drifts.
    ==================================================================== */
-body.wiki-fallout::before,              /* scanlines + flicker */
-body.wiki-fallout::after {              /* vignette            */
+
+/* scanline texture — rides WITH the content, so it can never decouple */
+body.wiki-fallout .fo-page { position: relative; }
+body.wiki-fallout .fo-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;                    /* spans the whole scrolling page        */
+  pointer-events: none;
+  z-index: 40;                 /* above content, below vignette + sweep */
+  background: repeating-linear-gradient(
+    0deg, transparent 0 2px, rgba(0,0,0,.22) 2px 3.5px);
+  animation: fo-flicker 5.5s steps(2, end) infinite;
+}
+
+/* vignette — viewport-fixed (static edge-darkening, safe to pin) */
+body.wiki-fallout::after {
   content: "";
   position: fixed;
   inset: var(--main-h, 56px) 0 0 0;
   pointer-events: none;
   z-index: 50;
-}
-body.wiki-fallout::before {
-  background: repeating-linear-gradient(
-    0deg, transparent 0 2px, rgba(0,0,0,.22) 2px 3.5px);
-  animation: fo-flicker 5.5s steps(2, end) infinite;
-}
-body.wiki-fallout::after {
   background: radial-gradient(
     120% 90% at 50% 42%, transparent 55%, rgba(0,0,0,.62) 100%);
 }
@@ -88,6 +98,12 @@ body.wiki-fallout .crt-sweep {
   background: linear-gradient(180deg,
     transparent, rgba(62,230,61,.05), transparent);
   animation: fo-sweep 9s linear infinite;
+  /* z-index 104 lifts the sweep ABOVE the wiki-toc rail (102) and the
+     wiki-bar (99) so it crosses the full screen width — yet stays
+     below the drawer + backdrop (108-110). The global ViziWiki nav is
+     still safe: every CRT layer is geometrically inset to start at
+     --main-h, and the nav occupies only that top strip. */
+  z-index: 104;
 }
 body.wiki-fallout .crt-tint {
   top: var(--main-h, 56px); bottom: 0;
@@ -227,6 +243,10 @@ body.wiki-fallout .wiki-wpill {
   border-color: var(--wiki-faint);
 }
 body.wiki-fallout .wiki-wpill-chev { color: var(--amber); }
+/* default.html hardcodes .wiki-cat-item text to Taco Bell's dark brown,
+   which is invisible on the dark Fallout rail — restate the resting
+   colour here (dim phosphor), brightening on hover. */
+body.wiki-fallout .wiki-cat-item { color: var(--wiki-muted); }
 body.wiki-fallout .wiki-cat-item:hover { color: var(--phosphor); }
 
 
