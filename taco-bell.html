@@ -1,8 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+---
+layout: default
+title: "Taco Bell — Visual Wiki · ViziWiki"
+body_class: "wiki-page"
+---
+{% raw %}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Spectral:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -79,7 +80,9 @@
 
   /* ── tile grid (same as carousel version) ── */
   .dir-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;}
-  @media(min-width:640px){.dir-grid{grid-template-columns:repeat(3,1fr);}}
+  @media(min-width:640px){.dir-grid{grid-template-columns:repeat(3,1fr);}
+  @media(min-width:1024px){.dir-grid{grid-template-columns:repeat(4,1fr);gap:.875rem;}}
+  @media(min-width:1280px){.dir-grid{grid-template-columns:repeat(5,1fr);gap:.875rem;}}}
 
   .dir-tile{
     position:relative;display:block;width:100%;text-align:left;
@@ -1766,7 +1769,12 @@ let panelWrap = null;
 let openIndex = null;
 let busy = false;
 
-function colsNow(){ return window.matchMedia("(min-width:640px)").matches ? 3 : 2; }
+function colsNow(){
+  if(window.matchMedia("(min-width:1280px)").matches) return 5;
+  if(window.matchMedia("(min-width:1024px)").matches) return 4;
+  if(window.matchMedia("(min-width:640px)").matches)  return 3;
+  return 2;
+}
 function rowEndIndex(i){ return Math.min(Math.ceil((i+1)/colsNow())*colsNow(), CATS.length) - 1; }
 
 /* ============================================================
@@ -2085,3 +2093,4 @@ if(window.lucide) lucide.createIcons();
 });  /* end DOMContentLoaded */
 </script>
 </html>
+{% endraw %}
