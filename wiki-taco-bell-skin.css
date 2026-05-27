@@ -1,180 +1,29 @@
 /* =====================================================================
    wiki-taco-bell-skin.css
-   ViziWiki · Taco Bell wiki — "Live Más" chrome skin
+   ViziWiki · Taco Bell wiki chrome skin
    ---------------------------------------------------------------------
-   Layered ON TOP of the shared default.html chrome. Loaded per Taco Bell
-   page through the `extra_head` front-matter hook.
+   Loaded per TB page via the `extra_head` front-matter hook.
+   Scoped entirely under `body.wiki-taco-bell` — nothing leaks.
 
-   EVERY rule is scoped under `body.wiki-taco-bell`, so nothing in this
-   file can reach the global white ViziWiki main-bar or any other
-   wiki's chrome. This skins the WIKI-LEVEL chrome only:
-     · the wiki-bar      (mobile top bar)
-     · the wiki-toc rail (desktop left rail / mobile drawer)
-   The global ViziWiki main-bar is deliberately left alone — it sits
-   above all of this and stays identical on every wiki.
+   The default.html chrome already uses a warm cream palette (#fdf8e7
+   background, #2a1f15 text) that suits Taco Bell well. This file
+   makes minimal, targeted overrides — it does NOT re-skin the bar or
+   drawer colour scheme, leaving those as the shared default.
 
-   Fonts used (Fraunces, JetBrains Mono) are already loaded by
-   default.html — this file adds no <link>s of its own.
+   Only two things change for Taco Bell:
+     1. The wiki-toc rail gets a TB-purple right-edge border for depth.
+     2. The active / accent colour swaps from the default pink to TB
+        purple, so highlighted section items feel on-brand.
    ===================================================================== */
 
 
-/* ---------------------------------------------------------------------
-   1 · PERSONALITY TOKENS
-   Remap the shared --wiki-* group to the Taco Bell palette.
-   `body.wiki-taco-bell` outranks default.html's :root, so the whole
-   wiki chrome re-flavors from these values. Dimension tokens
-   (--wiki-bar-h, --wiki-rail-w) are frozen and intentionally NOT touched.
-   --------------------------------------------------------------------- */
+/* ── 1. Accent token — active items in TB purple ── */
 body.wiki-taco-bell {
-  --wiki-bg:      #F8F2EE;                   /* warm cream — bar + rail surface  */
-  --wiki-fg:      #3b1840;                   /* deep purple-tinted dark text     */
-  --wiki-muted:   #9e6daa;                   /* muted lavender for secondary txt */
-  --wiki-faint:   rgba(112, 32, 130, .14);   /* hairlines / borders              */
-  --wiki-accent:  #702082;                   /* TB purple — primary accent       */
-
-  /* TB extras the explicit rule overrides need */
-  --tb-purple:    #702082;
-  --tb-yellow:    #FED141;
-  --tb-dark:      #3b1840;
-  --tb-cream:     #F8F2EE;
+  --wiki-accent: #702082;
 }
 
 
-/* =====================================================================
-   2 · WIKI-BAR — Taco Bell mobile top chrome
-   Deep purple surface with cream/yellow text — on-brand and distinct
-   from the global ViziWiki white main-bar above it.
-   ===================================================================== */
-body.wiki-taco-bell .wiki-bar {
-  background:    var(--tb-purple);
-  border-bottom: 1px solid rgba(254, 209, 65, .30);
-  box-shadow:    0 2px 12px rgba(112, 32, 130, .22);
-}
-
-/* hamburger + save/share — cream keys on purple */
-body.wiki-taco-bell .wiki-hamburger,
-body.wiki-taco-bell .wiki-bar-btn {
-  color:         var(--tb-cream);
-  background:    rgba(255, 255, 255, .08);
-  border:        1px solid rgba(254, 209, 65, .20);
-  border-radius: 4px;
-}
-body.wiki-taco-bell .wiki-hamburger:hover,
-body.wiki-taco-bell .wiki-bar-btn:hover {
-  background:    rgba(254, 209, 65, .14);
-  border-color:  var(--tb-yellow);
-}
-
-/* Wordmark — "Taco Bell" in Fraunces, yellow glow */
-body.wiki-taco-bell .wiki-bar-title {
-  font-family:   'Fraunces', Georgia, serif;
-  color:         var(--tb-yellow);
-  letter-spacing: -.01em;
-}
-
-
-/* =====================================================================
-   3 · WIKI-TOC RAIL — Taco Bell contents chrome (desktop) / drawer
-   Warm cream surface with the TB purple right-edge border that gives
-   the rail a "panel lifted above the page" depth.
-   Most recolouring is automatic from the --wiki-* remap in §1.
-   ===================================================================== */
+/* ── 2. TOC rail — TB-purple right-edge separator ── */
 body.wiki-taco-bell .wiki-toc {
-  background:   var(--tb-cream);
-  border-right: 2px solid var(--tb-purple);   /* ← the drawer separator */
-}
-
-/* ── Rail wordmark · "Taco Bell / THE VISUAL WIKI" ── */
-body.wiki-taco-bell .wiki-toc-hero-title {
-  font-family:   'Fraunces', Georgia, serif;
-  color:         var(--tb-purple);
-  letter-spacing: -.015em;
-}
-body.wiki-taco-bell .wiki-toc-hero-title::after {
-  content:        "The Visual Wiki";
-  display:        block;
-  margin-top:     3px;
-  font-family:    'JetBrains Mono', ui-monospace, monospace;
-  font-size:      9px;
-  font-weight:    500;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color:          var(--tb-purple);
-  opacity:        .55;
-}
-
-/* "Contents:" label */
-body.wiki-taco-bell .wiki-toc-contents-label {
-  font-family:    'JetBrains Mono', ui-monospace, monospace;
-  color:          var(--tb-purple);
-  opacity:        .65;
-  letter-spacing: .18em;
-}
-
-/* Section items */
-body.wiki-taco-bell .wiki-section-item        { color: var(--wiki-fg);     }
-body.wiki-taco-bell .wiki-section-item:hover  { color: var(--tb-purple);   }
-body.wiki-taco-bell .wiki-section-item.active {
-  color:       var(--tb-purple);
-  font-weight: 600;
-}
-
-/* Save / collapse / back-tile buttons */
-body.wiki-taco-bell .wiki-toc-save,
-body.wiki-taco-bell .wiki-toc-close,
-body.wiki-taco-bell .wiki-back-tile {
-  color:        var(--tb-purple);
-  border-color: var(--wiki-faint);
-}
-body.wiki-taco-bell .wiki-toc-save:hover,
-body.wiki-taco-bell .wiki-toc-close:hover,
-body.wiki-taco-bell .wiki-back-tile:hover {
-  border-color: var(--tb-purple);
-  background:   rgba(112, 32, 130, .06);
-}
-body.wiki-taco-bell .wiki-toc-save.saved { color: var(--tb-yellow); }
-
-/* Home chip + category pills */
-body.wiki-taco-bell .wiki-home-chip {
-  font-family:  'Fraunces', Georgia, serif;
-  color:        var(--tb-purple);
-  border-color: var(--wiki-faint);
-}
-body.wiki-taco-bell .wiki-home-chip:hover {
-  border-color: var(--tb-purple);
-  background:   rgba(112, 32, 130, .06);
-}
-body.wiki-taco-bell .wiki-wpill       { color: var(--tb-purple); border-color: var(--wiki-faint); }
-body.wiki-taco-bell .wiki-wpill-chev  { color: var(--tb-purple); opacity: .55; }
-body.wiki-taco-bell .wiki-cat-item        { color: var(--wiki-fg);   }
-body.wiki-taco-bell .wiki-cat-item:hover  { color: var(--tb-purple); }
-
-
-/* =====================================================================
-   4 · MOBILE DRAWER HEAD — "Taco Bell / Visual Wiki"
-   .wiki-mob-vizi ships a hard-coded blue (#0284c7) in default.html that
-   the token cascade can't reach — overridden explicitly here.
-   ===================================================================== */
-body.wiki-taco-bell .wiki-mob-head-name {
-  font-family: 'Fraunces', Georgia, serif;
-  color:       var(--tb-purple);
-}
-body.wiki-taco-bell .wiki-mob-head-vw {
-  font-family:    'JetBrains Mono', ui-monospace, monospace;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color:          var(--tb-purple);
-  opacity:        .55;
-}
-body.wiki-taco-bell .wiki-mob-vizi {   /* overrides hard-coded blue */
-  color: var(--tb-purple);
-}
-
-
-/* =====================================================================
-   5 · SELECTION — on-brand inside Taco Bell pages
-   ===================================================================== */
-body.wiki-taco-bell ::selection {
-  background: rgba(112, 32, 130, .22);
-  color:      var(--tb-dark);
+  border-right: 2px solid #702082;
 }
