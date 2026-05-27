@@ -1,0 +1,578 @@
+---
+layout: default
+title: "Luxe Value Menu · Taco Bell · ViziWiki"
+body_class: "wiki-page wiki-taco-bell"
+extra_head: |
+  <link rel="stylesheet" href="/wiki-taco-bell-skin.css">
+---
+{% raw %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,300;9..144,0,600;9..144,0,700;9..144,1,400;9..144,1,600&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --background: oklch(0.972 0.012 85);
+    --foreground: oklch(0.18 0.02 60);
+    --card: oklch(1 0 0);
+    --secondary: oklch(0.93 0.02 80);
+    --muted-foreground: oklch(0.45 0.03 60);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { background: var(--background); color: var(--foreground); }
+  body { font-family: 'Spectral', Georgia, serif; }
+  .font-display { font-family: 'Fraunces', Georgia, serif; font-optical-sizing: auto; letter-spacing: -.02em; }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+  .halftone { background-image: radial-gradient(rgba(255,100,180,.55) 1.4px, transparent 1.6px); background-size: 10px 10px; }
+  .eyebrow { display: flex; align-items: center; gap: .5rem; font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .25em; color: var(--muted-foreground); margin-bottom: .5rem; }
+  .page-section { max-width: 1500px; margin: 0 auto; padding: 3.5rem 1.5rem; }
+  .ob-pill { display: inline-block; padding: 5px 12px; border: 1px solid rgba(42,31,21,0.1); border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase; color: rgba(42,31,21,0.85); white-space: nowrap; background: #fff; transition: background .15s, border-color .15s; }
+  @media (max-width: 767px) {
+    .catalogue-cols { columns: 1 !important; }
+    .hero-grid { display: block !important; padding: 2.5rem 1.25rem !important; }
+    .hero-grid > div:last-child { margin-top: 1.5rem; }
+    .overview-prose { grid-template-columns: 1fr !important; }
+  }
+</style>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section id="overview" class="relative overflow-hidden border-b border-foreground/20 text-white"
+  style="background:linear-gradient(135deg,#b45309 0%,#78350f 50%,#1c0700 100%)">
+  <div class="halftone pointer-events-none absolute inset-0 mix-blend-overlay opacity-20"></div>
+  <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(to right,rgba(28,7,0,.6),rgba(120,53,15,.1),transparent)"></div>
+  <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(to bottom,rgba(0,0,0,.2) 0%,transparent 55%)"></div>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+    class="pointer-events-none absolute -right-8 -bottom-8 opacity-[.07]"
+    style="width:380px;height:380px;color:#fff;transform:rotate(15deg)">
+    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+    <line x1="7" y1="7" x2="7.01" y2="7"/>
+  </svg>
+
+  <div class="hero-grid relative mx-auto" style="display:grid;grid-template-columns:1.6fr 1fr;gap:2rem;max-width:1500px;padding:3.5rem 1.5rem">
+    <div>
+      <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[.25em]" style="backdrop-filter:blur(4px)">
+        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#86efac;flex-shrink:0"></span>
+        Value · Active · Jan. 2026
+      </div>
+      <h1 class="font-display" style="font-size:clamp(2.75rem,7vw,4.75rem);font-weight:700;line-height:.95;color:#fff;margin-top:.75rem">
+        Luxe Value Menu<span style="color:#fcd34d">.</span>
+      </h1>
+      <p style="font-family:'Spectral',Georgia,serif;font-size:1.05rem;line-height:1.7;max-width:36rem;margin-top:1rem;color:rgba(255,255,255,.85)">
+        Ten items. Three dollars or less. Five new creations paired with five Cravings Value Menu survivors — Taco Bell's direct answer to the 2025 fast-food value wars and a deliberate repositioning of what "cheap" can mean at the chain.
+      </p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;overflow:hidden;border-radius:3px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);align-self:center">
+      <div style="background:rgba(28,7,0,.55);padding:.75rem 1rem"><div class="font-display" style="font-size:1.5rem;font-weight:600;color:#fff">$3</div><div class="font-mono" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">Price ceiling</div></div>
+      <div style="background:rgba(28,7,0,.55);padding:.75rem 1rem"><div class="font-display" style="font-size:1.5rem;font-weight:600;color:#fff">10</div><div class="font-mono" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">Items</div></div>
+      <div style="background:rgba(28,7,0,.55);padding:.75rem 1rem"><div class="font-display" style="font-size:1.5rem;font-weight:600;color:#fff">Jan '26</div><div class="font-mono" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">Launched</div></div>
+      <div style="background:rgba(28,7,0,.55);padding:.75rem 1rem"><div class="font-display" style="font-size:1.5rem;font-weight:600;color:#86efac">Active</div><div class="font-mono" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">Status</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ OVERVIEW ═══════════════════ -->
+<section style="background:var(--card);border-bottom:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
+  <div class="page-section">
+    <div class="eyebrow">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      Overview
+    </div>
+    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:1.5rem">Value that doesn't taste like it.</h2>
+    <div class="overview-prose" style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem 3rem;border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);padding-top:2rem">
+      <p style="font-size:15px;line-height:1.7">The Luxe Value Menu launched nationwide on <strong>January 22, 2026</strong>, replacing the Cravings Value Menu that had anchored Taco Bell's value tier since 2014. The name was deliberate: "luxe" as a direct reframe of what fast-food value positioning could communicate. Where the Cravings menu had emphasised familiarity and affordability, the Luxe menu was designed to carry a premium connotation — the idea that a $2.49 item could feel like an indulgence rather than a fallback. The menu was first teased at Live Más Live 2025 and formally announced on January 13, 2026, with Rewards member early access running from January 16.</p>
+      <p style="font-size:15px;line-height:1.7">The programme was tested in <strong>Indianapolis, Indiana</strong> beginning July 17, 2025 — the same regional-test-then-national-rollout cadence Taco Bell used for the Cantina Chicken Menu in 2024. The Indianapolis test ran five new items alongside five Cravings holdovers, giving corporate a direct read on which innovations held up operationally before committing to a national launch. The nationwide rollout replicated the test menu's structure almost exactly: the same five new items, the same five carried-forward items, with the Avocado Ranch Chicken Stacker's name refined from "Chipotle Ranch Chicken Stacker" in the test to the final version.</p>
+      <p style="font-size:15px;line-height:1.7">The competitive context was explicit. By 2025, every major QSR chain had launched or reaffirmed a sub-$3 value tier in response to consumer price sensitivity following several years of industry-wide menu inflation. McDonald's, Burger King, and Wendy's had all made high-profile value commitments. Taco Bell's CMO Luis Restrepo framed the Luxe launch directly against this backdrop: <em>"This isn't just a menu refresh, it's a new standard for value at Taco Bell and across the industry."</em> The ten-item ceiling of $3 — versus the previous Cravings menu's $1–$3 spread — positioned the Luxe menu as a more coherent, easier-to-communicate value proposition on the menu board.</p>
+      <p style="font-size:15px;line-height:1.7">The five carried-forward items — Cheesy Roll Up, Spicy Potato Soft Taco, Cheesy Bean and Rice Burrito, 3 Cheese Chicken Flatbread Melt, and Cheesy Double Beef Burrito — were not accidents. Each had ranked among the highest-volume items on the Cravings menu, meaning the transition preserved the operational infrastructure already in place while the five new items introduced the format diversity that justified the "luxe" positioning. The <strong>Salted Caramel Churros</strong>, the only limited-time item in the launch lineup and its lowest price point at $1.99, served as an accessible entry point and a social-media-friendly novelty simultaneously.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ CATALOGUE ═══════════════════ -->
+<section id="catalogue" style="border-top:1px solid rgba(42,31,21,0.15);border-bottom:1px solid rgba(42,31,21,0.15);background:color-mix(in oklab,var(--secondary) 40%,transparent)">
+  <div style="max-width:1500px;margin:0 auto;padding:48px 24px">
+    <div style="margin-bottom:24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(42,31,21,0.35)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" x2="21" y1="6" y2="6"/><line x1="10" x2="21" y1="12" y2="12"/><line x1="10" x2="21" y1="18" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+          Full Catalogue
+        </div>
+        <h2 style="font-family:'Fraunces',Georgia,serif;font-size:30px;font-weight:600;letter-spacing:-0.02em">Every item on the Luxe lineup</h2>
+      </div>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(42,31,21,0.35)">10 items &middot; 3 categories &middot; all $3 or less</span>
+    </div>
+
+    <div class="catalogue-cols" style="columns:2;column-gap:16px">
+
+      <!-- NEW ITEMS -->
+      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #b45309;padding:20px;break-inside:avoid;margin-bottom:16px">
+        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#b45309">New additions</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px">5 items · Jan. 2026 debut</div>
+        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <span class="ob-pill" style="cursor:pointer" onclick="showLuxeItem('Mini Taco Salad')" onmouseover="this.style.background='#b453091a';this.style.borderColor='#b4530944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Mini Taco Salad</span>
+          <span class="ob-pill" style="cursor:pointer" onclick="showLuxeItem('Beefy Potato Loaded Griller')" onmouseover="this.style.background='#b453091a';this.style.borderColor='#b4530944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Beefy Potato Loaded Griller</span>
+          <span class="ob-pill" style="cursor:pointer" onclick="showLuxeItem('Chips & Nacho Supreme Dip')" onmouseover="this.style.background='#b453091a';this.style.borderColor='#b4530944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Chips &amp; Nacho Supreme Dip</span>
+          <span class="ob-pill" style="cursor:pointer" onclick="showLuxeItem('Avocado Ranch Chicken Stacker')" onmouseover="this.style.background='#b453091a';this.style.borderColor='#b4530944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Avocado Ranch Chicken Stacker</span>
+        </div>
+      </div>
+
+      <!-- CRAVINGS CARRY-OVERS -->
+      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #6d28d9;padding:20px;break-inside:avoid;margin-bottom:16px">
+        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#6d28d9">Cravings carry-overs</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px">5 items · retained from Cravings Value Menu</div>
+        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <span class="ob-pill" style="cursor:pointer" onclick="showLuxeItem('Cheesy Roll Up')" onmouseover="this.style.background='#6d28d91a';this.style.borderColor='#6d28d944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Cheesy Roll Up</span>
+          <span class="ob-pill" style="cursor:pointer" onclick="showLuxeItem('Spicy Potato Soft Taco')" onmouseover="this.style.background='#6d28d91a';this.style.borderColor='#6d28d944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Spicy Potato Soft Taco</span>
+          <span class="ob-pill" style="cursor:pointer" onclick="showLuxeItem('Cheesy Bean and Rice Burrito')" onmouseover="this.style.background='#6d28d91a';this.style.borderColor='#6d28d944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Cheesy Bean and Rice Burrito</span>
+          <span class="ob-pill" style="cursor:pointer" onclick="showLuxeItem('3 Cheese Chicken Flatbread Melt')" onmouseover="this.style.background='#6d28d91a';this.style.borderColor='#6d28d944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">3 Cheese Chicken Flatbread Melt</span>
+          <span class="ob-pill" style="cursor:pointer" onclick="showLuxeItem('Cheesy Double Beef Burrito')" onmouseover="this.style.background='#6d28d91a';this.style.borderColor='#6d28d944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Cheesy Double Beef Burrito</span>
+        </div>
+      </div>
+
+      <!-- LIMITED-TIME -->
+      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #a16207;padding:20px;break-inside:avoid;margin-bottom:16px;position:relative;overflow:hidden">
+        <div style="position:absolute;top:-1px;right:-1px;width:85px;height:85px;overflow:hidden;z-index:2;pointer-events:none"><span style="position:absolute;display:block;width:120px;padding:5px 0;background:rgba(161,98,7,0.75);color:#fff;font-family:'JetBrains Mono',monospace;font-size:6.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;text-align:center;transform:rotate(45deg);top:20px;right:-28px;box-shadow:0 2px 4px rgba(0,0,0,.15)">Limited time</span></div>
+        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#a16207">Limited-time</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px">1 item · rotating LTO slot</div>
+        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <span class="ob-pill" style="cursor:pointer" onclick="showLuxeItem('Salted Caramel Churros')" onmouseover="this.style.background='#a162071a';this.style.borderColor='#a1620744'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Salted Caramel Churros</span>
+        </div>
+        <div style="margin-top:12px;padding:8px 10px;border-radius:4px;background:rgba(42,31,21,0.04);font-family:'JetBrains Mono',monospace;font-size:9px;line-height:1.6;color:rgba(42,31,21,0.45)">The limited-time slot is designed to rotate new items through the year. Salted Caramel Churros held this position at launch.</div>
+      </div>
+
+    </div>
+
+    <!-- Price ladder -->
+    <div style="margin-top:8px;padding:1rem 1.25rem;border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);background:var(--card);font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted-foreground);letter-spacing:.03em">
+      <strong style="color:var(--foreground)">Price ladder:</strong> Cheesy Roll Up $1.19 · Spicy Potato Soft Taco $1.29 · Cheesy Bean and Rice Burrito $1.49 · Salted Caramel Churros $1.99 (LTO) · Mini Taco Salad $2.49 · Beefy Potato Loaded Griller $2.49 · Chips &amp; Nacho Supreme Dip $2.49 · 3 Cheese Chicken Flatbread Melt $2.29 · Cheesy Double Beef Burrito $2.79 · Avocado Ranch Chicken Stacker $2.99
+    </div>
+  </div>
+</section>
+
+<!-- ── Item detail modal ── -->
+<div id="luxe-ov" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:1rem" onclick="if(event.target===this){closeLuxeModal()}">
+  <div id="luxe-card" style="background:#fff;border-radius:14px;max-width:460px;width:100%;max-height:85vh;overflow-y:auto;position:relative;box-shadow:0 24px 64px rgba(42,31,21,.22)"></div>
+</div>
+
+<script>
+var LUXE_ITEMS = {
+  'Mini Taco Salad': {
+    cat:'Salad · New addition', color:'#b45309', price:'$2.49', status:'Active',
+    desc:'A new take on the classic taco salad in a compact format — seasoned beef, creamy Chipotle Sauce, cheddar cheese, shredded lettuce, diced tomatoes, and refried beans in a crispy, golden tortilla bowl. First teased at Live Más Live 2025 before the Indianapolis test in July 2025.',
+    ingredients:['Crispy golden tortilla bowl','Seasoned beef','Creamy Chipotle Sauce','Cheddar cheese','Shredded lettuce','Diced tomatoes','Refried beans']
+  },
+  'Beefy Potato Loaded Griller': {
+    cat:'Griller · New addition', color:'#b45309', price:'$2.49', status:'Active',
+    desc:'A grilled burrito format loaded with seasoned beef, seasoned potato bites, and warm nacho cheese sauce. The griller format — a tightly wrapped, grilled-on-the-outside burrito — gives the item its distinctive crisp exterior without the complexity of a quesadilla press.',
+    ingredients:['Flour tortilla (grilled)','Seasoned beef','Seasoned potato bites','Nacho cheese sauce']
+  },
+  'Chips & Nacho Supreme Dip': {
+    cat:'Snack / Shareable · New addition', color:'#b45309', price:'$2.49', status:'Active',
+    desc:'Seasoned tortilla chips served with a warm, loaded nacho dip featuring seasoned beef, refried beans, sour cream, and nacho cheese sauce. Positions the Luxe menu in the shareable/snack occasion typically dominated by the Nachos format.',
+    ingredients:['Seasoned tortilla chips','Nacho cheese sauce','Seasoned beef','Refried beans','Sour cream']
+  },
+  'Avocado Ranch Chicken Stacker': {
+    cat:'Stacker · New addition', color:'#b45309', price:'$2.99', status:'Active',
+    desc:'The highest-priced item on the Luxe Value Menu and the one most directly aimed at the premium-value consumer. Grilled chicken, avocado ranch sauce, cheddar cheese, and shredded lettuce in a stacked tortilla format. Note: in the July 2025 Indianapolis test, this item was called the Chipotle Ranch Chicken Stacker — the sauce was reformulated and the name updated before the national launch.',
+    ingredients:['Flour tortilla','Grilled chicken','Avocado ranch sauce','Cheddar cheese','Shredded lettuce']
+  },
+  'Cheesy Roll Up': {
+    cat:'Snack · Cravings carry-over', color:'#6d28d9', price:'$1.19', status:'Active',
+    desc:'The lowest-priced item on the Luxe Value Menu and one of the simplest items on the entire Taco Bell menu — a warm flour tortilla rolled around a three-cheese blend. A Cravings Value Menu original, retained as the accessible entry point of the Luxe lineup.',
+    ingredients:['Flour tortilla','Three-cheese blend (warm)']
+  },
+  'Spicy Potato Soft Taco': {
+    cat:'Taco · Cravings carry-over', color:'#6d28d9', price:'$1.29', status:'Active',
+    desc:'Crispy seasoned potato bites, chipotle sauce, lettuce, and cheddar cheese in a warm flour tortilla. A vegetarian item and a consistent top-performer on the Cravings menu, retained in full on the Luxe lineup.',
+    ingredients:['Flour tortilla','Crispy seasoned potato bites','Chipotle sauce','Shredded lettuce','Cheddar cheese']
+  },
+  'Cheesy Bean and Rice Burrito': {
+    cat:'Burrito · Cravings carry-over', color:'#6d28d9', price:'$1.49', status:'Active',
+    desc:'Seasoned beans, seasoned rice, and a warm three-cheese blend in a flour tortilla. A fully vegetarian burrito and one of the lowest-cost complete-meal items in the fast-food segment at $1.49.',
+    ingredients:['Flour tortilla','Seasoned beans','Seasoned rice','Three-cheese blend']
+  },
+  '3 Cheese Chicken Flatbread Melt': {
+    cat:'Flatbread · Cravings carry-over', color:'#6d28d9', price:'$2.29', status:'Active',
+    desc:'Grilled chicken and a three-cheese blend melted on a warm flatbread. The flatbread format differentiates it from the tortilla-based items elsewhere on the menu, offering a different texture profile at a mid-tier price point.',
+    ingredients:['Flatbread','Grilled chicken','Three-cheese blend (melted)']
+  },
+  'Cheesy Double Beef Burrito': {
+    cat:'Burrito · Cravings carry-over', color:'#6d28d9', price:'$2.79', status:'Active',
+    desc:'A double portion of seasoned beef with warm nacho cheese sauce in a flour tortilla. The highest-priced of the five Cravings carry-overs, and the most protein-forward item retained from the previous menu.',
+    ingredients:['Flour tortilla','Seasoned beef (double)','Nacho cheese sauce']
+  },
+  'Salted Caramel Churros': {
+    cat:'Dessert · Limited-time', color:'#a16207', price:'$1.99', status:'Limited-time',
+    desc:'Crispy fried churro bites dusted with cinnamon sugar and drizzled with salted caramel sauce. The only limited-time item in the January 2026 launch lineup and the only dessert — positioned as the social-media-friendly novelty of the menu and its second-lowest price point. The LTO slot is designed to rotate new items through the year.',
+    ingredients:['Fried churro bites','Cinnamon sugar dusting','Salted caramel drizzle']
+  }
+};
+
+function closeLuxeModal() {
+  document.getElementById('luxe-ov').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function showLuxeItem(name) {
+  var d = LUXE_ITEMS[name]; if (!d) return;
+  var card = document.getElementById('luxe-card');
+  var isLTO = d.status === 'Limited-time';
+  card.innerHTML =
+    '<div style="height:4px;border-radius:14px 14px 0 0;background:' + d.color + '"></div>' +
+    '<div style="position:sticky;top:0;z-index:5;background:#fff;padding:20px 24px 16px;border-bottom:1px solid rgba(42,31,21,0.08)">' +
+      '<button onclick="closeLuxeModal()" style="position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:50%;border:1px solid rgba(42,31,21,0.12);background:transparent;cursor:pointer;font-size:16px;color:rgba(42,31,21,0.4);display:flex;align-items:center;justify-content:center;line-height:1;pointer-events:auto">&times;</button>' +
+      '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-right:36px">' +
+        '<span style="font-family:\'JetBrains Mono\',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:' + d.color + '">' + d.cat + '</span>' +
+        (isLTO
+          ? '<span style="font-family:\'JetBrains Mono\',monospace;font-size:7px;text-transform:uppercase;letter-spacing:.15em;padding:2px 7px;border-radius:999px;background:rgba(161,98,7,0.1);color:#a16207">Limited time</span>'
+          : '<span style="font-family:\'JetBrains Mono\',monospace;font-size:7px;text-transform:uppercase;letter-spacing:.15em;padding:2px 7px;border-radius:999px;background:#dcfce7;color:#16a34a">Active</span>') +
+        '<span style="font-family:\'JetBrains Mono\',monospace;font-size:7px;text-transform:uppercase;letter-spacing:.15em;padding:2px 7px;border-radius:999px;background:rgba(42,31,21,0.08);color:rgba(42,31,21,0.5)">' + d.price + '</span>' +
+      '</div>' +
+      '<div style="font-family:Fraunces,Georgia,serif;font-size:22px;font-weight:600;letter-spacing:-.02em;margin-top:6px;line-height:1.15">' + name + '</div>' +
+    '</div>' +
+    '<div style="padding:20px 24px">' +
+      '<p style="font-family:\'Spectral\',Georgia,serif;font-size:14px;line-height:1.75;color:rgba(42,31,21,.8)">' + d.desc + '</p>' +
+      '<div style="margin-top:16px">' +
+        '<div style="font-family:\'JetBrains Mono\',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:rgba(42,31,21,.35);margin-bottom:8px">Ingredients</div>' +
+        '<div style="display:flex;flex-wrap:wrap;gap:5px">' +
+          d.ingredients.map(function(i){ return '<span style="font-family:\'JetBrains Mono\',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:3px 9px;border-radius:3px;border:1px solid ' + d.color + '33;background:' + d.color + '0d;color:' + d.color + '">' + i + '</span>'; }).join('') +
+        '</div>' +
+      '</div>' +
+      '<div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(42,31,21,0.08)">' +
+        '<a href="taco-bell-item-luxe-' + name.toLowerCase().replace(/[^a-z0-9]+/g,'-') + '.html" style="display:inline-flex;align-items:center;gap:6px;font-family:\'JetBrains Mono\',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:' + d.color + ';text-decoration:none;border-bottom:1px solid ' + d.color + '33;padding-bottom:1px">' +
+          'See full item entry' +
+          '<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\' style=\'pointer-events:none\'><polyline points=\'9 18 15 12 9 6\'/></svg>' +
+        '</a>' +
+      '</div>' +
+    '</div>';
+  document.getElementById('luxe-ov').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeLuxeModal();
+});
+</script>
+
+
+<!-- ═══════════════════ CONCEPT & STRATEGIC REBRAND ═══════════════════ -->
+<section id="concept" style="background:var(--card);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
+  <div class="page-section">
+    <div class="eyebrow">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Concept, Strategic Rebrand &amp; Launch
+    </div>
+    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:2rem">Retiring "Cravings." Introducing "Luxe."</h2>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;margin-bottom:2rem">
+
+      <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);overflow:hidden">
+        <div style="height:3px;background:linear-gradient(to right,#78350f,#1c0700)"></div>
+        <div style="padding:1.25rem">
+          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.5rem">Platform retirement · Late 2025</div>
+          <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.75rem">The death of the Cravings platform</div>
+          <p style="font-size:13.5px;line-height:1.65">The Cravings Value Menu had run from 2014 to 2025 — over a decade of QSR history in which Taco Bell had used it as its primary value communication tool. By 2024 it was working: <strong>nearly one-third of all Taco Bell transactions included a Cravings item</strong>, and when purchased, 80% of those orders had at least one additional item added, driving roughly a 10% check uplift. Yum Brands CEO David Gibbs called it out by name on earnings calls.</p>
+          <p style="font-size:13.5px;line-height:1.65;margin-top:.75rem">But the Cravings name had accumulated baggage. After years of industry-wide menu price inflation — driven by labour costs, commodity price increases, and post-pandemic supply chain normalisation — the word "Cravings" had become associated in consumer perception with the minimum viable version of a meal. The brand needed a value platform that communicated abundance and quality rather than just price. The internal decision to retire the Cravings title and replace it with "Luxe" was made in late 2025, ahead of the January 2026 launch, as part of a broader repositioning away from "affordable" as a primary message toward "elevated at an accessible price."</p>
+        </div>
+      </div>
+
+      <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);overflow:hidden">
+        <div style="height:3px;background:linear-gradient(to right,#b45309,#78350f)"></div>
+        <div style="padding:1.25rem">
+          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.5rem">Product design · "Affordable luxury" blueprint</div>
+          <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.75rem">Engineering the perception of premium</div>
+          <p style="font-size:13.5px;line-height:1.65">The five new items on the Luxe Value Menu were not designed to be operationally complex — they were designed to <em>appear</em> complex. The Mini Taco Salad arrives in a crispy fried tortilla bowl: a visually distinct format that registers as restaurant-tier plating at a $2.49 price point. The Chips &amp; Nacho Supreme Dip presents as a shareable, scoopable dipping experience — a format associated with casual dining appetizers rather than fast-food sides. The Avocado Ranch Chicken Stacker uses avocado-based sauce to signal fresh, premium ingredients at the category's top price of $2.99.</p>
+          <p style="font-size:13.5px;line-height:1.65;margin-top:.75rem">In each case, the underlying components are drawn from the existing Taco Bell assembly line — seasoned beef, standard chicken, nacho cheese sauce, flour tortillas. The "luxury" is achieved through format and presentation rather than ingredient upgrade. This is the operational logic behind the name: a product can feel luxurious without costing more to make, provided the format is novel enough to shift the consumer's reference point away from "fast food" and toward "something I wouldn't expect at this price."</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Rollout timeline -->
+    <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);padding:1.25rem 1.5rem">
+      <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:1rem">January 2026 rollout — key dates</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.75rem">
+        <div style="padding:.75rem;border-radius:4px;background:color-mix(in oklab,var(--secondary) 60%,transparent)">
+          <div class="font-display" style="font-size:1.0625rem;font-weight:600">July 17, 2025</div>
+          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-foreground);margin-top:.2rem">Indianapolis test</div>
+          <p style="font-size:11.5px;line-height:1.5;margin-top:.375rem;color:var(--muted-foreground)">Regional test at select Indianapolis locations. Five new items alongside five Cravings holdovers.</p>
+        </div>
+        <div style="padding:.75rem;border-radius:4px;background:color-mix(in oklab,var(--secondary) 60%,transparent)">
+          <div class="font-display" style="font-size:1.0625rem;font-weight:600">Jan. 13, 2026</div>
+          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-foreground);margin-top:.2rem">Announcement</div>
+          <p style="font-size:11.5px;line-height:1.5;margin-top:.375rem;color:var(--muted-foreground)">Official press release. CMO Luis Restrepo: "a new standard for value at Taco Bell and across the industry."</p>
+        </div>
+        <div style="padding:.75rem;border-radius:4px;background:color-mix(in oklab,var(--secondary) 60%,transparent)">
+          <div class="font-display" style="font-size:1.0625rem;font-weight:600">Jan. 14–15, 2026</div>
+          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-foreground);margin-top:.2rem">LA pop-up</div>
+          <p style="font-size:11.5px;line-height:1.5;margin-top:.375rem;color:var(--muted-foreground)">Exclusive immersive drive-thru pop-up in Los Angeles for select guests. Menu board configuration previewed.</p>
+        </div>
+        <div style="padding:.75rem;border-radius:4px;background:color-mix(in oklab,var(--secondary) 60%,transparent)">
+          <div class="font-display" style="font-size:1.0625rem;font-weight:600">Jan. 16, 2026</div>
+          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-foreground);margin-top:.2rem">Rewards early access</div>
+          <p style="font-size:11.5px;line-height:1.5;margin-top:.375rem;color:var(--muted-foreground)">Taco Bell Rewards Members gain early access via the app, drive-thru check-in, or restaurant kiosk.</p>
+        </div>
+        <div style="padding:.75rem;border-radius:4px;background:color-mix(in oklab,var(--secondary) 60%,transparent);border:1px solid color-mix(in oklab,#b45309 25%,transparent)">
+          <div class="font-display" style="font-size:1.0625rem;font-weight:600;color:#b45309">Jan. 22, 2026</div>
+          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:#b45309;margin-top:.2rem">Nationwide launch</div>
+          <p style="font-size:11.5px;line-height:1.5;margin-top:.375rem;color:var(--muted-foreground)">Full rollout to all participating US locations. Cravings Value Menu officially retired and replaced.</p>
+        </div>
+        <div style="padding:.75rem;border-radius:4px;background:color-mix(in oklab,var(--secondary) 60%,transparent)">
+          <div class="font-display" style="font-size:1.0625rem;font-weight:600">Jan. 27, 2026</div>
+          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-foreground);margin-top:.2rem">$1 Rewards deal</div>
+          <p style="font-size:11.5px;line-height:1.5;margin-top:.375rem;color:var(--muted-foreground)">30,000 Rewards Members offered a Luxe item for $1 via app at 2PM PT, first-come first-served.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ LUXE BOX VS LUXE MENU ═══════════════════ -->
+<section id="luxe-box" style="background:var(--background);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
+  <div class="page-section">
+    <div class="eyebrow">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+      Luxe Box vs. Luxe Menu
+    </div>
+    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:.625rem">Two products. One brand name.</h2>
+    <p style="font-size:14px;line-height:1.7;color:var(--muted-foreground);max-width:56rem;margin-bottom:2rem">The "Luxe" brand name encompasses two structurally distinct product types that coexist on the Taco Bell menu — the <strong style="color:var(--foreground)">Luxe Value Menu</strong> (a-la-carte items, $1.19–$2.99) and the <strong style="color:var(--foreground)">Luxe Cravings Box</strong> (fixed combo bundle, $7). They share a brand name and a value positioning but serve different consumer occasions and operate on different margin logics.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem" class="overview-prose">
+      <!-- Luxe Menu column -->
+      <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);overflow:hidden">
+        <div style="padding:.875rem 1.25rem;border-bottom:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);background:color-mix(in oklab,var(--secondary) 50%,transparent)">
+          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground)">Platform A · Ongoing</div>
+          <div class="font-display" style="font-size:1.0625rem;font-weight:600">Luxe Value Menu</div>
+        </div>
+        <div style="padding:1rem 1.25rem">
+          <p style="font-size:13px;line-height:1.65">10 individual items, $1.19–$2.99 each. The menu is permanent and rotating — the 10-item count is the committed size, but specific items can be swapped out over time (the limited-time slot exists precisely for this). The consumer builds their own combination, pays per-item, and has full customisation freedom. The Luxe Value Menu is a platform, not a transaction: it is designed to be a destination reason on the board, a reason to choose Taco Bell for a budget occasion over competitors.</p>
+          <div style="margin-top:.875rem;display:flex;flex-direction:column;gap:.375rem">
+            <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;padding:.3rem 0;border-bottom:1px solid color-mix(in oklab,var(--foreground) 6%,transparent)"><span style="text-transform:uppercase;letter-spacing:.1em;color:var(--muted-foreground)">Entry price</span><span style="font-weight:600">$1.19</span></div>
+            <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;padding:.3rem 0;border-bottom:1px solid color-mix(in oklab,var(--foreground) 6%,transparent)"><span style="text-transform:uppercase;letter-spacing:.1em;color:var(--muted-foreground)">Ceiling price</span><span style="font-weight:600">$2.99</span></div>
+            <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;padding:.3rem 0;border-bottom:1px solid color-mix(in oklab,var(--foreground) 6%,transparent)"><span style="text-transform:uppercase;letter-spacing:.1em;color:var(--muted-foreground)">Format</span><span style="font-weight:600">A-la-carte, per item</span></div>
+            <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;padding:.3rem 0"><span style="text-transform:uppercase;letter-spacing:.1em;color:var(--muted-foreground)">Duration</span><span style="font-weight:600">Permanent (rotating)</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- Box column -->
+      <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);overflow:hidden">
+        <div style="padding:.875rem 1.25rem;border-bottom:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);background:color-mix(in oklab,var(--secondary) 50%,transparent)">
+          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground)">Platform B · Limited-time / ongoing</div>
+          <div class="font-display" style="font-size:1.0625rem;font-weight:600">Luxe Cravings Box</div>
+        </div>
+        <div style="padding:1rem 1.25rem">
+          <p style="font-size:13px;line-height:1.65">A fixed multi-item bundle at $7, introduced in June 2024 — predating the Luxe Value Menu by 19 months. The box contains full-sized items (Chalupa Supreme, Beefy 5-Layer Burrito, Double Stacked Taco, chips and nacho cheese sauce, medium drink) at a confirmed 55% discount off a-la-carte prices. A later iteration introduced a Build Your Own format ($5.99–$9.99) with configurable slots. The Box serves the full-meal, single-transaction occasion; the a-la-carte menu serves the micro-purchase, snack, or supplement occasion.</p>
+          <div style="margin-top:.875rem;display:flex;flex-direction:column;gap:.375rem">
+            <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;padding:.3rem 0;border-bottom:1px solid color-mix(in oklab,var(--foreground) 6%,transparent)"><span style="text-transform:uppercase;letter-spacing:.1em;color:var(--muted-foreground)">Original price</span><span style="font-weight:600">$7</span></div>
+            <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;padding:.3rem 0;border-bottom:1px solid color-mix(in oklab,var(--foreground) 6%,transparent)"><span style="text-transform:uppercase;letter-spacing:.1em;color:var(--muted-foreground)">BYO range</span><span style="font-weight:600">$5.99–$9.99</span></div>
+            <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;padding:.3rem 0;border-bottom:1px solid color-mix(in oklab,var(--foreground) 6%,transparent)"><span style="text-transform:uppercase;letter-spacing:.1em;color:var(--muted-foreground)">Discount vs. a-la-carte</span><span style="font-weight:600">55%+ off</span></div>
+            <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;padding:.3rem 0"><span style="text-transform:uppercase;letter-spacing:.1em;color:var(--muted-foreground)">Format</span><span style="font-weight:600">Fixed bundle / configurable</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Box contents detail -->
+    <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);overflow:hidden">
+      <div style="padding:.875rem 1.25rem;border-bottom:1px solid color-mix(in oklab,var(--foreground) 8%,transparent)">
+        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground)">Luxe Cravings Box — original $7 build · Introduced June 27, 2024</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0">
+        <div style="padding:.875rem 1rem;border-right:1px solid color-mix(in oklab,var(--foreground) 6%,transparent)">
+          <div class="font-display" style="font-size:.9375rem;font-weight:600">Chalupa Supreme</div>
+          <p style="font-size:11.5px;line-height:1.5;color:var(--muted-foreground);margin-top:.25rem">Full-sized. Seasoned beef, sour cream, lettuce, tomato, cheddar in a fried chalupa shell.</p>
+        </div>
+        <div style="padding:.875rem 1rem;border-right:1px solid color-mix(in oklab,var(--foreground) 6%,transparent)">
+          <div class="font-display" style="font-size:.9375rem;font-weight:600">Beefy 5-Layer Burrito</div>
+          <p style="font-size:11.5px;line-height:1.5;color:var(--muted-foreground);margin-top:.25rem">Full-sized. Beef, beans, nacho cheese, sour cream, three-cheese blend — steamed tortilla.</p>
+        </div>
+        <div style="padding:.875rem 1rem;border-right:1px solid color-mix(in oklab,var(--foreground) 6%,transparent)">
+          <div class="font-display" style="font-size:.9375rem;font-weight:600">Double Stacked Taco</div>
+          <p style="font-size:11.5px;line-height:1.5;color:var(--muted-foreground);margin-top:.25rem">Full-sized. Dual-shell taco format with beef, cheese sauce, cheddar, lettuce.</p>
+        </div>
+        <div style="padding:.875rem 1rem;border-right:1px solid color-mix(in oklab,var(--foreground) 6%,transparent)">
+          <div class="font-display" style="font-size:.9375rem;font-weight:600">Chips &amp; Nacho Cheese</div>
+          <p style="font-size:11.5px;line-height:1.5;color:var(--muted-foreground);margin-top:.25rem">Seasoned tortilla chips with warm nacho cheese dipping sauce.</p>
+        </div>
+        <div style="padding:.875rem 1rem">
+          <div class="font-display" style="font-size:.9375rem;font-weight:600">Medium Drink</div>
+          <p style="font-size:11.5px;line-height:1.5;color:var(--muted-foreground);margin-top:.25rem">Standard fountain drink. PepsiCo portfolio.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SUPPLY CHAIN & OPERATIONS ═══════════════════ -->
+<section id="operations" style="background:var(--card);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
+  <div class="page-section">
+    <div class="eyebrow">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      Supply Chain &amp; Operational Engineering
+    </div>
+    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:2rem">New formats. Existing inventory.</h2>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem">
+
+      <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);border-top:3px solid #b45309;background:var(--card);padding:1.125rem 1.25rem">
+        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#b45309;margin-bottom:.375rem">Cross-utilization · Ingredient reuse</div>
+        <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.625rem">Pre-existing assets, new formats</div>
+        <p style="font-size:13.5px;line-height:1.65">None of the five new Luxe Value Menu items require a net-new ingredient introduction to the Taco Bell supply chain. The Mini Taco Salad's crispy tortilla bowl shares its shell-frying infrastructure with the Fiesta Taco Salad that preceded it. The Avocado Ranch Chicken Stacker draws on the Avocado Verde Salsa supply line established for the Cantina Chicken Menu in 2024. The Beefy Potato Loaded Griller uses the seasoned potato bites already stocked for the Spicy Potato Soft Taco — one of the five Cravings carry-overs. The Chips &amp; Nacho Supreme Dip combines existing chips stock with the nacho cheese sauce used across dozens of menu items. This cross-utilization strategy is a core franchise protection mechanism: it caps the SKU expansion cost of a new menu launch while keeping franchisee raw-material procurement inside established supplier contracts.</p>
+      </div>
+
+      <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);border-top:3px solid #6d28d9;background:var(--card);padding:1.125rem 1.25rem">
+        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#6d28d9;margin-bottom:.375rem">Assembly speed · Drive-thru engineering</div>
+        <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.625rem">The griller and stacker speed advantage</div>
+        <p style="font-size:13.5px;line-height:1.65">Two of the five new items — the Beefy Potato Loaded Griller and the Avocado Ranch Chicken Stacker — use flat-top grilled assembly formats. This is operationally significant. A griller is constructed by placing ingredients on a tortilla, folding it closed, and pressing it on the flat-top grill. The process is linear and time-predictable: fill, fold, press, bag. It does not require the multi-step layering sequence of items like the Crunchwrap Supreme or the Cantina Chicken Quesadilla, which involve multiple fold points and precise component sequencing.</p>
+        <p style="font-size:13.5px;line-height:1.65;margin-top:.75rem">At the drive-thru, seconds-per-ticket is the primary operational metric. Simpler assembly formats reduce ticket time variance — the difference between the fastest and slowest execution of a given item. Taco Bell's kitchen engineering team has historically prioritised fold-and-grill assemblies for value-tier items specifically because they can be built by staff at any experience level without quality degradation, which matters during high-volume periods when experienced staff are managing multiple stations simultaneously.</p>
+      </div>
+
+      <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);border-top:3px solid #0c4a6e;background:var(--card);padding:1.125rem 1.25rem">
+        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#0c4a6e;margin-bottom:.375rem">Margin architecture · Franchise economics</div>
+        <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.625rem">The fountain drink subsidy model — again</div>
+        <p style="font-size:13.5px;line-height:1.65">The Luxe Value Menu deploys the same margin architecture that made the $2 Meal Deals viable in 2010: items with meaningful perceived value are priced at a point where the margin on high-value-per-unit-cost components (fountain drinks in bundles, nacho cheese sauce in dips) subsidises the margin on the protein-based items that carry the most COGS risk. The Chips &amp; Nacho Supreme Dip at $2.49 is the clearest example: the chip-and-sauce format carries extremely low food cost relative to its price, while the beef-and-bean toppings in the dip add perceived richness at incremental cost. The Cheesy Roll Up at $1.19 — melted cheese in a tortilla — operates on similar logic: food cost is measured in cents, perceived value is "a warm, satisfying snack."</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ MARKET RECEPTION & LEGACY ═══════════════════ -->
+<section id="reception" style="background:var(--background);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
+  <div class="page-section">
+    <div class="eyebrow">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      Market Reception &amp; Legacy
+    </div>
+    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:2rem">Early reception, the nutrition record, and what comes next.</h2>
+
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;margin-bottom:1.5rem" class="overview-prose">
+
+      <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);overflow:hidden">
+        <div style="height:3px;background:linear-gradient(to right,#b45309,#78350f)"></div>
+        <div style="padding:1.25rem">
+          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.5rem">Consumer reception · January 2026</div>
+          <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.75rem">Early value assessments</div>
+          <p style="font-size:13.5px;line-height:1.65">Initial consumer response to the Luxe Value Menu launch was broadly positive on price, with the $1.99 Salted Caramel Churros drawing the most social-media engagement as the menu's accessible and novel entry point. The Avocado Ranch Chicken Stacker, as the menu's highest-priced and most "premium" item, generated the most discussion around whether the "luxe" positioning was substantiated by the actual product. Early reviews noted that the $2.99 price point for a chicken stacker — while genuinely lower than comparable items at Chipotle, Panera, or McDonald's McChicken Sandwich variants — sat at a level where consumer expectations shifted from "value snack" to "actual meal," which the item's portion size did not always satisfy.</p>
+          <p style="font-size:13.5px;line-height:1.65;margin-top:.75rem">The strategic positioning stood out against the competitor landscape. McDonald's had anchored its value play on a $5 Meal Deal (full item plus side plus drink); Burger King and Wendy's had similarly structured their value offers around multi-item bundles. Taco Bell's a-la-carte ceiling of $2.99 — for a single item, no bundle required — provided a distinctly different consumer story: not "get a full meal for less" but "get individual items for genuinely less than anywhere else."</p>
+        </div>
+      </div>
+
+      <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);overflow:hidden">
+        <div style="height:3px;background:linear-gradient(to right,#166534,#052e16)"></div>
+        <div style="padding:1.25rem">
+          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.5rem">Nutrition · Caloric profile analysis</div>
+          <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.75rem">Nutritional mapping</div>
+          <p style="font-size:13.5px;line-height:1.65">The Luxe Value Menu spans a wide caloric range — from the 170-calorie Cheesy Roll Up at the low end to the approximately 560-calorie Cheesy Double Beef Burrito at the high. The five Cravings carry-overs represent the menu's more calorie-dense items, reflecting their original design as satisfying standalone meal items rather than snack-tier additions. The five new Luxe items are, on average, lighter — the Mini Taco Salad (~350 cal), the Avocado Ranch Chicken Stacker (~380 cal), and the Chips &amp; Nacho Supreme Dip (~350 cal) all land in a mid-range that allows for multi-item ordering without immediately breaching a 700-calorie threshold.</p>
+          <p style="font-size:13.5px;line-height:1.65;margin-top:.75rem">The sodium profile carries the same structural criticism that applied to the Fresco Menu era: the tortillas, seasoned beef, and nacho cheese sauce that form the backbone of most items are sodium-dense by nature, and no modifier on the Luxe menu reduces this. A two-item Luxe meal — say, a Cheesy Bean and Rice Burrito and a Spicy Potato Soft Taco — lands around 1,400mg of sodium, approaching the 1,500mg daily limit recommended by the American Heart Association.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Nutrition table -->
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);margin-bottom:1.5rem">
+      <table style="width:100%;min-width:580px;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:11px">
+        <thead>
+          <tr style="background:color-mix(in oklab,var(--secondary) 50%,transparent)">
+            <th style="text-align:left;padding:.75rem 1rem;font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted-foreground);border-bottom:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);position:sticky;left:0;background:color-mix(in oklab,var(--secondary) 50%,transparent);z-index:2">Item</th>
+            <th style="text-align:right;padding:.75rem .875rem;font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted-foreground);border-bottom:1px solid color-mix(in oklab,var(--foreground) 12%,transparent)">Price</th>
+            <th style="text-align:right;padding:.75rem .875rem;font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted-foreground);border-bottom:1px solid color-mix(in oklab,var(--foreground) 12%,transparent)">Cal</th>
+            <th style="text-align:right;padding:.75rem .875rem;font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted-foreground);border-bottom:1px solid color-mix(in oklab,var(--foreground) 12%,transparent)">Fat</th>
+            <th style="text-align:right;padding:.75rem .875rem;font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted-foreground);border-bottom:1px solid color-mix(in oklab,var(--foreground) 12%,transparent)">Protein</th>
+            <th style="text-align:right;padding:.75rem .875rem;font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted-foreground);border-bottom:1px solid color-mix(in oklab,var(--foreground) 12%,transparent)">Sodium</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid color-mix(in oklab,var(--foreground) 5%,transparent)"><td style="padding:.65rem 1rem;font-weight:600;position:sticky;left:0;background:var(--card);z-index:1">Cheesy Roll Up</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">$1.19</td><td style="text-align:right;padding:.65rem .875rem;color:#16a34a;font-weight:600">170</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">6g</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">7g</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">380mg</td></tr>
+          <tr style="border-bottom:1px solid color-mix(in oklab,var(--foreground) 5%,transparent)"><td style="padding:.65rem 1rem;font-weight:600;position:sticky;left:0;background:var(--card);z-index:1">Spicy Potato Soft Taco</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">$1.29</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">240</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">11g</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">5g</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">580mg</td></tr>
+          <tr style="border-bottom:1px solid color-mix(in oklab,var(--foreground) 5%,transparent)"><td style="padding:.65rem 1rem;font-weight:600;position:sticky;left:0;background:var(--card);z-index:1">Cheesy Bean and Rice Burrito</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">$1.49</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">430</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">15g</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">12g</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">950mg</td></tr>
+          <tr style="border-bottom:1px solid color-mix(in oklab,var(--foreground) 5%,transparent)"><td style="padding:.65rem 1rem;font-weight:600;position:sticky;left:0;background:var(--card);z-index:1">Salted Caramel Churros</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">$1.99</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">280</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">14g</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">3g</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">180mg</td></tr>
+          <tr style="border-bottom:1px solid color-mix(in oklab,var(--foreground) 5%,transparent)"><td style="padding:.65rem 1rem;font-weight:600;position:sticky;left:0;background:var(--card);z-index:1">3 Cheese Chicken Flatbread Melt</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">$2.29</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">340</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">13g</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">19g</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">740mg</td></tr>
+          <tr style="border-bottom:1px solid color-mix(in oklab,var(--foreground) 5%,transparent)"><td style="padding:.65rem 1rem;font-weight:600;position:sticky;left:0;background:var(--card);z-index:1">Mini Taco Salad</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">$2.49</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">350</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">17g</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">14g</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">690mg</td></tr>
+          <tr style="border-bottom:1px solid color-mix(in oklab,var(--foreground) 5%,transparent)"><td style="padding:.65rem 1rem;font-weight:600;position:sticky;left:0;background:var(--card);z-index:1">Beefy Potato Loaded Griller</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">$2.49</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">400</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">18g</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">15g</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">870mg</td></tr>
+          <tr style="border-bottom:1px solid color-mix(in oklab,var(--foreground) 5%,transparent)"><td style="padding:.65rem 1rem;font-weight:600;position:sticky;left:0;background:var(--card);z-index:1">Chips &amp; Nacho Supreme Dip</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">$2.49</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">350</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">14g</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">9g</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">610mg</td></tr>
+          <tr style="border-bottom:1px solid color-mix(in oklab,var(--foreground) 5%,transparent)"><td style="padding:.65rem 1rem;font-weight:600;position:sticky;left:0;background:var(--card);z-index:1">Cheesy Double Beef Burrito</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">$2.79</td><td style="text-align:right;padding:.65rem .875rem;color:#991b1b;font-weight:600">560</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">24g</td><td style="text-align:right;padding:.65rem .875rem;color:#16a34a;font-weight:600">22g</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">1,220mg</td></tr>
+          <tr><td style="padding:.65rem 1rem;font-weight:600;position:sticky;left:0;background:var(--card);z-index:1">Avocado Ranch Chicken Stacker</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">$2.99</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">380</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">19g</td><td style="text-align:right;padding:.65rem .875rem;color:#16a34a;font-weight:600">21g</td><td style="text-align:right;padding:.65rem .875rem;color:var(--muted-foreground)">830mg</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="padding:.875rem 1rem;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);background:var(--card);font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted-foreground);letter-spacing:.03em">
+      <strong style="color:var(--foreground)">Note:</strong> Nutritional values are approximate and reflect standard builds. Verified current figures at <strong>tacobell.com/nutrition</strong>. Sodium values across most items approach or exceed 25–50% of the 2,300mg FDA daily recommended intake per item.
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SEE ALSO ═══════════════════ -->
+<section style="border-top:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card)">
+  <div style="max-width:1500px;margin:0 auto;padding:2.5rem 1.5rem">
+    <div class="eyebrow" style="margin-bottom:1rem">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      See also
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem">
+      <a href="taco-bell-menus.html" style="display:block;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card);padding:.875rem 1rem;text-decoration:none;color:inherit;transition:border-color .12s" onmouseover="this.style.borderColor='color-mix(in oklab,var(--foreground) 35%,transparent)'" onmouseout="this.style.borderColor=''">
+        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Parent</div>
+        <div class="font-display" style="font-size:1rem;font-weight:600;margin-top:.2rem;display:flex;align-items:baseline;justify-content:space-between">Taco Bell Menus <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+      <a href="taco-bell-menu-cravings.html" style="display:block;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card);padding:.875rem 1rem;text-decoration:none;color:inherit;transition:border-color .12s" onmouseover="this.style.borderColor='color-mix(in oklab,var(--foreground) 35%,transparent)'" onmouseout="this.style.borderColor=''">
+        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Predecessor</div>
+        <div class="font-display" style="font-size:1rem;font-weight:600;margin-top:.2rem;display:flex;align-items:baseline;justify-content:space-between">Cravings Value Menu <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+      <a href="taco-bell-menu-2-dollar-deals.html" style="display:block;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card);padding:.875rem 1rem;text-decoration:none;color:inherit;transition:border-color .12s" onmouseover="this.style.borderColor='color-mix(in oklab,var(--foreground) 35%,transparent)'" onmouseout="this.style.borderColor=''">
+        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Related</div>
+        <div class="font-display" style="font-size:1rem;font-weight:600;margin-top:.2rem;display:flex;align-items:baseline;justify-content:space-between">$2 Meal Deals <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+      <a href="taco-bell-menu-fresco.html" style="display:block;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card);padding:.875rem 1rem;text-decoration:none;color:inherit;transition:border-color .12s" onmouseover="this.style.borderColor='color-mix(in oklab,var(--foreground) 35%,transparent)'" onmouseout="this.style.borderColor=''">
+        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Historical context</div>
+        <div class="font-display" style="font-size:1rem;font-weight:600;margin-top:.2rem;display:flex;align-items:baseline;justify-content:space-between">Fresco Menu <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+      <a href="taco-bell-menu-border-lights.html" style="display:block;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card);padding:.875rem 1rem;text-decoration:none;color:inherit;transition:border-color .12s" onmouseover="this.style.borderColor='color-mix(in oklab,var(--foreground) 35%,transparent)'" onmouseout="this.style.borderColor=''">
+        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">1990s value era</div>
+        <div class="font-display" style="font-size:1rem;font-weight:600;margin-top:.2rem;display:flex;align-items:baseline;justify-content:space-between">Border Lights <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+      <a href="taco-bell.html" style="display:block;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card);padding:.875rem 1rem;text-decoration:none;color:inherit;transition:border-color .12s" onmouseover="this.style.borderColor='color-mix(in oklab,var(--foreground) 35%,transparent)'" onmouseout="this.style.borderColor=''">
+        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Wiki home</div>
+        <div class="font-display" style="font-size:1rem;font-weight:600;margin-top:.2rem;display:flex;align-items:baseline;justify-content:space-between">Taco Bell wiki <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer style="border-top:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:color-mix(in oklab,var(--secondary) 40%,transparent)">
+  <div style="max-width:1500px;margin:0 auto;padding:1.5rem;display:flex;align-items:center;gap:.5rem;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-foreground)">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    ViziWiki · Taco Bell · Luxe Value Menu · 10 items · Active Jan. 2026 · 2026
+  </div>
+</footer>
+
+<script>
+window.WIKI_TOC = {
+  pageTitle: 'Luxe Value Menu',
+  pageLogo: '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="6" fill="#702082"/><rect x="4" y="7" width="24" height="16" rx="2" fill="#FED141"/><rect x="4" y="7" width="24" height="4" rx="2" fill="#FED141" opacity=".55"/><rect x="7" y="10" width="5" height="1.5" rx=".75" fill="#702082" opacity=".4"/><rect x="7" y="13.5" width="7" height="1.5" rx=".75" fill="#702082" opacity=".35"/><rect x="7" y="16.5" width="5" height="1.5" rx=".75" fill="#702082" opacity=".35"/><rect x="7" y="19.5" width="8" height="1.5" rx=".75" fill="#702082" opacity=".35"/><rect x="16" y="13.5" width="6" height="1.5" rx=".75" fill="#702082" opacity=".35"/><rect x="16" y="16.5" width="8" height="1.5" rx=".75" fill="#702082" opacity=".35"/><rect x="16" y="19.5" width="5" height="1.5" rx=".75" fill="#702082" opacity=".35"/><rect x="13" y="23" width="6" height="3" rx="1" fill="#FED141" opacity=".5"/></svg>',
+  wikiHome: 'taco-bell.html',
+  wikiTitle: 'Taco Bell',
+  wikiLogo: '<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="28" height="28" rx="2.5" fill="#ffffff"/><rect x="4" y="4" width="24" height="24" rx="0.8" fill="#702082"/><rect x="14.7" y="8.5" width="2.6" height="1.3" rx="0.6" fill="#FED141"/><path d="M 12 10 Q 12 9.1 13 9.1 L 19 9.1 Q 20 9.1 20 10 L 21 18.5 Q 22 19 22 19.7 L 10 19.7 Q 10 19 11 18.5 Z" fill="#FED141"/><circle cx="16" cy="21" r="1" fill="#FED141"/></svg>',
+  parentUrl: 'taco-bell-menus.html',
+  parentTitle: 'Taco Bell menus',
+  categories: [
+    { name: 'Tacos',    url: 'taco-bell-tacos.html',    color: '#e07b22' },
+    { name: 'Drinks',   url: 'taco-bell-drinks.html',   color: '#0ea5e9' },
+    { name: 'Sauces',   url: 'taco-bell-sauces.html',   color: '#dc2626' },
+    { name: 'Slogans',  url: 'taco-bell-slogans.html',  color: '#702082' },
+    { name: 'Menus',    url: 'taco-bell-menus.html',    color: '#6d28d9' }
+  ],
+  sections: [
+    { id: 'overview',  label: 'Overview' },
+    { id: 'catalogue',  label: 'Full catalogue' },
+    { id: 'concept',    label: 'Concept & rebrand' },
+    { id: 'luxe-box',   label: 'Luxe Box vs. Luxe Menu' },
+    { id: 'operations', label: 'Supply chain & operations' },
+    { id: 'reception',  label: 'Market reception & legacy' }
+  ]
+};
+</script>
+{% endraw %}
