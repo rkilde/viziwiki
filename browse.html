@@ -54,6 +54,7 @@ body_class: "no-facet-chrome"
   .grad-music{background-image:linear-gradient(to bottom right,var(--electric),var(--plum));}
   .grad-film{background-image:linear-gradient(to bottom right,var(--rust),var(--gold));}
   .grad-games{background-image:linear-gradient(to bottom right,var(--acid),var(--olive));}
+  .grad-mobile{background-image:linear-gradient(to bottom right,var(--teal),var(--plum));}
   .grad-anime{background-image:linear-gradient(to bottom right,var(--plum),var(--hot-pink));}
   .grad-sports{background-image:linear-gradient(to bottom right,var(--teal),var(--cyan-pop));}
   .grad-food{background-image:linear-gradient(to bottom right,var(--gold),var(--rust));}
@@ -78,6 +79,38 @@ body_class: "no-facet-chrome"
      Fallback to 0 so it still sticks where --main-h is undefined
      (e.g. the standalone artifact preview, with no layout chrome). */
   .sticky.top-0 { top: var(--main-h, 0px); }
+
+  /* Filter pills render as three explicit rows (.filter-row). On desktop the
+     rows dissolve (display:contents) so pills wrap normally; on mobile they
+     become three real rows packed left-to-right that scroll horizontally. */
+  .filter-row{ display: contents; }
+
+  @media (max-width: 639px){
+    #filters{
+      flex: 1 1 100%;               /* full-width line of its own */
+      display: flex;
+      flex-direction: column;        /* exactly three stacked rows */
+      flex-wrap: nowrap;
+      gap: 6px;
+      overflow-x: auto;             /* the three rows scroll together */
+      overscroll-behavior-x: contain;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    #filters::-webkit-scrollbar{ display: none; }
+    #filters .filter-row{
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 6px;
+      width: max-content;           /* row is exactly as wide as its pills */
+      flex: 0 0 auto;
+    }
+    #filters .filter-row > button{
+      flex: 0 0 auto;               /* each pill = its own text width */
+      white-space: nowrap;
+    }
+  }
 </style>
 <section class="border-b border-foreground/15 bg-secondary/40">
   <div class="mx-auto flex max-w-[1500px] flex-col gap-2 px-6 py-8">
@@ -100,8 +133,8 @@ body_class: "no-facet-chrome"
     <div id="tiles" class="no-scrollbar flex gap-3 overflow-x-auto py-2"></div>
 
     <!-- edge fades — toggled by scroll position -->
-    <div id="fadeL" class="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[var(--background)] to-transparent opacity-0 transition-opacity duration-200"></div>
-    <div id="fadeR" class="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[var(--background)] to-transparent transition-opacity duration-200"></div>
+    <div id="fadeL" class="pointer-events-none hidden sm:block absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[var(--background)] to-transparent opacity-0 transition-opacity duration-200"></div>
+    <div id="fadeR" class="pointer-events-none hidden sm:block absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[var(--background)] to-transparent transition-opacity duration-200"></div>
 
     <!-- desktop scroll arrows — hidden on touch, where swiping is natural -->
     <button id="scrollL" aria-label="Scroll genres left"
@@ -119,7 +152,7 @@ body_class: "no-facet-chrome"
   <div class="mx-auto flex max-w-[1500px] flex-wrap items-center gap-3 px-6 py-3">
     <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Filter:</span>
     <div id="filters" class="flex flex-wrap gap-1"></div>
-    <div class="ml-auto flex items-center gap-1">
+    <div class="flex items-center gap-1 sm:ml-auto">
       <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Sort:</span>
       <div id="sorts" class="flex gap-1"></div>
     </div>
@@ -143,6 +176,7 @@ const CATEGORIES = [
   {key:"music",label:"Music",grad:"grad-music",icon:"music"},
   {key:"film",label:"Film & TV",grad:"grad-film",icon:"film"},
   {key:"games",label:"Video Games",grad:"grad-games",icon:"gamepad-2"},
+  {key:"mobile",label:"Mobile Games",grad:"grad-mobile",icon:"smartphone"},
   {key:"anime",label:"Anime & Manga",grad:"grad-anime",icon:"tv"},
   {key:"sports",label:"Sports",grad:"grad-sports",icon:"trophy"},
   {key:"food",label:"Fast Food",grad:"grad-food",icon:"pizza"},
@@ -189,6 +223,7 @@ const WIKIS = [
   {name:"Streetwear",category:"fashion",entries:4204,popularity:83,blurb:"Supreme drops, Yeezys, Bape archives."},
   {name:"Squid Game",category:"film",entries:1804,popularity:86,blurb:"Pink guards, dalgona, every game."},
   {name:"Fallout",category:"games",entries:1140,popularity:95,blurb:"Vaults, wastelands, and the war that never changes.",url:"fallout.html"},
+  {name:"Smurfs' Village",category:"mobile",entries:612,popularity:79,blurb:"Rebuild the village berry by berry — every mushroom house, Smurf, crop, and mini-game.",url:"smurfs-village.html"},
 ];
 
 let active = "all", sort = "popular", q = "";
@@ -216,9 +251,13 @@ function renderTiles(){
 }
 
 function renderFilters(){
-  el('filters').innerHTML = CATEGORIES.map(c=>`
-    <button data-cat="${c.key}" class="rounded-full border px-3 py-1 font-mono-acc text-[10px] uppercase tracking-wider transition ${active===c.key?'border-hp bg-hp text-white':'border-foreground/25 text-muted-foreground hover:border-foreground hover:text-foreground'}">${c.label}</button>
-  `).join('');
+  const pill = (c) => `
+    <button data-cat="${c.key}" class="rounded-full border px-3 py-1 font-mono-acc text-[10px] uppercase tracking-wider transition ${active===c.key?'border-hp bg-hp text-white':'border-foreground/25 text-muted-foreground hover:border-foreground hover:text-foreground'}">${c.label}</button>`;
+  // split sequentially into 3 balanced rows (keeps source order for desktop wrap)
+  const cats = CATEGORIES.slice(), rows = [[],[],[]];
+  let rem = cats.length, idx = 0;
+  for(let r=0; r<3; r++){ const n = Math.ceil(rem/(3-r)); rows[r] = cats.slice(idx, idx+n); idx += n; rem -= n; }
+  el('filters').innerHTML = rows.map(row=>`<div class="filter-row">${row.map(pill).join('')}</div>`).join('');
   el('filters').querySelectorAll('button').forEach(b=>{
     b.addEventListener('click',()=>{ active=b.dataset.cat; renderFilters(); renderList(); });
   });
