@@ -221,7 +221,8 @@
     overflow-y:hidden;
     padding:6px;
   }
-  .design-img-card{min-width:180px;}
+  .design-img-card{min-width:180px;width:180px;height:180px;}
+  .design-img-card img{width:180px;height:180px;aspect-ratio:unset;}
   .design-img-card+.design-img-card{border-top:none;border-left:1px solid rgba(255,255,255,.08);}
 }
 
