@@ -1,0 +1,207 @@
+/* ====================================================================
+   wiki-apple-skin.css
+   ViziWiki · Apple wiki — "Cupertino" chrome skin
+   --------------------------------------------------------------------
+   Layered ON TOP of the shared default.html chrome. Loaded per Apple
+   wiki page through the `extra_head` front-matter hook.
+
+   EVERY rule is scoped under `body.wiki-apple`, so nothing here
+   reaches the global ViziWiki main-bar or any other wiki's chrome.
+   This skins the WIKI-LEVEL chrome only:
+     · the wiki-bar      (mobile top bar)
+     · the wiki-toc rail (desktop left rail / mobile drawer)
+   The global ViziWiki main-bar is left untouched.
+
+   Design language: clean, light, minimal — matches apple.html.
+   Fonts (Fraunces, JetBrains Mono) already loaded by default.html.
+   ==================================================================== */
+
+
+/* --------------------------------------------------------------------
+   1 · PERSONALITY TOKENS
+   Remap the shared --wiki-* group to the Apple / Cupertino palette.
+   `body.wiki-apple` outranks default.html's :root, so the whole wiki
+   chrome re-flavors from these five values. One change here propagates
+   to every chrome component that reads a --wiki-* variable.
+   -------------------------------------------------------------------- */
+body.wiki-apple {
+  --wiki-bg:     #ffffff;               /* rail + bar — pure white      */
+  --wiki-fg:     #0a0a0a;               /* primary text — near black    */
+  --wiki-muted:  rgba(0,0,0,.45);       /* secondary / dim text         */
+  --wiki-faint:  rgba(0,0,0,.08);       /* hairlines, borders           */
+  --wiki-accent: #0071e3;               /* Apple blue — primary accent  */
+}
+
+
+/* ====================================================================
+   2 · BODY
+   Light background so the wiki page sits on cream/white rather than
+   the global dark default.
+   ==================================================================== */
+body.wiki-apple {
+  background: #f4f4f6;
+}
+
+
+/* ====================================================================
+   3 · WIKI-BAR  — Apple top chrome (mobile)
+   White surface with a clean hairline. No CRT effects — just precise,
+   minimal Cupertino-style chrome.
+   ==================================================================== */
+body.wiki-apple .wiki-bar {
+  background: rgba(255,255,255,.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0,0,0,.1);
+  box-shadow: 0 1px 0 rgba(0,0,0,.06);
+}
+
+/* Hamburger + save/share buttons */
+body.wiki-apple .wiki-hamburger,
+body.wiki-apple .wiki-bar-btn {
+  color: rgba(0,0,0,.55);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+}
+body.wiki-apple .wiki-hamburger:hover,
+body.wiki-apple .wiki-bar-btn:hover {
+  color: #0a0a0a;
+  background: rgba(0,0,0,.05);
+  border-color: rgba(0,0,0,.1);
+}
+
+/* Wiki name in the mobile bar */
+body.wiki-apple .wiki-bar-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+  letter-spacing: -0.02em;
+  color: #0a0a0a;
+}
+
+
+/* ====================================================================
+   4 · WIKI-TOC RAIL  — Apple contents chrome (desktop) / drawer
+   White rail, clean borders. Section items use Apple blue on active.
+   ==================================================================== */
+body.wiki-apple .wiki-toc {
+  background: #ffffff;
+  border-right: 1px solid rgba(0,0,0,.09);
+  box-shadow: 1px 0 0 rgba(0,0,0,.04);
+}
+
+/* ── Rail wordmark · "Apple / THE VISUAL WIKI" ──────────────────────
+   pageTitle fills .wiki-toc-hero-title with "Apple".
+   ::after adds the "The Visual Wiki" subtitle.               */
+body.wiki-apple .wiki-toc-hero-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+  letter-spacing: -0.02em;
+  color: #0a0a0a;
+}
+body.wiki-apple .wiki-toc-hero-title::after {
+  content: "The Visual Wiki";
+  display: block;
+  margin-top: 3px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,.38);
+}
+
+/* "Contents:" label */
+body.wiki-apple .wiki-toc-contents-label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  color: rgba(0,0,0,.38);
+  letter-spacing: .22em;
+}
+
+/* Section items */
+body.wiki-apple .wiki-section-item       { color: rgba(0,0,0,.6); }
+body.wiki-apple .wiki-section-item:hover { color: #0a0a0a; }
+body.wiki-apple .wiki-section-item.active {
+  color: #0071e3;
+  font-weight: 500;
+}
+
+/* Save / collapse / back */
+body.wiki-apple .wiki-toc-save,
+body.wiki-apple .wiki-toc-close,
+body.wiki-apple .wiki-back-tile {
+  color: rgba(0,0,0,.55);
+  border-color: rgba(0,0,0,.1);
+}
+body.wiki-apple .wiki-toc-save:hover,
+body.wiki-apple .wiki-toc-close:hover,
+body.wiki-apple .wiki-back-tile:hover {
+  color: #0a0a0a;
+  border-color: rgba(0,0,0,.2);
+  background: rgba(0,0,0,.04);
+}
+body.wiki-apple .wiki-toc-save.saved { color: #0071e3; }
+
+/* Wiki Home chip + category pills */
+body.wiki-apple .wiki-home-chip {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+  letter-spacing: -0.01em;
+  color: #0a0a0a;
+  border-color: rgba(0,0,0,.1);
+}
+body.wiki-apple .wiki-home-chip:hover {
+  border-color: #0071e3;
+  background: rgba(0,113,227,.04);
+}
+body.wiki-apple .wiki-wpill {
+  color: rgba(0,0,0,.55);
+  border-color: rgba(0,0,0,.1);
+}
+body.wiki-apple .wiki-wpill-chev { color: rgba(0,0,0,.3); }
+
+/* Category items */
+body.wiki-apple .wiki-cat-item       { color: rgba(0,0,0,.6); }
+body.wiki-apple .wiki-cat-item:hover { color: #0071e3; }
+
+
+/* ====================================================================
+   5 · MOBILE DRAWER HEAD  — "Apple / Visual Wiki"
+   ==================================================================== */
+body.wiki-apple .wiki-mob-head-name {
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+  letter-spacing: -0.02em;
+  color: #0a0a0a;
+}
+body.wiki-apple .wiki-mob-head-vw {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,.38);
+}
+body.wiki-apple .wiki-mob-vizi {   /* overrides hard-coded blue in default.html */
+  color: #0071e3;
+}
+
+
+/* ====================================================================
+   6 · GROUP LABELS in TOC
+   ==================================================================== */
+body.wiki-apple .wiki-group-label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 8.5px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,.3);
+  padding: 12px 16px 4px;
+}
+
+
+/* ====================================================================
+   7 · SELECTION
+   ==================================================================== */
+body.wiki-apple ::selection {
+  background: rgba(0,113,227,.15);
+  color: #0a0a0a;
+}
