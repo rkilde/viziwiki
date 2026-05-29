@@ -1,0 +1,1004 @@
+---
+layout: default
+title: Doodle Jump
+body_class: wiki-page wiki-doodle-jump
+extra_head: |
+  <link rel="stylesheet" href="/wiki-doodle-jump-skin.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Spectral:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={corePlugins:{preflight:false}}</script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+---
+
+<!-- ====================================================================
+     Doodle Jump — wiki home page  (ViziWiki / "Field Notebook" skin)
+     --------------------------------------------------------------------
+     A CONTENT page: it renders inside _layouts/default.html, so it
+     carries NO global chrome — topbar, breadcrumb and footer all come
+     from the layout. The wiki-level chrome (wiki-bar + contents rail) is
+     populated from window.WIKI_TOC below and skinned by
+     /wiki-doodle-jump-skin.css.
+
+     Concept: a kid's 2009 school notebook obsessively documenting
+     Doodle Jump in the margins — ruled paper, marker headings, sticky
+     notes, ballpoint prose, the Doodler peeking from the spotlight.
+     ==================================================================== -->
+
+<!-- ── wiki chrome config — populates the wiki-bar + contents rail ── -->
+<script>
+window.WIKI_TOC = {
+  pageTitle: "Doodle Jump",
+  wikiTitle: "Doodle Jump",
+  wikiHome:  "/doodle-jump.html",
+  pageLogo:  `<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="6" fill="#3a7a20"/><ellipse cx="14" cy="17" rx="9" ry="8" fill="#6bb84a"/><ellipse cx="14" cy="19.5" rx="5.5" ry="3.5" fill="#8ed268" opacity=".55"/><ellipse cx="21" cy="17.5" rx="3.5" ry="2.8" fill="#6bb84a"/><circle cx="20.2" cy="17.5" r="0.7" fill="#1a3a08"/><circle cx="22" cy="18.2" r="0.7" fill="#1a3a08"/><circle cx="10.5" cy="12.5" r="3" fill="#fff"/><circle cx="11.2" cy="13.2" r="1.4" fill="#1a3a08"/><circle cx="11.8" cy="12.5" r="0.5" fill="#fff"/><circle cx="17.5" cy="11.5" r="3" fill="#fff"/><circle cx="18.2" cy="12.2" r="1.4" fill="#1a3a08"/><circle cx="18.8" cy="11.5" r="0.5" fill="#fff"/><path d="M7 23 Q6 26 7.5 28" stroke="#1a3a08" stroke-width="1.3" fill="none" stroke-linecap="round"/><path d="M11 25 Q11 28 12.5 29" stroke="#1a3a08" stroke-width="1.3" fill="none" stroke-linecap="round"/><path d="M17 25 Q17.5 28 16 29" stroke="#1a3a08" stroke-width="1.3" fill="none" stroke-linecap="round"/><path d="M21 23 Q22 26 20.5 28" stroke="#1a3a08" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>`,
+  categories: [
+    { name: "Characters",  url: "/doodle-jump-characters.html",  color: "#6bb84a" },
+    { name: "Monsters",    url: "/doodle-jump-monsters.html",    color: "#6bb84a" },
+    { name: "Platforms",   url: "/doodle-jump-platforms.html",   color: "#6bb84a" },
+    { name: "Power-ups",   url: "/doodle-jump-powerups.html",    color: "#6bb84a" },
+    { name: "Themes",      url: "/doodle-jump-themes.html",      color: "#6bb84a" },
+    { name: "History",     url: "/doodle-jump-history.html",     color: "#6bb84a" }
+  ],
+  sections: [
+    { group: "The Wiki",  id: "browse",   label: "Browse the wiki" },
+    { group: "The Wiki",  id: "overview", label: "Overview" },
+    { group: "The Wiki",  id: "about",    label: "About the game" }
+  ]
+};
+</script>
+
+<style>
+/* ====================================================================
+   Doodle Jump wiki — PAGE-LEVEL styling (Field Notebook).
+   Every rule is scoped under .dj-page, so nothing here reaches the
+   shared chrome. The wiki-bar/rail skin and the ruled-paper background
+   live in /wiki-doodle-jump-skin.css.
+
+   Tailwind's preflight is disabled in the front-matter (so it can't
+   touch the layout's chrome). The :where() block below restores the
+   handful of resets the content needs — at zero specificity, so every
+   Tailwind utility and component rule still wins.
+   ==================================================================== */
+
+/* preflight replacement — zero-specificity, .dj-page-scoped */
+:where(.dj-page *, .dj-page *::before, .dj-page *::after){ border-width:0; border-style:solid; }
+:where(.dj-page ul, .dj-page ol, .dj-page li){ list-style:none; }
+:where(.dj-page a){ color:inherit; text-decoration:none; }
+:where(.dj-page svg){ display:block; }
+:where(.dj-page img){ max-width:100%; height:auto; }
+:where(.dj-page button, .dj-page input){ font:inherit; color:inherit; background:transparent; appearance:none; -webkit-appearance:none; }
+:where(.dj-page button){ cursor:pointer; }
+:where(.dj-page input)::placeholder{ color:inherit; opacity:1; }
+
+/* personality tokens — scoped to .dj-page, NOT :root */
+.dj-page{
+  --paper:#fdfbf3;
+  --paper-edge:#f3eede;
+  --margin-red:#e34a3c;       /* the red margin line on notebook paper */
+  --rule:#9bc3e0;             /* ruled-line blue */
+  --rule-soft:rgba(155,195,224,0.45);
+  --ink:#1f2a3d;              /* dark blue ballpoint */
+  --ink-soft:#4a5a78;
+  --graphite:#3a3a3a;          /* pencil */
+  --graphite-soft:#6a6a6a;
+  --marker-green:#6bb84a;      /* Doodle Jump platform green */
+  --marker-green-dark:#4a8c30;
+  --spring:#e6453a;
+  --highlight:#fff37a;          /* highlighter yellow */
+  --radius:3px;
+  color:var(--ink);
+  font-family:'Spectral',Georgia,serif;
+  -webkit-font-smoothing:antialiased;
+}
+/* paper body so overscroll / section gaps stay in-world */
+body.wiki-doodle-jump{ background:var(--paper); }
+
+/* font stacks — ViziWiki system fonts, Doodle Jump skin applies weight/size/color */
+.dj-page .font-marker{font-family:'Fraunces',Georgia,serif;font-optical-sizing:auto;font-variation-settings:"SOFT" 40,"WONK" 0;letter-spacing:-0.02em;}
+.dj-page .font-hand{font-family:'Spectral',Georgia,serif;font-weight:500;}
+.dj-page .font-body{font-family:'Spectral',Georgia,serif;font-weight:400;}
+.dj-page .font-stamp{font-family:'JetBrains Mono',ui-monospace,monospace;letter-spacing:.08em;}
+
+/* ruled paper background — HERO only: visually distinct with full ruled-paper treatment */
+.dj-page .paper{
+  background:
+    linear-gradient(to right, transparent 0, transparent 78px, var(--margin-red) 78px, var(--margin-red) 79px, transparent 79px, transparent 100%),
+    repeating-linear-gradient(to bottom, transparent 0, transparent 31px, var(--rule-soft) 31px, var(--rule-soft) 32px),
+    var(--paper);
+}
+@media (max-width:768px){
+  .dj-page .paper{
+    background:
+      linear-gradient(to right, transparent 0, transparent 38px, var(--margin-red) 38px, var(--margin-red) 39px, transparent 39px, transparent 100%),
+      repeating-linear-gradient(to bottom, transparent 0, transparent 31px, var(--rule-soft) 31px, var(--rule-soft) 32px),
+      var(--paper);
+  }
+}
+
+/* alternating panel system:
+   .panel-base = clean cream (odd sections after hero)
+   .panel-alt  = slightly warmer/deeper (even sections after hero)
+   Hero always uses .paper — the ruled notebook background is its distinct identity. */
+.dj-page .panel-base{
+  background:#fdfbf3;  /* same cream as --paper, clean */
+}
+.dj-page .panel-alt{
+  background:#f3ede0;  /* warmer parchment — still notebook-family, visually distinct */
+}
+
+/* paper grain — subtle fiber texture overlay */
+.dj-page .grain{position:relative;}
+.dj-page .grain::after{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;mix-blend-mode:multiply;
+  background-image:
+    radial-gradient(rgba(120,100,60,.06) 1px, transparent 1.2px),
+    radial-gradient(rgba(60,80,120,.05) 1px, transparent 1.4px);
+  background-size:3px 3px, 5px 5px;
+  background-position:0 0, 1px 1px;
+}
+
+/* "torn paper" / sticky-note style cards — slightly rotated, soft shadow */
+.dj-page .sticky{
+  background:#fffce8;
+  box-shadow:
+    2px 3px 0 rgba(0,0,0,.04),
+    4px 6px 14px rgba(50,40,20,.08),
+    inset 0 0 30px rgba(255,243,122,.18);
+  border:1px solid rgba(0,0,0,.04);
+  position:relative;
+}
+.dj-page .sticky.tilt-l{ transform:rotate(-0.6deg); }
+.dj-page .sticky.tilt-r{ transform:rotate(0.7deg); }
+
+/* taped-down corner — little decorative tape strip */
+.dj-page .tape{
+  position:absolute;width:64px;height:18px;background:rgba(255,243,122,.55);
+  border:1px solid rgba(200,180,80,.35);
+  box-shadow:0 1px 2px rgba(0,0,0,.05);
+}
+
+/* dashed sketch border (for directory panels) */
+.dj-page .sketch{
+  border:2px dashed var(--graphite);
+  background:rgba(255,255,255,.55);
+  position:relative;
+}
+.dj-page .sketch:hover{ border-color:var(--marker-green-dark); background:rgba(255,255,255,.85); }
+
+/* marker underline for headings — slightly wobbly */
+.dj-page .marker-underline{position:relative;display:inline-block;}
+.dj-page .marker-underline::after{
+  content:"";position:absolute;left:-4px;right:-8px;bottom:-2px;height:14px;z-index:-1;
+  background:linear-gradient(180deg, transparent 0%, transparent 40%, var(--marker-green) 40%, var(--marker-green) 86%, transparent 86%);
+  opacity:.55;border-radius:40% 60% 50% 50% / 50%;
+  transform:rotate(-0.5deg);
+}
+.dj-page .marker-underline.spring::after{ background:linear-gradient(180deg, transparent 0%, transparent 40%, var(--spring) 40%, var(--spring) 86%, transparent 86%); opacity:.5;}
+
+/* hand-drawn arrow (CSS) used as accent */
+.dj-page .arrow{
+  display:inline-block;width:1em;height:1em;border-bottom:2px solid currentColor;border-right:2px solid currentColor;
+  transform:rotate(-45deg);position:relative;top:-2px;
+}
+
+/* DOODLER character — drawn in SVG inline, but this is its container */
+.dj-page .doodler{ transform-origin:center; }
+.dj-page .doodler-bob{ animation:dj-bob 2.6s ease-in-out infinite; }
+@keyframes dj-bob{ 0%,100%{transform:translateY(0) rotate(-2deg);} 50%{transform:translateY(-6px) rotate(2deg);} }
+
+/* PLATFORM motif — used as section divider */
+.dj-page .platform{
+  display:inline-block;height:18px;border-radius:9px;background:var(--marker-green);
+  box-shadow:0 3px 0 var(--marker-green-dark), inset 0 -3px 0 rgba(0,0,0,.08), 2px 5px 10px rgba(80,140,40,.18);
+  position:relative;
+}
+.dj-page .platform::before{
+  content:"";position:absolute;inset:3px 8px auto 8px;height:3px;border-radius:2px;background:rgba(255,255,255,.45);
+}
+
+/* spring icon — used as accent */
+.dj-page .spring-icon{
+  display:inline-block;width:14px;height:18px;background:
+    linear-gradient(180deg, var(--spring) 0%, var(--spring) 30%, transparent 30%, transparent 35%, var(--spring) 35%, var(--spring) 45%, transparent 45%, transparent 50%, var(--spring) 50%, var(--spring) 60%, transparent 60%, transparent 65%, var(--spring) 65%, var(--spring) 75%, #888 75%, #888 100%);
+  border-radius:3px;vertical-align:middle;
+}
+
+/* ===== three-column platform browser =====
+   Col A: category platforms (always visible, Doodler sits here)
+   Col B: entry platforms (drop in when category selected)
+   Col C: entry preview card (sticky-note, appears when entry selected)
+
+   Layout is a CSS grid: [col-a] [divider] [col-b] [divider] [col-c]
+   On mobile: stacks vertically, col-b + col-c appear below col-a. */
+
+.dj-page .col-browser{
+  display:grid;
+  grid-template-columns:260px 1px 1fr 1px 300px;
+  grid-template-rows:auto;
+  gap:0;
+  min-height:460px;
+  border:2px solid var(--ink);
+  border-radius:6px;
+  overflow:hidden;
+  box-shadow:4px 6px 0 rgba(0,0,0,.08);
+  background:#fffce8;
+}
+@media (max-width:900px){
+  .dj-page .col-browser{
+    grid-template-columns:1fr;
+    grid-template-rows:auto auto auto;
+  }
+  .dj-page .col-divider{ display:none; }
+}
+
+/* vertical ink-line dividers between columns */
+.dj-page .col-divider{
+  background:var(--ink);
+  opacity:.12;
+  width:1px;
+}
+
+/* column headers */
+.dj-page .col-header{
+  padding:10px 14px 8px;
+  border-bottom:2px dashed rgba(58,58,58,.2);
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--graphite-soft);
+  background:rgba(255,255,255,.4);
+  display:flex;align-items:center;gap:6px;
+}
+
+/* ── COLUMN A: category platforms ── */
+.dj-page .col-a{ position:relative; }
+.dj-page .col-a-inner{ padding:14px 12px; display:flex; flex-direction:column; gap:10px; }
+
+/* each category = a platform button */
+.dj-page .cat-plat{
+  position:relative;
+  display:flex;align-items:center;gap:12px;
+  padding:13px 16px 17px;
+  border-radius:12px;
+  background:var(--marker-green);
+  box-shadow:0 4px 0 var(--marker-green-dark), inset 0 -3px 0 rgba(0,0,0,.08);
+  cursor:pointer;border:none;text-align:left;width:100%;
+  transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.dj-page .cat-plat::before{ /* shine stripe */
+  content:"";position:absolute;left:10px;right:10px;top:4px;height:3px;
+  border-radius:2px;background:rgba(255,255,255,.45);
+}
+.dj-page .cat-plat:hover{
+  transform:translateY(-1px);
+  box-shadow:0 6px 0 var(--marker-green-dark), inset 0 -3px 0 rgba(0,0,0,.08), 0 8px 16px rgba(80,140,40,.2);
+}
+.dj-page .cat-plat.is-active{
+  background:#7ed05a;
+  box-shadow:0 4px 0 var(--marker-green-dark), inset 0 -3px 0 rgba(0,0,0,.08), 0 0 0 3px rgba(255,243,122,.7);
+  transform:translateY(-1px);
+}
+.dj-page .cat-plat-name{
+  font-family:'Fraunces',Georgia,serif;font-size:18px;font-weight:700;
+  color:#1a3a08;line-height:1;
+}
+.dj-page .cat-plat-count{
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;
+  color:#1a3a08;opacity:.65;margin-top:3px;
+}
+
+/* the Doodler — sits above the active platform, slides vertically */
+.dj-page .col-a-doodler{
+  position:absolute;right:-2px;width:44px;height:44px;
+  transition:top .4s cubic-bezier(.34,1.4,.64,1);
+  pointer-events:none;z-index:10;
+  filter:drop-shadow(1px 2px 3px rgba(0,0,0,.18));
+}
+.dj-page .col-a-doodler.hop{ animation:dj-col-hop .45s ease; }
+@keyframes dj-col-hop{
+  0%  { transform:translateY(0)   rotate(0deg); }
+  35% { transform:translateY(-18px) rotate(-10deg); }
+  100%{ transform:translateY(0)   rotate(0deg); }
+}
+
+/* ── COLUMN B: entry platforms ── */
+.dj-page .col-b{ background:rgba(255,255,255,.25); }
+.dj-page .col-b-inner{ padding:14px 12px; display:flex; flex-direction:column; gap:8px; }
+
+/* ghost state when no category selected */
+.dj-page .col-b-ghost{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  height:100%;min-height:200px;gap:8px;padding:24px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--graphite-soft);opacity:.5;
+  text-align:center;
+}
+
+/* entry = smaller, mixed-type platform button */
+.dj-page .entry-plat{
+  position:relative;display:flex;align-items:center;gap:10px;
+  padding:9px 14px 13px;border-radius:10px;
+  cursor:pointer;border:none;text-align:left;width:100%;
+  font-family:'Spectral',Georgia,serif;font-size:14px;color:var(--ink);
+  transition:transform .12s ease, filter .12s ease;
+  animation:dj-drop .3s ease both;
+}
+.dj-page .entry-plat::before{
+  content:"";position:absolute;left:7px;right:7px;top:3px;height:2px;
+  border-radius:1px;background:rgba(255,255,255,.5);
+}
+@keyframes dj-drop{
+  from{ opacity:0; transform:translateY(-8px); }
+  to  { opacity:1; transform:translateY(0); }
+}
+.dj-page .entry-plat:hover{ transform:translateY(-1px); filter:brightness(1.06); }
+.dj-page .entry-plat.is-active{
+  outline:2px solid rgba(255,243,122,.9);
+  outline-offset:1px;
+  filter:brightness(1.08);
+}
+
+/* platform type colours — same system as before */
+.dj-page .entry-plat.t-green{ background:var(--marker-green); box-shadow:0 3px 0 var(--marker-green-dark); color:#1a3a08; }
+.dj-page .entry-plat.t-blue { background:#6fb1e8; box-shadow:0 3px 0 #3d7eb5; color:#0e2540; }
+.dj-page .entry-plat.t-brown{ background:#c98a55; box-shadow:0 3px 0 #8a5a30; color:#2a1808; }
+
+/* "view all" spring platform at bottom of col-b */
+.dj-page .entry-plat.t-spring{
+  background:var(--marker-green);box-shadow:0 3px 0 var(--marker-green-dark);
+  color:#1a3a08;margin-top:6px;
+  font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:13px;
+}
+.dj-page .entry-plat.t-spring::after{
+  content:"";position:absolute;right:14px;top:-11px;width:10px;height:12px;
+  background:linear-gradient(180deg,
+    var(--spring) 0 20%, transparent 20% 28%,
+    var(--spring) 28% 42%, transparent 42% 50%,
+    var(--spring) 50% 64%, transparent 64% 72%,
+    var(--spring) 72% 86%, #888 86% 100%);
+  border-radius:2px;
+}
+
+/* ── COLUMN B: view-all banner + entry label ── */
+/* "view full page" banner — top of col B, dominant tier */
+.dj-page .col-b-viewall{
+  position:relative;display:flex;align-items:center;gap:10px;
+  padding:14px 16px;margin-bottom:14px;
+  background:var(--ink);border-radius:8px;
+  text-decoration:none;overflow:hidden;
+  animation:dj-drop .2s ease both;
+  transition:background .15s ease;
+}
+.dj-page .col-b-viewall:hover{ background:#2e3f5c; }
+.dj-page .col-b-viewall-eyebrow{
+  position:absolute;top:7px;left:16px;
+  font-family:'JetBrains Mono',monospace;font-size:8px;
+  letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.42);
+}
+.dj-page .col-b-viewall-title{
+  font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;
+  color:#fff;line-height:1;margin-top:14px;flex:1;
+  font-optical-sizing:auto;font-variation-settings:"SOFT" 30,"WONK" 0;
+  letter-spacing:-0.01em;
+}
+.dj-page .col-b-viewall-arrow{
+  font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:600;
+  color:var(--marker-green);flex-shrink:0;margin-top:14px;
+}
+.dj-page .col-b-viewall-spring{
+  position:absolute;right:44px;top:0;bottom:0;width:10px;
+  background:linear-gradient(180deg,
+    var(--spring) 0 18%, transparent 18% 26%,
+    var(--spring) 26% 40%, transparent 40% 48%,
+    var(--spring) 48% 62%, transparent 62% 70%,
+    var(--spring) 70% 84%, #555 84% 100%);
+  opacity:.45;border-radius:2px;
+}
+.dj-page .col-b-entry-label{
+  font-family:'JetBrains Mono',monospace;font-size:8px;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:var(--graphite-soft);margin-bottom:8px;
+  padding-bottom:6px;border-bottom:1px dashed rgba(58,58,58,.2);
+}
+
+/* ── COLUMN C: entry preview ── */
+.dj-page .col-c{ background:rgba(255,255,255,.18); }
+.dj-page .col-c-inner{ padding:18px 16px; height:100%; }
+
+/* ghost */
+.dj-page .col-c-ghost{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  height:100%;min-height:200px;gap:10px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--graphite-soft);opacity:.45;
+  text-align:center;
+}
+
+/* preview card — sticky note */
+.dj-page .preview-card{
+  background:#fffce8;
+  border:1px solid rgba(0,0,0,.06);
+  box-shadow:2px 3px 0 rgba(0,0,0,.04), 4px 8px 18px rgba(50,40,20,.1), inset 0 0 24px rgba(255,243,122,.15);
+  border-radius:2px;padding:20px;position:relative;
+  animation:dj-card-in .25s ease both;
+}
+.dj-page .preview-card .tape{
+  position:absolute;width:52px;height:15px;background:rgba(255,243,122,.6);
+  border:1px solid rgba(200,180,80,.35);top:-8px;left:24px;transform:rotate(-2deg);
+}
+@keyframes dj-card-in{
+  from{ opacity:0; transform:translateY(6px) rotate(1deg); }
+  to  { opacity:1; transform:translateY(0) rotate(0deg); }
+}
+
+/* hover lifts */
+.dj-page .lift{transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;}
+.dj-page .lift:hover{transform:translateY(-2px); box-shadow:3px 6px 0 rgba(0,0,0,.05), 6px 10px 22px rgba(80,140,40,.12);}
+
+/* staggered boot-in — "page being written" reveal */
+.dj-page .ink-in{opacity:0;transform:translateY(6px);animation:dj-inkin .6s ease forwards;}
+@keyframes dj-inkin{to{opacity:1;transform:translateY(0);}}
+
+/* highlighter swipe */
+.dj-page .hl{background:linear-gradient(180deg, transparent 0%, transparent 55%, var(--highlight) 55%, var(--highlight) 92%, transparent 92%);padding:0 .1em;}
+
+.dj-page ::selection{background:rgba(107,184,74,.35);color:var(--ink);}
+
+/* =====================================================================
+   MOBILE — specific layout adjustments (max-width: 768px)
+   ===================================================================== */
+@media (max-width:768px){
+
+  /* Hero: remove the left margin offset on mobile — no visible margin line */
+  .dj-page .paper{padding-left:0;}
+
+  /* Hero grid: single column, tighter padding */
+  .dj-page section#overview .relative.mx-auto{
+    padding-left:1.25rem;
+    padding-right:1.25rem;
+    padding-top:2.75rem;
+    padding-bottom:2.75rem;
+  }
+
+  /* Ghost icon: scale down so it doesn't overwhelm mobile */
+  .dj-page section#overview [data-lucide="gamepad-2"]{
+    width:260px !important;
+    height:260px !important;
+    right:-1.5rem !important;
+    top:-1.25rem !important;
+  }
+
+  /* Stat grid: 2×2 on mobile */
+  .dj-stat-grid-wrap{
+    grid-template-columns:repeat(2,1fr) !important;
+  }
+
+  /* Spotlight aside: full width, no absolute doodler offset needed */
+  .dj-page aside .doodler{ display:none !important; }
+
+  /* Browse section: adjust left indent for mobile */
+  .dj-page section#browse .mx-auto,
+  .dj-page .dj-section-inner{
+    padding-left:1.25rem;
+    padding-right:1.25rem;
+  }
+
+  /* Overview/about section: adjust left indent for mobile */
+  .dj-page section#about .mx-auto{
+    padding-left:1.25rem;
+    padding-right:1.25rem;
+  }
+
+  /* Column browser: stack vertically on mobile */
+  .dj-page .col-browser{
+    grid-template-columns:1fr;
+    min-height:unset;
+  }
+
+  /* Section headings: tighter on mobile */
+  .dj-page h2.font-marker{
+    font-size:2.5rem;
+  }
+
+  /* Sticky/infobox: full width, no tilt on very small screens */
+  .dj-page .sticky.tilt-l,
+  .dj-page .sticky.tilt-r{
+    transform:none;
+  }
+
+  /* Col browser: reduce padding */
+  .dj-page .col-a-inner,
+  .dj-page .col-b-inner{
+    padding:10px 8px;
+    gap:8px;
+  }
+
+  /* Platform buttons: slightly smaller on mobile */
+  .dj-page .cat-plat{
+    padding:10px 12px 14px;
+  }
+  .dj-page .cat-plat-name{
+    font-size:15px;
+  }
+}
+
+/* Extra-small phones (max 420px) */
+@media (max-width:420px){
+  .dj-page h1.font-marker{
+    font-size:4.5rem; /* falls back from text-7xl if viewport is very narrow */
+  }
+  .dj-page .vh-stat-n, .dj-page .font-marker.text-xl{
+    font-size:1rem;
+  }
+}
+</style>
+
+<div class="dj-page">
+
+  <!-- ================================================================
+       HERO  id="overview" — spec-compliant ViziWiki hero
+       Eyebrow pill · H1 (text-7xl→8xl) · Breadcrumb · Description ·
+       Stat grid · Ghost icon · Right: Spotlight aside (wiki-specific)
+       ================================================================ -->
+  <section id="overview" class="paper grain relative overflow-hidden border-b-2" style="border-color:var(--rule);">
+
+    <!-- Ghost icon — fixed spec: right:-3rem; top:-2.5rem; 440×440; rotate(12deg); white/10
+         Adapted for notebook skin: ink/6 so it reads on paper without overpowering -->
+    <i data-lucide="gamepad-2" stroke-width="1.25"
+       class="pointer-events-none absolute"
+       style="right:-3rem;top:-2.5rem;width:440px;height:440px;transform:rotate(12deg);color:rgba(31,42,61,0.06);"></i>
+
+    <!-- Content grid — spec: max-w-[1500px] mx-auto px-6 py-14 md:grid-cols-[1.4fr_1fr] gap-8
+         DJ skin offset: pl-[96px] md:pl-[112px] for the margin rule -->
+    <div class="relative mx-auto grid max-w-[1500px] gap-8 px-6 py-10 pl-[96px] md:grid-cols-[1.4fr_1fr] md:pl-[112px]">
+
+      <!-- LEFT: all text -->
+      <div>
+
+        <!-- Eyebrow pill -->
+        <div class="ink-in mb-2 inline-flex items-center gap-2 rounded-full border border-dashed px-3 py-1 font-stamp text-[10px] uppercase tracking-[0.25em] backdrop-blur"
+             style="border-color:rgba(31,42,61,0.35);color:var(--graphite);background:rgba(255,255,255,0.5);animation-delay:.05s;">
+          <span class="inline-block h-1.5 w-1.5 flex-shrink-0 rounded-full" style="background:var(--spring);"></span>
+          Visual Wiki · Mobile · 2009
+        </div>
+
+        <!-- H1 — two lines, sized so total block ≈ single-line "Taco Bell." at text-8xl
+             clamp: ~2.75rem mobile → 4rem desktop keeps total two-line height proportional -->
+        <h1 class="ink-in font-marker font-bold leading-[0.92] tracking-tight"
+            style="font-size:clamp(2.75rem,5.5vw,4rem);color:var(--ink);animation-delay:.12s;">
+          <span class="marker-underline">Doodle</span>
+          <span class="block" style="color:var(--marker-green-dark);">Jump<span style="color:var(--spring);">.</span></span>
+        </h1>
+
+        <!-- Breadcrumb -->
+        <div class="ink-in mt-2 flex items-center gap-2 font-stamp text-[10px] uppercase tracking-[0.2em]"
+             style="animation-delay:.17s;color:rgba(31,42,61,0.6);">
+          <a href="/doodle-jump.html" class="transition-colors hover:text-[var(--ink)]" style="color:rgba(31,42,61,0.6);">Doodle Jump</a>
+          <i data-lucide="chevron-right" style="width:.75rem;height:.75rem;flex-shrink:0;"></i>
+          <span style="color:var(--ink);">Overview</span>
+        </div>
+
+        <!-- Description -->
+        <p class="ink-in mt-3 max-w-xl font-body text-lg leading-[1.55]"
+           style="animation-delay:.2s;color:var(--ink);">
+          A four-legged green creature, an infinite ladder of <span class="hl">green platforms</span>, and a phone tilted just so. Lima Sky's pocket-sized obsession — every monster, power-up, and platform variant indexed here, drawn from the margins up.
+        </p>
+
+        <!-- Stat grid -->
+        <div class="ink-in dj-stat-grid-wrap mt-6 grid max-w-2xl overflow-hidden rounded-sm border font-stamp text-[10px] uppercase tracking-wider"
+             style="grid-template-columns:repeat(4,1fr);border-color:rgba(31,42,61,0.2);background:rgba(255,255,255,0.5);animation-delay:.36s;">
+          <div class="dj-stat-grid px-3 py-3" style="border-right:1px solid rgba(31,42,61,0.12);background:rgba(253,251,243,0.6);">
+            <div class="font-marker text-xl font-semibold leading-none tracking-tight normal-case" style="color:var(--ink);">318</div>
+            <div class="mt-1" style="color:rgba(31,42,61,0.65);">entries</div>
+          </div>
+          <div class="px-3 py-3" style="border-right:1px solid rgba(31,42,61,0.12);background:rgba(253,251,243,0.6);">
+            <div class="font-marker text-xl font-semibold leading-none tracking-tight normal-case" style="color:var(--marker-green-dark);">2009</div>
+            <div class="mt-1" style="color:rgba(31,42,61,0.65);">debut</div>
+          </div>
+          <div class="px-3 py-3" style="border-right:1px solid rgba(31,42,61,0.12);background:rgba(253,251,243,0.6);">
+            <div class="font-marker text-xl font-semibold leading-none tracking-tight normal-case" style="color:var(--ink);">15M+</div>
+            <div class="mt-1" style="color:rgba(31,42,61,0.65);">downloads</div>
+          </div>
+          <div class="px-3 py-3" style="background:rgba(253,251,243,0.6);">
+            <div class="font-marker text-xl font-semibold leading-none tracking-tight normal-case" style="color:var(--spring);">∞</div>
+            <div class="mt-1" style="color:rgba(31,42,61,0.65);">high score</div>
+          </div>
+        </div>
+
+      </div><!-- /left col -->
+
+      <!-- RIGHT: wiki-specific visual — Spotlight aside (sticky note + Doodler peeking) -->
+      <div class="flex items-center justify-center">
+        <aside class="ink-in relative w-full self-start" style="animation-delay:.44s;">
+          <!-- The Doodler character, peeking from behind the sticky — desktop only -->
+          <div class="doodler doodler-bob absolute -top-8 -right-2 z-10 hidden md:block" style="width:88px;height:88px;">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="50" cy="55" rx="32" ry="28" fill="#6bb84a" stroke="#2c3a1e" stroke-width="2.5"/>
+              <ellipse cx="50" cy="62" rx="20" ry="14" fill="#8ed268" opacity=".55"/>
+              <path d="M 28 78 Q 24 86 28 92 M 40 82 Q 38 90 42 94 M 58 82 Q 60 90 58 94 M 72 78 Q 76 86 72 92" stroke="#2c3a1e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <ellipse cx="62" cy="56" rx="11" ry="9" fill="#6bb84a" stroke="#2c3a1e" stroke-width="2.5"/>
+              <circle cx="60" cy="56" r="1.4" fill="#2c3a1e"/>
+              <circle cx="65" cy="58" r="1.4" fill="#2c3a1e"/>
+              <circle cx="42" cy="42" r="9" fill="#fff" stroke="#2c3a1e" stroke-width="2.5"/>
+              <circle cx="44" cy="44" r="4" fill="#2c3a1e"/>
+              <circle cx="58" cy="40" r="9" fill="#fff" stroke="#2c3a1e" stroke-width="2.5"/>
+              <circle cx="60" cy="42" r="4" fill="#2c3a1e"/>
+            </svg>
+          </div>
+
+          <div class="sticky tilt-r relative p-6" style="border-radius:2px;">
+            <span class="tape" style="top:-9px;left:30%;transform:rotate(-3deg);"></span>
+            <div class="mb-3 font-stamp text-[10px] uppercase tracking-[0.2em]" style="color:var(--spring);">★ Spotlight</div>
+            <div class="font-marker text-4xl font-bold leading-none" style="color:var(--ink);">The Doodler</div>
+            <p class="mt-3 font-body text-[15px] leading-relaxed" style="color:var(--ink);">
+              The wiki's namesake creature — four legs, two eyes, one impossibly long nose. Lima Sky's <span class="hl">unnamed protagonist</span> has been launching himself off green platforms for over fifteen years, and still won't tell anyone what he is.
+            </p>
+            <div class="mt-4 flex flex-wrap gap-2 font-stamp text-[9px] uppercase tracking-wider">
+              <span class="border px-2 py-0.5" style="border-color:var(--graphite);color:var(--graphite);">Character</span>
+              <span class="border px-2 py-0.5" style="border-color:var(--graphite);color:var(--graphite);">Iconic</span>
+              <span class="border px-2 py-0.5" style="border-color:var(--graphite);color:var(--graphite);">Lima Sky</span>
+            </div>
+            <button class="mt-5 w-full border-2 px-4 py-2.5 font-hand text-[14px] uppercase tracking-wider transition"
+                    style="border-color:var(--ink);background:var(--marker-green);color:var(--ink);border-radius:3px;box-shadow:2px 3px 0 var(--ink);"
+                    onmouseover="this.style.background='var(--highlight)'"
+                    onmouseout="this.style.background='var(--marker-green)'">
+              Open entry &nbsp;→
+            </button>
+          </div>
+        </aside>
+      </div><!-- /right col -->
+
+    </div><!-- /content grid -->
+  </section>
+
+  <!-- ================================================================
+       BROWSE THE WIKI  (shared nav slot — sticky-note directory grid)
+       ================================================================ -->
+  <section id="browse" class="panel-alt grain border-b-2" style="border-color:var(--rule);">
+    <div class="mx-auto max-w-[1500px] px-6 py-16 pl-[96px] md:pl-[112px] dj-section-inner">
+      <div class="mb-2 flex items-center gap-2 font-stamp text-[10px] uppercase tracking-[0.3em]" style="color:var(--marker-green-dark);">
+        <i data-lucide="network" class="h-3 w-3"></i> ▸ The directory
+      </div>
+      <div class="flex flex-wrap items-end justify-between gap-3">
+        <h2 class="font-marker text-5xl font-bold tracking-tight md:text-6xl" style="color:var(--ink);">
+          <span class="marker-underline">Browse</span> the wiki<span style="color:var(--spring);">.</span>
+        </h2>
+      </div>
+      <p class="mt-3 max-w-2xl font-hand text-[16px]" style="color:var(--ink-soft);">
+        This wiki has 6 main category pages and 318 total entries. Tap a platform to land on it — browse entries, pick one, then open it.
+      </p>
+
+      <!-- three-column browser -->
+      <div class="col-browser mt-10">
+
+        <!-- COL A: categories -->
+        <div class="col-a">
+          <div class="col-header">
+            <i data-lucide="layers" class="h-3 w-3"></i> Categories
+          </div>
+          <div class="col-a-inner" id="colA">
+            <!-- Doodler -->
+            <div class="col-a-doodler" id="colADoodler" aria-hidden="true">
+              <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <ellipse cx="50" cy="55" rx="32" ry="28" fill="#6bb84a" stroke="#2c3a1e" stroke-width="2.5"/>
+                <ellipse cx="50" cy="62" rx="20" ry="14" fill="#8ed268" opacity=".55"/>
+                <path d="M 28 78 Q 24 86 28 92 M 40 82 Q 38 90 42 94 M 58 82 Q 60 90 58 94 M 72 78 Q 76 86 72 92" stroke="#2c3a1e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <ellipse cx="62" cy="56" rx="11" ry="9" fill="#6bb84a" stroke="#2c3a1e" stroke-width="2.5"/>
+                <circle cx="60" cy="56" r="1.4" fill="#2c3a1e"/>
+                <circle cx="65" cy="58" r="1.4" fill="#2c3a1e"/>
+                <circle cx="42" cy="42" r="9" fill="#fff" stroke="#2c3a1e" stroke-width="2.5"/>
+                <circle cx="44" cy="44" r="4" fill="#2c3a1e"/>
+                <circle cx="58" cy="40" r="9" fill="#fff" stroke="#2c3a1e" stroke-width="2.5"/>
+                <circle cx="60" cy="42" r="4" fill="#2c3a1e"/>
+              </svg>
+            </div>
+            <!-- category platforms injected by JS -->
+          </div>
+        </div>
+
+        <div class="col-divider"></div>
+
+        <!-- COL B: entries -->
+        <div class="col-b">
+          <div class="col-header">
+            <i data-lucide="layout-list" class="h-3 w-3"></i>
+            <span id="colBLabel">Entries</span>
+          </div>
+          <div class="col-b-inner" id="colB">
+            <div class="col-b-ghost" id="colBGhost">
+              <i data-lucide="arrow-left" class="h-5 w-5 opacity-40"></i>
+              <span>Select a category<br>to see its entries</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-divider"></div>
+
+        <!-- COL C: preview -->
+        <div class="col-c">
+          <div class="col-header">
+            <i data-lucide="file-text" class="h-3 w-3"></i> Preview
+          </div>
+          <div class="col-c-inner" id="colC">
+            <div class="col-c-ghost" id="colCGhost">
+              <i data-lucide="arrow-left" class="h-5 w-5 opacity-40"></i>
+              <span>Select an entry<br>to preview it</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.col-browser -->
+    </div>
+  </section>
+
+  <!-- ================================================================
+       OVERVIEW  (▸ eyebrow + prose + infobox)
+       ================================================================ -->
+  <section id="about" class="panel-base grain border-b-2" style="border-color:var(--rule);">
+    <div class="mx-auto grid max-w-[1500px] gap-12 px-6 py-16 pl-[96px] md:pl-[112px] lg:grid-cols-[1.6fr_1fr] dj-section-inner">
+      <div>
+        <div class="flex items-center gap-2 font-stamp text-[10px] uppercase tracking-[0.3em]" style="color:var(--marker-green-dark);">
+          <i data-lucide="book-open" class="h-3 w-3"></i> ▸ Overview
+        </div>
+        <h2 class="mt-2 font-marker text-5xl font-bold leading-[0.95] tracking-tight md:text-6xl" style="color:var(--ink);">
+          One button. One direction. <span class="marker-underline spring">Forever up.</span>
+        </h2>
+        <div class="mt-7 space-y-5 font-body text-[17px] leading-relaxed" style="color:var(--ink);">
+          <p>
+            <strong style="color:var(--marker-green-dark);">Doodle Jump</strong> is a vertical platformer for mobile, released by Croatian-American studio <strong style="color:var(--marker-green-dark);">Lima Sky</strong> on April 6, <strong style="color:var(--marker-green-dark);">2009</strong>. You tilt the phone to steer a creature called the <em>Doodler</em> left and right; he jumps automatically; the platforms keep coming; gravity always wins eventually.
+          </p>
+          <p>
+            It became one of the App Store's first true cultural artifacts — a game that defined an era of one-handed, sketchbook-aesthetic mobile play. By 2010 it had sold over <strong style="color:var(--marker-green-dark);">five million copies</strong>; by 2014, fifteen million. The procedurally-generated platforms, the rotating cast of monsters, the spring-shoes and jet-packs and rocket-power-ups — all of it drawn like a kid filling the margins of a school notebook.
+          </p>
+          <p>
+            This wiki catalogues that notebook. Every platform variant, every monster, every seasonal theme (Easter, Halloween, Soccer, Underwater, Space), every <span class="hl">unlockable</span>. We're trying to do for Doodle Jump what its players have always done — fill the margins until there's no white space left.
+          </p>
+        </div>
+      </div>
+
+      <!-- Infobox — sticky-note style -->
+      <aside class="sticky tilt-l self-start p-6" style="border-radius:2px;">
+        <span class="tape" style="top:-9px;right:18%;transform:rotate(4deg);"></span>
+        <div class="font-stamp text-[10px] uppercase tracking-[0.3em]" style="color:var(--spring);">Field card</div>
+        <div class="mt-2 font-marker text-3xl font-bold leading-none" style="color:var(--ink);">The Doodle Jump series</div>
+        <dl class="mt-5 grid grid-cols-[auto_1fr] gap-x-4 gap-y-3 font-body text-[15px]">
+          <dt class="font-stamp text-[10px] uppercase tracking-wider" style="color:var(--graphite-soft);">Released</dt>
+          <dd style="color:var(--ink);">April 6, 2009</dd>
+          <dt class="font-stamp text-[10px] uppercase tracking-wider" style="color:var(--graphite-soft);">Developer</dt>
+          <dd style="color:var(--ink);">Lima Sky</dd>
+          <dt class="font-stamp text-[10px] uppercase tracking-wider" style="color:var(--graphite-soft);">Genre</dt>
+          <dd style="color:var(--ink);">Vertical platformer</dd>
+          <dt class="font-stamp text-[10px] uppercase tracking-wider" style="color:var(--graphite-soft);">Platforms</dt>
+          <dd style="color:var(--ink);">iOS · Android · BlackBerry · Symbian · Windows Phone</dd>
+          <dt class="font-stamp text-[10px] uppercase tracking-wider" style="color:var(--graphite-soft);">Controls</dt>
+          <dd style="color:var(--ink);">Accelerometer tilt</dd>
+          <dt class="font-stamp text-[10px] uppercase tracking-wider" style="color:var(--graphite-soft);">Hero</dt>
+          <dd style="color:var(--ink);">The Doodler (unnamed)</dd>
+          <dt class="font-stamp text-[10px] uppercase tracking-wider" style="color:var(--graphite-soft);">Sequel</dt>
+          <dd style="color:var(--ink);">Doodle Jump 2 — 2021</dd>
+        </dl>
+      </aside>
+    </div>
+  </section>
+
+</div><!-- /.dj-page -->
+
+<script>
+/* ============================================================
+   DATA — categories with entries and preview blurbs
+   ============================================================ */
+const CATEGORIES = [
+  { key:"characters", name:"Characters", icon:"user", count:14,
+    blurb:"The creatures of Doodle Jump — playable skins, seasonal variants, and the one protagonist who never got a name.",
+    entries:[
+      { name:"The Doodler",         type:"green", blurb:"The unnamed four-legged protagonist. Green, goggle-eyed, perpetually airborne. Lima Sky never gave him a name and probably never will." },
+      { name:"Doodle Jr.",          type:"green", blurb:"A smaller, faster variant introduced in Doodle Jump 2. Shares the same nose, same legs, considerably less patience." },
+      { name:"The Hat Trick",       type:"blue",  blurb:"A special-edition skin released for the New Year. Wears a top hat. Has no other distinguishing characteristics. The hat is enough." },
+      { name:"Easter Doodler",      type:"green", blurb:"Seasonal skin with bunny ears and a pastel palette. Available during the Easter theme. The ears do not provide extra height." },
+      { name:"Halloween Doodler",   type:"green", blurb:"Draped in a ghost costume for the Halloween theme. The costume trails behind as he jumps — purely decorative." },
+      { name:"Soccer Doodler",      type:"green", blurb:"Wears a football kit in the Soccer theme. The ball graphic on the platforms matches. Attention to detail for a 2009 mobile game." },
+      { name:"Space Doodler",       type:"blue",  blurb:"Suits up for the Space theme. Zero-gravity mechanics don't apply — the jump physics are identical. The suit is purely cosmetic." },
+      { name:"Underwater Doodler",  type:"green", blurb:"Wears a diving mask in the Underwater theme. The monsters get fins. The platforms go coral. The Doodler gets goggles." }
+    ] },
+  { key:"monsters", name:"Monsters", icon:"ghost", count:42,
+    blurb:"Everything trying to end your run — from the UFO that beams you up to the black hole that swallows the screen.",
+    entries:[
+      { name:"UFO",              type:"green", blurb:"The classic encounter. Flies horizontally across the screen and fires a beam downward. Side-shooting is your only option." },
+      { name:"Ninja Monster",    type:"green", blurb:"Dashes forward when you approach. Fast, predictable once you know the trigger distance. The shuriken graphic is a nice touch." },
+      { name:"Black Hole",       type:"brown", blurb:"Appears in the Space theme. Pulls the Doodler toward it — the only monster that uses gravity as a weapon. Cannot be shot." },
+      { name:"Smiley Cloud",     type:"blue",  blurb:"Disguises itself as a platform until you land on it, then reveals a face and bounces you into a nearby monster. The game's most sinister trick." },
+      { name:"One-Eyed Blob",    type:"green", blurb:"A slow, large target that absorbs multiple shots. Common in mid-game. The eye tracks the Doodler's horizontal movement." },
+      { name:"Spike Ball",       type:"green", blurb:"Bounces vertically in a fixed lane. Predictable pattern, but the hitbox is generous. Responsible for more late-game deaths than any other enemy." },
+      { name:"Hopping Tomb",     type:"blue",  blurb:"Halloween-theme exclusive. Hops instead of walking. The jump height varies — it can occasionally leap into platform range." },
+      { name:"Pumpkin Monster",  type:"green", blurb:"A jack-o'-lantern that rolls slowly and shoots seeds. The seeds have a slight arc. The Halloween theme's signature enemy." }
+    ] },
+  { key:"platforms", name:"Platforms", icon:"layout-template", count:18,
+    blurb:"The foundation of everything — from the reliable green standard to the brown that breaks the moment you trust it.",
+    entries:[
+      { name:"Green (standard)", type:"green", blurb:"The game's default. Solid, permanent, reliable. Appears at all heights. The metric against which every other platform type is judged." },
+      { name:"Blue (horizontal)",type:"blue",  blurb:"Moves left and right in a fixed range. Requires timing rather than reflexes. The width stays constant; the speed increases with height." },
+      { name:"Brown (breakable)", type:"brown", blurb:"Appears solid until you land on it, then shatters immediately. No second chance. Distinguishable only by its colour — learn the palette." },
+      { name:"Disappearing",     type:"brown", blurb:"Fades out after a brief moment, whether or not you're standing on it. The warning flash is short. React fast or fall." },
+      { name:"Moving cloud",     type:"blue",  blurb:"Drifts horizontally, narrower than standard platforms. Appears in the Sky and Cloud themes. Requires an adjustment to your approach angle." },
+      { name:"Spring-loaded",    type:"green", blurb:"Has a spring attached. Landing on the spring sends you dramatically higher than a normal jump — useful for leaping past dense monster clusters." },
+      { name:"Conveyor",         type:"blue",  blurb:"Pulls the Doodler left or right on landing. The direction arrow is small and easy to miss. Relevant mostly in the Jungle theme." },
+      { name:"Trampoline",       type:"green", blurb:"A bonus object that appears mid-screen. Not a platform — it's a projectile. Landing on it sends you to the top of the screen instantly." }
+    ] },
+  { key:"powerups", name:"Power-ups", icon:"zap", count:11,
+    blurb:"The gear that keeps you in the air — springs, jetpacks, propeller hats, and the rocket that makes you briefly invincible.",
+    entries:[
+      { name:"Spring",          type:"green", blurb:"A small coil found on select platforms. Adds one large boost to your jump height. Single-use. Visually distinct from the spring platform." },
+      { name:"Spring Shoes",    type:"green", blurb:"Equips the Doodler with springs on his feet for several jumps. Every landing becomes a boosted jump. One of the most valuable pickups." },
+      { name:"Propeller Hat",   type:"green", blurb:"Adds a propeller to the Doodler's head for a sustained upward float. Duration-based. Provides time to plan rather than react." },
+      { name:"Jetpack",         type:"blue",  blurb:"Attaches to the Doodler's back and burns upward for several seconds. Faster than the propeller hat. Cannot be steered left or right while active." },
+      { name:"Trampoline",      type:"green", blurb:"A mid-air pickup that behaves like the trampoline object. Catching it sends you to the screen ceiling instantly." },
+      { name:"Rocket",          type:"blue",  blurb:"Fires the Doodler straight up at high speed, passing through monsters without contact damage. The most dramatic pickup in the game." },
+      { name:"Bubble Shield",   type:"green", blurb:"Encases the Doodler in a bubble that absorbs one monster hit. The bubble pops visibly on impact. Does not protect against falling." },
+      { name:"Magnet",          type:"green", blurb:"Draws nearby power-ups and score multipliers toward the Doodler. Duration-based. Rare but extremely useful in power-up-dense runs." }
+    ] },
+  { key:"themes", name:"Themes", icon:"palette", count:9,
+    blurb:"Nine full visual reskins — each replaces the background, platform art, monster roster, and sound effects while keeping the core mechanics identical.",
+    entries:[
+      { name:"Standard",        type:"green", blurb:"The original notebook-paper aesthetic. White background, green platforms, ruled lines. The version that shipped in April 2009 and defined the series." },
+      { name:"Easter",          type:"green", blurb:"Pastel palette, egg-patterned platforms, bunny-eared Doodler. Released seasonally. The monster roster gains rabbit variants." },
+      { name:"Halloween",       type:"green", blurb:"Dark background, orange platforms, tombstone monsters. The Smiley Cloud becomes a jack-o'-lantern. One of the more atmospheric themes." },
+      { name:"Christmas",       type:"green", blurb:"Snow background, candy-cane platforms, snowflake obstacles. The Doodler gains a Santa hat. Released for the 2009 holiday season." },
+      { name:"Space",           type:"blue",  blurb:"Black background, crater-surface platforms, alien monsters. Introduces the Black Hole — the only monster that uses gravity as a mechanic." },
+      { name:"Underwater",      type:"blue",  blurb:"Blue gradient background, coral platforms, fish monsters. The Doodler gains a diving mask. The bubble physics are unchanged." },
+      { name:"Soccer",          type:"green", blurb:"Stadium background, grass platforms, ball-headed monsters. Released for the 2010 World Cup. The most topical theme in the series." },
+      { name:"Jungle",          type:"green", blurb:"Dense foliage background, vine platforms, parrot monsters. Introduces the conveyor platform. One of the later themes in the original game." },
+      { name:"Pocket Edition",  type:"brown", blurb:"A stripped-down version of the original theme with reduced asset complexity. Released for lower-spec devices. Identical mechanics, lighter rendering." }
+    ] },
+  { key:"history", name:"History", icon:"clock", count:24,
+    blurb:"The full arc — from Lima Sky's two-person launch in 2009 to the trademark dispute, the sales milestones, and the long-awaited sequel.",
+    entries:[
+      { name:"Launch (April 2009)",          type:"green", blurb:"Doodle Jump launches on the App Store on April 6, 2009, priced at $0.99. Lima Sky is a two-person studio. The game reaches the top-10 in under a week." },
+      { name:"First million",                type:"green", blurb:"One million copies sold within the first few months. Lima Sky has no marketing budget; the growth is entirely word-of-mouth and App Store placement." },
+      { name:"'Doodle' trademark dispute",   type:"brown", blurb:"Lima Sky files to trademark the word 'Doodle' in games. The application triggers widespread criticism from developers and is eventually abandoned." },
+      { name:"5 million sold",               type:"green", blurb:"By early 2010, five million copies sold. Doodle Jump becomes one of the App Store's best-selling titles of its era." },
+      { name:"Android release",              type:"blue",  blurb:"Doodle Jump arrives on Android in 2010 via the Android Market. The port is handled by Lima Sky with slight visual adjustments for varying screen sizes." },
+      { name:"Doodle Jump 2 (2021)",         type:"green", blurb:"The sequel launches twelve years after the original. New mechanics, new art direction, new characters. Mixed reception — the original's simplicity proves hard to follow." },
+      { name:"Lima Sky studio",              type:"green", blurb:"Founded by brothers Igor and Marko Pusenjak in New York. Doodle Jump remains their defining work. The studio continues to operate independently." }
+    ] }
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let activeCatIdx  = null;
+let activeEntryIdx = null;
+
+/* ============================================================
+   ELEMENTS
+   ============================================================ */
+const colA       = document.getElementById("colA");
+const colB       = document.getElementById("colB");
+const colBLabel  = document.getElementById("colBLabel");
+const colC       = document.getElementById("colC");
+const doodler    = document.getElementById("colADoodler");
+
+/* ============================================================
+   RENDER — Col A: category platforms
+   ============================================================ */
+function renderColA(){
+  // Keep the doodler element, inject category buttons after it
+  const platHTML = CATEGORIES.map((c, i) => `
+    <button class="cat-plat${activeCatIdx === i ? " is-active" : ""}" data-cat="${i}" type="button">
+      <span class="flex-1">
+        <span class="cat-plat-name">${c.name}</span>
+        <span class="cat-plat-count">${c.count} entries</span>
+      </span>
+    </button>`).join("");
+  // Insert after the doodler div
+  const doodlerEl = colA.querySelector(".col-a-doodler");
+  doodlerEl.insertAdjacentHTML("afterend", platHTML.replace(/^\s+/, ""));
+}
+
+/* ============================================================
+   RENDER — Col B: entry platforms for selected category
+   ============================================================ */
+function renderColB(catIdx){
+  const cat = CATEGORIES[catIdx];
+  colBLabel.textContent = cat.name;
+  const entries = cat.entries.map((e, i) => `
+    <button class="entry-plat t-${e.type}${activeEntryIdx === i ? " is-active" : ""}" data-entry="${i}" type="button"
+            style="animation-delay:${(i + 1) * 0.04}s">
+      ${e.name}
+    </button>`).join("");
+  // "View full page" — top, dominant, its own visual tier
+  const viewAll = `
+    <a href="#" class="col-b-viewall" data-entry="spring" style="animation-delay:0s">
+      <span class="col-b-viewall-eyebrow">Full category page</span>
+      <span class="col-b-viewall-title">${cat.name}</span>
+      <span class="col-b-viewall-arrow">→</span>
+      <span class="col-b-viewall-spring" aria-hidden="true"></span>
+    </a>`;
+  colB.innerHTML = `<div class="col-b-inner">${viewAll}<div class="col-b-entry-label">Entries</div>${entries}</div>`;
+}
+
+/* ============================================================
+   RENDER — Col C: entry preview card
+   ============================================================ */
+function renderColC(catIdx, entryIdx){
+  const cat   = CATEGORIES[catIdx];
+  const entry = cat.entries[entryIdx];
+  const typeLabel = { green:"Standard", blue:"Moving / Special", brown:"Breakable / Legacy" };
+  colC.innerHTML = `
+    <div class="col-c-inner">
+      <div class="preview-card">
+        <div class="tape"></div>
+        <div class="font-stamp text-[9px] uppercase tracking-[.2em] mb-2" style="color:var(--spring);">★ Entry preview</div>
+        <div class="font-marker text-3xl font-bold leading-none" style="color:var(--ink);">${entry.name}</div>
+        <div class="font-stamp text-[9px] uppercase tracking-[.15em] mt-2 mb-4" style="color:var(--graphite-soft);">
+          ${cat.name} · ${typeLabel[entry.type] || entry.type}
+        </div>
+        <p class="font-body text-[14px] leading-relaxed" style="color:var(--ink);">${entry.blurb}</p>
+        <button class="mt-5 w-full border-2 px-4 py-2.5 font-hand text-[13px] uppercase tracking-wider"
+                style="border-color:var(--ink);background:var(--marker-green);color:#1a3a08;border-radius:3px;box-shadow:2px 3px 0 var(--ink);cursor:pointer;"
+                onmouseover="this.style.background='var(--highlight)'"
+                onmouseout="this.style.background='var(--marker-green)'">
+          Open full entry →
+        </button>
+      </div>
+    </div>`;
+}
+
+/* ============================================================
+   DOODLER POSITIONING — slides to the active cat-plat in Col A
+   ============================================================ */
+function positionDoodler(idx){
+  const plats = colA.querySelectorAll(".cat-plat");
+  if(!plats[idx]) return;
+  const colRect  = colA.getBoundingClientRect();
+  const platRect = plats[idx].getBoundingClientRect();
+  // Doodler top = platform top relative to colA, shifted up so it sits ON the platform
+  const targetTop = platRect.top - colRect.top - 16;
+  doodler.style.top = Math.max(0, targetTop) + "px";
+  doodler.classList.remove("hop");
+  void doodler.offsetWidth;
+  doodler.classList.add("hop");
+}
+
+/* ============================================================
+   INTERACTIONS
+   ============================================================ */
+// Col A: category click
+colA.addEventListener("click", e => {
+  const btn = e.target.closest(".cat-plat");
+  if(!btn) return;
+  const idx = +btn.dataset.cat;
+  activeCatIdx   = idx;
+  activeEntryIdx = null;
+  // update active state
+  colA.querySelectorAll(".cat-plat").forEach((b, i) => b.classList.toggle("is-active", i === idx));
+  positionDoodler(idx);
+  renderColB(idx);
+  // reset col C
+  colC.innerHTML = `<div class="col-c-inner"><div class="col-c-ghost"><i data-lucide="arrow-left" class="h-5 w-5 opacity-40"></i><span>Select an entry<br>to preview it</span></div></div>`;
+  lucide.createIcons();
+});
+
+// Col B: entry click (delegated — colB is re-rendered each time)
+colB.addEventListener("click", e => {
+  const btn = e.target.closest(".entry-plat");
+  if(!btn || activeCatIdx === null) return;
+  if(btn.dataset.entry === "spring") return; // "view all" — navigate to category page
+  const idx = +btn.dataset.entry;
+  activeEntryIdx = idx;
+  colB.querySelectorAll(".entry-plat").forEach((b, i) => b.classList.toggle("is-active", i === idx));
+  renderColC(activeCatIdx, idx);
+  lucide.createIcons();
+});
+
+/* ============================================================
+   INIT
+   ============================================================ */
+renderColA();
+lucide.createIcons();
+
+// Reposition doodler on resize if a category is active
+window.addEventListener("resize", () => {
+  if(activeCatIdx !== null) positionDoodler(activeCatIdx);
+});
+</script>
