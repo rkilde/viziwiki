@@ -589,10 +589,13 @@ function positionTimeline(){
     var card=el.querySelector(".station-card");
     var spine=el.querySelector(".station-event-spine");
     if(!card||!spine)return;
-    // Connector bar from card-bottom to spine dot — drawn as absolute div
-    var cardBottom=card.offsetTop+card.offsetHeight;
-    var barTop=cardBottom;
-    var barH=Math.max(0,335-barTop);
+    // getBoundingClientRect forces layout sync — always accurate
+    var stRect=el.getBoundingClientRect();
+    var cRect=card.getBoundingClientRect();
+    var sRect=spine.getBoundingClientRect();
+    var barTop=cRect.bottom-stRect.top;
+    var barH=Math.max(0,(sRect.top+sRect.height/2)-cRect.bottom);
+    if(barH<=0)return;
     var bar=document.createElement("div");
     bar.style.cssText="position:absolute;left:50%;transform:translateX(-50%);top:"+barTop+"px;width:1px;height:"+barH+"px;background:rgba(0,0,0,.15);pointer-events:none;z-index:1;";
     el.appendChild(bar);
