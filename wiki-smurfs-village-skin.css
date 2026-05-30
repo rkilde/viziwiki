@@ -75,63 +75,107 @@ body.wiki-smurfs-village{
 }
 .sv-page .spots > *{position:relative;z-index:2}
 
-/* ============================================================  HERO  */
-.sv-page .hero{position:relative;overflow:hidden;
-  background:linear-gradient(180deg,#DEE7E0 0%, #E8EDE2 44%, var(--page) 100%);}
-.sv-page .hero-scene{position:absolute;inset:0;z-index:0;pointer-events:none}
-.sv-page .hero-scene svg.scene{position:absolute;width:100%;height:100%;left:0;top:0}
-.sv-page .mist{position:absolute;left:-10%;width:120%;height:90px;opacity:.5;
-  background:radial-gradient(60% 100% at 50% 50%, rgba(255,253,247,.9), transparent 70%);animation:sv-mist 46s linear infinite}
-.sv-page .mist.b{top:auto;animation-duration:62s;animation-delay:-20s;opacity:.35}
-@keyframes sv-mist{0%{transform:translateX(-6%)}50%{transform:translateX(6%)}100%{transform:translateX(-6%)}}
-.sv-page .firefly{position:absolute;width:4px;height:4px;border-radius:50%;background:var(--gold);
-  box-shadow:0 0 7px 2px rgba(193,154,82,.7);animation:sv-twinkle 5s ease-in-out infinite}
-@keyframes sv-twinkle{0%,100%{opacity:0}45%,55%{opacity:.95}}
+/* ============================================================  HERO  ·  CANONICAL SPEC OVERRIDES
+   The hero structure now comes from wiki-home.css. This skin re-flavors it
+   via the --hero-* token group, plus adds the wiki-specific decorative
+   layer (forest scene SVG, drifting mist, twinkling fireflies, the
+   smurfberry illustration on the spotlight card).
+   ================================================================ */
 
-.sv-page .hero .wrap{position:relative;z-index:3;display:grid;grid-template-columns:1fr 360px;gap:46px;
-  padding-top:66px;padding-bottom:104px;align-items:start}
+/* ── 1 · Token overrides — recolor the whole hero in one place ── */
+body.wiki-smurfs-village {
+  /* divider that closes the hero section */
+  --hero-divider:                 rgba(40,56,50,.13);
 
-.sv-page .eyebrow{font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--leaf-deep);display:flex;flex-wrap:wrap;align-items:center;gap:6px 9px}
-.sv-page .eyebrow .tri{color:var(--cap)}
-.sv-page .eyebrow .dot{width:3px;height:3px;border-radius:50%;background:var(--ink-faint)}
+  /* eyebrow pill */
+  --hero-eyebrow-bg:              rgba(250,246,236,.62);
+  --hero-eyebrow-border:          rgba(40,56,50,.18);
+  --hero-eyebrow-text:            #3E6A4A;        /* leaf-deep */
+  --hero-eyebrow-dot:             #9E3050;        /* berry — same as period */
 
-.sv-page h1.title{font-family:var(--font-display);font-weight:600;font-size:clamp(46px,7vw,84px);line-height:.96;letter-spacing:-.02em;margin:20px 0 0;color:var(--ink);font-optical-sizing:auto}
-.sv-page h1.title .berry-dot{color:var(--berry)}
-.sv-page .lede{font-size:18.5px;line-height:1.66;color:var(--ink-soft);max-width:47ch;margin-top:22px}
-.sv-page .lede em{font-style:italic;color:var(--leaf-deep)}
+  /* H1 + accent period */
+  --hero-title-color:             #283832;        /* ink */
+  --hero-title-accent:            #9E3050;        /* berry */
 
-/* search bar */
-.sv-page .wsearch{margin-top:30px;display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--hair-strong);
-  box-shadow:var(--shadow-soft);border-radius:13px;padding:13px 16px;max-width:480px}
-.sv-page .wsearch svg{flex:none}
-.sv-page .wsearch input{border:0;outline:0;flex:1;font-family:var(--font-body);font-size:16px;color:var(--ink);background:transparent}
-.sv-page .wsearch input::placeholder{color:var(--ink-faint)}
-.sv-page .wsearch .go{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;color:var(--cream);
-  background:var(--leaf-deep);padding:9px 15px;border-radius:9px}
+  /* description */
+  --hero-desc-color:              #566159;        /* ink-soft */
 
-/* stat grid */
-.sv-page .stats{margin-top:36px;display:grid;grid-template-columns:repeat(4,1fr);gap:13px;max-width:560px}
-.sv-page .stat{background:var(--card);border:1px solid var(--hair);border-radius:12px;padding:16px 15px 14px;box-shadow:var(--shadow-soft);position:relative}
-.sv-page .stat .ic{color:var(--ink-faint);margin-bottom:9px;display:block}
-.sv-page .stat .ic svg{width:19px;height:19px}
-.sv-page .stat .n{font-family:var(--font-display);font-weight:600;font-size:25px;line-height:1;letter-spacing:-.02em}
-.sv-page .stat .l{font-family:var(--font-mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-top:7px}
-.sv-page .stat:nth-child(1) .n{color:var(--berry-deep)} .sv-page .stat:nth-child(2) .n{color:var(--sky-deep)}
-.sv-page .stat:nth-child(3) .n{color:var(--leaf-deep)} .sv-page .stat:nth-child(4) .n{color:var(--gold-deep)}
+  /* search bar */
+  --hero-search-bg:               #FAF6EC;        /* card */
+  --hero-search-border:           rgba(40,56,50,.24);
+  --hero-search-text:             #283832;
+  --hero-search-placeholder:      #8b948b;
+  --hero-search-icon:             #8b948b;
 
-/* spotlight aside */
-.sv-page .spotlight{position:relative;border-radius:18px;padding:1px;background:linear-gradient(160deg,var(--berry-deep),var(--cap) 60%,var(--gold-deep));box-shadow:var(--shadow-pop)}
-.sv-page .spotlight .inner{background:linear-gradient(168deg,var(--card),#F4ECDC);border-radius:17px;padding:26px 24px 22px;position:relative;overflow:hidden}
-.sv-page .spotlight .eyebrow{color:var(--berry-deep);margin-bottom:16px;justify-content:center}
-.sv-page .spotlight .berry-art{width:104px;height:104px;margin:4px auto 16px;display:block;filter:drop-shadow(0 5px 9px rgba(108,32,56,.26))}
-.sv-page .spotlight h3{font-family:var(--font-display);font-weight:600;font-size:27px;text-align:center;letter-spacing:-.02em;color:var(--ink)}
-.sv-page .spotlight .role{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--cap-deep);text-align:center;margin-top:7px}
-.sv-page .spotlight p{font-family:var(--font-body);font-size:14.5px;line-height:1.58;color:var(--ink-soft);text-align:center;margin-top:14px}
-.sv-page .spotlight p em{font-style:italic;color:var(--berry-deep)}
-.sv-page .spotlight .cta{margin-top:20px;display:flex;align-items:center;justify-content:center;gap:8px;
-  font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;color:var(--cream);
-  background:var(--berry-deep);padding:13px;border-radius:11px;transition:.18s}
-.sv-page .spotlight .cta:hover{background:var(--berry);transform:translateY(-1px)}
+  /* stat grid */
+  --hero-stat-wrapper-bg:         rgba(40,56,50,.18);   /* shows through gap-px as dividers */
+  --hero-stat-wrapper-border:     rgba(40,56,50,.18);
+  --hero-stat-cell-bg:            #FAF6EC;
+  --hero-stat-num:                #283832;
+  --hero-stat-label:              #8b948b;
+
+  /* spotlight card */
+  --hero-spotlight-bg:            #FAF6EC;
+  --hero-spotlight-border:        rgba(40,56,50,.24);
+  --hero-spotlight-eyebrow:       #6C2038;        /* berry-deep */
+  --hero-spotlight-title:         #283832;
+  --hero-spotlight-desc:          #566159;
+
+  --hero-spotlight-tag-bg:        rgba(158,48,80,.08);
+  --hero-spotlight-tag-border:    rgba(158,48,80,.32);
+  --hero-spotlight-tag-text:      #6C2038;
+
+  --hero-spotlight-cta-bg:        #6C2038;        /* berry-deep */
+  --hero-spotlight-cta-text:      #F2EADA;        /* cream */
+  --hero-spotlight-cta-hover-bg:  #9E3050;        /* berry */
+}
+
+/* ── 2 · Hero background — parchment gradient (no image, no overlay) ── */
+.sv-page .wiki-hero {
+  background: linear-gradient(180deg, #DEE7E0 0%, #E8EDE2 44%, var(--page) 100%);
+}
+
+/* ── 3 · Hero scene scaffolding — SVG illustration, mist, fireflies ── */
+.sv-page .wiki-hero .hero-scene { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.sv-page .wiki-hero .hero-scene svg.scene { position: absolute; width: 100%; height: 100%; left: 0; top: 0; }
+.sv-page .wiki-hero .mist {
+  position: absolute; left: -10%; width: 120%; height: 90px; opacity: .5;
+  background: radial-gradient(60% 100% at 50% 50%, rgba(255,253,247,.9), transparent 70%);
+  animation: sv-mist 46s linear infinite;
+}
+.sv-page .wiki-hero .mist.b { top: auto; animation-duration: 62s; animation-delay: -20s; opacity: .35; }
+@keyframes sv-mist { 0% { transform: translateX(-6%); } 50% { transform: translateX(6%); } 100% { transform: translateX(-6%); } }
+.sv-page .wiki-hero .firefly {
+  position: absolute; width: 4px; height: 4px; border-radius: 50%; background: var(--gold);
+  box-shadow: 0 0 7px 2px rgba(193,154,82,.7);
+  animation: sv-twinkle 5s ease-in-out infinite;
+}
+@keyframes sv-twinkle { 0%,100% { opacity: 0; } 45%,55% { opacity: .95; } }
+
+/* lift the canonical hero content above the scene */
+.sv-page .wiki-hero .wiki-hero-inner { z-index: 3; }
+
+/* ── 4 · Spotlight decoration — berry illustration in top-right corner ── */
+.sv-page .wiki-hero-spotlight { position: relative; }
+.sv-page .wiki-hero-spotlight .berry-art {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 60px;
+  height: 60px;
+  filter: drop-shadow(0 5px 9px rgba(108,32,56,.26));
+  pointer-events: none;
+}
+/* reserve room on the right side of the title so it doesn't collide with the art */
+.sv-page .wiki-hero-spotlight-title { padding-right: 72px; }
+
+/* preserve aged-field-guide font for the spotlight desc + em accent */
+.sv-page .wiki-hero-spotlight-desc { font-family: var(--font-body); }
+.sv-page .wiki-hero-spotlight-desc em { font-style: italic; color: #6C2038; }
+
+/* preserve em accent inside the main description too */
+.sv-page .wiki-hero-desc { font-family: var(--font-body); }
+.sv-page .wiki-hero-desc em { font-style: italic; color: #3E6A4A; }
 
 /* ============================================================  SECTION SCAFFOLD  */
 .sv-page section.block{padding:66px 0}
@@ -258,8 +302,6 @@ body.wiki-smurfs-village{
 
 @media(max-width:900px){
   .sv-page .sechead{flex-direction:column;align-items:flex-start}
-  .sv-page .hero .wrap{grid-template-columns:1fr;gap:32px;padding-bottom:70px}
-  .sv-page .stats{grid-template-columns:repeat(2,1fr);max-width:380px}
   .sv-page .tilegrid{grid-template-columns:repeat(2,1fr)}
   .sv-page .fame,.sv-page .trend{grid-template-columns:1fr}
   .sv-page .lore .house{display:none}
@@ -268,6 +310,5 @@ body.wiki-smurfs-village{
 }
 @media(max-width:560px){
   .sv-page .tilegrid{grid-template-columns:1fr}
-  .sv-page .stats{grid-template-columns:repeat(2,1fr)}
   .sv-page .shelves{grid-template-columns:1fr}
 }

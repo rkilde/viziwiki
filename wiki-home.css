@@ -1,0 +1,358 @@
+/* ====================================================================
+   wiki-home.css
+   ViziWiki · Master wiki-home layout
+   --------------------------------------------------------------------
+   Universal structure for every wiki home page. Loaded BEFORE each
+   wiki's own skin file, so skin rules cascade over these defaults.
+
+   This file owns:
+     · Hero layout, dimensions, spacing, shapes
+     · Element structure (eyebrow, H1, description, search, stats, spotlight)
+     · Mobile breakpoints and stacking order
+     · Section divider rule (the bottom border exists; skin colors it)
+
+   This file does NOT own (skin's job):
+     · Colors of anything (backgrounds, borders, text, accents)
+     · Background treatments (gradients, images, textures, overlays)
+     · The search icon, ghost watermark, decorative spotlight elements
+     · Card backgrounds, CTA button colors, tag pill colors
+
+   Skins override via CSS variables declared in §1 below, scoped under
+   `body.wiki-{name}` in their own skin file. One variable change in a
+   skin propagates everywhere the variable is used.
+
+   Fonts (Fraunces, JetBrains Mono) are assumed loaded by default.html.
+   ==================================================================== */
+
+
+/* --------------------------------------------------------------------
+   1 · DEFAULT TOKENS
+   Every skinnable color has a default here. Skins override under
+   `body.wiki-{name}` to re-flavor the entire hero in one place.
+   -------------------------------------------------------------------- */
+:root {
+  /* ── divider that separates every <section> ── */
+  --hero-divider:                 rgba(0,0,0,.12);
+
+  /* ── eyebrow pill ── */
+  --hero-eyebrow-bg:              rgba(255,255,255,.06);
+  --hero-eyebrow-border:          rgba(255,255,255,.18);
+  --hero-eyebrow-text:            currentColor;
+  --hero-eyebrow-dot:             #ffb000;    /* matches H1 period */
+
+  /* ── H1 ── */
+  --hero-title-color:             currentColor;
+  --hero-title-accent:            #ffb000;    /* the period — same as dot */
+
+  /* ── description ── */
+  --hero-desc-color:              currentColor;
+
+  /* ── search bar ── */
+  --hero-search-bg:               rgba(255,255,255,.06);
+  --hero-search-border:           rgba(255,255,255,.18);
+  --hero-search-text:             currentColor;
+  --hero-search-placeholder:      rgba(255,255,255,.5);
+  --hero-search-icon:             currentColor;
+
+  /* ── stat grid ── */
+  --hero-stat-wrapper-bg:         rgba(255,255,255,.18);  /* shows through gap-px gaps as dividers */
+  --hero-stat-wrapper-border:     rgba(255,255,255,.18);
+  --hero-stat-cell-bg:            rgba(0,0,0,.25);
+  --hero-stat-num:                currentColor;
+  --hero-stat-label:              rgba(255,255,255,.6);
+
+  /* ── spotlight card ── */
+  --hero-spotlight-bg:            rgba(255,255,255,.05);
+  --hero-spotlight-border:        rgba(255,255,255,.18);
+  --hero-spotlight-eyebrow:       rgba(255,255,255,.7);
+  --hero-spotlight-title:         currentColor;
+  --hero-spotlight-desc:          rgba(255,255,255,.75);
+
+  --hero-spotlight-tag-bg:        rgba(255,255,255,.08);
+  --hero-spotlight-tag-border:    rgba(255,255,255,.22);
+  --hero-spotlight-tag-text:      currentColor;
+
+  --hero-spotlight-cta-bg:        #ffb000;
+  --hero-spotlight-cta-text:      #0a0a0a;
+  --hero-spotlight-cta-hover-bg:  #ffffff;
+}
+
+
+/* ====================================================================
+   2 · HERO SECTION  — outer <section>
+   ==================================================================== */
+.wiki-hero {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--hero-divider);
+}
+
+
+/* ====================================================================
+   3 · HERO INNER  — grid container
+   1500px max, py-16 (64px), px-6 (24px), gap-8 between columns.
+   ==================================================================== */
+.wiki-hero-inner {
+  position: relative;          /* skin watermark icons absolute against this */
+  margin-inline: auto;
+  display: grid;
+  gap: 32px;
+  max-width: 1500px;
+  padding: 64px 24px;
+}
+
+@media (min-width: 768px) {
+  .wiki-hero-inner {
+    grid-template-columns: 1.5fr 1fr;
+  }
+}
+
+
+/* ====================================================================
+   4 · LEFT COLUMN  — content wrapper
+   ==================================================================== */
+.wiki-hero-content {
+  min-width: 0;                /* lets max-w-xl children clamp inside the grid */
+}
+
+
+/* ====================================================================
+   5 · EYEBROW PILL
+   "● Visual Wiki · Vol. [N]"
+   ==================================================================== */
+.wiki-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--hero-eyebrow-border);
+  background: var(--hero-eyebrow-bg);
+  color: var(--hero-eyebrow-text);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+}
+
+.wiki-hero-eyebrow-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--hero-eyebrow-dot);
+}
+
+
+/* ====================================================================
+   6 · H1 + ACCENT PERIOD
+   Fraunces, clamp(64px, 7vw, 96px), can wrap on small screens.
+   ==================================================================== */
+.wiki-hero-title {
+  margin: 0;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(64px, 7vw, 96px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: var(--hero-title-color);
+}
+
+.wiki-hero-title-accent {
+  color: var(--hero-title-accent);
+}
+
+
+/* ====================================================================
+   7 · DESCRIPTION
+   ==================================================================== */
+.wiki-hero-desc {
+  margin: 24px 0 0;
+  max-width: 36rem;            /* max-w-xl */
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--hero-desc-color);
+}
+
+
+/* ====================================================================
+   8 · SEARCH BAR
+   Left icon slot + input. ⌘K dropped. Visual only for now.
+   ==================================================================== */
+.wiki-hero-search {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  margin-top: 32px;
+  max-width: 36rem;            /* matches description */
+  border-radius: 4px;
+  border: 1px solid var(--hero-search-border);
+  background: var(--hero-search-bg);
+}
+
+.wiki-hero-search-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  padding-left: 12px;
+  color: var(--hero-search-icon);
+}
+.wiki-hero-search-icon svg,
+.wiki-hero-search-icon img {
+  width: 16px;
+  height: 16px;
+}
+
+.wiki-hero-search-input {
+  flex: 1;
+  padding: 12px;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--hero-search-text);
+}
+.wiki-hero-search-input::placeholder {
+  color: var(--hero-search-placeholder);
+}
+
+
+/* ====================================================================
+   9 · 4-CELL STAT GRID
+   Always 4 cells; cell 1 = entry count (canonical).
+   Desktop 4-col → mobile 2x2 below 640px.
+   1px gaps act as dividers via wrapper background bleeding through.
+   ==================================================================== */
+.wiki-hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  overflow: hidden;
+  margin-top: 40px;
+  max-width: 36rem;            /* matches search and description */
+  border-radius: 4px;
+  border: 1px solid var(--hero-stat-wrapper-border);
+  background: var(--hero-stat-wrapper-bg);
+}
+
+@media (max-width: 639px) {
+  .wiki-hero-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.wiki-hero-stat {
+  padding: 12px;
+  background: var(--hero-stat-cell-bg);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.wiki-hero-stat-num {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--hero-stat-num);
+  line-height: 1.1;
+}
+
+.wiki-hero-stat-label {
+  margin-top: 2px;
+  color: var(--hero-stat-label);
+}
+
+
+/* ====================================================================
+   10 · SPOTLIGHT ASIDE  — right column
+   Top-aligned. pl-4 (16px) nudges card off the right edge.
+   ==================================================================== */
+.wiki-hero-aside {
+  align-self: start;
+  padding-left: 16px;
+}
+
+@media (max-width: 767px) {
+  /* on mobile, drop the left padding so the card uses full width */
+  .wiki-hero-aside {
+    padding-left: 0;
+  }
+}
+
+.wiki-hero-spotlight {
+  padding: 20px;
+  border-radius: 4px;
+  border: 1px solid var(--hero-spotlight-border);
+  background: var(--hero-spotlight-bg);
+}
+
+.wiki-hero-spotlight-eyebrow {
+  margin-bottom: 12px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--hero-spotlight-eyebrow);
+}
+
+.wiki-hero-spotlight-title {
+  margin: 0;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--hero-spotlight-title);
+}
+
+.wiki-hero-spotlight-desc {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--hero-spotlight-desc);
+}
+
+.wiki-hero-spotlight-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.wiki-hero-spotlight-tag {
+  padding: 2px 8px;
+  border-radius: 3px;
+  border: 1px solid var(--hero-spotlight-tag-border);
+  background: var(--hero-spotlight-tag-bg);
+  color: var(--hero-spotlight-tag-text);
+}
+
+.wiki-hero-spotlight-cta {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--hero-spotlight-cta-bg);
+  color: var(--hero-spotlight-cta-text);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background .15s ease;
+}
+.wiki-hero-spotlight-cta:hover {
+  background: var(--hero-spotlight-cta-hover-bg);
+}
