@@ -3,6 +3,7 @@ layout: default
 title: Doodle Jump
 body_class: wiki-page wiki-doodle-jump
 extra_head: |
+  <link rel="stylesheet" href="/wiki-home.css">
   <link rel="stylesheet" href="/wiki-doodle-jump-skin.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -137,6 +138,96 @@ body.wiki-doodle-jump{ background:var(--paper); }
     radial-gradient(rgba(60,80,120,.05) 1px, transparent 1.4px);
   background-size:3px 3px, 5px 5px;
   background-position:0 0, 1px 1px;
+}
+
+/* ====================================================================
+   HERO  ·  CANONICAL WIKI-HOME SPEC OVERRIDES
+   The hero structure now comes from wiki-home.css. This block reflavors
+   it via --hero-* tokens plus the DJ-specific scaffolding (notebook
+   margin offset, gamepad watermark, doodler peek, sticky tilt).
+   ==================================================================== */
+body.wiki-doodle-jump{
+  /* divider that closes the hero section */
+  --hero-divider:               rgba(31,42,61,.20);
+
+  /* eyebrow pill */
+  --hero-eyebrow-bg:            rgba(255,255,255,.50);
+  --hero-eyebrow-border:        rgba(31,42,61,.35);
+  --hero-eyebrow-text:          #3a3a3a;          /* graphite */
+  --hero-eyebrow-dot:           #e6453a;          /* spring — same as period */
+
+  /* H1 + accent period */
+  --hero-title-color:           #1f2a3d;          /* ink */
+  --hero-title-accent:          #e6453a;          /* spring */
+
+  /* description */
+  --hero-desc-color:            #1f2a3d;
+
+  /* search bar */
+  --hero-search-bg:             rgba(255,255,255,.55);
+  --hero-search-border:         rgba(31,42,61,.25);
+  --hero-search-text:           #1f2a3d;
+  --hero-search-placeholder:    rgba(31,42,61,.5);
+  --hero-search-icon:           rgba(31,42,61,.55);
+
+  /* stat grid */
+  --hero-stat-wrapper-bg:       rgba(31,42,61,.12);
+  --hero-stat-wrapper-border:   rgba(31,42,61,.2);
+  --hero-stat-cell-bg:          rgba(253,251,243,.6);
+  --hero-stat-num:              #1f2a3d;
+  --hero-stat-label:            rgba(31,42,61,.65);
+
+  /* spotlight card (sticky-note treatment is layered on by .sticky) */
+  --hero-spotlight-bg:          #fffce8;
+  --hero-spotlight-border:      rgba(31,42,61,.18);
+  --hero-spotlight-eyebrow:     #e6453a;          /* spring */
+  --hero-spotlight-title:       #1f2a3d;
+  --hero-spotlight-desc:        #1f2a3d;
+
+  --hero-spotlight-tag-bg:      transparent;
+  --hero-spotlight-tag-border:  #3a3a3a;          /* graphite */
+  --hero-spotlight-tag-text:    #3a3a3a;
+
+  --hero-spotlight-cta-bg:      #6bb84a;          /* marker-green */
+  --hero-spotlight-cta-text:    #1f2a3d;
+  --hero-spotlight-cta-hover-bg:#fff37a;          /* highlight */
+}
+
+/* Hero left-padding offset for the red margin rule (notebook paper) */
+.dj-page .wiki-hero-inner{ padding-left:96px; }
+@media (min-width:768px){
+  .dj-page .wiki-hero-inner{ padding-left:112px; }
+}
+
+/* Gamepad ghost watermark, top right */
+.dj-page .wiki-hero .hero-watermark{
+  position:absolute; right:-3rem; top:-2.5rem;
+  width:440px; height:440px; transform:rotate(12deg);
+  color:rgba(31,42,61,.06); pointer-events:none; z-index:1;
+}
+
+/* Lift canonical content above the watermark */
+.dj-page .wiki-hero-inner{ position:relative; z-index:2; }
+
+/* H1 — DJ skin embellishments inside the canon title */
+.dj-page .wiki-hero-title{ font-family:'Fraunces',Georgia,serif; font-weight:700; line-height:.92; }
+.dj-page .wiki-hero-title .dj-title-jump{ color:#4a8c30; }   /* marker-green-dark */
+
+/* Doodler character peeking out from the spotlight card */
+.dj-page .wiki-hero-spotlight{ overflow:visible; }
+.dj-page .wiki-hero-spotlight .doodler{
+  position:absolute; top:-2rem; right:-.5rem; z-index:10; width:88px; height:88px;
+}
+@media (max-width:767px){
+  .dj-page .wiki-hero-spotlight .doodler{ display:none; }
+}
+
+/* Sticky-note CTA — preserve the box-shadow / border treatment */
+.dj-page .wiki-hero-spotlight-cta{
+  border:2px solid #1f2a3d;
+  box-shadow:2px 3px 0 #1f2a3d;
+  font-family:'Spectral',Georgia,serif; font-weight:500;
+  text-transform:uppercase; letter-spacing:.05em;
 }
 
 /* "torn paper" / sticky-note style cards — slightly rotated, soft shadow */
@@ -541,78 +632,71 @@ body.wiki-doodle-jump{ background:var(--paper); }
        Eyebrow pill · H1 (text-7xl→8xl) · Breadcrumb · Description ·
        Stat grid · Ghost icon · Right: Spotlight aside (wiki-specific)
        ================================================================ -->
-  <section id="overview" class="paper grain relative overflow-hidden border-b-2" style="border-color:var(--rule);">
+  <!-- ================================================================
+       HERO  ·  canonical wiki-home spec (see wiki-home.css)
+       Skin owns: paper bg + grain, ruled-line margin offset, gamepad
+                  ghost watermark, doodler character peek, sticky-note
+                  spotlight treatment, all colors via --hero-* tokens.
+       ================================================================ -->
+  <section id="overview" class="wiki-hero paper grain">
+    <!-- skin-owned ghost watermark (gamepad) -->
+    <i data-lucide="gamepad-2" stroke-width="1.25" class="hero-watermark" aria-hidden="true"></i>
 
-    <!-- Ghost icon — fixed spec: right:-3rem; top:-2.5rem; 440×440; rotate(12deg); white/10
-         Adapted for notebook skin: ink/6 so it reads on paper without overpowering -->
-    <i data-lucide="gamepad-2" stroke-width="1.25"
-       class="pointer-events-none absolute"
-       style="right:-3rem;top:-2.5rem;width:440px;height:440px;transform:rotate(12deg);color:rgba(31,42,61,0.06);"></i>
+    <div class="wiki-hero-inner">
+      <div class="wiki-hero-content">
 
-    <!-- Content grid — spec: max-w-[1500px] mx-auto px-6 py-14 md:grid-cols-[1.4fr_1fr] gap-8
-         DJ skin offset: pl-[96px] md:pl-[112px] for the margin rule -->
-    <div class="relative mx-auto grid max-w-[1500px] gap-8 px-6 py-10 pl-[96px] md:grid-cols-[1.4fr_1fr] md:pl-[112px]">
-
-      <!-- LEFT: all text -->
-      <div>
-
-        <!-- Eyebrow pill -->
-        <div class="ink-in mb-2 inline-flex items-center gap-2 rounded-full border border-dashed px-3 py-1 font-stamp text-[10px] uppercase tracking-[0.25em] backdrop-blur"
-             style="border-color:rgba(31,42,61,0.35);color:var(--graphite);background:rgba(255,255,255,0.5);animation-delay:.05s;">
-          <span class="inline-block h-1.5 w-1.5 flex-shrink-0 rounded-full" style="background:var(--spring);"></span>
-          Visual Wiki · Mobile · 2009
+        <!-- eyebrow pill: ● Visual Wiki · Vol. [N] -->
+        <div class="wiki-hero-eyebrow ink-in" style="animation-delay:.05s">
+          <span class="wiki-hero-eyebrow-dot"></span>
+          Visual Wiki · Vol. 3
         </div>
 
-        <!-- H1 — two lines, sized so total block ≈ single-line "Taco Bell." at text-8xl
-             clamp: ~2.75rem mobile → 4rem desktop keeps total two-line height proportional -->
-        <h1 class="ink-in font-marker font-bold leading-[0.92] tracking-tight"
-            style="font-size:clamp(2.75rem,5.5vw,4rem);color:var(--ink);animation-delay:.12s;">
-          <span class="marker-underline">Doodle</span>
-          <span class="block" style="color:var(--marker-green-dark);">Jump<span style="color:var(--spring);">.</span></span>
+        <!-- H1 + accent period — DJ skin: marker-underline on "Doodle", green "Jump", forced two-line -->
+        <h1 class="wiki-hero-title ink-in" style="animation-delay:.12s">
+          <span class="marker-underline">Doodle</span><br>
+          <span class="dj-title-jump">Jump</span><span class="wiki-hero-title-accent">.</span>
         </h1>
 
-        <!-- Breadcrumb -->
-        <div class="ink-in mt-2 flex items-center gap-2 font-stamp text-[10px] uppercase tracking-[0.2em]"
-             style="animation-delay:.17s;color:rgba(31,42,61,0.6);">
-          <a href="/doodle-jump.html" class="transition-colors hover:text-[var(--ink)]" style="color:rgba(31,42,61,0.6);">Doodle Jump</a>
-          <i data-lucide="chevron-right" style="width:.75rem;height:.75rem;flex-shrink:0;"></i>
-          <span style="color:var(--ink);">Overview</span>
-        </div>
-
-        <!-- Description -->
-        <p class="ink-in mt-3 max-w-xl font-body text-lg leading-[1.55]"
-           style="animation-delay:.2s;color:var(--ink);">
+        <!-- description -->
+        <p class="wiki-hero-desc ink-in" style="animation-delay:.2s">
           A four-legged green creature, an infinite ladder of <span class="hl">green platforms</span>, and a phone tilted just so. Lima Sky's pocket-sized obsession — every monster, power-up, and platform variant indexed here, drawn from the margins up.
         </p>
 
-        <!-- Stat grid -->
-        <div class="ink-in dj-stat-grid-wrap mt-6 grid max-w-2xl overflow-hidden rounded-sm border font-stamp text-[10px] uppercase tracking-wider"
-             style="grid-template-columns:repeat(4,1fr);border-color:rgba(31,42,61,0.2);background:rgba(255,255,255,0.5);animation-delay:.36s;">
-          <div class="dj-stat-grid px-3 py-3" style="border-right:1px solid rgba(31,42,61,0.12);background:rgba(253,251,243,0.6);">
-            <div class="font-marker text-xl font-semibold leading-none tracking-tight normal-case" style="color:var(--ink);">318</div>
-            <div class="mt-1" style="color:rgba(31,42,61,0.65);">entries</div>
-          </div>
-          <div class="px-3 py-3" style="border-right:1px solid rgba(31,42,61,0.12);background:rgba(253,251,243,0.6);">
-            <div class="font-marker text-xl font-semibold leading-none tracking-tight normal-case" style="color:var(--marker-green-dark);">2009</div>
-            <div class="mt-1" style="color:rgba(31,42,61,0.65);">debut</div>
-          </div>
-          <div class="px-3 py-3" style="border-right:1px solid rgba(31,42,61,0.12);background:rgba(253,251,243,0.6);">
-            <div class="font-marker text-xl font-semibold leading-none tracking-tight normal-case" style="color:var(--ink);">15M+</div>
-            <div class="mt-1" style="color:rgba(31,42,61,0.65);">downloads</div>
-          </div>
-          <div class="px-3 py-3" style="background:rgba(253,251,243,0.6);">
-            <div class="font-marker text-xl font-semibold leading-none tracking-tight normal-case" style="color:var(--spring);">∞</div>
-            <div class="mt-1" style="color:rgba(31,42,61,0.65);">high score</div>
-          </div>
+        <!-- search bar (icon is skin-owned — search glass) -->
+        <div class="wiki-hero-search ink-in" style="animation-delay:.28s">
+          <span class="wiki-hero-search-icon">
+            <i data-lucide="search" style="width:16px;height:16px"></i>
+          </span>
+          <input class="wiki-hero-search-input" placeholder="Search 318 entries — try 'Doodler', 'spring', 'UFO'…" />
         </div>
 
-      </div><!-- /left col -->
+        <!-- 4-cell stat grid · cell 1 ALWAYS = entry count -->
+        <div class="wiki-hero-stats ink-in" style="animation-delay:.36s">
+          <div class="wiki-hero-stat">
+            <div class="wiki-hero-stat-num">318</div>
+            <div class="wiki-hero-stat-label">entries</div>
+          </div>
+          <div class="wiki-hero-stat">
+            <div class="wiki-hero-stat-num">2009</div>
+            <div class="wiki-hero-stat-label">debut</div>
+          </div>
+          <div class="wiki-hero-stat">
+            <div class="wiki-hero-stat-num">15M+</div>
+            <div class="wiki-hero-stat-label">downloads</div>
+          </div>
+          <div class="wiki-hero-stat">
+            <div class="wiki-hero-stat-num">∞</div>
+            <div class="wiki-hero-stat-label">high score</div>
+          </div>
+        </div>
+      </div>
 
-      <!-- RIGHT: wiki-specific visual — Spotlight aside (sticky note + Doodler peeking) -->
-      <div class="flex items-center justify-center">
-        <aside class="ink-in relative w-full self-start" style="animation-delay:.44s;">
-          <!-- The Doodler character, peeking from behind the sticky — desktop only -->
-          <div class="doodler doodler-bob absolute -top-8 -right-2 z-10 hidden md:block" style="width:88px;height:88px;">
+      <!-- spotlight aside — DJ skin: sticky note + Doodler peek -->
+      <aside class="wiki-hero-aside ink-in" style="animation-delay:.44s">
+        <div class="wiki-hero-spotlight sticky tilt-r">
+          <!-- skin-owned decorations: sticky tape + Doodler character peeking from behind -->
+          <span class="tape" style="top:-9px;left:30%;transform:rotate(-3deg);"></span>
+          <div class="doodler doodler-bob" aria-hidden="true">
             <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
               <ellipse cx="50" cy="55" rx="32" ry="28" fill="#6bb84a" stroke="#2c3a1e" stroke-width="2.5"/>
               <ellipse cx="50" cy="62" rx="20" ry="14" fill="#8ed268" opacity=".55"/>
@@ -627,29 +711,20 @@ body.wiki-doodle-jump{ background:var(--paper); }
             </svg>
           </div>
 
-          <div class="sticky tilt-r relative p-6" style="border-radius:2px;">
-            <span class="tape" style="top:-9px;left:30%;transform:rotate(-3deg);"></span>
-            <div class="mb-3 font-stamp text-[10px] uppercase tracking-[0.2em]" style="color:var(--spring);">★ Spotlight</div>
-            <div class="font-marker text-4xl font-bold leading-none" style="color:var(--ink);">The Doodler</div>
-            <p class="mt-3 font-body text-[15px] leading-relaxed" style="color:var(--ink);">
-              The wiki's namesake creature — four legs, two eyes, one impossibly long nose. Lima Sky's <span class="hl">unnamed protagonist</span> has been launching himself off green platforms for over fifteen years, and still won't tell anyone what he is.
-            </p>
-            <div class="mt-4 flex flex-wrap gap-2 font-stamp text-[9px] uppercase tracking-wider">
-              <span class="border px-2 py-0.5" style="border-color:var(--graphite);color:var(--graphite);">Character</span>
-              <span class="border px-2 py-0.5" style="border-color:var(--graphite);color:var(--graphite);">Iconic</span>
-              <span class="border px-2 py-0.5" style="border-color:var(--graphite);color:var(--graphite);">Lima Sky</span>
-            </div>
-            <button class="mt-5 w-full border-2 px-4 py-2.5 font-hand text-[14px] uppercase tracking-wider transition"
-                    style="border-color:var(--ink);background:var(--marker-green);color:var(--ink);border-radius:3px;box-shadow:2px 3px 0 var(--ink);"
-                    onmouseover="this.style.background='var(--highlight)'"
-                    onmouseout="this.style.background='var(--marker-green)'">
-              Open entry &nbsp;→
-            </button>
+          <div class="wiki-hero-spotlight-eyebrow">★ Spotlight</div>
+          <h3 class="wiki-hero-spotlight-title">The Doodler</h3>
+          <p class="wiki-hero-spotlight-desc">
+            The wiki's namesake creature — four legs, two eyes, one impossibly long nose. Lima Sky's <span class="hl">unnamed protagonist</span> has been launching himself off green platforms for over fifteen years, and still won't tell anyone what he is.
+          </p>
+          <div class="wiki-hero-spotlight-tags">
+            <span class="wiki-hero-spotlight-tag">Character</span>
+            <span class="wiki-hero-spotlight-tag">Iconic</span>
+            <span class="wiki-hero-spotlight-tag">Lima Sky</span>
           </div>
-        </aside>
-      </div><!-- /right col -->
-
-    </div><!-- /content grid -->
+          <button class="wiki-hero-spotlight-cta">Open entry &nbsp;→</button>
+        </div>
+      </aside>
+    </div>
   </section>
 
   <!-- ================================================================

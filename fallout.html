@@ -3,6 +3,7 @@ layout: default
 title: Fallout
 body_class: wiki-page wiki-fallout
 extra_head: |
+  <link rel="stylesheet" href="/wiki-home.css">
   <link rel="stylesheet" href="/wiki-fallout-skin.css">
   <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
@@ -140,81 +141,74 @@ body.wiki-fallout{ background:#0b0f0a; }
   <div class="crt-tint" aria-hidden="true"></div>
 
   <!-- ================================================================
-       HERO  (badge / H1+period / intro / search / 4-cell stat grid /
-              spotlight aside)
+       HERO  ·  canonical wiki-home spec (see wiki-home.css)
+       Skin owns: bg, radiation watermark, terminal cursor, "boot" / "glow"
+                  animation classes, and all colors via --hero-* tokens.
        ================================================================ -->
-  <section class="relative overflow-hidden border-b border-line bg-bg">
-    <!-- faded radiation watermark, set right -->
-    <i data-lucide="radiation" class="pointer-events-none absolute -right-16 top-10 h-[460px] w-[460px] text-phos" style="opacity:.05;stroke-width:.8"></i>
+  <section class="wiki-hero">
+    <!-- skin-owned ghost watermark, set right -->
+    <i data-lucide="radiation" class="hero-watermark" aria-hidden="true" style="opacity:.05;stroke-width:.8"></i>
 
-    <div class="relative mx-auto grid max-w-[1500px] gap-10 px-6 py-20 md:grid-cols-[1.5fr_1fr]">
-      <div>
-        <!-- badge eyebrow -->
-        <div class="boot mb-4 inline-flex items-center gap-2 rounded-[4px] border border-line bg-surface px-3 py-1 font-mono-acc text-[10px] uppercase tracking-[0.3em] text-phos" style="animation-delay:.05s">
-          <span class="h-1.5 w-1.5 rounded-full bg-amber" style="box-shadow:0 0 8px var(--amber)"></span>
+    <div class="wiki-hero-inner">
+      <div class="wiki-hero-content">
+
+        <!-- eyebrow pill: ● Visual Wiki · Vol. [N] -->
+        <div class="wiki-hero-eyebrow boot" style="animation-delay:.05s">
+          <span class="wiki-hero-eyebrow-dot"></span>
           Visual Wiki · Vol. 21
         </div>
 
-        <!-- H1 + accent period + terminal cursor -->
-        <h1 class="boot font-display text-7xl font-bold leading-[0.95] tracking-tight text-phos glow md:text-[112px]" style="animation-delay:.12s">
-          Fallout<span class="text-amber glow-amber">.</span><span class="cursor align-baseline"></span>
+        <!-- H1 with accent period + skin-owned terminal cursor -->
+        <h1 class="wiki-hero-title boot glow" style="animation-delay:.12s">
+          Fallout<span class="wiki-hero-title-accent glow-amber">.</span><span class="cursor align-baseline"></span>
         </h1>
 
-        <p class="boot mt-6 max-w-xl text-lg leading-relaxed text-ink" style="animation-delay:.2s">
-          A retro-future that never let go of <strong class="text-phos">1950s America</strong> — then dropped
-          the bombs on it. Since <strong class="text-phos">1997</strong>, the post-nuclear RPG series indexed
-          here entry by entry: every game, faction, vault, wasteland and walking horror, catalogued from
-          the wrist up.
+        <!-- description -->
+        <p class="wiki-hero-desc boot" style="animation-delay:.2s">
+          A retro-future that never let go of <strong>1950s America</strong> — then dropped the bombs on it. Since <strong>1997</strong>, the post-nuclear RPG series indexed here entry by entry: every game, faction, vault, wasteland and walking horror, catalogued from the wrist up.
         </p>
 
-        <!-- WikiSearchBar — Pip-Boy terminal treatment -->
-        <div class="boot mt-8 max-w-xl" style="animation-delay:.28s">
-          <div class="flex items-center overflow-hidden rounded-[4px] border border-line bg-surface scan">
-            <span class="pl-3 font-mono-acc text-sm text-amber">&gt;</span>
-            <input placeholder="QUERY 1,140 ENTRIES — try 'Deathclaw' or 'New Vegas'"
-                   class="flex-1 bg-transparent px-3 py-3 font-mono-acc text-[12px] uppercase tracking-wider text-ink outline-none placeholder:text-dim" />
-            <span class="border-l border-line px-3 py-3 font-mono-acc text-[10px] uppercase tracking-wider text-dim">⌘K</span>
-          </div>
+        <!-- search bar (icon is skin-owned — Pip-Boy prompt) -->
+        <div class="wiki-hero-search boot scan" style="animation-delay:.28s">
+          <span class="wiki-hero-search-icon">&gt;</span>
+          <input class="wiki-hero-search-input" placeholder="QUERY 1,140 ENTRIES — try 'Deathclaw' or 'New Vegas'" />
         </div>
 
-        <!-- 4-cell stat grid -->
-        <div class="boot mt-10 grid max-w-xl grid-cols-4 gap-px overflow-hidden rounded-[4px] border border-line bg-line font-mono-acc text-[10px] uppercase tracking-wider" style="animation-delay:.36s">
-          <div class="bg-bg-dark px-3 py-3">
-            <div class="font-display text-2xl font-semibold normal-case tracking-tight text-phos">1,140</div>
-            <div class="text-dim">entries</div>
+        <!-- 4-cell stat grid · cell 1 ALWAYS = entry count -->
+        <div class="wiki-hero-stats boot" style="animation-delay:.36s">
+          <div class="wiki-hero-stat">
+            <div class="wiki-hero-stat-num">1,140</div>
+            <div class="wiki-hero-stat-label">entries</div>
           </div>
-          <div class="bg-bg-dark px-3 py-3">
-            <div class="font-display text-2xl font-semibold normal-case tracking-tight text-phos">1997</div>
-            <div class="text-dim">debut</div>
+          <div class="wiki-hero-stat">
+            <div class="wiki-hero-stat-num">1997</div>
+            <div class="wiki-hero-stat-label">debut</div>
           </div>
-          <div class="bg-bg-dark px-3 py-3">
-            <div class="font-display text-2xl font-semibold normal-case tracking-tight text-phos">9</div>
-            <div class="text-dim">games</div>
+          <div class="wiki-hero-stat">
+            <div class="wiki-hero-stat-num">9</div>
+            <div class="wiki-hero-stat-label">games</div>
           </div>
-          <div class="bg-bg-dark px-3 py-3">
-            <div class="font-display text-2xl font-semibold normal-case tracking-tight text-phos">122</div>
-            <div class="text-dim">vaults</div>
+          <div class="wiki-hero-stat">
+            <div class="wiki-hero-stat-num">122</div>
+            <div class="wiki-hero-stat-label">vaults</div>
           </div>
         </div>
       </div>
 
-      <!-- Spotlight aside (eyebrow has no time-qualifier — per house style) -->
-      <aside class="boot relative" style="animation-delay:.44s">
-        <div class="rounded-[5px] border border-line bg-surface p-5 scan">
-          <div class="mb-3 font-mono-acc text-[10px] uppercase tracking-[0.2em] text-amber">★ Spotlight</div>
-          <div class="font-display text-3xl font-semibold leading-tight text-phos glow">Pip-Boy 3000</div>
-          <p class="mt-2 text-sm text-ink">
-            The wrist-mounted Personal Information Processor — RobCo's pre-war handheld that every
-            player wears for 200 years. Maps, stats, radio, and a soft green light in the dark.
+      <!-- spotlight aside -->
+      <aside class="wiki-hero-aside boot" style="animation-delay:.44s">
+        <div class="wiki-hero-spotlight scan">
+          <div class="wiki-hero-spotlight-eyebrow">★ Spotlight</div>
+          <h3 class="wiki-hero-spotlight-title glow">Pip-Boy 3000</h3>
+          <p class="wiki-hero-spotlight-desc">
+            The wrist-mounted Personal Information Processor — RobCo's pre-war handheld that every player wears for 200 years. Maps, stats, radio, and a soft green light in the dark.
           </p>
-          <div class="mt-4 flex flex-wrap gap-2 font-mono-acc text-[9px] uppercase tracking-wider">
-            <span class="rounded-[3px] border border-line bg-surface px-2 py-0.5 text-dim">Tech</span>
-            <span class="rounded-[3px] border border-line bg-surface px-2 py-0.5 text-dim">Iconic</span>
-            <span class="rounded-[3px] border border-line bg-surface px-2 py-0.5 text-dim">RobCo</span>
+          <div class="wiki-hero-spotlight-tags">
+            <span class="wiki-hero-spotlight-tag">Tech</span>
+            <span class="wiki-hero-spotlight-tag">Iconic</span>
+            <span class="wiki-hero-spotlight-tag">RobCo</span>
           </div>
-          <button class="mt-5 w-full rounded-[4px] bg-amber px-4 py-2 font-mono-acc text-[11px] uppercase tracking-wider text-bg-dark transition hover:bg-phos">
-            Open entry &nbsp;&rarr;
-          </button>
+          <button class="wiki-hero-spotlight-cta">Open entry &nbsp;&rarr;</button>
         </div>
       </aside>
     </div>

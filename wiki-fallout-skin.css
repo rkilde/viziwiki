@@ -271,3 +271,93 @@ body.wiki-fallout ::selection {
   background: rgba(62,230,61,.30);
   color: #eafff0;
 }
+
+
+/* ====================================================================
+   7 · HERO  ·  CANONICAL WIKI-HOME SPEC OVERRIDES
+   The hero structure now comes from wiki-home.css. This section reflavors
+   it via --hero-* tokens plus the Fallout-specific decoration scaffolding
+   (radiation watermark + assumed inline helper classes: .boot .glow
+   .glow-amber .cursor .scan, defined in fallout.html's <style>).
+   ==================================================================== */
+
+body.wiki-fallout {
+  /* divider that closes the hero section */
+  --hero-divider:                 var(--phos-dim);
+
+  /* eyebrow pill */
+  --hero-eyebrow-bg:              rgba(62,230,61,0.035);     /* surface */
+  --hero-eyebrow-border:          rgba(62,230,61,0.22);      /* line */
+  --hero-eyebrow-text:            var(--phosphor);
+  --hero-eyebrow-dot:             var(--amber);
+
+  /* H1 + accent period */
+  --hero-title-color:             var(--phosphor);
+  --hero-title-accent:            var(--amber);
+
+  /* description */
+  --hero-desc-color:              #c6f5be;                   /* ink */
+
+  /* search bar — Pip-Boy terminal treatment */
+  --hero-search-bg:               rgba(62,230,61,0.035);
+  --hero-search-border:           rgba(62,230,61,0.22);
+  --hero-search-text:             #c6f5be;
+  --hero-search-placeholder:      #6f9e6a;                   /* ink-dim */
+  --hero-search-icon:             var(--amber);
+
+  /* stat grid */
+  --hero-stat-wrapper-bg:         rgba(62,230,61,0.22);      /* line — bleeds through gap-px */
+  --hero-stat-wrapper-border:     rgba(62,230,61,0.22);
+  --hero-stat-cell-bg:            #050805;                   /* bg-dark */
+  --hero-stat-num:                var(--phosphor);
+  --hero-stat-label:              #6f9e6a;
+
+  /* spotlight card */
+  --hero-spotlight-bg:            rgba(62,230,61,0.035);
+  --hero-spotlight-border:        rgba(62,230,61,0.22);
+  --hero-spotlight-eyebrow:       var(--amber);
+  --hero-spotlight-title:         var(--phosphor);
+  --hero-spotlight-desc:          #c6f5be;
+
+  --hero-spotlight-tag-bg:        rgba(62,230,61,0.035);
+  --hero-spotlight-tag-border:    rgba(62,230,61,0.22);
+  --hero-spotlight-tag-text:      #6f9e6a;
+
+  --hero-spotlight-cta-bg:        var(--amber);
+  --hero-spotlight-cta-text:      #050805;
+  --hero-spotlight-cta-hover-bg:  var(--phosphor);
+}
+
+/* Hero background — solid CRT surface */
+body.wiki-fallout .wiki-hero {
+  background: var(--crt-deep);
+}
+
+/* Hero search bar — Pip-Boy prompt sits in monospace, no svg */
+body.wiki-fallout .wiki-hero-search-icon {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 14px;
+}
+
+/* Hero search bar input — uppercase mono tone */
+body.wiki-fallout .wiki-hero-search-input {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+/* Hero ghost watermark — radiation icon, set right */
+body.wiki-fallout .wiki-hero .hero-watermark {
+  position: absolute;
+  top: 40px;
+  right: -64px;
+  width: 460px;
+  height: 460px;
+  color: var(--phosphor);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Lift canonical content above the watermark */
+body.wiki-fallout .wiki-hero-inner { position: relative; z-index: 2; }

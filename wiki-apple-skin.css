@@ -229,3 +229,98 @@ body.wiki-apple .wiki-bar-logo img {
   height: 100%;
   object-fit: contain;
 }
+
+
+/* ====================================================================
+   9 · HERO  ·  CANONICAL WIKI-HOME SPEC OVERRIDES
+   The hero structure now comes from wiki-home.css. This section reflavors
+   it via --hero-* tokens plus the Cupertino-specific decoration scaffolding
+   (light page background + giant Apple-logo ghost watermark).
+   ==================================================================== */
+
+body.wiki-apple {
+  /* divider that closes the hero section */
+  --hero-divider:                 rgba(0,0,0,.12);
+
+  /* eyebrow pill */
+  --hero-eyebrow-bg:              #ffffff;
+  --hero-eyebrow-border:          rgba(0,0,0,.16);
+  --hero-eyebrow-text:            rgba(0,0,0,.4);
+  --hero-eyebrow-dot:             rgba(0,0,0,.28);   /* matches H1 period */
+
+  /* H1 + accent period */
+  --hero-title-color:             #0a0a0a;
+  --hero-title-accent:            rgba(0,0,0,.28);
+
+  /* description */
+  --hero-desc-color:              rgba(0,0,0,.62);
+
+  /* search bar */
+  --hero-search-bg:               #ffffff;
+  --hero-search-border:           rgba(0,0,0,.16);
+  --hero-search-text:             #0a0a0a;
+  --hero-search-placeholder:      rgba(0,0,0,.4);
+  --hero-search-icon:             rgba(0,0,0,.45);
+
+  /* stat grid */
+  --hero-stat-wrapper-bg:         rgba(0,0,0,.10);   /* bleeds through gap-px */
+  --hero-stat-wrapper-border:     rgba(0,0,0,.10);
+  --hero-stat-cell-bg:            #ffffff;
+  --hero-stat-num:                #0a0a0a;
+  --hero-stat-label:              rgba(0,0,0,.4);
+
+  /* spotlight card */
+  --hero-spotlight-bg:            #ffffff;
+  --hero-spotlight-border:        rgba(0,0,0,.10);
+  --hero-spotlight-eyebrow:       rgba(0,0,0,.55);
+  --hero-spotlight-title:         #0a0a0a;
+  --hero-spotlight-desc:          rgba(0,0,0,.62);
+
+  --hero-spotlight-tag-bg:        rgba(0,0,0,.04);
+  --hero-spotlight-tag-border:    rgba(0,0,0,.12);
+  --hero-spotlight-tag-text:      rgba(0,0,0,.6);
+
+  --hero-spotlight-cta-bg:        #0071e3;           /* Apple blue */
+  --hero-spotlight-cta-text:      #ffffff;
+  --hero-spotlight-cta-hover-bg:  #0a0a0a;
+}
+
+/* Hero background — light Cupertino panel */
+body.wiki-apple .wiki-hero {
+  background: #f4f4f6;
+}
+
+/* Hero title — engage Fraunces SOFT axis (Apple house style) */
+body.wiki-apple .wiki-hero-title {
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+}
+body.wiki-apple .wiki-hero-stat-num {
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+}
+body.wiki-apple .wiki-hero-spotlight-title {
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+}
+
+/* Strong text inside the description — slightly darker */
+body.wiki-apple .wiki-hero-desc strong {
+  color: #0a0a0a;
+  font-weight: 600;
+}
+
+/* Apple-logo ghost watermark — top right */
+body.wiki-apple .wiki-hero .hero-watermark {
+  position: absolute;
+  right: 60px;
+  top: 20px;
+  width: 480px;
+  height: 480px;
+  opacity: .18;
+  pointer-events: none;
+  z-index: 1;
+}
+@media (max-width: 768px) {
+  body.wiki-apple .wiki-hero .hero-watermark { display: none; }
+}
+
+/* Lift canonical content above the watermark */
+body.wiki-apple .wiki-hero-inner { position: relative; z-index: 2; }

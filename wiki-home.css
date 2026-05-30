@@ -90,7 +90,7 @@
 
 /* ====================================================================
    3 · HERO INNER  — grid container
-   1500px max, py-16 (64px), px-6 (24px), gap-8 between columns.
+   1500px max, py-16 (64px), px-12 (48px), gap-8 between columns.
    ==================================================================== */
 .wiki-hero-inner {
   position: relative;          /* skin watermark icons absolute against this */
@@ -98,7 +98,7 @@
   display: grid;
   gap: 32px;
   max-width: 1500px;
-  padding: 64px 24px;
+  padding: 64px 48px;
 }
 
 @media (min-width: 768px) {
@@ -223,7 +223,7 @@
 /* ====================================================================
    9 · 4-CELL STAT GRID
    Always 4 cells; cell 1 = entry count (canonical).
-   Desktop 4-col → mobile 2x2 below 640px.
+   Stays 4 cols at every viewport size — single row, always.
    1px gaps act as dividers via wrapper background bleeding through.
    ==================================================================== */
 .wiki-hero-stats {
@@ -236,12 +236,6 @@
   border-radius: 4px;
   border: 1px solid var(--hero-stat-wrapper-border);
   background: var(--hero-stat-wrapper-bg);
-}
-
-@media (max-width: 639px) {
-  .wiki-hero-stats {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 .wiki-hero-stat {
@@ -271,17 +265,17 @@
 
 /* ====================================================================
    10 · SPOTLIGHT ASIDE  — right column
-   Top-aligned. pl-4 (16px) nudges card off the right edge.
+   Top-aligned. pr-4 (16px) pulls the card off the right edge.
    ==================================================================== */
 .wiki-hero-aside {
   align-self: start;
-  padding-left: 16px;
+  padding-right: 16px;
 }
 
 @media (max-width: 767px) {
-  /* on mobile, drop the left padding so the card uses full width */
+  /* on mobile, drop the padding so the card uses full width */
   .wiki-hero-aside {
-    padding-left: 0;
+    padding-right: 0;
   }
 }
 
