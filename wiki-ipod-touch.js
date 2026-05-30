@@ -191,14 +191,14 @@ function renderTimeline(){
   // Rebuild positioning after render
   track.innerHTML = TIMELINE.map(function(e,i){
     var daySpan = e.day ? '<span class="sc-float-day fr">'+e.day+'</span> ' : '';
-    return '<div class="station" data-date="'+e.dateKey+'">'
-      +'<div class="station-event-top">'
+    return '<div class="itl-station" data-date="'+e.dateKey+'">'
+      +'<div class="itl-event-top">'
       +'<div class="sc-float-date">'
       +'<span class="sc-float-month fr">'+e.month+'</span> '
       + daySpan
       +'<span class="sc-float-year fr">'+e.year+'</span>'
       +'</div>'
-      +'<div class="station-card" onclick="openTl('+i+')">'
+      +'<div class="itl-card" onclick="openTl('+i+')">'
       +'<div class="sc-bar"></div>'
       +'<div class="sc-body">'
       +'<div class="sc-tag jb">'+e.tag+'</div>'
@@ -208,7 +208,7 @@ function renderTimeline(){
       +'<span class="sc-expand jb">Details <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>'
       +'<span class="sc-num jb">'+String(i+1).padStart(2,'0')+'</span>'
       +'</div></div></div></div>'
-      +'<div class="station-event-spine"><div class="station-dot"></div></div>'
+      +'<div class="itl-spine"><div class="itl-dot"></div></div>'
       +'</div>';
   }).join('\n');
   // positionTimeline called on window.onload — see initPage()
@@ -561,7 +561,7 @@ function positionTimeline(){
   function dm(a,b){return(b.y-a.y)*12+(b.m-a.m);}
   function fmt(n){if(n<1)return null;if(n===1)return"1 mo";if(n<12)return n+" mo";var y=Math.round(n/12);return y+" yr";}
   var track=document.getElementById("tlTrack");if(!track)return;
-  var stations=[].slice.call(track.querySelectorAll(".station"));
+  var stations=[].slice.call(track.querySelectorAll(".itl-station"));
   var items=stations.map(function(el){return{el:el,d:pd(el.getAttribute("data-date"))};}).filter(function(x){return x.d;});
   if(items.length<2)return;
   var byYear={};
@@ -585,8 +585,8 @@ function positionTimeline(){
   var sorted=items.slice().sort(function(a,b){return(a.d.y*12+a.d.m)-(b.d.y*12+b.d.m);});
   for(var i=0;i<sorted.length-1;i++){var gap=dm(sorted[i].d,sorted[i+1].d);if(gap<1)continue;var label=fmt(gap);if(!label)continue;var cx1=(posX.get(sorted[i].el)||0)+CARD_W;var cx2=(posX.get(sorted[i+1].el)||0);var mid=(cx1+cx2)/2;var chip=document.createElement("div");chip.className="tl-gap";chip.style.cssText="left:"+mid+"px;top:"+chipY+"px";chip.textContent=label;track.appendChild(chip);}
   stations.forEach(function(el){
-    var card=el.querySelector(".station-card");
-    var spine=el.querySelector(".station-event-spine");
+    var card=el.querySelector(".itl-card");
+    var spine=el.querySelector(".itl-spine");
     if(!card||!spine)return;
     // getBoundingClientRect forces layout sync — always accurate
     var stRect=el.getBoundingClientRect();
@@ -612,7 +612,7 @@ function schedulePositionTimeline(attemptsLeft) {
   if (attemptsLeft <= 0) return;
   var track = document.getElementById('tlTrack');
   if (!track) { setTimeout(function(){ schedulePositionTimeline(attemptsLeft-1); }, 100); return; }
-  var firstCard = track.querySelector('.station-card');
+  var firstCard = track.querySelector('.itl-card');
   if (!firstCard || firstCard.getBoundingClientRect().height === 0) {
     setTimeout(function(){ schedulePositionTimeline(attemptsLeft-1); }, 100);
     return;
