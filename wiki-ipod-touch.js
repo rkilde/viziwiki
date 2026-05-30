@@ -606,9 +606,24 @@ function positionTimeline(){
   outer.addEventListener("mousemove",function(e){if(!dn)return;var dx=e.pageX-mx;if(Math.abs(dx)>4){_tlDragged=true;e.preventDefault();}outer.scrollLeft=sl-(e.pageX-outer.offsetLeft-sx)*1.2;});
 }
 
-// positionTimeline on window.onload — guarantees external CSS is applied
-// before any layout measurements are taken.
-window.addEventListener('load', function(){
+// positionTimeline: retry until station cards have non-zero height,
+// which confirms CSS is applied and layout is computed.
+function schedulePositionTimeline(attemptsLeft) {
+  if (attemptsLeft <= 0) return;
+  var track = document.getElementById('tlTrack');
+  if (!track) { setTimeout(function(){ schedulePositionTimeline(attemptsLeft-1); }, 100); return; }
+  var firstCard = track.querySelector('.station-card');
+  if (!firstCard || firstCard.getBoundingClientRect().height === 0) {
+    setTimeout(function(){ schedulePositionTimeline(attemptsLeft-1); }, 100);
+    return;
+  }
   positionTimeline();
+}
+// Start trying on DOMContentLoaded, keep retrying up to 2 seconds
+document.addEventListener('DOMContentLoaded', function(){
+  schedulePositionTimeline(20);
+});
+window.addEventListener('load', function(){
+  schedulePositionTimeline(10);
 });
 
