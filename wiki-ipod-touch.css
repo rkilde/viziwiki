@@ -500,11 +500,11 @@
 .cfg-fill-25{width:25%;}.cfg-fill-50{width:50%;}.cfg-fill-100{width:100%;}
 .cfg-model{font-family:"JetBrains Mono",monospace;font-size:7px;text-transform:uppercase;letter-spacing:.1em;color:rgba(0,0,0,.72);white-space:nowrap;}
 .cfg-dates{font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:.04em;color:rgba(0,0,0,.62);white-space:nowrap;margin-top:3px;display:block;}
-.cfg-colors{grid-column:2 / -1;display:flex;align-items:center;gap:10px;justify-content:flex-start;flex-wrap:wrap;padding-left:4px;margin-top:2px;}
-.cfg-color{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0;}
+.cfg-colors{grid-column:2 / -1;display:flex;align-items:flex-start;gap:10px;justify-content:flex-start;flex-wrap:wrap;padding-left:4px;margin-top:2px;}
+.cfg-color{display:flex;flex-direction:column;align-items:center;gap:4px;width:34px;}
 .cfg-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0;box-shadow:0 1px 2px rgba(0,0,0,.12);}
 .cfg-dot.ring{box-shadow:inset 0 0 0 1px rgba(0,0,0,.32),0 1px 2px rgba(0,0,0,.08);}
-.cfg-dot-name{font-family:"JetBrains Mono",monospace;font-size:8px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:rgba(0,0,0,.5);white-space:nowrap;text-align:center;line-height:1.2;}
+.cfg-dot-name{font-family:"JetBrains Mono",monospace;font-size:8px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:rgba(0,0,0,.5);text-align:center;line-height:1.2;width:100%;}
 .cfg-price-arrow{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:400;letter-spacing:0;vertical-align:middle;}
 .cfg-price{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:18px;font-weight:600;letter-spacing:-0.02em;text-align:right;color:#0a0a0a;white-space:nowrap;}
 .cfg-price-line{line-height:1.18;}
@@ -550,11 +550,11 @@
 .cfg-fill-25{width:25%;}.cfg-fill-50{width:50%;}.cfg-fill-100{width:100%;}
 .cfg-model{font-family:"JetBrains Mono",monospace;font-size:7px;text-transform:uppercase;letter-spacing:.1em;color:rgba(0,0,0,.72);white-space:nowrap;}
 .cfg-dates{font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:.04em;color:rgba(0,0,0,.62);white-space:nowrap;margin-top:3px;display:block;}
-.cfg-colors{grid-column:2 / -1;display:flex;align-items:center;gap:10px;justify-content:flex-start;flex-wrap:wrap;padding-left:4px;margin-top:2px;}
-.cfg-color{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0;}
+.cfg-colors{grid-column:2 / -1;display:flex;align-items:flex-start;gap:10px;justify-content:flex-start;flex-wrap:wrap;padding-left:4px;margin-top:2px;}
+.cfg-color{display:flex;flex-direction:column;align-items:center;gap:4px;width:34px;}
 .cfg-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0;box-shadow:0 1px 2px rgba(0,0,0,.12);}
 .cfg-dot.ring{box-shadow:inset 0 0 0 1px rgba(0,0,0,.32),0 1px 2px rgba(0,0,0,.08);}
-.cfg-dot-name{font-family:"JetBrains Mono",monospace;font-size:8px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:rgba(0,0,0,.5);white-space:nowrap;text-align:center;line-height:1.2;}
+.cfg-dot-name{font-family:"JetBrains Mono",monospace;font-size:8px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:rgba(0,0,0,.5);text-align:center;line-height:1.2;width:100%;}
 .cfg-price-arrow{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:400;letter-spacing:0;vertical-align:middle;}
 .cfg-price{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:18px;font-weight:600;letter-spacing:-0.02em;text-align:right;color:#0a0a0a;white-space:nowrap;}
 .cfg-price-line{line-height:1.18;}
