@@ -1381,14 +1381,22 @@
   body.wiki-page .wiki-hamburger .burger-x { display: none; }
   body.wiki-page.drawer-open .wiki-hamburger .burger-lines { display: none; }
   body.wiki-page.drawer-open .wiki-hamburger .burger-x { display: inline-block; }
+  body.wiki-page .wiki-bar-logo {
+    flex-shrink: 0;
+  }
   body.wiki-page .wiki-bar-title {
     font-family: 'Fraunces', Georgia, serif;
     font-size: 17px; font-weight: 500;
     letter-spacing: -.01em;
     color: var(--wiki-fg);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
     flex: 1;
+    min-width: 0;
   }
+  body.wiki-page .wiki-bar-title::-webkit-scrollbar { display: none; }
   body.wiki-page .wiki-bar-actions {
     display: flex; gap: 4px;
   }
