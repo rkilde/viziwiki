@@ -3510,7 +3510,7 @@ let lastY = window.scrollY;
     var barTitle = document.getElementById('wiki-bar-title-host');
     if (barTitle && toc.pageTitle) barTitle.textContent = toc.pageTitle;
     var barLogo = document.getElementById('wiki-bar-logo-host');
-    if (barLogo) barLogo.innerHTML = toc.wikiLogo || toc.pageLogo || '';
+    if (barLogo) barLogo.innerHTML = toc.pageLogo || toc.wikiLogo || '';
 
     // ── STEP 2: Desktop rail — hero logo + title ──
     var heroLogo = document.getElementById('wiki-toc-hero-logo');
