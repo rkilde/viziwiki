@@ -310,10 +310,17 @@ function renderCfg(){
   var revised  = c.items.filter(function(it){ return  it.cls.includes('rev'); });
 
   function cfgRow(item){
+    var colorsHtml = (item.colors||[]).map(function(c){
+      return '<div class="cfg-color">'
+        +'<span class="cfg-dot'+(c.ring?' ring':'')+'" style="background:'+c.hex+'"></span>'
+        +'<span class="cfg-dot-name jb">'+c.name+'</span>'
+        +'</div>';
+    }).join('');
     return '<div class="cfg-row">'
-      +'<div class="cfg-cap fr">'+item.gb+'<span>GB</span></div>'
+      +(function(){var mobileColors='';if(item.colors&&item.colors.length){mobileColors='<div class="cfg-colors-mobile">'+item.colors.map(function(c){return '<div class="cfg-color-mobile">'+'<span class="cfg-dot-mobile'+(c.ring?' ring':'')+'" style="background:'+c.hex+'"></span>'+'<span class="cfg-dot-name-mobile">'+c.name+'</span>'+'</div>';}).join('')+'</div>';}return '<div class="cfg-cap fr">'+item.gb+'<span>GB</span>'+mobileColors+'</div>';})()
       +'<div class="cfg-track"><div class="cfg-fill '+item.cls+'"><span class="cfg-model">'+item.model+'</span></div></div>'
-      +'<div class="cfg-price fr">'+item.price+'</div>'
+      +'<div class="cfg-colors">'+colorsHtml+'</div>'
+      +(function(){var parts=item.price.split('→');if(parts.length===2){return '<div class="cfg-price fr">'+'<div class="cfg-price-line">'+parts[0].trim()+'</div>'+'<div class="cfg-price-line"><span class="cfg-price-arrow">→</span> '+parts[1].trim()+'</div>'+'</div>';}return '<div class="cfg-price fr"><div class="cfg-price-line">'+item.price+'</div></div>';})()
       +'<div class="cfg-date-row"><span class="cfg-dates">'+item.dates+'</span></div>'
       +'</div>';
   }
