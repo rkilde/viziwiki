@@ -212,7 +212,7 @@ function renderTimeline(){
       +'</div>';
   }).join('\n');
   // Re-run positioning now that cards exist
-  setTimeout(positionTimeline, 0);
+  setTimeout(positionTimeline, 150);
 }
 
 // ── renderTLHeader ────────────────────────────────────────────────────
@@ -556,7 +556,7 @@ function closeTl(){document.getElementById("tlModal").classList.remove("open");d
 document.addEventListener("keydown",function(e){if(e.key==="Escape")closeTl();});
 function positionTimeline(){
 
-  var CARD_W=280,SLIM_W=68,PAD=24,SPINE_Y=340,TRACK_H=368;
+  var CARD_W=280,SLIM_W=68,PAD=24,SPINE_Y=339,TRACK_H=368;
   var MO={Jan:1,Feb:2,Mar:3,Apr:4,May:5,Jun:6,Jul:7,Aug:8,Sep:9,Oct:10,Nov:11,Dec:12};
   function pd(s){s=(s||"").trim();var m=s.match(/^(\w{3})\s+(\d{4})$/);if(m)return{y:+m[2],m:MO[m[1]]||1};var m2=s.match(/(\d{4})/);return m2?{y:+m2[1],m:1}:null;}
   function dm(a,b){return(b.y-a.y)*12+(b.m-a.m);}
