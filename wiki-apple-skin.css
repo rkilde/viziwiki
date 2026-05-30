@@ -324,3 +324,37 @@ body.wiki-apple .wiki-hero .hero-watermark {
 
 /* Lift canonical content above the watermark */
 body.wiki-apple .wiki-hero-inner { position: relative; z-index: 2; }
+
+
+/* ====================================================================
+   10 · APPLE-SPECIFIC SQUIRCLE SHAPE OVERRIDE  ·  TIER 3 (structural)
+   --------------------------------------------------------------------
+   The canon (§2 of the spec) defines a universal 4px border-radius on
+   eyebrow pill, search bar, stat grid, and spotlight card. Apple's
+   brand language is built around the squircle — iOS app icons, Apple
+   Silicon chip diagrams, Mac wallpapers — so we soften those radii
+   here. The eyebrow pill stays at canon (it's small enough that 4px
+   reads as a sharp rectangle anyway, and a larger radius would just
+   make it pill-shaped which competes with the squircle vibe).
+
+   This is a deliberate Tier 3 override — it changes a canon rule for
+   one wiki because the brand requires it. Per the spec's §10 rules:
+   skin-scoped selector ✓, documented ✓, minimal scope ✓.
+
+   Note: true mathematical squircles need SVG clip-path. CSS
+   border-radius gives elliptical corners that READ as squircle at
+   these sizes — close enough for now.
+   ==================================================================== */
+
+body.wiki-apple .wiki-hero-search,
+body.wiki-apple .wiki-hero-stats {
+  border-radius: 12px;
+}
+
+body.wiki-apple .wiki-hero-spotlight {
+  border-radius: 18px;
+}
+
+body.wiki-apple .wiki-hero-spotlight-cta {
+  border-radius: 12px;
+}
