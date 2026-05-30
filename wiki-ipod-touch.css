@@ -1,3 +1,9 @@
+/* ── Hero generation line (name · Model ####) ──────────────────────── */
+.hero-gen{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:28px;}
+.hero-gen-sep{color:rgba(0,0,0,.25);}
+.hero-gen-model{font-family:"JetBrains Mono",monospace;font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:rgba(0,0,0,.38);}
+.hero-gen-model span{color:rgba(0,0,0,.55);}
+
 /* ====================================================================
    wiki-ipod-touch.css
    ViziWiki · iPod touch wiki — shared page styles
@@ -739,20 +745,52 @@
   .spec-v{text-align:left;}
 }
 /* ── cfg chart mobile ──────────────────────────────────────────────── */
+/* nested-in-cap dots are unused on every viewport now */
+.cfg-colors-mobile{display:none;}
 @media(max-width:600px){
-  .cfg-row{grid-template-columns:48px 1fr 72px;}
-  /* hide the color column — colors move under the GB cap */
-  .cfg-colors{display:none;}
-  /* date row spans under track only */
-  .cfg-date-row{grid-column:2 / 3;}
-  /* mobile color dots sit below the GB number */
-  .cfg-cap{display:flex;flex-direction:column;align-items:flex-start;gap:6px;}
-  .cfg-colors-mobile{display:flex;gap:12px;align-items:flex-start;}
-  .cfg-color-mobile{display:flex;flex-direction:column;align-items:center;gap:3px;}
-  .cfg-dot-mobile{width:12px;height:12px;border-radius:50%;box-shadow:0 1px 2px rgba(0,0,0,.12);}
-  .cfg-dot-mobile.ring{box-shadow:inset 0 0 0 1px rgba(0,0,0,.32),0 1px 2px rgba(0,0,0,.08);}
-  .cfg-dot-name-mobile{font-family:"JetBrains Mono",monospace;font-size:7px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;color:rgba(0,0,0,.45);text-align:center;line-height:1.2;}
+  /* Row 1: [cap | track | price]  ·  Row 2: [_ | colors | dates] */
+  .cfg-row{
+    grid-template-columns:auto 1fr auto;
+    grid-template-areas:
+      "cap    track  price"
+      ".      meta   .";
+    column-gap:12px;
+    row-gap:8px;
+    align-items:center;
+    padding:14px 0;
+    border-bottom:1px solid rgba(0,0,0,.06);
+  }
+  .cfg-bars .cfg-row:last-child{border-bottom:none;}
+  /* capacity: "8 GB" inline, left */
+  .cfg-cap{
+    grid-area:cap;
+    flex-direction:row;
+    align-items:baseline;
+    gap:5px;
+    text-align:left;
+    font-size:20px;
+  }
+  .cfg-cap span{font-size:12px;margin-left:0;}
+  /* track sits between cap and price */
+  .cfg-track{grid-area:track;height:42px;}
+  /* price right */
+  .cfg-price{grid-area:price;align-self:center;}
+  /* colors: row 2, aligned to track start */
+  .cfg-colors{
+    grid-area:meta;
+    justify-self:start;
+    display:flex;
+    justify-content:flex-start;
+    gap:14px;
+  }
+  /* dates: row 2, right */
+  .cfg-date-row{
+    grid-area:meta;
+    justify-self:end;
+    padding-left:0;
+    align-self:center;
+  }
+  .cfg-dates{font-size:9px;}
 }
-@media(min-width:601px){
-  .cfg-colors-mobile{display:none;}
+
 }
