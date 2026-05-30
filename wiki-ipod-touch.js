@@ -319,9 +319,9 @@ function renderCfg(){
     return '<div class="cfg-row">'
       +(function(){var mobileColors='';if(item.colors&&item.colors.length){mobileColors='<div class="cfg-colors-mobile">'+item.colors.map(function(c){return '<div class="cfg-color-mobile">'+'<span class="cfg-dot-mobile'+(c.ring?' ring':'')+'" style="background:'+c.hex+'"></span>'+'<span class="cfg-dot-name-mobile">'+c.name+'</span>'+'</div>';}).join('')+'</div>';}return '<div class="cfg-cap fr">'+item.gb+'<span>GB</span>'+mobileColors+'</div>';})()
       +'<div class="cfg-track"><div class="cfg-fill '+item.cls+'"><span class="cfg-model">'+item.model+'</span></div></div>'
-      +'<div class="cfg-colors">'+colorsHtml+'</div>'
       +(function(){var parts=item.price.split('→');if(parts.length===2){return '<div class="cfg-price fr">'+'<div class="cfg-price-line">'+parts[0].trim()+'</div>'+'<div class="cfg-price-line"><span class="cfg-price-arrow">→</span> '+parts[1].trim()+'</div>'+'</div>';}return '<div class="cfg-price fr"><div class="cfg-price-line">'+item.price+'</div></div>';})()
       +'<div class="cfg-date-row"><span class="cfg-dates">'+item.dates+'</span></div>'
+      +(colorsHtml?'<div class="cfg-colors">'+colorsHtml+'</div>':'')
       +'</div>';
   }
 
