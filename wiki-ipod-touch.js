@@ -211,8 +211,7 @@ function renderTimeline(){
       +'<div class="station-event-spine"><div class="station-dot"></div></div>'
       +'</div>';
   }).join('\n');
-  // Re-run positioning now that cards exist
-  setTimeout(positionTimeline, 150);
+  // positionTimeline called on window.onload — see initPage()
 }
 
 // ── renderTLHeader ────────────────────────────────────────────────────
@@ -606,3 +605,10 @@ function positionTimeline(){
   outer.addEventListener("mouseup",function(){dn=false;});
   outer.addEventListener("mousemove",function(e){if(!dn)return;var dx=e.pageX-mx;if(Math.abs(dx)>4){_tlDragged=true;e.preventDefault();}outer.scrollLeft=sl-(e.pageX-outer.offsetLeft-sx)*1.2;});
 }
+
+// positionTimeline on window.onload — guarantees external CSS is applied
+// before any layout measurements are taken.
+window.addEventListener('load', function(){
+  positionTimeline();
+});
+
