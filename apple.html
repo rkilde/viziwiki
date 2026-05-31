@@ -13,35 +13,8 @@ extra_head: |
 
 <style>
 /* ── Hero ─────────────────────────────────────────── */
-.hero{background:#f4f4f6;border-bottom:2px solid rgba(0,0,0,.12);padding:88px 0 100px;overflow:hidden;position:relative;}
-.hero-wm{position:absolute;right:60px;top:20px;width:480px;height:480px;pointer-events:none;opacity:.18;}
-.hero-inner{max-width:1320px;margin:0 auto;padding:0 48px;align-items:start;}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(0,0,0,.16);border-radius:100px;background:#fff;padding:4px 14px;font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.3em;color:rgba(0,0,0,.4);margin-bottom:20px;}
-.eyebrow-dot{width:6px;height:6px;border-radius:50%;background:rgba(0,0,0,.25);}
-.hero-title{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:clamp(72px,8.5vw,112px);font-weight:700;letter-spacing:-0.02em;line-height:.95;color:#0a0a0a;margin-bottom:24px;}
-.hero-title .period{color:rgba(0,0,0,.28);}
-.hero-intro{font-size:17px;line-height:1.68;color:rgba(0,0,0,.62);max-width:520px;margin-bottom:32px;}
-.hero-intro strong{color:#0a0a0a;font-weight:600;}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid rgba(0,0,0,.1);border-radius:2px;overflow:hidden;background:rgba(0,0,0,.1);max-width:520px;}
-.stat-cell{background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.04);border-right:1px solid rgba(0,0,0,.08);padding:12px 14px;border-right:1px solid rgba(0,0,0,.08);}
-.stat-cell:last-child{border-right:none;}
-.stat-val{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:22px;font-weight:600;letter-spacing:-0.02em;color:#0a0a0a;display:block;margin-bottom:2px;}
-.stat-lbl{font-family:"JetBrains Mono",monospace;font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:rgba(0,0,0,.4);}
 /* Featured card */
-.feat-card{border:1px solid rgba(0,0,0,.15);border-radius:6px;background:#fff;padding:20px;box-shadow:0 1px 2px rgba(0,0,0,.05);}
-.feat-eyebrow{display:flex;align-items:center;justify-content:space-between;font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.25em;color:rgba(0,0,0,.48);margin-bottom:14px;}
-.feat-art{width:100%;aspect-ratio:4/5;background:linear-gradient(to bottom,#e5e5ea,#c7c7cc);border-radius:4px;margin-bottom:16px;}
-.feat-art svg{width:100%;height:100%;}
-.feat-name{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:28px;font-weight:600;letter-spacing:-0.02em;color:#0a0a0a;}
-.feat-years{font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.18em;color:rgba(0,0,0,.45);}
-.feat-blurb{font-size:13px;color:rgba(0,0,0,.65);margin:8px 0 14px;line-height:1.5;}
-.feat-cta{display:flex;align-items:center;justify-content:center;width:100%;padding:11px;background:#0071e3;color:#fff;border:none;border-radius:4px;font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;cursor:pointer;}
 /* Overview */
-.overview{background:#fff;padding:64px 0;}
-.ov-inner{max-width:1320px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:1.6fr 1fr;gap:52px;align-items:start;}
-.ov-text p{font-size:15px;color:rgba(0,0,0,.8);line-height:1.75;margin-bottom:18px;}
-.ov-text p strong{color:#0a0a0a;font-weight:600;}
-.ov-text p:last-child{margin-bottom:0;}
 /* See also */
 .sa-section{background:#fff;padding:56px 0;}
 .sa-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:24px;}
@@ -70,48 +43,17 @@ a{color:inherit;text-decoration:none;}
 .jb{font-family:"JetBrains Mono",ui-monospace,monospace;letter-spacing:.06em;}
 
 /* ── Layout ───────────────────────────────────────────────── */
-.inner{max-width:1320px;margin:0 auto;padding:0 40px;}
 section{border-bottom:1px solid rgba(0,0,0,.1);}
 
 /* ── Topbar ───────────────────────────────────────────────── */
-.topbar{background:#fff;border-bottom:1px solid rgba(0,0,0,.09);position:sticky;top:0;z-index:100;}
-.topbar-inner{max-width:1320px;margin:0 auto;display:flex;align-items:center;gap:20px;padding:11px 48px;}
-.logo-sq{width:30px;height:30px;border-radius:7px;background:#0a0a0a;display:flex;align-items:center;justify-content:center;}
-.logo-sq svg{width:16px;height:16px;}
-.logo-name{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:20px;font-weight:600;letter-spacing:-0.02em;color:#0a0a0a;}
-.logo-sub{font-family:"JetBrains Mono",monospace;font-size:8.5px;text-transform:uppercase;letter-spacing:.22em;color:rgba(0,0,0,.4);}
-.topbar-nav{margin-left:auto;display:flex;align-items:center;gap:18px;font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.12em;}
-.topbar-nav a{color:rgba(0,0,0,.45);transition:color .15s;}
-.topbar-nav a:hover,.topbar-nav .here{color:#0a0a0a;}
 
 /* ── Breadcrumb ───────────────────────────────────────────── */
-.bc{background:#fff;border-bottom:1px solid rgba(0,0,0,.09);}
-.bc-inner{max-width:1320px;margin:0 auto;display:flex;align-items:center;gap:6px;padding:7px 48px;font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.2em;color:rgba(0,0,0,.42);}
-.bc-inner a{color:rgba(0,0,0,.42);}
-.bc-inner a:hover{color:#0a0a0a;}
-.bc-sep{opacity:.35;}
-.bc-here{color:#0a0a0a;}
 
 /* ── Section primitives ───────────────────────────────────── */
-.sec-label{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:rgba(0,0,0,.52);margin-bottom:6px;display:flex;align-items:center;gap:6px;}
-.sec-label.light{color:rgba(255,255,255,.55);}
-.sec-h2{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;letter-spacing:-0.02em;font-size:clamp(26px,3.2vw,40px);font-weight:600;color:#0a0a0a;line-height:1.1;}
-.sec-h2.light{color:#fff;}
 
 /* ── Infobox ──────────────────────────────────────────────── */
-.infobox{border:1px solid rgba(0,0,0,.14);border-radius:3px;background:#fafafa;padding:20px;}
-.ib-label{font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.3em;color:rgba(0,0,0,.4);margin-bottom:6px;}
-.ib-name{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:20px;font-weight:600;letter-spacing:-0.02em;color:#0a0a0a;margin-bottom:16px;}
-.ib-table{width:100%;border-collapse:collapse;}
-.ib-table td{padding:5px 0;font-size:13px;vertical-align:top;}
-.ib-table td:first-child{font-family:"JetBrains Mono",monospace;font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:rgba(0,0,0,.44);padding-right:12px;white-space:nowrap;}
-.ib-table td:last-child{color:rgba(0,0,0,.82);}
-.ib-disc{display:inline-block;margin-top:12px;font-family:"JetBrains Mono",monospace;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#92400e;border:1px solid rgba(146,64,14,.3);padding:3px 8px;border-radius:3px;}
 
 /* ── Body text ────────────────────────────────────────────── */
-.body-text p{font-size:15px;color:rgba(0,0,0,.8);line-height:1.75;margin-bottom:18px;}
-.body-text p strong{color:#0a0a0a;font-weight:600;}
-.body-text p:last-child{margin-bottom:0;}
 
 /* ── Status classes (tiles / infoboxes) ───────────────────── */
 .tile-status-active{color:#15803d;}
@@ -148,7 +90,6 @@ section{border-bottom:1px solid rgba(0,0,0,.1);}
 .tl-desc{font-size:13px;color:rgba(0,0,0,.65);line-height:1.5;}
 
 /* ── Footer ───────────────────────────────────────────────── */
-.footer-bar{border-top:1px solid rgba(0,0,0,.1);background:#fafafa;padding:28px 48px;font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:rgba(0,0,0,.38);}
 
 /* ── Responsive ───────────────────────────────────────────── */
 @media(max-width:960px){
@@ -162,8 +103,6 @@ section{border-bottom:1px solid rgba(0,0,0,.1);}
 }
 
 .browse-section{background:#f4f4f6;border-bottom:1px solid rgba(0,0,0,.09);padding:64px 48px 72px;}
-.s-eye{font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.3em;color:rgba(0,0,0,.52);margin-bottom:6px;display:flex;align-items:center;gap:6px;}
-.s-title{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:clamp(26px,3.2vw,40px);font-weight:600;letter-spacing:-0.02em;color:#0a0a0a;line-height:1.1;}
 .s-sub{font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:rgba(0,0,0,.4);margin-top:6px;}
 /* Browse nav */
 .browse-nav{display:none;align-items:center;gap:10px;margin-bottom:20px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,.09);}
@@ -215,12 +154,9 @@ section{border-bottom:1px solid rgba(0,0,0,.1);}
 .sa-note{font-size:12px;color:rgba(0,0,0,.52);margin-top:1px;}
 .sa-arrow{margin-left:auto;color:rgba(0,0,0,.25);}
 /* Footer */
-.footer-bar{border-top:1px solid rgba(0,0,0,.1);background:#fafafa;padding:28px 48px;font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:rgba(0,0,0,.38);}
 /* Mobile browse panel */
 #mobileCarousel{display:none;}
 /* ═══ MOBILE ≤768px ═══════════════════════════════════════════════════ */
-
-
 
 @media(max-width:768px){
   .hero-inner,.ov-inner{grid-template-columns:1fr;}
@@ -282,7 +218,7 @@ section{border-bottom:1px solid rgba(0,0,0,.1);}
   .mini-tile.gen-hdr{background:#0a0a0a;border-color:transparent;grid-row:1/-1;width:104px;flex-shrink:0;justify-content:flex-start;gap:4px;margin-left:28px;}
   .mini-tile.gen-hdr .mini-name{color:#fff;font-size:10px;}
   .mini-tile.gen-hdr .mini-range{color:rgba(255,255,255,.42);}
-
+}
 
 /* Sub-carousel dark header card */
 .sub-header-card{
@@ -434,7 +370,7 @@ section{border-bottom:1px solid rgba(0,0,0,.1);}
 }
 
 /* Open-full-page button — hidden by default, shown when expanded */
-.is-open>.tile /* Flat bottom radius when drawer open */
+/* Flat bottom radius when drawer open */
 .is-open>.tile{border-radius:12px 12px 0 0;}
 /* Hide regular tile btns when open */
 .is-open .tile-btn-primary{display:none;}
@@ -510,7 +446,7 @@ window.WIKI_TOC = {
       <!-- eyebrow pill: ● Visual Wiki · Vol. [N] -->
       <div class="wiki-hero-eyebrow">
         <span class="wiki-hero-eyebrow-dot"></span>
-        Visual Wiki · Vol. 33
+        Visual Wiki · Vol. 3
       </div>
 
       <!-- H1 + accent period -->
@@ -575,7 +511,7 @@ window.WIKI_TOC = {
     <div class="wiki-overview">
 
       <div class="wiki-overview-prose">
-        <div class="wiki-section-eyebrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> Overview</div>
+        <div class="wiki-section-eyebrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg> Overview</div>
         <h2 class="wiki-section-title">A company built on the bitten apple, the bezier curve, and the relentless deletion of anything that doesn't ship.</h2>
         <div class="wiki-section-prose">
           <p><strong>Apple Inc.</strong> is an American technology company headquartered in Cupertino, California. It designs and sells consumer electronics, computer software, online services, and — since 2020 — its own silicon. The company is structured around vertical integration across hardware, software, and services, a model Steve Jobs called "the whole widget."</p>
@@ -605,7 +541,7 @@ window.WIKI_TOC = {
 <!-- BROWSE -->
 <section class="wiki-section" data-section="browse" data-tone="a">
   <div class="wiki-section-inner">
-    <div class="wiki-section-eyebrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" /></svg> Directory</div>
+    <div class="wiki-section-eyebrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-2.5a1 1 0 0 1-.8-.4l-.9-1.2A1 1 0 0 0 14 3h-2a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1Z"/><path d="M20 21a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-2.9a1 1 0 0 1-.88-.55l-.42-.85a1 1 0 0 0-.92-.6H13a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1Z"/><path d="M3 5a2 2 0 0 0 2 2h3"/><path d="M3 3v13a2 2 0 0 0 2 2h3"/></svg> Directory</div>
     <h2 class="wiki-section-title">Browse the wiki</h2>
     <p class="s-sub jb" id="browseSubtitle">8 product lines · 2 app categories · iOS tracked</p>
 
