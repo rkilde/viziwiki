@@ -183,3 +183,14 @@ body.wiki-taco-bell .wiki-hero-inner {
   position: relative;
   z-index: 2;
 }
+
+/* ── Frosted glass on the hero spotlight card ──────────────────────
+   Matches the .hm-hero-btn CTA buttons in the browse section exactly:
+   translucent white fill + 8px backdrop blur + matching hairline.
+   The card sits over the hero photo, so the blur frosts what's behind. */
+body.wiki-taco-bell .wiki-hero-spotlight {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
