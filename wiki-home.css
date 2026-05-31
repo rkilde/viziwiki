@@ -90,7 +90,11 @@
 
 /* ====================================================================
    3 · HERO INNER  — grid container
-   1500px max, py-16 (64px), px-12 (48px), gap-8 between columns.
+   1500px max, py-16 (64px), px-12 (48px) desktop / px-6 (24px) mobile,
+   gap-8 between columns.
+   Mobile horizontal padding matches the rest of the page sections
+   (.section-inner uses px-6) so the hero feels continuous with the
+   content below it instead of indenting more.
    ==================================================================== */
 .wiki-hero-inner {
   position: relative;          /* skin watermark icons absolute against this */
@@ -98,12 +102,13 @@
   display: grid;
   gap: 32px;
   max-width: 1500px;
-  padding: 64px 48px;
+  padding: 64px 24px;          /* mobile default — px-6 to match page rhythm */
 }
 
 @media (min-width: 768px) {
   .wiki-hero-inner {
     grid-template-columns: 1.5fr 1fr;
+    padding: 64px 48px;        /* desktop — wider air at large viewports */
   }
 }
 
@@ -260,6 +265,28 @@
 .wiki-hero-stat-label {
   margin-top: 2px;
   color: var(--hero-stat-label);
+}
+
+
+/* ── Mobile stat band scaling ──────────────────────────────────────
+   The canon (§7) keeps the stat grid at 4 columns at every viewport
+   size — never collapses to 2×2. On narrow screens that means each
+   cell gets very thin and 24px values like "$3.66T" or "Vol. 14"
+   start to truncate. Solution: shrink cell padding and font sizes
+   on mobile so the whole band scales down proportionally while the
+   container keeps its full available width and 4-column layout. */
+@media (max-width: 767px) {
+  .wiki-hero-stat {
+    padding: 8px 6px;
+    font-size: 8px;            /* affects the eyebrow-style label below */
+    letter-spacing: 0.04em;
+  }
+  .wiki-hero-stat-num {
+    font-size: 16px;
+  }
+  .wiki-hero-stat-label {
+    font-size: 8px;            /* explicit — don't inherit reduced value */
+  }
 }
 
 
