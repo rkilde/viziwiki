@@ -44,6 +44,22 @@ body.wiki-fallout {
   --section-tone-b:       #0e150d;               /* slightly tinted alt panel     */
   --section-tone-special: #050805;               /* dark band (used for factions) */
   --section-divider:      rgba(62,230,61,.22);   /* phosphor-green hairline       */
+
+  /* §15 section typography — color tokens (sizing is universal canon) */
+  --eyebrow-color:        #3ee63d;               /* phosphor — eyebrow text + icon */
+  --section-title-color:  #3ee63d;               /* phosphor — H2 titles           */
+  --prose-color:          #c6f5be;               /* phosphor-tinted ink            */
+  --prose-strong-color:   #3ee63d;               /* phosphor — emphasized text     */
+
+  /* §16 overview infobox tokens */
+  --overview-infobox-bg:            rgba(62,230,61,0.035);   /* surface */
+  --overview-infobox-border:        rgba(62,230,61,0.22);    /* line    */
+  --overview-infobox-header-bg:     transparent;             /* no separate header band */
+  --overview-infobox-label-color:   #ffb000;                 /* amber accent */
+  --overview-infobox-title-color:   #3ee63d;                 /* phosphor */
+  --overview-infobox-key-color:     #6f9e6a;                 /* dim phosphor — <dt> */
+  --overview-infobox-value-color:   #c6f5be;                 /* ink — <dd> */
+  --overview-infobox-divider:       rgba(62,230,61,.12);     /* soft phosphor */
 }
 
 
@@ -367,3 +383,18 @@ body.wiki-fallout .wiki-hero .hero-watermark {
 
 /* Lift canonical content above the watermark */
 body.wiki-fallout .wiki-hero-inner { position: relative; z-index: 2; }
+
+
+/* ====================================================================
+   §13 SECTION ORDER — Fallout sections
+   --------------------------------------------------------------------
+   The master canon only owns browse (10) and overview (20). Every
+   other section type on Fallout is per-wiki, so its order lives here.
+   Numbers chosen to match the desired top-to-bottom flow.
+   ==================================================================== */
+
+body.wiki-fallout .wiki-section[data-section="timeline"]   { order: 40; }
+body.wiki-fallout .wiki-section[data-section="factions"]   { order: 45; }
+body.wiki-fallout .wiki-section[data-section="chronology"] { order: 50; }
+body.wiki-fallout .wiki-section[data-section="numbers"]    { order: 60; }
+body.wiki-fallout .wiki-section[data-section="seealso"]    { order: 90; }

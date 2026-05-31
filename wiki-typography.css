@@ -1,0 +1,49 @@
+/* ════════════════════════════════════════════════════════════════════
+   WIKI TYPOGRAPHY CANON
+   ════════════════════════════════════════════════════════════════════
+   Wiki-website-wide canon. Applies to every page on the ViziWiki
+   product — wiki home pages AND detail pages alike. Loaded by adding
+   this stylesheet to every page's <head>:
+
+     <link rel="stylesheet" href="/wiki-typography.css">
+
+   Defines the three-font stack used across the entire product:
+
+     1. Fraunces       — display serif for titles, headlines
+     2. Spectral       — reading serif for body prose, paragraphs
+     3. JetBrains Mono — monospace for eyebrows, labels, UI accents
+
+   Font CHOICE is universal (these three, everywhere across the wiki
+   product). What each wiki's skin customizes is COLOR, decorative
+   effects (glow, gradients, animation), and weight/size adjustments
+   if it deviates from the base typography rules.
+
+   To change a font across the entire product, edit this file.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* Load the three font families from Google Fonts ------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&family=Spectral:wght@400;500;600&display=swap');
+
+/* Body default — every page starts with Spectral as the reading font */
+body {
+  font-family: 'Spectral', Georgia, serif;
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Display font — for titles, headlines, infobox titles ------------- */
+/* Fraunces is a variable serif; SOFT and WONK are axis settings.    */
+.font-display {
+  font-family: 'Fraunces', 'Spectral', Georgia, serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+  letter-spacing: -0.02em;
+}
+
+/* Monospace accent — for eyebrows, labels, key-names, UI accents --- */
+.font-mono-acc {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  letter-spacing: 0.05em;
+}

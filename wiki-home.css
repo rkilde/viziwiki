@@ -456,3 +456,209 @@
 .wiki-section {
   border-bottom: 1px solid var(--section-divider, transparent);
 }
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §13 — SECTION ORDERING MECHANISM
+   ════════════════════════════════════════════════════════════════════
+   The flex column wrapper that holds all sections on a wiki home page.
+   The hero implicitly has order: 0 (CSS default) and always renders
+   first — no rule needed for it.
+
+   The master canon owns only the section types every wiki shares:
+   currently browse and overview. Everything else (timeline, numbers,
+   factions, heat-ladder, see-also, footer, etc.) lives in each wiki's
+   skin file, slotted between or after the canon values.
+
+   To globally reorder canonical sections, edit the values below.
+   To swap browse and overview, swap their numbers — that's the entire
+   change. To add a 4th canonical section later (e.g. a universal
+   "footer"), add a new line here with an appropriate order value.
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-home {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Canon — universally-shared section types only.
+   Numbers spaced generously (10, 20) so wikis can slot their own
+   sections between (15) or after (30, 40, 50, ..., 90, etc.). */
+.wiki-section[data-section="browse"]   { order: 10; }   /* directory of entries */
+.wiki-section[data-section="overview"] { order: 20; }   /* introduction to the topic */
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §15 — SECTION TYPOGRAPHY SIZING
+   ════════════════════════════════════════════════════════════════════
+   Universal sizing + internal spacing for eyebrow / H2 title / prose
+   inside every wiki home page section. Font families come from §14
+   (typography canon). Colors come from each wiki's skin tokens.
+
+   Internal spacing uses margin-top on each element so spacing only
+   appears when there's something above it. First-child resets keep
+   the top of each section flush against the §11 64px padding.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── Eyebrow ────────────────────────────────────────────────────── */
+.wiki-section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--eyebrow-color, currentColor);
+}
+
+.wiki-section-eyebrow > i,
+.wiki-section-eyebrow > svg {
+  width: 12px;
+  height: 12px;
+  flex: none;
+}
+
+/* ── Section title (H2) ─────────────────────────────────────────── */
+.wiki-section-title {
+  font-family: 'Fraunces', 'Spectral', Georgia, serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+  font-size: 30px;            /* mobile default */
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-top: 8px;            /* spacing from eyebrow above */
+  color: var(--section-title-color, currentColor);
+}
+
+@media (min-width: 768px) {
+  .wiki-section-title {
+    font-size: 36px;
+  }
+}
+
+/* ── Prose ──────────────────────────────────────────────────────── */
+.wiki-section-prose {
+  margin-top: 24px;           /* spacing from title above */
+  max-width: 65ch;            /* readable line length */
+  color: var(--prose-color, currentColor);
+}
+
+.wiki-section-prose > p + p {
+  margin-top: 20px;           /* spacing between paragraphs */
+}
+
+.wiki-section-prose strong {
+  color: var(--prose-strong-color, currentColor);
+}
+
+/* ── First-child resets (when first element in section, no top margin) ── */
+.wiki-section-inner > *:first-child,
+.wiki-section-inner > *:first-child > *:first-child {
+  margin-top: 0;
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §16 — STANDARD SECTION: OVERVIEW
+   ════════════════════════════════════════════════════════════════════
+   Locked-shell template for the Overview section. Every wiki uses
+   the same structure: 2-column grid (1.6fr 1fr) with prose on the
+   left and an infobox aside on the right. Below 768px the grid
+   collapses to a single column with the infobox stacked below.
+
+   Tokens (skin-defined):
+     --overview-infobox-bg            : infobox container background
+     --overview-infobox-border        : infobox container border
+     --overview-infobox-header-bg     : header band background
+     --overview-infobox-label-color   : "Infobox" eyebrow color
+     --overview-infobox-title-color   : entity name color
+     --overview-infobox-key-color     : <dt> color
+     --overview-infobox-value-color   : <dd> color
+     --overview-infobox-divider       : row divider color
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── Grid wrapper ───────────────────────────────────────────────── */
+.wiki-overview {
+  display: grid;
+  gap: 48px;
+  grid-template-columns: 1fr;   /* mobile default: single column */
+}
+
+@media (min-width: 768px) {
+  .wiki-overview {
+    grid-template-columns: 1.6fr 1fr;
+  }
+}
+
+/* ── Infobox container ──────────────────────────────────────────── */
+.wiki-overview-infobox {
+  align-self: start;
+  background: var(--overview-infobox-bg, transparent);
+  border: 1px solid var(--overview-infobox-border, transparent);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* ── Infobox header band ────────────────────────────────────────── */
+.wiki-overview-infobox-header {
+  padding: 12px 16px;
+  background: var(--overview-infobox-header-bg, transparent);
+  border-bottom: 1px solid var(--overview-infobox-divider, transparent);
+}
+
+.wiki-overview-infobox-label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--overview-infobox-label-color, currentColor);
+}
+
+.wiki-overview-infobox-title {
+  font-family: 'Fraunces', 'Spectral', Georgia, serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-top: 2px;
+  color: var(--overview-infobox-title-color, currentColor);
+}
+
+/* ── Infobox data list (dl) with row dividers ───────────────────── */
+.wiki-overview-infobox-data {
+  margin: 0;
+  padding: 4px 16px;
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 12px 16px;
+}
+
+.wiki-overview-infobox-data > dt,
+.wiki-overview-infobox-data > dd {
+  padding: 8px 0;
+  margin: 0;
+  border-top: 1px solid var(--overview-infobox-divider, transparent);
+}
+
+/* Remove top border from first row (the row after the header band) */
+.wiki-overview-infobox-data > dt:first-of-type,
+.wiki-overview-infobox-data > dt:first-of-type + dd {
+  border-top: 0;
+}
+
+.wiki-overview-infobox-data > dt {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--overview-infobox-key-color, currentColor);
+}
+
+.wiki-overview-infobox-data > dd {
+  font-size: 14px;
+  color: var(--overview-infobox-value-color, currentColor);
+}

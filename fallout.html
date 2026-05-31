@@ -3,9 +3,9 @@ layout: default
 title: Fallout
 body_class: wiki-page wiki-fallout
 extra_head: |
+  <link rel="stylesheet" href="/wiki-typography.css">
   <link rel="stylesheet" href="/wiki-home.css">
   <link rel="stylesheet" href="/wiki-fallout-skin.css">
-  <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>tailwind.config={corePlugins:{preflight:false}}</script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
@@ -81,15 +81,12 @@ window.WIKI_TOC = {
   --line:rgba(62,230,61,0.22); --line-soft:rgba(62,230,61,0.12);
   --radius:5px;
   color:var(--ink);
-  font-family:'Spectral',Georgia,serif;
   -webkit-font-smoothing:antialiased;
 }
 /* dark body so overscroll / section gaps stay in-world */
 body.wiki-fallout{ background:#0b0f0a; }
 
-/* font stack */
-.fo-page .font-display{font-family:'Fraunces','Spectral',Georgia,serif;font-optical-sizing:auto;font-variation-settings:"SOFT" 0,"WONK" 0;letter-spacing:-0.02em;}
-.fo-page .font-mono-acc{font-family:'JetBrains Mono',ui-monospace,monospace;letter-spacing:.05em;}
+/* font stack — provided by /wiki-typography.css */
 
 /* phosphor glow */
 .fo-page .glow{text-shadow:0 0 10px rgba(62,230,61,.45),0 0 28px rgba(62,230,61,.18);}
@@ -134,7 +131,7 @@ body.wiki-fallout{ background:#0b0f0a; }
 .fo-page ::selection{background:rgba(62,230,61,.3);color:#eafff0;}
 </style>
 
-<div class="fo-page">
+<div class="fo-page wiki-home">
 
   <!-- moving phosphor sweep + faint green tint — styled by the skin -->
   <div class="crt-sweep" aria-hidden="true"></div>
@@ -218,13 +215,13 @@ body.wiki-fallout{ background:#0b0f0a; }
        BROWSE THE WIKI  (shared nav slot — Pip-Boy "RobCo directory":
        categories, entry counts, contents preview, drill-down.)
        ================================================================ -->
-  <section class="wiki-section" id="browse" data-tone="b">
+  <section class="wiki-section" id="browse" data-section="browse" data-tone="b">
     <div class="wiki-section-inner">
-      <div class="mb-2 flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.3em] text-phos">
-        <i data-lucide="folder-tree" class="h-3 w-3"></i> ▸ Directory
+      <div class="wiki-section-eyebrow">
+        <i data-lucide="folder-tree"></i> Directory
       </div>
       <div class="flex items-end justify-between">
-        <h2 class="font-display text-4xl font-semibold tracking-tight text-phos glow">Browse the wiki</h2>
+        <h2 class="wiki-section-title glow">Browse the wiki</h2>
         <span class="hidden font-mono-acc text-[10px] uppercase tracking-wider text-dim md:block">
           select a node to expand
         </span>
@@ -243,58 +240,54 @@ body.wiki-fallout{ background:#0b0f0a; }
   <!-- ================================================================
        OVERVIEW  (▸ eyebrow + prose + infobox)
        ================================================================ -->
-  <section class="wiki-section" id="overview" data-tone="a">
+  <section class="wiki-section" id="overview" data-section="overview" data-tone="a">
     <div class="wiki-section-inner">
-      <div class="grid gap-12 lg:grid-cols-[1.6fr_1fr]">
-      <div>
-        <div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.3em] text-phos">
-          <i data-lucide="book-open" class="h-3 w-3"></i> ▸ Overview
-        </div>
-        <h2 class="mt-2 font-display text-4xl font-semibold leading-tight tracking-tight text-phos glow">
-          War. War never changes — but the company that catalogues it does.
-        </h2>
-        <div class="mt-6 space-y-5 text-[15px] leading-relaxed text-ink">
-          <p>
-            <strong class="text-phos">Fallout</strong> is a post-apocalyptic role-playing series set in a
-            retro-futuristic United States — a timeline where transistor-era optimism and 1950s design never
-            ended, and atomic power went everywhere before the bombs fell on October 23, <strong class="text-phos">2077</strong>.
-          </p>
-          <p>
-            The series began in <strong class="text-phos">1997</strong> as an isometric RPG from Interplay's
-            Black Isle Studios, built around the S.P.E.C.I.A.L. character system. After <em>Fallout 2</em>,
-            the property passed to <strong class="text-phos">Bethesda Game Studios</strong>, which rebuilt it
-            in first person with <em>Fallout 3</em> (2008). <em>New Vegas</em> (2010), developed by Obsidian,
-            returned much of the original writing team to the Mojave.
-          </p>
-          <p>
-            This wiki indexes the canon from the wrist up — every game, faction, vault, location, character,
-            creature and piece of pre-war tech — and renders it the way a Pip-Boy would: green phosphor on a
-            dark screen, organised as a directory you can drill straight into.
-          </p>
-        </div>
-      </div>
+      <div class="wiki-overview">
 
-      <!-- Infobox -->
-      <aside class="self-start rounded-[5px] border border-line bg-surface p-5 scan">
-        <div class="font-mono-acc text-[10px] uppercase tracking-[0.3em] text-amber">Infobox</div>
-        <div class="mt-2 font-display text-2xl font-semibold leading-tight text-phos">The Fallout series</div>
-        <dl class="mt-4 grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
-          <dt class="font-mono-acc text-[10px] uppercase tracking-wider text-dim">Debut</dt>
-          <dd class="text-ink">Fallout — 1997</dd>
-          <dt class="font-mono-acc text-[10px] uppercase tracking-wider text-dim">Genre</dt>
-          <dd class="text-ink">Post-apocalyptic action RPG</dd>
-          <dt class="font-mono-acc text-[10px] uppercase tracking-wider text-dim">Setting</dt>
-          <dd class="text-ink">Retro-future post-nuclear USA</dd>
-          <dt class="font-mono-acc text-[10px] uppercase tracking-wider text-dim">Developers</dt>
-          <dd class="text-ink">Interplay · Bethesda · Obsidian</dd>
-          <dt class="font-mono-acc text-[10px] uppercase tracking-wider text-dim">System</dt>
-          <dd class="text-ink">S.P.E.C.I.A.L.</dd>
-          <dt class="font-mono-acc text-[10px] uppercase tracking-wider text-dim">Great War</dt>
-          <dd class="text-ink">October 23, 2077</dd>
-          <dt class="font-mono-acc text-[10px] uppercase tracking-wider text-dim">Adaptation</dt>
-          <dd class="text-ink">Fallout — TV series, 2024</dd>
-        </dl>
-      </aside>
+        <div class="wiki-overview-prose">
+          <div class="wiki-section-eyebrow">
+            <i data-lucide="book-open"></i> Overview
+          </div>
+          <h2 class="wiki-section-title glow">
+            War. War never changes — but the company that catalogues it does.
+          </h2>
+          <div class="wiki-section-prose">
+            <p>
+              <strong>Fallout</strong> is a post-apocalyptic role-playing series set in a
+              retro-futuristic United States — a timeline where transistor-era optimism and 1950s design never
+              ended, and atomic power went everywhere before the bombs fell on October 23, <strong>2077</strong>.
+            </p>
+            <p>
+              The series began in <strong>1997</strong> as an isometric RPG from Interplay's
+              Black Isle Studios, built around the S.P.E.C.I.A.L. character system. After <em>Fallout 2</em>,
+              the property passed to <strong>Bethesda Game Studios</strong>, which rebuilt it
+              in first person with <em>Fallout 3</em> (2008). <em>New Vegas</em> (2010), developed by Obsidian,
+              returned much of the original writing team to the Mojave.
+            </p>
+            <p>
+              This wiki indexes the canon from the wrist up — every game, faction, vault, location, character,
+              creature and piece of pre-war tech — and renders it the way a Pip-Boy would: green phosphor on a
+              dark screen, organised as a directory you can drill straight into.
+            </p>
+          </div>
+        </div>
+
+        <aside class="wiki-overview-infobox scan">
+          <div class="wiki-overview-infobox-header">
+            <div class="wiki-overview-infobox-label">Infobox</div>
+            <div class="wiki-overview-infobox-title">The Fallout series</div>
+          </div>
+          <dl class="wiki-overview-infobox-data">
+            <dt>Debut</dt>      <dd>Fallout — 1997</dd>
+            <dt>Genre</dt>      <dd>Post-apocalyptic action RPG</dd>
+            <dt>Setting</dt>    <dd>Retro-future post-nuclear USA</dd>
+            <dt>Developers</dt> <dd>Interplay · Bethesda · Obsidian</dd>
+            <dt>System</dt>     <dd>S.P.E.C.I.A.L.</dd>
+            <dt>Great War</dt>  <dd>October 23, 2077</dd>
+            <dt>Adaptation</dt> <dd>Fallout — TV series, 2024</dd>
+          </dl>
+        </aside>
+
       </div>
     </div>
   </section>
@@ -302,10 +295,12 @@ body.wiki-fallout{ background:#0b0f0a; }
   <!-- ================================================================
        TIMELINE  (horizontal spine with markers)
        ================================================================ -->
-  <section class="wiki-section" id="timeline" data-tone="b">
+  <section class="wiki-section" id="timeline" data-section="timeline" data-tone="b">
     <div class="wiki-section-inner">
-      <div class="font-mono-acc text-[10px] uppercase tracking-[0.3em] text-phos">▸ Release timeline</div>
-      <h2 class="mt-1 font-display text-4xl font-semibold tracking-tight text-phos glow">Seven entries in the log.</h2>
+      <div class="wiki-section-eyebrow">
+        <i data-lucide="clock"></i> Release timeline
+      </div>
+      <h2 class="wiki-section-title glow">Seven entries in the log.</h2>
 
       <div class="relative mt-12">
         <div class="absolute left-0 right-0 top-[27px] h-px bg-line"></div>
@@ -317,10 +312,12 @@ body.wiki-fallout{ background:#0b0f0a; }
   <!-- ================================================================
        FACTIONS BAND  (dark band — alternating section tone)
        ================================================================ -->
-  <section class="wiki-section" id="factions" data-tone="special">
+  <section class="wiki-section" id="factions" data-section="factions" data-tone="special">
     <div class="wiki-section-inner">
-      <div class="font-mono-acc text-[10px] uppercase tracking-[0.3em] text-amber">▸ Factions</div>
-      <h2 class="mt-1 font-display text-4xl font-semibold tracking-tight text-phos glow">Who's left fighting over the ash.</h2>
+      <div class="wiki-section-eyebrow">
+        <i data-lucide="shield"></i> Factions
+      </div>
+      <h2 class="wiki-section-title glow">Who's left fighting over the ash.</h2>
       <div class="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-[4px] bg-line md:grid-cols-2 lg:grid-cols-3" id="factionGrid"></div>
     </div>
   </section>
@@ -330,10 +327,12 @@ body.wiki-fallout{ background:#0b0f0a; }
        deliberately a different shape from the release timeline above
        so the two never read as duplicates)
        ================================================================ -->
-  <section class="wiki-section" id="chronology" data-tone="b">
+  <section class="wiki-section" id="chronology" data-section="chronology" data-tone="b">
     <div class="wiki-section-inner">
-      <div class="font-mono-acc text-[10px] uppercase tracking-[0.3em] text-amber">▸ In-universe</div>
-      <h2 class="mt-1 font-display text-4xl font-semibold tracking-tight text-phos glow">Chronology of the wasteland.</h2>
+      <div class="wiki-section-eyebrow">
+        <i data-lucide="history"></i> In-universe
+      </div>
+      <h2 class="wiki-section-title glow">Chronology of the wasteland.</h2>
       <p class="mt-2 max-w-2xl font-mono-acc text-[11px] uppercase tracking-wide text-dim">
         Not release dates — when each story actually happens inside the timeline.
       </p>
@@ -344,10 +343,12 @@ body.wiki-fallout{ background:#0b0f0a; }
   <!-- ================================================================
        BY THE NUMBERS  (dark large-text ledger)
        ================================================================ -->
-  <section class="wiki-section" id="numbers" data-tone="a">
+  <section class="wiki-section" id="numbers" data-section="numbers" data-tone="a">
     <div class="wiki-section-inner">
-      <div class="font-mono-acc text-[10px] uppercase tracking-[0.3em] text-phos">▸ Numbers</div>
-      <h2 class="mt-1 font-display text-4xl font-semibold tracking-tight text-phos glow">The wasteland, quantified.</h2>
+      <div class="wiki-section-eyebrow">
+        <i data-lucide="bar-chart-3"></i> Numbers
+      </div>
+      <h2 class="wiki-section-title glow">The wasteland, quantified.</h2>
       <dl class="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-[4px] bg-line md:grid-cols-2 lg:grid-cols-3" id="numberGrid"></dl>
     </div>
   </section>
@@ -355,10 +356,12 @@ body.wiki-fallout{ background:#0b0f0a; }
   <!-- ================================================================
        SEE ALSO
        ================================================================ -->
-  <section class="wiki-section" id="seealso" data-tone="b">
+  <section class="wiki-section" id="seealso" data-section="seealso" data-tone="b">
     <div class="wiki-section-inner">
-      <div class="font-mono-acc text-[10px] uppercase tracking-[0.3em] text-phos">▸ See also</div>
-      <h2 class="mt-1 font-display text-4xl font-semibold tracking-tight text-phos glow">Adjacent rabbit holes.</h2>
+      <div class="wiki-section-eyebrow">
+        <i data-lucide="link-2"></i> See also
+      </div>
+      <h2 class="wiki-section-title glow">Adjacent rabbit holes.</h2>
       <div class="mt-6 grid gap-3 md:grid-cols-3" id="seealsoGrid"></div>
     </div>
   </section>
