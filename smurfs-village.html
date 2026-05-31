@@ -3,6 +3,7 @@ layout: default
 title: "Smurfs' Village"
 body_class: wiki-page wiki-smurfs-village
 extra_head: |
+  <link rel="stylesheet" href="/wiki-typography.css">
   <link rel="stylesheet" href="/wiki-home.css">
   <link rel="stylesheet" href="/wiki-smurfs-village-skin.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,7 +47,7 @@ window.WIKI_TOC = {
 };
 </script>
 
-<div class="sv-page">
+<div class="sv-page wiki-home">
 
 <!-- refined line-icon set -->
 <svg class="svgset" aria-hidden="true">
@@ -109,7 +110,7 @@ window.WIKI_TOC = {
       <!-- eyebrow pill: ● Visual Wiki · Vol. [N] -->
       <div class="wiki-hero-eyebrow rise d1">
         <span class="wiki-hero-eyebrow-dot"></span>
-        Visual Wiki · Vol. 7
+        Visual Wiki · Vol. 4
       </div>
 
       <!-- H1 with accent period (color = same as eyebrow dot) -->
@@ -182,12 +183,12 @@ window.WIKI_TOC = {
 </section>
 
 <!-- ========== BROWSE THE WIKI ========== -->
-<section class="block" id="browse">
-  <div class="wrap">
+<section class="wiki-section" data-section="browse" data-tone="a" id="browse">
+  <div class="wiki-section-inner">
     <div class="sechead rise">
       <div class="l">
-        <div class="eyebrow"><span class="tri">&#9656;</span> Browse the wiki</div>
-        <h2>Find your way around the village</h2>
+        <div class="wiki-section-eyebrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-2.5a1 1 0 0 1-.8-.4l-.9-1.2A1 1 0 0 0 14 3h-2a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1Z"/><path d="M20 21a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-2.9a1 1 0 0 1-.88-.55l-.42-.85a1 1 0 0 0-.92-.6H13a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1Z"/><path d="M3 5a2 2 0 0 0 2 2h3"/><path d="M3 3v13a2 2 0 0 0 2 2h3"/></svg> Directory</div>
+        <h2 class="wiki-section-title">Browse the wiki</h2>
         <p class="sub">Pick a toadstool to fan open its shelf — every category drops down into its sub-shelves and entries. Filled pages glow; <span class="ghost-word">ghost stubs</span> are waiting to be written.</p>
       </div>
       <span class="count" id="browse-count">8 categories &middot; 612 entries</span>
@@ -207,15 +208,48 @@ window.WIKI_TOC = {
   </div>
 </section>
 
-<div class="div"></div>
+<!-- ========== OVERVIEW (canonical §16) ========== -->
+<section class="wiki-section" data-section="overview" data-tone="b" id="overview">
+  <div class="wiki-section-inner">
+    <div class="wiki-overview">
+
+      <div class="wiki-overview-prose">
+        <div class="wiki-section-eyebrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg> Overview</div>
+        <h2 class="wiki-section-title">A whole village raised one mushroom house at a time.</h2>
+        <div class="wiki-section-prose">
+          <p><strong>Smurfs' Village</strong> is a free-to-play casual town-building game in which the player rebuilds the Smurf village after Gargamel scatters it, starting from a single mushroom house and one plowed plot of land. Players harvest crops, construct huts, and collect resources, guided by Papa Smurf, while fan-favourite characters like Smurfette and Jokey bring their own perks.</p>
+          <p>It was originally developed by <strong>Beeline Interactive</strong>, a subsidiary of <strong>Capcom</strong>, and released on iOS in November 2010 before expanding to Android in 2011. One of the first titles to pioneer the freemium model on mobile, it briefly overtook <em>Angry Birds</em> as the top-grossing iPhone game and went on to rank number one in dozens of countries. The game is built on a time-based "produce and upgrade" loop that can be skipped with its premium currency, <strong>Smurfberries</strong>.</p>
+          <p>The Smurfs themselves are a property created by Belgian cartoonist <strong>Peyo</strong> in 1958. Today the game is maintained by <strong>PopReach</strong>, based in Toronto, and has been expanded across far-flung locations — forests, desert islands, mountaintops, and even space — through dozens of content updates.</p>
+        </div>
+      </div>
+
+      <aside class="wiki-overview-infobox">
+        <div class="wiki-overview-infobox-header">
+          <div class="wiki-overview-infobox-label">Infobox</div>
+          <div class="wiki-overview-infobox-title">Smurfs' Village</div>
+        </div>
+        <dl class="wiki-overview-infobox-data">
+          <dt>Released</dt><dd>Nov 4, 2010 (iOS)</dd>
+          <dt>Developer</dt><dd>Beeline Interactive (Capcom)</dd>
+          <dt>Maintainer</dt><dd>PopReach (Toronto)</dd>
+          <dt>Platforms</dt><dd>iOS · Android</dd>
+          <dt>Genre</dt><dd>Free-to-play town-builder</dd>
+          <dt>Currencies</dt><dd>Coins · Smurfberries</dd>
+          <dt>Franchise</dt><dd>The Smurfs (Peyo, 1958)</dd>
+        </dl>
+      </aside>
+
+    </div>
+  </div>
+</section>
 
 <!-- ========== HALL OF FAME ========== -->
-<section class="block" id="hall-of-fame">
-  <div class="wrap">
+<section class="wiki-section" data-section="hall-of-fame" data-tone="a" id="hall-of-fame">
+  <div class="wiki-section-inner">
     <div class="sechead rise">
       <div class="l">
-        <div class="eyebrow"><span class="tri">&#9656;</span> Hall of fame</div>
-        <h2>The most-visited entries</h2>
+        <div class="wiki-section-eyebrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg> Hall of fame</div>
+        <h2 class="wiki-section-title">The most-visited entries</h2>
         <p class="sub">Where readers keep landing — pulled from the wiki's own traffic.</p>
       </div>
       <span class="count">Top 9 &middot; this month</span>
@@ -237,15 +271,13 @@ window.WIKI_TOC = {
   </div>
 </section>
 
-<div class="div"></div>
-
 <!-- ========== TRENDING ========== -->
-<section class="block" id="trending">
-  <div class="wrap">
+<section class="wiki-section" data-section="trending" data-tone="b" id="trending">
+  <div class="wiki-section-inner">
     <div class="sechead rise">
       <div class="l">
-        <div class="eyebrow"><span class="tri">&#9656;</span> Trending now</div>
-        <h2>Fresh in the forest</h2>
+        <div class="wiki-section-eyebrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg> Trending now</div>
+        <h2 class="wiki-section-title">Fresh in the forest</h2>
         <p class="sub">Recent edits, live events, and pages picking up steam this week.</p>
       </div>
       <span class="count">Updated daily</span>
@@ -260,10 +292,10 @@ window.WIKI_TOC = {
 </section>
 
 <!-- ========== ABOUT / LORE ========== -->
-<section class="block" id="about" style="padding-top:0">
-  <div class="wrap">
+<section class="wiki-section" data-section="about" data-tone="special" id="about">
+  <div class="wiki-section-inner">
     <div class="lore rise">
-      <div class="eyebrow"><span class="tri">&#9656;</span> About the village</div>
+      <div class="wiki-section-eyebrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg> About the village</div>
       <blockquote>&ldquo;It begins with one mushroom home and a smurflightful plot of land.&rdquo;<cite>— the premise, more or less, of every save file since 2010</cite></blockquote>
       <svg class="house" viewBox="0 0 200 160" fill="none">
         <ellipse cx="100" cy="150" rx="76" ry="9" fill="#000" opacity=".14"/>

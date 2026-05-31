@@ -60,7 +60,6 @@ body.wiki-smurfs-village{
 }
 
 .sv-page a{color:inherit;text-decoration:none}
-.sv-page .wrap{max-width:var(--container);margin:0 auto;padding:0 28px}
 
 /* refined line-icon defaults */
 .sv-page .svgset{position:absolute;width:0;height:0;overflow:hidden}
@@ -178,18 +177,12 @@ body.wiki-smurfs-village {
 .sv-page .wiki-hero-desc em { font-style: italic; color: #3E6A4A; }
 
 /* ============================================================  SECTION SCAFFOLD  */
-.sv-page section.block{padding:66px 0}
 
 /* generic eyebrow (used by section headers, lore quote, browse tiles etc.) —
    the hero has its own .wiki-hero-eyebrow that does NOT inherit this. */
-.sv-page .eyebrow{font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--leaf-deep);display:flex;flex-wrap:wrap;align-items:center;gap:6px 9px}
-.sv-page .eyebrow .tri{color:var(--cap)}
-.sv-page .eyebrow .dot{width:3px;height:3px;border-radius:50%;background:var(--ink-faint)}
 
 .sv-page .sechead{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:34px}
 .sv-page .sechead .l{flex:1}
-.sv-page .sechead .eyebrow{margin-bottom:12px}
-.sv-page .sechead h2{font-family:var(--font-display);font-weight:600;font-size:clamp(30px,4vw,42px);letter-spacing:-.02em;line-height:1.04}
 .sv-page .sechead .sub{font-size:16px;color:var(--ink-soft);margin-top:10px;max-width:56ch}
 .sv-page .ghost-word{color:var(--berry-deep);font-style:italic}
 .sv-page .count{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);white-space:nowrap;border:1px solid var(--hair-strong);border-radius:999px;padding:8px 15px}
@@ -300,7 +293,6 @@ body.wiki-smurfs-village {
 
 .sv-page .foot-note{max-width:var(--container);margin:0 auto;padding:30px 28px 56px;font-family:var(--font-mono);font-size:10px;line-height:1.8;color:var(--ink-faint)}
 
-.sv-page .div{height:1px;background:var(--hair);max-width:var(--container);margin:0 auto}
 
 /* entrance */
 .sv-page .rise{opacity:0;transform:translateY(14px);animation:sv-rise .8s cubic-bezier(.2,.8,.2,1) forwards}
@@ -319,3 +311,74 @@ body.wiki-smurfs-village {
   .sv-page .tilegrid{grid-template-columns:1fr}
   .sv-page .shelves{grid-template-columns:1fr}
 }
+
+
+/* ====================================================================
+   SECTION CANON TOKENS  ·  §12 alternation + §15 typography + §16 infobox
+   --------------------------------------------------------------------
+   The page is now migrated to the canon (.wiki-section / data-tone /
+   data-section / .wiki-section-inner). wiki-home.css drives section
+   sizing, spacing, padding, ordering, and the Overview/infobox shell.
+   This block supplies the Smurfs COLOR layer those canon rules read.
+
+   Scoped under body.wiki-smurfs-village so it cannot leak.
+   ==================================================================== */
+body.wiki-smurfs-village {
+  /* §12 — panel alternation (warm field-guide tones) */
+  --section-tone-a:        #F1ECE0;          /* page — warm base   */
+  --section-tone-b:        #FAF6EC;          /* card — lighter cream */
+  --section-tone-special:  #23402F;          /* moss — the lore band */
+  --section-divider:       rgba(40,56,50,.13); /* hair — replaces manual .div */
+
+  /* §15 — section typography colors (sizing is universal canon) */
+  --eyebrow-color:         #3E6A4A;          /* leaf-deep          */
+  --section-title-color:   #283832;          /* ink                */
+  --prose-color:           #566159;          /* ink-soft           */
+  --prose-strong-color:    #283832;          /* ink                */
+
+  /* §16 — overview infobox tokens (parchment card, no colored header band) */
+  --overview-infobox-bg:            #FAF6EC;
+  --overview-infobox-border:        rgba(40,56,50,.18);
+  --overview-infobox-header-bg:     transparent;
+  --overview-infobox-label-color:   #8b948b;
+  --overview-infobox-title-color:   #283832;
+  --overview-infobox-key-color:     #8b948b;
+  --overview-infobox-value-color:   #283832;
+  --overview-infobox-divider:       rgba(40,56,50,.13);
+}
+
+/* Engage the display font on canon section + infobox titles
+   (the §15 canon already sets Fraunces; this just confirms Smurfs'
+   display family applies, matching the old .sechead h2 look). */
+body.wiki-smurfs-village .wiki-section-title,
+body.wiki-smurfs-village .wiki-overview-infobox-title {
+  font-family: var(--font-display);
+}
+
+/* The migrated section sub-paragraph kept Smurfs' .sub class for the
+   browse/fame/trend headers (per-wiki copy under the title). The canon
+   Overview uses .wiki-section-prose, which inherits §15 prose rules. */
+body.wiki-smurfs-village .wiki-section-prose {
+  font-family: var(--font-body);
+}
+
+/* Special (About/Lore) band — invert eyebrow/title to light on the moss
+   gradient. The .lore block carries its own green gradient background;
+   data-tone="special" paints the section panel moss behind it too. */
+body.wiki-smurfs-village .wiki-section[data-tone="special"] {
+  --eyebrow-color:        #BCCFC0;
+  --section-title-color:  #FAF6EC;
+  --prose-color:          rgba(250,246,236,.8);
+  --prose-strong-color:   #FAF6EC;
+}
+
+
+/* ====================================================================
+   SECTION ORDERING  ·  §13 — Smurfs' per-wiki section orders
+   --------------------------------------------------------------------
+   Canon owns browse=10, overview=20, seealso=90, footer=100.
+   Smurfs adds its own sections after the canon pair.
+   ==================================================================== */
+body.wiki-smurfs-village .wiki-section[data-section="hall-of-fame"] { order: 40; }
+body.wiki-smurfs-village .wiki-section[data-section="trending"]     { order: 50; }
+body.wiki-smurfs-village .wiki-section[data-section="about"]        { order: 60; }
