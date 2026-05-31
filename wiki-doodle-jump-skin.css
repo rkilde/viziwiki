@@ -1,0 +1,663 @@
+/* ====================================================================
+   ViziWiki · Doodle Jump skin  —  "Field Notebook"
+   --------------------------------------------------------------------
+   Per-wiki personality layer. Loads AFTER wiki-typography.css and
+   wiki-home.css so its tokens/overrides win. Everything is scoped under
+   .dj-page / body.wiki-doodle-jump so it can never leak to other wikis.
+
+   (Extracted from the page's former inline <style> block so the skin
+   lives in its own file, matching every other wiki.)
+   ==================================================================== */
+
+/* ====================================================================
+   Doodle Jump wiki — PAGE-LEVEL styling (Field Notebook).
+   Every rule is scoped under .dj-page, so nothing here reaches the
+   shared chrome. The wiki-bar/rail skin and the ruled-paper background
+   live in /wiki-doodle-jump-skin.css.
+
+   Tailwind's preflight is disabled in the front-matter (so it can't
+   touch the layout's chrome). The :where() block below restores the
+   handful of resets the content needs — at zero specificity, so every
+   Tailwind utility and component rule still wins.
+   ==================================================================== */
+
+/* preflight replacement — zero-specificity, .dj-page-scoped */
+:where(.dj-page *, .dj-page *::before, .dj-page *::after){ border-width:0; border-style:solid; }
+:where(.dj-page ul, .dj-page ol, .dj-page li){ list-style:none; }
+:where(.dj-page a){ color:inherit; text-decoration:none; }
+:where(.dj-page svg){ display:block; }
+:where(.dj-page img){ max-width:100%; height:auto; }
+:where(.dj-page button, .dj-page input){ font:inherit; color:inherit; background:transparent; appearance:none; -webkit-appearance:none; }
+:where(.dj-page button){ cursor:pointer; }
+:where(.dj-page input)::placeholder{ color:inherit; opacity:1; }
+
+/* personality tokens — scoped to .dj-page, NOT :root */
+.dj-page{
+  --paper:#fdfbf3;
+  --paper-edge:#f3eede;
+  --margin-red:#e34a3c;       /* the red margin line on notebook paper */
+  --rule:#9bc3e0;             /* ruled-line blue */
+  --rule-soft:rgba(155,195,224,0.45);
+  --ink:#1f2a3d;              /* dark blue ballpoint */
+  --ink-soft:#4a5a78;
+  --graphite:#3a3a3a;          /* pencil */
+  --graphite-soft:#6a6a6a;
+  --marker-green:#6bb84a;      /* Doodle Jump platform green */
+  --marker-green-dark:#4a8c30;
+  --spring:#e6453a;
+  --highlight:#fff37a;          /* highlighter yellow */
+  --radius:3px;
+  color:var(--ink);
+  font-family:'Spectral',Georgia,serif;
+  -webkit-font-smoothing:antialiased;
+}
+/* paper body so overscroll / section gaps stay in-world */
+body.wiki-doodle-jump{ background:var(--paper); }
+
+/* font stacks — ViziWiki system fonts, Doodle Jump skin applies weight/size/color */
+.dj-page .font-marker{font-family:'Fraunces',Georgia,serif;font-optical-sizing:auto;font-variation-settings:"SOFT" 40,"WONK" 0;letter-spacing:-0.02em;}
+.dj-page .font-hand{font-family:'Spectral',Georgia,serif;font-weight:500;}
+.dj-page .font-body{font-family:'Spectral',Georgia,serif;font-weight:400;}
+.dj-page .font-stamp{font-family:'JetBrains Mono',ui-monospace,monospace;letter-spacing:.08em;}
+
+/* ruled paper background — HERO only: visually distinct with full ruled-paper treatment */
+.dj-page .paper{
+  background:
+    linear-gradient(to right, transparent 0, transparent 78px, var(--margin-red) 78px, var(--margin-red) 79px, transparent 79px, transparent 100%),
+    repeating-linear-gradient(to bottom, transparent 0, transparent 31px, var(--rule-soft) 31px, var(--rule-soft) 32px),
+    var(--paper);
+}
+@media (max-width:768px){
+  .dj-page .paper{
+    background:
+      linear-gradient(to right, transparent 0, transparent 38px, var(--margin-red) 38px, var(--margin-red) 39px, transparent 39px, transparent 100%),
+      repeating-linear-gradient(to bottom, transparent 0, transparent 31px, var(--rule-soft) 31px, var(--rule-soft) 32px),
+      var(--paper);
+  }
+}
+
+/* alternating panel system:
+   .panel-base = clean cream (odd sections after hero)
+   .panel-alt  = slightly warmer/deeper (even sections after hero)
+   Hero always uses .paper — the ruled notebook background is its distinct identity. */
+/* paper grain — subtle fiber texture overlay */
+.dj-page .grain{position:relative;}
+.dj-page .grain::after{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;mix-blend-mode:multiply;
+  background-image:
+    radial-gradient(rgba(120,100,60,.06) 1px, transparent 1.2px),
+    radial-gradient(rgba(60,80,120,.05) 1px, transparent 1.4px);
+  background-size:3px 3px, 5px 5px;
+  background-position:0 0, 1px 1px;
+}
+
+/* ====================================================================
+   HERO  ·  CANONICAL WIKI-HOME SPEC OVERRIDES
+   The hero structure now comes from wiki-home.css. This block reflavors
+   it via --hero-* tokens plus the DJ-specific scaffolding (notebook
+   margin offset, gamepad watermark, doodler peek, sticky tilt).
+   ==================================================================== */
+body.wiki-doodle-jump{
+  /* divider that closes the hero section */
+  --hero-divider:               rgba(31,42,61,.20);
+
+  /* eyebrow pill */
+  --hero-eyebrow-bg:            rgba(255,255,255,.50);
+  --hero-eyebrow-border:        rgba(31,42,61,.35);
+  --hero-eyebrow-text:          #3a3a3a;          /* graphite */
+  --hero-eyebrow-dot:           #e6453a;          /* spring — same as period */
+
+  /* H1 + accent period */
+  --hero-title-color:           #1f2a3d;          /* ink */
+  --hero-title-accent:          #e6453a;          /* spring */
+
+  /* description */
+  --hero-desc-color:            #1f2a3d;
+
+  /* search bar */
+  --hero-search-bg:             rgba(255,255,255,.55);
+  --hero-search-border:         rgba(31,42,61,.25);
+  --hero-search-text:           #1f2a3d;
+  --hero-search-placeholder:    rgba(31,42,61,.5);
+  --hero-search-icon:           rgba(31,42,61,.55);
+
+  /* stat grid */
+  --hero-stat-wrapper-bg:       rgba(31,42,61,.12);
+  --hero-stat-wrapper-border:   rgba(31,42,61,.2);
+  --hero-stat-cell-bg:          rgba(253,251,243,.6);
+  --hero-stat-num:              #1f2a3d;
+  --hero-stat-label:            rgba(31,42,61,.65);
+
+  /* spotlight card (sticky-note treatment is layered on by .sticky) */
+  --hero-spotlight-bg:          #fffce8;
+  --hero-spotlight-border:      rgba(31,42,61,.18);
+  --hero-spotlight-eyebrow:     #e6453a;          /* spring */
+  --hero-spotlight-title:       #1f2a3d;
+  --hero-spotlight-desc:        #1f2a3d;
+
+  --hero-spotlight-tag-bg:      transparent;
+  --hero-spotlight-tag-border:  #3a3a3a;          /* graphite */
+  --hero-spotlight-tag-text:    #3a3a3a;
+
+  --hero-spotlight-cta-bg:      #6bb84a;          /* marker-green */
+  --hero-spotlight-cta-text:    #1f2a3d;
+  --hero-spotlight-cta-hover-bg:#fff37a;          /* highlight */
+}
+
+/* Hero left-padding offset for the red margin rule (notebook paper) */
+.dj-page .wiki-hero-inner{ padding-left:96px; }
+@media (min-width:768px){
+  .dj-page .wiki-hero-inner{ padding-left:112px; }
+}
+
+/* Gamepad ghost watermark, top right */
+.dj-page .wiki-hero .hero-watermark{
+  position:absolute; right:-3rem; top:-2.5rem;
+  width:440px; height:440px; transform:rotate(12deg);
+  color:rgba(31,42,61,.06); pointer-events:none; z-index:1;
+}
+
+/* Lift canonical content above the watermark */
+.dj-page .wiki-hero-inner{ position:relative; z-index:2; }
+
+/* H1 — DJ skin embellishments inside the canon title */
+.dj-page .wiki-hero-title{ font-family:'Fraunces',Georgia,serif; font-weight:700; line-height:.92; }
+.dj-page .wiki-hero-title .dj-title-jump{ color:#4a8c30; }   /* marker-green-dark */
+
+/* Doodler character peeking out from the spotlight card */
+.dj-page .wiki-hero-spotlight{ overflow:visible; }
+.dj-page .wiki-hero-spotlight .doodler{
+  position:absolute; top:-2rem; right:-.5rem; z-index:10; width:88px; height:88px;
+}
+@media (max-width:767px){
+  .dj-page .wiki-hero-spotlight .doodler{ display:none; }
+}
+
+/* Sticky-note CTA — preserve the box-shadow / border treatment */
+.dj-page .wiki-hero-spotlight-cta{
+  border:2px solid #1f2a3d;
+  box-shadow:2px 3px 0 #1f2a3d;
+  font-family:'Spectral',Georgia,serif; font-weight:500;
+  text-transform:uppercase; letter-spacing:.05em;
+}
+
+/* "torn paper" / sticky-note style cards — slightly rotated, soft shadow */
+.dj-page .sticky{
+  background:#fffce8;
+  box-shadow:
+    2px 3px 0 rgba(0,0,0,.04),
+    4px 6px 14px rgba(50,40,20,.08),
+    inset 0 0 30px rgba(255,243,122,.18);
+  border:1px solid rgba(0,0,0,.04);
+  position:relative;
+}
+.dj-page .sticky.tilt-l{ transform:rotate(-0.6deg); }
+.dj-page .sticky.tilt-r{ transform:rotate(0.7deg); }
+
+/* taped-down corner — little decorative tape strip */
+.dj-page .tape{
+  position:absolute;width:64px;height:18px;background:rgba(255,243,122,.55);
+  border:1px solid rgba(200,180,80,.35);
+  box-shadow:0 1px 2px rgba(0,0,0,.05);
+}
+
+/* dashed sketch border (for directory panels) */
+.dj-page .sketch{
+  border:2px dashed var(--graphite);
+  background:rgba(255,255,255,.55);
+  position:relative;
+}
+.dj-page .sketch:hover{ border-color:var(--marker-green-dark); background:rgba(255,255,255,.85); }
+
+/* marker underline for headings — slightly wobbly */
+.dj-page .marker-underline{position:relative;display:inline-block;}
+.dj-page .marker-underline::after{
+  content:"";position:absolute;left:-4px;right:-8px;bottom:-2px;height:14px;z-index:-1;
+  background:linear-gradient(180deg, transparent 0%, transparent 40%, var(--marker-green) 40%, var(--marker-green) 86%, transparent 86%);
+  opacity:.55;border-radius:40% 60% 50% 50% / 50%;
+  transform:rotate(-0.5deg);
+}
+.dj-page .marker-underline.spring::after{ background:linear-gradient(180deg, transparent 0%, transparent 40%, var(--spring) 40%, var(--spring) 86%, transparent 86%); opacity:.5;}
+
+/* hand-drawn arrow (CSS) used as accent */
+.dj-page .arrow{
+  display:inline-block;width:1em;height:1em;border-bottom:2px solid currentColor;border-right:2px solid currentColor;
+  transform:rotate(-45deg);position:relative;top:-2px;
+}
+
+/* DOODLER character — drawn in SVG inline, but this is its container */
+.dj-page .doodler{ transform-origin:center; }
+.dj-page .doodler-bob{ animation:dj-bob 2.6s ease-in-out infinite; }
+@keyframes dj-bob{ 0%,100%{transform:translateY(0) rotate(-2deg);} 50%{transform:translateY(-6px) rotate(2deg);} }
+
+/* PLATFORM motif — used as section divider */
+.dj-page .platform{
+  display:inline-block;height:18px;border-radius:9px;background:var(--marker-green);
+  box-shadow:0 3px 0 var(--marker-green-dark), inset 0 -3px 0 rgba(0,0,0,.08), 2px 5px 10px rgba(80,140,40,.18);
+  position:relative;
+}
+.dj-page .platform::before{
+  content:"";position:absolute;inset:3px 8px auto 8px;height:3px;border-radius:2px;background:rgba(255,255,255,.45);
+}
+
+/* spring icon — used as accent */
+.dj-page .spring-icon{
+  display:inline-block;width:14px;height:18px;background:
+    linear-gradient(180deg, var(--spring) 0%, var(--spring) 30%, transparent 30%, transparent 35%, var(--spring) 35%, var(--spring) 45%, transparent 45%, transparent 50%, var(--spring) 50%, var(--spring) 60%, transparent 60%, transparent 65%, var(--spring) 65%, var(--spring) 75%, #888 75%, #888 100%);
+  border-radius:3px;vertical-align:middle;
+}
+
+/* ===== three-column platform browser =====
+   Col A: category platforms (always visible, Doodler sits here)
+   Col B: entry platforms (drop in when category selected)
+   Col C: entry preview card (sticky-note, appears when entry selected)
+
+   Layout is a CSS grid: [col-a] [divider] [col-b] [divider] [col-c]
+   On mobile: stacks vertically, col-b + col-c appear below col-a. */
+
+.dj-page .col-browser{
+  display:grid;
+  grid-template-columns:260px 1px 1fr 1px 300px;
+  grid-template-rows:auto;
+  gap:0;
+  min-height:460px;
+  border:2px solid var(--ink);
+  border-radius:6px;
+  overflow:hidden;
+  box-shadow:4px 6px 0 rgba(0,0,0,.08);
+  background:#fffce8;
+}
+@media (max-width:900px){
+  .dj-page .col-browser{
+    grid-template-columns:1fr;
+    grid-template-rows:auto auto auto;
+  }
+  .dj-page .col-divider{ display:none; }
+}
+
+/* vertical ink-line dividers between columns */
+.dj-page .col-divider{
+  background:var(--ink);
+  opacity:.12;
+  width:1px;
+}
+
+/* column headers */
+.dj-page .col-header{
+  padding:10px 14px 8px;
+  border-bottom:2px dashed rgba(58,58,58,.2);
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--graphite-soft);
+  background:rgba(255,255,255,.4);
+  display:flex;align-items:center;gap:6px;
+}
+
+/* ── COLUMN A: category platforms ── */
+.dj-page .col-a{ position:relative; }
+.dj-page .col-a-inner{ padding:14px 12px; display:flex; flex-direction:column; gap:10px; }
+
+/* each category = a platform button */
+.dj-page .cat-plat{
+  position:relative;
+  display:flex;align-items:center;gap:12px;
+  padding:13px 16px 17px;
+  border-radius:12px;
+  background:var(--marker-green);
+  box-shadow:0 4px 0 var(--marker-green-dark), inset 0 -3px 0 rgba(0,0,0,.08);
+  cursor:pointer;border:none;text-align:left;width:100%;
+  transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.dj-page .cat-plat::before{ /* shine stripe */
+  content:"";position:absolute;left:10px;right:10px;top:4px;height:3px;
+  border-radius:2px;background:rgba(255,255,255,.45);
+}
+.dj-page .cat-plat:hover{
+  transform:translateY(-1px);
+  box-shadow:0 6px 0 var(--marker-green-dark), inset 0 -3px 0 rgba(0,0,0,.08), 0 8px 16px rgba(80,140,40,.2);
+}
+.dj-page .cat-plat.is-active{
+  background:#7ed05a;
+  box-shadow:0 4px 0 var(--marker-green-dark), inset 0 -3px 0 rgba(0,0,0,.08), 0 0 0 3px rgba(255,243,122,.7);
+  transform:translateY(-1px);
+}
+.dj-page .cat-plat-name{
+  font-family:'Fraunces',Georgia,serif;font-size:18px;font-weight:700;
+  color:#1a3a08;line-height:1;
+}
+.dj-page .cat-plat-count{
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;
+  color:#1a3a08;opacity:.65;margin-top:3px;
+}
+
+/* the Doodler — sits above the active platform, slides vertically */
+.dj-page .col-a-doodler{
+  position:absolute;right:-2px;width:44px;height:44px;
+  transition:top .4s cubic-bezier(.34,1.4,.64,1);
+  pointer-events:none;z-index:10;
+  filter:drop-shadow(1px 2px 3px rgba(0,0,0,.18));
+}
+.dj-page .col-a-doodler.hop{ animation:dj-col-hop .45s ease; }
+@keyframes dj-col-hop{
+  0%  { transform:translateY(0)   rotate(0deg); }
+  35% { transform:translateY(-18px) rotate(-10deg); }
+  100%{ transform:translateY(0)   rotate(0deg); }
+}
+
+/* ── COLUMN B: entry platforms ── */
+.dj-page .col-b{ background:rgba(255,255,255,.25); }
+.dj-page .col-b-inner{ padding:14px 12px; display:flex; flex-direction:column; gap:8px; }
+
+/* ghost state when no category selected */
+.dj-page .col-b-ghost{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  height:100%;min-height:200px;gap:8px;padding:24px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--graphite-soft);opacity:.5;
+  text-align:center;
+}
+
+/* entry = smaller, mixed-type platform button */
+.dj-page .entry-plat{
+  position:relative;display:flex;align-items:center;gap:10px;
+  padding:9px 14px 13px;border-radius:10px;
+  cursor:pointer;border:none;text-align:left;width:100%;
+  font-family:'Spectral',Georgia,serif;font-size:14px;color:var(--ink);
+  transition:transform .12s ease, filter .12s ease;
+  animation:dj-drop .3s ease both;
+}
+.dj-page .entry-plat::before{
+  content:"";position:absolute;left:7px;right:7px;top:3px;height:2px;
+  border-radius:1px;background:rgba(255,255,255,.5);
+}
+@keyframes dj-drop{
+  from{ opacity:0; transform:translateY(-8px); }
+  to  { opacity:1; transform:translateY(0); }
+}
+.dj-page .entry-plat:hover{ transform:translateY(-1px); filter:brightness(1.06); }
+.dj-page .entry-plat.is-active{
+  outline:2px solid rgba(255,243,122,.9);
+  outline-offset:1px;
+  filter:brightness(1.08);
+}
+
+/* platform type colours — same system as before */
+.dj-page .entry-plat.t-green{ background:var(--marker-green); box-shadow:0 3px 0 var(--marker-green-dark); color:#1a3a08; }
+.dj-page .entry-plat.t-blue { background:#6fb1e8; box-shadow:0 3px 0 #3d7eb5; color:#0e2540; }
+.dj-page .entry-plat.t-brown{ background:#c98a55; box-shadow:0 3px 0 #8a5a30; color:#2a1808; }
+
+/* "view all" spring platform at bottom of col-b */
+.dj-page .entry-plat.t-spring{
+  background:var(--marker-green);box-shadow:0 3px 0 var(--marker-green-dark);
+  color:#1a3a08;margin-top:6px;
+  font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:13px;
+}
+.dj-page .entry-plat.t-spring::after{
+  content:"";position:absolute;right:14px;top:-11px;width:10px;height:12px;
+  background:linear-gradient(180deg,
+    var(--spring) 0 20%, transparent 20% 28%,
+    var(--spring) 28% 42%, transparent 42% 50%,
+    var(--spring) 50% 64%, transparent 64% 72%,
+    var(--spring) 72% 86%, #888 86% 100%);
+  border-radius:2px;
+}
+
+/* ── COLUMN B: view-all banner + entry label ── */
+/* "view full page" banner — top of col B, dominant tier */
+.dj-page .col-b-viewall{
+  position:relative;display:flex;align-items:center;gap:10px;
+  padding:14px 16px;margin-bottom:14px;
+  background:var(--ink);border-radius:8px;
+  text-decoration:none;overflow:hidden;
+  animation:dj-drop .2s ease both;
+  transition:background .15s ease;
+}
+.dj-page .col-b-viewall:hover{ background:#2e3f5c; }
+.dj-page .col-b-viewall-eyebrow{
+  position:absolute;top:7px;left:16px;
+  font-family:'JetBrains Mono',monospace;font-size:8px;
+  letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.42);
+}
+.dj-page .col-b-viewall-title{
+  font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;
+  color:#fff;line-height:1;margin-top:14px;flex:1;
+  font-optical-sizing:auto;font-variation-settings:"SOFT" 30,"WONK" 0;
+  letter-spacing:-0.01em;
+}
+.dj-page .col-b-viewall-arrow{
+  font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:600;
+  color:var(--marker-green);flex-shrink:0;margin-top:14px;
+}
+.dj-page .col-b-viewall-spring{
+  position:absolute;right:44px;top:0;bottom:0;width:10px;
+  background:linear-gradient(180deg,
+    var(--spring) 0 18%, transparent 18% 26%,
+    var(--spring) 26% 40%, transparent 40% 48%,
+    var(--spring) 48% 62%, transparent 62% 70%,
+    var(--spring) 70% 84%, #555 84% 100%);
+  opacity:.45;border-radius:2px;
+}
+.dj-page .col-b-entry-label{
+  font-family:'JetBrains Mono',monospace;font-size:8px;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:var(--graphite-soft);margin-bottom:8px;
+  padding-bottom:6px;border-bottom:1px dashed rgba(58,58,58,.2);
+}
+
+/* ── COLUMN C: entry preview ── */
+.dj-page .col-c{ background:rgba(255,255,255,.18); }
+.dj-page .col-c-inner{ padding:18px 16px; height:100%; }
+
+/* ghost */
+.dj-page .col-c-ghost{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  height:100%;min-height:200px;gap:10px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--graphite-soft);opacity:.45;
+  text-align:center;
+}
+
+/* preview card — sticky note */
+.dj-page .preview-card{
+  background:#fffce8;
+  border:1px solid rgba(0,0,0,.06);
+  box-shadow:2px 3px 0 rgba(0,0,0,.04), 4px 8px 18px rgba(50,40,20,.1), inset 0 0 24px rgba(255,243,122,.15);
+  border-radius:2px;padding:20px;position:relative;
+  animation:dj-card-in .25s ease both;
+}
+.dj-page .preview-card .tape{
+  position:absolute;width:52px;height:15px;background:rgba(255,243,122,.6);
+  border:1px solid rgba(200,180,80,.35);top:-8px;left:24px;transform:rotate(-2deg);
+}
+@keyframes dj-card-in{
+  from{ opacity:0; transform:translateY(6px) rotate(1deg); }
+  to  { opacity:1; transform:translateY(0) rotate(0deg); }
+}
+
+/* hover lifts */
+.dj-page .lift{transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;}
+.dj-page .lift:hover{transform:translateY(-2px); box-shadow:3px 6px 0 rgba(0,0,0,.05), 6px 10px 22px rgba(80,140,40,.12);}
+
+/* staggered boot-in — "page being written" reveal */
+.dj-page .ink-in{opacity:0;transform:translateY(6px);animation:dj-inkin .6s ease forwards;}
+@keyframes dj-inkin{to{opacity:1;transform:translateY(0);}}
+
+/* highlighter swipe */
+.dj-page .hl{background:linear-gradient(180deg, transparent 0%, transparent 55%, var(--highlight) 55%, var(--highlight) 92%, transparent 92%);padding:0 .1em;}
+
+.dj-page ::selection{background:rgba(107,184,74,.35);color:var(--ink);}
+
+/* =====================================================================
+   MOBILE — specific layout adjustments (max-width: 768px)
+   ===================================================================== */
+@media (max-width:768px){
+
+  /* Hero: remove the left margin offset on mobile — no visible margin line */
+  .dj-page .paper{padding-left:0;}
+
+  /* Hero grid: single column, tighter padding */
+  .dj-page section#overview .relative.mx-auto{
+    padding-left:1.25rem;
+    padding-right:1.25rem;
+    padding-top:2.75rem;
+    padding-bottom:2.75rem;
+  }
+
+  /* Ghost icon: scale down so it doesn't overwhelm mobile */
+  .dj-page section#overview [data-lucide="gamepad-2"]{
+    width:260px !important;
+    height:260px !important;
+    right:-1.5rem !important;
+    top:-1.25rem !important;
+  }
+
+  /* Stat grid: 2×2 on mobile */
+  .dj-stat-grid-wrap{
+    grid-template-columns:repeat(2,1fr) !important;
+  }
+
+  /* Spotlight aside: full width, no absolute doodler offset needed */
+  .dj-page aside .doodler{ display:none !important; }
+
+  /* Browse section: adjust left indent for mobile */
+  .dj-page .dj-section-inner{
+    padding-left:1.25rem;
+    padding-right:1.25rem;
+  }
+
+  /* Overview/about section: adjust left indent for mobile */
+  .dj-page section#about .mx-auto{
+    padding-left:1.25rem;
+    padding-right:1.25rem;
+  }
+
+  /* Column browser: stack vertically on mobile */
+  .dj-page .col-browser{
+    grid-template-columns:1fr;
+    min-height:unset;
+  }
+
+  /* Section headings: tighter on mobile */
+  .dj-page h2.font-marker{
+    font-size:2.5rem;
+  }
+
+  /* Sticky/infobox: full width, no tilt on very small screens */
+  .dj-page .sticky.tilt-l,
+  .dj-page .sticky.tilt-r{
+    transform:none;
+  }
+
+  /* Col browser: reduce padding */
+  .dj-page .col-a-inner,
+  .dj-page .col-b-inner{
+    padding:10px 8px;
+    gap:8px;
+  }
+
+  /* Platform buttons: slightly smaller on mobile */
+  .dj-page .cat-plat{
+    padding:10px 12px 14px;
+  }
+  .dj-page .cat-plat-name{
+    font-size:15px;
+  }
+}
+
+/* Extra-small phones (max 420px) */
+@media (max-width:420px){
+  .dj-page h1.font-marker{
+    font-size:4.5rem; /* falls back from text-7xl if viewport is very narrow */
+  }
+  .dj-page .vh-stat-n, .dj-page .font-marker.text-xl{
+    font-size:1rem;
+  }
+}
+
+
+/* ====================================================================
+   SECTION CANON LAYER  ·  §12 tones · §13 order · §15 type · §16 infobox
+   --------------------------------------------------------------------
+   The page is migrated to the canon (.wiki-section / data-section /
+   data-tone / .wiki-section-inner / wiki-section-eyebrow|title|prose /
+   .wiki-overview shell). wiki-home.css now drives section structure,
+   spacing, the 1.6fr/1fr Overview grid, ordering, and the infobox shell.
+   This block supplies Doodle Jump's COLOR + the notebook deviations.
+
+   Scoped under body.wiki-doodle-jump so it can never leak.
+   ==================================================================== */
+body.wiki-doodle-jump {
+  /* §12 — panel alternation (was .panel-base / .panel-alt) */
+  --section-tone-a:        #f3ede0;   /* warm parchment — old .panel-alt  */
+  --section-tone-b:        #fdfbf3;   /* clean cream    — old .panel-base */
+  --section-divider:       #9bc3e0;   /* ruled-line blue — replaces the old border-b-2 */
+
+  /* §15 — section typography COLORS (sizing/spacing is universal canon) */
+  --eyebrow-color:         #4a8c30;   /* marker-green-dark */
+  --section-title-color:   #1f2a3d;   /* ink — dark blue ballpoint */
+  --prose-color:           #1f2a3d;   /* ink */
+  --prose-strong-color:    #4a8c30;   /* marker-green-dark (matches old inline strong) */
+
+  /* §16 — overview infobox tokens (the sticky-note styling is layered
+     on separately below via .dj-infobox-sticky; these set the canon
+     shell's text colors to match the field-notebook palette) */
+  --overview-infobox-bg:            transparent;  /* .sticky paints the bg */
+  --overview-infobox-border:        transparent;  /* .sticky paints the border */
+  --overview-infobox-header-bg:     transparent;
+  --overview-infobox-label-color:   #e6453a;      /* spring — old "Field card" color */
+  --overview-infobox-title-color:   #1f2a3d;      /* ink */
+  --overview-infobox-key-color:     #6b6b6b;      /* graphite-soft */
+  --overview-infobox-value-color:   #1f2a3d;      /* ink */
+  --overview-infobox-divider:       rgba(31,42,61,.10);
+}
+
+/* Section titles + infobox title keep Doodle Jump's marker (Fraunces)
+   display font — the §15 canon already specifies Fraunces, this just
+   confirms the skin family + the heavier marker weighting applies. */
+body.wiki-doodle-jump .wiki-section-title,
+body.wiki-doodle-jump .wiki-overview-infobox-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 40, "WONK" 0;
+  font-weight: 700;
+}
+
+/* The browse subtitle keeps the hand (Spectral) feel it had as font-hand. */
+body.wiki-doodle-jump .dj-prose-hand {
+  font-family: 'Spectral', Georgia, serif;
+  font-weight: 500;
+}
+
+/* Spring-red accent period on the Browse title (was an inline span). */
+body.wiki-doodle-jump .dj-title-dot { color: #e6453a; }
+
+/* ── Tier-3: notebook left margin offset ────────────────────────────
+   The signature red-margin-rule indent. Canon's .wiki-section-inner
+   provides the base max-width + 56px desktop padding; this ADDS the
+   extra left indent so content clears the notebook margin line.
+   Desktop only — the mobile override below resets it.            */
+@media (min-width: 768px) {
+  body.wiki-doodle-jump .dj-section-inner {
+    padding-left: 112px;
+  }
+}
+
+/* ── Tier-3: sticky-note infobox ────────────────────────────────────
+   The canon infobox shell is transparent (tokens above); this layers
+   the sticky-note look — cream fill, tape, tilt, soft shadow, padding —
+   on top of the canon .wiki-overview-infobox via .dj-infobox-sticky.
+   (.sticky / .tilt-l / .tape rules already exist above; this adds the
+   pad + radius the old inline p-6 / border-radius supplied.)      */
+body.wiki-doodle-jump .dj-infobox-sticky {
+  padding: 24px;
+  border-radius: 2px;
+}
+
+
+/* ====================================================================
+   SECTION ORDERING  ·  §13
+   --------------------------------------------------------------------
+   Canon owns browse=10, overview=20, seealso=90, footer=100.
+   Doodle Jump has only the canon browse + overview pair, so no extra
+   per-wiki orders are needed. (Listed for parity / future sections.)
+   ==================================================================== */
