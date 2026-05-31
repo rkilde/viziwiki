@@ -2349,6 +2349,67 @@
     .journey-half { padding: 20px 16px; }
     .journey-half h3 { font-size: 19px; }
   }
+
+  /* ── Breadcrumb bar ──────────────────────────────────────────────
+     Fixed directly below the main-bar (translateY(--main-h)). Same
+     frosted-white treatment as the main-bar. Hidden by default via
+     the [hidden] attribute; JS reveals it when data-category is set.
+     Excluded on pages with body.no-crumb-bar (e.g. homepage). ── */
+  .crumb-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    transform: translateY(var(--main-h, 56px));
+    height: 32px;
+    z-index: 99;
+    background: rgba(255,255,255,.96);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(10,14,26,.07);
+    display: flex;
+    align-items: center;
+  }
+  .crumb-bar[hidden]{ display: none; }
+  .crumb-inner {
+    max-width: 1500px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(10,14,26,.45);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .crumb-item {
+    color: rgba(10,14,26,.45);
+    text-decoration: none;
+    transition: color .15s;
+    flex-shrink: 0;
+  }
+  .crumb-item:hover { color: #0284c7; }
+  .crumb-sep {
+    color: rgba(10,14,26,.25);
+    flex-shrink: 0;
+    user-select: none;
+  }
+  .crumb-current {
+    color: rgba(10,14,26,.7);
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+  /* When crumb-bar is showing, push body content down an extra 32px */
+  body.has-crumb-bar {
+    padding-top: calc(var(--main-h, 56px) + 32px);
+  }
+  @media (min-width: 768px) {
+    .crumb-inner { padding: 0 72px; }
+  }
   {% endraw %}
   </style>
 
@@ -2411,6 +2472,17 @@
     <div class="main-account" title="Account">A</div>
   </div>
 </header>
+
+<!-- ── Breadcrumb bar — sits below the white main-bar on every page.
+     Category + key come from Jekyll front matter (breadcrumb_category /
+     breadcrumb_category_key). JS builds the crumb trail from those values.
+     Hidden on pages with no category set (e.g. the homepage). ── -->
+<nav class="crumb-bar" id="crumbBar"
+  data-title="{{ page.title | split: ' — ' | first | split: ' · ' | first }}"
+  aria-label="Breadcrumb"
+  hidden>
+  <div class="crumb-inner" id="crumbInner"></div>
+</nav>
 
 <div class="main-nav-panel" id="main-nav-panel">
   <a href="index.html"{% if page.nav_active == "home" %} class="active"{% endif %} data-nav="home">Home</a>
@@ -3726,6 +3798,55 @@ let lastY = window.scrollY;
   // Run after DOM is ready. The IIFE is already at end of body, so
   // window.WIKI_TOC (set inline within the page content above) is defined.
   populateWiki();
+
+  // ── Breadcrumb bar ─────────────────────────────────────────────────
+  // Derives category from the body's wiki-* class — the same class every
+  // wiki page and sub-page already carries via body_class front matter.
+  // No per-page configuration needed; adding a new wiki = one line here.
+  (function(){
+    var bar = document.getElementById('crumbBar');
+    if(!bar) return;
+
+    // ── Wiki → category lookup ──────────────────────────────────────
+    // Key: body class suffix (wiki-{key}). Value: [label, browse key].
+    // Add one line here for each new wiki; everything else is automatic.
+    var WIKI_CATS = {
+      'wiki-taco-bell':      ['Fast Food',    'food'],
+      'wiki-fallout':        ['Video Games',  'games'],
+      'wiki-apple':          ['Tech & Web',   'tech'],
+      'wiki-smurfs-village': ['Mobile Games', 'mobile'],
+      'wiki-doodle-jump':    ['Mobile Games', 'mobile'],
+    };
+
+    // Find which wiki class is on the body
+    var bodyClasses = Array.from(document.body.classList);
+    var match = null;
+    for(var cls in WIKI_CATS){
+      if(bodyClasses.indexOf(cls) !== -1){ match = WIKI_CATS[cls]; break; }
+    }
+    if(!match) return;   // not a wiki page — no breadcrumb
+
+    var cat    = match[0];
+    var catKey = match[1];
+
+    // Page name: use data-title if set (Jekyll bakes it in),
+    // otherwise fall back to the document title (strip the site suffix)
+    var title = bar.dataset.title ||
+      document.title.split('—')[0].split('·')[0].trim();
+
+    bar.removeAttribute('hidden');
+    document.body.classList.add('has-crumb-bar');
+
+    var inner = document.getElementById('crumbInner');
+    if(!inner) return;
+
+    var sep     = '<span class="crumb-sep" aria-hidden="true">›</span>';
+    var home    = '<a class="crumb-item" href="index.html">Home</a>';
+    var catLink = '<a class="crumb-item" href="browse.html?cat=' + catKey + '">' + cat + '</a>';
+    var current = title ? sep + '<span class="crumb-current">' + title + '</span>' : '';
+
+    inner.innerHTML = home + sep + catLink + current;
+  })();
 
 })();
   {% endraw %}
