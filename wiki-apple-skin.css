@@ -358,3 +358,67 @@ body.wiki-apple .wiki-hero-spotlight {
 body.wiki-apple .wiki-hero-spotlight-cta {
   border-radius: 12px;
 }
+
+
+/* ====================================================================
+   11 · SECTION CANON TOKENS  ·  §12 panel alternation + §15 typography
+   --------------------------------------------------------------------
+   With the page now migrated to the canon (.wiki-section / data-tone /
+   data-section), wiki-home.css drives section sizing, spacing, padding,
+   and the overview/infobox structure. This block supplies the Apple
+   COLOR layer those canon rules read from.
+
+   Apple's personality: achromatic, no visible dividers (tonal
+   alternation alone separates sections — see spec §12 example), with a
+   pure-black "special" band for the Numbers section.
+   ==================================================================== */
+body.wiki-apple {
+  /* §12 — background panel alternation */
+  --section-tone-a:        #ffffff;            /* pure white                 */
+  --section-tone-b:        #f4f4f6;            /* signature Cupertino grey    */
+  --section-tone-special:  #0a0a0a;            /* pure-black Numbers band      */
+  --section-divider:       transparent;        /* no visible line — tone does it */
+
+  /* §15 — section typography colors (sizing is universal canon) */
+  --eyebrow-color:         rgba(0,0,0,.52);    /* mono eyebrow + icon         */
+  --section-title-color:   #0a0a0a;            /* H2 near-black               */
+  --prose-color:           rgba(0,0,0,.80);    /* body paragraphs             */
+  --prose-strong-color:    #0a0a0a;            /* emphasized text — full black */
+
+  /* §16 — overview infobox tokens (achromatic, hairline-bordered) */
+  --overview-infobox-bg:            #fafafa;
+  --overview-infobox-border:        rgba(0,0,0,.14);
+  --overview-infobox-header-bg:     transparent;   /* no colored header band — Apple restraint */
+  --overview-infobox-label-color:   rgba(0,0,0,.4);
+  --overview-infobox-title-color:   #0a0a0a;
+  --overview-infobox-key-color:     rgba(0,0,0,.44);
+  --overview-infobox-value-color:   rgba(0,0,0,.82);
+  --overview-infobox-divider:       rgba(0,0,0,.10);
+}
+
+/* Engage the Fraunces SOFT axis on section + infobox titles (Apple house
+   style — matches the hero title treatment in §9). */
+body.wiki-apple .wiki-section-title,
+body.wiki-apple .wiki-overview-infobox-title {
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+}
+
+/* Special (Numbers) band — invert text to light on the black background.
+   Mirrors the Taco Bell special-tone pattern. */
+body.wiki-apple .wiki-section[data-tone="special"] {
+  --eyebrow-color:        rgba(255,255,255,.55);
+  --section-title-color:  #ffffff;
+  --prose-color:          rgba(255,255,255,.75);
+  --prose-strong-color:   #ffffff;
+  color: #ffffff;
+}
+
+
+/* ====================================================================
+   12 · SECTION ORDERING  ·  §13 — Apple's per-wiki section orders
+   --------------------------------------------------------------------
+   Canon (wiki-home.css) owns browse=10, overview=20, seealso=90, and
+   the page footer=100. Apple adds its own sections between/after.
+   ==================================================================== */
+body.wiki-apple .wiki-section[data-section="timeline"] { order: 40; }
+body.wiki-apple .wiki-section[data-section="numbers"]  { order: 50; }

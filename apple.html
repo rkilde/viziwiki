@@ -6,6 +6,7 @@ extra_head: |
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0;1,9..144,100..900,0..100,0&family=JetBrains+Mono:wght@400;500&family=Spectral:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/wiki-typography.css">
   <link rel="stylesheet" href="/wiki-home.css">
   <link rel="stylesheet" href="/wiki-apple-skin.css">
 ---
@@ -496,6 +497,7 @@ window.WIKI_TOC = {
      Skin owns: light page bg, giant Apple-logo ghost watermark,
                 all colors via --hero-* tokens.
      ================================================================ -->
+<div class="wiki-home">
 <section class="wiki-hero">
   <!-- skin-owned ghost watermark: the Apple silhouette -->
   <div class="hero-watermark" aria-hidden="true">
@@ -568,68 +570,75 @@ window.WIKI_TOC = {
     </aside>
   </div>
 </section>
-<section class="overview">
-  <div class="ov-inner">
-    <div class="ov-text">
-      <div class="sec-label jb"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> Overview</div>
-      <h2 class="sec-h2 fr" style="margin-bottom:24px;">A company built on the bitten apple, the bezier curve, and the relentless deletion of anything that doesn't ship.</h2>
-      <p><strong>Apple Inc.</strong> is an American technology company headquartered in Cupertino, California. It designs and sells consumer electronics, computer software, online services, and — since 2020 — its own silicon. The company is structured around vertical integration across hardware, software, and services, a model Steve Jobs called "the whole widget."</p>
-      <p>Apple's history splits cleanly into five eras. The <strong>founding period</strong> (1976–1985) produced the Apple I, II, and the original 1984 Macintosh. The <strong>wilderness years</strong> (1985–1997) saw three CEOs and a billion-dollar loss. The <strong>restoration</strong> (1997–2007) brought the iMac, OS X, and the iPod. The <strong>iPhone era</strong> (2007–2011) reshaped consumer electronics globally. The <strong>Cook era</strong> (2011–present) made Apple the first company to cross $1T, $2T, and $3T in market capitalisation.</p>
+<section class="wiki-section" data-section="overview" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="wiki-overview">
+
+      <div class="wiki-overview-prose">
+        <div class="wiki-section-eyebrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> Overview</div>
+        <h2 class="wiki-section-title">A company built on the bitten apple, the bezier curve, and the relentless deletion of anything that doesn't ship.</h2>
+        <div class="wiki-section-prose">
+          <p><strong>Apple Inc.</strong> is an American technology company headquartered in Cupertino, California. It designs and sells consumer electronics, computer software, online services, and — since 2020 — its own silicon. The company is structured around vertical integration across hardware, software, and services, a model Steve Jobs called "the whole widget."</p>
+          <p>Apple's history splits cleanly into five eras. The <strong>founding period</strong> (1976–1985) produced the Apple I, II, and the original 1984 Macintosh. The <strong>wilderness years</strong> (1985–1997) saw three CEOs and a billion-dollar loss. The <strong>restoration</strong> (1997–2007) brought the iMac, OS X, and the iPod. The <strong>iPhone era</strong> (2007–2011) reshaped consumer electronics globally. The <strong>Cook era</strong> (2011–present) made Apple the first company to cross $1T, $2T, and $3T in market capitalisation.</p>
+        </div>
+      </div>
+
+      <aside class="wiki-overview-infobox">
+        <div class="wiki-overview-infobox-header">
+          <div class="wiki-overview-infobox-label">Infobox</div>
+          <div class="wiki-overview-infobox-title">Apple Inc.</div>
+        </div>
+        <dl class="wiki-overview-infobox-data">
+          <dt>Founded</dt><dd>April 1, 1976</dd>
+          <dt>Founders</dt><dd>Jobs · Wozniak · Wayne</dd>
+          <dt>HQ</dt><dd>1 Apple Park Way, Cupertino</dd>
+          <dt>CEO</dt><dd>Tim Cook (Aug 2011 –)</dd>
+          <dt>Ticker</dt><dd>NASDAQ: AAPL</dd>
+          <dt>Revenue</dt><dd>$391.0B (FY24)</dd>
+          <dt>Employees</dt><dd>164,000</dd>
+        </dl>
+      </aside>
+
     </div>
-    <aside class="infobox">
-      <div class="ib-label jb">Infobox</div>
-      <div class="ib-name fr">Apple Inc.</div>
-      <table class="ib-table">
-        <tr><td>Founded</td><td>April 1, 1976</td></tr>
-        <tr><td>Founders</td><td>Jobs · Wozniak · Wayne</td></tr>
-        <tr><td>HQ</td><td>1 Apple Park Way, Cupertino</td></tr>
-        <tr><td>CEO</td><td>Tim Cook (Aug 2011 –)</td></tr>
-        <tr><td>Ticker</td><td>NASDAQ: AAPL</td></tr>
-        <tr><td>Revenue</td><td>$391.0B (FY24)</td></tr>
-        <tr><td>Employees</td><td>164,000</td></tr>
-      </table>
-    </aside>
   </div>
 </section>
 <!-- BROWSE -->
-<section class="browse-section">
-  <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:24px;">
-    <div>
-      <div class="s-eye jb"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:4px;"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" /></svg>Directory</div>
-      <h2 class="s-title fr">Browse the wiki.</h2>
-      <p class="s-sub jb" id="browseSubtitle">8 product lines · 2 app categories · iOS tracked</p>
-    </div>
-  </div>
-  <!-- Mobile carousel panel -->
+<section class="wiki-section" data-section="browse" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" /></svg> Directory</div>
+    <h2 class="wiki-section-title">Browse the wiki</h2>
+    <p class="s-sub jb" id="browseSubtitle">8 product lines · 2 app categories · iOS tracked</p>
 
-  <!-- Browse nav (desktop drill-in) -->
-  <div class="browse-nav" id="browseNav">
-    <button class="browse-back" id="browseBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg>Back</button>
-    <div class="browse-crumb" id="browseCrumb"></div>
+    <!-- Browse internal content — per-wiki (§17 not yet canonized). Apple's drill-in TREE grid. -->
+    <!-- Browse nav (desktop drill-in) -->
+    <div class="browse-nav" id="browseNav">
+      <button class="browse-back" id="browseBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg>Back</button>
+      <div class="browse-crumb" id="browseCrumb"></div>
+    </div>
+    <div class="browse-grid" id="browseGrid"></div>
   </div>
-  <div class="browse-grid" id="browseGrid"></div>
 </section>
 <!-- TIMELINE -->
-<section style="background:#fff;padding:64px 0;border-bottom:1px solid rgba(0,0,0,.1);">
-  <div class="inner">
-    <div class="sec-label jb">▸ Timeline</div>
-    <h2 class="sec-h2 fr" style="margin-bottom:28px;">Eight moments that changed everything.</h2>
+<section class="wiki-section" data-section="timeline" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg> Timeline</div>
+    <h2 class="wiki-section-title">Eight moments that changed everything.</h2>
     <div class="tl-grid" id="tlGrid"></div>
   </div>
 </section>
 <!-- NUMBERS -->
-<section class="num-dark">
-  <div class="inner">
-    <div class="sec-label light jb">▸ Numbers</div>
-    <h2 class="sec-h2 light fr" style="margin-bottom:0;">Apple, on a single page.</h2>
+<section class="wiki-section" data-section="numbers" data-tone="special">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg> Numbers</div>
+    <h2 class="wiki-section-title">Apple, on a single page.</h2>
     <div class="num-grid" id="numGrid"></div>
   </div>
 </section>
 <!-- SEE ALSO -->
-<section class="sa-section">
-  <div class="inner">
-    <div class="sec-label jb">▸ See also</div>
-    <h2 class="sec-h2 fr">Adjacent rabbit holes.</h2>
+<section class="wiki-section" data-section="seealso" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> See also</div>
+    <h2 class="wiki-section-title">Adjacent rabbit holes.</h2>
     <div class="sa-grid">
       <div class="sa-card"><div class="sa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div><div><div class="sa-name fr">iPod</div><div class="sa-note">The 2001 device that turned Apple into a music company.</div></div><span class="sa-arrow">↗</span></div>
       <div class="sa-card"><div class="sa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></div><div><div class="sa-name fr">iPhone</div><div class="sa-note">The handheld that ate every other handheld.</div></div><span class="sa-arrow">↗</span></div>
@@ -637,6 +646,11 @@ window.WIKI_TOC = {
     </div>
   </div>
 </section>
+
+<footer class="border-t border-foreground/15 bg-card">
+  <div class="mx-auto max-w-[1500px] px-6 py-6 font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">ViziWiki · Apple Visual Wiki · 1,142 entries · Updated daily</div>
+</footer>
+</div>
 
 <script>
 const ICO={'monitor':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2" /> <line x1="8" x2="16" y1="21" y2="21" /> <line x1="12" x2="12" y1="17" y2="21" /></svg>','music':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13" /> <circle cx="6" cy="18" r="3" /> <circle cx="18" cy="16" r="3" /></svg>','phone':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2" /> <path d="M12 18h.01" /></svg>','hd':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><line x1="22" x2="2" y1="12" y2="12" /> <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" /> <line x1="6" x2="6.01" y1="16" y2="16" /> <line x1="10" x2="10.01" y1="16" y2="16" /></svg>','watch':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="6" /> <polyline points="12 10 12 12 13 13" /> <path d="m16.13 7.66-.81-4.05a2 2 0 0 0-2-1.61h-2.68a2 2 0 0 0-2 1.61l-.78 4.05" /> <path d="m7.88 16.36.8 4a2 2 0 0 0 2 1.61h2.72a2 2 0 0 0 2-1.61l.81-4.05" /></svg>','hp':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3" /></svg>','cpu':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="16" x="4" y="4" rx="2" /> <rect width="6" height="6" x="9" y="9" rx="1" /> <path d="M15 2v2" /> <path d="M15 20v2" /> <path d="M2 15h2" /> <path d="M2 9h2" /> <path d="M20 15h2" /> <path d="M20 9h2" /> <path d="M9 2v2" /> <path d="M9 20v2" /></svg>','grid4':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1" /> <rect width="7" height="7" x="14" y="3" rx="1" /> <rect width="7" height="7" x="14" y="14" rx="1" /> <rect width="7" height="7" x="3" y="14" rx="1" /></svg>','appwin':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" /> <path d="M10 4v4" /> <path d="M2 8h20" /> <path d="M6 4v4" /></svg>'};
