@@ -616,13 +616,13 @@
   overflow: hidden;
 }
 
-/* On desktop (side-by-side grid), drop the infobox so its top edge lines
-   up with the H2 title rather than the eyebrow above it. Offset = eyebrow
-   row height (12px icon) + the title's 0 margin-top = 12px. On mobile the
-   infobox stacks below the prose, so this offset must NOT apply there. */
+/* On desktop (side-by-side grid), drop the infobox down so it sits lower
+   in its column. ~1 inch ≈ 96px on a standard monitor, plus the original
+   12px eyebrow offset = 108px. On mobile the infobox stacks below the
+   prose, so this offset must NOT apply there. */
 @media (min-width: 768px) {
   .wiki-overview-infobox {
-    margin-top: 12px;
+    margin-top: 108px;
   }
 }
 
