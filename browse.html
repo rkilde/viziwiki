@@ -116,55 +116,118 @@ body_class: "no-facet-chrome"
     }
   }
 </style>
-<section class="border-b border-foreground/15 bg-secondary/40">
-  <div class="mx-auto flex max-w-[1500px] flex-col gap-2 px-6 py-8">
-    <div class="font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground">▸ Index · Browse all wikis</div>
-    <h1 class="font-display text-5xl font-semibold tracking-tight">Browse<span class="text-hp">.</span></h1>
-    <p class="max-w-2xl text-sm text-muted-foreground">Every fandom, every encyclopedia. Pick a vibe below or scroll the full index.</p>
-    <div class="mt-4 flex w-full max-w-2xl items-center overflow-hidden rounded-sm border border-foreground/30 bg-background">
-      <input id="q" type="text" placeholder="Search wikis…" class="flex-1 bg-transparent px-4 py-2 text-sm outline-none" />
-      <span id="hits" class="border-l border-foreground/30 bg-secondary px-4 py-2 font-mono-acc text-[11px] uppercase">0 hits</span>
+<style>
+  /* ════════ Index-style cover tiles, ported into Browse ════════
+     5 built wikis get bespoke covers; the rest get themed genre covers
+     (using browse's own .grad-* gradients) with an "Indexed" badge.
+     Layout: responsive vertical-scroll grid — columns adapt to width on
+     web, fixed 3-across on mobile. ════════════════════════════════ */
+  .cover-grid{
+    display:grid; gap:14px;
+    grid-template-columns:repeat(4, 1fr);   /* index: fixed 4 across on desktop */
+  }
+  @media (max-width:1000px){
+    .cover-grid{ grid-template-columns:repeat(3, 1fr); }   /* index: 3 across */
+  }
+  @media (max-width:640px){
+    .cover-grid{ grid-template-columns:repeat(2, 1fr); gap:10px; }   /* browse: 2 across on mobile */
+  }
+
+  .cover{
+    position:relative; display:block; aspect-ratio:4/5; border-radius:9px; overflow:hidden;
+    border:1px solid rgba(26,23,20,.22); isolation:isolate;
+    container-type:inline-size;
+    transition:transform .28s cubic-bezier(.22,.61,.36,1), box-shadow .28s cubic-bezier(.22,.61,.36,1);
+    will-change:transform; animation:cover-in .5s cubic-bezier(.22,.61,.36,1) both;
+  }
+  .cover:hover{ transform:translateY(-6px); box-shadow:0 16px 34px -12px rgba(26,23,20,.42); }
+  @keyframes cover-in{ from{ opacity:0; transform:translateY(16px);} to{ opacity:1; transform:translateY(0);} }
+
+  .cover .c-genre{ position:absolute; top:12px; left:13px; z-index:6; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:8px; text-transform:uppercase; letter-spacing:.18em; }
+  .cover .c-vol{ position:absolute; top:12px; right:13px; z-index:6; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:8px; letter-spacing:.1em; opacity:.7; }
+  .cover .c-foot{ position:absolute; left:13px; right:13px; bottom:13px; z-index:6; }
+  .cover .c-title{ font-family:'Fraunces','Spectral',Georgia,serif; font-weight:700; font-size:21px; line-height:1.02; letter-spacing:-.02em; }
+  .cover .c-blurb{ font-family:'JetBrains Mono',ui-monospace,monospace; font-size:8px; text-transform:uppercase; letter-spacing:.08em; margin-top:6px; opacity:.85; }
+
+  /* ═══ bespoke skins (5 built wikis) ═══ */
+  .c-tacobell{ background:linear-gradient(150deg,#c026d3 0%,#7e22ce 52%,#1e1b4b 100%); color:#fff; }
+  .c-tacobell .halftone{ position:absolute; inset:0; z-index:1; mix-blend-mode:overlay; opacity:.5; background-image:radial-gradient(rgba(255,255,255,.9) 1px,transparent 1.2px); background-size:8px 8px; transition:background-size .4s ease; }
+  .c-tacobell:hover .halftone{ background-size:11px 11px; }
+  .c-tacobell .bell{ position:absolute; right:-20px; bottom:-16px; z-index:2; width:130px; height:130px; opacity:.22; transform:rotate(-8deg); transition:transform .4s ease,opacity .4s ease; }
+  .c-tacobell:hover .bell{ transform:rotate(0) scale(1.05); opacity:.32; }
+  .c-tacobell .c-genre{ color:rgba(255,255,255,.8); }
+
+  .c-fallout{ background:#0b0f0a; color:#3ee63d; }
+  .c-fallout .scan{ position:absolute; inset:0; z-index:3; pointer-events:none; opacity:.5; background:repeating-linear-gradient(180deg,rgba(62,230,61,.06) 0 1px,transparent 1px 3px); }
+  .c-fallout .glow{ position:absolute; inset:0; z-index:1; background:radial-gradient(ellipse at 50% 120%,rgba(62,230,61,.25),transparent 60%); transition:background .35s; }
+  .c-fallout:hover .glow{ background:radial-gradient(ellipse at 50% 120%,rgba(62,230,61,.42),transparent 60%); }
+  .c-fallout .term{ position:absolute; left:13px; top:40px; z-index:2; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:7.5px; line-height:1.85; color:rgba(62,230,61,.5); letter-spacing:.04em; text-shadow:0 0 8px rgba(62,230,61,.4); }
+  .c-fallout .c-title{ font-family:'JetBrains Mono',ui-monospace,monospace; font-weight:600; font-size:19px; letter-spacing:.02em; text-shadow:0 0 12px rgba(62,230,61,.7); }
+  .c-fallout .c-genre{ color:#ffb000; } .c-fallout .c-vol{ color:#3ee63d; } .c-fallout .c-blurb{ color:#6f9e6a; }
+  .c-fallout .cursor{ display:inline-block; width:7px; height:13px; background:#3ee63d; margin-left:3px; vertical-align:-2px; animation:blink 1.1s steps(1) infinite; }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  .c-apple{ background:#fff; color:#0a0a0a; border-color:rgba(0,0,0,.14); }
+  .c-apple .c-title{ font-weight:600; font-variation-settings:"SOFT" 0; }
+  .c-apple .c-genre{ color:rgba(0,0,0,.4); } .c-apple .c-vol{ color:rgba(0,0,0,.4); } .c-apple .c-blurb{ color:rgba(0,0,0,.5); }
+  .c-apple .logo{ position:absolute; top:50%; left:50%; transform:translate(-50%,-60%); z-index:2; width:64px; height:64px; color:#0a0a0a; transition:transform .45s cubic-bezier(.22,.61,.36,1); }
+  .c-apple:hover .logo{ transform:translate(-50%,-60%) scale(1.1); }
+
+  .c-smurfs{ background:linear-gradient(170deg,#C5D4DF 0%,#DEE7E0 40%,#E8EDE2 100%); color:#283832; }
+  .c-smurfs .house{ position:absolute; right:10px; bottom:40px; z-index:2; width:84px; transition:transform .4s ease; transform-origin:bottom center; }
+  .c-smurfs:hover .house{ transform:translateY(-4px) rotate(-2deg); }
+  .c-smurfs .c-genre{ color:#3E6A4A; } .c-smurfs .c-vol{ color:#566159; } .c-smurfs .c-blurb{ color:#566159; }
+
+  .c-doodlejump{ background:#fdfbf3; color:#1f2a3d;
+    background-image:repeating-linear-gradient(180deg,transparent 0 22px,rgba(155,195,224,.5) 22px 23px),linear-gradient(to right,transparent 0 30px,rgba(227,74,60,.55) 30px 31px,transparent 31px); }
+  .c-doodlejump .c-title{ font-weight:700; } .c-doodlejump .c-genre{ color:#4a8c30; } .c-doodlejump .c-vol{ color:#6a6a6a; } .c-doodlejump .c-blurb{ color:#4a5a78; }
+  .c-doodlejump .doodler{ position:absolute; right:16px; top:38px; z-index:3; width:72px; transition:transform .35s cubic-bezier(.34,1.56,.64,1); }
+  .c-doodlejump:hover .doodler{ transform:translateY(-12px); }
+  .c-doodlejump .plat{ fill:#6bb84a; stroke:#2c3a1e; stroke-width:2; }
+
+  /* ═══ themed covers (everything else) — use browse's .grad-* gradients ═══ */
+  .c-themed{ color:#fff; }
+  .c-themed .c-genre{ color:rgba(255,255,255,.82); } .c-themed .c-vol{ color:rgba(255,255,255,.7); }
+  .c-themed .c-blurb{ color:rgba(255,255,255,.82); }
+  .c-themed .sheen{ position:absolute; inset:0; z-index:1; mix-blend-mode:soft-light; opacity:.45; background-image:radial-gradient(rgba(255,255,255,.8) 1px,transparent 1.2px); background-size:9px 9px; }
+  .c-themed .glyph{ position:absolute; right:-12px; bottom:-10px; z-index:2; width:120px; height:120px; opacity:.16; }
+  .c-soon{ position:absolute; top:12px; right:13px; z-index:6; font-family:'JetBrains Mono',ui-monospace,monospace; font-size:7px; text-transform:uppercase; letter-spacing:.12em; background:rgba(255,255,255,.22); border:1px solid rgba(255,255,255,.35); border-radius:100px; padding:2px 7px; color:#fff; }
+
+  /* search bar focus state (custom, since .border-hp isn't a real Tailwind utility) */
+  #searchBar:focus-within{ border-color:var(--hot-pink); box-shadow:0 10px 36px -10px rgba(0,0,0,.35); }
+  #searchBar:focus-within svg{ color:var(--hot-pink); }
+</style>
+<section class="relative overflow-hidden border-b border-foreground/10 bg-gradient-to-b from-secondary/50 to-background">
+  <div class="mx-auto max-w-[1500px] px-6 py-12 sm:py-14">
+    <div class="font-mono-acc text-[10px] uppercase tracking-[0.3em] text-muted-foreground">Index · The full library</div>
+    <h1 class="mt-3 font-display text-6xl sm:text-7xl font-semibold tracking-tight leading-none">Browse<span class="text-hp">.</span></h1>
+    <p class="mt-4 max-w-xl text-base text-muted-foreground">Browse and filter every wiki.</p>
+
+    <!-- search -->
+    <div class="mt-7 max-w-xl">
+      <div id="searchBar" class="group flex items-center gap-3 rounded-full border border-foreground/15 bg-background px-5 py-3 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.25)] transition">
+        <svg class="h-5 w-5 shrink-0 text-muted-foreground transition" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg>
+        <input id="q" type="text" placeholder="Search wikis — try “Pokémon”, “Taco Bell”…" class="flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground/70" />
+        <span id="hits" class="shrink-0 font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">0 hits</span>
+      </div>
     </div>
-  </div>
-</section>
-
-<section class="mx-auto max-w-[1500px] px-6 py-8">
-  <div class="mb-4 flex items-baseline justify-between">
-    <h2 class="font-display text-2xl font-semibold">Quick jumps</h2>
-    <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground" id="genreCount"></span>
-  </div>
-  <div class="relative">
-    <div id="tiles" class="no-scrollbar flex gap-3 overflow-x-auto py-2"></div>
-
-    <!-- edge fades — toggled by scroll position -->
-    <div id="fadeL" class="pointer-events-none hidden sm:block absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[var(--background)] to-transparent opacity-0 transition-opacity duration-200"></div>
-    <div id="fadeR" class="pointer-events-none hidden sm:block absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[var(--background)] to-transparent transition-opacity duration-200"></div>
-
-    <!-- desktop scroll arrows — hidden on touch, where swiping is natural -->
-    <button id="scrollL" aria-label="Scroll genres left"
-      class="sticker absolute left-1 top-1/2 z-10 hidden h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-card text-foreground opacity-0 pointer-events-none transition hover:bg-secondary sm:grid">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="13" y1="8" x2="3" y2="8"/><polyline points="7,4 3,8 7,12"/></svg>
-    </button>
-    <button id="scrollR" aria-label="Scroll genres right"
-      class="sticker absolute right-1 top-1/2 z-10 hidden h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-card text-foreground transition hover:bg-secondary sm:grid">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg>
-    </button>
   </div>
 </section>
 
 <section class="sticky top-0 z-10 border-y border-foreground/15 bg-background/95 backdrop-blur">
   <div class="mx-auto max-w-[1500px] px-6 py-3">
-    <!-- top line: Filter label + selected (floated-up) chips on the left, Sort on the right -->
+    <!-- top line: Filter label + selected (floated-up) chips -->
     <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
       <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Filter:</span>
       <div id="selected-filters" class="flex flex-wrap items-center gap-1"></div>
-      <div class="flex items-center gap-1 ml-auto">
-        <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Sort:</span>
-        <div id="sorts" class="flex gap-1"></div>
-      </div>
     </div>
-    <!-- pool: the unselected chips, in their rows, on a line below -->
+    <!-- pool: the unselected category chips, in their rows, on a line below -->
     <div id="filters" class="mt-2 flex flex-wrap gap-1"></div>
+    <!-- sort: sits below the category chips, just above the divider, right-aligned -->
+    <div class="mt-3 flex items-center justify-end gap-1">
+      <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Sort:</span>
+      <div id="sorts" class="flex gap-1"></div>
+    </div>
   </div>
 </section>
 
@@ -242,24 +305,6 @@ let selected = new Set(), sort = "popular", q = "";
 const el = (id) => document.getElementById(id);
 const catBy = (k) => CATEGORIES.find(c=>c.key===k);
 
-function renderTiles(){
-  el('genreCount').textContent = (CATEGORIES.length-1)+' genres';
-  el('totalCount').textContent = WIKIS.length.toLocaleString();
-  el('tiles').innerHTML = CATEGORIES.filter(c=>c.key!=="all").map(c=>`
-    <button data-cat="${c.key}" class="tile sticker group relative w-32 h-40 sm:w-40 sm:h-48 shrink-0 overflow-hidden rounded-md ${c.grad} text-left">
-      <div class="absolute inset-0 halftone opacity-20 mix-blend-overlay"></div>
-      <div class="absolute left-3 top-3 font-mono-acc text-[9px] uppercase tracking-[0.2em] text-white/80">Genre</div>
-      <i data-lucide="${c.icon}" class="icon pointer-events-none absolute -bottom-4 -right-4 h-28 w-28 rotate-12 text-white/90 drop-shadow-lg" stroke-width="1.5"></i>
-      <div class="absolute bottom-3 left-3 right-3">
-        <div class="font-display text-xl font-semibold leading-tight text-white drop-shadow">${c.label}</div>
-      </div>
-      <div class="absolute right-3 top-3 grid h-7 w-7 rotate-12 place-items-center rounded-sm bg-background text-[10px] font-bold text-foreground">↗</div>
-    </button>
-  `).join('');
-  el('tiles').querySelectorAll('button').forEach(b=>{
-    b.addEventListener('click',()=>{ toggleFilter(b.dataset.cat); window.scrollTo({top:600,behavior:'smooth'}); });
-  });
-}
 
 // Collect every filter chip currently on screen, keyed by category, with its
 // screen rectangle. Used by FLIP to animate chips physically between zones.
@@ -368,6 +413,98 @@ function renderFilters(){
   });
 }
 
+/* Decorative inner markup for the 5 built wikis (their bespoke covers). */
+const BESPOKE = {
+  "Taco Bell": { cls:"c-tacobell", vol:"Vol. 1", inner:`
+    <div class="halftone"></div>
+    <svg class="bell" viewBox="0 0 100 100" fill="#fff" aria-hidden="true"><path d="M50 18c-20 0-34 14-36 40-1 9 5 14 14 14h44c9 0 15-5 14-14C84 32 70 18 50 18Z"/><rect x="12" y="74" width="76" height="10" rx="5"/></svg>` },
+  "Fallout": { cls:"c-fallout", vol:"Vol. 2", inner:`
+    <div class="glow"></div><div class="scan"></div>
+    <div class="term" aria-hidden="true">ROBCO TERMLINK<br>VAULT-TEC<br>&gt; RUN WIKI.EXE<br>&gt; ACCESS GRANTED ▮</div>`, titleSuffix:`<span class="cursor"></span>` },
+  "Apple": { cls:"c-apple", vol:"Vol. 3", inner:`
+    <svg class="logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 12.04c-.03-2.65 2.16-3.92 2.26-3.98-1.23-1.8-3.15-2.05-3.83-2.08-1.63-.16-3.18.96-4.01.96-.82 0-2.1-.94-3.45-.91-1.78.03-3.42 1.03-4.33 2.62-1.85 3.2-.47 7.94 1.33 10.54.88 1.27 1.93 2.7 3.31 2.65 1.33-.05 1.83-.86 3.44-.86 1.6 0 2.05.86 3.45.83 1.42-.02 2.33-1.3 3.2-2.58 1.01-1.48 1.42-2.91 1.45-2.99-.03-.01-2.78-1.07-2.81-4.24zM14.6 4.3c.73-.89 1.22-2.12 1.09-3.35-1.05.04-2.32.7-3.07 1.58-.67.78-1.26 2.03-1.1 3.23 1.17.09 2.36-.6 3.08-1.46z"/></svg>` },
+  "Smurfs' Village": { cls:"c-smurfs", vol:"Vol. 4", inner:`
+    <svg class="house" viewBox="0 0 200 170" fill="none" aria-hidden="true"><ellipse cx="100" cy="158" rx="78" ry="9" fill="#000" opacity=".12"/><path d="M16 100C16 48 52 20 100 20s84 28 84 80c0 8-7 12-16 12H32c-9 0-16-4-16-12Z" fill="#B14A3C"/><circle cx="58" cy="66" r="7" fill="#F2EADA" opacity=".55"/><circle cx="122" cy="50" r="5" fill="#F2EADA" opacity=".5"/><circle cx="146" cy="82" r="8" fill="#F2EADA" opacity=".55"/><rect x="60" y="108" width="84" height="50" rx="10" fill="#553A24"/><rect x="72" y="120" width="20" height="20" rx="3" fill="#C19A52" opacity=".7"/><path d="M106 158v-22a16 16 0 0 1 32 0v22Z" fill="#7C5838"/></svg>` },
+  "Doodle Jump": { cls:"c-doodlejump", vol:"Vol. 5", inner:`
+    <svg class="doodler" viewBox="0 0 100 100" aria-hidden="true"><ellipse cx="50" cy="55" rx="32" ry="28" fill="#6bb84a" stroke="#2c3a1e" stroke-width="2.5"/><ellipse cx="50" cy="62" rx="20" ry="14" fill="#8ed268" opacity=".55"/><ellipse cx="62" cy="56" rx="11" ry="9" fill="#6bb84a" stroke="#2c3a1e" stroke-width="2.5"/><circle cx="42" cy="42" r="9" fill="#fff" stroke="#2c3a1e" stroke-width="2.5"/><circle cx="44" cy="44" r="4" fill="#2c3a1e"/><circle cx="58" cy="40" r="9" fill="#fff" stroke="#2c3a1e" stroke-width="2.5"/><circle cx="60" cy="42" r="4" fill="#2c3a1e"/></svg>
+    <svg class="plats" viewBox="0 0 300 375" preserveAspectRatio="none" aria-hidden="true" style="position:absolute;inset:0;z-index:2"><rect class="plat" x="40" y="250" width="60" height="12" rx="6"/><rect class="plat" x="150" y="300" width="60" height="12" rx="6"/></svg>` },
+};
+
+/* Short index-style taglines per wiki (the 5 built + 7 others use index's
+   exact text; the rest match that clean dot-separated style). Popularity and
+   entry counts stay in the WIKIS data for filter/sort — just not displayed. */
+const TAGLINES = {
+  "Taco Bell":"Menus · Sauces · Slogans",
+  "Fallout":"Factions · Timeline",
+  "Apple":"Products · Timeline",
+  "Smurfs' Village":"Buildings · Lore",
+  "Doodle Jump":"Platforms · Monsters",
+  "Star Wars":"Saga · Characters · Lore",
+  "Pokémon":"Pokédex · Regions · Games",
+  "Taylor Swift":"Eras · Discography",
+  "One Piece":"Arcs · Crews · Devil Fruits",
+  "Formula 1":"Teams · Circuits · Seasons",
+  "Marvel Cinematic Universe":"Phases · Heroes · Timeline",
+  "Minecraft":"Blocks · Mobs · Biomes",
+  "Dune":"Houses · Spice · Lore",
+  "BTS":"Members · Eras · Discography",
+  "The Legend of Zelda":"Games · Items · Timeline",
+  "Studio Ghibli":"Films · Characters · Lore",
+  "McDonald's":"Menu · History · Promos",
+  "Naruto":"Villages · Jutsu · Clans",
+  "NBA":"Teams · Players · Seasons",
+  "FIFA World Cup":"Teams · Tournaments · History",
+  "Genshin Impact":"Characters · Regions · Banners",
+  "Kendrick Lamar":"Albums · Era · Verses",
+  "Chick-fil-A":"Menu · History · Locations",
+  "Severance":"Episodes · Lumon · Lore",
+  "Sabrina Carpenter":"Eras · Discography",
+  "TikTok Trends":"Trends · Sounds · Eras",
+  "Y2K Fashion":"Styles · Icons · Eras",
+  "GeoCities":"Sites · History · Web Lore",
+  "Fortnite":"Seasons · Skins · Map",
+  "Beyoncé":"Eras · Discography · Tours",
+  "Harry Potter":"Books · Spells · Lore",
+  "Stranger Things":"Seasons · Characters · Lore",
+  "Demon Slayer":"Arcs · Hashira · Breathing",
+  "K-pop":"Groups · Eras · Charts",
+  "Wendy's":"Menu · History · Tweets",
+  "Wii Sports":"Games · Miis · Records",
+  "Vine (rip)":"Vines · Creators · Lore",
+  "Streetwear":"Brands · Drops · History",
+  "Squid Game":"Games · Players · Lore",
+};
+
+function coverTile(w){
+  const cat = catBy(w.category);
+  const href = w.url || '#';
+  const tag = TAGLINES[w.name] || cat.label;
+  const b = BESPOKE[w.name];
+  if(b){
+    // bespoke cover (built wiki) — matches index exactly: genre + Vol., title + tagline
+    return `<a class="cover ${b.cls}" href="${href}">
+      ${b.inner}
+      <div class="c-genre">${cat.label}</div>
+      <div class="c-vol">${b.vol}</div>
+      <div class="c-foot">
+        <div class="c-title">${w.name}${b.titleSuffix||''}</div>
+        <div class="c-blurb">${tag}</div>
+      </div>
+    </a>`;
+  }
+  // themed cover — matches index exactly: genre + Indexed badge, title + tagline
+  return `<a class="cover c-themed ${cat.grad}" href="${href}">
+    <div class="sheen"></div>
+    <i data-lucide="${cat.icon}" class="glyph" stroke-width="1.5"></i>
+    <div class="c-genre">${cat.label}</div>
+    <span class="c-soon">Indexed</span>
+    <div class="c-foot">
+      <div class="c-title">${w.name}</div>
+      <div class="c-blurb">${tag}</div>
+    </div>
+  </a>`;
+}
+
 function renderList(){
   let list = WIKIS.slice();
   if(selected.size > 0) list = list.filter(w => selected.has(w.category));
@@ -380,50 +517,13 @@ function renderList(){
     el('list').innerHTML = `<div class="border border-dashed border-foreground/25 bg-card p-12 text-center text-muted-foreground">No wikis match those filters.</div>`;
     return;
   }
-  el('list').innerHTML = `<ul class="grid grid-cols-1 gap-px overflow-hidden rounded-md border border-foreground/20 bg-foreground/20 sm:grid-cols-2 lg:grid-cols-3">${
-    list.map(w=>{
-      const cat = catBy(w.category);
-      const href = w.url || '#';
-      return `<li class="wiki-card bg-card transition"><a href="${href}" class="block p-4">
-        <div class="mb-2 flex items-center justify-between">
-          <span class="inline-block rounded-sm ${cat.grad} px-2 py-0.5 font-mono-acc text-[9px] uppercase tracking-wider text-white">${cat.label}</span>
-          <span class="font-mono-acc text-[10px] text-muted-foreground">★ ${w.popularity}</span>
-        </div>
-        <div class="font-display text-xl font-semibold leading-tight wiki-name">${w.name}</div>
-        <p class="mt-1 line-clamp-2 text-sm text-muted-foreground">${w.blurb}</p>
-        <div class="mt-3 flex items-center justify-between font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">
-          <span>${w.entries.toLocaleString()} entries</span>
-          <span class="text-foreground">Open →</span>
-        </div>
-      </a></li>`;
-    }).join('')
-  }</ul>`;
+  el('list').innerHTML = `<div class="cover-grid">${ list.map(coverTile).join('') }</div>`;
+  if(window.lucide) lucide.createIcons();   // draw the genre glyphs on themed covers
 }
 
 el('q').addEventListener('input', e=>{ q=e.target.value; renderList(); });
-renderTiles(); renderFilters(); renderList();
-
-/* ── carousel: desktop arrow controls + edge-fade state ── */
-(function(){
-  const track=el('tiles'), aL=el('scrollL'), aR=el('scrollR'), fL=el('fadeL'), fR=el('fadeR');
-  if(!track||!aL||!aR) return;
-  const step=()=>Math.max(track.clientWidth*0.8,200);
-  function update(){
-    const max=track.scrollWidth-track.clientWidth, x=track.scrollLeft;
-    const atStart=x<=2, atEnd=x>=max-2;
-    fL.classList.toggle('opacity-0',atStart);
-    fR.classList.toggle('opacity-0',atEnd);
-    aL.classList.toggle('opacity-0',atStart);
-    aL.classList.toggle('pointer-events-none',atStart);
-    aR.classList.toggle('opacity-0',atEnd);
-    aR.classList.toggle('pointer-events-none',atEnd);
-  }
-  aL.addEventListener('click',()=>track.scrollBy({left:-step(),behavior:'smooth'}));
-  aR.addEventListener('click',()=>track.scrollBy({left: step(),behavior:'smooth'}));
-  track.addEventListener('scroll',update,{passive:true});
-  window.addEventListener('resize',update);
-  update();
-})();
+el('totalCount').textContent = WIKIS.length.toLocaleString();
+renderFilters(); renderList();
 
 lucide.createIcons();
 </script>
