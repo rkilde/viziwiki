@@ -21,8 +21,11 @@
 body.wiki-taco-bell {
   --wiki-accent: #702082;
 
-  /* Hero — two-color diagonal gradient sits beneath the luminosity photo */
-  --hero-bg:      linear-gradient(135deg, #702082 0%, #c026d3 55%, #2a1f15 100%);
+  /* Hero — base gradient beneath the luminosity photo (layer 1 of the
+     four-layer recipe in §3). Magenta → purple → deep indigo, on the
+     canonical to-bottom-right diagonal. The .wiki-hero rule in §3
+     consumes this token, so this line is the single place to retune it. */
+  --hero-bg:      linear-gradient(to bottom right, #c026d3, #7e22ce, #1e1b4b);
   --hero-text:    #ffffff;                          /* base light text on the dark gradient */
   --hero-divider: rgba(255,255,255,0.12);
 
@@ -77,4 +80,106 @@ body.wiki-taco-bell .wiki-section[data-tone="special"] {
 /* ── 2. TOC rail — TB-purple right-edge separator ── */
 body.wiki-taco-bell .wiki-toc {
   border-right: 2px solid #702082;
+}
+
+
+/* ====================================================================
+   3 · HERO DECORATION  ·  the colorization recipe
+   --------------------------------------------------------------------
+   The wiki-home.css hero is a bare structural shell. Taco Bell's hero
+   personality is a FOUR-LAYER stack that wiki-home.css can't express
+   through --hero-* tokens alone (it needs real elements with their own
+   mix-blend-modes). The markup provides four hooks inside .wiki-hero:
+
+     <img class="hero-bg-photo">          ← layer 2
+     <div class="hero-bg-overlay-a">      ← layer 3
+     <div class="hero-bg-overlay-b">      ← layer 4
+     <i   class="hero-watermark">         ← bell ghost
+
+   Layer order (back to front):
+     1. .wiki-hero background      — base gradient (magenta→purple→indigo)
+     2. .hero-bg-photo             — food photo, desaturated via luminosity
+     3. .hero-bg-overlay-a         — purple multiply, re-colorizes the photo
+     4. .hero-bg-overlay-b         — left→right darkener for text legibility
+
+   Values are ported verbatim from the canonical TB hero so the look is
+   identical to the pre-refactor page.
+   ==================================================================== */
+
+/* Layer 1 — base gradient. Consumes the --hero-bg token defined in §1
+   (the canonical to-bottom-right magenta→purple→indigo recipe). Editing
+   the gradient is a one-line change at the token, not here. */
+body.wiki-taco-bell .wiki-hero {
+  background: var(--hero-bg);
+}
+
+/* Layer 2 — the photo. mix-blend luminosity strips the photo's own
+   color and keeps only its light/dark, so layer 3 can re-tint it.
+   The img already carries inset-0/h-full/w-full positioning utilities;
+   these rules guarantee the look even if those utilities are absent. */
+body.wiki-taco-bell .wiki-hero .hero-bg-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.60;
+  mix-blend-mode: luminosity;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Layer 3 — colorizer. Multiplies TB purple back over the now-greyscale
+   photo, restoring the brand color while keeping the photo's texture. */
+body.wiki-taco-bell .wiki-hero .hero-bg-overlay-a {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom right,
+    rgba(192, 38, 211, 0.75),
+    rgba(107, 33, 168, 0.70),
+    rgba(30, 27, 75, 0.80)
+  );
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Layer 4 — readability gradient. Darkens the left edge (where the H1,
+   description, search and stats live) and fades to transparent on the
+   right so the spotlight card still reads against lighter photo areas. */
+body.wiki-taco-bell .wiki-hero .hero-bg-overlay-b {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(59, 7, 100, 0.70),
+    rgba(88, 28, 135, 0.30),
+    transparent
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Bell ghost watermark — top-right, rotated, faint. Mirrors the Apple
+   and Fallout watermark pattern. */
+body.wiki-taco-bell .wiki-hero .hero-watermark {
+  position: absolute;
+  top: -40px;
+  right: -48px;
+  width: 440px;
+  height: 440px;
+  transform: rotate(12deg);
+  color: rgba(255, 255, 255, 0.10);
+  pointer-events: none;
+  z-index: 1;
+}
+@media (max-width: 768px) {
+  body.wiki-taco-bell .wiki-hero .hero-watermark { display: none; }
+}
+
+/* Lift the canonical hero content above all four decoration layers. */
+body.wiki-taco-bell .wiki-hero-inner {
+  position: relative;
+  z-index: 2;
 }
