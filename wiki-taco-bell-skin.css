@@ -23,6 +23,7 @@ body.wiki-taco-bell {
 
   /* Hero — two-color diagonal gradient sits beneath the luminosity photo */
   --hero-bg:      linear-gradient(135deg, #702082 0%, #c026d3 55%, #2a1f15 100%);
+  --hero-text:    #ffffff;                          /* base light text on the dark gradient */
   --hero-divider: rgba(255,255,255,0.12);
 
   /* §12 section canon — alternating panel tones + divider */

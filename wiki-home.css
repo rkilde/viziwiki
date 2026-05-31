@@ -85,6 +85,7 @@
   position: relative;
   overflow: hidden;
   background: var(--hero-bg, #1a1a1a);
+  color: var(--hero-text, #ffffff);
   border-bottom: 1px solid var(--hero-divider);
 }
 
@@ -482,12 +483,22 @@
   flex-direction: column;
 }
 
+/* Hero is pinned first with an explicit order. (Relying on the CSS
+   default of 0 is fragile: any other direct child that also lacks an
+   order collapses to 0 and stacks right after the hero — which is how
+   the page footer ended up rendering second.) */
+.wiki-home > .wiki-hero { order: 0; }
+
 /* Canon — universally-shared section types only.
    Numbers spaced generously (10, 20) so wikis can slot their own
    sections between (15) or after (30, 40, 50, ..., 90, etc.). */
 .wiki-section[data-section="browse"]   { order: 10; }   /* directory of entries */
 .wiki-section[data-section="overview"] { order: 20; }   /* introduction to the topic */
 .wiki-section[data-section="seealso"]  { order: 90; }   /* cross-references — always last */
+
+/* The page's own <footer> is a direct flex child too. Without an explicit
+   order it defaults to 0 and floats up beneath the hero. Pin it last. */
+.wiki-home > footer { order: 100; }
 
 
 /* ════════════════════════════════════════════════════════════════════
