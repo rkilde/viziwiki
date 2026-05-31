@@ -85,6 +85,10 @@ body_class: "no-facet-chrome"
      become three real rows packed left-to-right that scroll horizontally. */
   .filter-row{ display: contents; }
 
+  /* Selected chips physically glide between the pool and the selected zone
+     via FLIP (see toggleFilter in JS). No entry keyframe needed. */
+  #selected-filters:empty{ display: none; }
+
   @media (max-width: 639px){
     #filters{
       flex: 1 1 100%;               /* full-width line of its own */
@@ -149,13 +153,18 @@ body_class: "no-facet-chrome"
 </section>
 
 <section class="sticky top-0 z-10 border-y border-foreground/15 bg-background/95 backdrop-blur">
-  <div class="mx-auto flex max-w-[1500px] flex-wrap items-center gap-3 px-6 py-3">
-    <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Filter:</span>
-    <div id="filters" class="flex flex-wrap gap-1"></div>
-    <div class="flex items-center gap-1 sm:ml-auto">
-      <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Sort:</span>
-      <div id="sorts" class="flex gap-1"></div>
+  <div class="mx-auto max-w-[1500px] px-6 py-3">
+    <!-- top line: Filter label + selected (floated-up) chips on the left, Sort on the right -->
+    <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
+      <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Filter:</span>
+      <div id="selected-filters" class="flex flex-wrap items-center gap-1"></div>
+      <div class="flex items-center gap-1 ml-auto">
+        <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Sort:</span>
+        <div id="sorts" class="flex gap-1"></div>
+      </div>
     </div>
+    <!-- pool: the unselected chips, in their rows, on a line below -->
+    <div id="filters" class="mt-2 flex flex-wrap gap-1"></div>
   </div>
 </section>
 
@@ -228,7 +237,7 @@ const WIKIS = [
   {name:"Apple",category:"tech",entries:2847,popularity:97,blurb:"Every product, every era, every Steve moment. Mac to Vision Pro.",url:"apple.html"},
 ];
 
-let active = "all", sort = "popular", q = "";
+let selected = new Set(), sort = "popular", q = "";
 
 const el = (id) => document.getElementById(id);
 const catBy = (k) => CATEGORIES.find(c=>c.key===k);
@@ -248,21 +257,108 @@ function renderTiles(){
     </button>
   `).join('');
   el('tiles').querySelectorAll('button').forEach(b=>{
-    b.addEventListener('click',()=>{ active = b.dataset.cat; renderFilters(); renderList(); window.scrollTo({top:600,behavior:'smooth'}); });
+    b.addEventListener('click',()=>{ toggleFilter(b.dataset.cat); window.scrollTo({top:600,behavior:'smooth'}); });
+  });
+}
+
+// Collect every filter chip currently on screen, keyed by category, with its
+// screen rectangle. Used by FLIP to animate chips physically between zones.
+function chipRects(){
+  const map = new Map();
+  document.querySelectorAll('#selected-filters > button, #filters button').forEach(b=>{
+    map.set(b.dataset.cat, b.getBoundingClientRect());
+  });
+  return map;
+}
+
+function toggleFilter(key){
+  // 1. FIRST — measure where every chip is right now
+  const firstRects = chipRects();
+
+  // 2. mutate state + re-render (chips jump to their new DOM positions)
+  if(key === 'all'){ selected.clear(); }              // "All" = clear every selection
+  else if(selected.has(key)){ selected.delete(key); } // already up → drop it back
+  else { selected.add(key); }                          // lift it up
+  renderFilters(); renderList();
+
+  // 3. LAST + INVERT + PLAY — for each chip that existed before, compute the
+  //    delta from its old spot to its new spot, snap it back to the old spot
+  //    with no transition, then release it so it glides to the new one.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduceMotion) return;
+
+  document.querySelectorAll('#selected-filters > button, #filters button').forEach(b=>{
+    const prev = firstRects.get(b.dataset.cat);
+    const now  = b.getBoundingClientRect();
+    if(prev){
+      const dx = prev.left - now.left;
+      const dy = prev.top  - now.top;
+      if(dx || dy){
+        b.style.transition = 'none';
+        b.style.transform  = `translate(${dx}px, ${dy}px)`;
+        b.style.position   = 'relative';
+        b.style.zIndex     = '5';
+        // force reflow so the starting transform is committed before we animate
+        b.getBoundingClientRect();
+        requestAnimationFrame(()=>{
+          b.style.transition = 'transform .32s cubic-bezier(.22,.61,.36,1)';
+          b.style.transform  = '';
+        });
+        // once the glide finishes, strip inline styles so Tailwind's hover
+        // transition (the `transition` class) takes over again cleanly
+        b.addEventListener('transitionend', function done(){
+          b.style.transition = '';
+          b.style.transform  = '';
+          b.style.position   = '';
+          b.style.zIndex     = '';
+          b.removeEventListener('transitionend', done);
+        });
+      }
+    } else {
+      // brand-new chip (shouldn't normally happen here) — gentle fade-in
+      b.style.transition = 'none';
+      b.style.opacity = '0';
+      requestAnimationFrame(()=>{
+        b.style.transition = 'opacity .25s ease-out';
+        b.style.opacity = '';
+      });
+    }
   });
 }
 
 function renderFilters(){
-  const pill = (c) => `
-    <button data-cat="${c.key}" class="rounded-full border px-3 py-1 font-mono-acc text-[10px] uppercase tracking-wider transition ${active===c.key?'border-hp bg-hp text-white':'border-foreground/25 text-muted-foreground hover:border-foreground hover:text-foreground'}">${c.label}</button>`;
-  // split sequentially into 3 balanced rows (keeps source order for desktop wrap)
-  const cats = CATEGORIES.slice(), rows = [[],[],[]];
-  let rem = cats.length, idx = 0;
-  for(let r=0; r<3; r++){ const n = Math.ceil(rem/(3-r)); rows[r] = cats.slice(idx, idx+n); idx += n; rem -= n; }
-  el('filters').innerHTML = rows.map(row=>`<div class="filter-row">${row.map(pill).join('')}</div>`).join('');
+  const isOn = (k) => selected.has(k);
+  const emptySel = selected.size === 0;
+
+  // A pool chip (unselected). data-zone="pool" so we know where the click came from.
+  const poolPill = (c) => `
+    <button data-cat="${c.key}" data-zone="pool" class="rounded-full border px-3 py-1 font-mono-acc text-[10px] uppercase tracking-wider transition ${ (c.key==='all' && emptySel) ? 'border-hp bg-hp text-white' : 'border-foreground/25 text-muted-foreground hover:border-foreground hover:text-foreground'}">${c.label}</button>`;
+
+  // A selected (floated-up) chip — active styling + a × to drop it back.
+  const selPill = (c) => `
+    <button data-cat="${c.key}" data-zone="selected" class="inline-flex items-center gap-1 rounded-full border border-hp bg-hp px-3 py-1 font-mono-acc text-[10px] uppercase tracking-wider text-white transition hover:opacity-90">${c.label}<span aria-hidden="true" class="text-white/80">×</span></button>`;
+
+  // ── Selected zone (next to "Filter:") — the chips that floated up ──
+  const selectedCats = CATEGORIES.filter(c => c.key !== 'all' && isOn(c.key));
+  el('selected-filters').innerHTML = selectedCats.map(selPill).join('');
+
+  // ── Pool — 3 balanced rows, but OMIT any chip that's currently selected ──
+  // (omitting, not hiding, is what makes the row compress to fill the gap)
+  const pool = CATEGORIES.filter(c => !isOn(c.key));   // drops selected genres; "all" stays unless something is selected
+  const visiblePool = pool.filter(c => !(c.key === 'all' && !emptySel)); // hide "All" once a genre is chosen
+  const rows = [[],[],[]];
+  let rem = visiblePool.length, idx = 0;
+  for(let r=0; r<3; r++){ const n = Math.ceil(rem/(3-r)); rows[r] = visiblePool.slice(idx, idx+n); idx += n; rem -= n; }
+  el('filters').innerHTML = rows.map(row=>`<div class="filter-row">${row.map(poolPill).join('')}</div>`).join('');
+
+  // wire both zones to the same toggle
   el('filters').querySelectorAll('button').forEach(b=>{
-    b.addEventListener('click',()=>{ active=b.dataset.cat; renderFilters(); renderList(); });
+    b.addEventListener('click',()=> toggleFilter(b.dataset.cat));
   });
+  el('selected-filters').querySelectorAll('button').forEach(b=>{
+    b.addEventListener('click',()=> toggleFilter(b.dataset.cat));
+  });
+
   const sorts = [["popular","Most popular"],["az","A–Z"],["entries","Most entries"]];
   el('sorts').innerHTML = sorts.map(([k,l])=>`
     <button data-sort="${k}" class="rounded-sm border px-3 py-1 font-mono-acc text-[10px] uppercase tracking-wider transition ${sort===k?'border-hp bg-hp text-white':'border-foreground/25 text-muted-foreground hover:border-foreground hover:text-foreground'}">${l}</button>
@@ -274,7 +370,7 @@ function renderFilters(){
 
 function renderList(){
   let list = WIKIS.slice();
-  if(active!=='all') list = list.filter(w=>w.category===active);
+  if(selected.size > 0) list = list.filter(w => selected.has(w.category));
   if(q.trim()){ const s=q.toLowerCase(); list=list.filter(w=>w.name.toLowerCase().includes(s)||w.blurb.toLowerCase().includes(s)); }
   if(sort==='popular') list.sort((a,b)=>b.popularity-a.popularity);
   if(sort==='az') list.sort((a,b)=>a.name.localeCompare(b.name));
