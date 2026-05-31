@@ -38,6 +38,12 @@ body.wiki-fallout {
   --amber:    #ffb000;
   --crt-deep: #050805;                  /* deepest screen black         */
   --crt-glow: 0 0 10px rgba(62,230,61,.45), 0 0 28px rgba(62,230,61,.18);
+
+  /* §12 section canon — alternating panel tones + divider */
+  --section-tone-a:       #0b0f0a;               /* default Pip-Boy bg            */
+  --section-tone-b:       #0e150d;               /* slightly tinted alt panel     */
+  --section-tone-special: #050805;               /* dark band (used for factions) */
+  --section-divider:      rgba(62,230,61,.22);   /* phosphor-green hairline       */
 }
 
 

@@ -218,8 +218,8 @@ body.wiki-fallout{ background:#0b0f0a; }
        BROWSE THE WIKI  (shared nav slot — Pip-Boy "RobCo directory":
        categories, entry counts, contents preview, drill-down.)
        ================================================================ -->
-  <section id="browse" class="border-b border-line bg-bg-alt">
-    <div class="mx-auto max-w-[1500px] px-6 py-16">
+  <section class="wiki-section" id="browse" data-tone="b">
+    <div class="wiki-section-inner">
       <div class="mb-2 flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.3em] text-phos">
         <i data-lucide="folder-tree" class="h-3 w-3"></i> ▸ Directory
       </div>
@@ -243,8 +243,9 @@ body.wiki-fallout{ background:#0b0f0a; }
   <!-- ================================================================
        OVERVIEW  (▸ eyebrow + prose + infobox)
        ================================================================ -->
-  <section id="overview" class="border-b border-line bg-bg">
-    <div class="mx-auto grid max-w-[1500px] gap-12 px-6 py-16 lg:grid-cols-[1.6fr_1fr]">
+  <section class="wiki-section" id="overview" data-tone="a">
+    <div class="wiki-section-inner">
+      <div class="grid gap-12 lg:grid-cols-[1.6fr_1fr]">
       <div>
         <div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.3em] text-phos">
           <i data-lucide="book-open" class="h-3 w-3"></i> ▸ Overview
@@ -294,14 +295,15 @@ body.wiki-fallout{ background:#0b0f0a; }
           <dd class="text-ink">Fallout — TV series, 2024</dd>
         </dl>
       </aside>
+      </div>
     </div>
   </section>
 
   <!-- ================================================================
        TIMELINE  (horizontal spine with markers)
        ================================================================ -->
-  <section id="timeline" class="border-b border-line bg-bg-alt">
-    <div class="mx-auto max-w-[1500px] px-6 py-16">
+  <section class="wiki-section" id="timeline" data-tone="b">
+    <div class="wiki-section-inner">
       <div class="font-mono-acc text-[10px] uppercase tracking-[0.3em] text-phos">▸ Release timeline</div>
       <h2 class="mt-1 font-display text-4xl font-semibold tracking-tight text-phos glow">Seven entries in the log.</h2>
 
@@ -315,8 +317,8 @@ body.wiki-fallout{ background:#0b0f0a; }
   <!-- ================================================================
        FACTIONS BAND  (dark band — alternating section tone)
        ================================================================ -->
-  <section id="factions" class="border-b border-line bg-bg-dark">
-    <div class="mx-auto max-w-[1500px] px-6 py-16">
+  <section class="wiki-section" id="factions" data-tone="special">
+    <div class="wiki-section-inner">
       <div class="font-mono-acc text-[10px] uppercase tracking-[0.3em] text-amber">▸ Factions</div>
       <h2 class="mt-1 font-display text-4xl font-semibold tracking-tight text-phos glow">Who's left fighting over the ash.</h2>
       <div class="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-[4px] bg-line md:grid-cols-2 lg:grid-cols-3" id="factionGrid"></div>
@@ -328,8 +330,8 @@ body.wiki-fallout{ background:#0b0f0a; }
        deliberately a different shape from the release timeline above
        so the two never read as duplicates)
        ================================================================ -->
-  <section id="chronology" class="border-b border-line bg-bg-alt">
-    <div class="mx-auto max-w-[1500px] px-6 py-16">
+  <section class="wiki-section" id="chronology" data-tone="b">
+    <div class="wiki-section-inner">
       <div class="font-mono-acc text-[10px] uppercase tracking-[0.3em] text-amber">▸ In-universe</div>
       <h2 class="mt-1 font-display text-4xl font-semibold tracking-tight text-phos glow">Chronology of the wasteland.</h2>
       <p class="mt-2 max-w-2xl font-mono-acc text-[11px] uppercase tracking-wide text-dim">
@@ -342,8 +344,8 @@ body.wiki-fallout{ background:#0b0f0a; }
   <!-- ================================================================
        BY THE NUMBERS  (dark large-text ledger)
        ================================================================ -->
-  <section id="numbers" class="border-b border-line bg-bg">
-    <div class="mx-auto max-w-[1500px] px-6 py-16">
+  <section class="wiki-section" id="numbers" data-tone="a">
+    <div class="wiki-section-inner">
       <div class="font-mono-acc text-[10px] uppercase tracking-[0.3em] text-phos">▸ Numbers</div>
       <h2 class="mt-1 font-display text-4xl font-semibold tracking-tight text-phos glow">The wasteland, quantified.</h2>
       <dl class="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-[4px] bg-line md:grid-cols-2 lg:grid-cols-3" id="numberGrid"></dl>
@@ -353,8 +355,8 @@ body.wiki-fallout{ background:#0b0f0a; }
   <!-- ================================================================
        SEE ALSO
        ================================================================ -->
-  <section id="seealso" class="border-b border-line bg-bg-alt">
-    <div class="mx-auto max-w-[1500px] px-6 py-16">
+  <section class="wiki-section" id="seealso" data-tone="b">
+    <div class="wiki-section-inner">
       <div class="font-mono-acc text-[10px] uppercase tracking-[0.3em] text-phos">▸ See also</div>
       <h2 class="mt-1 font-display text-4xl font-semibold tracking-tight text-phos glow">Adjacent rabbit holes.</h2>
       <div class="mt-6 grid gap-3 md:grid-cols-3" id="seealsoGrid"></div>

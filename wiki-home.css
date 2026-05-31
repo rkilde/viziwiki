@@ -429,3 +429,30 @@
     max-width: 1500px;         /* big monitors get the wider cap */
   }
 }
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §12 — BACKGROUND PANEL ALTERNATION
+   ════════════════════════════════════════════════════════════════════
+   Every section below the hero alternates between two tonal panels
+   (tone A and tone B), with an optional 'special' slot for one-off
+   sections that need their own treatment. A divider line is part of
+   the same visual system — its visibility is controlled per-skin.
+
+   The hero (.wiki-hero) does NOT participate — it has its own
+   decorative background system governed by §1 and §3.
+
+   Tokens (defined per skin):
+     --section-tone-a       : default tone (required)
+     --section-tone-b       : alternation tone (required)
+     --section-tone-special : occasional override (optional)
+     --section-divider      : 1px line color, transparent if undefined
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-section[data-tone="a"]       { background: var(--section-tone-a); }
+.wiki-section[data-tone="b"]       { background: var(--section-tone-b); }
+.wiki-section[data-tone="special"] { background: var(--section-tone-special); }
+
+.wiki-section {
+  border-bottom: 1px solid var(--section-divider, transparent);
+}
