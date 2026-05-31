@@ -20,6 +20,52 @@
 /* ── 1. Accent token — active items in TB purple ── */
 body.wiki-taco-bell {
   --wiki-accent: #702082;
+
+  /* §12 section canon — alternating panel tones + divider */
+  --section-tone-a:       #ffffff;                  /* warm white default panel */
+  --section-tone-b:       #f4ede4;                  /* secondary cream alternation */
+  --section-tone-special: #2a1f15;                  /* dark band — used for footer CTA */
+  --section-divider:      rgba(42,31,21,0.15);      /* subtle warm-brown hairline */
+
+  /* §15 section typography — color tokens (sizing is universal canon) */
+  --eyebrow-color:        rgba(42,31,21,0.55);      /* muted brown */
+  --section-title-color:  #2a1f15;                  /* warm near-black */
+  --prose-color:          rgba(42,31,21,0.85);      /* foreground/85 */
+  --prose-strong-color:   #2a1f15;                  /* full dark for emphasis */
+
+  /* §16 overview infobox tokens — TB's signature purple gradient header */
+  --overview-infobox-bg:            #f4ede4;
+  --overview-infobox-border:        rgba(42,31,21,0.20);
+  --overview-infobox-header-bg:     linear-gradient(to bottom right, #c026d3, #581c87);
+  --overview-infobox-label-color:   rgba(255,255,255,0.7);
+  --overview-infobox-title-color:   #ffffff;
+  --overview-infobox-key-color:     rgba(42,31,21,0.55);
+  --overview-infobox-value-color:   #2a1f15;
+  --overview-infobox-divider:       rgba(42,31,21,0.10);
+}
+
+/* §13 section ordering — Taco Bell-specific section orders.
+   Canon owns browse=10, overview=20, seealso=90. */
+body.wiki-taco-bell .wiki-section[data-section="featured"]       { order: 30; }
+body.wiki-taco-bell .wiki-section[data-section="heat-ladder"]    { order: 35; }
+body.wiki-taco-bell .wiki-section[data-section="patch-history"]  { order: 40; }
+body.wiki-taco-bell .wiki-section[data-section="footprint"]      { order: 45; }
+body.wiki-taco-bell .wiki-section[data-section="menu-history"]   { order: 50; }
+body.wiki-taco-bell .wiki-section[data-section="marketing"]      { order: 55; }
+body.wiki-taco-bell .wiki-section[data-section="in-media"]       { order: 60; }
+body.wiki-taco-bell .wiki-section[data-section="identity"]       { order: 65; }
+body.wiki-taco-bell .wiki-section[data-section="cast"]           { order: 70; }
+body.wiki-taco-bell .wiki-section[data-section="receipts"]       { order: 75; }
+body.wiki-taco-bell .wiki-section[data-section="footer"]         { order: 99; }
+
+/* Special tone (footer) needs inverted text colors so eyebrow/title/prose
+   stay legible on the dark background. */
+body.wiki-taco-bell .wiki-section[data-tone="special"] {
+  --eyebrow-color:       rgba(255,255,255,0.6);
+  --section-title-color: #ffffff;
+  --prose-color:         rgba(255,255,255,0.7);
+  --prose-strong-color:  #ffffff;
+  color: #ffffff;
 }
 
 
@@ -27,110 +73,3 @@ body.wiki-taco-bell {
 body.wiki-taco-bell .wiki-toc {
   border-right: 2px solid #702082;
 }
-
-
-/* ====================================================================
-   3 · HERO  ·  CANONICAL WIKI-HOME SPEC OVERRIDES
-   The hero structure now comes from wiki-home.css. This section
-   reflavors it via --hero-* tokens plus the TB-specific decoration
-   (food-photo background, gradient overlays, bell ghost watermark).
-   ==================================================================== */
-
-body.wiki-taco-bell {
-  /* divider that closes the hero section */
-  --hero-divider:                 rgba(0,0,0,.20);
-
-  /* eyebrow pill — frosted glass on dark gradient */
-  --hero-eyebrow-bg:              rgba(255,255,255,.10);
-  --hero-eyebrow-border:          rgba(255,255,255,.30);
-  --hero-eyebrow-text:            #ffffff;
-  --hero-eyebrow-dot:             #fcd34d;          /* amber-300 — matches H1 period */
-
-  /* H1 + accent period */
-  --hero-title-color:             #ffffff;
-  --hero-title-accent:            #fcd34d;
-
-  /* description */
-  --hero-desc-color:              rgba(255,255,255,.85);
-
-  /* search bar — frosted glass */
-  --hero-search-bg:               rgba(255,255,255,.10);
-  --hero-search-border:           rgba(255,255,255,.30);
-  --hero-search-text:             #ffffff;
-  --hero-search-placeholder:      rgba(255,255,255,.50);
-  --hero-search-icon:             rgba(255,255,255,.70);
-
-  /* stat grid */
-  --hero-stat-wrapper-bg:         rgba(255,255,255,.20);     /* bleeds through gap-px */
-  --hero-stat-wrapper-border:     rgba(255,255,255,.20);
-  --hero-stat-cell-bg:            rgba(30,27,75,.60);        /* deep purple-blue */
-  --hero-stat-num:                #ffffff;
-  --hero-stat-label:              rgba(255,255,255,.60);
-
-  /* spotlight card — frosted glass */
-  --hero-spotlight-bg:            rgba(255,255,255,.05);
-  --hero-spotlight-border:        rgba(255,255,255,.20);
-  --hero-spotlight-eyebrow:       rgba(255,255,255,.70);
-  --hero-spotlight-title:         #ffffff;
-  --hero-spotlight-desc:          rgba(255,255,255,.75);
-
-  --hero-spotlight-tag-bg:        rgba(255,255,255,.10);
-  --hero-spotlight-tag-border:    rgba(255,255,255,.30);
-  --hero-spotlight-tag-text:      #ffffff;
-
-  --hero-spotlight-cta-bg:        #fcd34d;          /* amber-300 */
-  --hero-spotlight-cta-text:      #2e1065;          /* purple-950 */
-  --hero-spotlight-cta-hover-bg:  #ffffff;
-}
-
-/* Hero base background — purple/pink/indigo gradient under the photo */
-body.wiki-taco-bell .wiki-hero {
-  color: #fff;
-  background: linear-gradient(to bottom right, #c026d3, #7e22ce, #1e1b4b);
-}
-
-/* Hero background photo — luminosity blend on top of the gradient */
-body.wiki-taco-bell .wiki-hero .hero-bg-photo {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: .60;
-  pointer-events: none;
-}
-
-/* Two gradient overlays that bring back the brand-purple wash */
-body.wiki-taco-bell .wiki-hero .hero-bg-overlay-a {
-  position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(to bottom right, rgba(192,38,211,.75), rgba(107,33,168,.7), rgba(30,27,75,.8));
-  mix-blend-mode: multiply;
-}
-body.wiki-taco-bell .wiki-hero .hero-bg-overlay-b {
-  position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(to right, rgba(59,7,100,.7), rgba(88,28,135,.3), transparent);
-}
-
-/* Bell ghost watermark, top right */
-body.wiki-taco-bell .wiki-hero .hero-watermark {
-  position: absolute;
-  top: -40px;
-  right: -48px;
-  width: 440px;
-  height: 440px;
-  transform: rotate(12deg);
-  color: rgba(255,255,255,.10);
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Frosted-glass treatment on the search bar, stat grid wrapper, eyebrow, spotlight */
-body.wiki-taco-bell .wiki-hero-eyebrow,
-body.wiki-taco-bell .wiki-hero-search,
-body.wiki-taco-bell .wiki-hero-spotlight {
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-
-/* Lift the canonical content above the overlays + watermark */
-body.wiki-taco-bell .wiki-hero-inner { position: relative; z-index: 2; }

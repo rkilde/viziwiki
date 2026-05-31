@@ -528,7 +528,7 @@
   font-weight: 600;
   line-height: 1.15;
   letter-spacing: -0.02em;
-  margin-top: 8px;            /* spacing from eyebrow above */
+  margin-top: 4px;            /* tight spacing from eyebrow — reads as one unit */
   color: var(--section-title-color, currentColor);
 }
 
