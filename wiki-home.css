@@ -631,20 +631,27 @@
 /* ── Infobox data list (dl) with row dividers ───────────────────── */
 .wiki-overview-infobox-data {
   margin: 0;
-  padding: 4px 16px;
+  padding: 0 16px;
   display: grid;
   grid-template-columns: 1fr 1.4fr;
-  gap: 12px 16px;
+  row-gap: 0;       /* no row gap — border-top handles separation */
+  column-gap: 0;    /* no column gap so border-top spans across both columns */
 }
 
 .wiki-overview-infobox-data > dt,
 .wiki-overview-infobox-data > dd {
-  padding: 8px 0;
+  padding: 12px 0;
   margin: 0;
   border-top: 1px solid var(--overview-infobox-divider, transparent);
 }
 
-/* Remove top border from first row (the row after the header band) */
+/* Visual column separation: pad <dt> on the right so key + value
+   aren't flush against each other (borders still connect underneath). */
+.wiki-overview-infobox-data > dt {
+  padding-right: 16px;
+}
+
+/* Remove top border from first row (the row right under the header band) */
 .wiki-overview-infobox-data > dt:first-of-type,
 .wiki-overview-infobox-data > dt:first-of-type + dd {
   border-top: 0;
