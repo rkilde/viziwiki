@@ -90,18 +90,23 @@
 
 /* ====================================================================
    3 · HERO INNER  — grid container
-   1500px max, py-16 (64px), px-12 (48px) desktop / px-6 (24px) mobile,
-   gap-8 between columns.
+   Responsive max-width: 1320px default / 1500px on big monitors (>=1600px).
+   Padding: 64px vertical · 24px mobile / 48px desktop horizontal.
    Mobile horizontal padding matches the rest of the page sections
    (.section-inner uses px-6) so the hero feels continuous with the
    content below it instead of indenting more.
+
+   Note: this responsive max-width rule is canonical for every wiki home
+   inner container — sections inherit the same 1320/1500 pattern with
+   the same 1600px breakpoint. Hero and sections stay edge-aligned at
+   every viewport size.
    ==================================================================== */
 .wiki-hero-inner {
   position: relative;          /* skin watermark icons absolute against this */
   margin-inline: auto;
   display: grid;
   gap: 32px;
-  max-width: 1500px;
+  max-width: 1320px;           /* default — laptop and below */
   padding: 64px 24px;          /* mobile default — px-6 to match page rhythm */
 }
 
@@ -109,6 +114,12 @@
   .wiki-hero-inner {
     grid-template-columns: 1.5fr 1fr;
     padding: 64px 48px;        /* desktop — wider air at large viewports */
+  }
+}
+
+@media (min-width: 1600px) {
+  .wiki-hero-inner {
+    max-width: 1500px;         /* big monitors get the wider "heroic" cap */
   }
 }
 
@@ -376,4 +387,45 @@
 }
 .wiki-hero-spotlight-cta:hover {
   background: var(--hero-spotlight-cta-hover-bg);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §11 — STRUCTURAL SECTION CANON
+   ════════════════════════════════════════════════════════════════════
+   Every section on a wiki home page uses the same two-element wrapper:
+
+     <section class="wiki-section">
+       <div class="wiki-section-inner">...content...</div>
+     </section>
+
+   .wiki-section       → outer element; carries background + divider (§13)
+   .wiki-section-inner → inner container; carries max-width + padding
+
+   Box rules MUST match the hero's box rules (§3) so hero and section
+   edges align at every viewport size. If hero values change in §3,
+   these values must change too — the two specs are linked.
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-section {
+  /* Outer element. Background/divider rules live in §13 (forthcoming).
+     Nothing to declare here at the structural canon level. */
+}
+
+.wiki-section-inner {
+  margin-inline: auto;
+  max-width: 1320px;           /* default — laptop and below */
+  padding: 64px 24px;          /* mobile default — px-6 to match page rhythm */
+}
+
+@media (min-width: 768px) {
+  .wiki-section-inner {
+    padding: 64px 48px;        /* desktop — wider air at large viewports */
+  }
+}
+
+@media (min-width: 1600px) {
+  .wiki-section-inner {
+    max-width: 1500px;         /* big monitors get the wider cap */
+  }
 }
