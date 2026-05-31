@@ -21,6 +21,10 @@
 body.wiki-taco-bell {
   --wiki-accent: #702082;
 
+  /* Hero — two-color diagonal gradient sits beneath the luminosity photo */
+  --hero-bg:      linear-gradient(135deg, #702082 0%, #c026d3 55%, #2a1f15 100%);
+  --hero-divider: rgba(255,255,255,0.12);
+
   /* §12 section canon — alternating panel tones + divider */
   --section-tone-a:       #ffffff;                  /* warm white default panel */
   --section-tone-b:       #f4ede4;                  /* secondary cream alternation */

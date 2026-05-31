@@ -84,6 +84,7 @@
 .wiki-hero {
   position: relative;
   overflow: hidden;
+  background: var(--hero-bg, #1a1a1a);
   border-bottom: 1px solid var(--hero-divider);
 }
 
@@ -486,6 +487,7 @@
    sections between (15) or after (30, 40, 50, ..., 90, etc.). */
 .wiki-section[data-section="browse"]   { order: 10; }   /* directory of entries */
 .wiki-section[data-section="overview"] { order: 20; }   /* introduction to the topic */
+.wiki-section[data-section="seealso"]  { order: 90; }   /* cross-references — always last */
 
 
 /* ════════════════════════════════════════════════════════════════════
@@ -528,7 +530,7 @@
   font-weight: 600;
   line-height: 1.15;
   letter-spacing: -0.02em;
-  margin-top: 4px;            /* tight spacing from eyebrow — reads as one unit */
+  margin-top: 2px;            /* tight spacing from eyebrow — reads as one unit */
   color: var(--section-title-color, currentColor);
 }
 
