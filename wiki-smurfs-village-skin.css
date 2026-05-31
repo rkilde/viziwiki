@@ -382,3 +382,8 @@ body.wiki-smurfs-village .wiki-section[data-tone="special"] {
 body.wiki-smurfs-village .wiki-section[data-section="hall-of-fame"] { order: 40; }
 body.wiki-smurfs-village .wiki-section[data-section="trending"]     { order: 50; }
 body.wiki-smurfs-village .wiki-section[data-section="about"]        { order: 60; }
+
+/* The page foot-note is a direct child of .wiki-home (.sv-page) with no
+   order, so it defaults to 0 and floats up beneath the hero. Pin it last,
+   the same way the canon pins its <footer> to order 100. */
+body.wiki-smurfs-village .sv-page > .foot-note { order: 100; }

@@ -115,7 +115,7 @@
 @media (min-width: 768px) {
   .wiki-hero-inner {
     grid-template-columns: 1.5fr 1fr;
-    padding: 64px 48px;        /* desktop — wider air at large viewports */
+    padding: 64px 56px;        /* desktop — wider air at large viewports */
   }
 }
 
@@ -422,7 +422,7 @@
 
 @media (min-width: 768px) {
   .wiki-section-inner {
-    padding: 64px 48px;        /* desktop — wider air at large viewports */
+    padding: 64px 56px;        /* desktop — wider air at large viewports */
   }
 }
 
@@ -612,6 +612,16 @@
   border: 1px solid var(--overview-infobox-border, transparent);
   border-radius: 4px;
   overflow: hidden;
+}
+
+/* On desktop (side-by-side grid), drop the infobox so its top edge lines
+   up with the H2 title rather than the eyebrow above it. Offset = eyebrow
+   row height (12px icon) + the title's 2px margin-top = 14px. On mobile the
+   infobox stacks below the prose, so this offset must NOT apply there. */
+@media (min-width: 768px) {
+  .wiki-overview-infobox {
+    margin-top: 14px;
+  }
 }
 
 /* ── Infobox header band ────────────────────────────────────────── */
