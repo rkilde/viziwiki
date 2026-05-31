@@ -609,7 +609,7 @@
 
 /* ── Infobox container ──────────────────────────────────────────── */
 .wiki-overview-infobox {
-  align-self: start;
+  align-self: end;
   background: var(--overview-infobox-bg, transparent);
   border: 1px solid var(--overview-infobox-border, transparent);
   border-radius: 4px;
