@@ -115,7 +115,7 @@
 @media (min-width: 768px) {
   .wiki-hero-inner {
     grid-template-columns: 1.5fr 1fr;
-    padding: 64px 56px;        /* desktop — wider air at large viewports */
+    padding: 64px 72px;        /* desktop — wider air at large viewports */
   }
 }
 
@@ -422,7 +422,7 @@
 
 @media (min-width: 768px) {
   .wiki-section-inner {
-    padding: 64px 56px;        /* desktop — wider air at large viewports */
+    padding: 64px 72px;        /* desktop — wider air at large viewports */
   }
 }
 
@@ -617,12 +617,11 @@
 }
 
 /* On desktop (side-by-side grid), drop the infobox down so it sits lower
-   in its column. ~1 inch ≈ 96px on a standard monitor, plus the original
-   12px eyebrow offset = 108px. On mobile the infobox stacks below the
-   prose, so this offset must NOT apply there. */
+   in its column. On mobile the infobox stacks below the prose, so this
+   offset must NOT apply there. */
 @media (min-width: 768px) {
   .wiki-overview-infobox {
-    margin-top: 108px;
+    margin-top: 54px;
   }
 }
 
