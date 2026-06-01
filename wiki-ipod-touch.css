@@ -103,20 +103,12 @@
 .ov-text p strong{color:#0a0a0a;font-weight:600;}
 .ov-text p em{font-style:italic;}
 
-/* Infobox */
-.infobox{border:1px solid rgba(0,0,0,.14);border-radius:3px;background:#fafafa;padding:20px;position:sticky;top:24px;}
-.ib-label{font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.3em;color:rgba(0,0,0,.4);margin-bottom:6px;}
-.ib-name{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:18px;font-weight:600;letter-spacing:-0.02em;color:#0a0a0a;line-height:1.2;margin-bottom:16px;}
-.ib-table{width:100%;border-collapse:collapse;}
-.ib-table tr{border-bottom:1px solid rgba(0,0,0,.06);}
-.ib-table tr:last-child{border-bottom:none;}
-.ib-table td{padding:6px 0;font-size:12.5px;vertical-align:top;}
-.ib-table td:first-child{font-family:"JetBrains Mono",monospace;font-size:8.5px;text-transform:uppercase;letter-spacing:.14em;color:rgba(0,0,0,.42);padding-right:14px;white-space:nowrap;padding-top:8px;}
-.ib-table td:last-child{color:rgba(0,0,0,.82);padding-top:7px;}
-.ib-disc{display:inline-block;margin-top:14px;font-family:"JetBrains Mono",monospace;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#92400e;border:1px solid rgba(146,64,14,.3);padding:3px 8px;border-radius:3px;}
+/* Infobox — now uses the universal .wiki-overview-infobox component
+   (wiki-universals.css §15). The iPod-specific .infobox/.ib-* styles were
+   removed so every infobox sitewide shares one canonical format. */
 
 /* Responsive */
-@media(max-width:960px){.ov-inner{grid-template-columns:1fr;}.infobox{position:static;}}
+@media(max-width:960px){.ov-inner{grid-template-columns:1fr;}}
 @media(max-width:600px){.hero-inner,.ov-inner{padding:0 16px;}.hero{padding:52px 0 60px;}.stats-grid{grid-template-columns:repeat(2,1fr);}.stat-cell:nth-child(1),.stat-cell:nth-child(2){border-bottom:1px solid rgba(0,0,0,.14);}}
 
 /* Prose-only sections: run full width within section margins */

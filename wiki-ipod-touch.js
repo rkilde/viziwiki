@@ -153,12 +153,15 @@ function renderOverview(){
     +'<h2 class="sec-h2 fr" style="margin-bottom:24px;">'+PAGE_DATA.overview.heading+'</h2>'
     + paraList(o.paragraphs)
     +'</div>'
-    +'<aside class="infobox">'
-    +'  <div class="ib-name fr">'+ib.name+'</div>'
-    +'  <table class="ib-table"><tbody>'
-    + ib.rows.map(function(r){ return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>'; }).join('')
-    +'  </tbody></table>'
-    +'  <span class="ib-disc jb">'+ib.discontinued+'</span>'
+    +'<aside class="wiki-overview-infobox">'
+    +'  <div class="wiki-overview-infobox-header">'
+    +'    <div class="wiki-overview-infobox-label">Infobox</div>'
+    +'    <div class="wiki-overview-infobox-title">'+ib.name+'</div>'
+    +'  </div>'
+    +'  <dl class="wiki-overview-infobox-data">'
+    + ib.rows.map(function(r){ return '<dt>'+r[0]+'</dt><dd>'+r[1]+'</dd>'; }).join('')
+    +'  </dl>'
+    + (ib.discontinued ? '<span class="wiki-overview-infobox-badge">'+ib.discontinued+'</span>' : '')
     +'</aside>'
     +'</div>';
 }

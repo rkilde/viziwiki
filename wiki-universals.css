@@ -464,7 +464,10 @@
    in its column. On mobile the infobox stacks below the prose, so this
    offset must NOT apply there. */
 @media (min-width: 768px) {
-  .wiki-overview-infobox {
+  /* Scoped to the overview grid so the infobox COMPONENT stays
+     parent-agnostic — reusable in any layout without inheriting this
+     grid-specific offset. */
+  .wiki-overview > .wiki-overview-infobox {
     margin-top: 54px;
   }
 }
@@ -536,4 +539,31 @@
 .wiki-overview-infobox-data > dd {
   font-size: 14px;
   color: var(--overview-infobox-value-color, currentColor);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §15-b — OPTIONAL STATUS BADGE (chip)
+   ════════════════════════════════════════════════════════════════════
+   An OPT-IN slot of the infobox type: rendered only when an instance
+   supplies badge text (e.g. "Discontinued · July 2015"). Sits below the
+   data list. This is an optional add-on of the ONE canonical infobox —
+   not a separate variant. Colors come from skin tokens, with safe
+   fallbacks to the infobox's own divider/key colors.
+
+   Tokens (skin-defined, optional):
+     --overview-infobox-badge-border
+     --overview-infobox-badge-color
+   ════════════════════════════════════════════════════════════════════ */
+.wiki-overview-infobox-badge {
+  display: inline-block;
+  margin: 14px 16px 16px;
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 1px solid var(--overview-infobox-badge-border, var(--overview-infobox-divider, currentColor));
+  color: var(--overview-infobox-badge-color, var(--overview-infobox-key-color, currentColor));
 }
