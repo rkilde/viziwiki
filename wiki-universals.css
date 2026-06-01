@@ -424,8 +424,10 @@
    ════════════════════════════════════════════════════════════════════
    The canonical Overview section: a content column (.wiki-overview-prose)
    plus an OPTIONAL infobox (.wiki-infobox — defined as its own standalone
-   component in §15-INFOBOX below). The grid is single-column by default
-   and becomes two-column ONLY when an infobox is present (see :has rule).
+   component in §15-INFOBOX below). The layout adapts to the infobox:
+     • WITH infobox    → prose (left) | infobox (right)
+     • WITHOUT infobox → body prose flows into two newspaper-style columns
+                         (eyebrow + title stay full-width above)
    So the infobox is an opt-in slot, not a requirement.
 
    This section owns ONLY the overview layout (the grid + how it positions
@@ -440,12 +442,19 @@
   grid-template-columns: 1fr;   /* default: single column (prose only) */
 }
 
-/* The infobox is an OPTIONAL slot. The overview only becomes two-column
-   when it actually contains a .wiki-infobox; otherwise the prose column
-   spans full width. (:has lets the layout adapt with no modifier class.) */
+/* The infobox is an OPTIONAL slot; the overview adapts to its presence
+   with no modifier class (:has):
+     • WITH an infobox  → two columns: prose (left) | infobox (right)
+     • WITHOUT an infobox → the body prose flows into two newspaper-style
+       columns to fill the full width (eyebrow + title stay full-width above). */
 @media (min-width: 768px) {
   .wiki-overview:has(> .wiki-infobox) {
     grid-template-columns: 1.6fr 1fr;
+  }
+  .wiki-overview:not(:has(> .wiki-infobox)) .wiki-section-prose {
+    max-width: none;        /* drop the single-column reading cap */
+    columns: 2;
+    column-gap: 48px;
   }
 }
 
