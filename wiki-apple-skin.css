@@ -394,6 +394,8 @@ body.wiki-apple {
   --overview-infobox-key-color:     rgba(0,0,0,.44);
   --overview-infobox-value-color:   rgba(0,0,0,.82);
   --overview-infobox-divider:       rgba(0,0,0,.10);
+  --overview-infobox-badge-border:  rgba(146,64,14,.3);   /* amber — matches the old discontinued chip */
+  --overview-infobox-badge-color:   #92400e;
 }
 
 /* Engage the Fraunces SOFT axis on section + infobox titles (Apple house
