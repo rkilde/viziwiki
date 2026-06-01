@@ -52,14 +52,14 @@ body.wiki-fallout {
   --prose-strong-color:   #3ee63d;               /* phosphor — emphasized text     */
 
   /* §16 overview infobox tokens */
-  --overview-infobox-bg:            rgba(62,230,61,0.035);   /* surface */
-  --overview-infobox-border:        rgba(62,230,61,0.22);    /* line    */
-  --overview-infobox-header-bg:     transparent;             /* no separate header band */
-  --overview-infobox-label-color:   #ffb000;                 /* amber accent */
-  --overview-infobox-title-color:   #3ee63d;                 /* phosphor */
-  --overview-infobox-key-color:     #6f9e6a;                 /* dim phosphor — <dt> */
-  --overview-infobox-value-color:   #c6f5be;                 /* ink — <dd> */
-  --overview-infobox-divider:       rgba(62,230,61,.12);     /* soft phosphor */
+  --infobox-bg:            rgba(62,230,61,0.035);   /* surface */
+  --infobox-border:        rgba(62,230,61,0.22);    /* line    */
+  --infobox-header-bg:     transparent;             /* no separate header band */
+  --infobox-label-color:   #ffb000;                 /* amber accent */
+  --infobox-title-color:   #3ee63d;                 /* phosphor */
+  --infobox-key-color:     #6f9e6a;                 /* dim phosphor — <dt> */
+  --infobox-value-color:   #c6f5be;                 /* ink — <dd> */
+  --infobox-divider:       rgba(62,230,61,.12);     /* soft phosphor */
 }
 
 

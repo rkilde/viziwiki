@@ -420,42 +420,61 @@
 
 
 /* ════════════════════════════════════════════════════════════════════
-   §15 — STANDARD SECTION: OVERVIEW
+   §15 — OVERVIEW (master section structure)
    ════════════════════════════════════════════════════════════════════
-   Locked-shell template for the Overview section. Every wiki uses
-   the same structure: 2-column grid (1.6fr 1fr) with prose on the
-   left and an infobox aside on the right. Below 768px the grid
-   collapses to a single column with the infobox stacked below.
+   The canonical Overview section: a content column (.wiki-overview-prose)
+   plus an OPTIONAL infobox (.wiki-infobox — defined as its own standalone
+   component in §15-INFOBOX below). The layout adapts to the infobox:
+     • WITH infobox    → prose (left) | infobox (right)
+     • WITHOUT infobox → body prose flows into two newspaper-style columns
+                         (eyebrow + title stay full-width above)
+   So the infobox is an opt-in slot, not a requirement.
 
-   Tokens (skin-defined):
-     --overview-infobox-bg            : infobox container background
-     --overview-infobox-border        : infobox container border
-     --overview-infobox-header-bg     : header band background
-     --overview-infobox-label-color   : "Infobox" eyebrow color
-     --overview-infobox-title-color   : entity name color
-     --overview-infobox-key-color     : <dt> color
-     --overview-infobox-value-color   : <dd> color
-     --overview-infobox-divider       : row divider color
+   This section owns ONLY the overview layout (the grid + how it positions
+   an embedded infobox). The infobox's own format lives in §15-INFOBOX so
+   it can be reused outside an overview.
    ════════════════════════════════════════════════════════════════════ */
 
 /* ── Grid wrapper ───────────────────────────────────────────────── */
 .wiki-overview {
   display: grid;
   gap: 48px;
-  grid-template-columns: 1fr;   /* mobile default: single column */
+  grid-template-columns: 1fr;   /* default: single column (prose only) */
 }
 
+/* The infobox is an OPTIONAL slot; the overview adapts to its presence
+   with no modifier class (:has):
+     • WITH an infobox  → two columns: prose (left) | infobox (right)
+     • WITHOUT an infobox → the body prose flows into two newspaper-style
+       columns to fill the full width (eyebrow + title stay full-width above). */
 @media (min-width: 768px) {
-  .wiki-overview {
+  .wiki-overview:has(> .wiki-infobox) {
     grid-template-columns: 1.6fr 1fr;
+  }
+  .wiki-overview:not(:has(> .wiki-infobox)) .wiki-section-prose {
+    max-width: none;        /* drop the single-column reading cap */
+    columns: 2;
+    column-gap: 48px;
   }
 }
 
+/* ════════════════════════════════════════════════════════════════════
+   §15-INFOBOX — INFOBOX (standalone bank component — BANK TYPE #1)
+   ════════════════════════════════════════════════════════════════════
+   A self-contained, parent-agnostic component: a key/value fact panel
+   with a header (label + title) and an OPTIONAL status badge (§15-b).
+   Used inside the overview today, but reusable anywhere. Edit here once
+   and every infobox sitewide updates. Colors come from skin tokens:
+     --infobox-bg / -border / -header-bg / -label-color / -title-color
+     --infobox-key-color / -value-color / -divider
+     --infobox-badge-border / -badge-color   (optional badge)
+   (When the bank grows, this block moves to its own _bank/infobox.css.)
+   ════════════════════════════════════════════════════════════════════ */
 /* ── Infobox container ──────────────────────────────────────────── */
-.wiki-overview-infobox {
+.wiki-infobox {
   align-self: start;
-  background: var(--overview-infobox-bg, transparent);
-  border: 1px solid var(--overview-infobox-border, transparent);
+  background: var(--infobox-bg, transparent);
+  border: 1px solid var(--infobox-border, transparent);
   border-radius: 4px;
   overflow: hidden;
 }
@@ -467,27 +486,27 @@
   /* Scoped to the overview grid so the infobox COMPONENT stays
      parent-agnostic — reusable in any layout without inheriting this
      grid-specific offset. */
-  .wiki-overview > .wiki-overview-infobox {
+  .wiki-overview > .wiki-infobox {
     margin-top: 54px;
   }
 }
 
 /* ── Infobox header band ────────────────────────────────────────── */
-.wiki-overview-infobox-header {
+.wiki-infobox-header {
   padding: 12px 16px;
-  background: var(--overview-infobox-header-bg, transparent);
-  border-bottom: 1px solid var(--overview-infobox-divider, transparent);
+  background: var(--infobox-header-bg, transparent);
+  border-bottom: 1px solid var(--infobox-divider, transparent);
 }
 
-.wiki-overview-infobox-label {
+.wiki-infobox-label {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 9px;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: var(--overview-infobox-label-color, currentColor);
+  color: var(--infobox-label-color, currentColor);
 }
 
-.wiki-overview-infobox-title {
+.wiki-infobox-title {
   font-family: 'Fraunces', 'Spectral', Georgia, serif;
   font-optical-sizing: auto;
   font-variation-settings: "SOFT" 30, "WONK" 0;
@@ -496,11 +515,11 @@
   line-height: 1.15;
   letter-spacing: -0.02em;
   margin-top: 2px;
-  color: var(--overview-infobox-title-color, currentColor);
+  color: var(--infobox-title-color, currentColor);
 }
 
 /* ── Infobox data list (dl) with row dividers ───────────────────── */
-.wiki-overview-infobox-data {
+.wiki-infobox-data {
   margin: 0;
   padding: 0 16px;
   display: grid;
@@ -509,36 +528,36 @@
   column-gap: 0;    /* no column gap so border-top spans across both columns */
 }
 
-.wiki-overview-infobox-data > dt,
-.wiki-overview-infobox-data > dd {
+.wiki-infobox-data > dt,
+.wiki-infobox-data > dd {
   padding: 12px 0;
   margin: 0;
-  border-top: 1px solid var(--overview-infobox-divider, transparent);
+  border-top: 1px solid var(--infobox-divider, transparent);
 }
 
 /* Visual column separation: pad <dt> on the right so key + value
    aren't flush against each other (borders still connect underneath). */
-.wiki-overview-infobox-data > dt {
+.wiki-infobox-data > dt {
   padding-right: 16px;
 }
 
 /* Remove top border from first row (the row right under the header band) */
-.wiki-overview-infobox-data > dt:first-of-type,
-.wiki-overview-infobox-data > dt:first-of-type + dd {
+.wiki-infobox-data > dt:first-of-type,
+.wiki-infobox-data > dt:first-of-type + dd {
   border-top: 0;
 }
 
-.wiki-overview-infobox-data > dt {
+.wiki-infobox-data > dt {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--overview-infobox-key-color, currentColor);
+  color: var(--infobox-key-color, currentColor);
 }
 
-.wiki-overview-infobox-data > dd {
+.wiki-infobox-data > dd {
   font-size: 14px;
-  color: var(--overview-infobox-value-color, currentColor);
+  color: var(--infobox-value-color, currentColor);
 }
 
 
@@ -552,10 +571,10 @@
    fallbacks to the infobox's own divider/key colors.
 
    Tokens (skin-defined, optional):
-     --overview-infobox-badge-border
-     --overview-infobox-badge-color
+     --infobox-badge-border
+     --infobox-badge-color
    ════════════════════════════════════════════════════════════════════ */
-.wiki-overview-infobox-badge {
+.wiki-infobox-badge {
   display: inline-block;
   margin: 14px 16px 16px;
   padding: 3px 8px;
@@ -564,6 +583,6 @@
   font-size: 9px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  border: 1px solid var(--overview-infobox-badge-border, var(--overview-infobox-divider, currentColor));
-  color: var(--overview-infobox-badge-color, var(--overview-infobox-key-color, currentColor));
+  border: 1px solid var(--infobox-badge-border, var(--infobox-divider, currentColor));
+  color: var(--infobox-badge-color, var(--infobox-key-color, currentColor));
 }

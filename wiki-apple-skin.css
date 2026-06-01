@@ -386,22 +386,22 @@ body.wiki-apple {
   --prose-strong-color:    #0a0a0a;            /* emphasized text — full black */
 
   /* §16 — overview infobox tokens (achromatic, hairline-bordered) */
-  --overview-infobox-bg:            #fafafa;
-  --overview-infobox-border:        rgba(0,0,0,.14);
-  --overview-infobox-header-bg:     transparent;   /* no colored header band — Apple restraint */
-  --overview-infobox-label-color:   rgba(0,0,0,.4);
-  --overview-infobox-title-color:   #0a0a0a;
-  --overview-infobox-key-color:     rgba(0,0,0,.44);
-  --overview-infobox-value-color:   rgba(0,0,0,.82);
-  --overview-infobox-divider:       rgba(0,0,0,.10);
-  --overview-infobox-badge-border:  rgba(146,64,14,.3);   /* amber — matches the old discontinued chip */
-  --overview-infobox-badge-color:   #92400e;
+  --infobox-bg:            #fafafa;
+  --infobox-border:        rgba(0,0,0,.14);
+  --infobox-header-bg:     transparent;   /* no colored header band — Apple restraint */
+  --infobox-label-color:   rgba(0,0,0,.4);
+  --infobox-title-color:   #0a0a0a;
+  --infobox-key-color:     rgba(0,0,0,.44);
+  --infobox-value-color:   rgba(0,0,0,.82);
+  --infobox-divider:       rgba(0,0,0,.10);
+  --infobox-badge-border:  rgba(146,64,14,.3);   /* amber — matches the old discontinued chip */
+  --infobox-badge-color:   #92400e;
 }
 
 /* Engage the Fraunces SOFT axis on section + infobox titles (Apple house
    style — matches the hero title treatment in §9). */
 body.wiki-apple .wiki-section-title,
-body.wiki-apple .wiki-overview-infobox-title {
+body.wiki-apple .wiki-infobox-title {
   font-variation-settings: "SOFT" 30, "WONK" 0;
 }
 

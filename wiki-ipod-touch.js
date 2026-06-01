@@ -153,15 +153,15 @@ function renderOverview(){
     +'<h2 class="sec-h2 fr" style="margin-bottom:24px;">'+PAGE_DATA.overview.heading+'</h2>'
     + paraList(o.paragraphs)
     +'</div>'
-    +'<aside class="wiki-overview-infobox">'
-    +'  <div class="wiki-overview-infobox-header">'
-    +'    <div class="wiki-overview-infobox-label">Infobox</div>'
-    +'    <div class="wiki-overview-infobox-title">'+ib.name+'</div>'
+    +'<aside class="wiki-infobox">'
+    +'  <div class="wiki-infobox-header">'
+    +'    <div class="wiki-infobox-label">Infobox</div>'
+    +'    <div class="wiki-infobox-title">'+ib.name+'</div>'
     +'  </div>'
-    +'  <dl class="wiki-overview-infobox-data">'
+    +'  <dl class="wiki-infobox-data">'
     + ib.rows.map(function(r){ return '<dt>'+r[0]+'</dt><dd>'+r[1]+'</dd>'; }).join('')
     +'  </dl>'
-    + (ib.discontinued ? '<span class="wiki-overview-infobox-badge">'+ib.discontinued+'</span>' : '')
+    + (ib.discontinued ? '<span class="wiki-infobox-badge">'+ib.discontinued+'</span>' : '')
     +'</aside>'
     +'</div>';
 }
