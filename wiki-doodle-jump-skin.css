@@ -601,21 +601,21 @@ body.wiki-doodle-jump {
   /* §16 — overview infobox tokens (the sticky-note styling is layered
      on separately below via .dj-infobox-sticky; these set the canon
      shell's text colors to match the field-notebook palette) */
-  --overview-infobox-bg:            transparent;  /* .sticky paints the bg */
-  --overview-infobox-border:        transparent;  /* .sticky paints the border */
-  --overview-infobox-header-bg:     transparent;
-  --overview-infobox-label-color:   #e6453a;      /* spring — old "Field card" color */
-  --overview-infobox-title-color:   #1f2a3d;      /* ink */
-  --overview-infobox-key-color:     #6b6b6b;      /* graphite-soft */
-  --overview-infobox-value-color:   #1f2a3d;      /* ink */
-  --overview-infobox-divider:       rgba(31,42,61,.10);
+  --infobox-bg:            transparent;  /* .sticky paints the bg */
+  --infobox-border:        transparent;  /* .sticky paints the border */
+  --infobox-header-bg:     transparent;
+  --infobox-label-color:   #e6453a;      /* spring — old "Field card" color */
+  --infobox-title-color:   #1f2a3d;      /* ink */
+  --infobox-key-color:     #6b6b6b;      /* graphite-soft */
+  --infobox-value-color:   #1f2a3d;      /* ink */
+  --infobox-divider:       rgba(31,42,61,.10);
 }
 
 /* Section titles + infobox title keep Doodle Jump's marker (Fraunces)
    display font — the §15 canon already specifies Fraunces, this just
    confirms the skin family + the heavier marker weighting applies. */
 body.wiki-doodle-jump .wiki-section-title,
-body.wiki-doodle-jump .wiki-overview-infobox-title {
+body.wiki-doodle-jump .wiki-infobox-title {
   font-family: 'Fraunces', Georgia, serif;
   font-optical-sizing: auto;
   font-variation-settings: "SOFT" 40, "WONK" 0;
@@ -645,7 +645,7 @@ body.wiki-doodle-jump .dj-title-dot { color: #e6453a; }
 /* ── Tier-3: sticky-note infobox ────────────────────────────────────
    The canon infobox shell is transparent (tokens above); this layers
    the sticky-note look — cream fill, tape, tilt, soft shadow, padding —
-   on top of the canon .wiki-overview-infobox via .dj-infobox-sticky.
+   on top of the canon .wiki-infobox via .dj-infobox-sticky.
    (.sticky / .tilt-l / .tape rules already exist above; this adds the
    pad + radius the old inline p-6 / border-radius supplied.)      */
 body.wiki-doodle-jump .dj-infobox-sticky {

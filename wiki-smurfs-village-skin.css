@@ -337,21 +337,21 @@ body.wiki-smurfs-village {
   --prose-strong-color:    #283832;          /* ink                */
 
   /* §16 — overview infobox tokens (parchment card, no colored header band) */
-  --overview-infobox-bg:            #FAF6EC;
-  --overview-infobox-border:        rgba(40,56,50,.18);
-  --overview-infobox-header-bg:     transparent;
-  --overview-infobox-label-color:   #8b948b;
-  --overview-infobox-title-color:   #283832;
-  --overview-infobox-key-color:     #8b948b;
-  --overview-infobox-value-color:   #283832;
-  --overview-infobox-divider:       rgba(40,56,50,.13);
+  --infobox-bg:            #FAF6EC;
+  --infobox-border:        rgba(40,56,50,.18);
+  --infobox-header-bg:     transparent;
+  --infobox-label-color:   #8b948b;
+  --infobox-title-color:   #283832;
+  --infobox-key-color:     #8b948b;
+  --infobox-value-color:   #283832;
+  --infobox-divider:       rgba(40,56,50,.13);
 }
 
 /* Engage the display font on canon section + infobox titles
    (the §15 canon already sets Fraunces; this just confirms Smurfs'
    display family applies, matching the old .sechead h2 look). */
 body.wiki-smurfs-village .wiki-section-title,
-body.wiki-smurfs-village .wiki-overview-infobox-title {
+body.wiki-smurfs-village .wiki-infobox-title {
   font-family: var(--font-display);
 }
 

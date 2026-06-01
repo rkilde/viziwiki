@@ -103,7 +103,7 @@
 .ov-text p strong{color:#0a0a0a;font-weight:600;}
 .ov-text p em{font-style:italic;}
 
-/* Infobox — now uses the universal .wiki-overview-infobox component
+/* Infobox — now uses the universal .wiki-infobox component
    (wiki-universals.css §15). The iPod-specific .infobox/.ib-* styles were
    removed so every infobox sitewide shares one canonical format. */
 

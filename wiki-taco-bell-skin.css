@@ -42,14 +42,14 @@ body.wiki-taco-bell {
   --prose-strong-color:   #2a1f15;                  /* full dark for emphasis */
 
   /* §16 overview infobox tokens — TB's signature purple gradient header */
-  --overview-infobox-bg:            #f4ede4;
-  --overview-infobox-border:        rgba(42,31,21,0.20);
-  --overview-infobox-header-bg:     linear-gradient(to bottom right, #c026d3, #581c87);
-  --overview-infobox-label-color:   rgba(255,255,255,0.7);
-  --overview-infobox-title-color:   #ffffff;
-  --overview-infobox-key-color:     rgba(42,31,21,0.55);
-  --overview-infobox-value-color:   #2a1f15;
-  --overview-infobox-divider:       rgba(42,31,21,0.10);
+  --infobox-bg:            #f4ede4;
+  --infobox-border:        rgba(42,31,21,0.20);
+  --infobox-header-bg:     linear-gradient(to bottom right, #c026d3, #581c87);
+  --infobox-label-color:   rgba(255,255,255,0.7);
+  --infobox-title-color:   #ffffff;
+  --infobox-key-color:     rgba(42,31,21,0.55);
+  --infobox-value-color:   #2a1f15;
+  --infobox-divider:       rgba(42,31,21,0.10);
 }
 
 /* §13 section ordering — Taco Bell-specific section orders.
