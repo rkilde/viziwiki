@@ -21,6 +21,34 @@
 
 
 /* ════════════════════════════════════════════════════════════════════
+   PAGE-CLASS BASE — palette tokens · reset · page background
+   ════════════════════════════════════════════════════════════════════
+   The light menu-page palette, box-sizing reset, page background, and a
+   couple of helpers — shared by every menu page. Consolidated here from
+   the per-page inline <style> so it lives in ONE place. (Per-page accent
+   colors are still set inline on each page.)
+   ════════════════════════════════════════════════════════════════════ */
+:root {
+  --background: oklch(0.972 0.012 85);
+  --foreground: oklch(0.18 0.02 60);
+  --card: oklch(1 0 0);
+  --secondary: oklch(0.93 0.02 80);
+  --muted-foreground: oklch(0.45 0.03 60);
+  --hot-pink: rgba(255,100,180,.55);
+  --tb-purple: #702082;
+  --tb-yellow: #FED141;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { background: var(--background); color: var(--foreground); }
+.text-muted { color: var(--muted-foreground); }
+.bg-card { background: var(--card); }
+
+/* ── Deal-detail modal (CSS-only :target overlay; used by value/deal menu pages) ── */
+.deal-modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;z-index:9999;background:rgba(0,0,0,.45);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:1rem}
+.deal-modal:target{display:flex}
+.deal-card{background:#fff;border-radius:14px;max-width:440px;width:100%;max-height:85vh;overflow-y:auto;position:relative;box-shadow:0 24px 64px rgba(42,31,21,.22)}
+
+/* ════════════════════════════════════════════════════════════════════
    HALFTONE OVERLAY — hero dot texture
    ════════════════════════════════════════════════════════════════════
    The pink-dot overlay laid over the hero gradient (mix-blend in markup).
@@ -65,16 +93,13 @@
 
 
 /* ════════════════════════════════════════════════════════════════════
-   PAGE SECTION + EYEBROW — menu page content sections
+   EYEBROW — menu page section eyebrow (mono label)
    ════════════════════════════════════════════════════════════════════
-   Menu pages use a slightly wider section (1500px) than the universal
-   wiki section. Eyebrow matches the universal mono-label style.
+   Section spacing comes from the universal .wiki-section-inner
+   (wiki-universals.css §2) — menu pages no longer use a bespoke width.
+   (The old .page-section, an unused 1500px/bespoke-padding container, was
+   removed so all section gutters conform to the universal canon.)
    ════════════════════════════════════════════════════════════════════ */
-.page-section {
-  max-width: 1500px;
-  margin: 0 auto;
-  padding: 3.5rem 1.5rem;
-}
 .eyebrow {
   display: flex;
   align-items: center;
@@ -288,11 +313,9 @@
   border-bottom: 1px solid var(--section-divider, rgba(42,31,21,0.15));
   background: color-mix(in oklab, var(--secondary) 40%, transparent);
 }
-.catalogue-inner {
-  max-width: 1500px;
-  margin: 0 auto;
-  padding: 48px 24px;
-}
+/* .catalogue-inner removed — the catalogue now uses the universal
+   .wiki-section-inner for its gutters, so it aligns with every other
+   section sitewide (wiki-universals.css §2). */
 .catalogue-head {
   margin-bottom: 24px;
   display: flex;
