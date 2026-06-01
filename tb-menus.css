@@ -93,16 +93,13 @@ html, body { background: var(--background); color: var(--foreground); }
 
 
 /* ════════════════════════════════════════════════════════════════════
-   PAGE SECTION + EYEBROW — menu page content sections
+   EYEBROW — menu page section eyebrow (mono label)
    ════════════════════════════════════════════════════════════════════
-   Menu pages use a slightly wider section (1500px) than the universal
-   wiki section. Eyebrow matches the universal mono-label style.
+   Section spacing comes from the universal .wiki-section-inner
+   (wiki-universals.css §2) — menu pages no longer use a bespoke width.
+   (The old .page-section, an unused 1500px/bespoke-padding container, was
+   removed so all section gutters conform to the universal canon.)
    ════════════════════════════════════════════════════════════════════ */
-.page-section {
-  max-width: 1500px;
-  margin: 0 auto;
-  padding: 3.5rem 1.5rem;
-}
 .eyebrow {
   display: flex;
   align-items: center;
@@ -316,11 +313,9 @@ html, body { background: var(--background); color: var(--foreground); }
   border-bottom: 1px solid var(--section-divider, rgba(42,31,21,0.15));
   background: color-mix(in oklab, var(--secondary) 40%, transparent);
 }
-.catalogue-inner {
-  max-width: 1500px;
-  margin: 0 auto;
-  padding: 48px 24px;
-}
+/* .catalogue-inner removed — the catalogue now uses the universal
+   .wiki-section-inner for its gutters, so it aligns with every other
+   section sitewide (wiki-universals.css §2). */
 .catalogue-head {
   margin-bottom: 24px;
   display: flex;
