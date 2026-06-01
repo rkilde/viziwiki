@@ -2413,6 +2413,12 @@
   {% endraw %}
   </style>
 
+  <!-- Universal spacing/sizing/rhythm — loads on every page so layout
+       rules propagate sitewide from one file. Harmless on non-wiki pages
+       (its rules match nothing there). Loads BEFORE extra_head so page
+       and skin styles can still override where needed. -->
+  <link rel="stylesheet" href="/wiki-universals.css">
+
   {% if page.extra_head %}{{ page.extra_head }}{% endif %}
 </head>
 
