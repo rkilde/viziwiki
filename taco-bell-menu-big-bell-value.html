@@ -3,13 +3,11 @@ layout: default
 title: "Big Bell Value Menu · Taco Bell · ViziWiki"
 body_class: "wiki-page wiki-taco-bell"
 extra_head: |
+  <link rel="stylesheet" href="/wiki-typography.css">
   <link rel="stylesheet" href="/wiki-taco-bell-skin.css">
+  <link rel="stylesheet" href="/tb-menus.css">
 ---
 {% raw %}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,300;9..144,0,600;9..144,0,700;9..144,1,400;9..144,1,600&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
 <style>
   :root {
     --background: oklch(0.972 0.012 85);
@@ -17,99 +15,86 @@ extra_head: |
     --card: oklch(1 0 0);
     --secondary: oklch(0.93 0.02 80);
     --muted-foreground: oklch(0.45 0.03 60);
+    --hot-pink: rgba(255,100,180,.55);
   }
   *, *::before, *::after { box-sizing: border-box; }
   html, body { background: var(--background); color: var(--foreground); }
-  body { font-family: 'Spectral', Georgia, serif; }
-  .font-display { font-family: 'Fraunces', Georgia, serif; font-optical-sizing: auto; letter-spacing: -.02em; }
-  .font-mono { font-family: 'JetBrains Mono', monospace; }
-  .halftone { background-image: radial-gradient(rgba(255,100,180,.55) 1.4px, transparent 1.6px); background-size: 10px 10px; }
-  .eyebrow { display: flex; align-items: center; gap: .5rem; font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .25em; color: var(--muted-foreground); margin-bottom: .5rem; }
-  .page-section { max-width: 1500px; margin: 0 auto; padding: 3.5rem 1.5rem; }
-  .ob-pill { display: inline-block; padding: 5px 12px; border: 1px solid rgba(42,31,21,0.1); border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase; color: rgba(42,31,21,0.85); white-space: nowrap; background: #fff; transition: background .15s, border-color .15s; }
-  @media (max-width: 767px) {
-    .catalogue-cols { columns: 1 !important; }
-    .hero-grid { display: block !important; padding: 2.5rem 1.25rem !important; }
-    .hero-grid > div:last-child { margin-top: 1.5rem; }
-    .overview-prose { grid-template-columns: 1fr !important; }
-  }
+  /* Component styles (.halftone .hero-grid .ob-pill .page-section .eyebrow
+     + catalogue + responsive) now live in /tb-menus.css. Fonts via /wiki-typography.css. */
 </style>
 
 <!-- ═══════════════════ HERO ═══════════════════ -->
-<section id="overview" class="relative overflow-hidden border-b border-foreground/20 text-white"
-  style="background:linear-gradient(135deg,#92400e 0%,#451a03 55%,#1c0700 100%)">
-  <div class="halftone pointer-events-none absolute inset-0 mix-blend-overlay opacity-20"></div>
-  <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(to right,rgba(28,7,0,.6),rgba(69,26,3,.1),transparent)"></div>
-  <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(to bottom,rgba(0,0,0,.2) 0%,transparent 55%)"></div>
+<section id="overview" class="wiki-hero" style="background:linear-gradient(135deg,#92400e 0%,#451a03 55%,#1c0700 100%);color:#fff;border-bottom:1px solid rgba(255,255,255,.2)">
+  <div class="halftone" style="position:absolute;inset:0;pointer-events:none;mix-blend-mode:overlay;opacity:.2"></div>
+  <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(to right,rgba(28,7,0,.6),rgba(69,26,3,.1),transparent)"></div>
+  <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,rgba(0,0,0,.2) 0%,transparent 55%)"></div>
+
   <!-- Ghost icon: dollar sign / value -->
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-    class="pointer-events-none absolute -right-8 -bottom-8 opacity-[.07]"
-    style="width:380px;height:380px;color:#fff;transform:rotate(10deg)">
+    style="position:absolute;right:-2rem;bottom:-2rem;pointer-events:none;opacity:.07;width:380px;height:380px;color:#fff;transform:rotate(10deg)">
     <line x1="12" y1="1" x2="12" y2="23"/>
     <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
   </svg>
 
-  <div class="hero-grid relative mx-auto" style="display:grid;grid-template-columns:1.6fr 1fr;gap:2rem;max-width:1500px;padding:3.5rem 1.5rem">
-    <div>
-      <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[.25em]" style="backdrop-filter:blur(4px)">
-        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#9ca3af;flex-shrink:0"></span>
+  <div class="wiki-hero-inner">
+    <div class="wiki-hero-content">
+      <div class="wiki-hero-eyebrow" style="border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;backdrop-filter:blur(4px)">
+        <span class="wiki-hero-eyebrow-dot" style="background:#9ca3af"></span>
         Value · Retired · 2004 – 2008
       </div>
-      <h1 class="font-display" style="font-size:clamp(2.75rem,7vw,4.75rem);font-weight:700;line-height:.95;color:#fff;margin-top:.75rem">
-        Big Bell Value Menu<span style="color:#fcd34d">.</span>
-      </h1>
-      <p style="font-family:'Spectral',Georgia,serif;font-size:1.05rem;line-height:1.7;max-width:36rem;margin-top:1rem;color:rgba(255,255,255,.85)">
+      <h1 class="wiki-hero-title" style="margin-top:.75rem">Big Bell Value Menu<span class="wiki-hero-title-accent" style="color:#fcd34d">.</span></h1>
+      <p class="wiki-hero-desc" style="color:rgba(255,255,255,.85)">
         The answer to McDonald's Dollar Menu wasn't a dollar — it was a half-pound. Launched February 2004, the Big Bell Value Menu won the early-2000s value war through sheer portion size rather than rock-bottom pricing.
       </p>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;overflow:hidden;border-radius:3px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);align-self:center">
-      <div style="background:rgba(28,7,0,.55);padding:.75rem 1rem"><div class="font-display" style="font-size:1.5rem;font-weight:600;color:#fff">2004</div><div class="font-mono" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">Launched</div></div>
-      <div style="background:rgba(28,7,0,.55);padding:.75rem 1rem"><div class="font-display" style="font-size:1.5rem;font-weight:600;color:#fff">99¢</div><div class="font-mono" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">Starting price</div></div>
-      <div style="background:rgba(28,7,0,.55);padding:.75rem 1rem"><div class="font-display" style="font-size:1.5rem;font-weight:600;color:#fff">½ lb</div><div class="font-mono" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">Signature format</div></div>
-      <div style="background:rgba(28,7,0,.55);padding:.75rem 1rem"><div class="font-display" style="font-size:1.5rem;font-weight:600;color:#9ca3af">Retired</div><div class="font-mono" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">Status</div></div>
+      <div class="wiki-hero-stats">
+        <div class="wiki-hero-stat"><div class="wiki-hero-stat-num">2004</div><div class="wiki-hero-stat-label">Launched</div></div>
+        <div class="wiki-hero-stat"><div class="wiki-hero-stat-num">99¢</div><div class="wiki-hero-stat-label">Starting price</div></div>
+        <div class="wiki-hero-stat"><div class="wiki-hero-stat-num">½ lb</div><div class="wiki-hero-stat-label">Signature format</div></div>
+        <div class="wiki-hero-stat"><div class="wiki-hero-stat-num" style="color:#9ca3af">Retired</div><div class="wiki-hero-stat-label">Status</div></div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ═══════════════════ OVERVIEW ═══════════════════ -->
-<section style="background:var(--card);border-bottom:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
-  <div class="page-section">
-    <div class="eyebrow">
+<div class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
       Overview
     </div>
-    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:1.5rem">Win on weight, not on cents.</h2>
-    <div class="overview-prose" style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem 3rem;border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);padding-top:2rem">
+    <h2 class="wiki-section-title">Win on weight, not on cents.</h2>
+    <div class="overview-prose" style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem 3rem;border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);padding-top:2rem;margin-top:1.5rem">
       <p style="font-size:15px;line-height:1.7">The Big Bell Value Menu launched on <strong>February 2004</strong> as Taco Bell's calculated response to the early-2000s fast-food value wars. McDonald's Dollar Menu — introduced in 2002 — had set the industry reference point: one dollar, one item, no negotiation. Burger King and Wendy's followed with comparable offerings. Rather than match them dollar-for-dollar, Taco Bell's strategy was to reframe the value equation entirely. Instead of asking "is this cheap?" the Big Bell Value Menu asked "how much do you get?" The answer, on most items, was a half pound — a portion size that made the comparable Dollar Menu burger look visibly inadequate.</p>
       <p style="font-size:15px;line-height:1.7">The menu launched with nine permanent items, five of which were billed as "grande" or "½ lb" to foreground their size advantage — three half-pound burritos, the Grande Soft Taco, and the Double Decker Taco. The Cheesy Double Beef Burrito — filled with a double portion of seasoned beef and nacho cheese sauce — became the program's signature item and its most enduring legacy. The Caramel Apple Empanada anchored the dessert slot, and the Beef Combo Burrito gave the menu a low-cost beef-and-bean entry point at 99¢. Prices ranged from 99¢ to approximately $1.29 across the lineup.</p>
       <p style="font-size:15px;line-height:1.7">The timing was deliberately competitive. In 2003, Taco Bell's same-store sales had been under pressure from the broader QSR value push, and the brand needed a value narrative that was both differentiated and operationally executable at scale. The Big Bell Value Menu achieved both: it used existing kitchen infrastructure and inventory, required no new equipment, and communicated its advantage through menu board language ("grande," "½ lb") rather than through price comparison. <em>Volume</em> was the positioning — the consumer's sense that they were getting substantially more than a dollar could buy at a burger chain.</p>
       <p style="font-size:15px;line-height:1.7">The program ran from 2003 until <strong>2008</strong>, when the 2008 recession prompted a strategic pivot. As consumer disposable income contracted sharply, the "½ lb for 99¢" pitch was superseded by a more urgent proposition: exact pocket-change pricing at three rigid tiers. The Big Bell Value Menu was retired and replaced by the <strong>79¢ / 89¢ / 99¢ "Why Pay More!?" Value Menu</strong> — same franchise, different economic moment, fundamentally different strategy. Several Big Bell items carried forward into the Why Pay More lineup, including the Cheesy Double Beef Burrito and Caramel Apple Empanada, but the "grande" branding and volume-first positioning did not.</p>
     </div>
   </div>
-</section>
+</div>
 
 <!-- ═══════════════════ CATALOGUE ═══════════════════ -->
-<section id="catalogue" style="border-top:1px solid rgba(42,31,21,0.15);border-bottom:1px solid rgba(42,31,21,0.15);background:color-mix(in oklab,var(--secondary) 40%,transparent)">
-  <div style="max-width:1500px;margin:0 auto;padding:48px 24px">
-    <div style="margin-bottom:24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px">
+<section id="catalogue" class="catalogue-section">
+  <div class="catalogue-inner">
+    <div class="catalogue-head">
       <div>
-        <div style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(42,31,21,0.35)">
+        <div class="wiki-section-eyebrow">
           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" x2="21" y1="6" y2="6"/><line x1="10" x2="21" y1="12" y2="12"/><line x1="10" x2="21" y1="18" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
           Full Catalogue
         </div>
-        <h2 style="font-family:'Fraunces',Georgia,serif;font-size:30px;font-weight:600;letter-spacing:-0.02em">Every Big Bell item</h2>
+        <h2 class="catalogue-title">Every Big Bell item</h2>
       </div>
-      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(42,31,21,0.35)">9 items + 1 LTO &middot; 4 categories &middot; 99¢ – $1.29</span>
+      <span class="catalogue-summary">9 items + 1 LTO &middot; 4 categories &middot; 99¢ – $1.29</span>
     </div>
 
-    <div class="catalogue-cols" style="columns:2;column-gap:16px">
+    <div class="catalogue-cols">
 
       <!-- ½ LB HEAVY BURRITOS -->
-      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #92400e;padding:20px;break-inside:avoid;margin-bottom:16px">
-        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#92400e">½ lb heavy burritos</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px">3 items · $1.19 – $1.29 · volume flagship tier</div>
-        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0"></div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px">
+      <div class="cat-card" style="border-left-color:#92400e">
+        <div class="cat-card-title" style="color:#92400e">½ lb heavy burritos</div>
+        <div class="cat-card-count">3 items · $1.19 – $1.29 · volume flagship tier</div>
+        <div class="cat-card-divider"></div>
+        <div class="cat-card-pills">
           <span class="ob-pill" style="cursor:pointer" onclick="showBBItem('Cheesy Double Beef Burrito')" onmouseover="this.style.background='#92400e1a';this.style.borderColor='#92400e44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">&#189; lb. Cheesy Double Beef Burrito</span>
           <span class="ob-pill" style="cursor:pointer" onclick="showBBItem('Beef and Potato Burrito')" onmouseover="this.style.background='#92400e1a';this.style.borderColor='#92400e44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">&#189; lb. Beef &amp; Potato Burrito</span>
           <span class="ob-pill" style="cursor:pointer" onclick="showBBItem('Spicy Chicken Burrito')" onmouseover="this.style.background='#92400e1a';this.style.borderColor='#92400e44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">&#189; lb. Spicy Chicken Burrito</span>
@@ -117,11 +102,11 @@ extra_head: |
       </div>
 
       <!-- GRANDE & MULTI-LAYER SPECIALTIES -->
-      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #6d28d9;padding:20px;break-inside:avoid;margin-bottom:16px">
-        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#6d28d9">Grande &amp; multi-layer specialties</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px">3 items · complex textures, increased volume</div>
-        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0"></div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px">
+      <div class="cat-card" style="border-left-color:#6d28d9">
+        <div class="cat-card-title" style="color:#6d28d9">Grande &amp; multi-layer specialties</div>
+        <div class="cat-card-count">3 items · complex textures, increased volume</div>
+        <div class="cat-card-divider"></div>
+        <div class="cat-card-pills">
           <span class="ob-pill" style="cursor:pointer" onclick="showBBItem('Grande Soft Taco')" onmouseover="this.style.background='#6d28d91a';this.style.borderColor='#6d28d944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Grande Soft Taco</span>
           <span class="ob-pill" style="cursor:pointer" onclick="showBBItem('Double Decker Taco')" onmouseover="this.style.background='#6d28d91a';this.style.borderColor='#6d28d944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Double Decker Taco</span>
           <span class="ob-pill" style="cursor:pointer" onclick="showBBItem('Spicy Chicken Soft Taco')" onmouseover="this.style.background='#6d28d91a';this.style.borderColor='#6d28d944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Spicy Chicken Soft Taco</span>
@@ -129,11 +114,11 @@ extra_head: |
       </div>
 
       <!-- VALUE CLASSICS & SWEET ADDITIONS -->
-      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #0c4a6e;padding:20px;break-inside:avoid;margin-bottom:16px">
-        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#0c4a6e">Value classics &amp; sweet additions</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px">3 items · 89¢ – 99¢ · lower-tier entry points</div>
-        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0"></div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px">
+      <div class="cat-card" style="border-left-color:#0c4a6e">
+        <div class="cat-card-title" style="color:#0c4a6e">Value classics &amp; sweet additions</div>
+        <div class="cat-card-count">3 items · 89¢ – 99¢ · lower-tier entry points</div>
+        <div class="cat-card-divider"></div>
+        <div class="cat-card-pills">
           <span class="ob-pill" style="cursor:pointer" onclick="showBBItem('Cheesy Bean and Rice Burrito')" onmouseover="this.style.background='#0c4a6e1a';this.style.borderColor='#0c4a6e44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Cheesy Bean and Rice Burrito</span>
           <span class="ob-pill" style="cursor:pointer" onclick="showBBItem('Beef Combo Burrito')" onmouseover="this.style.background='#0c4a6e1a';this.style.borderColor='#0c4a6e44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Beef Combo Burrito</span>
           <span class="ob-pill" style="cursor:pointer" onclick="showBBItem('Caramel Apple Empanada')" onmouseover="this.style.background='#0c4a6e1a';this.style.borderColor='#0c4a6e44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Caramel Apple Empanada</span>
@@ -141,12 +126,12 @@ extra_head: |
       </div>
 
       <!-- LATE-ERA PROMOTIONAL ROTATIONS -->
-      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #a16207;padding:20px;break-inside:avoid;margin-bottom:16px;position:relative;overflow:hidden">
+      <div class="cat-card" style="border-left-color:#a16207;position:relative;overflow:hidden">
         <div style="position:absolute;top:-1px;right:-1px;width:85px;height:85px;overflow:hidden;z-index:2;pointer-events:none"><span style="position:absolute;display:block;width:120px;padding:5px 0;background:rgba(161,98,7,0.75);color:#fff;font-family:'JetBrains Mono',monospace;font-size:6.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;text-align:center;transform:rotate(45deg);top:20px;right:-28px;box-shadow:0 2px 4px rgba(0,0,0,.15)">2006 – 2007</span></div>
-        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#a16207;padding-right:80px;line-height:1.2">Late-era promotional rotations</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px">1 item · $1.29 · limited-time, 2006–2007</div>
-        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0"></div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px">
+        <div class="cat-card-title" style="color:#a16207;padding-right:80px;line-height:1.2">Late-era promotional rotations</div>
+        <div class="cat-card-count">1 item · $1.29 · limited-time, 2006–2007</div>
+        <div class="cat-card-divider"></div>
+        <div class="cat-card-pills">
           <span class="ob-pill" style="cursor:pointer" onclick="showBBItem('Extreme Cheese Beef Quesadilla')" onmouseover="this.style.background='#a162071a';this.style.borderColor='#a1620744'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Extreme Cheese &amp; Beef Quesadilla</span>
         </div>
         <div style="margin-top:12px;padding:8px 10px;border-radius:4px;background:rgba(42,31,21,0.04);font-family:'JetBrains Mono',monospace;font-size:9px;line-height:1.6;color:rgba(42,31,21,0.45)">As the menu matured, corporate used the Big Bell Value platform to test cheese-centric limited-time items before the 2008 transition to Why Pay More.</div>
@@ -266,22 +251,22 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') close
 
 
 <!-- ═══════════════════ STRATEGIC ORIGIN ═══════════════════ -->
-<section id="strategy" style="background:var(--background);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
-  <div class="page-section">
-    <div class="eyebrow">
+<div class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       Strategic Origin &amp; The "Size vs. Price" Market War
     </div>
-    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:2rem">Win on weight, not on cents.</h2>
+    <h2 class="wiki-section-title" style="margin-bottom:2rem">Win on weight, not on cents.</h2>
 
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-bottom:2rem">
       <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);border-top:3px solid #92400e;background:var(--card);padding:1.125rem 1.25rem">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#92400e;margin-bottom:.375rem">Competitive threat · 2002</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#92400e;margin-bottom:.375rem">Competitive threat · 2002</div>
         <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.625rem">The Dollar Menu threat</div>
         <p style="font-size:13.5px;line-height:1.65">McDonald's launched its national Dollar Menu in November 2002 — a permanent, clearly communicated $1-per-item value tier that immediately set the consumer reference point for fast-food value across the entire industry. Wendy's followed with a comparable 99¢ value stack. Between them, they captured significant late-night and youth-demographic traffic that Taco Bell had previously owned on price perception alone. The issue for Taco Bell was structural: the Dollar Menu's items — a McChicken sandwich, small fries, a cheeseburger — were tangible, recognizable, and at a psychologically clean price. Taco Bell's existing value items were cheaper in raw cost but communicated no coherent narrative about <em>why</em> they were worth choosing.</p>
       </div>
       <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);border-top:3px solid #6d28d9;background:var(--card);padding:1.125rem 1.25rem">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#6d28d9;margin-bottom:.375rem">Corporate pivot · 2003</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#6d28d9;margin-bottom:.375rem">Corporate pivot · 2003</div>
         <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.625rem">The weight-based counter-strategy</div>
         <p style="font-size:13.5px;line-height:1.65">Rather than compete on price parity — matching McDonald's at exactly $1 per item — Taco Bell's leadership chose to reframe the value equation entirely. The strategy was built on a single consumer insight: a dollar-menu burger is roughly 3–4 oz. A half-pound burrito is 8 oz. If the consumer's mental model of "value" is <em>how much food per dollar</em>, the math is decisive. The Big Bell Value Menu was engineered around this premise. The "½ lb." and "Grande" designations were not incidental — they were the entire marketing claim, printed in bold on every board panel. The weight was the ad.</p>
         <p style="font-size:13.5px;line-height:1.65;margin-top:.75rem">Critically, the ½ lb. target was achievable cheaply. Seasoned rice, refried beans, and nacho cheese sauce — already in every Taco Bell kitchen — added mass at a fraction of the cost of additional beef. A Cheesy Double Beef Burrito weighed half a pound; it did not contain half a pound of beef. The strategy was not to give the consumer more expensive food — it was to give them more <em>food</em>.</p>
@@ -290,63 +275,63 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') close
 
     <!-- Rollout timeline -->
     <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);padding:1.25rem 1.5rem">
-      <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:1rem">June 2003 national rollout — key milestones</div>
+      <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:1rem">June 2003 national rollout — key milestones</div>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.75rem">
         <div style="padding:.75rem;border-radius:4px;background:color-mix(in oklab,var(--secondary) 60%,transparent)">
           <div class="font-display" style="font-size:1rem;font-weight:600">Early 2003</div>
-          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-foreground);margin-top:.2rem">Internal strategy finalised</div>
+          <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-foreground);margin-top:.2rem">Internal strategy finalised</div>
           <p style="font-size:11.5px;line-height:1.5;margin-top:.375rem;color:var(--muted-foreground)">Corporate greenlit the Big Bell Value Menu concept following competitive analysis of the McDonald's Dollar Menu's market impact. Regional test markets ran from mid-2003.</p>
         </div>
         <div style="padding:.75rem;border-radius:4px;background:color-mix(in oklab,var(--secondary) 60%,transparent)">
           <div class="font-display" style="font-size:1rem;font-weight:600">Spring 2003</div>
-          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-foreground);margin-top:.2rem">Franchise transition</div>
+          <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-foreground);margin-top:.2rem">Franchise transition</div>
           <p style="font-size:11.5px;line-height:1.5;margin-top:.375rem;color:var(--muted-foreground)">Franchise operators received updated POS configuration, kitchen build guides, and drive-thru board panel kits featuring purple-accented Big Bell Value branding.</p>
         </div>
         <div style="padding:.75rem;border-radius:4px;background:color-mix(in oklab,var(--secondary) 60%,transparent);border:1px solid color-mix(in oklab,#92400e 25%,transparent)">
           <div class="font-display" style="font-size:1rem;font-weight:600;color:#92400e">February 2004</div>
-          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:#92400e;margin-top:.2rem">Nationwide launch</div>
+          <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:#92400e;margin-top:.2rem">Nationwide launch</div>
           <p style="font-size:11.5px;line-height:1.5;margin-top:.375rem;color:var(--muted-foreground)">Full systemwide rollout backed by Q1 2004 national media campaign. Ten items across four tiers. Purple-accented board panels dedicated exclusively to Big Bell branding appeared in locations nationwide. June 2003 marks an earlier regional test window.</p>
         </div>
         <div style="padding:.75rem;border-radius:4px;background:color-mix(in oklab,var(--secondary) 60%,transparent)">
           <div class="font-display" style="font-size:1rem;font-weight:600">2004–2008</div>
-          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-foreground);margin-top:.2rem">Active program period</div>
+          <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-foreground);margin-top:.2rem">Active program period</div>
           <p style="font-size:11.5px;line-height:1.5;margin-top:.375rem;color:var(--muted-foreground)">Four-year run as Taco Bell's primary value narrative. Items rotated through promotional positions; late-era LTO additions tested new formats.</p>
         </div>
         <div style="padding:.75rem;border-radius:4px;background:color-mix(in oklab,var(--secondary) 60%,transparent)">
           <div class="font-display" style="font-size:1rem;font-weight:600">May 2008</div>
-          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-foreground);margin-top:.2rem">Formal retirement</div>
+          <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-foreground);margin-top:.2rem">Formal retirement</div>
           <p style="font-size:11.5px;line-height:1.5;margin-top:.375rem;color:var(--muted-foreground)">Big Bell Value Menu dismantled. Replaced by the Why Pay More!? 79¢/89¢/99¢ menu in direct response to the 2008 economic recession.</p>
         </div>
       </div>
     </div>
   </div>
-</section>
+</div>
 
 <!-- ═══════════════════ OPERATIONS ═══════════════════ -->
-<section id="operations" style="background:var(--card);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
-  <div class="page-section">
-    <div class="eyebrow">
+<div class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
       Ingredient Optimisation &amp; Kitchen Operations
     </div>
-    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:2rem">Half a pound of food. Not half a pound of beef.</h2>
+    <h2 class="wiki-section-title" style="margin-bottom:2rem">Half a pound of food. Not half a pound of beef.</h2>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem">
 
       <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);border-top:3px solid #92400e;background:var(--card);padding:1.125rem 1.25rem">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#92400e;margin-bottom:.375rem">Supply chain · Cross-utilisation</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#92400e;margin-bottom:.375rem">Supply chain · Cross-utilisation</div>
         <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.625rem">No new proteins. Zero new SKUs.</div>
         <p style="font-size:13.5px;line-height:1.65">The Big Bell Value Menu was engineered to require zero raw material introductions to the Taco Bell supply chain. Every component — seasoned beef, refried beans, seasoned rice, nacho cheese sauce, shredded chicken — was already present and in bulk procurement across the system. The "½ lb." weight target was achieved primarily through volume additions of rice, beans, and nacho cheese sauce rather than additional protein. Seasoned rice costs Taco Bell a fraction of a cent per gram at wholesale QSR scale; refried beans and nacho cheese sauce are similarly low-cost. By wrapping these filler components around a standard portion of beef or chicken, the kitchen could deliver a visually and physically imposing burrito at a food cost that kept franchise margins intact at the 99¢–$1.29 price tier.</p>
       </div>
 
       <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);border-top:3px solid #6d28d9;background:var(--card);padding:1.125rem 1.25rem">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#6d28d9;margin-bottom:.375rem">Assembly speed · Drive-thru engineering</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#6d28d9;margin-bottom:.375rem">Assembly speed · Drive-thru engineering</div>
         <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.625rem">The cylinder-roll advantage</div>
         <p style="font-size:13.5px;line-height:1.65">A ½ lb. burrito is operationally simple: lay out a large flour tortilla, deposit the filling components in a horizontal strip, roll once, tuck, roll to close. The process is linear and time-predictable — fill, roll, wrap, hand off. It requires no fold points, no press sequences, and no component sequencing precision of the kind required by items like the Crunchwrap Supreme (five fold points, precise layering order, flat-top press required). During peak drive-thru volume — the lunch and late-night windows the Big Bell menu was targeting — simpler build formats are critical. A burrito that takes a trained crew member 18 seconds to build protects ticket times in a way that a complex fold-and-press item cannot.</p>
         <p style="font-size:13.5px;line-height:1.65;margin-top:.75rem">The Double Decker Taco introduced one operational complexity — the bean-adhesive step, where warm refried beans are spread across the soft tortilla before the crunchy shell is nested inside — but this added only a few seconds and could be batched ahead of peak windows by staging pre-beaned soft tortillas.</p>
       </div>
 
       <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);border-top:3px solid #0c4a6e;background:var(--card);padding:1.125rem 1.25rem">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#0c4a6e;margin-bottom:.375rem">Fryer infrastructure · Dessert engineering</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#0c4a6e;margin-bottom:.375rem">Fryer infrastructure · Dessert engineering</div>
         <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.625rem">The empanada fryer-slot asset</div>
         <p style="font-size:13.5px;line-height:1.65">The Caramel Apple Empanada was engineered to fit the existing fryer station infrastructure already present in every Taco Bell location for the Mexican Pizza shells. The Mexican Pizza shell is a small, flat, fried flour disc — a format requiring a dedicated fryer basket and timed fry cycle. The empanada turnover is dimensionally compatible with this same fryer slot. By designing the empanada to use the identical fry equipment already installed for the Mexican Pizza, corporate avoided any capital expenditure requirement on franchise owners while adding a genuine dessert asset to the value menu at 89–99¢.</p>
         <p style="font-size:13.5px;line-height:1.65;margin-top:.75rem">Critically, the empanada required <em>no active kitchen line assembly</em> — it arrived pre-filled from the supplier, was fried to order, dusted with cinnamon sugar, and handed over. This gave the item among the best labor-efficiency metrics on the entire menu: high perceived premium, low labor cost, high margin, zero assembly complexity.</p>
@@ -354,25 +339,25 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') close
 
     </div>
   </div>
-</section>
+</div>
 
 <!-- ═══════════════════ MARKETING ═══════════════════ -->
-<section id="marketing" style="background:var(--background);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
-  <div class="page-section">
-    <div class="eyebrow">
+<div class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
       Marketing, Visual Identity &amp; Media Presence
     </div>
-    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:2rem">Think outside the bun. Think bigger than the dollar.</h2>
+    <h2 class="wiki-section-title" style="margin-bottom:2rem">Think outside the bun. Think bigger than the dollar.</h2>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem" class="overview-prose">
       <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);padding:1.25rem">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.5rem">"Think Outside the Bun" integration</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.5rem">"Think Outside the Bun" integration</div>
         <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.625rem">The overarching campaign framework</div>
         <p style="font-size:13.5px;line-height:1.65">Taco Bell's "Think Outside the Bun" campaign — which ran from 2001 through 2012, covering the entire lifespan of the Big Bell Value Menu — created a ready-made ideological frame for the value menu's competitive claims. The campaign positioned Taco Bell as the antithesis of the standard burger-and-fries QSR experience. Within this framework, the Big Bell Value Menu became an argument: why buy a 3-oz. dollar burger when you can get half a pound of Mexican-inspired food for the same price? The advertising consistently juxtaposed the Big Bell items against unnamed burger-chain equivalents — a visual language the campaign had already established — and the size differential was always the punchline.</p>
       </div>
       <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);padding:1.25rem">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.5rem">Media buying · Late-night targeting</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.5rem">Media buying · Late-night targeting</div>
         <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.625rem">Late-night and the college demographic</div>
         <p style="font-size:13.5px;line-height:1.65">The Big Bell Value Menu's media strategy concentrated spend in late-night television slots — specifically post-prime-time cable programming (10PM–2AM), sports broadcasting, and early-2000s video game advertising. These slots reached the 18–24 male demographic that represented the highest-frequency, lowest-inhibition QSR occasion: the late-night hunger window when both food quantity and price sensitivity peak simultaneously. Taco Bell also made some of its earliest investments in digital and web advertising during this period, running banner and pre-roll campaigns on early gaming and sports portals. The combination of TV, sports, and digital gave the Big Bell campaign disproportionate reach in the exact demographic that the Dollar Menu was competing for most directly.</p>
       </div>
@@ -381,7 +366,7 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') close
     <!-- Drive-thru board callout -->
     <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);overflow:hidden">
       <div style="padding:.875rem 1.25rem;border-bottom:1px solid color-mix(in oklab,var(--foreground) 8%,transparent)">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground)">Physical environment · Drive-thru architecture</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground)">Physical environment · Drive-thru architecture</div>
       </div>
       <div style="padding:1.25rem;display:grid;grid-template-columns:1fr 1fr;gap:1.5rem" class="overview-prose">
         <div>
@@ -395,36 +380,36 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') close
       </div>
     </div>
   </div>
-</section>
+</div>
 
 <!-- ═══════════════════ 2008 RETIREMENT ═══════════════════ -->
-<section id="retirement" style="background:var(--card);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
-  <div class="page-section">
-    <div class="eyebrow">
+<div class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
       Macroeconomic Pressures &amp; The 2008 Retirement
     </div>
-    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:.75rem">When half a pound became too expensive to give away.</h2>
+    <h2 class="wiki-section-title" style="margin-bottom:.75rem">When half a pound became too expensive to give away.</h2>
     <p style="font-size:15px;line-height:1.75;color:var(--muted-foreground);max-width:56rem;margin-bottom:2rem">The strategy that made the Big Bell Value Menu viable in 2003 was undone by a global commodity shock it had no defence against. Between 2006 and 2008, the wholesale costs of the three core inputs that made ½ lb. burritos economical — beef, wheat flour, and cheese — spiked dramatically, driven by a confluence of drought cycles, energy cost transmission, and biofuel-driven agricultural reallocation.</p>
 
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-bottom:1.5rem">
       <div style="padding:1rem;border-radius:6px;background:color-mix(in oklab,var(--secondary) 60%,transparent);border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent)">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground);margin-bottom:.375rem">Beef</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground);margin-bottom:.375rem">Beef</div>
         <div class="font-display" style="font-size:1.25rem;font-weight:700">+40–50%</div>
         <p style="font-size:12px;line-height:1.55;color:var(--muted-foreground);margin-top:.375rem">US ground beef wholesale prices increased approximately 40–50% between 2006 and mid-2008, driven by feed corn price spikes from the ethanol mandate and drought-reduced cattle supply.</p>
       </div>
       <div style="padding:1rem;border-radius:6px;background:color-mix(in oklab,var(--secondary) 60%,transparent);border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent)">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground);margin-bottom:.375rem">Wheat flour</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground);margin-bottom:.375rem">Wheat flour</div>
         <div class="font-display" style="font-size:1.25rem;font-weight:700">+140%</div>
         <p style="font-size:12px;line-height:1.55;color:var(--muted-foreground);margin-top:.375rem">Global wheat prices reached record highs in early 2008, approximately 140% above their 2006 baseline, directly inflating the cost of the large flour tortillas central to every Big Bell item.</p>
       </div>
       <div style="padding:1rem;border-radius:6px;background:color-mix(in oklab,var(--secondary) 60%,transparent);border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent)">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground);margin-bottom:.375rem">Cheese / dairy</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground);margin-bottom:.375rem">Cheese / dairy</div>
         <div class="font-display" style="font-size:1.25rem;font-weight:700">+25–35%</div>
         <p style="font-size:12px;line-height:1.55;color:var(--muted-foreground);margin-top:.375rem">Cheddar and processed cheese (nacho sauce) costs rose significantly from 2007 onward, compounding margin pressure on items like the Cheesy Double Beef that used nacho cheese as a primary fill component.</p>
       </div>
       <div style="padding:1rem;border-radius:6px;background:color-mix(in oklab,var(--secondary) 60%,transparent);border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent)">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground);margin-bottom:.375rem">Combined effect</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground);margin-bottom:.375rem">Combined effect</div>
         <div class="font-display" style="font-size:1.25rem;font-weight:700">Margin collapse</div>
         <p style="font-size:12px;line-height:1.55;color:var(--muted-foreground);margin-top:.375rem">The simultaneous spike across beef, flour, and cheese eliminated the food-cost margin that had made $1.19 half-pound burritos viable for franchise operators. The platform became unprofitable at its stated price tier.</p>
       </div>
@@ -433,32 +418,32 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') close
     <!-- Transition narrative -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem" class="overview-prose">
       <div>
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted-foreground);margin-bottom:.5rem">Menu simplification</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted-foreground);margin-bottom:.5rem">Menu simplification</div>
         <p style="font-size:13.5px;line-height:1.65">Beyond the commodity crisis, the Big Bell Value Menu had accumulated a structural problem: its overlapping burrito variants — Cheesy Double Beef, Beef &amp; Potato, ½ lb. Spicy Chicken, Beef Combo — created order confusion at the drive-thru board. Four burritos at slightly different price points, with similar names and partially overlapping builds, increased ticket decision time and kitchen error rate. Corporate's response to the commodity pressure was simultaneous: simplify the value tier to fewer, more distinctly positioned items. The "Why Pay More!?" menu that replaced it had nine items across three exact price tiers — a dramatically more legible value communication than the Big Bell board had been by 2007.</p>
       </div>
       <div>
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted-foreground);margin-bottom:.5rem">May 2008 — formal transition</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted-foreground);margin-bottom:.5rem">May 2008 — formal transition</div>
         <p style="font-size:13.5px;line-height:1.65">The Big Bell Value Menu was formally retired in May 2008, replaced simultaneously by the <strong>79¢ / 89¢ / 99¢ "Why Pay More!?" Value Menu</strong>. The timing was not incidental — the Why Pay More launch was explicitly framed by Taco Bell corporate as a recession-era value response, arriving as consumer confidence collapsed following the early 2008 financial market turmoil. Where the Big Bell menu had argued for value through <em>size</em>, the Why Pay More menu argued for value through <em>exact price certainty</em>: pocket change, no calculation required. Several Big Bell items survived the transition at adjusted tier positions — the Cheesy Double Beef Burrito moved to the 89¢ tier; the Caramel Apple Empanada continued at 89¢ — but the "½ lb." and "Grande" designations were permanently retired.</p>
       </div>
     </div>
   </div>
-</section>
+</div>
 
 <!-- ═══════════════════ LEGACY ═══════════════════ -->
-<section id="legacy" style="background:var(--background);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
-  <div class="page-section">
-    <div class="eyebrow">
+<div class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
       Historic Legacy &amp; Fan Reception
     </div>
-    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:2rem">What outlived the menu, and what people still try to rebuild.</h2>
+    <h2 class="wiki-section-title" style="margin-bottom:2rem">What outlived the menu, and what people still try to rebuild.</h2>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem" class="overview-prose">
 
       <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);overflow:hidden">
         <div style="height:3px;background:linear-gradient(to right,#0c4a6e,#1e3a5f)"></div>
         <div style="padding:1.25rem">
-          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.5rem">The empanada · Post-menu longevity</div>
+          <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.5rem">The empanada · Post-menu longevity</div>
           <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.75rem">The Caramel Apple Empanada's cult status</div>
           <p style="font-size:13.5px;line-height:1.65">Of the ten Big Bell Value Menu items, only one outlived the platform by a significant margin: the Caramel Apple Empanada, which remained on the Taco Bell menu as a standalone dessert item for eleven years after the Big Bell menu was retired. It appeared on the Why Pay More!? menu, the Dollar Cravings menu, and the broader Taco Bell dessert section before its controversial discontinuation in <strong>August 2019</strong>. The empanada's survival can be attributed to the same operational logic that made it valuable in 2003: minimal labor, no assembly line complexity, a dedicated fryer-slot footprint already maintained for Mexican Pizza shells, and a genuine dessert occasion not covered by any other item on the menu.</p>
           <p style="font-size:13.5px;line-height:1.65;margin-top:.75rem">Its discontinuation in 2019 — part of a broader menu simplification Taco Bell undertook ahead of its breakfast expansion and COVID-era streamlining — generated significant consumer backlash. Fan-run petition campaigns, Reddit threads, and social media posts circulated for years after its removal. The empanada became one of several Taco Bell "lost menu" items with dedicated online communities documenting the exact 2003-era build in hopes of corporate reinstatement.</p>
@@ -468,7 +453,7 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') close
       <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);overflow:hidden">
         <div style="height:3px;background:linear-gradient(to right,#92400e,#451a03)"></div>
         <div style="padding:1.25rem">
-          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.5rem">The half-pound burritos · Nostalgia &amp; reconstruction</div>
+          <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.5rem">The half-pound burritos · Nostalgia &amp; reconstruction</div>
           <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.75rem">The ½ lb. nostalgia complex</div>
           <p style="font-size:13.5px;line-height:1.65">The ½ lb. Cheesy Double Beef Burrito and the ½ lb. Beef &amp; Potato Burrito have developed a persistent nostalgic following in Taco Bell fan communities — notably on Reddit's r/tacobell and fan wikis — driven largely by millennial consumers who formed their Taco Bell relationship during the 2003–2008 Big Bell era. The specific builds — particularly the combination of seasoned beef, nacho cheese sauce, <em>and</em> seasoned rice in the Cheesy Double Beef — are not replicated exactly by any current menu item.</p>
           <p style="font-size:13.5px;line-height:1.65;margin-top:.75rem">Fan communities have developed workaround custom orders: adding rice and sour cream to the current Cheesy Double Beef Burrito via the app customisation function approximates the original Big Bell build, though the tortilla size and portion weight are no longer identical. These reconstruction guides circulate regularly on Taco Bell fan accounts as a form of menu archaeology — an acknowledgement that the Big Bell era produced builds that the current value tier does not replicate, and that consumers still want.</p>
@@ -477,35 +462,35 @@ document.addEventListener('keydown', function(e) { if (e.key === 'Escape') close
 
     </div>
   </div>
-</section>
+</div>
 
 <!-- ═══════════════════ SEE ALSO ═══════════════════ -->
-<section style="border-top:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card)">
-  <div style="max-width:1500px;margin:0 auto;padding:2.5rem 1.5rem">
-    <div class="eyebrow" style="margin-bottom:1rem">
+<div class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner" style="padding-top:2.5rem;padding-bottom:2.5rem">
+    <div class="wiki-section-eyebrow" style="margin-bottom:1rem">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
       See also
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem">
       <a href="taco-bell-menus.html" style="display:block;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card);padding:.875rem 1rem;text-decoration:none;color:inherit;transition:border-color .12s" onmouseover="this.style.borderColor='color-mix(in oklab,var(--foreground) 35%,transparent)'" onmouseout="this.style.borderColor=''">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Parent</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Parent</div>
         <div class="font-display" style="font-size:1rem;font-weight:600;margin-top:.2rem;display:flex;align-items:baseline;justify-content:space-between">Taco Bell Menus <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></div>
       </a>
       <a href="taco-bell-menu-why-pay-more.html" style="display:block;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card);padding:.875rem 1rem;text-decoration:none;color:inherit;transition:border-color .12s" onmouseover="this.style.borderColor='color-mix(in oklab,var(--foreground) 35%,transparent)'" onmouseout="this.style.borderColor=''">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Successor</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Successor</div>
         <div class="font-display" style="font-size:1rem;font-weight:600;margin-top:.2rem;display:flex;align-items:baseline;justify-content:space-between">"Why Pay More!?" Menu <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></div>
       </a>
       <a href="taco-bell-menu-value-59-79-99.html" style="display:block;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card);padding:.875rem 1rem;text-decoration:none;color:inherit;transition:border-color .12s" onmouseover="this.style.borderColor='color-mix(in oklab,var(--foreground) 35%,transparent)'" onmouseout="this.style.borderColor=''">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Predecessor</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Predecessor</div>
         <div class="font-display" style="font-size:1rem;font-weight:600;margin-top:.2rem;display:flex;align-items:baseline;justify-content:space-between">59 / 79 / 99&#162; Value Menu <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></div>
       </a>
       <a href="taco-bell.html" style="display:block;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card);padding:.875rem 1rem;text-decoration:none;color:inherit;transition:border-color .12s" onmouseover="this.style.borderColor='color-mix(in oklab,var(--foreground) 35%,transparent)'" onmouseout="this.style.borderColor=''">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Wiki home</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Wiki home</div>
         <div class="font-display" style="font-size:1rem;font-weight:600;margin-top:.2rem;display:flex;align-items:baseline;justify-content:space-between">Taco Bell wiki <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></div>
       </a>
     </div>
   </div>
-</section>
+</div>
 
 <footer style="border-top:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:color-mix(in oklab,var(--secondary) 40%,transparent)">
   <div style="max-width:1500px;margin:0 auto;padding:1.5rem;display:flex;align-items:center;gap:.5rem;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-foreground)">

@@ -385,6 +385,8 @@
   }
 }
 
+/* ════════════════════════════════════════════════════════════════════
+   FIRST-CHILD MARGIN RESET
    When the eyebrow or title is the very first element inside
    .wiki-section-inner, its top margin would add to the section's
    64px padding — resulting in too much space. This reset removes
