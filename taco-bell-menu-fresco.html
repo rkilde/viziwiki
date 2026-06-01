@@ -3,13 +3,11 @@ layout: default
 title: "Fresco Menu · Taco Bell · ViziWiki"
 body_class: "wiki-page wiki-taco-bell"
 extra_head: |
+  <link rel="stylesheet" href="/wiki-typography.css">
   <link rel="stylesheet" href="/wiki-taco-bell-skin.css">
+  <link rel="stylesheet" href="/tb-menus.css">
 ---
 {% raw %}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,300;9..144,0,600;9..144,0,700;9..144,1,400;9..144,1,600&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
 <style>
   :root {
     --background: oklch(0.972 0.012 85);
@@ -17,35 +15,23 @@ extra_head: |
     --card: oklch(1 0 0);
     --secondary: oklch(0.93 0.02 80);
     --muted-foreground: oklch(0.45 0.03 60);
+    --hot-pink: rgba(255,100,180,.55);
   }
   *, *::before, *::after { box-sizing: border-box; }
   html, body { background: var(--background); color: var(--foreground); }
-  body { font-family: 'Spectral', Georgia, serif; }
-  .font-display { font-family: 'Fraunces', Georgia, serif; font-optical-sizing: auto; letter-spacing: -.02em; }
-  .font-mono { font-family: 'JetBrains Mono', monospace; }
-  .halftone { background-image: radial-gradient(rgba(255,100,180,.55) 1.4px, transparent 1.6px); background-size: 10px 10px; }
-  .eyebrow { display: flex; align-items: center; gap: .5rem; font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .25em; color: var(--muted-foreground); margin-bottom: .5rem; }
-  .page-section { max-width: 1500px; margin: 0 auto; padding: 3.5rem 1.5rem; }
-  .ob-pill { display: inline-block; padding: 5px 12px; border: 1px solid rgba(42,31,21,0.1); border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase; color: rgba(42,31,21,0.85); white-space: nowrap; background: #fff; transition: background .15s, border-color .15s; }
-  @media (max-width: 767px) {
-    .catalogue-cols { columns: 1 !important; }
-    .hero-grid { display: block !important; padding: 2.5rem 1.25rem !important; }
-    .hero-grid > div:last-child { margin-top: 1.5rem; }
-    .overview-prose { grid-template-columns: 1fr !important; }
-  }
+  /* Component styles (.halftone .hero-grid .ob-pill .page-section .eyebrow
+     + responsive) now live in /tb-menus.css. Fonts via /wiki-typography.css. */
 </style>
 
 <!-- ═══════════════════ HERO ═══════════════════ -->
-<section id="overview" class="relative overflow-hidden border-b border-white/20 text-white"
-  style="background:linear-gradient(135deg,#166534 0%,#14532d 55%,#020c05 100%)">
-  <div class="halftone pointer-events-none absolute inset-0 mix-blend-overlay opacity-20"></div>
-  <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(to right,rgba(2,12,5,.6),rgba(20,83,45,.1),transparent)"></div>
-  <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(to bottom,rgba(0,0,0,.2) 0%,transparent 55%)"></div>
+<section id="overview" class="wiki-hero" style="background:linear-gradient(135deg,#166534 0%,#14532d 55%,#020c05 100%);color:#fff;border-bottom:1px solid rgba(255,255,255,.2)">
+  <div class="halftone" style="position:absolute;inset:0;pointer-events:none;mix-blend-mode:overlay;opacity:.2"></div>
+  <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(to right,rgba(2,12,5,.6),rgba(20,83,45,.1),transparent)"></div>
+  <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,rgba(0,0,0,.2) 0%,transparent 55%)"></div>
 
   <!-- ghost leaf icon -->
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-    class="pointer-events-none absolute -right-8 -bottom-8 opacity-[.07]"
-    style="width:380px;height:380px;color:#fff;transform:rotate(15deg);stroke-width:1.25">
+    style="position:absolute;right:-2rem;bottom:-2rem;pointer-events:none;opacity:.07;width:380px;height:380px;color:#fff;transform:rotate(15deg);stroke-width:1.25">
     <path d="M7 21h10"/>
     <path d="M12 21a9 9 0 0 0 9-9H3a9 9 0 0 0 9 9z"/>
     <path d="M11.38 12a2.4 2.4 0 0 1-.4-4.77 2.4 2.4 0 0 1 3.2-3.19 2.4 2.4 0 0 1 3.47-.63 2.4 2.4 0 0 1 3.37 3.37 2.4 2.4 0 0 1-1.1 3.7 2.51 2.51 0 0 1 .03 1.1"/>
@@ -53,16 +39,14 @@ extra_head: |
     <path d="M10.9 7.25A3.99 3.99 0 0 0 4 10c0 .73.2 1.41.54 2"/>
   </svg>
 
-  <div class="hero-grid relative mx-auto" style="display:grid;grid-template-columns:1.6fr 1fr;gap:2rem;max-width:1500px;padding:3.5rem 1.5rem">
+  <div class="hero-grid">
     <div>
-      <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[.25em]" style="backdrop-filter:blur(4px)">
-        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#86efac;flex-shrink:0"></span>
+      <div class="wiki-hero-eyebrow" style="border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;backdrop-filter:blur(4px)">
+        <span class="wiki-hero-eyebrow-dot" style="background:#86efac"></span>
         Health-Forward · Retired Aug. 2020 · Est. 2003
       </div>
-      <h1 class="font-display" style="font-size:clamp(2.75rem,7vw,4.75rem);font-weight:700;line-height:.95;color:#fff;margin-top:.75rem">
-        Fresco Menu<span style="color:#86efac">.</span>
-      </h1>
-      <p style="font-family:'Spectral',Georgia,serif;font-size:1.05rem;line-height:1.7;max-width:36rem;margin-top:1rem;color:rgba(255,255,255,.85)">
+      <h1 class="wiki-hero-title" style="margin-top:.75rem">Fresco Menu<span style="color:#86efac">.</span></h1>
+      <p class="wiki-hero-desc" style="color:rgba(255,255,255,.85)">
         A dedicated sub-menu built around a single substitution: replace cheese and sauce with Fiesta Salsa — Taco Bell's fresh-daily blend of tomatoes, onions, cilantro, and chili. Every item under nine grams of fat. No upcharge.
       </p>
     </div>
@@ -93,27 +77,27 @@ extra_head: |
 </section>
 
 <!-- ═══════════════════ CATALOGUE ═══════════════════ -->
-<section id="catalogue" style="border-top:1px solid rgba(42,31,21,0.15);border-bottom:1px solid rgba(42,31,21,0.15);background:color-mix(in oklab,var(--secondary) 40%,transparent);">
-  <div style="max-width:1500px;margin:0 auto;padding:48px 24px;">
-    <div style="margin-bottom:24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;">
+<section id="catalogue" class="catalogue-section">
+  <div class="catalogue-inner">
+    <div class="catalogue-head">
       <div>
-        <div style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(42,31,21,0.35);">
+        <div class="eyebrow">
           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" x2="21" y1="6" y2="6"/><line x1="10" x2="21" y1="12" y2="12"/><line x1="10" x2="21" y1="18" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
           Full Catalogue
         </div>
-        <h2 style="font-family:'Fraunces',Georgia,serif;font-size:30px;font-weight:600;letter-spacing:-0.02em;">Every Fresco item</h2>
+        <h2 class="catalogue-title">Every Fresco item</h2>
       </div>
-      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(42,31,21,0.35);">9 items &middot; 3 categories &middot; all under 9g fat</span>
+      <span class="catalogue-summary">9 items &middot; 3 categories &middot; all under 9g fat</span>
     </div>
 
-    <div class="catalogue-cols" style="columns:2;column-gap:16px;">
+    <div class="catalogue-cols">
 
       <!-- TACOS -->
-      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #b45309;padding:20px;break-inside:avoid;margin-bottom:16px;">
-        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#b45309;">Tacos</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">4 items</div>
-        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+      <div class="cat-card" style="border-left-color:#b45309">
+        <div class="cat-card-title" style="color:#b45309">Tacos</div>
+        <div class="cat-card-count">4 items</div>
+        <div class="cat-card-divider"></div>
+        <div class="cat-card-pills">
           <span class="ob-pill" style="cursor:pointer;" onclick="showFrescoItem('Fresco Crunchy Taco')" onmouseover="this.style.background='#b453091a';this.style.borderColor='#b4530944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Fresco Crunchy Taco</span>
           <span class="ob-pill" style="cursor:pointer;" onclick="showFrescoItem('Fresco Soft Taco')" onmouseover="this.style.background='#b453091a';this.style.borderColor='#b4530944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Fresco Soft Taco</span>
           <span class="ob-pill" style="cursor:pointer;" onclick="showFrescoItem('Fresco Grilled Chicken Soft Taco')" onmouseover="this.style.background='#b453091a';this.style.borderColor='#b4530944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Fresco Grilled Chicken Soft Taco</span>
@@ -122,11 +106,11 @@ extra_head: |
       </div>
 
       <!-- BURRITOS -->
-      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #6d28d9;padding:20px;break-inside:avoid;margin-bottom:16px;">
-        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#6d28d9;">Burritos</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">4 items</div>
-        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+      <div class="cat-card" style="border-left-color:#6d28d9">
+        <div class="cat-card-title" style="color:#6d28d9">Burritos</div>
+        <div class="cat-card-count">4 items</div>
+        <div class="cat-card-divider"></div>
+        <div class="cat-card-pills">
           <span class="ob-pill" style="cursor:pointer;" onclick="showFrescoItem('Fresco Burrito Supreme')" onmouseover="this.style.background='#6d28d91a';this.style.borderColor='#6d28d944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Fresco Burrito Supreme</span>
           <span class="ob-pill" style="cursor:pointer;" onclick="showFrescoItem('Fresco Bean Burrito')" onmouseover="this.style.background='#6d28d91a';this.style.borderColor='#6d28d944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Fresco Bean Burrito</span>
           <span class="ob-pill" style="cursor:pointer;" onclick="showFrescoItem('Fresco Beef Premium Burrito')" onmouseover="this.style.background='#6d28d91a';this.style.borderColor='#6d28d944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Fresco Beef Premium Burrito</span>
@@ -135,11 +119,11 @@ extra_head: |
       </div>
 
       <!-- SPECIALTIES -->
-      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #0c4a6e;padding:20px;break-inside:avoid;margin-bottom:16px;">
-        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#0c4a6e;">Specialties</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">1 item</div>
-        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+      <div class="cat-card" style="border-left-color:#0c4a6e">
+        <div class="cat-card-title" style="color:#0c4a6e">Specialties</div>
+        <div class="cat-card-count">1 item</div>
+        <div class="cat-card-divider"></div>
+        <div class="cat-card-pills">
           <span class="ob-pill" style="cursor:pointer;" onclick="showFrescoItem('Fresco Fiesta Taco Salad')" onmouseover="this.style.background='#0c4a6e1a';this.style.borderColor='#0c4a6e44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Fresco Fiesta Taco Salad</span>
         </div>
       </div>
