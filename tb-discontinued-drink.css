@@ -1,0 +1,197 @@
+/* ====================================================================
+   tb-discontinued-drink.css
+   ViziWiki · Page-class stylesheet for Taco Bell DISCONTINUED DRINKS
+   --------------------------------------------------------------------
+   Shared component styling for every page in the "Taco Bell discontinued
+   drink" class (sangrita-blast, brisk-raspberry, pina-colada-frutista,
+   spiked-lemonade, and any future ones).
+
+   Layer position (loads after universals + skin, before page styles):
+     wiki-universals.css   → all wikis (spacing, hero, sections)
+     wiki-taco-bell-skin.css → all Taco Bell pages (brand colors, tones)
+     tb-discontinued-drink.css → THIS page class (shared components)  ← here
+     [page]                → per-page accent color + data only
+
+   Edit a component here once → it changes on every discontinued-drink
+   page at once. Per-page pages supply only DATA (bar positions, labels,
+   year ranges) inline; all STYLING lives here.
+
+   Colors reference each page's own palette tokens (--accent,
+   --accent-light, --accent-dark, --foreground, --card, --muted-foreground)
+   so each drink keeps its own accent while sharing structure.
+   ==================================================================== */
+
+
+/* ════════════════════════════════════════════════════════════════════
+   SWIM CHART — Channel availability timeline
+   ════════════════════════════════════════════════════════════════════
+   A horizontal timeline showing when a product was available across
+   channels (Fountain, Retail, Freeze, etc.). Each "lane" is a row with
+   a label and a track; each filled "bar" spans the active period.
+
+   Markup pattern (page supplies only the data: years, lane names,
+   bar left/width %, and bar text):
+
+     <div class="swim">
+       <div class="swim-axis">
+         <span class="swim-year" style="text-align:left">2012</span>
+         <span class="swim-year">2013</span> … 
+         <span class="swim-year" style="text-align:right">2018</span>
+       </div>
+       <div class="swim-baseline"></div>
+
+       <div class="swim-lane">
+         <div class="swim-label">Fountain</div>
+         <div class="swim-track">
+           <div class="swim-bar" style="left:16%;width:72%">
+             <span class="swim-bar-text">Dec 2013 – 2017</span>
+           </div>
+         </div>
+       </div>
+       … more lanes …
+
+       <div class="swim-legend">
+         <div class="swim-legend-item">
+           <div class="swim-legend-swatch"></div>
+           <span class="swim-legend-label">Active</span>
+         </div>
+       </div>
+     </div>
+
+   The lane-label gutter width is one number (--swim-gutter). Change it
+   here and every lane + axis + legend re-aligns automatically.
+   ════════════════════════════════════════════════════════════════════ */
+
+.swim {
+  --swim-gutter: 80px;          /* width of the lane-label column */
+  --swim-lane-h: 24px;          /* height of each track/bar */
+  position: relative;
+  margin-top: 24px;
+  background: var(--card);
+  border: 1px solid color-mix(in oklab, var(--foreground) 8%, transparent);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+/* Year axis row — labels sit above the lanes, offset by the gutter */
+.swim-axis {
+  display: flex;
+  margin-left: var(--swim-gutter);
+  margin-bottom: 6px;
+}
+.swim-year {
+  flex: 1;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 8px;
+  color: var(--muted-foreground);
+  text-align: center;          /* override to left/right on first/last inline */
+}
+
+/* The hairline baseline under the axis */
+.swim-baseline {
+  margin-left: var(--swim-gutter);
+  height: 1px;
+  background: color-mix(in oklab, var(--foreground) 8%, transparent);
+  margin-bottom: 8px;
+}
+
+/* A lane = label + track, one per channel */
+.swim-lane {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.swim-label {
+  width: var(--swim-gutter);
+  flex-shrink: 0;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 8px;
+  text-align: right;
+  padding-right: 10px;
+  color: var(--foreground);
+}
+.swim-label.is-muted {            /* for "never available" / inactive lanes */
+  color: var(--muted-foreground);
+  opacity: 0.5;
+}
+
+/* The track = grey background bar the fill sits in */
+.swim-track {
+  flex: 1;
+  height: var(--swim-lane-h);
+  position: relative;
+  background: color-mix(in oklab, var(--foreground) 3%, transparent);
+  border-radius: 4px;
+}
+
+/* The fill bar = the active-period span. Page supplies left/width inline.
+   Default fill is the full accent gradient. */
+.swim-bar {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-light), var(--accent), var(--accent-dark));
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+/* Variant: a shorter two-stop gradient (used for brief/secondary spans) */
+.swim-bar.is-short {
+  background: linear-gradient(90deg, var(--accent-light), var(--accent));
+}
+/* Variant: centered text instead of left-aligned (for narrow bars) */
+.swim-bar.is-centered {
+  justify-content: center;
+  padding-left: 0;
+}
+/* Variant: a dashed "transitional/partial" bar */
+.swim-bar.is-dashed {
+  background: color-mix(in oklab, var(--accent) 15%, transparent);
+  border: 1px dashed var(--accent);
+}
+
+.swim-bar-text {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 7px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* A label that sits OUTSIDE a narrow bar (page positions it inline) */
+.swim-bar-text-outside {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 7px;
+  color: var(--muted-foreground);
+}
+
+/* Legend row under the chart */
+.swim-legend {
+  margin-top: 12px;
+  margin-left: var(--swim-gutter);
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.swim-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.swim-legend-swatch {
+  width: 10px;
+  height: 6px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent-light), var(--accent));
+}
+.swim-legend-swatch.is-dashed {
+  border: 1px dashed var(--accent);
+  background: color-mix(in oklab, var(--accent) 15%, transparent);
+}
+.swim-legend-label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 7px;
+  color: var(--muted-foreground);
+}
