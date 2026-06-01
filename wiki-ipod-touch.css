@@ -11,17 +11,12 @@
    Change anything here and it propagates to every gen page.
    ==================================================================== */
 
-.hero-title-block{display:flex;flex-direction:column;align-items:flex-start;}
 /* ── Page-specific ──────────────────────────────── */
 
 /* Hero */
-.hero{background:#f4f4f6;border-bottom:2px solid rgba(0,0,0,.12);padding:88px 0 100px;overflow:hidden;position:relative;}
-.hero-inner{max-width:1320px;margin:0 auto;padding:0 48px;}
-.eyebrow-dot{width:6px;height:6px;border-radius:50%;background:#0a0a0a;flex-shrink:0;}
 @media(max-width:900px){
   }
 @media(max-width:600px){}
-.period{color:rgba(0,0,0,.28);}
 .hero-device-icon{position:absolute;right:max(calc((100vw - 1320px)/2 + 48px),24px);top:50%;transform:translateY(-48%);width:clamp(260px,22vw,360px);opacity:.22;pointer-events:none;user-select:none;}
 .hero-device-icon svg{display:block;width:100%;height:auto;}
 @media(max-width:900px){.hero-device-icon{width:clamp(180px,20vw,240px);opacity:.06;right:12px;}}
@@ -29,17 +24,12 @@
 
 @media(max-width:900px){}
 @media(max-width:600px){}
-.hero-title-block{display:flex;flex-direction:column;align-items:flex-start;}
 /* ── Page-specific ──────────────────────────────── */
 
 /* Hero */
-.hero{background:#f4f4f6;border-bottom:2px solid rgba(0,0,0,.12);padding:88px 0 100px;overflow:hidden;position:relative;}
-.hero-inner{max-width:1320px;margin:0 auto;padding:0 48px;}
-.eyebrow-dot{width:6px;height:6px;border-radius:50%;background:#0a0a0a;flex-shrink:0;}
 @media(max-width:900px){
   }
 @media(max-width:600px){}
-.period{color:rgba(0,0,0,.28);}
 @media(max-width:900px){}
 @media(max-width:600px){}
 .hero-gen-name{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:clamp(24px,3vw,36px);font-weight:600;letter-spacing:-0.02em;color:#0a0a0a;line-height:1;margin-bottom:10px;}
@@ -54,18 +44,6 @@
    removed so every infobox sitewide shares one canonical format. */
 
 /* Responsive */
-@media(max-width:960px){.ov-inner{grid-template-columns:1fr;}}
-@media(max-width:600px){.hero-inner,.ov-inner{padding:0 16px;}.hero{padding:52px 0 60px;}.stats-grid{grid-template-columns:repeat(2,1fr);}.stat-cell:nth-child(1),.stat-cell:nth-child(2){border-bottom:1px solid rgba(0,0,0,.14);}}
-
-/* Prose-only sections: run full width within section margins */
-.gaming-section .wiki-prose,
-.budget-section .wiki-prose,
-.design-section .wiki-prose,
-.controversies-section .wiki-prose{max-width:100% !important;}
-.gaming-section .wiki-prose p,
-.budget-section .wiki-prose p,
-.design-section .wiki-prose p,
-.controversies-section .wiki-prose p{max-width:100% !important;}
 
 /* ── Industrial design section — two column ─── */
 .design-cols{
@@ -348,8 +326,6 @@
 @media(max-width:600px){.tl-hdr{padding:0 16px 24px;}.tl-scroll-hint{font-size:8px;}.tl-modal-box{width:calc(100vw - 32px);}}
 
 /* ── Generation delta ─────────────────────────────── */
-.delta-section{background:#fff;padding:72px 0;border-top:1px solid rgba(0,0,0,.1);}
-.delta-inner{max-width:1320px;margin:0 auto;padding:0 48px;}
 .delta-prose{max-width:720px;margin-bottom:36px;}
 .delta-prose p{font-size:15px;color:rgba(0,0,0,.78);line-height:1.78;margin-bottom:16px;}
 .delta-prose p:last-child{margin-bottom:0;}
@@ -409,8 +385,6 @@
   .gd-old-val,.gd-new-val{font-size:12px;}
 }
 
-.cfg-section{background:#fafafa;padding:72px 0;border-top:1px solid rgba(0,0,0,.1);}
-.cfg-inner{max-width:1320px;margin:0 auto;padding:0 48px;}
 .cfg-prose{max-width:720px;margin-bottom:36px;}
 .cfg-prose p{font-size:15px;color:rgba(0,0,0,.78);line-height:1.78;margin-bottom:16px;}
 .cfg-prose p:last-child{margin-bottom:0;}
@@ -444,7 +418,6 @@
 .cfg-fill-rev{background:repeating-linear-gradient(-45deg,#c7c7cc,#c7c7cc 3px,#c2c2c7 3px,#c2c2c7 4px);}
 .cfg-footer{margin-top:16px;padding-top:14px;border-top:1px solid rgba(0,0,0,.06);font-family:"JetBrains Mono",monospace;font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:rgba(0,0,0,.35);line-height:1.6;}
 @media(max-width:600px){
-.cfg-inner{padding:0 16px;}
 .cfg-chart{padding:16px;}
 /* same column structure as desktop, narrower cap + price to fit the bar */
 .cfg-row{grid-template-columns:44px minmax(0,1fr) auto;column-gap:10px;}
@@ -459,8 +432,6 @@
 .cfg-colors{gap:8px;}
 }
 
-.cfg-section{background:#fafafa;padding:72px 0;border-top:1px solid rgba(0,0,0,.1);}
-.cfg-inner{max-width:1320px;margin:0 auto;padding:0 48px;}
 .cfg-prose{max-width:720px;margin-bottom:36px;}
 .cfg-prose p{font-size:15px;color:rgba(0,0,0,.78);line-height:1.78;margin-bottom:16px;}
 .cfg-prose p:last-child{margin-bottom:0;}
@@ -494,7 +465,6 @@
 .cfg-fill-rev{background:repeating-linear-gradient(-45deg,#c7c7cc,#c7c7cc 3px,#c2c2c7 3px,#c2c2c7 4px);}
 .cfg-footer{margin-top:16px;padding-top:14px;border-top:1px solid rgba(0,0,0,.06);font-family:"JetBrains Mono",monospace;font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:rgba(0,0,0,.35);line-height:1.6;}
 @media(max-width:600px){
-.cfg-inner{padding:0 16px;}
 .cfg-chart{padding:16px;}
 /* same column structure as desktop, narrower cap + price to fit the bar */
 .cfg-row{grid-template-columns:44px minmax(0,1fr) auto;column-gap:10px;}
@@ -585,8 +555,6 @@
 @media(max-width:600px){.jb-chart-head,.jb-row{grid-template-columns:120px 1fr 1fr;}.jb-cell{padding:9px 10px;font-size:12px;}.jb-models{grid-template-columns:1fr;}}
 
 /* ── OS Support section ─────────────────────────────── */
-.os-section{background:#fff;padding:72px 0;border-top:1px solid rgba(0,0,0,.1);}
-.os-inner{max-width:1320px;margin:0 auto;padding:0 48px;}
 .os-prose{max-width:720px;margin-bottom:40px;}
 .os-prose p{font-size:15px;color:rgba(0,0,0,.78);line-height:1.78;margin-bottom:16px;}
 .os-prose p:last-child{margin-bottom:0;}
@@ -621,8 +589,6 @@
 @media(max-width:600px){.os-inner{padding:0 16px;}.lane-wrap{padding:16px 14px 14px;}.lane-head{flex-direction:column;gap:4px;}.lane-title{font-size:14px;}.lane-notes{flex-direction:column;gap:10px;}.lane-note{max-width:100%;}.lane-legend{flex-wrap:wrap;gap:10px;}.lane-ver{padding-right:38px;}.lane-badge{font-size:5px;padding:1px 3px;letter-spacing:.04em;}.lane-seg{min-width:64px;}}
 
 /* ── OS Support section ─────────────────────────────── */
-.os-section{background:#fff;padding:72px 0;border-top:1px solid rgba(0,0,0,.1);}
-.os-inner{max-width:1320px;margin:0 auto;padding:0 48px;}
 .os-prose{max-width:720px;margin-bottom:40px;}
 .os-prose p{font-size:15px;color:rgba(0,0,0,.78);line-height:1.78;margin-bottom:16px;}
 .os-prose p:last-child{margin-bottom:0;}
@@ -656,8 +622,6 @@
 .lane-leg-sw{width:12px;height:8px;border-radius:2px;}
 @media(max-width:600px){.os-inner{padding:0 16px;}.lane-wrap{padding:16px 14px 14px;}.lane-head{flex-direction:column;gap:4px;}.lane-title{font-size:14px;}.lane-notes{flex-direction:column;gap:10px;}.lane-note{max-width:100%;}.lane-legend{flex-wrap:wrap;gap:10px;}.lane-ver{padding-right:38px;}.lane-badge{font-size:5px;padding:1px 3px;letter-spacing:.04em;}.lane-seg{min-width:64px;}}
 
-.spec-section{background:#0a0a0a;padding:84px 0 96px;border-top:1px solid rgba(0,0,0,.1);}
-.spec-inner{max-width:1320px;margin:0 auto;padding:0 48px;}
 .spec-eyebrow{font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.3em;color:rgba(255,255,255,.45);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
 .spec-title{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:clamp(28px,3.4vw,44px);font-weight:600;letter-spacing:-0.02em;line-height:1.05;color:#fff;margin-bottom:6px;}
 .spec-sub{font-family:"JetBrains Mono",monospace;font-size:9px;text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.4);margin-bottom:44px;}
