@@ -216,15 +216,9 @@
   .jb-two-col{grid-template-columns:1fr;gap:32px;}
 }
 
-.photo-rail-section{
-  background:#0a0a0a;
-  padding:0;
-  border-top:1px solid rgba(255,255,255,.06);
-}
-.photo-rail-inner{
-  padding:12px 0 12px 48px;
-  overflow:hidden;
-}
+/* .photo-rail-section / .photo-rail-inner removed — band now uses the
+   universal .wiki-section + data-tone, gutter uses .wiki-section-inner, and
+   the scroller bleeds via the canonical .wiki-section-bleed. */
 .photo-rail-label{
   font-family:"JetBrains Mono",monospace;
   font-size:8px;
@@ -278,7 +272,6 @@
   .photo-rail-scroll{padding:8px 12px 8px 0;}
 }
 
-.tl-section{background:#f4f4f6;padding-top:72px;border-top:1px solid rgba(0,0,0,.1);}
 .tl-hdr{max-width:1320px;margin:0 auto;padding:0 48px 32px;}
 .tl-scroll-hint{display:flex;align-items:center;gap:6px;font-family:"JetBrains Mono",monospace;font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:rgba(0,0,0,.35);margin-top:12px;}
 .tl-outer{overflow-x:auto;-webkit-overflow-scrolling:touch;cursor:grab;padding:0 0 36px;scrollbar-width:none;}

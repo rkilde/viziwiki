@@ -89,6 +89,21 @@
 
 
 /* ════════════════════════════════════════════════════════════════════
+   §2-b — FULL-BLEED SCROLLER  (canonical edge-to-edge rail / timeline)
+   ════════════════════════════════════════════════════════════════════
+   For horizontal scrollers (timelines, photo rails) meant to run off the
+   screen edge. Put this on the SCROLL container, placed INSIDE a normal
+   .wiki-section-inner — so the eyebrow/title above it keep the standard
+   gutters, and the scroller STARTS flush with the section's left gutter,
+   then breaks out to the right viewport edge and scrolls. One canonical
+   treatment for every full-bleed visual — edit here once.
+   ════════════════════════════════════════════════════════════════════ */
+.wiki-section-bleed {
+  margin-right: calc(50% - 50vw);   /* left stays at the gutter; right edge → viewport */
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
    §3 — BACKGROUND TONAL ALTERNATION + SECTION DIVIDER
    Sections alternate between tone-a and tone-b panels. The divider
    is a 1px border-bottom whose color comes from the skin token.

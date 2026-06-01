@@ -172,7 +172,7 @@ function renderOverview(){
 function renderPhotoRail(){
   var el = document.getElementById('photo-rail-inner');
   if(!el) return;
-  el.innerHTML = '<div class="photo-rail-scroll" id="photoRailScroll">'
+  el.innerHTML = '<div class="photo-rail-scroll wiki-section-bleed" id="photoRailScroll">'
     +'<div class="photo-rail-label">Photo archive <span>→</span></div>'
     + PAGE_DATA.photos.map(function(im){
         return '<div class="photo-rail-card">'
