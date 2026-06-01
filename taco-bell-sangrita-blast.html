@@ -19,29 +19,33 @@ extra_head: |
 body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var(--background);}
 .fra{font-family:'Fraunces',Georgia,serif;}.mono{font-family:'JetBrains Mono',monospace;}
 
-.de-hero{position:relative;overflow:hidden;color:#fff;padding:clamp(48px,10vw,96px) 24px clamp(40px,8vw,72px);}
-.de-hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(color-mix(in srgb,var(--accent-light) 70%,white) 1.4px,transparent 1.6px);background-size:10px 10px;opacity:.12;mix-blend-mode:overlay;}
-.de-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(to top,rgba(0,0,0,.35),transparent);}
-.de-hero-inner{position:relative;z-index:1;max-width:1500px;margin:0 auto;}
+/* ── Page-specific hero treatment (halftone + gradient overlay) ──
+   Structure/sizing comes from wiki-universals.css (.wiki-hero). These
+   are this drink's own visual flourishes + accent colors. */
+.wiki-hero{ color:#fff; }
+.wiki-hero::before{ content:''; position:absolute; inset:0; background-image:radial-gradient(color-mix(in srgb,var(--accent-light) 70%,white) 1.4px,transparent 1.6px); background-size:10px 10px; opacity:.12; mix-blend-mode:overlay; pointer-events:none; }
+.wiki-hero::after{ content:''; position:absolute; bottom:0; left:0; right:0; height:40%; background:linear-gradient(to top,rgba(0,0,0,.35),transparent); pointer-events:none; }
+.wiki-hero-inner > *{ position:relative; z-index:1; }
 
-.de-section{padding:clamp(32px,6vw,64px) 24px;}
-.de-section-inner{max-width:1500px;margin:0 auto;}
-.de-section:nth-child(even){background:color-mix(in oklab,var(--secondary) 40%,transparent);}
-.de-section:nth-child(odd){background:var(--card);}
-.de-section + .de-section{border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);}
+/* This page drives the universal hero/section tokens from its OWN palette
+   (so the maroon accent shows), EXCEPT the alternating panel tones, which
+   come from the Taco Bell skin so they stay consistent wiki-wide. */
+.wiki-hero{ --hero-title-color:#fff; --hero-desc-color:rgba(255,255,255,0.7); }
+/* Hero eyebrow: this page uses a plain mono label, not the pill. Override
+   the universal pill styling with this drink's own treatment. */
+.wiki-hero-eyebrow{ margin-bottom:0; padding:0; border:0; background:none; border-radius:0; color:rgba(255,255,255,0.45); }
+/* Section typography colors from this page's palette */
+.wiki-section-title{ color:var(--foreground); }
+.wiki-section-eyebrow{ color:var(--muted-foreground); }
+.wiki-section-eyebrow::before{ content:''; width:8px; height:8px; border-radius:50%; background:var(--accent); display:inline-block; flex:none; }
+.wiki-section-prose{ color:color-mix(in oklab,var(--foreground) 80%,transparent); font-size:15px; line-height:1.75; }
+.wiki-section-prose p+p{ margin-top:12px; }
 
-.de-eye{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--muted-foreground);display:flex;align-items:center;gap:8px;}
-.de-eye::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--accent);}
-.de-h2{margin-top:4px;font-family:'Fraunces',Georgia,serif;font-size:28px;font-weight:600;}
 
 .de-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:20px;}
 .de-stat{background:var(--card);border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);border-radius:10px;padding:16px;border-top:3px solid var(--accent);}
 .de-stat-val{font-family:'Fraunces',Georgia,serif;font-size:24px;font-weight:700;color:var(--accent);}
 .de-stat-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted-foreground);margin-top:2px;}
-
-.de-prose{font-size:15px;line-height:1.75;color:color-mix(in oklab,var(--foreground) 80%,transparent);}
-.de-prose p+p{margin-top:12px;}
-.de-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:16px;}
 
 .de-tl{position:relative;padding-left:28px;margin-top:24px;}
 .de-tl::before{content:'';position:absolute;left:8px;top:4px;bottom:4px;width:2px;background:color-mix(in oklab,var(--accent) 25%,transparent);border-radius:1px;}
@@ -68,19 +72,19 @@ body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var
 
 .de-back{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);text-decoration:none;border:1px solid color-mix(in oklab,var(--accent) 25%,transparent);padding:10px 20px;border-radius:6px;}
 
-@media(max-width:768px){.de-stats{grid-template-columns:1fr 1fr;}.de-grid{grid-template-columns:1fr !important;}}
+@media(max-width:768px){.de-stats{grid-template-columns:1fr 1fr;}}
 
 </style>
 
 <!-- HERO -->
-<div class="de-hero" style="background:linear-gradient(135deg,#881337,#9f1239,#4c0519,#0f172a);">
-  <div class="de-hero-inner">
-    <div class="mono" style="font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.45);display:flex;align-items:center;gap:8px;">
+<div class="wiki-hero" style="background:linear-gradient(135deg,#881337,#9f1239,#4c0519,#0f172a);">
+  <div class="wiki-hero-inner">
+    <div class="wiki-hero-eyebrow">
       <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
       Mountain Dew · PepsiCo · 2013–2017
     </div>
-    <h1 class="fra" style="font-size:clamp(40px,8vw,72px);font-weight:700;letter-spacing:-0.03em;line-height:.95;margin-top:8px;">Mtn Dew<br>Sangrita Blast</h1>
-    <p style="margin-top:16px;font-size:clamp(14px,2vw,17px);line-height:1.6;color:rgba(255,255,255,0.7);max-width:560px;">A cherry-citrus punch soda produced by PepsiCo under the Mountain Dew brand. Introduced in December 2013 and discontinued in 2017.</p>
+    <h1 class="wiki-hero-title">Mtn Dew<br>Sangrita Blast</h1>
+    <p class="wiki-hero-desc">A cherry-citrus punch soda produced by PepsiCo under the Mountain Dew brand. Introduced in December 2013 and discontinued in 2017.</p>
     <div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:8px;">
       <span class="de-pill">Discontinued</span><span class="de-pill">Taco Bell exclusive</span><span class="de-pill">PepsiCo · Mountain Dew</span>
     </div>
@@ -88,10 +92,10 @@ body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var
 </div>
 
 <!-- AT A GLANCE -->
-<div class="de-section">
-  <div class="de-section-inner">
-    <div class="de-eye">At a glance</div>
-    <h2 id="glance" class="de-h2">Product summary</h2>
+<div class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">At a glance</div>
+    <h2 id="glance" class="wiki-section-title">Product summary</h2>
     <div class="de-stats">
       <div class="de-stat"><div class="de-stat-val">Dec 2013</div><div class="de-stat-label">Launched</div></div>
       <div class="de-stat"><div class="de-stat-val">2017</div><div class="de-stat-label">Discontinued</div></div>
@@ -104,23 +108,23 @@ body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var
 </div>
 
 <!-- OVERVIEW -->
-<div class="de-section">
-  <div class="de-section-inner">
-    <div class="de-eye">Overview</div>
-    <h2 id="story" class="de-h2">Background</h2>
+<div class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">Overview</div>
+    <h2 id="story" class="wiki-section-title">Background</h2>
     <div class="de-grid">
-      <div class="de-prose"><p>Mtn Dew Sangrita Blast was a franchise-exclusive Mountain Dew flavor produced by PepsiCo for Taco Bell restaurants. It launched in December 2013 as part of a six-drink PepsiCo fountain expansion that also included Diet Baja Blast, Brisk Iced Tea and Lemonade, Brisk Mango Fiesta, SoBe Lifewater Yumberry Pomegranate, and Kickstart Orange Citrus.</p><p>The drink was maroon in color, achieved through a combination of Red 40 and Blue 1 dyes. PepsiCo’s official flavor descriptor was “citrus punch,” though consumer descriptions frequently referenced cherry, pomegranate, cranberry, and raspberry notes.</p></div>
-      <div class="de-prose"><p>In April 2015, PepsiCo released Sangrita Blast in cans and bottles alongside Baja Blast’s second retail run. This remains the only retail release of Sangrita Blast. A frozen Freeze variant was also available at Taco Bell from May to September 2015.</p><p>Sangrita Blast was discontinued from Taco Bell fountains in 2017 and replaced by Mtn Dew Spiked (Lemonade). No official reason was given for the discontinuation. PepsiCo has not re-released the flavor in any format since.</p></div>
+      <div class="wiki-section-prose"><p>Mtn Dew Sangrita Blast was a franchise-exclusive Mountain Dew flavor produced by PepsiCo for Taco Bell restaurants. It launched in December 2013 as part of a six-drink PepsiCo fountain expansion that also included Diet Baja Blast, Brisk Iced Tea and Lemonade, Brisk Mango Fiesta, SoBe Lifewater Yumberry Pomegranate, and Kickstart Orange Citrus.</p><p>The drink was maroon in color, achieved through a combination of Red 40 and Blue 1 dyes. PepsiCo’s official flavor descriptor was “citrus punch,” though consumer descriptions frequently referenced cherry, pomegranate, cranberry, and raspberry notes.</p></div>
+      <div class="wiki-section-prose"><p>In April 2015, PepsiCo released Sangrita Blast in cans and bottles alongside Baja Blast’s second retail run. This remains the only retail release of Sangrita Blast. A frozen Freeze variant was also available at Taco Bell from May to September 2015.</p><p>Sangrita Blast was discontinued from Taco Bell fountains in 2017 and replaced by Mtn Dew Spiked (Lemonade). No official reason was given for the discontinuation. PepsiCo has not re-released the flavor in any format since.</p></div>
     </div>
   </div>
 </div>
 
 <!-- FLAVOR PROFILE -->
-<div class="de-section">
-  <div class="de-section-inner">
-    <div class="de-eye">Flavor profile</div>
-    <h2 id="flavor" class="de-h2">Flavor characteristics</h2>
-    <div class="de-prose" style="max-width:680px;margin-top:16px;"><p>The official label described Sangrita Blast as “DEW with a Blast of Natural & Artificial Citrus Punch Flavor.” Consumer reviews consistently noted a tart, pomegranate-forward profile with cherry undertones and higher acidity than most Mountain Dew variants. Unlike Code Red’s candy-sweet cherry profile, Sangrita Blast leaned toward a cranberry-juice mouthfeel with a sour finish.</p></div>
+<div class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">Flavor profile</div>
+    <h2 id="flavor" class="wiki-section-title">Flavor characteristics</h2>
+    <div class="wiki-section-prose" style="max-width:680px;margin-top:16px;"><p>The official label described Sangrita Blast as “DEW with a Blast of Natural & Artificial Citrus Punch Flavor.” Consumer reviews consistently noted a tart, pomegranate-forward profile with cherry undertones and higher acidity than most Mountain Dew variants. Unlike Code Red’s candy-sweet cherry profile, Sangrita Blast leaned toward a cranberry-juice mouthfeel with a sour finish.</p></div>
     <div style="margin-top:24px;max-width:500px;">
       <div class="de-flavor-bar"><span class="de-flavor-name">Cherry</span><div style="flex:1;height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 6%,transparent);"><div class="de-flavor-fill" style="width:85%;"></div></div></div>
       <div class="de-flavor-bar"><span class="de-flavor-name">Pomegranate</span><div style="flex:1;height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 6%,transparent);"><div class="de-flavor-fill" style="width:75%;"></div></div></div>
@@ -133,12 +137,11 @@ body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var
 
 <!-- DISTRIBUTION -->
 
-
 <!-- NUTRITION -->
-<div class="de-section">
-  <div class="de-section-inner">
-    <div class="de-eye">Nutrition</div>
-    <h2 id="nutrition" class="de-h2">Nutrition facts</h2>
+<div class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">Nutrition</div>
+    <h2 id="nutrition" class="wiki-section-title">Nutrition facts</h2>
     <div style="margin-top:20px;max-width:500px;">
       <div style="background:var(--card);border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);border-radius:12px;padding:24px;">
         <div class="mono" style="font-size:9px;color:var(--muted-foreground);margin-bottom:16px;">Per 20 fl oz (591 mL)</div>
@@ -218,11 +221,11 @@ body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var
   </div>
 </div>
 
-<div class="de-section">
-  <div class="de-section-inner">
-    <div class="de-eye">Distribution</div>
-    <h2 id="distribution" class="de-h2">Channel availability</h2>
-    <div class="de-prose" style="max-width:680px;margin-top:16px;"><p>Sangrita Blast was distributed across three channels during its lifetime: Taco Bell fountain (December 2013–2017), retail cans and bottles (April–October 2015), and the Taco Bell Freeze machine (May–September 2015). All three channels were active simultaneously only during the summer of 2015.</p></div>
+<div class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">Distribution</div>
+    <h2 id="distribution" class="wiki-section-title">Channel availability</h2>
+    <div class="wiki-section-prose" style="max-width:680px;margin-top:16px;"><p>Sangrita Blast was distributed across three channels during its lifetime: Taco Bell fountain (December 2013–2017), retail cans and bottles (April–October 2015), and the Taco Bell Freeze machine (May–September 2015). All three channels were active simultaneously only during the summer of 2015.</p></div>
         <div style="margin-top:24px;background:var(--card);border-radius:12px;border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);padding:20px;">
       <div style="position:relative;">
         <div style="display:flex;margin-left:80px;margin-bottom:6px;"><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:left;">2012</span><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:center;">2013</span><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:center;">2014</span><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:center;">2015</span><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:center;">2016</span><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:center;">2017</span><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:right;">2018</span></div>
@@ -257,10 +260,10 @@ body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var
 </div>
 
 <!-- TIMELINE -->
-<div class="de-section">
-  <div class="de-section-inner">
-    <div class="de-eye">Timeline</div>
-    <h2 id="timeline" class="de-h2">Key dates</h2>
+<div class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">Timeline</div>
+    <h2 id="timeline" class="wiki-section-title">Key dates</h2>
     <div class="de-tl">
       <div class="de-tl-item">
         <div class="de-tl-date">December 2013</div>
@@ -292,27 +295,27 @@ body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var
 </div>
 
 <!-- TACO BELL RELATIONSHIP -->
-<div class="de-section">
-  <div class="de-section-inner">
-    <div class="de-eye">Taco Bell</div>
-    <h2 id="partner-taco-bell" class="de-h2">Relationship with Taco Bell</h2>
-    <div class="de-prose" style="max-width:680px;margin-top:16px;"><p>Sangrita Blast was designed exclusively for Taco Bell’s fountain system and was never available at other restaurant chains or convenience stores. It occupied the second dedicated Mountain Dew valve alongside Baja Blast, which has held the primary valve since 2004.</p><p>The drink was part of the December 2013 six-drink PepsiCo expansion—the largest beverage shakeup in Taco Bell’s history. When Sangrita Blast was discontinued in 2017, its valve was reassigned to Mtn Dew Spiked (Lemonade), which was itself discontinued by 2019. The second Dew valve has now cycled through three tenants: Sangrita Blast (2013–2017), Spiked Lemonade (2017–2019), and Baja Blast Zero Sugar (2019–present).</p></div>
+<div class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">Taco Bell</div>
+    <h2 id="partner-taco-bell" class="wiki-section-title">Relationship with Taco Bell</h2>
+    <div class="wiki-section-prose" style="max-width:680px;margin-top:16px;"><p>Sangrita Blast was designed exclusively for Taco Bell’s fountain system and was never available at other restaurant chains or convenience stores. It occupied the second dedicated Mountain Dew valve alongside Baja Blast, which has held the primary valve since 2004.</p><p>The drink was part of the December 2013 six-drink PepsiCo expansion—the largest beverage shakeup in Taco Bell’s history. When Sangrita Blast was discontinued in 2017, its valve was reassigned to Mtn Dew Spiked (Lemonade), which was itself discontinued by 2019. The second Dew valve has now cycled through three tenants: Sangrita Blast (2013–2017), Spiked Lemonade (2017–2019), and Baja Blast Zero Sugar (2019–present).</p></div>
 
   </div>
 </div>
 
 <!-- LEGACY -->
-<div class="de-section">
-  <div class="de-section-inner">
-    <div class="de-eye">Legacy</div>
-    <h2 id="legacy" class="de-h2">Reception and afterlife</h2>
-    <div class="de-prose" style="max-width:680px;margin-top:16px;"><p>Sangrita Blast has maintained a dedicated following since its discontinuation. A Change.org petition requesting its return has circulated among fans. Reddit threads on r/tacobell and r/mountaindew periodically surface, with users comparing the flavor to Mtn Dew Cyclone, a maroon citrus-punch flavor available at Speedway gas stations. PepsiCo has not confirmed or denied a connection between the two formulas.</p><p>The drink’s most common fan-created recreation uses approximately 70% Original Mountain Dew mixed with 30% sugar-free pomegranate juice and a splash of lime.</p></div>
+<div class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">Legacy</div>
+    <h2 id="legacy" class="wiki-section-title">Reception and afterlife</h2>
+    <div class="wiki-section-prose" style="max-width:680px;margin-top:16px;"><p>Sangrita Blast has maintained a dedicated following since its discontinuation. A Change.org petition requesting its return has circulated among fans. Reddit threads on r/tacobell and r/mountaindew periodically surface, with users comparing the flavor to Mtn Dew Cyclone, a maroon citrus-punch flavor available at Speedway gas stations. PepsiCo has not confirmed or denied a connection between the two formulas.</p><p>The drink’s most common fan-created recreation uses approximately 70% Original Mountain Dew mixed with 30% sugar-free pomegranate juice and a splash of lime.</p></div>
 
   </div>
 </div>
 
 <!-- BACK LINK -->
-<div class="de-section" style="text-align:center;padding:32px 24px;">
+<div class="wiki-section" data-tone="a" style="text-align:center;padding:32px 24px;">
   <a href="taco-bell-discontinued-drinks.html" class="de-back vw-back-link">← Back to Discontinued Drinks</a>
 </div>
 
