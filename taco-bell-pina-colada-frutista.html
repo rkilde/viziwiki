@@ -3,13 +3,12 @@ layout: default
 title: "Piña Colada Frutista Freeze — ViziWiki"
 body_class: "wiki-page wiki-taco-bell"
 extra_head: |
+  <link rel="stylesheet" href="/wiki-typography.css">
   <link rel="stylesheet" href="/wiki-taco-bell-skin.css">
+  <link rel="stylesheet" href="/tb-discontinued-drinks.css">
 ---
 {% raw %}
 <meta charset="UTF-8">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --accent:#b45309;--accent-light:#fbbf24;--accent-dark:#78350f;
@@ -19,79 +18,49 @@ extra_head: |
 body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var(--background);}
 .fra{font-family:'Fraunces',Georgia,serif;}.mono{font-family:'JetBrains Mono',monospace;}
 
-.de-hero{position:relative;overflow:hidden;color:#fff;padding:clamp(48px,10vw,96px) 24px clamp(40px,8vw,72px);}
-.de-hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(color-mix(in srgb,var(--accent-light) 70%,white) 1.4px,transparent 1.6px);background-size:10px 10px;opacity:.12;mix-blend-mode:overlay;}
-.de-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(to top,rgba(0,0,0,.35),transparent);}
-.de-hero-inner{position:relative;z-index:1;max-width:1500px;margin:0 auto;}
+/* ── Page-specific hero treatment (halftone + gradient overlay) ──
+   Structure/sizing comes from wiki-universals.css. These are this
+   drink's own visual flourishes + accent colors. */
+.wiki-hero{ color:#fff; }
+.wiki-hero::before{ content:''; position:absolute; inset:0; background-image:radial-gradient(color-mix(in srgb,var(--accent-light) 70%,white) 1.4px,transparent 1.6px); background-size:10px 10px; opacity:.12; mix-blend-mode:overlay; pointer-events:none; }
+.wiki-hero::after{ content:''; position:absolute; bottom:0; left:0; right:0; height:40%; background:linear-gradient(to top,rgba(0,0,0,.35),transparent); pointer-events:none; }
+.wiki-hero-inner > *{ position:relative; z-index:1; }
 
-.de-section{padding:clamp(32px,6vw,64px) 24px;}
-.de-section-inner{max-width:1500px;margin:0 auto;}
-.de-section:nth-child(even){background:color-mix(in oklab,var(--secondary) 40%,transparent);}
-.de-section:nth-child(odd){background:var(--card);}
-.de-section + .de-section{border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);}
+/* This page drives the universal hero/section tokens from its OWN palette
+   (so the accent shows), EXCEPT the alternating panel tones, which come
+   from the Taco Bell skin so they stay consistent wiki-wide. */
+.wiki-hero{ --hero-title-color:#fff; --hero-desc-color:rgba(255,255,255,0.7); }
 
-.de-eye{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--muted-foreground);display:flex;align-items:center;gap:8px;}
-.de-eye::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--accent);}
-.de-h2{margin-top:4px;font-family:'Fraunces',Georgia,serif;font-size:28px;font-weight:600;}
+.wiki-section-title{ color:var(--foreground); }
+.wiki-section-eyebrow{ color:var(--muted-foreground); }
+.wiki-section-eyebrow::before{ content:''; width:8px; height:8px; border-radius:50%; background:var(--accent); display:inline-block; flex:none; }
+.wiki-section-prose{ color:color-mix(in oklab,var(--foreground) 80%,transparent); font-size:15px; line-height:1.75; }
+.wiki-section-prose p+p{ margin-top:12px; }
 
-.de-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:20px;}
-.de-stat{background:var(--card);border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);border-radius:10px;padding:16px;border-top:3px solid var(--accent);}
-.de-stat-val{font-family:'Fraunces',Georgia,serif;font-size:24px;font-weight:700;color:var(--accent);}
-.de-stat-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted-foreground);margin-top:2px;}
-
-.de-prose{font-size:15px;line-height:1.75;color:color-mix(in oklab,var(--foreground) 80%,transparent);}
-.de-prose p+p{margin-top:12px;}
-.de-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:16px;}
-
-.de-tl{position:relative;padding-left:28px;margin-top:24px;}
-.de-tl::before{content:'';position:absolute;left:8px;top:4px;bottom:4px;width:2px;background:color-mix(in oklab,var(--accent) 25%,transparent);border-radius:1px;}
-.de-tl-item{position:relative;margin-bottom:24px;}
-.de-tl-item::before{content:'';position:absolute;left:-24px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid var(--card);}
-.de-tl-item:last-child{margin-bottom:0;}
-.de-tl-date{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);font-weight:600;}
-.de-tl-title{font-family:'Fraunces',Georgia,serif;font-size:17px;font-weight:600;margin-top:2px;}
-.de-tl-desc{margin-top:4px;font-size:14px;line-height:1.6;color:color-mix(in oklab,var(--foreground) 70%,transparent);}
-
-.de-quote{position:relative;background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:12px;padding:28px 28px 28px 44px;margin:24px 0;overflow:hidden;}
-.de-quote::before{content:'\201c';position:absolute;top:12px;left:16px;font-family:'Fraunces',Georgia,serif;font-size:48px;font-weight:700;color:rgba(255,255,255,0.15);line-height:1;}
-.de-quote::after{content:'';position:absolute;inset:0;background-image:radial-gradient(color-mix(in srgb,var(--accent-light) 70%,white) 1.4px,transparent 1.6px);background-size:10px 10px;opacity:.08;mix-blend-mode:overlay;pointer-events:none;}
-.de-quote p{position:relative;font-style:italic;font-size:15px;line-height:1.6;}
-.de-quote cite{position:relative;display:block;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);font-style:normal;}
-
-.de-callout{background:color-mix(in oklab,var(--accent) 6%,transparent);border:1px solid color-mix(in oklab,var(--accent) 15%,transparent);border-radius:10px;padding:20px;margin:24px 0;}
-
-.de-flavor-bar{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-.de-flavor-name{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted-foreground);width:90px;text-align:right;flex-shrink:0;}
-.de-flavor-fill{height:8px;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));}
-
-.de-pill{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:5px 12px;border-radius:4px;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);}
-
-.de-back{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);text-decoration:none;border:1px solid color-mix(in oklab,var(--accent) 25%,transparent);padding:10px 20px;border-radius:6px;}
-
-@media(max-width:768px){.de-stats{grid-template-columns:1fr 1fr;}.de-grid{grid-template-columns:1fr !important;}}
+@media(max-width:768px){}
 
 </style>
 
 <!-- HERO -->
-<div class="de-hero" style="background:linear-gradient(135deg,#fbbf24,#f59e0b,#b45309,#78350f);">
-  <div class="de-hero-inner">
-    <div class="mono" style="font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.45);display:flex;align-items:center;gap:8px;">
+<div class="wiki-hero" style="background:linear-gradient(135deg,#fbbf24,#f59e0b,#b45309,#78350f);">
+  <div class="wiki-hero-inner">
+    <div class="wiki-hero-eyebrow">
       <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
       Frutista Freeze · Taco Bell · 2009–2013
     </div>
-    <h1 class="fra" style="font-size:clamp(40px,8vw,72px);font-weight:700;letter-spacing:-0.03em;line-height:.95;margin-top:8px;">Piña Colada<br>Frutista Freeze</h1>
-    <p style="margin-top:16px;font-size:clamp(14px,2vw,17px);line-height:1.6;color:rgba(255,255,255,0.7);max-width:560px;">A hand-blended pineapple-coconut frozen drink produced exclusively for Taco Bell as part of the Frutista Freeze program (2008–2013).</p>
-    <div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:8px;">
+    <h1 class="wiki-hero-title">Piña Colada<br>Frutista Freeze</h1>
+    <p class="wiki-hero-desc">A hand-blended pineapple-coconut frozen drink produced exclusively for Taco Bell as part of the Frutista Freeze program (2008–2013).</p>
+    <div class="de-chip-row">
       <span class="de-pill">Discontinued</span><span class="de-pill">Taco Bell exclusive</span><span class="de-pill">Blender program</span>
     </div>
   </div>
 </div>
 
 <!-- AT A GLANCE -->
-<div class="de-section">
-  <div class="de-section-inner">
-    <div class="de-eye">At a glance</div>
-    <h2 id="glance" class="de-h2">Product summary</h2>
+<div class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">At a glance</div>
+    <h2 id="glance" class="wiki-section-title">Product summary</h2>
     <div class="de-stats">
       <div class="de-stat"><div class="de-stat-val">Spring 2009</div><div class="de-stat-label">Launched</div></div>
       <div class="de-stat"><div class="de-stat-val">Late 2012</div><div class="de-stat-label">Program ended</div></div>
@@ -104,154 +73,172 @@ body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var
 </div>
 
 <!-- OVERVIEW -->
-<div class="de-section">
-  <div class="de-section-inner">
-    <div class="de-eye">Overview</div>
-    <h2 id="story" class="de-h2">Background</h2>
+<div class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">Overview</div>
+    <h2 id="story" class="wiki-section-title">Background</h2>
     <div class="de-grid">
-      <div class="de-prose"><p>The Piña Colada Frutista Freeze was a pineapple-coconut frozen beverage introduced in spring 2009 as part of Taco Bell’s Frutista Freeze program. It launched alongside the Strawberry Colada variant as part of the program’s tropical rotation.</p><p>Frutista Freezes were hand-blended per order using a commercial blender with fruit syrups, ice, and real fruit toppings. The Piña Colada variant was topped with actual pineapple chunks.</p></div>
-      <div class="de-prose"><p>The Frutista Freeze program ran from May 2008 to late 2012, producing 13 flavors across seasonal rotations. In January 2013, Taco Bell replaced the commercial blenders with automated Taylor Freeze machines. A non-Frutista “Piña Colada Freeze” briefly appeared on the Taylor machine from January to September 2013 as a transitional product, but it was a different formulation without the hand-blended preparation or real fruit.</p><p>The Piña Colada Frutista Freeze was never sold in retail (cans, bottles) or at any location outside Taco Bell.</p></div>
+      <div class="wiki-section-prose"><p>The Piña Colada Frutista Freeze was a pineapple-coconut frozen beverage introduced in spring 2009 as part of Taco Bell’s Frutista Freeze program. It launched alongside the Strawberry Colada variant as part of the program’s tropical rotation.</p><p>Frutista Freezes were hand-blended per order using a commercial blender with fruit syrups, ice, and real fruit toppings. The Piña Colada variant was topped with actual pineapple chunks.</p></div>
+      <div class="wiki-section-prose"><p>The Frutista Freeze program ran from May 2008 to late 2012, producing 13 flavors across seasonal rotations. In January 2013, Taco Bell replaced the commercial blenders with automated Taylor Freeze machines. A non-Frutista “Piña Colada Freeze” briefly appeared on the Taylor machine from January to September 2013 as a transitional product, but it was a different formulation without the hand-blended preparation or real fruit.</p><p>The Piña Colada Frutista Freeze was never sold in retail (cans, bottles) or at any location outside Taco Bell.</p></div>
     </div>
   </div>
 </div>
 
 <!-- FLAVOR PROFILE -->
-<div class="de-section">
-  <div class="de-section-inner">
-    <div class="de-eye">Flavor profile</div>
-    <h2 id="flavor" class="de-h2">Flavor characteristics</h2>
-    <div class="de-prose" style="max-width:680px;margin-top:16px;"><p>The drink combined pineapple and coconut flavoring in a frozen slush base, modeled on a non-alcoholic piña colada. The Impulsive Buy rated it 8 out of 10 in a 2009 review, noting that it “fulfilled my piña colada desires.” The real pineapple chunks on top were a distinguishing feature of the Frutista program that was not carried over to the automated Freeze machine era.</p></div>
+<div class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">Flavor profile</div>
+    <h2 id="flavor" class="wiki-section-title">Flavor characteristics</h2>
+    <div class="wiki-section-prose is-narrow"><p>The drink combined pineapple and coconut flavoring in a frozen slush base, modeled on a non-alcoholic piña colada. The Impulsive Buy rated it 8 out of 10 in a 2009 review, noting that it “fulfilled my piña colada desires.” The real pineapple chunks on top were a distinguishing feature of the Frutista program that was not carried over to the automated Freeze machine era.</p></div>
 
   </div>
 </div>
 
 <!-- DISTRIBUTION -->
 
-
 <!-- NUTRITION -->
-<div class="de-section">
-  <div class="de-section-inner">
-    <div class="de-eye">Nutrition</div>
-    <h2 id="nutrition" class="de-h2">Nutrition facts</h2>
-    <div style="margin-top:20px;max-width:500px;">
-      <div style="background:var(--card);border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);border-radius:12px;padding:24px;">
-        <div class="mono" style="font-size:9px;color:var(--muted-foreground);margin-bottom:16px;">Per 16 fl oz (473 mL)</div>
+<div class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">Nutrition</div>
+    <h2 id="nutrition" class="wiki-section-title">Nutrition facts</h2>
+    <div class="nutri-wrap">
+      <div class="nutri-card">
+        <div class="nutri-serving">Per 16 fl oz (473 mL)</div>
 
-        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);">
-          <span class="fra" style="font-size:48px;font-weight:700;color:var(--accent);">230</span>
-          <span class="mono" style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted-foreground);">Calories</span>
-        </div>
-
-        <div style="display:flex;flex-direction:column;gap:10px;">
-      <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-          <span class="mono" style="font-size:9px;color:var(--foreground);">Total Sugar</span>
-          <span class="mono" style="font-size:9px;color:var(--muted-foreground);">48g</span>
-        </div>
-        <div style="height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 5%,transparent);">
-          <div style="height:100%;width:96%;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));"></div>
-        </div>
-        <div class="mono" style="font-size:7px;color:var(--muted-foreground);margin-top:2px;">96% Daily Value</div>
-      </div>
-      <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-          <span class="mono" style="font-size:9px;color:var(--foreground);">Caffeine</span>
-          <span class="mono" style="font-size:9px;color:var(--muted-foreground);">0mg</span>
-        </div>
-        <div style="height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 5%,transparent);">
-          <div style="height:100%;width:0%;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));"></div>
-        </div>
-      </div>
-      <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-          <span class="mono" style="font-size:9px;color:var(--foreground);">Total Carbs</span>
-          <span class="mono" style="font-size:9px;color:var(--muted-foreground);">58g</span>
-        </div>
-        <div style="height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 5%,transparent);">
-          <div style="height:100%;width:21%;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));"></div>
-        </div>
-        <div class="mono" style="font-size:7px;color:var(--muted-foreground);margin-top:2px;">21% Daily Value</div>
-      </div>
-      <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-          <span class="mono" style="font-size:9px;color:var(--foreground);">Sodium</span>
-          <span class="mono" style="font-size:9px;color:var(--muted-foreground);">30mg</span>
-        </div>
-        <div style="height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 5%,transparent);">
-          <div style="height:100%;width:1%;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));"></div>
-        </div>
-        <div class="mono" style="font-size:7px;color:var(--muted-foreground);margin-top:2px;">1% Daily Value</div>
-      </div>
-      <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-          <span class="mono" style="font-size:9px;color:var(--foreground);">Protein</span>
-          <span class="mono" style="font-size:9px;color:var(--muted-foreground);">0g</span>
-        </div>
-        <div style="height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 5%,transparent);">
-          <div style="height:100%;width:0%;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));"></div>
-        </div>
-      </div>
-      <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-          <span class="mono" style="font-size:9px;color:var(--foreground);">Total Fat</span>
-          <span class="mono" style="font-size:9px;color:var(--muted-foreground);">0g</span>
-        </div>
-        <div style="height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 5%,transparent);">
-          <div style="height:100%;width:0%;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));"></div>
-        </div>
-      </div>
+        <div class="nutri-calories">
+          <span class="nutri-cal-num">230</span>
+          <span class="nutri-cal-label">Calories</span>
         </div>
 
-        <div style="margin-top:20px;padding-top:16px;border-top:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);">
-          <div class="mono" style="font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted-foreground);margin-bottom:6px;">Ingredients</div>
-          <p style="font-size:12px;line-height:1.5;color:color-mix(in oklab,var(--foreground) 60%,transparent);">Ice, Piña Colada Flavored Syrup (Water, High Fructose Corn Syrup, Natural & Artificial Flavors, Citric Acid, Sodium Benzoate), Pineapple Chunks</p>
+        <div class="nutri-rows">
+      <div>
+        <div class="nutri-row-head">
+          <span class="nutri-row-name">Total Sugar</span>
+          <span class="nutri-row-val">48g</span>
+        </div>
+        <div class="nutri-bar">
+          <div class="nutri-fill" style="width:96%"></div>
+        </div>
+        <div class="nutri-dv">96% Daily Value</div>
+      </div>
+      <div>
+        <div class="nutri-row-head">
+          <span class="nutri-row-name">Caffeine</span>
+          <span class="nutri-row-val">0mg</span>
+        </div>
+        <div class="nutri-bar">
+          <div class="nutri-fill" style="width:0%"></div>
+        </div>
+      </div>
+      <div>
+        <div class="nutri-row-head">
+          <span class="nutri-row-name">Total Carbs</span>
+          <span class="nutri-row-val">58g</span>
+        </div>
+        <div class="nutri-bar">
+          <div class="nutri-fill" style="width:21%"></div>
+        </div>
+        <div class="nutri-dv">21% Daily Value</div>
+      </div>
+      <div>
+        <div class="nutri-row-head">
+          <span class="nutri-row-name">Sodium</span>
+          <span class="nutri-row-val">30mg</span>
+        </div>
+        <div class="nutri-bar">
+          <div class="nutri-fill" style="width:1%"></div>
+        </div>
+        <div class="nutri-dv">1% Daily Value</div>
+      </div>
+      <div>
+        <div class="nutri-row-head">
+          <span class="nutri-row-name">Protein</span>
+          <span class="nutri-row-val">0g</span>
+        </div>
+        <div class="nutri-bar">
+          <div class="nutri-fill" style="width:0%"></div>
+        </div>
+      </div>
+      <div>
+        <div class="nutri-row-head">
+          <span class="nutri-row-name">Total Fat</span>
+          <span class="nutri-row-val">0g</span>
+        </div>
+        <div class="nutri-bar">
+          <div class="nutri-fill" style="width:0%"></div>
+        </div>
+      </div>
+        </div>
+
+        <div class="nutri-ingredients">
+          <div class="nutri-ingredients-label">Ingredients</div>
+          <p class="nutri-ingredients-text">Ice, Piña Colada Flavored Syrup (Water, High Fructose Corn Syrup, Natural & Artificial Flavors, Citric Acid, Sodium Benzoate), Pineapple Chunks</p>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="de-section">
-  <div class="de-section-inner">
-    <div class="de-eye">Distribution</div>
-    <h2 id="distribution" class="de-h2">Channel availability</h2>
-    <div class="de-prose" style="max-width:680px;margin-top:16px;"><p>The Piña Colada Frutista Freeze was available only as a hand-blended in-store drink at Taco Bell. It was never sold in retail or through any other distribution channel. A machine-dispensed version briefly existed during the January–September 2013 transition to the Taylor Freeze system.</p></div>
-        <div style="margin-top:24px;background:var(--card);border-radius:12px;border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);padding:20px;">
-      <div style="position:relative;">
-        <div style="display:flex;margin-left:80px;margin-bottom:6px;"><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:left;">2008</span><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:center;">2009</span><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:center;">2010</span><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:center;">2011</span><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:center;">2012</span><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:center;">2013</span><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:right;">2014</span></div>
-        <div style="margin-left:80px;height:1px;background:color-mix(in oklab,var(--foreground) 8%,transparent);margin-bottom:8px;"></div>
-        <div style="display:flex;align-items:center;margin-bottom:6px;">
-          <div class="mono" style="width:80px;flex-shrink:0;font-size:8px;text-align:right;padding-right:10px;color:var(--foreground);">Blender</div>
-          <div style="flex:1;height:24px;position:relative;background:color-mix(in oklab,var(--foreground) 3%,transparent);border-radius:4px;">
-            <div style="position:absolute;left:14%;width:62%;height:100%;background:linear-gradient(90deg,var(--accent-light),var(--accent),var(--accent-dark));border-radius:4px;display:flex;align-items:center;padding-left:10px;">
-              <span class="mono" style="font-size:7px;color:rgba(255,255,255,0.85);">Spring 2009 – Late 2012 · Frutista</span>
-            </div>
+<div class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">Distribution</div>
+    <h2 id="distribution" class="wiki-section-title">Channel availability</h2>
+    <div class="wiki-section-prose is-narrow"><p>The Piña Colada Frutista Freeze was available only as a hand-blended in-store drink at Taco Bell. It was never sold in retail or through any other distribution channel. A machine-dispensed version briefly existed during the January–September 2013 transition to the Taylor Freeze system.</p></div>
+        <div class="swim">
+      <div class="swim-axis">
+        <span class="swim-year" style="text-align:left">2008</span>
+        <span class="swim-year">2009</span>
+        <span class="swim-year">2010</span>
+        <span class="swim-year">2011</span>
+        <span class="swim-year">2012</span>
+        <span class="swim-year">2013</span>
+        <span class="swim-year" style="text-align:right">2014</span>
+      </div>
+      <div class="swim-baseline"></div>
+
+      <div class="swim-lane">
+        <div class="swim-label">Blender</div>
+        <div class="swim-track">
+          <div class="swim-bar" style="left:14%;width:62%">
+            <span class="swim-bar-text">Spring 2009 – Late 2012 · Frutista</span>
           </div>
         </div>
-        <div style="display:flex;align-items:center;margin-bottom:6px;">
-          <div class="mono" style="width:80px;flex-shrink:0;font-size:8px;text-align:right;padding-right:10px;color:var(--foreground);">Freeze</div>
-          <div style="flex:1;height:24px;position:relative;background:color-mix(in oklab,var(--foreground) 3%,transparent);border-radius:4px;">
-            <div style="position:absolute;left:78%;width:10%;height:100%;background:color-mix(in oklab,var(--accent) 15%,transparent);border:1px dashed var(--accent);border-radius:4px;"></div>
-            <span class="mono" style="position:absolute;left:calc(78% + 10% + 6px);top:50%;transform:translateY(-50%);font-size:7px;color:var(--muted-foreground);">Jan–Sep 2013</span>
-          </div>
+      </div>
+
+      <div class="swim-lane">
+        <div class="swim-label">Freeze</div>
+        <div class="swim-track">
+          <div class="swim-bar is-dashed" style="left:78%;width:10%"></div>
+          <span class="swim-bar-text-outside" style="left:calc(78% + 10% + 6px)">Jan–Sep 2013</span>
         </div>
-        <div style="display:flex;align-items:center;margin-bottom:6px;">
-          <div class="mono" style="width:80px;flex-shrink:0;font-size:8px;text-align:right;padding-right:10px;color:var(--muted-foreground);opacity:.5;">Retail</div>
-          <div style="flex:1;height:24px;position:relative;background:color-mix(in oklab,var(--foreground) 3%,transparent);border-radius:4px;display:flex;align-items:center;padding-left:10px;">
-            <span class="mono" style="font-size:7px;color:var(--muted-foreground);opacity:.5;">Never available</span>
-          </div>
+      </div>
+
+      <div class="swim-lane">
+        <div class="swim-label is-muted">Retail</div>
+        <div class="swim-track">
+          <span class="swim-track-note">Never available</span>
         </div>
-        <div style="margin-top:12px;margin-left:80px;display:flex;gap:14px;flex-wrap:wrap;"><div style="display:flex;align-items:center;gap:4px;"><div style="width:10px;height:6px;border-radius:2px;background:linear-gradient(90deg,var(--accent-light),var(--accent))"></div><span class="mono" style="font-size:7px;color:var(--muted-foreground);">Frutista (blender)</span></div><div style="display:flex;align-items:center;gap:4px;"><div style="width:10px;height:6px;border-radius:2px;border:1px dashed var(--accent);background:color-mix(in oklab,var(--accent) 15%,transparent)"></div><span class="mono" style="font-size:7px;color:var(--muted-foreground);">Transition (machine)</span></div></div>
+      </div>
+
+      <div class="swim-legend">
+        <div class="swim-legend-item">
+          <div class="swim-legend-swatch"></div>
+          <span class="swim-legend-label">Frutista (blender)</span>
+        </div>
+        <div class="swim-legend-item">
+          <div class="swim-legend-swatch is-dashed"></div>
+          <span class="swim-legend-label">Transition (machine)</span>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <!-- TIMELINE -->
-<div class="de-section">
-  <div class="de-section-inner">
-    <div class="de-eye">Timeline</div>
-    <h2 id="timeline" class="de-h2">Key dates</h2>
+<div class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">Timeline</div>
+    <h2 id="timeline" class="wiki-section-title">Key dates</h2>
     <div class="de-tl">
       <div class="de-tl-item">
         <div class="de-tl-date">May 2008</div>
@@ -283,27 +270,27 @@ body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var
 </div>
 
 <!-- TACO BELL RELATIONSHIP -->
-<div class="de-section">
-  <div class="de-section-inner">
-    <div class="de-eye">Taco Bell</div>
-    <h2 id="partner-taco-bell" class="de-h2">Relationship with Taco Bell</h2>
-    <div class="de-prose" style="max-width:680px;margin-top:16px;"><p>The Frutista Freeze program was exclusive to Taco Bell and was not a PepsiCo product. The drinks were prepared in-store using commercial blenders, which created operational challenges during peak drive-thru hours due to the per-order preparation time. The real fruit toppings also required cold storage and spoilage management that most locations could not sustain at scale.</p><p>The transition from the Frutista blender program to the automated Taylor Freeze machine in January 2013 represented a trade-off between product quality and operational efficiency. The Taylor machine dispenses pre-mixed syrup continuously, eliminating per-order preparation time but also eliminating the hand-blended texture and real fruit that distinguished the Frutista line.</p></div>
+<div class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">Taco Bell</div>
+    <h2 id="partner-taco-bell" class="wiki-section-title">Relationship with Taco Bell</h2>
+    <div class="wiki-section-prose is-narrow"><p>The Frutista Freeze program was exclusive to Taco Bell and was not a PepsiCo product. The drinks were prepared in-store using commercial blenders, which created operational challenges during peak drive-thru hours due to the per-order preparation time. The real fruit toppings also required cold storage and spoilage management that most locations could not sustain at scale.</p><p>The transition from the Frutista blender program to the automated Taylor Freeze machine in January 2013 represented a trade-off between product quality and operational efficiency. The Taylor machine dispenses pre-mixed syrup continuously, eliminating per-order preparation time but also eliminating the hand-blended texture and real fruit that distinguished the Frutista line.</p></div>
 
   </div>
 </div>
 
 <!-- LEGACY -->
-<div class="de-section">
-  <div class="de-section-inner">
-    <div class="de-eye">Legacy</div>
-    <h2 id="legacy" class="de-h2">Reception and afterlife</h2>
-    <div class="de-prose" style="max-width:680px;margin-top:16px;"><p>The Piña Colada Frutista Freeze is the most frequently replicated flavor from the Frutista program in online copycat recipes. Versions appear on CopyKat, food blogs, and social media. The standard copycat formula uses approximately ¼ cup piña colada mix (non-alcoholic), ¼ cup lemon-lime soda, 1 cup ice, and the juice of half a lime, blended on high.</p><p>The Frutista program as a whole is remembered as a higher-quality frozen drink offering that was replaced for operational reasons rather than lack of consumer demand.</p></div>
+<div class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">Legacy</div>
+    <h2 id="legacy" class="wiki-section-title">Reception and afterlife</h2>
+    <div class="wiki-section-prose is-narrow"><p>The Piña Colada Frutista Freeze is the most frequently replicated flavor from the Frutista program in online copycat recipes. Versions appear on CopyKat, food blogs, and social media. The standard copycat formula uses approximately ¼ cup piña colada mix (non-alcoholic), ¼ cup lemon-lime soda, 1 cup ice, and the juice of half a lime, blended on high.</p><p>The Frutista program as a whole is remembered as a higher-quality frozen drink offering that was replaced for operational reasons rather than lack of consumer demand.</p></div>
 
   </div>
 </div>
 
 <!-- BACK LINK -->
-<div class="de-section" style="text-align:center;padding:32px 24px;">
+<div class="wiki-section de-back-section" data-tone="a">
   <a href="taco-bell-discontinued-drinks.html" class="de-back vw-back-link">← Back to Discontinued Drinks</a>
 </div>
 

@@ -3,13 +3,12 @@ layout: default
 title: "Mtn Dew Spiked Lemonade — ViziWiki"
 body_class: "wiki-page wiki-taco-bell"
 extra_head: |
+  <link rel="stylesheet" href="/wiki-typography.css">
   <link rel="stylesheet" href="/wiki-taco-bell-skin.css">
+  <link rel="stylesheet" href="/tb-discontinued-drinks.css">
 ---
 {% raw %}
 <meta charset="UTF-8">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --accent:#65a30d;--accent-light:#a3e635;--accent-dark:#365314;
@@ -19,79 +18,49 @@ extra_head: |
 body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var(--background);}
 .fra{font-family:'Fraunces',Georgia,serif;}.mono{font-family:'JetBrains Mono',monospace;}
 
-.de-hero{position:relative;overflow:hidden;color:#fff;padding:clamp(48px,10vw,96px) 24px clamp(40px,8vw,72px);}
-.de-hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(color-mix(in srgb,var(--accent-light) 70%,white) 1.4px,transparent 1.6px);background-size:10px 10px;opacity:.12;mix-blend-mode:overlay;}
-.de-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(to top,rgba(0,0,0,.35),transparent);}
-.de-hero-inner{position:relative;z-index:1;max-width:1500px;margin:0 auto;}
+/* ── Page-specific hero treatment (halftone + gradient overlay) ──
+   Structure/sizing comes from wiki-universals.css. These are this
+   drink's own visual flourishes + accent colors. */
+.wiki-hero{ color:#fff; }
+.wiki-hero::before{ content:''; position:absolute; inset:0; background-image:radial-gradient(color-mix(in srgb,var(--accent-light) 70%,white) 1.4px,transparent 1.6px); background-size:10px 10px; opacity:.12; mix-blend-mode:overlay; pointer-events:none; }
+.wiki-hero::after{ content:''; position:absolute; bottom:0; left:0; right:0; height:40%; background:linear-gradient(to top,rgba(0,0,0,.35),transparent); pointer-events:none; }
+.wiki-hero-inner > *{ position:relative; z-index:1; }
 
-.de-section{padding:clamp(32px,6vw,64px) 24px;}
-.de-section-inner{max-width:1500px;margin:0 auto;}
-.de-section:nth-child(even){background:color-mix(in oklab,var(--secondary) 40%,transparent);}
-.de-section:nth-child(odd){background:var(--card);}
-.de-section + .de-section{border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);}
+/* This page drives the universal hero/section tokens from its OWN palette
+   (so the accent shows), EXCEPT the alternating panel tones, which come
+   from the Taco Bell skin so they stay consistent wiki-wide. */
+.wiki-hero{ --hero-title-color:#fff; --hero-desc-color:rgba(255,255,255,0.7); }
 
-.de-eye{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--muted-foreground);display:flex;align-items:center;gap:8px;}
-.de-eye::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--accent);}
-.de-h2{margin-top:4px;font-family:'Fraunces',Georgia,serif;font-size:28px;font-weight:600;}
+.wiki-section-title{ color:var(--foreground); }
+.wiki-section-eyebrow{ color:var(--muted-foreground); }
+.wiki-section-eyebrow::before{ content:''; width:8px; height:8px; border-radius:50%; background:var(--accent); display:inline-block; flex:none; }
+.wiki-section-prose{ color:color-mix(in oklab,var(--foreground) 80%,transparent); font-size:15px; line-height:1.75; }
+.wiki-section-prose p+p{ margin-top:12px; }
 
-.de-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:20px;}
-.de-stat{background:var(--card);border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);border-radius:10px;padding:16px;border-top:3px solid var(--accent);}
-.de-stat-val{font-family:'Fraunces',Georgia,serif;font-size:24px;font-weight:700;color:var(--accent);}
-.de-stat-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted-foreground);margin-top:2px;}
-
-.de-prose{font-size:15px;line-height:1.75;color:color-mix(in oklab,var(--foreground) 80%,transparent);}
-.de-prose p+p{margin-top:12px;}
-.de-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:16px;}
-
-.de-tl{position:relative;padding-left:28px;margin-top:24px;}
-.de-tl::before{content:'';position:absolute;left:8px;top:4px;bottom:4px;width:2px;background:color-mix(in oklab,var(--accent) 25%,transparent);border-radius:1px;}
-.de-tl-item{position:relative;margin-bottom:24px;}
-.de-tl-item::before{content:'';position:absolute;left:-24px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid var(--card);}
-.de-tl-item:last-child{margin-bottom:0;}
-.de-tl-date{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);font-weight:600;}
-.de-tl-title{font-family:'Fraunces',Georgia,serif;font-size:17px;font-weight:600;margin-top:2px;}
-.de-tl-desc{margin-top:4px;font-size:14px;line-height:1.6;color:color-mix(in oklab,var(--foreground) 70%,transparent);}
-
-.de-quote{position:relative;background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:12px;padding:28px 28px 28px 44px;margin:24px 0;overflow:hidden;}
-.de-quote::before{content:'\201c';position:absolute;top:12px;left:16px;font-family:'Fraunces',Georgia,serif;font-size:48px;font-weight:700;color:rgba(255,255,255,0.15);line-height:1;}
-.de-quote::after{content:'';position:absolute;inset:0;background-image:radial-gradient(color-mix(in srgb,var(--accent-light) 70%,white) 1.4px,transparent 1.6px);background-size:10px 10px;opacity:.08;mix-blend-mode:overlay;pointer-events:none;}
-.de-quote p{position:relative;font-style:italic;font-size:15px;line-height:1.6;}
-.de-quote cite{position:relative;display:block;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);font-style:normal;}
-
-.de-callout{background:color-mix(in oklab,var(--accent) 6%,transparent);border:1px solid color-mix(in oklab,var(--accent) 15%,transparent);border-radius:10px;padding:20px;margin:24px 0;}
-
-.de-flavor-bar{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-.de-flavor-name{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted-foreground);width:90px;text-align:right;flex-shrink:0;}
-.de-flavor-fill{height:8px;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));}
-
-.de-pill{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:5px 12px;border-radius:4px;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);}
-
-.de-back{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);text-decoration:none;border:1px solid color-mix(in oklab,var(--accent) 25%,transparent);padding:10px 20px;border-radius:6px;}
-
-@media(max-width:768px){.de-stats{grid-template-columns:1fr 1fr;}.de-grid{grid-template-columns:1fr !important;}}
+@media(max-width:768px){}
 
 </style>
 
 <!-- HERO -->
-<div class="de-hero" style="background:linear-gradient(135deg,#a3e635,#65a30d,#365314,#1a2e05);">
-  <div class="de-hero-inner">
-    <div class="mono" style="font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.45);display:flex;align-items:center;gap:8px;">
+<div class="wiki-hero" style="background:linear-gradient(135deg,#a3e635,#65a30d,#365314,#1a2e05);">
+  <div class="wiki-hero-inner">
+    <div class="wiki-hero-eyebrow">
       <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
       Mountain Dew · PepsiCo · 2017–2019
     </div>
-    <h1 class="fra" style="font-size:clamp(40px,8vw,72px);font-weight:700;letter-spacing:-0.03em;line-height:.95;margin-top:8px;">Mtn Dew<br>Spiked Lemonade</h1>
-    <p style="margin-top:16px;font-size:clamp(14px,2vw,17px);line-height:1.6;color:rgba(255,255,255,0.7);max-width:560px;">A non-alcoholic lemonade soda with prickly pear cactus juice, produced by PepsiCo under the Mountain Dew brand. Available from 2017 to 2019.</p>
-    <div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:8px;">
+    <h1 class="wiki-hero-title">Mtn Dew<br>Spiked Lemonade</h1>
+    <p class="wiki-hero-desc">A non-alcoholic lemonade soda with prickly pear cactus juice, produced by PepsiCo under the Mountain Dew brand. Available from 2017 to 2019.</p>
+    <div class="de-chip-row">
       <span class="de-pill">Discontinued</span><span class="de-pill">Taco Bell exclusive (fountain)</span><span class="de-pill">PepsiCo · Mountain Dew</span>
     </div>
   </div>
 </div>
 
 <!-- AT A GLANCE -->
-<div class="de-section">
-  <div class="de-section-inner">
-    <div class="de-eye">At a glance</div>
-    <h2 id="glance" class="de-h2">Product summary</h2>
+<div class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">At a glance</div>
+    <h2 id="glance" class="wiki-section-title">Product summary</h2>
     <div class="de-stats">
       <div class="de-stat"><div class="de-stat-val">Early 2017</div><div class="de-stat-label">Launched</div></div>
       <div class="de-stat"><div class="de-stat-val">Mar 2019</div><div class="de-stat-label">Discontinued</div></div>
@@ -104,157 +73,169 @@ body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var
 </div>
 
 <!-- OVERVIEW -->
-<div class="de-section">
-  <div class="de-section-inner">
-    <div class="de-eye">Overview</div>
-    <h2 id="story" class="de-h2">Background</h2>
+<div class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">Overview</div>
+    <h2 id="story" class="wiki-section-title">Background</h2>
     <div class="de-grid">
-      <div class="de-prose"><p>Mtn Dew Spiked was a lemonade-flavored Mountain Dew variant introduced in early 2017 as a replacement for Sangrita Blast on Taco Bell’s dedicated Mountain Dew fountain valve. The drink was marketed as being “spiked” with prickly pear cactus juice, though it contained no alcohol.</p><p>PepsiCo simultaneously released retail 16-ounce cans in two flavors: Lemonade and Raspberry Lemonade. The drink was promoted during Comedy Central’s Colossal Clusterfest in 2017.</p></div>
-      <div class="de-prose"><p>A Freeze variant was available at Taco Bell from early 2017 through September 2017, when it was replaced by the Strawberry Poppin’ Candy Freeze. Retail cans were discontinued in 2018. The Taco Bell fountain version was phased out between December 2018 and March 2019 to make room for the introduction of Baja Blast Zero Sugar.</p><p>In Canada, the product was sold under the name “Mtn Dew Extra (Lemonade)” to avoid confusion about the “Spiked” name’s implied alcohol content.</p></div>
+      <div class="wiki-section-prose"><p>Mtn Dew Spiked was a lemonade-flavored Mountain Dew variant introduced in early 2017 as a replacement for Sangrita Blast on Taco Bell’s dedicated Mountain Dew fountain valve. The drink was marketed as being “spiked” with prickly pear cactus juice, though it contained no alcohol.</p><p>PepsiCo simultaneously released retail 16-ounce cans in two flavors: Lemonade and Raspberry Lemonade. The drink was promoted during Comedy Central’s Colossal Clusterfest in 2017.</p></div>
+      <div class="wiki-section-prose"><p>A Freeze variant was available at Taco Bell from early 2017 through September 2017, when it was replaced by the Strawberry Poppin’ Candy Freeze. Retail cans were discontinued in 2018. The Taco Bell fountain version was phased out between December 2018 and March 2019 to make room for the introduction of Baja Blast Zero Sugar.</p><p>In Canada, the product was sold under the name “Mtn Dew Extra (Lemonade)” to avoid confusion about the “Spiked” name’s implied alcohol content.</p></div>
     </div>
   </div>
 </div>
 
 <!-- FLAVOR PROFILE -->
-<div class="de-section">
-  <div class="de-section-inner">
-    <div class="de-eye">Flavor profile</div>
-    <h2 id="flavor" class="de-h2">Flavor characteristics</h2>
-    <div class="de-prose" style="max-width:680px;margin-top:16px;"><p>Spiked Lemonade was a citrus-forward, lighter-bodied drink compared to its predecessor Sangrita Blast. The prickly pear cactus juice addition was a departure from typical Mountain Dew formulations. Consumer reviews described it as having a standard lemonade base with a slight botanical undertone. Some reviewers noted an unusual aftertaste attributed to the prickly pear component.</p></div>
+<div class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">Flavor profile</div>
+    <h2 id="flavor" class="wiki-section-title">Flavor characteristics</h2>
+    <div class="wiki-section-prose is-narrow"><p>Spiked Lemonade was a citrus-forward, lighter-bodied drink compared to its predecessor Sangrita Blast. The prickly pear cactus juice addition was a departure from typical Mountain Dew formulations. Consumer reviews described it as having a standard lemonade base with a slight botanical undertone. Some reviewers noted an unusual aftertaste attributed to the prickly pear component.</p></div>
 
   </div>
 </div>
 
 <!-- DISTRIBUTION -->
 
-
 <!-- NUTRITION -->
-<div class="de-section">
-  <div class="de-section-inner">
-    <div class="de-eye">Nutrition</div>
-    <h2 id="nutrition" class="de-h2">Nutrition facts</h2>
-    <div style="margin-top:20px;max-width:500px;">
-      <div style="background:var(--card);border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);border-radius:12px;padding:24px;">
-        <div class="mono" style="font-size:9px;color:var(--muted-foreground);margin-bottom:16px;">Per 16 fl oz can (473 mL)</div>
+<div class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">Nutrition</div>
+    <h2 id="nutrition" class="wiki-section-title">Nutrition facts</h2>
+    <div class="nutri-wrap">
+      <div class="nutri-card">
+        <div class="nutri-serving">Per 16 fl oz can (473 mL)</div>
 
-        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);">
-          <span class="fra" style="font-size:48px;font-weight:700;color:var(--accent);">160</span>
-          <span class="mono" style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted-foreground);">Calories</span>
-        </div>
-
-        <div style="display:flex;flex-direction:column;gap:10px;">
-      <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-          <span class="mono" style="font-size:9px;color:var(--foreground);">Total Sugar</span>
-          <span class="mono" style="font-size:9px;color:var(--muted-foreground);">42g</span>
-        </div>
-        <div style="height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 5%,transparent);">
-          <div style="height:100%;width:84%;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));"></div>
-        </div>
-        <div class="mono" style="font-size:7px;color:var(--muted-foreground);margin-top:2px;">84% Daily Value</div>
-      </div>
-      <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-          <span class="mono" style="font-size:9px;color:var(--foreground);">Caffeine</span>
-          <span class="mono" style="font-size:9px;color:var(--muted-foreground);">68mg</span>
-        </div>
-        <div style="height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 5%,transparent);">
-          <div style="height:100%;width:17%;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));"></div>
-        </div>
-        <div class="mono" style="font-size:7px;color:var(--muted-foreground);margin-top:2px;">17% Daily Value</div>
-      </div>
-      <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-          <span class="mono" style="font-size:9px;color:var(--foreground);">Total Carbs</span>
-          <span class="mono" style="font-size:9px;color:var(--muted-foreground);">42g</span>
-        </div>
-        <div style="height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 5%,transparent);">
-          <div style="height:100%;width:15%;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));"></div>
-        </div>
-        <div class="mono" style="font-size:7px;color:var(--muted-foreground);margin-top:2px;">15% Daily Value</div>
-      </div>
-      <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-          <span class="mono" style="font-size:9px;color:var(--foreground);">Sodium</span>
-          <span class="mono" style="font-size:9px;color:var(--muted-foreground);">60mg</span>
-        </div>
-        <div style="height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 5%,transparent);">
-          <div style="height:100%;width:3%;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));"></div>
-        </div>
-        <div class="mono" style="font-size:7px;color:var(--muted-foreground);margin-top:2px;">3% Daily Value</div>
-      </div>
-      <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-          <span class="mono" style="font-size:9px;color:var(--foreground);">Protein</span>
-          <span class="mono" style="font-size:9px;color:var(--muted-foreground);">0g</span>
-        </div>
-        <div style="height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 5%,transparent);">
-          <div style="height:100%;width:0%;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));"></div>
-        </div>
-      </div>
-      <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-          <span class="mono" style="font-size:9px;color:var(--foreground);">Total Fat</span>
-          <span class="mono" style="font-size:9px;color:var(--muted-foreground);">0g</span>
-        </div>
-        <div style="height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 5%,transparent);">
-          <div style="height:100%;width:0%;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));"></div>
-        </div>
-      </div>
+        <div class="nutri-calories">
+          <span class="nutri-cal-num">160</span>
+          <span class="nutri-cal-label">Calories</span>
         </div>
 
-        <div style="margin-top:20px;padding-top:16px;border-top:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);">
-          <div class="mono" style="font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted-foreground);margin-bottom:6px;">Ingredients</div>
-          <p style="font-size:12px;line-height:1.5;color:color-mix(in oklab,var(--foreground) 60%,transparent);">Carbonated Water, High Fructose Corn Syrup, Concentrated Orange Juice, Citric Acid, Natural Flavor, Sodium Benzoate (Preserves Freshness), Caffeine, Gum Arabic, Sodium Citrate, Calcium Disodium EDTA, Yellow 5</p>
+        <div class="nutri-rows">
+      <div>
+        <div class="nutri-row-head">
+          <span class="nutri-row-name">Total Sugar</span>
+          <span class="nutri-row-val">42g</span>
+        </div>
+        <div class="nutri-bar">
+          <div class="nutri-fill" style="width:84%"></div>
+        </div>
+        <div class="nutri-dv">84% Daily Value</div>
+      </div>
+      <div>
+        <div class="nutri-row-head">
+          <span class="nutri-row-name">Caffeine</span>
+          <span class="nutri-row-val">68mg</span>
+        </div>
+        <div class="nutri-bar">
+          <div class="nutri-fill" style="width:17%"></div>
+        </div>
+        <div class="nutri-dv">17% Daily Value</div>
+      </div>
+      <div>
+        <div class="nutri-row-head">
+          <span class="nutri-row-name">Total Carbs</span>
+          <span class="nutri-row-val">42g</span>
+        </div>
+        <div class="nutri-bar">
+          <div class="nutri-fill" style="width:15%"></div>
+        </div>
+        <div class="nutri-dv">15% Daily Value</div>
+      </div>
+      <div>
+        <div class="nutri-row-head">
+          <span class="nutri-row-name">Sodium</span>
+          <span class="nutri-row-val">60mg</span>
+        </div>
+        <div class="nutri-bar">
+          <div class="nutri-fill" style="width:3%"></div>
+        </div>
+        <div class="nutri-dv">3% Daily Value</div>
+      </div>
+      <div>
+        <div class="nutri-row-head">
+          <span class="nutri-row-name">Protein</span>
+          <span class="nutri-row-val">0g</span>
+        </div>
+        <div class="nutri-bar">
+          <div class="nutri-fill" style="width:0%"></div>
+        </div>
+      </div>
+      <div>
+        <div class="nutri-row-head">
+          <span class="nutri-row-name">Total Fat</span>
+          <span class="nutri-row-val">0g</span>
+        </div>
+        <div class="nutri-bar">
+          <div class="nutri-fill" style="width:0%"></div>
+        </div>
+      </div>
+        </div>
+
+        <div class="nutri-ingredients">
+          <div class="nutri-ingredients-label">Ingredients</div>
+          <p class="nutri-ingredients-text">Carbonated Water, High Fructose Corn Syrup, Concentrated Orange Juice, Citric Acid, Natural Flavor, Sodium Benzoate (Preserves Freshness), Caffeine, Gum Arabic, Sodium Citrate, Calcium Disodium EDTA, Yellow 5</p>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="de-section">
-  <div class="de-section-inner">
-    <div class="de-eye">Distribution</div>
-    <h2 id="distribution" class="de-h2">Channel availability</h2>
-    <div class="de-prose" style="max-width:680px;margin-top:16px;"><p>Spiked Lemonade launched across three channels nearly simultaneously in early 2017: Taco Bell fountain, retail cans, and Freeze. The Freeze was removed first (September 2017), retail cans followed (2018), and the fountain version was the last to go (March 2019).</p></div>
-        <div style="margin-top:24px;background:var(--card);border-radius:12px;border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);padding:20px;">
-      <div style="position:relative;">
-        <div style="display:flex;margin-left:80px;margin-bottom:6px;"><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:left;">2016</span><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:center;">2017</span><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:center;">2018</span><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:center;">2019</span><span class="mono" style="flex:1;font-size:8px;color:var(--muted-foreground);text-align:right;">2020</span></div>
-        <div style="margin-left:80px;height:1px;background:color-mix(in oklab,var(--foreground) 8%,transparent);margin-bottom:8px;"></div>
-        <div style="display:flex;align-items:center;margin-bottom:6px;">
-          <div class="mono" style="width:80px;flex-shrink:0;font-size:8px;text-align:right;padding-right:10px;color:var(--foreground);">Fountain</div>
-          <div style="flex:1;height:24px;position:relative;background:color-mix(in oklab,var(--foreground) 3%,transparent);border-radius:4px;">
-            <div style="position:absolute;left:16%;width:58%;height:100%;background:linear-gradient(90deg,var(--accent-light),var(--accent),var(--accent-dark));border-radius:4px;display:flex;align-items:center;padding-left:10px;">
-              <span class="mono" style="font-size:7px;color:rgba(255,255,255,0.85);">Early 2017 – Mar 2019</span>
-            </div>
+<div class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">Distribution</div>
+    <h2 id="distribution" class="wiki-section-title">Channel availability</h2>
+    <div class="wiki-section-prose is-narrow"><p>Spiked Lemonade launched across three channels nearly simultaneously in early 2017: Taco Bell fountain, retail cans, and Freeze. The Freeze was removed first (September 2017), retail cans followed (2018), and the fountain version was the last to go (March 2019).</p></div>
+        <div class="swim">
+      <div class="swim-axis">
+        <span class="swim-year" style="text-align:left">2016</span>
+        <span class="swim-year">2017</span>
+        <span class="swim-year">2018</span>
+        <span class="swim-year">2019</span>
+        <span class="swim-year" style="text-align:right">2020</span>
+      </div>
+      <div class="swim-baseline"></div>
+
+      <div class="swim-lane">
+        <div class="swim-label">Fountain</div>
+        <div class="swim-track">
+          <div class="swim-bar" style="left:16%;width:58%">
+            <span class="swim-bar-text">Early 2017 – Mar 2019</span>
           </div>
         </div>
-        <div style="display:flex;align-items:center;margin-bottom:6px;">
-          <div class="mono" style="width:80px;flex-shrink:0;font-size:8px;text-align:right;padding-right:10px;color:var(--foreground);">Retail</div>
-          <div style="flex:1;height:24px;position:relative;background:color-mix(in oklab,var(--foreground) 3%,transparent);border-radius:4px;">
-            <div style="position:absolute;left:16%;width:35%;height:100%;background:linear-gradient(90deg,var(--accent-light),var(--accent));border-radius:4px;display:flex;align-items:center;justify-content:center;">
-              <span class="mono" style="font-size:7px;color:rgba(255,255,255,0.85);">Mar 2017 – 2018</span>
-            </div>
+      </div>
+
+      <div class="swim-lane">
+        <div class="swim-label">Retail</div>
+        <div class="swim-track">
+          <div class="swim-bar is-short is-centered" style="left:16%;width:35%">
+            <span class="swim-bar-text">Mar 2017 – 2018</span>
           </div>
         </div>
-        <div style="display:flex;align-items:center;margin-bottom:6px;">
-          <div class="mono" style="width:80px;flex-shrink:0;font-size:8px;text-align:right;padding-right:10px;color:var(--foreground);">Freeze</div>
-          <div style="flex:1;height:24px;position:relative;background:color-mix(in oklab,var(--foreground) 3%,transparent);border-radius:4px;">
-            <div style="position:absolute;left:16%;width:18%;height:100%;background:linear-gradient(90deg,var(--accent-light),var(--accent));border-radius:4px;"></div>
-            <span class="mono" style="position:absolute;left:calc(16% + 18% + 6px);top:50%;transform:translateY(-50%);font-size:7px;color:var(--muted-foreground);">Early–Sep 2017</span>
-          </div>
+      </div>
+
+      <div class="swim-lane">
+        <div class="swim-label">Freeze</div>
+        <div class="swim-track">
+          <div class="swim-bar is-short" style="left:16%;width:18%"></div>
+          <span class="swim-bar-text-outside" style="left:calc(16% + 18% + 6px)">Early–Sep 2017</span>
         </div>
-        <div style="margin-top:12px;margin-left:80px;display:flex;gap:14px;flex-wrap:wrap;"><div style="display:flex;align-items:center;gap:4px;"><div style="width:10px;height:6px;border-radius:2px;background:linear-gradient(90deg,var(--accent-light),var(--accent))"></div><span class="mono" style="font-size:7px;color:var(--muted-foreground);">Active</span></div></div>
+      </div>
+
+      <div class="swim-legend">
+        <div class="swim-legend-item">
+          <div class="swim-legend-swatch"></div>
+          <span class="swim-legend-label">Active</span>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <!-- TIMELINE -->
-<div class="de-section">
-  <div class="de-section-inner">
-    <div class="de-eye">Timeline</div>
-    <h2 id="timeline" class="de-h2">Key dates</h2>
+<div class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">Timeline</div>
+    <h2 id="timeline" class="wiki-section-title">Key dates</h2>
     <div class="de-tl">
       <div class="de-tl-item">
         <div class="de-tl-date">Early 2017</div>
@@ -286,11 +267,11 @@ body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var
 </div>
 
 <!-- TACO BELL RELATIONSHIP -->
-<div class="de-section">
-  <div class="de-section-inner">
-    <div class="de-eye">Taco Bell</div>
-    <h2 id="partner-taco-bell" class="de-h2">Relationship with Taco Bell</h2>
-    <div class="de-prose" style="max-width:680px;margin-top:16px;"><p>Spiked Lemonade replaced Sangrita Blast as the second dedicated Mountain Dew flavor on Taco Bell fountains. Unlike Sangrita Blast, which was developed specifically as a Taco Bell exclusive, Spiked Lemonade was simultaneously available in retail, making it less of a franchise-exclusive product.</p><p>The drink occupied the Taco Bell fountain valve for approximately two years—half the tenure of its predecessor. When it was removed, Baja Blast Zero Sugar took the valve, becoming the third tenant in six years. The naming controversy (see Overview) may have contributed to underperformance at the franchise level.</p></div>
+<div class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">Taco Bell</div>
+    <h2 id="partner-taco-bell" class="wiki-section-title">Relationship with Taco Bell</h2>
+    <div class="wiki-section-prose is-narrow"><p>Spiked Lemonade replaced Sangrita Blast as the second dedicated Mountain Dew flavor on Taco Bell fountains. Unlike Sangrita Blast, which was developed specifically as a Taco Bell exclusive, Spiked Lemonade was simultaneously available in retail, making it less of a franchise-exclusive product.</p><p>The drink occupied the Taco Bell fountain valve for approximately two years—half the tenure of its predecessor. When it was removed, Baja Blast Zero Sugar took the valve, becoming the third tenant in six years. The naming controversy (see Overview) may have contributed to underperformance at the franchise level.</p></div>
     <div class="de-callout">
       <div class="mono" style="font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:6px;">Naming discrepancy</div>
       <div style="display:flex;gap:24px;flex-wrap:wrap;">
@@ -302,17 +283,17 @@ body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var
 </div>
 
 <!-- LEGACY -->
-<div class="de-section">
-  <div class="de-section-inner">
-    <div class="de-eye">Legacy</div>
-    <h2 id="legacy" class="de-h2">Reception and afterlife</h2>
-    <div class="de-prose" style="max-width:680px;margin-top:16px;"><p>Spiked Lemonade did not generate the same level of nostalgia as Sangrita Blast after its discontinuation. There are no known petitions for its return. Online discussions about the product focus primarily on the naming controversy and its short lifespan relative to Sangrita Blast.</p><p>The drink’s most lasting significance may be structural: it demonstrated that the second Mountain Dew valve at Taco Bell is an inherently volatile position, cycling through tenants at an accelerating pace.</p></div>
+<div class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">Legacy</div>
+    <h2 id="legacy" class="wiki-section-title">Reception and afterlife</h2>
+    <div class="wiki-section-prose is-narrow"><p>Spiked Lemonade did not generate the same level of nostalgia as Sangrita Blast after its discontinuation. There are no known petitions for its return. Online discussions about the product focus primarily on the naming controversy and its short lifespan relative to Sangrita Blast.</p><p>The drink’s most lasting significance may be structural: it demonstrated that the second Mountain Dew valve at Taco Bell is an inherently volatile position, cycling through tenants at an accelerating pace.</p></div>
 
   </div>
 </div>
 
 <!-- BACK LINK -->
-<div class="de-section" style="text-align:center;padding:32px 24px;">
+<div class="wiki-section de-back-section" data-tone="a">
   <a href="taco-bell-discontinued-drinks.html" class="de-back vw-back-link">← Back to Discontinued Drinks</a>
 </div>
 

@@ -1,0 +1,479 @@
+/* ====================================================================
+   tb-discontinued-drinks.css
+   ViziWiki · Page-class stylesheet for Taco Bell DISCONTINUED DRINKS
+   --------------------------------------------------------------------
+   Shared component styling for every page in the "Taco Bell discontinued
+   drink" class (sangrita-blast, brisk-raspberry, pina-colada-frutista,
+   spiked-lemonade, and any future ones).
+
+   Layer position (loads after universals + skin, before page styles):
+     wiki-universals.css   → all wikis (spacing, hero, sections)
+     wiki-taco-bell-skin.css → all Taco Bell pages (brand colors, tones)
+     tb-discontinued-drinks.css → THIS page class (shared components)  ← here
+     [page]                → per-page accent color + data only
+
+   Edit a component here once → it changes on every discontinued-drink
+   page at once. Per-page pages supply only DATA (bar positions, labels,
+   year ranges) inline; all STYLING lives here.
+
+   Colors reference each page's own palette tokens (--accent,
+   --accent-light, --accent-dark, --foreground, --card, --muted-foreground)
+   so each drink keeps its own accent while sharing structure.
+   ==================================================================== */
+
+
+/* ════════════════════════════════════════════════════════════════════
+   HERO EYEBROW — brand descriptor treatment
+   ════════════════════════════════════════════════════════════════════
+   Discontinued-drink heroes use a PLAIN mono label above the H1
+   (e.g. "Mountain Dew · PepsiCo · 2013–2017"), not the universal pill.
+   This overrides wiki-universals' .wiki-hero-eyebrow pill styling back
+   to a flat label. Layout (inline-flex, gap, icon slot) is inherited
+   from wiki-universals; we only strip the pill chrome here.
+
+   Content (the brand/company/years text) stays inline per page — data.
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-taco-bell .wiki-hero-eyebrow {
+  margin-bottom: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  border-radius: 0;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   HERO CHIPS — status/tag pills at the bottom of the hero
+   ════════════════════════════════════════════════════════════════════
+   The row of small outlined tags under the hero description
+   (e.g. "Discontinued" · "Taco Bell exclusive" · "PepsiCo").
+   Styling is shared; the chip text stays inline per page.
+   ════════════════════════════════════════════════════════════════════ */
+
+.de-pill {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   SWIM CHART — Channel availability timeline
+   ════════════════════════════════════════════════════════════════════
+   A horizontal timeline showing when a product was available across
+   channels (Fountain, Retail, Freeze, etc.). Each "lane" is a row with
+   a label and a track; each filled "bar" spans the active period.
+
+   Markup pattern (page supplies only the data: years, lane names,
+   bar left/width %, and bar text):
+
+     <div class="swim">
+       <div class="swim-axis">
+         <span class="swim-year" style="text-align:left">2012</span>
+         <span class="swim-year">2013</span> … 
+         <span class="swim-year" style="text-align:right">2018</span>
+       </div>
+       <div class="swim-baseline"></div>
+
+       <div class="swim-lane">
+         <div class="swim-label">Fountain</div>
+         <div class="swim-track">
+           <div class="swim-bar" style="left:16%;width:72%">
+             <span class="swim-bar-text">Dec 2013 – 2017</span>
+           </div>
+         </div>
+       </div>
+       … more lanes …
+
+       <div class="swim-legend">
+         <div class="swim-legend-item">
+           <div class="swim-legend-swatch"></div>
+           <span class="swim-legend-label">Active</span>
+         </div>
+       </div>
+     </div>
+
+   The lane-label gutter width is one number (--swim-gutter). Change it
+   here and every lane + axis + legend re-aligns automatically.
+   ════════════════════════════════════════════════════════════════════ */
+
+.swim {
+  --swim-gutter: 80px;          /* width of the lane-label column */
+  --swim-lane-h: 24px;          /* height of each track/bar */
+  position: relative;
+  margin-top: 24px;
+  background: var(--card);
+  border: 1px solid color-mix(in oklab, var(--foreground) 8%, transparent);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+/* Year axis row — labels sit above the lanes, offset by the gutter */
+.swim-axis {
+  display: flex;
+  margin-left: var(--swim-gutter);
+  margin-bottom: 6px;
+}
+.swim-year {
+  flex: 1;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 8px;
+  color: var(--muted-foreground);
+  text-align: center;          /* override to left/right on first/last inline */
+}
+
+/* The hairline baseline under the axis */
+.swim-baseline {
+  margin-left: var(--swim-gutter);
+  height: 1px;
+  background: color-mix(in oklab, var(--foreground) 8%, transparent);
+  margin-bottom: 8px;
+}
+
+/* A lane = label + track, one per channel */
+.swim-lane {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.swim-label {
+  width: var(--swim-gutter);
+  flex-shrink: 0;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 8px;
+  text-align: right;
+  padding-right: 10px;
+  color: var(--foreground);
+}
+.swim-label.is-muted {            /* for "never available" / inactive lanes */
+  color: var(--muted-foreground);
+  opacity: 0.5;
+}
+
+/* The track = grey background bar the fill sits in */
+.swim-track {
+  flex: 1;
+  height: var(--swim-lane-h);
+  position: relative;
+  background: color-mix(in oklab, var(--foreground) 3%, transparent);
+  border-radius: 4px;
+}
+
+/* The fill bar = the active-period span. Page supplies left/width inline.
+   Default fill is the full accent gradient. */
+.swim-bar {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-light), var(--accent), var(--accent-dark));
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+/* Variant: a shorter two-stop gradient (used for brief/secondary spans) */
+.swim-bar.is-short {
+  background: linear-gradient(90deg, var(--accent-light), var(--accent));
+}
+/* Variant: centered text instead of left-aligned (for narrow bars) */
+.swim-bar.is-centered {
+  justify-content: center;
+  padding-left: 0;
+}
+/* Variant: a dashed "transitional/partial" bar */
+.swim-bar.is-dashed {
+  background: color-mix(in oklab, var(--accent) 15%, transparent);
+  border: 1px dashed var(--accent);
+}
+/* Variant: an "ongoing" bar that spans the full track to the right edge
+   (page sets left:0 inline; this stretches it to the end) */
+.swim-bar.is-ongoing {
+  right: 0;
+}
+
+.swim-bar-text {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 7px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* A label that sits OUTSIDE a narrow bar (page positions it inline) */
+.swim-bar-text-outside {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 7px;
+  color: var(--muted-foreground);
+}
+
+/* A muted note inside an empty track (e.g. "Never available") */
+.swim-track-note {
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 7px;
+  color: var(--muted-foreground);
+  opacity: 0.5;
+}
+
+/* A free-standing note in the legend row (e.g. "Bar touching edge = …") */
+.swim-legend-note {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 7px;
+  color: var(--muted-foreground);
+}
+
+/* Legend row under the chart */
+.swim-legend {
+  margin-top: 12px;
+  margin-left: var(--swim-gutter);
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.swim-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.swim-legend-swatch {
+  width: 10px;
+  height: 6px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent-light), var(--accent));
+}
+.swim-legend-swatch.is-dashed {
+  border: 1px dashed var(--accent);
+  background: color-mix(in oklab, var(--accent) 15%, transparent);
+}
+.swim-legend-label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 7px;
+  color: var(--muted-foreground);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   STAT GRID — "At a glance" cards
+   ════════════════════════════════════════════════════════════════════
+   The auto-fit grid of stat cards (label + value) with an accent top
+   border. Collapses to 2 columns on mobile. Card text/values stay
+   inline per page; styling is shared.
+   ════════════════════════════════════════════════════════════════════ */
+.de-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:20px;}
+.de-stat{background:var(--card);border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);border-radius:10px;padding:16px;border-top:3px solid var(--accent);}
+.de-stat-val{font-family:'Fraunces',Georgia,serif;font-size:24px;font-weight:700;color:var(--accent);}
+.de-stat-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted-foreground);margin-top:2px;}
+@media (max-width: 768px) { .de-stats { grid-template-columns: 1fr 1fr; } }
+
+
+/* ════════════════════════════════════════════════════════════════════
+   TIMELINE — vertical "Key dates" list
+   ════════════════════════════════════════════════════════════════════
+   A left-rail timeline with accent dots. Each item's date/title/desc
+   text stays inline per page; styling is shared.
+   ════════════════════════════════════════════════════════════════════ */
+.de-tl{position:relative;padding-left:28px;margin-top:24px;}
+.de-tl::before{content:'';position:absolute;left:8px;top:4px;bottom:4px;width:2px;background:color-mix(in oklab,var(--accent) 25%,transparent);border-radius:1px;}
+.de-tl-item{position:relative;margin-bottom:24px;}
+.de-tl-item::before{content:'';position:absolute;left:-24px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid var(--card);}
+.de-tl-item:last-child{margin-bottom:0;}
+.de-tl-date{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);font-weight:600;}
+.de-tl-title{font-family:'Fraunces',Georgia,serif;font-size:17px;font-weight:600;margin-top:2px;}
+.de-tl-desc{margin-top:4px;font-size:14px;line-height:1.6;color:color-mix(in oklab,var(--foreground) 70%,transparent);}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   FLAVOR BARS — flavor-profile meters
+   ════════════════════════════════════════════════════════════════════
+   Labeled horizontal bars showing flavor intensity. The fill width
+   (the data) stays inline per page; bar styling is shared.
+   ════════════════════════════════════════════════════════════════════ */
+.de-flavor-bar{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.de-flavor-name{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted-foreground);width:90px;text-align:right;flex-shrink:0;}
+.de-flavor-fill{height:8px;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   QUOTE BLOCK — accent pull-quote
+   ════════════════════════════════════════════════════════════════════ */
+.de-quote{position:relative;background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:12px;padding:28px 28px 28px 44px;margin:24px 0;overflow:hidden;}
+.de-quote::before{content:'\201c';position:absolute;top:12px;left:16px;font-family:'Fraunces',Georgia,serif;font-size:48px;font-weight:700;color:rgba(255,255,255,0.15);line-height:1;}
+.de-quote::after{content:'';position:absolute;inset:0;background-image:radial-gradient(color-mix(in srgb,var(--accent-light) 70%,white) 1.4px,transparent 1.6px);background-size:10px 10px;opacity:.08;mix-blend-mode:overlay;pointer-events:none;}
+.de-quote p{position:relative;font-style:italic;font-size:15px;line-height:1.6;}
+.de-quote cite{position:relative;display:block;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);font-style:normal;}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   CALLOUT — highlighted note box
+   ════════════════════════════════════════════════════════════════════ */
+.de-callout{background:color-mix(in oklab,var(--accent) 6%,transparent);border:1px solid color-mix(in oklab,var(--accent) 15%,transparent);border-radius:10px;padding:20px;margin:24px 0;}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   BACK LINK — "← Back to ..." button
+   ════════════════════════════════════════════════════════════════════ */
+.de-back{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);text-decoration:none;border:1px solid color-mix(in oklab,var(--accent) 25%,transparent);padding:10px 20px;border-radius:6px;}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   NUTRITION CARD — "Nutrition facts" panel
+   ════════════════════════════════════════════════════════════════════
+   A card with a serving label, big calorie number, a list of nutrient
+   rows (label + value + meter bar + % daily value), and an ingredients
+   footer. All values/widths/text stay inline per page (data); the
+   card, rows, bars, and type are styled here. Add a row by adding one
+   <div class="nutri-row"> with that nutrient's data.
+   ════════════════════════════════════════════════════════════════════ */
+
+.nutri-wrap {
+  margin-top: 20px;
+  max-width: 500px;
+}
+.nutri-card {
+  background: var(--card);
+  border: 1px solid color-mix(in oklab, var(--foreground) 8%, transparent);
+  border-radius: 12px;
+  padding: 24px;
+}
+.nutri-serving {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  color: var(--muted-foreground);
+  margin-bottom: 16px;
+}
+.nutri-calories {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid color-mix(in oklab, var(--foreground) 8%, transparent);
+}
+.nutri-cal-num {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.nutri-cal-label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+.nutri-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.nutri-row-head {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 3px;
+}
+.nutri-row-name {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  color: var(--foreground);
+}
+.nutri-row-val {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  color: var(--muted-foreground);
+}
+.nutri-bar {
+  height: 8px;
+  border-radius: 4px;
+  background: color-mix(in oklab, var(--foreground) 5%, transparent);
+}
+.nutri-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--accent-light), var(--accent));
+}
+.nutri-dv {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 7px;
+  color: var(--muted-foreground);
+  margin-top: 2px;
+}
+.nutri-ingredients {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid color-mix(in oklab, var(--foreground) 8%, transparent);
+}
+.nutri-ingredients-label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  margin-bottom: 6px;
+}
+.nutri-ingredients-text {
+  font-size: 12px;
+  line-height: 1.5;
+  color: color-mix(in oklab, var(--foreground) 60%, transparent);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   FLAVOR BAR TRACK — the meter track each .de-flavor-fill sits in
+   ════════════════════════════════════════════════════════════════════ */
+
+.de-flavor-track {
+  flex: 1;
+  height: 8px;
+  border-radius: 4px;
+  background: color-mix(in oklab, var(--foreground) 6%, transparent);
+}
+.de-flavor-list {
+  margin-top: 24px;
+  max-width: 500px;
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   PROSE WIDTH MODIFIER
+   ════════════════════════════════════════════════════════════════════
+   Several sections cap their prose narrower than the 65ch default and
+   add a small top margin. Use .is-narrow instead of an inline style.
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-section-prose.is-narrow {
+  max-width: 680px;
+  margin-top: 16px;
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   HERO CHIP ROW — the flex container holding the chips
+   ════════════════════════════════════════════════════════════════════ */
+
+.de-chip-row {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   BACK-LINK SECTION — the centered footer "← Back to …" wrapper
+   ════════════════════════════════════════════════════════════════════ */
+
+.de-back-section {
+  text-align: center;
+  padding: 32px 24px;
+}

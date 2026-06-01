@@ -3,14 +3,12 @@ layout: default
 title: "Mtn Dew Sangrita Blast — ViziWiki"
 body_class: "wiki-page wiki-taco-bell"
 extra_head: |
+  <link rel="stylesheet" href="/wiki-typography.css">
   <link rel="stylesheet" href="/wiki-taco-bell-skin.css">
-  <link rel="stylesheet" href="/tb-discontinued-drink.css">
+  <link rel="stylesheet" href="/tb-discontinued-drinks.css">
 ---
 {% raw %}
 <meta charset="UTF-8">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --accent:#9f1239;--accent-light:#fb7185;--accent-dark:#4c0519;
@@ -34,7 +32,7 @@ body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var
 .wiki-hero{ --hero-title-color:#fff; --hero-desc-color:rgba(255,255,255,0.7); }
 /* Hero eyebrow: this page uses a plain mono label, not the pill. Override
    the universal pill styling with this drink's own treatment. */
-.wiki-hero-eyebrow{ margin-bottom:0; padding:0; border:0; background:none; border-radius:0; color:rgba(255,255,255,0.45); }
+
 /* Section typography colors from this page's palette */
 .wiki-section-title{ color:var(--foreground); }
 .wiki-section-eyebrow{ color:var(--muted-foreground); }
@@ -42,38 +40,7 @@ body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var
 .wiki-section-prose{ color:color-mix(in oklab,var(--foreground) 80%,transparent); font-size:15px; line-height:1.75; }
 .wiki-section-prose p+p{ margin-top:12px; }
 
-
-.de-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:20px;}
-.de-stat{background:var(--card);border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);border-radius:10px;padding:16px;border-top:3px solid var(--accent);}
-.de-stat-val{font-family:'Fraunces',Georgia,serif;font-size:24px;font-weight:700;color:var(--accent);}
-.de-stat-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted-foreground);margin-top:2px;}
-
-.de-tl{position:relative;padding-left:28px;margin-top:24px;}
-.de-tl::before{content:'';position:absolute;left:8px;top:4px;bottom:4px;width:2px;background:color-mix(in oklab,var(--accent) 25%,transparent);border-radius:1px;}
-.de-tl-item{position:relative;margin-bottom:24px;}
-.de-tl-item::before{content:'';position:absolute;left:-24px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid var(--card);}
-.de-tl-item:last-child{margin-bottom:0;}
-.de-tl-date{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);font-weight:600;}
-.de-tl-title{font-family:'Fraunces',Georgia,serif;font-size:17px;font-weight:600;margin-top:2px;}
-.de-tl-desc{margin-top:4px;font-size:14px;line-height:1.6;color:color-mix(in oklab,var(--foreground) 70%,transparent);}
-
-.de-quote{position:relative;background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:12px;padding:28px 28px 28px 44px;margin:24px 0;overflow:hidden;}
-.de-quote::before{content:'\201c';position:absolute;top:12px;left:16px;font-family:'Fraunces',Georgia,serif;font-size:48px;font-weight:700;color:rgba(255,255,255,0.15);line-height:1;}
-.de-quote::after{content:'';position:absolute;inset:0;background-image:radial-gradient(color-mix(in srgb,var(--accent-light) 70%,white) 1.4px,transparent 1.6px);background-size:10px 10px;opacity:.08;mix-blend-mode:overlay;pointer-events:none;}
-.de-quote p{position:relative;font-style:italic;font-size:15px;line-height:1.6;}
-.de-quote cite{position:relative;display:block;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);font-style:normal;}
-
-.de-callout{background:color-mix(in oklab,var(--accent) 6%,transparent);border:1px solid color-mix(in oklab,var(--accent) 15%,transparent);border-radius:10px;padding:20px;margin:24px 0;}
-
-.de-flavor-bar{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
-.de-flavor-name{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted-foreground);width:90px;text-align:right;flex-shrink:0;}
-.de-flavor-fill{height:8px;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));}
-
-.de-pill{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:5px 12px;border-radius:4px;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);}
-
-.de-back{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);text-decoration:none;border:1px solid color-mix(in oklab,var(--accent) 25%,transparent);padding:10px 20px;border-radius:6px;}
-
-@media(max-width:768px){.de-stats{grid-template-columns:1fr 1fr;}}
+@media(max-width:768px){}
 
 </style>
 
@@ -86,7 +53,7 @@ body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var
     </div>
     <h1 class="wiki-hero-title">Mtn Dew<br>Sangrita Blast</h1>
     <p class="wiki-hero-desc">A cherry-citrus punch soda produced by PepsiCo under the Mountain Dew brand. Introduced in December 2013 and discontinued in 2017.</p>
-    <div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:8px;">
+    <div class="de-chip-row">
       <span class="de-pill">Discontinued</span><span class="de-pill">Taco Bell exclusive</span><span class="de-pill">PepsiCo · Mountain Dew</span>
     </div>
   </div>
@@ -125,13 +92,13 @@ body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var
   <div class="wiki-section-inner">
     <div class="wiki-section-eyebrow">Flavor profile</div>
     <h2 id="flavor" class="wiki-section-title">Flavor characteristics</h2>
-    <div class="wiki-section-prose" style="max-width:680px;margin-top:16px;"><p>The official label described Sangrita Blast as “DEW with a Blast of Natural & Artificial Citrus Punch Flavor.” Consumer reviews consistently noted a tart, pomegranate-forward profile with cherry undertones and higher acidity than most Mountain Dew variants. Unlike Code Red’s candy-sweet cherry profile, Sangrita Blast leaned toward a cranberry-juice mouthfeel with a sour finish.</p></div>
-    <div style="margin-top:24px;max-width:500px;">
-      <div class="de-flavor-bar"><span class="de-flavor-name">Cherry</span><div style="flex:1;height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 6%,transparent);"><div class="de-flavor-fill" style="width:85%;"></div></div></div>
-      <div class="de-flavor-bar"><span class="de-flavor-name">Pomegranate</span><div style="flex:1;height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 6%,transparent);"><div class="de-flavor-fill" style="width:75%;"></div></div></div>
-      <div class="de-flavor-bar"><span class="de-flavor-name">Citrus</span><div style="flex:1;height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 6%,transparent);"><div class="de-flavor-fill" style="width:60%;"></div></div></div>
-      <div class="de-flavor-bar"><span class="de-flavor-name">Tartness</span><div style="flex:1;height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 6%,transparent);"><div class="de-flavor-fill" style="width:90%;"></div></div></div>
-      <div class="de-flavor-bar"><span class="de-flavor-name">Sweetness</span><div style="flex:1;height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 6%,transparent);"><div class="de-flavor-fill" style="width:50%;"></div></div></div>
+    <div class="wiki-section-prose is-narrow"><p>The official label described Sangrita Blast as “DEW with a Blast of Natural & Artificial Citrus Punch Flavor.” Consumer reviews consistently noted a tart, pomegranate-forward profile with cherry undertones and higher acidity than most Mountain Dew variants. Unlike Code Red’s candy-sweet cherry profile, Sangrita Blast leaned toward a cranberry-juice mouthfeel with a sour finish.</p></div>
+    <div class="de-flavor-list">
+      <div class="de-flavor-bar"><span class="de-flavor-name">Cherry</span><div class="de-flavor-track"><div class="de-flavor-fill" style="width:85%;"></div></div></div>
+      <div class="de-flavor-bar"><span class="de-flavor-name">Pomegranate</span><div class="de-flavor-track"><div class="de-flavor-fill" style="width:75%;"></div></div></div>
+      <div class="de-flavor-bar"><span class="de-flavor-name">Citrus</span><div class="de-flavor-track"><div class="de-flavor-fill" style="width:60%;"></div></div></div>
+      <div class="de-flavor-bar"><span class="de-flavor-name">Tartness</span><div class="de-flavor-track"><div class="de-flavor-fill" style="width:90%;"></div></div></div>
+      <div class="de-flavor-bar"><span class="de-flavor-name">Sweetness</span><div class="de-flavor-track"><div class="de-flavor-fill" style="width:50%;"></div></div></div>
     </div>
   </div>
 </div>
@@ -143,79 +110,79 @@ body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var
   <div class="wiki-section-inner">
     <div class="wiki-section-eyebrow">Nutrition</div>
     <h2 id="nutrition" class="wiki-section-title">Nutrition facts</h2>
-    <div style="margin-top:20px;max-width:500px;">
-      <div style="background:var(--card);border:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);border-radius:12px;padding:24px;">
-        <div class="mono" style="font-size:9px;color:var(--muted-foreground);margin-bottom:16px;">Per 20 fl oz (591 mL)</div>
+    <div class="nutri-wrap">
+      <div class="nutri-card">
+        <div class="nutri-serving">Per 20 fl oz (591 mL)</div>
 
-        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);">
-          <span class="fra" style="font-size:48px;font-weight:700;color:var(--accent);">170</span>
-          <span class="mono" style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted-foreground);">Calories</span>
-        </div>
-
-        <div style="display:flex;flex-direction:column;gap:10px;">
-      <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-          <span class="mono" style="font-size:9px;color:var(--foreground);">Total Sugar</span>
-          <span class="mono" style="font-size:9px;color:var(--muted-foreground);">46g</span>
-        </div>
-        <div style="height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 5%,transparent);">
-          <div style="height:100%;width:92%;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));"></div>
-        </div>
-        <div class="mono" style="font-size:7px;color:var(--muted-foreground);margin-top:2px;">92% Daily Value</div>
-      </div>
-      <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-          <span class="mono" style="font-size:9px;color:var(--foreground);">Caffeine</span>
-          <span class="mono" style="font-size:9px;color:var(--muted-foreground);">68mg</span>
-        </div>
-        <div style="height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 5%,transparent);">
-          <div style="height:100%;width:17%;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));"></div>
-        </div>
-        <div class="mono" style="font-size:7px;color:var(--muted-foreground);margin-top:2px;">17% Daily Value</div>
-      </div>
-      <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-          <span class="mono" style="font-size:9px;color:var(--foreground);">Total Carbs</span>
-          <span class="mono" style="font-size:9px;color:var(--muted-foreground);">46g</span>
-        </div>
-        <div style="height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 5%,transparent);">
-          <div style="height:100%;width:17%;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));"></div>
-        </div>
-        <div class="mono" style="font-size:7px;color:var(--muted-foreground);margin-top:2px;">17% Daily Value</div>
-      </div>
-      <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-          <span class="mono" style="font-size:9px;color:var(--foreground);">Sodium</span>
-          <span class="mono" style="font-size:9px;color:var(--muted-foreground);">85mg</span>
-        </div>
-        <div style="height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 5%,transparent);">
-          <div style="height:100%;width:4%;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));"></div>
-        </div>
-        <div class="mono" style="font-size:7px;color:var(--muted-foreground);margin-top:2px;">4% Daily Value</div>
-      </div>
-      <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-          <span class="mono" style="font-size:9px;color:var(--foreground);">Protein</span>
-          <span class="mono" style="font-size:9px;color:var(--muted-foreground);">0g</span>
-        </div>
-        <div style="height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 5%,transparent);">
-          <div style="height:100%;width:0%;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));"></div>
-        </div>
-      </div>
-      <div>
-        <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-          <span class="mono" style="font-size:9px;color:var(--foreground);">Total Fat</span>
-          <span class="mono" style="font-size:9px;color:var(--muted-foreground);">0g</span>
-        </div>
-        <div style="height:8px;border-radius:4px;background:color-mix(in oklab,var(--foreground) 5%,transparent);">
-          <div style="height:100%;width:0%;border-radius:4px;background:linear-gradient(90deg,var(--accent-light),var(--accent));"></div>
-        </div>
-      </div>
+        <div class="nutri-calories">
+          <span class="nutri-cal-num">170</span>
+          <span class="nutri-cal-label">Calories</span>
         </div>
 
-        <div style="margin-top:20px;padding-top:16px;border-top:1px solid color-mix(in oklab,var(--foreground) 8%,transparent);">
-          <div class="mono" style="font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted-foreground);margin-bottom:6px;">Ingredients</div>
-          <p style="font-size:12px;line-height:1.5;color:color-mix(in oklab,var(--foreground) 60%,transparent);">Carbonated Water, High Fructose Corn Syrup, Citric Acid, Natural Flavor, Sodium Benzoate (Preserves Freshness), Caffeine, Sodium Citrate, Gum Arabic, Red 40, Calcium Disodium EDTA, Blue 1</p>
+        <div class="nutri-rows">
+      <div>
+        <div class="nutri-row-head">
+          <span class="nutri-row-name">Total Sugar</span>
+          <span class="nutri-row-val">46g</span>
+        </div>
+        <div class="nutri-bar">
+          <div class="nutri-fill" style="width:92%"></div>
+        </div>
+        <div class="nutri-dv">92% Daily Value</div>
+      </div>
+      <div>
+        <div class="nutri-row-head">
+          <span class="nutri-row-name">Caffeine</span>
+          <span class="nutri-row-val">68mg</span>
+        </div>
+        <div class="nutri-bar">
+          <div class="nutri-fill" style="width:17%"></div>
+        </div>
+        <div class="nutri-dv">17% Daily Value</div>
+      </div>
+      <div>
+        <div class="nutri-row-head">
+          <span class="nutri-row-name">Total Carbs</span>
+          <span class="nutri-row-val">46g</span>
+        </div>
+        <div class="nutri-bar">
+          <div class="nutri-fill" style="width:17%"></div>
+        </div>
+        <div class="nutri-dv">17% Daily Value</div>
+      </div>
+      <div>
+        <div class="nutri-row-head">
+          <span class="nutri-row-name">Sodium</span>
+          <span class="nutri-row-val">85mg</span>
+        </div>
+        <div class="nutri-bar">
+          <div class="nutri-fill" style="width:4%"></div>
+        </div>
+        <div class="nutri-dv">4% Daily Value</div>
+      </div>
+      <div>
+        <div class="nutri-row-head">
+          <span class="nutri-row-name">Protein</span>
+          <span class="nutri-row-val">0g</span>
+        </div>
+        <div class="nutri-bar">
+          <div class="nutri-fill" style="width:0%"></div>
+        </div>
+      </div>
+      <div>
+        <div class="nutri-row-head">
+          <span class="nutri-row-name">Total Fat</span>
+          <span class="nutri-row-val">0g</span>
+        </div>
+        <div class="nutri-bar">
+          <div class="nutri-fill" style="width:0%"></div>
+        </div>
+      </div>
+        </div>
+
+        <div class="nutri-ingredients">
+          <div class="nutri-ingredients-label">Ingredients</div>
+          <p class="nutri-ingredients-text">Carbonated Water, High Fructose Corn Syrup, Citric Acid, Natural Flavor, Sodium Benzoate (Preserves Freshness), Caffeine, Sodium Citrate, Gum Arabic, Red 40, Calcium Disodium EDTA, Blue 1</p>
         </div>
       </div>
     </div>
@@ -226,7 +193,7 @@ body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var
   <div class="wiki-section-inner">
     <div class="wiki-section-eyebrow">Distribution</div>
     <h2 id="distribution" class="wiki-section-title">Channel availability</h2>
-    <div class="wiki-section-prose" style="max-width:680px;margin-top:16px;"><p>Sangrita Blast was distributed across three channels during its lifetime: Taco Bell fountain (December 2013–2017), retail cans and bottles (April–October 2015), and the Taco Bell Freeze machine (May–September 2015). All three channels were active simultaneously only during the summer of 2015.</p></div>
+    <div class="wiki-section-prose is-narrow"><p>Sangrita Blast was distributed across three channels during its lifetime: Taco Bell fountain (December 2013–2017), retail cans and bottles (April–October 2015), and the Taco Bell Freeze machine (May–September 2015). All three channels were active simultaneously only during the summer of 2015.</p></div>
         <div class="swim">
       <div class="swim-axis">
         <span class="swim-year" style="text-align:left">2012</span>
@@ -315,7 +282,7 @@ body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var
   <div class="wiki-section-inner">
     <div class="wiki-section-eyebrow">Taco Bell</div>
     <h2 id="partner-taco-bell" class="wiki-section-title">Relationship with Taco Bell</h2>
-    <div class="wiki-section-prose" style="max-width:680px;margin-top:16px;"><p>Sangrita Blast was designed exclusively for Taco Bell’s fountain system and was never available at other restaurant chains or convenience stores. It occupied the second dedicated Mountain Dew valve alongside Baja Blast, which has held the primary valve since 2004.</p><p>The drink was part of the December 2013 six-drink PepsiCo expansion—the largest beverage shakeup in Taco Bell’s history. When Sangrita Blast was discontinued in 2017, its valve was reassigned to Mtn Dew Spiked (Lemonade), which was itself discontinued by 2019. The second Dew valve has now cycled through three tenants: Sangrita Blast (2013–2017), Spiked Lemonade (2017–2019), and Baja Blast Zero Sugar (2019–present).</p></div>
+    <div class="wiki-section-prose is-narrow"><p>Sangrita Blast was designed exclusively for Taco Bell’s fountain system and was never available at other restaurant chains or convenience stores. It occupied the second dedicated Mountain Dew valve alongside Baja Blast, which has held the primary valve since 2004.</p><p>The drink was part of the December 2013 six-drink PepsiCo expansion—the largest beverage shakeup in Taco Bell’s history. When Sangrita Blast was discontinued in 2017, its valve was reassigned to Mtn Dew Spiked (Lemonade), which was itself discontinued by 2019. The second Dew valve has now cycled through three tenants: Sangrita Blast (2013–2017), Spiked Lemonade (2017–2019), and Baja Blast Zero Sugar (2019–present).</p></div>
 
   </div>
 </div>
@@ -325,13 +292,13 @@ body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var
   <div class="wiki-section-inner">
     <div class="wiki-section-eyebrow">Legacy</div>
     <h2 id="legacy" class="wiki-section-title">Reception and afterlife</h2>
-    <div class="wiki-section-prose" style="max-width:680px;margin-top:16px;"><p>Sangrita Blast has maintained a dedicated following since its discontinuation. A Change.org petition requesting its return has circulated among fans. Reddit threads on r/tacobell and r/mountaindew periodically surface, with users comparing the flavor to Mtn Dew Cyclone, a maroon citrus-punch flavor available at Speedway gas stations. PepsiCo has not confirmed or denied a connection between the two formulas.</p><p>The drink’s most common fan-created recreation uses approximately 70% Original Mountain Dew mixed with 30% sugar-free pomegranate juice and a splash of lime.</p></div>
+    <div class="wiki-section-prose is-narrow"><p>Sangrita Blast has maintained a dedicated following since its discontinuation. A Change.org petition requesting its return has circulated among fans. Reddit threads on r/tacobell and r/mountaindew periodically surface, with users comparing the flavor to Mtn Dew Cyclone, a maroon citrus-punch flavor available at Speedway gas stations. PepsiCo has not confirmed or denied a connection between the two formulas.</p><p>The drink’s most common fan-created recreation uses approximately 70% Original Mountain Dew mixed with 30% sugar-free pomegranate juice and a splash of lime.</p></div>
 
   </div>
 </div>
 
 <!-- BACK LINK -->
-<div class="wiki-section" data-tone="a" style="text-align:center;padding:32px 24px;">
+<div class="wiki-section de-back-section" data-tone="a">
   <a href="taco-bell-discontinued-drinks.html" class="de-back vw-back-link">← Back to Discontinued Drinks</a>
 </div>
 
