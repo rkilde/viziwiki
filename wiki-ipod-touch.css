@@ -12,9 +12,6 @@
    ==================================================================== */
 
 .hero-title-block{display:flex;flex-direction:column;align-items:flex-start;}
-.wiki-section{background:#fff;padding:72px 0;border-top:1px solid rgba(0,0,0,.1);}
-.wiki-section-inner{max-width:1320px;margin:0 auto;padding:0 48px;}
-@media(max-width:600px){.wiki-section-inner{padding:0 16px;}}
 /* ── Page-specific ──────────────────────────────── */
 
 /* Hero */
@@ -32,21 +29,7 @@
 
 @media(max-width:900px){}
 @media(max-width:600px){}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>iPod touch (2nd generation) — Apple · ViziWiki</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0;1,9..144,100..900,0..100,0&family=JetBrains+Mono:wght@400;500&family=Spectral:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="wiki.apple.css">
-<style>
 .hero-title-block{display:flex;flex-direction:column;align-items:flex-start;}
-.wiki-section{background:#fff;padding:72px 0;border-top:1px solid rgba(0,0,0,.1);}
-.wiki-section-inner{max-width:1320px;margin:0 auto;padding:0 48px;}
-@media(max-width:600px){.wiki-section-inner{padding:0 16px;}}
 /* ── Page-specific ──────────────────────────────── */
 
 /* Hero */

@@ -269,7 +269,7 @@ function renderDelta(){
   var swIcon = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>';
 
   el.innerHTML =
-    '<div class="delta-inner">'
+    '<div class="wiki-section-inner">'
     +'<div class="wiki-section-eyebrow">'
     +'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>'
     +'Generation delta'
@@ -331,7 +331,7 @@ function renderCfg(){
   }
 
   el.innerHTML =
-    '<div class="cfg-inner">'
+    '<div class="wiki-section-inner">'
     +'<div class="wiki-section-eyebrow">'
     +'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" x2="2" y1="12" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" x2="6.01" y1="16" y2="16"/><line x1="10" x2="10.01" y1="16" y2="16"/></svg>'
     +'Configurations'
@@ -442,7 +442,7 @@ function renderOS(){
       +'</div>';
   }).join('');
   el.innerHTML =
-    '<div class="os-inner">'
+    '<div class="wiki-section-inner">'
     +'<div class="wiki-section-eyebrow">'
     +'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>'
     +'Operating system support'
@@ -502,7 +502,7 @@ function renderSpecs(){
   var eyebrowIcon = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>';
 
   el.innerHTML =
-    '<div class="spec-inner">'
+    '<div class="wiki-section-inner">'
     +'<div class="spec-eyebrow jb">'+eyebrowIcon+'Technical specifications</div>'
     +'<div class="spec-title fr">'+sp.specHeading+'</div>'
     +'<div class="spec-sub jb">'+sp.specSub+'</div>'
