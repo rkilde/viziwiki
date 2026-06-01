@@ -342,13 +342,13 @@
   margin-top: 40px;
   max-width: 36rem;
   border-radius: 4px;
-  border: 1px solid var(--hero-stat-wrapper-border);
-  background: var(--hero-stat-wrapper-bg);
+  border: 1px solid var(--hero-stat-wrapper-border, rgba(255,255,255,.18));
+  background: var(--hero-stat-wrapper-bg, rgba(255,255,255,.18));
 }
 
 .wiki-hero-stat {
   padding: 12px;
-  background: var(--hero-stat-cell-bg);
+  background: var(--hero-stat-cell-bg, rgba(0,0,0,.25));
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 10px;
   text-transform: uppercase;
@@ -361,13 +361,13 @@
   font-weight: 600;
   letter-spacing: -0.01em;
   text-transform: none;
-  color: var(--hero-stat-num);
+  color: var(--hero-stat-num, currentColor);
   line-height: 1.1;
 }
 
 .wiki-hero-stat-label {
   margin-top: 2px;
-  color: var(--hero-stat-label);
+  color: var(--hero-stat-label, rgba(255,255,255,.6));
 }
 
 /* Mobile scaling — stays 4 columns, just smaller */
