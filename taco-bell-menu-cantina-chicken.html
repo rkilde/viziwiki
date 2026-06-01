@@ -3,13 +3,11 @@ layout: default
 title: "Cantina Chicken Menu · Taco Bell · ViziWiki"
 body_class: "wiki-page wiki-taco-bell"
 extra_head: |
+  <link rel="stylesheet" href="/wiki-typography.css">
   <link rel="stylesheet" href="/wiki-taco-bell-skin.css">
+  <link rel="stylesheet" href="/tb-menus.css">
 ---
 {% raw %}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,300;9..144,0,600;9..144,0,700;9..144,1,300;9..144,1,400;9..144,1,600&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
 <style>
   :root {
     --background: oklch(0.972 0.012 85);
@@ -23,211 +21,149 @@ extra_head: |
   }
   *, *::before, *::after { box-sizing: border-box; }
   html, body { background: var(--background); color: var(--foreground); }
-  body { font-family: 'Spectral', Georgia, serif; }
-  .font-display { font-family: 'Fraunces', Georgia, serif; font-optical-sizing: auto; font-variation-settings: "SOFT" 30, "WONK" 0; letter-spacing: -.02em; }
-  .font-mono { font-family: 'JetBrains Mono', monospace; }
-  .halftone { background-image: radial-gradient(var(--hot-pink) 1.4px, transparent 1.6px); background-size: 10px 10px; }
   .text-muted { color: var(--muted-foreground); }
   .bg-card { background: var(--card); }
-
-  /* Section */
-  .page-section { max-width: 1500px; margin: 0 auto; padding: 3.5rem 1.5rem; }
-  .eyebrow { display: flex; align-items: center; gap: .5rem; font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .25em; color: var(--muted-foreground); margin-bottom: .5rem; }
-
-  /* ── Category header ────────────────────────────────────── */
-  .cat-header {
-    display: flex; align-items: center; gap: 1rem;
-    padding: .875rem 1.25rem;
-    border-radius: 6px 6px 0 0;
-    position: sticky; top: 0; z-index: 10;
-  }
-  .cat-header-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.15); flex-shrink: 0; }
-  .cat-header-icon svg { width: 16px; height: 16px; color: #fff; }
-  .cat-title { font-family: 'Fraunces', Georgia, serif; font-size: 1.0625rem; font-weight: 600; color: #fff; letter-spacing: -.01em; }
-  .cat-count { font-family: 'JetBrains Mono', monospace; font-size: 8px; text-transform: uppercase; letter-spacing: .2em; color: rgba(255,255,255,.65); margin-left: auto; }
-
-  /* ── Item card ──────────────────────────────────────────── */
-  .item-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: .75rem; }
-  .item-card {
-    background: var(--card); border-radius: 5px;
-    border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent);
-    overflow: hidden; transition: border-color .12s, box-shadow .12s;
-    display: flex; flex-direction: column;
-  }
-  .item-card:hover {
-    border-color: color-mix(in oklab, var(--foreground) 25%, transparent);
-    box-shadow: 0 2px 10px rgba(0,0,0,.08);
-  }
-  .item-card-accent { height: 3px; flex-shrink: 0; }
-  .item-card-body { padding: .875rem 1rem 1rem; flex: 1; display: flex; flex-direction: column; }
-  .item-cat-eye { font-family: 'JetBrains Mono', monospace; font-size: 7.5px; text-transform: uppercase; letter-spacing: .2em; margin-bottom: .3rem; }
-  .item-name { font-family: 'Fraunces', Georgia, serif; font-size: 1.0625rem; font-weight: 600; line-height: 1.2; }
-  .item-desc { font-size: 12.5px; line-height: 1.55; color: color-mix(in oklab, var(--foreground) 72%, transparent); margin-top: .4rem; flex: 1; }
-  .item-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: .75rem; }
-  .item-tag { font-family: 'JetBrains Mono', monospace; font-size: 7px; text-transform: uppercase; letter-spacing: .12em; padding: 2px 7px; border-radius: 999px; border: 1px solid color-mix(in oklab, var(--foreground) 12%, transparent); background: color-mix(in oklab, var(--secondary) 60%, transparent); color: var(--muted-foreground); }
-  .item-badge { font-family: 'JetBrains Mono', monospace; font-size: 7px; text-transform: uppercase; letter-spacing: .12em; padding: 2px 7px; border-radius: 999px; color: #fff; }
-
-  /* Category block wrapper */
-  .cat-block { border-radius: 6px; overflow: hidden; border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent); margin-bottom: 2rem; }
-  .cat-body { padding: 1rem; background: color-mix(in oklab, var(--secondary) 30%, transparent); }
-
-  /* Stat row */
-  .stat-row { display: flex; flex-wrap: wrap; gap: 1.5rem; padding: 1.25rem 1.5rem; border-radius: 6px; background: color-mix(in oklab, var(--secondary) 50%, transparent); border: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent); margin-bottom: 2.5rem; }
-  .stat-v { font-family: 'Fraunces', Georgia, serif; font-size: 1.5rem; font-weight: 600; letter-spacing: -.02em; line-height: 1; }
-  .stat-k { font-family: 'JetBrains Mono', monospace; font-size: 8px; text-transform: uppercase; letter-spacing: .2em; color: var(--muted-foreground); margin-top: .2rem; }
-
-  /* Mobile */
-  @media (max-width: 767px) {
-    .cat-columns { columns: 1 !important; }
-    .hero-grid { display: block !important; padding: 2.5rem 1.25rem !important; }
-    .hero-grid > div:last-child { margin-top: 1.5rem; }
-    .overview-prose { grid-template-columns: 1fr !important; }
-    .item-grid { grid-template-columns: 1fr 1fr; }
-    .cat-header { position: relative; }
-  }
-  @media (max-width: 480px) {
-    .item-grid { grid-template-columns: 1fr; }
-  }
-.ob-pill{display:inline-block;padding:5px 12px;border:1px solid rgba(42,31,21,0.1);border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:rgba(42,31,21,0.85);white-space:nowrap;background:#fff;transition:background .15s,border-color .15s;}
-  /* Catalogue: single column on mobile */
-  @media (max-width: 639px) {
-    .cat-columns { columns: 1 !important; }
-  }
+  /* Component styles (.halftone .hero-grid .ob-pill .page-section .eyebrow
+     .cat-header .cat-block .cat-body .item-grid .item-card .stat-row + catalogue
+     + responsive) now live in /tb-menus.css. Fonts via /wiki-typography.css. */
 </style>
 
 <!-- ═══════════════════ HERO ═══════════════════ -->
-<section id="overview" class="relative overflow-hidden border-b border-foreground/20 text-white"
-  style="background:linear-gradient(135deg,#6d28d9 0%,#4a044e 50%,#0d0015 100%)">
-  <div class="halftone pointer-events-none absolute inset-0 mix-blend-overlay opacity-20"></div>
-  <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(to right,rgba(13,0,21,.55),rgba(74,4,78,.12),transparent)"></div>
-  <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(to bottom,rgba(0,0,0,.2) 0%,transparent 50%)"></div>
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" class="pointer-events-none absolute -right-10 -bottom-10 opacity-[.06] rotate-12" style="width:420px;height:420px;color:#fff"><path d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 0A5.11 5.11 0 0 1 16.59 6 4 4 0 0 1 18 13.87V21H6Z"/><line x1="6" x2="18" y1="17" y2="17"/></svg>
+<section id="overview" class="wiki-hero" style="background:linear-gradient(135deg,#6d28d9 0%,#4a044e 50%,#0d0015 100%);color:#fff;border-bottom:1px solid rgba(255,255,255,.2)">
+  <div class="halftone" style="position:absolute;inset:0;pointer-events:none;mix-blend-mode:overlay;opacity:.2"></div>
+  <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(to right,rgba(13,0,21,.55),rgba(74,4,78,.12),transparent)"></div>
+  <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,rgba(0,0,0,.2) 0%,transparent 50%)"></div>
 
-  <div class="hero-grid relative mx-auto" style="display:grid;grid-template-columns:1.6fr 1fr;gap:2rem;max-width:1500px;padding:3.5rem 1.5rem">
-    <div>
-      <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[.25em]" style="backdrop-filter:blur(4px)">
-        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#c084fc;flex-shrink:0"></span>
+  <!-- Ghost icon: roast / cloche -->
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"
+    style="position:absolute;right:-2.5rem;bottom:-2.5rem;pointer-events:none;opacity:.06;width:420px;height:420px;color:#fff;transform:rotate(12deg)">
+    <path d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 0A5.11 5.11 0 0 1 16.59 6 4 4 0 0 1 18 13.87V21H6Z"/>
+    <line x1="6" x2="18" y1="17" y2="17"/>
+  </svg>
+
+  <div class="wiki-hero-inner">
+    <div class="wiki-hero-content">
+      <div class="wiki-hero-eyebrow" style="border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;backdrop-filter:blur(4px)">
+        <span class="wiki-hero-eyebrow-dot" style="background:#c084fc"></span>
         Sub-brand · Active · Est. 2024
       </div>
-      <h1 class="font-display" style="font-size:clamp(2.75rem,7vw,4.75rem);font-weight:700;line-height:.95;color:#fff;margin-top:.75rem">
-        Cantina Chicken Menu<span style="color:#c084fc">.</span>
-      </h1>
-      <p style="font-family:'Spectral',Georgia,serif;font-size:1.05rem;line-height:1.7;max-width:36rem;margin-top:1rem;color:rgba(255,255,255,.85)">
+      <h1 class="wiki-hero-title" style="margin-top:.75rem">Cantina Chicken Menu<span class="wiki-hero-title-accent" style="color:#c084fc">.</span></h1>
+      <p class="wiki-hero-desc" style="color:rgba(255,255,255,.85)">
         Slow-roasted chicken in garlic, onions, and Mexican chilies — across tacos, burritos, quesadillas, and bowls. Launched nationwide March 21, 2024.
       </p>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;overflow:hidden;border-radius:3px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);align-self:center">
-      <div style="background:rgba(13,0,21,.55);padding:.75rem 1rem"><div class="font-display" style="font-size:1.5rem;font-weight:600;color:#fff;letter-spacing:-.02em">9</div><div class="font-mono" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">Menu items</div></div>
-      <div style="background:rgba(13,0,21,.55);padding:.75rem 1rem"><div class="font-display" style="font-size:1.5rem;font-weight:600;color:#fff;letter-spacing:-.02em">5</div><div class="font-mono" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">Categories</div></div>
-      <div style="background:rgba(13,0,21,.55);padding:.75rem 1rem"><div class="font-display" style="font-size:1.5rem;font-weight:600;color:#fff;letter-spacing:-.02em">2024</div><div class="font-mono" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">Launched</div></div>
-      <div style="background:rgba(13,0,21,.55);padding:.75rem 1rem"><div class="font-display" style="font-size:1.5rem;font-weight:600;color:#c084fc;letter-spacing:-.02em">Active</div><div class="font-mono" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">Status</div></div>
+      <div class="wiki-hero-stats">
+        <div class="wiki-hero-stat"><div class="wiki-hero-stat-num">9</div><div class="wiki-hero-stat-label">Menu items</div></div>
+        <div class="wiki-hero-stat"><div class="wiki-hero-stat-num">5</div><div class="wiki-hero-stat-label">Categories</div></div>
+        <div class="wiki-hero-stat"><div class="wiki-hero-stat-num">2024</div><div class="wiki-hero-stat-label">Launched</div></div>
+        <div class="wiki-hero-stat"><div class="wiki-hero-stat-num" style="color:#c084fc">Active</div><div class="wiki-hero-stat-label">Status</div></div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ═══════════════════ OVERVIEW ═══════════════════ -->
-<section style="background:var(--card);border-bottom:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
-  <div class="page-section">
-    <div class="eyebrow">
+<div class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
       Overview
     </div>
-    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:1.5rem">A protein pivot, not a variety play.</h2>
-    <div class="overview-prose" style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem 3rem;border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);padding-top:2rem">
+    <h2 class="wiki-section-title">A protein pivot, not a variety play.</h2>
+    <div class="overview-prose" style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem 3rem;border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);padding-top:2rem;margin-top:1.5rem">
       <p style="font-size:15px;line-height:1.7">Launched nationwide on <strong>March 21, 2024</strong>, the Cantina Chicken Menu is Taco Bell's most deliberate bid yet to compete at the fast-casual tier — not on price, but on ingredient quality. The strategic target was explicit: Chipotle, CAVA, and the broader daytime fast-casual segment that has eroded legacy QSR market share through the 2010s and early 2020s. The line debuted at Taco Bell's inaugural <em>Live Más LIVE</em> event in Las Vegas in February 2024, followed by a Taco Bell Rewards early-access window on March 14 and 18 before the full nationwide roll-out one week later.</p>
       <p style="font-size:15px;line-height:1.7">The entire line is built around a single new protein: slow-roasted chicken prepared in a savory blend of garlic, onions, and authentic Mexican chilies. This is a distinct offering from the chain's standard shredded or grilled chicken — a separate preparation with its own seasoning profile and supply chain. Taco Bell deploys it across every major format in its menu architecture (tacos, burritos, quesadillas, bowls), which is the vertical logic of the sub-line: one elevated protein, maximum menu surface area.</p>
       <p style="font-size:15px;line-height:1.7">To distinguish the line visually and texturally from standard builds, Taco Bell introduced a suite of fresh ingredients not previously deployed at scale: <strong>shredded purple cabbage</strong> for crunch and color, <strong>pico de gallo</strong> prepared fresh daily, <strong>white corn tortilla shells</strong> fried in-house daily for the crispy items, and the <strong>Avocado Verde Salsa</strong> — a new packet-based sauce formulated with real avocado pulp, tomatillos, and green chili peppers, included automatically with every Cantina order. The fresh-produce commitment alone projected 2.5 million additional pounds of usage in the first year.</p>
       <p style="font-size:15px;line-height:1.7">The precedent is <strong>Cantina Bell</strong> (2012–2014), which attempted the same fast-casual pivot through a broader ingredient overhaul with chef Lorena Garcia. It lasted two years. Cantina Chicken narrows the bet to a single protein and owns the preparation rather than overhauling the entire ingredient stack. Consumer response to the initial five-item launch was strong enough that the culinary team permanently expanded the line — adding the <strong>Cantina Chicken Rolled Quesadilla</strong> and the <strong>Cantina Chicken Mexican Pizza</strong> to the permanent roster, raising the item count above the launch configuration catalogued here.</p>
     </div>
   </div>
-</section>
+</div>
 
 <!-- ═══════════════════ MENU CATALOGUE ═══════════════════ -->
-<section id="catalogue" style="border-top:1px solid rgba(42,31,21,0.15);border-bottom:1px solid rgba(42,31,21,0.15);background:color-mix(in oklab,var(--secondary) 40%,transparent);">
-  <div style="max-width:1500px;margin:0 auto;padding:48px 24px;">
-    <div style="margin-bottom:24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;">
+<section id="catalogue" class="catalogue-section">
+  <div class="catalogue-inner">
+    <div class="catalogue-head">
       <div>
-        <div style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(42,31,21,0.35);">
+        <div class="wiki-section-eyebrow">
           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" x2="21" y1="6" y2="6"/><line x1="10" x2="21" y1="12" y2="12"/><line x1="10" x2="21" y1="18" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
           Full Catalogue
         </div>
-        <h2 style="font-family:'Fraunces',Georgia,serif;font-size:30px;font-weight:600;letter-spacing:-0.02em;">Every menu item</h2>
+        <h2 class="catalogue-title">Every menu item</h2>
       </div>
-      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(42,31,21,0.35);">14 items &middot; 7 categories</span>
+      <span class="catalogue-summary">14 items &middot; 7 categories</span>
     </div>
 
-    <div class="cat-columns" style="columns:2;column-gap:16px;">
+    <div class="catalogue-cols">
 
       <!-- TACOS -->
-      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #b45309;padding:20px;break-inside:avoid;margin-bottom:16px;">
-        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#b45309;">Tacos</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">2 items</div>
-        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+      <div class="cat-card" style="border-left-color:#b45309">
+        <div class="cat-card-title" style="color:#b45309">Tacos</div>
+        <div class="cat-card-count">2 items</div>
+        <div class="cat-card-divider"></div>
+        <div class="cat-card-pills">
           <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Cantina Chicken Crispy Taco')" onmouseover="this.style.background='#b453091a';this.style.borderColor='#b4530944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Cantina Chicken Crispy Taco</span>
           <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Cantina Chicken Soft Taco')" onmouseover="this.style.background='#b453091a';this.style.borderColor='#b4530944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Cantina Chicken Soft Taco</span>
         </div>
       </div>
 
       <!-- BURRITOS -->
-      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #6d28d9;padding:20px;break-inside:avoid;margin-bottom:16px;">
-        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#6d28d9;">Burritos</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">1 item</div>
-        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+      <div class="cat-card" style="border-left-color:#6d28d9">
+        <div class="cat-card-title" style="color:#6d28d9">Burritos</div>
+        <div class="cat-card-count">1 item</div>
+        <div class="cat-card-divider"></div>
+        <div class="cat-card-pills">
           <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Cantina Chicken Burrito')" onmouseover="this.style.background='#6d28d91a';this.style.borderColor='#6d28d944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Cantina Chicken Burrito</span>
         </div>
       </div>
 
       <!-- QUESADILLAS -->
-      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #a16207;padding:20px;break-inside:avoid;margin-bottom:16px;">
-        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#a16207;">Quesadillas</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">2 items</div>
-        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+      <div class="cat-card" style="border-left-color:#a16207">
+        <div class="cat-card-title" style="color:#a16207">Quesadillas</div>
+        <div class="cat-card-count">2 items</div>
+        <div class="cat-card-divider"></div>
+        <div class="cat-card-pills">
           <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Cantina Chicken Quesadilla')" onmouseover="this.style.background='#a162071a';this.style.borderColor='#a1620744'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Cantina Chicken Quesadilla</span>
           <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Cantina Chicken Rolled Quesadilla')" onmouseover="this.style.background='#a162071a';this.style.borderColor='#a1620744'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Cantina Chicken Rolled Quesadilla</span>
         </div>
       </div>
 
       <!-- BOWLS -->
-      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #0c4a6e;padding:20px;break-inside:avoid;margin-bottom:16px;">
-        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#0c4a6e;">Bowls</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">1 item</div>
-        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+      <div class="cat-card" style="border-left-color:#0c4a6e">
+        <div class="cat-card-title" style="color:#0c4a6e">Bowls</div>
+        <div class="cat-card-count">1 item</div>
+        <div class="cat-card-divider"></div>
+        <div class="cat-card-pills">
           <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Cantina Chicken Bowl')" onmouseover="this.style.background='#0c4a6e1a';this.style.borderColor='#0c4a6e44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Cantina Chicken Bowl</span>
         </div>
       </div>
 
       <!-- PIZZA -->
-      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #991b1b;padding:20px;break-inside:avoid;margin-bottom:16px;">
-        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#991b1b;">Mexican Pizza</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">1 item</div>
-        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+      <div class="cat-card" style="border-left-color:#991b1b">
+        <div class="cat-card-title" style="color:#991b1b">Mexican Pizza</div>
+        <div class="cat-card-count">1 item</div>
+        <div class="cat-card-divider"></div>
+        <div class="cat-card-pills">
           <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Cantina Chicken Mexican Pizza')" onmouseover="this.style.background='#991b1b1a';this.style.borderColor='#991b1b44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Cantina Chicken Mexican Pizza</span>
         </div>
       </div>
 
       <!-- NACHOS -->
-      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #4d7c0f;padding:20px;break-inside:avoid;margin-bottom:16px;">
-        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#4d7c0f;">Nachos</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">1 item</div>
-        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+      <div class="cat-card" style="border-left-color:#4d7c0f">
+        <div class="cat-card-title" style="color:#4d7c0f">Nachos</div>
+        <div class="cat-card-count">1 item</div>
+        <div class="cat-card-divider"></div>
+        <div class="cat-card-pills">
           <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Cantina Chicken Verde Nachos')" onmouseover="this.style.background='#4d7c0f1a';this.style.borderColor='#4d7c0f44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Cantina Chicken Verde Nachos</span>
         </div>
       </div>
 
-            <!-- DISCONTINUED — Caliente line -->
-      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #44403c;padding:20px;break-inside:avoid;margin-bottom:16px;position:relative;overflow:hidden;">
+      <!-- DISCONTINUED — Caliente line -->
+      <div class="cat-card" style="border-left-color:#44403c;position:relative;overflow:hidden">
         <!-- Discontinued ribbon -->
         <div style="position:absolute;top:-1px;right:-1px;width:85px;height:85px;overflow:hidden;z-index:2;pointer-events:none;"><span style="position:absolute;display:block;width:120px;padding:5px 0;background:rgba(42,31,21,0.72);color:#fff;font-family:'JetBrains Mono',monospace;font-size:6.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;text-align:center;transform:rotate(45deg);top:20px;right:-28px;box-shadow:0 2px 4px rgba(0,0,0,.15);">Discontinued</span></div>
-        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#44403c;">Caliente Line</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">6 items &middot; limited run</div>
-        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+        <div class="cat-card-title" style="color:#44403c">Caliente Line</div>
+        <div class="cat-card-count">6 items &middot; limited run</div>
+        <div class="cat-card-divider"></div>
+        <div class="cat-card-pills">
           <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Caliente Cantina Chicken Crispy Taco')" onmouseover="this.style.background='#44403c1a';this.style.borderColor='#44403c44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Caliente Cantina Chicken Crispy Taco</span>
           <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Caliente Cantina Chicken Soft Taco')" onmouseover="this.style.background='#44403c1a';this.style.borderColor='#44403c44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Caliente Cantina Chicken Soft Taco</span>
           <span class="ob-pill" style="cursor:pointer;" onclick="showItem('Caliente Cantina Chicken Burrito')" onmouseover="this.style.background='#44403c1a';this.style.borderColor='#44403c44'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'">Caliente Cantina Chicken Burrito</span>
@@ -392,13 +328,13 @@ document.addEventListener('keydown', function(e) {
 
 
 <!-- ═══════════════════ HISTORY & DEVELOPMENT ═══════════════════ -->
-<section id="history" style="background:var(--card);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
-  <div style="max-width:1500px;margin:0 auto;padding:3.5rem 1.5rem">
-    <div class="eyebrow">
+<div class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       History &amp; Development
     </div>
-    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:.625rem">From test kitchen to nationwide.</h2>
+    <h2 class="wiki-section-title" style="margin-bottom:.625rem">From test kitchen to nationwide.</h2>
     <p style="font-size:14px;color:var(--muted-foreground);font-family:'JetBrains Mono',monospace;letter-spacing:.02em;margin-bottom:2.5rem">Six weeks from public debut to full US rollout — one of the faster premium menu launches in QSR history.</p>
 
     <!-- Timeline -->
@@ -456,16 +392,16 @@ document.addEventListener('keydown', function(e) {
       </div>
     </div>
   </div>
-</section>
+</div>
 
 <!-- ═══════════════════ SIGNATURE COMPONENTS ═══════════════════ -->
-<section id="ingredients" style="background:var(--card);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
-  <div style="max-width:1500px;margin:0 auto;padding:3.5rem 1.5rem">
-    <div class="eyebrow">
+<div class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
       Signature Components &amp; Ingredients
     </div>
-    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:2rem">Four ingredients new to the assembly line.</h2>
+    <h2 class="wiki-section-title" style="margin-bottom:2rem">Four ingredients new to the assembly line.</h2>
 
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem">
 
@@ -539,16 +475,16 @@ document.addEventListener('keydown', function(e) {
 
     </div>
   </div>
-</section>
+</div>
 
 <!-- ═══════════════════ MENU LINEUP ═══════════════════ -->
-<section id="menu-lineup" style="background:var(--background);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
-  <div style="max-width:1500px;margin:0 auto;padding:3.5rem 1.5rem">
-    <div class="eyebrow">
+<div class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
       Rollout &amp; Expansion
     </div>
-    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:2rem">Five at launch. Growing since.</h2>
+    <h2 class="wiki-section-title" style="margin-bottom:2rem">Five at launch. Growing since.</h2>
 
     <div style="display:grid;gap:1.5rem">
 
@@ -616,16 +552,16 @@ document.addEventListener('keydown', function(e) {
 
     </div>
   </div>
-</section>
+</div>
 
 <!-- ═══════════════════ CALIENTE LINE ═══════════════════ -->
-<section id="caliente-line" style="background:var(--card);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
-  <div style="max-width:1500px;margin:0 auto;padding:3.5rem 1.5rem">
-    <div class="eyebrow">
+<div class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
       Limited Edition · Caliente Line
     </div>
-    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:.5rem">The Caliente variant.</h2>
+    <h2 class="wiki-section-title" style="margin-bottom:.5rem">The Caliente variant.</h2>
     <p style="font-size:14px;font-family:'JetBrains Mono',monospace;letter-spacing:.02em;color:var(--muted-foreground);margin-bottom:2.5rem">A limited-run spicy overlay on the Cantina Chicken line — same base builds, same slow-roasted protein, different sauce logic.</p>
 
     <!-- What it was -->
@@ -713,16 +649,16 @@ document.addEventListener('keydown', function(e) {
       <p style="font-size:13.5px;line-height:1.65">The Caliente line is textbook LTO strategy applied to a permanent sub-line: introduce a sauce variant, run it for a defined window, retire it, and measure whether customers ask for it back. The five direct variants add minimal operational complexity — same protein, same assembly, one new sauce in the flow. The Nacho Fries crossover is the more interesting move: it tests whether the Cantina Chicken brand has enough equity to carry the Nacho Fries format into premium territory, or whether the reverse is true. That both platforms benefited from the association without either being diluted suggests the answer was yes on both counts.</p>
     </div>
   </div>
-</section>
+</div>
 
 <!-- ═══════════════════ MARKETING ═══════════════════ -->
-<section id="marketing" style="background:var(--background);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
-  <div style="max-width:1500px;margin:0 auto;padding:3.5rem 1.5rem">
-    <div class="eyebrow">
+<div class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
       Marketing Campaigns &amp; Media
     </div>
-    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:2rem">The "unethical daytime meal" campaign.</h2>
+    <h2 class="wiki-section-title" style="margin-bottom:2rem">The "unethical daytime meal" campaign.</h2>
 
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1rem">
 
@@ -758,16 +694,16 @@ document.addEventListener('keydown', function(e) {
 
     </div>
   </div>
-</section>
+</div>
 
 <!-- ═══════════════════ NUTRITION ═══════════════════ -->
-<section id="nutrition" style="background:var(--card);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
-  <div style="max-width:1500px;margin:0 auto;padding:3.5rem 1.5rem">
-    <div class="eyebrow">
+<div class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
       Nutrition &amp; Dietary Reference
     </div>
-    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:.625rem">Quick reference — core items.</h2>
+    <h2 class="wiki-section-title" style="margin-bottom:.625rem">Quick reference — core items.</h2>
     <p style="font-size:13px;font-family:'JetBrains Mono',monospace;letter-spacing:.02em;color:var(--muted-foreground);margin-bottom:2rem">Values are approximate and reflect standard build without modifications. Verified current figures available at <strong>tacobell.com/nutrition</strong>.</p>
 
     <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
@@ -846,32 +782,32 @@ document.addEventListener('keydown', function(e) {
       <strong style="color:var(--foreground)">Allergen note:</strong> The Cantina Chicken Bowl is the primary gluten-free-friendly item in the core lineup — no wheat in the standard build. Customisations removing cheese or sour cream may accommodate dairy-free requirements. Cross-contamination risks apply across all items. Nutritional data reflects standard preparation and may vary by location.
     </div>
   </div>
-</section>
+</div>
 
 
 <!-- ═══════════════════ SEE ALSO ═══════════════════ -->
-<section style="border-top:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card)">
-  <div style="max-width:1500px;margin:0 auto;padding:2.5rem 1.5rem">
-    <div class="eyebrow" style="margin-bottom:1rem">
+<div class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner" style="padding-top:2.5rem;padding-bottom:2.5rem">
+    <div class="wiki-section-eyebrow" style="margin-bottom:1rem">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
       See also
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem">
       <a href="taco-bell-menus.html" style="display:block;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card);padding:.875rem 1rem;text-decoration:none;color:inherit;transition:border-color .12s" onmouseover="this.style.borderColor='color-mix(in oklab,var(--foreground) 35%,transparent)'" onmouseout="this.style.borderColor=''">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Parent</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Parent</div>
         <div class="font-display" style="font-size:1rem;font-weight:600;margin-top:.2rem;display:flex;align-items:baseline;justify-content:space-between">Taco Bell Menus <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></div>
       </a>
       <a href="taco-bell-menu-cantina-bell.html" style="display:block;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card);padding:.875rem 1rem;text-decoration:none;color:inherit;transition:border-color .12s" onmouseover="this.style.borderColor='color-mix(in oklab,var(--foreground) 35%,transparent)'" onmouseout="this.style.borderColor=''">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Predecessor</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Predecessor</div>
         <div class="font-display" style="font-size:1rem;font-weight:600;margin-top:.2rem;display:flex;align-items:baseline;justify-content:space-between">Cantina Bell Menu <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></div>
       </a>
       <a href="taco-bell.html" style="display:block;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card);padding:.875rem 1rem;text-decoration:none;color:inherit;transition:border-color .12s" onmouseover="this.style.borderColor='color-mix(in oklab,var(--foreground) 35%,transparent)'" onmouseout="this.style.borderColor=''">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Wiki home</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Wiki home</div>
         <div class="font-display" style="font-size:1rem;font-weight:600;margin-top:.2rem;display:flex;align-items:baseline;justify-content:space-between">Taco Bell wiki <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></div>
       </a>
     </div>
   </div>
-</section>
+</div>
 
 <!-- ═══════════════════ FOOTER ═══════════════════ -->
 <footer style="border-top:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:color-mix(in oklab,var(--secondary) 40%,transparent)">

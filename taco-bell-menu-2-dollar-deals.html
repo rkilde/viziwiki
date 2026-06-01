@@ -3,13 +3,11 @@ layout: default
 title: "$2 Meal Deals · Taco Bell · ViziWiki"
 body_class: "wiki-page wiki-taco-bell"
 extra_head: |
+  <link rel="stylesheet" href="/wiki-typography.css">
   <link rel="stylesheet" href="/wiki-taco-bell-skin.css">
+  <link rel="stylesheet" href="/tb-menus.css">
 ---
 {% raw %}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,ital,wght@9..144,0,300;9..144,0,600;9..144,0,700;9..144,1,400;9..144,1,600&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
 <style>
   :root {
     --background: oklch(0.972 0.012 85);
@@ -21,116 +19,103 @@ extra_head: |
   }
   *, *::before, *::after { box-sizing: border-box; }
   html, body { background: var(--background); color: var(--foreground); }
-  body { font-family: 'Spectral', Georgia, serif; }
-  .font-display { font-family: 'Fraunces', Georgia, serif; font-optical-sizing: auto; font-variation-settings: "SOFT" 30, "WONK" 0; letter-spacing: -.02em; }
-  .font-mono { font-family: 'JetBrains Mono', monospace; }
-  .halftone { background-image: radial-gradient(var(--hot-pink) 1.4px, transparent 1.6px); background-size: 10px 10px; }
-  .eyebrow { display: flex; align-items: center; gap: .5rem; font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .25em; color: var(--muted-foreground); margin-bottom: .5rem; }
-  .page-section { max-width: 1500px; margin: 0 auto; padding: 3.5rem 1.5rem; }
-  .ob-pill { display: inline-block; padding: 5px 12px; border: 1px solid rgba(42,31,21,0.1); border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.04em; text-transform: uppercase; color: rgba(42,31,21,0.85); white-space: nowrap; background: #fff; transition: background .15s, border-color .15s; }
-  @media (max-width: 767px) {
-    .hero-grid { display: block !important; padding: 2.5rem 1.25rem !important; }
-    .hero-grid > div:last-child { margin-top: 1.5rem; }
-    .overview-prose { grid-template-columns: 1fr !important; }
-    .catalogue-cols { columns: 1 !important; }
-  }
+  /* Component styles (.halftone .hero-grid .ob-pill .page-section .eyebrow
+     + catalogue + responsive) now live in /tb-menus.css. Fonts via /wiki-typography.css. */
 </style>
 
 <!-- ═══════════════════ HERO ═══════════════════ -->
-<section id="overview" class="relative overflow-hidden border-b border-foreground/20 text-white"
-  style="background:linear-gradient(135deg,#3a5c12 0%,#0e2a1c 50%,#04090a 100%)">
-  <div class="halftone pointer-events-none absolute inset-0 mix-blend-overlay opacity-20"></div>
-  <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(to right,rgba(4,9,10,.55),rgba(14,42,28,.12),transparent)"></div>
-  <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(to bottom,rgba(0,0,0,.22) 0%,transparent 55%)"></div>
+<section id="overview" class="wiki-hero" style="background:linear-gradient(135deg,#3a5c12 0%,#0e2a1c 50%,#04090a 100%);color:#fff;border-bottom:1px solid rgba(255,255,255,.2)">
+  <div class="halftone" style="position:absolute;inset:0;pointer-events:none;mix-blend-mode:overlay;opacity:.2"></div>
+  <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(to right,rgba(4,9,10,.55),rgba(14,42,28,.12),transparent)"></div>
+  <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,rgba(0,0,0,.22) 0%,transparent 55%)"></div>
+
+  <!-- Ghost icon: price tag -->
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"
-    class="pointer-events-none absolute -right-10 -bottom-10 rotate-12 opacity-[.06]"
-    style="width:420px;height:420px;color:#fff">
+    style="position:absolute;right:-2.5rem;bottom:-2.5rem;pointer-events:none;opacity:.06;width:420px;height:420px;color:#fff;transform:rotate(12deg)">
     <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
     <line x1="7" y1="7" x2="7.01" y2="7"/>
   </svg>
 
-  <div class="hero-grid relative mx-auto" style="display:grid;grid-template-columns:1.6fr 1fr;gap:2rem;max-width:1500px;padding:3.5rem 1.5rem">
-    <div>
-      <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[.25em]" style="backdrop-filter:blur(4px)">
-        <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#9ca3af;flex-shrink:0"></span>
+  <div class="wiki-hero-inner">
+    <div class="wiki-hero-content">
+      <div class="wiki-hero-eyebrow" style="border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;backdrop-filter:blur(4px)">
+        <span class="wiki-hero-eyebrow-dot" style="background:#9ca3af"></span>
         Value · Retired · 2010–2013
       </div>
-      <h1 class="font-display" style="font-size:clamp(2.75rem,7vw,4.75rem);font-weight:700;line-height:.95;color:#fff;margin-top:.75rem">
-        $2 Meal Deals<span style="color:#86efac">.</span>
-      </h1>
-      <p style="font-family:'Spectral',Georgia,serif;font-size:1.05rem;line-height:1.7;max-width:36rem;margin-top:1rem;color:rgba(255,255,255,.85)">
+      <h1 class="wiki-hero-title" style="margin-top:.75rem">$2 Meal Deals<span class="wiki-hero-title-accent" style="color:#86efac">.</span></h1>
+      <p class="wiki-hero-desc" style="color:rgba(255,255,255,.85)">
         Three items for two dollars — an entrée, a small bag of Doritos chips, and a medium drink. A Frito-Lay partnership that gave Taco Bell a value story competitors couldn't replicate item-for-item.
       </p>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;overflow:hidden;border-radius:3px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);align-self:center">
-      <div style="background:rgba(4,9,10,.55);padding:.75rem 1rem"><div class="font-display" style="font-size:1.5rem;font-weight:600;color:#fff;letter-spacing:-.02em">$2</div><div class="font-mono" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">Price point</div></div>
-      <div style="background:rgba(4,9,10,.55);padding:.75rem 1rem"><div class="font-display" style="font-size:1.5rem;font-weight:600;color:#fff;letter-spacing:-.02em">3 yr</div><div class="font-mono" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">Active run</div></div>
-      <div style="background:rgba(4,9,10,.55);padding:.75rem 1rem"><div class="font-display" style="font-size:1.5rem;font-weight:600;color:#fff;letter-spacing:-.02em">2010</div><div class="font-mono" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">Launched</div></div>
-      <div style="background:rgba(4,9,10,.55);padding:.75rem 1rem"><div class="font-display" style="font-size:1.5rem;font-weight:600;color:#9ca3af;letter-spacing:-.02em">Retired</div><div class="font-mono" style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.6)">Status</div></div>
+      <div class="wiki-hero-stats">
+        <div class="wiki-hero-stat"><div class="wiki-hero-stat-num">$2</div><div class="wiki-hero-stat-label">Price point</div></div>
+        <div class="wiki-hero-stat"><div class="wiki-hero-stat-num">3 yr</div><div class="wiki-hero-stat-label">Active run</div></div>
+        <div class="wiki-hero-stat"><div class="wiki-hero-stat-num">2010</div><div class="wiki-hero-stat-label">Launched</div></div>
+        <div class="wiki-hero-stat"><div class="wiki-hero-stat-num" style="color:#9ca3af">Retired</div><div class="wiki-hero-stat-label">Status</div></div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ═══════════════════ OVERVIEW ═══════════════════ -->
-<section style="background:var(--card);border-bottom:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
-  <div class="page-section">
-    <div class="eyebrow">
+<div class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
       Overview
     </div>
-    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:1.5rem">The bundle as the differentiator.</h2>
-    <div class="overview-prose" style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem 3rem;border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);padding-top:2rem">
+    <h2 class="wiki-section-title">The bundle as the differentiator.</h2>
+    <div class="overview-prose" style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem 3rem;border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);padding-top:2rem;margin-top:1.5rem">
       <p style="font-size:15px;line-height:1.7">The $2 Meal Deals launched around 2010 as Taco Bell's most direct response to the dollar-menu wars being fought between McDonald's, Burger King, and Wendy's. Rather than matching competitors item-for-item at the dollar price point, Taco Bell offered something structurally different: three components for two dollars — an entrée, a small bag of Nacho Cheese Doritos, and a medium fountain drink. The Doritos inclusion was a Frito-Lay partnership and the key structural move. Dollar menus sold items; the $2 Meal Deals sold a complete occasion.</p>
       <p style="font-size:15px;line-height:1.7">The operational logic was straightforward. Taco Bell's core items — the Crunchy Taco, the Soft Taco, the Bean Burrito — were already priced below a dollar individually at full margin. Bundling them with a fountain drink and a snack-size Doritos bag at two dollars gave the customer a perceived deal while maintaining reasonable unit economics — both chips and fountain drinks carry extremely low wholesale cost relative to perceived value. The format also gave Taco Bell a story: not "we have cheap items," but "we give you more."</p>
       <p style="font-size:15px;line-height:1.7">The timing placed the $2 Meal Deals squarely within the <strong>Why Pay More!? / Big Bell Value Menu</strong> era — Taco Bell's broader early-2010s push to own the value segment outright. The two programs ran in parallel: the Big Bell Value Menu covered individual items at low price points; the $2 Meal Deals covered the bundle-and-drink occasion. Together they attempted to make Taco Bell the default answer to any fast-food budget decision.</p>
       <p style="font-size:15px;line-height:1.7">The format was retired around 2013. Its replacement was the <strong>Cravings Value Menu</strong> (2014), which brought a cleaner tiered architecture — $1, $2, and $3 levels — that absorbed the bundle logic without requiring a dedicated program. The $2 Meal Deals served their purpose: they established the bundle as a legitimate value format at Taco Bell, and the Cravings menu inherited that framing at scale.</p>
     </div>
   </div>
-</section>
+</div>
 
 <!-- ═══════════════════ FULL CATALOGUE ═══════════════════ -->
-<section id="catalogue" style="border-top:1px solid rgba(42,31,21,0.15);border-bottom:1px solid rgba(42,31,21,0.15);background:color-mix(in oklab,var(--secondary) 40%,transparent);">
-  <div style="max-width:1500px;margin:0 auto;padding:48px 24px;">
-    <div style="margin-bottom:24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;">
+<section id="catalogue" class="catalogue-section">
+  <div class="catalogue-inner">
+    <div class="catalogue-head">
       <div>
-        <div style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(42,31,21,0.35);">
+        <div class="wiki-section-eyebrow">
           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="10" x2="21" y1="6" y2="6"/><line x1="10" x2="21" y1="12" y2="12"/><line x1="10" x2="21" y1="18" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
           Full Catalogue
         </div>
-        <h2 style="font-family:'Fraunces',Georgia,serif;font-size:30px;font-weight:600;letter-spacing:-0.02em;">Every documented deal</h2>
+        <h2 class="catalogue-title">Every documented deal</h2>
       </div>
-      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(42,31,21,0.35);">4 options &middot; 3 categories</span>
+      <span class="catalogue-summary">4 options &middot; 3 categories</span>
     </div>
 
-    <div class="catalogue-cols" style="columns:2;column-gap:16px;">
+    <div class="catalogue-cols">
 
       <!-- TACOS -->
-      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #b45309;padding:20px;break-inside:avoid;margin-bottom:16px;">
-        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#b45309;">Tacos</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">1 option &middot; + Doritos + medium drink</div>
-        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+      <div class="cat-card" style="border-left-color:#b45309">
+        <div class="cat-card-title" style="color:#b45309">Tacos</div>
+        <div class="cat-card-count">1 option &middot; + Doritos + medium drink</div>
+        <div class="cat-card-divider"></div>
+        <div class="cat-card-pills">
           <span class="ob-pill" style="cursor:pointer;" onclick="showDeal('B')" onmouseover="this.style.background='#b453091a';this.style.borderColor='#b4530944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'"><strong>B</strong> &mdash; Double Decker Taco</span>
         </div>
       </div>
 
       <!-- BURRITOS -->
-      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #6d28d9;padding:20px;break-inside:avoid;margin-bottom:16px;">
-        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#6d28d9;">Burritos</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">2 options &middot; + Doritos + medium drink</div>
-        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+      <div class="cat-card" style="border-left-color:#6d28d9">
+        <div class="cat-card-title" style="color:#6d28d9">Burritos</div>
+        <div class="cat-card-count">2 options &middot; + Doritos + medium drink</div>
+        <div class="cat-card-divider"></div>
+        <div class="cat-card-pills">
           <span class="ob-pill" style="cursor:pointer;" onclick="showDeal('A')" onmouseover="this.style.background='#6d28d91a';this.style.borderColor='#6d28d944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'"><strong>A</strong> &mdash; Grilled Chicken Burrito</span>
           <span class="ob-pill" style="cursor:pointer;" onclick="showDeal('D')" onmouseover="this.style.background='#6d28d91a';this.style.borderColor='#6d28d944'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'"><strong>D</strong> &mdash; Beefy 5-Layer Burrito</span>
         </div>
       </div>
 
       <!-- GORDITAS -->
-      <div style="background:#fff;border-radius:12px;border:1px solid rgba(42,31,21,0.06);border-left:4px solid #a16207;padding:20px;break-inside:avoid;margin-bottom:16px;">
-        <div style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#a16207;">Gorditas</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-top:2px;">1 option &middot; + Doritos + medium drink</div>
-        <div style="height:1px;background:rgba(42,31,21,0.1);margin:12px 0;"></div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+      <div class="cat-card" style="border-left-color:#a16207">
+        <div class="cat-card-title" style="color:#a16207">Gorditas</div>
+        <div class="cat-card-count">1 option &middot; + Doritos + medium drink</div>
+        <div class="cat-card-divider"></div>
+        <div class="cat-card-pills">
           <span class="ob-pill" style="cursor:pointer;" onclick="showDeal('C')" onmouseover="this.style.background='#a162071a';this.style.borderColor='#a1620744'" onmouseout="this.style.background='#fff';this.style.borderColor='rgba(42,31,21,0.1)'"><strong>C</strong> &mdash; Gordita Supreme</span>
         </div>
       </div>
@@ -232,13 +217,13 @@ document.addEventListener('keydown', function(e) {
 
 
 <!-- ═══════════════════ BACKGROUND & ECONOMIC CONTEXT ═══════════════════ -->
-<section id="background" style="background:var(--card);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
-  <div class="page-section">
-    <div class="eyebrow">
+<div class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       Background &amp; Economic Context
     </div>
-    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:2rem">The right deal at the right moment.</h2>
+    <h2 class="wiki-section-title" style="margin-bottom:2rem">The right deal at the right moment.</h2>
     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem 3rem;border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);padding-top:2rem" class="overview-prose">
       <p style="font-size:15px;line-height:1.7">The $2 Meal Deals launched in May 2010 — approximately eighteen months after the collapse of Lehman Brothers and the onset of the deepest recession since the Great Depression. Unemployment had peaked above 10% in late 2009 and remained elevated through 2010. Consumer spending patterns had shifted structurally, not just cyclically: surveys from the period consistently showed that teenage and college-age consumers — Taco Bell's core demographic — were tracking fast-food pricing with a level of attention typically seen only during longer economic contractions. A dollar or two was not incidental.</p>
       <p style="font-size:15px;line-height:1.7">Fast food had been the beneficiary of the downturn — foot traffic at QSR chains increased as consumers traded down from casual dining — but the value arms race within the segment had also intensified. McDonald's Dollar Menu, which had launched in 2002, had become the industry's reference point for accessible pricing. A basic three-item meal at McDonald's ran roughly $3. Taco Bell's internal research, cited at the May 2010 launch, found that consumers viewed combo meals industry-wide as overpriced, and that drink pricing specifically was a pain point. The $2 Meal Deal was built to exploit both findings simultaneously.</p>
@@ -246,22 +231,22 @@ document.addEventListener('keydown', function(e) {
       <p style="font-size:15px;line-height:1.7">The <strong>Frito-Lay partnership</strong> was the structural enabler that made the math work. A fountain drink and a snack-size chip bag both carry extremely low wholesale costs relative to their perceived value — the two components customers could see and handle in the deal were simultaneously the two cheapest for Taco Bell to include. The entrée was the margin risk; the Doritos bag and the drink were effectively subsidised by the volume the price point was designed to generate.</p>
     </div>
   </div>
-</section>
+</div>
 
 <!-- ═══════════════════ FRITO-LAY PARTNERSHIP ═══════════════════ -->
-<section id="frito-lay" style="background:var(--background);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
-  <div class="page-section">
-    <div class="eyebrow">
+<div class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
       Frito-Lay Partnership &amp; Synergy
     </div>
-    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:2rem">The co-branding deal that changed both companies.</h2>
+    <h2 class="wiki-section-title" style="margin-bottom:2rem">The co-branding deal that changed both companies.</h2>
 
     <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;margin-bottom:2rem" class="overview-prose">
 
       <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);overflow:hidden">
         <div style="padding:1rem 1.25rem;border-bottom:1px solid color-mix(in oklab,var(--foreground) 8%,transparent)">
-          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.3rem">Act 01 · 2010</div>
+          <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.3rem">Act 01 · 2010</div>
           <div class="font-display" style="font-size:1.0625rem;font-weight:600">The bag in the bag</div>
         </div>
         <div style="padding:1rem 1.25rem">
@@ -272,7 +257,7 @@ document.addEventListener('keydown', function(e) {
 
       <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);overflow:hidden">
         <div style="padding:1rem 1.25rem;border-bottom:1px solid color-mix(in oklab,var(--foreground) 8%,transparent)">
-          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.3rem">Act 02 · 2010–2012</div>
+          <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.3rem">Act 02 · 2010–2012</div>
           <div class="font-display" style="font-size:1.0625rem;font-weight:600">The path to Doritos Locos Tacos</div>
         </div>
         <div style="padding:1rem 1.25rem">
@@ -285,41 +270,41 @@ document.addEventListener('keydown', function(e) {
 
     <!-- Partnership timeline -->
     <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);padding:1.25rem 1.5rem">
-      <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:1rem">Doritos × Taco Bell — key dates</div>
+      <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:1rem">Doritos × Taco Bell — key dates</div>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.75rem">
         <div style="padding:.75rem;border-radius:4px;background:color-mix(in oklab,var(--secondary) 60%,transparent)">
           <div class="font-display" style="font-size:1.125rem;font-weight:600">May 2010</div>
-          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-foreground);margin-top:.2rem">$2 Meal Deal launches</div>
+          <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-foreground);margin-top:.2rem">$2 Meal Deal launches</div>
           <p style="font-size:11.5px;line-height:1.5;margin-top:.375rem;color:var(--muted-foreground)">Doritos bag first appears as a standard Taco Bell component nationwide</p>
         </div>
         <div style="padding:.75rem;border-radius:4px;background:color-mix(in oklab,var(--secondary) 60%,transparent)">
           <div class="font-display" style="font-size:1.125rem;font-weight:600">2008–2012</div>
-          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-foreground);margin-top:.2rem">DLT development</div>
+          <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-foreground);margin-top:.2rem">DLT development</div>
           <p style="font-size:11.5px;line-height:1.5;margin-top:.375rem;color:var(--muted-foreground)">Taco Bell's internal R&D develops the Doritos-shell taco concept over ~4 years</p>
         </div>
         <div style="padding:.75rem;border-radius:4px;background:color-mix(in oklab,var(--secondary) 60%,transparent)">
           <div class="font-display" style="font-size:1.125rem;font-weight:600">Mar 2012</div>
-          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-foreground);margin-top:.2rem">Doritos Locos Tacos</div>
+          <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-foreground);margin-top:.2rem">Doritos Locos Tacos</div>
           <p style="font-size:11.5px;line-height:1.5;margin-top:.375rem;color:var(--muted-foreground)">The best-selling product launch in Taco Bell history — 100M sold in first 10 weeks</p>
         </div>
         <div style="padding:.75rem;border-radius:4px;background:color-mix(in oklab,var(--secondary) 60%,transparent)">
           <div class="font-display" style="font-size:1.125rem;font-weight:600">2013</div>
-          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-foreground);margin-top:.2rem">Meal Deal retired</div>
+          <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-foreground);margin-top:.2rem">Meal Deal retired</div>
           <p style="font-size:11.5px;line-height:1.5;margin-top:.375rem;color:var(--muted-foreground)">The Doritos bag exits the standard combo format; DLT carries the Frito-Lay equity forward</p>
         </div>
       </div>
     </div>
   </div>
-</section>
+</div>
 
 <!-- ═══════════════════ MARKETING CAMPAIGNS ═══════════════════ -->
-<section id="marketing" style="background:var(--card);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
-  <div class="page-section">
-    <div class="eyebrow">
+<div class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
       High-Profile Marketing Campaigns
     </div>
-    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:2rem">Two campaigns that defined the launch summer.</h2>
+    <h2 class="wiki-section-title" style="margin-bottom:2rem">Two campaigns that defined the launch summer.</h2>
 
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;margin-bottom:2rem">
 
@@ -327,7 +312,7 @@ document.addEventListener('keydown', function(e) {
       <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);overflow:hidden">
         <div style="height:3px;background:linear-gradient(to right,#3a5c12,#0e2a1c)"></div>
         <div style="padding:1.25rem">
-          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.5rem">National TV &amp; Radio · Draftfcb · Summer 2010</div>
+          <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.5rem">National TV &amp; Radio · Draftfcb · Summer 2010</div>
           <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.75rem">"Which one is free?"</div>
           <p style="font-size:13.5px;line-height:1.65">The primary campaign creative — 15-second and 30-second spots handled by agency Draftfcb — depicted customers and employees humorously debating which of the three items in the deal was effectively the free one. The joke was structurally accurate: at $2 for three items, one of them was functionally below cost from a standard combo-meal perspective. The campaign ran on national TV and radio across the summer of 2010, supported by in-store signage and digital creative handled by R/GA.</p>
           <p style="font-size:13.5px;line-height:1.65;margin-top:.875rem">The conceit succeeded because it required no explanation of the deal. The question <em>"which one is free?"</em> communicated the price, the structure, and the value proposition in five words. It also implicitly benchmarked Taco Bell against the standard combo — the premise only made sense if the customer already understood that three items normally cost more than two dollars.</p>
@@ -338,7 +323,7 @@ document.addEventListener('keydown', function(e) {
       <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);background:var(--card);overflow:hidden">
         <div style="height:3px;background:linear-gradient(to right,#1e3a8a,#172554)"></div>
         <div style="padding:1.25rem">
-          <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.5rem">Guerrilla PR · June 2010 · "$2 Meal Deal Appeal"</div>
+          <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted-foreground);margin-bottom:.5rem">Guerrilla PR · June 2010 · "$2 Meal Deal Appeal"</div>
           <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.75rem">The Federal Reserve petition</div>
           <p style="font-size:13.5px;line-height:1.65">Three weeks after the $2 Meal Deal launch, Taco Bell escalated with a full-page open letter to the Federal Reserve, published in <em>USA Today</em>, calling on the central bank to circulate more $2 bills to meet the anticipated surge in customer demand. The letter read in part: <em>"Cooler than a $5. Twice as powerful as a $1. And thanks to our new $2 Meal Deal, only at Taco Bell can Americans get three items for two bucks. Which is why we're writing to you today."</em></p>
           <p style="font-size:13.5px;line-height:1.65;margin-top:.875rem">The campaign — formally titled the "$2 Meal Deal Appeal" — directed customers to sign a petition on the Taco Bell Facebook page, with signatories entered into a sweepstakes offering prizes including $2 per day for a year (paid as a $730 cheque). CMO David Ovens described the petition as "a celebration of Taco Bell redefining the meaning of value in the industry." The Washington Post, Central Banking, and several national outlets covered it, extending the earned-media reach well beyond the paid USA Today placement. The $2 bill framing was particularly effective because of the bill's own cultural mystique — its scarcity in circulation made it a curiosity, which made the promotion memorable.</p>
@@ -347,49 +332,49 @@ document.addEventListener('keydown', function(e) {
 
     </div>
   </div>
-</section>
+</div>
 
 <!-- ═══════════════════ OPERATIONAL IMPACT ═══════════════════ -->
-<section id="operations" style="background:var(--background);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
-  <div class="page-section">
-    <div class="eyebrow">
+<div class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
       Operational &amp; Kitchen Impact
     </div>
-    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:2rem">Simplicity as an operational advantage.</h2>
+    <h2 class="wiki-section-title" style="margin-bottom:2rem">Simplicity as an operational advantage.</h2>
 
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-bottom:2rem">
 
       <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);border-top:3px solid #3a5c12;background:var(--card);padding:1.125rem 1.25rem">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#3a5c12;margin-bottom:.375rem">Drive-thru efficiency</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#3a5c12;margin-bottom:.375rem">Drive-thru efficiency</div>
         <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.625rem">Letter-coded ordering</div>
         <p style="font-size:13.5px;line-height:1.65">The four entrée options were offered as labelled deals — Meal Deal A through D — giving drive-thru staff and headset communications a single character to transmit per order rather than a full item name. At QSR speed, where seconds per transaction directly affect throughput, reducing the verbal complexity of a multi-item order to a single letter represents a measurable efficiency gain. The simplicity also reduced order-error rates: a deal letter is unambiguous in a way that a full item name under drive-thru noise conditions is not.</p>
       </div>
 
       <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);border-top:3px solid #0e2a1c;background:var(--card);padding:1.125rem 1.25rem">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#365314;margin-bottom:.375rem">Unit economics</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#365314;margin-bottom:.375rem">Unit economics</div>
         <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.625rem">The fountain drink subsidy</div>
         <p style="font-size:13.5px;line-height:1.65">Fountain beverages carry the highest margins in fast food — the syrup-and-water cost of a medium drink runs approximately 10–20 cents at wholesale, against a retail value of $1.50–$2.00 at standard pricing. Including the drink in a $2 bundle effectively transferred ~$0.80 of perceived value to the customer at a cost of under $0.20 to the restaurant. The Doritos bag ran similarly: snack-size chips in QSR wholesale bulk are priced at pennies per unit. The entrée — the meat, the cheese, the tortilla — carried the only meaningful cost in the deal, and high volume was the mechanism that kept the margins viable.</p>
       </div>
 
       <div style="border-radius:6px;border:1px solid color-mix(in oklab,var(--foreground) 10%,transparent);border-top:3px solid #1e3a8a;background:var(--card);padding:1.125rem 1.25rem">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#1e3a8a;margin-bottom:.375rem">Assembly line</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.2em;color:#1e3a8a;margin-bottom:.375rem">Assembly line</div>
         <div class="font-display" style="font-size:1.0625rem;font-weight:600;margin-bottom:.625rem">Minimal kitchen complexity</div>
         <p style="font-size:13.5px;line-height:1.65">The four entrée options — Beefy 5-Layer Burrito, Gordita Supreme, Grilled Chicken Burrito, Double Decker Taco — were all existing permanent menu items with established kitchen procedures. The Doritos bag required no preparation. The drink required no preparation. The full deal could be assembled and bagged with no incremental kitchen training, no new equipment, and no additional prep time beyond whatever the entrée required. The operational commitment of the $2 Meal Deal was essentially zero — which meant the program could be rolled out to all participating locations simultaneously without a training cycle.</p>
       </div>
 
     </div>
   </div>
-</section>
+</div>
 
 <!-- ═══════════════════ RETIREMENT ═══════════════════ -->
-<section id="retirement" style="background:var(--card);border-top:1px solid color-mix(in oklab,var(--foreground) 10%,transparent)">
-  <div class="page-section">
-    <div class="eyebrow">
+<div class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
       Price Increases &amp; Retirement
     </div>
-    <h2 class="font-display" style="font-size:clamp(1.75rem,3.5vw,2.25rem);font-weight:600;margin-bottom:2rem">Three years. Then the math stopped working.</h2>
+    <h2 class="wiki-section-title" style="margin-bottom:2rem">Three years. Then the math stopped working.</h2>
 
     <div style="position:relative;padding-left:2rem">
       <div style="position:absolute;left:7px;top:0;bottom:0;width:1px;background:color-mix(in oklab,var(--foreground) 15%,transparent)"></div>
@@ -398,7 +383,7 @@ document.addEventListener('keydown', function(e) {
       <div style="position:relative;margin-bottom:2rem">
         <div style="position:absolute;left:-2rem;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid #3a5c12;background:#fff;z-index:1"></div>
         <div style="display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:.375rem">
-          <span class="font-mono" style="font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:#3a5c12;flex-shrink:0">May 2010</span>
+          <span class="font-mono-acc" style="font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:#3a5c12;flex-shrink:0">May 2010</span>
           <h3 class="font-display" style="font-size:1.0625rem;font-weight:600">$2 Meal Deals launch</h3>
         </div>
         <p style="font-size:14px;line-height:1.7;max-width:56rem">Four deals: Beefy 5-Layer Burrito, Gordita Supreme, Grilled Chicken Burrito, Double Decker Taco — each bundled with a Nacho Cheese Doritos bag and a medium fountain drink at $2. Launched as the centrepiece of the Why Pay More Value Menu.</p>
@@ -408,7 +393,7 @@ document.addEventListener('keydown', function(e) {
       <div style="position:relative;margin-bottom:2rem">
         <div style="position:absolute;left:-2rem;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid #b45309;background:#fff;z-index:1"></div>
         <div style="display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:.375rem">
-          <span class="font-mono" style="font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:#b45309;flex-shrink:0">2013</span>
+          <span class="font-mono-acc" style="font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:#b45309;flex-shrink:0">2013</span>
           <h3 class="font-display" style="font-size:1.0625rem;font-weight:600">Rebranded to "Meal Deal" · price raised to $3.49</h3>
         </div>
         <p style="font-size:14px;line-height:1.7;max-width:56rem">Rising ingredient costs — beef, dairy, and distribution costs all increased materially between 2010 and 2013 — made the $2 price point increasingly difficult to maintain at acceptable margins, particularly for the beef-based entrées. Taco Bell dropped the "$2" from the name, rebranding simply as "Meal Deal," and raised the base price to $3.49. The structural format (entrée + side + drink) was preserved, but the signature price anchor — the feature that made the program newsworthy — was gone. The Doritos bag was replaced by standard tortilla chips and nacho cheese dip — the in-house Taco Bell side rather than the branded Frito-Lay component — completing the unwinding of the PepsiCo/Frito-Lay co-branding that had defined the original program.</p>
@@ -418,14 +403,14 @@ document.addEventListener('keydown', function(e) {
       <div style="position:relative">
         <div style="position:absolute;left:-2rem;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid #44403c;background:#44403c;z-index:1"></div>
         <div style="display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:.375rem">
-          <span class="font-mono" style="font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:#44403c;flex-shrink:0">2014</span>
+          <span class="font-mono-acc" style="font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:#44403c;flex-shrink:0">2014</span>
           <h3 class="font-display" style="font-size:1.0625rem;font-weight:600">Permanent retirement — replaced by Dollar Cravings Menu</h3>
         </div>
         <p style="font-size:14px;line-height:1.7;max-width:56rem">The Meal Deal system was retired entirely in 2014 to clear menu board space for the nationwide rollout of the <strong>Dollar Cravings Menu</strong> — a broader, more flexible value architecture offering individual items at $1, $2, and $3 price points. The Cravings format served the same customer need (affordable fast food) without requiring a dedicated bundle structure or a brand-name snack partnership. What the $2 Meal Deals had proven — that a sub-$3 full meal was both operationally viable and commercially appealing — the Cravings menu absorbed as institutional knowledge and deployed at scale for the next decade.</p>
       </div>
     </div>
   </div>
-</section>
+</div>
 
 <style>
 .deal-modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;z-index:9999;background:rgba(0,0,0,.45);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:1rem}
@@ -542,32 +527,32 @@ document.addEventListener('keydown', function(e) {
 </div>
 
 <!-- ═══════════════════ SEE ALSO ═══════════════════ -->
-<section style="border-top:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card)">
-  <div style="max-width:1500px;margin:0 auto;padding:2.5rem 1.5rem">
-    <div class="eyebrow" style="margin-bottom:1rem">
+<div class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner" style="padding-top:2.5rem;padding-bottom:2.5rem">
+    <div class="wiki-section-eyebrow" style="margin-bottom:1rem">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
       See also
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem">
       <a href="taco-bell-menus.html" style="display:block;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card);padding:.875rem 1rem;text-decoration:none;color:inherit;transition:border-color .12s" onmouseover="this.style.borderColor='color-mix(in oklab,var(--foreground) 35%,transparent)'" onmouseout="this.style.borderColor=''">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Parent</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Parent</div>
         <div class="font-display" style="font-size:1rem;font-weight:600;margin-top:.2rem;display:flex;align-items:baseline;justify-content:space-between">Taco Bell Menus <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></div>
       </a>
       <a href="taco-bell-menu-big-bell-value.html" style="display:block;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card);padding:.875rem 1rem;text-decoration:none;color:inherit;transition:border-color .12s" onmouseover="this.style.borderColor='color-mix(in oklab,var(--foreground) 35%,transparent)'" onmouseout="this.style.borderColor=''">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Contemporary</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Contemporary</div>
         <div class="font-display" style="font-size:1rem;font-weight:600;margin-top:.2rem;display:flex;align-items:baseline;justify-content:space-between">Why Pay More!? Menu <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></div>
       </a>
       <a href="taco-bell-menu-cravings.html" style="display:block;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card);padding:.875rem 1rem;text-decoration:none;color:inherit;transition:border-color .12s" onmouseover="this.style.borderColor='color-mix(in oklab,var(--foreground) 35%,transparent)'" onmouseout="this.style.borderColor=''">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Successor</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Successor</div>
         <div class="font-display" style="font-size:1rem;font-weight:600;margin-top:.2rem;display:flex;align-items:baseline;justify-content:space-between">Cravings Value Menu <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></div>
       </a>
       <a href="taco-bell.html" style="display:block;border-radius:5px;border:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:var(--card);padding:.875rem 1rem;text-decoration:none;color:inherit;transition:border-color .12s" onmouseover="this.style.borderColor='color-mix(in oklab,var(--foreground) 35%,transparent)'" onmouseout="this.style.borderColor=''">
-        <div class="font-mono" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Wiki home</div>
+        <div class="font-mono-acc" style="font-size:8px;text-transform:uppercase;letter-spacing:.15em;color:var(--muted-foreground)">Wiki home</div>
         <div class="font-display" style="font-size:1rem;font-weight:600;margin-top:.2rem;display:flex;align-items:baseline;justify-content:space-between">Taco Bell wiki <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><polyline points="9 18 15 12 9 6"/></svg></div>
       </a>
     </div>
   </div>
-</section>
+</div>
 
 <!-- ═══════════════════ FOOTER ═══════════════════ -->
 <footer style="border-top:1px solid color-mix(in oklab,var(--foreground) 12%,transparent);background:color-mix(in oklab,var(--secondary) 40%,transparent)">
