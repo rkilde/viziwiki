@@ -119,10 +119,12 @@
 /* Hero pinned first — explicit order prevents footer floating up */
 .wiki-home > .wiki-hero  { order: 0; }
 
-/* Universal canon sections */
-.wiki-section[data-section="browse"]   { order: 10; }   /* entry directory */
-.wiki-section[data-section="overview"] { order: 20; }   /* topic introduction */
-.wiki-section[data-section="seealso"]  { order: 90; }   /* cross-references — always last */
+/* Universal canon sections — scoped to .wiki-home so these order values
+   only apply on home pages. A sub-page's overview/other sections render
+   in normal document flow, unaffected by this ordering. */
+.wiki-home > .wiki-section[data-section="browse"]   { order: 10; }   /* entry directory */
+.wiki-home > .wiki-section[data-section="overview"] { order: 20; }   /* topic introduction */
+.wiki-home > .wiki-section[data-section="seealso"]  { order: 90; }   /* cross-references — always last */
 
 /* Footer pinned absolutely last */
 .wiki-home > footer { order: 100; }
