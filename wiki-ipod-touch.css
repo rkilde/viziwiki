@@ -12,16 +12,6 @@
    ==================================================================== */
 
 .hero-title-block{display:flex;flex-direction:column;align-items:flex-start;}
-.sec-label{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:rgba(0,0,0,.52);margin-bottom:0;display:flex;align-items:center;gap:6px;}
-.sec-h2{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;letter-spacing:-0.02em;font-size:clamp(26px,3.2vw,40px);font-weight:600;color:#0a0a0a;line-height:1.1;margin-top:4px;margin-bottom:0;}
-.wiki-prose{max-width:720px;}
-.wiki-prose p{font-size:15px;color:rgba(0,0,0,.78);line-height:1.78;margin-bottom:16px;}
-.wiki-prose p:last-child{margin-bottom:0;}
-.wiki-prose p strong{color:#0a0a0a;font-weight:600;}
-.wiki-prose p em{font-style:italic;}
-.wiki-sub{display:flex;align-items:center;gap:7px;font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:17px;font-weight:600;letter-spacing:-0.01em;color:#0a0a0a;margin-top:32px;margin-bottom:8px;line-height:1.2;}
-.wiki-sub:first-child{margin-top:0;}
-.wiki-sub svg{flex-shrink:0;color:rgba(0,0,0,.45);}
 .wiki-section{background:#fff;padding:72px 0;border-top:1px solid rgba(0,0,0,.1);}
 .wiki-section-inner{max-width:1320px;margin:0 auto;padding:0 48px;}
 @media(max-width:600px){.wiki-section-inner{padding:0 16px;}}
@@ -30,7 +20,6 @@
 /* Hero */
 .hero{background:#f4f4f6;border-bottom:2px solid rgba(0,0,0,.12);padding:88px 0 100px;overflow:hidden;position:relative;}
 .hero-inner{max-width:1320px;margin:0 auto;padding:0 48px;}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(0,0,0,.16);border-radius:100px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:4px 14px;font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.3em;color:rgba(0,0,0,.6);margin-bottom:20px;}
 .eyebrow-dot{width:6px;height:6px;border-radius:50%;background:#0a0a0a;flex-shrink:0;}
 @media(max-width:900px){
   }
@@ -55,16 +44,6 @@
 <link rel="stylesheet" href="wiki.apple.css">
 <style>
 .hero-title-block{display:flex;flex-direction:column;align-items:flex-start;}
-.sec-label{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:rgba(0,0,0,.52);margin-bottom:0;display:flex;align-items:center;gap:6px;}
-.sec-h2{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;letter-spacing:-0.02em;font-size:clamp(26px,3.2vw,40px);font-weight:600;color:#0a0a0a;line-height:1.1;margin-top:4px;margin-bottom:0;}
-.wiki-prose{max-width:720px;}
-.wiki-prose p{font-size:15px;color:rgba(0,0,0,.78);line-height:1.78;margin-bottom:16px;}
-.wiki-prose p:last-child{margin-bottom:0;}
-.wiki-prose p strong{color:#0a0a0a;font-weight:600;}
-.wiki-prose p em{font-style:italic;}
-.wiki-sub{display:flex;align-items:center;gap:7px;font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:17px;font-weight:600;letter-spacing:-0.01em;color:#0a0a0a;margin-top:32px;margin-bottom:8px;line-height:1.2;}
-.wiki-sub:first-child{margin-top:0;}
-.wiki-sub svg{flex-shrink:0;color:rgba(0,0,0,.45);}
 .wiki-section{background:#fff;padding:72px 0;border-top:1px solid rgba(0,0,0,.1);}
 .wiki-section-inner{max-width:1320px;margin:0 auto;padding:0 48px;}
 @media(max-width:600px){.wiki-section-inner{padding:0 16px;}}
@@ -73,7 +52,6 @@
 /* Hero */
 .hero{background:#f4f4f6;border-bottom:2px solid rgba(0,0,0,.12);padding:88px 0 100px;overflow:hidden;position:relative;}
 .hero-inner{max-width:1320px;margin:0 auto;padding:0 48px;}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(0,0,0,.16);border-radius:100px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.06);padding:4px 14px;font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.3em;color:rgba(0,0,0,.6);margin-bottom:20px;}
 .eyebrow-dot{width:6px;height:6px;border-radius:50%;background:#0a0a0a;flex-shrink:0;}
 @media(max-width:900px){
   }
@@ -81,27 +59,12 @@
 .period{color:rgba(0,0,0,.28);}
 @media(max-width:900px){}
 @media(max-width:600px){}
-.hero-title{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:clamp(48px,6vw,88px);font-weight:700;letter-spacing:-0.02em;line-height:.95;color:#0a0a0a;margin-bottom:6px;}
 .hero-gen-name{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:clamp(24px,3vw,36px);font-weight:600;letter-spacing:-0.02em;color:#0a0a0a;line-height:1;margin-bottom:10px;}
 .hero-model{font-family:"JetBrains Mono",monospace;font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:rgba(0,0,0,.38);margin-bottom:28px;display:inline-flex;align-items:center;gap:8px;}
-.hero-intro{font-size:17px;line-height:1.68;color:rgba(0,0,0,.72);max-width:520px;margin-bottom:32px;}
-.hero-intro strong{color:#0a0a0a;font-weight:600;}
-.hero-intro em{font-style:italic;}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid rgba(0,0,0,.1);border-radius:2px;overflow:hidden;background:rgba(0,0,0,.1);max-width:520px;}
-.stat-cell{background:#fff;padding:12px 14px;border-right:1px solid rgba(0,0,0,.08);box-shadow:0 1px 4px rgba(0,0,0,.04);}
-.stat-cell:last-child{border-right:none;}
-.stat-val{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:20px;font-weight:600;letter-spacing:-0.02em;color:#0a0a0a;display:block;margin-bottom:2px;}
-.stat-lbl{font-family:"JetBrains Mono",monospace;font-size:8.5px;text-transform:uppercase;letter-spacing:.1em;color:rgba(0,0,0,.55);}
 
 /* Spotlight card */
 
 /* Overview */
-.overview{background:#fff;padding:72px 0;}
-.ov-inner{max-width:1320px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:1.6fr 1fr;gap:52px;align-items:start;}
-.ov-text p{font-size:15px;color:rgba(0,0,0,.78);line-height:1.78;margin-bottom:18px;}
-.ov-text p:last-child{margin-bottom:0;}
-.ov-text p strong{color:#0a0a0a;font-weight:600;}
-.ov-text p em{font-style:italic;}
 
 /* Infobox — now uses the universal .wiki-infobox component
    (wiki-universals.css §15). The iPod-specific .infobox/.ib-* styles were
@@ -120,13 +83,6 @@
 .budget-section .wiki-prose p,
 .design-section .wiki-prose p,
 .controversies-section .wiki-prose p{max-width:100% !important;}
-.wiki-prose-full{width:100%;}
-.wiki-prose-full p{font-size:15px;color:rgba(0,0,0,.78);line-height:1.78;margin-bottom:16px;}
-.wiki-prose-full p:last-child{margin-bottom:0;}
-.wiki-prose-full p strong{color:#0a0a0a;font-weight:600;}
-.wiki-prose-full p em{font-style:italic;}
-.wiki-prose-full .wiki-sub{display:flex;align-items:center;gap:7px;font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:17px;font-weight:600;letter-spacing:-0.01em;color:#0a0a0a;margin-top:32px;margin-bottom:8px;line-height:1.2;}
-.wiki-prose-full .wiki-sub svg{flex-shrink:0;color:rgba(0,0,0,.45);}
 
 /* ── Industrial design section — two column ─── */
 .design-cols{
