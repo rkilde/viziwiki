@@ -105,10 +105,29 @@
 
 
 /* ════════════════════════════════════════════════════════════════════
-   §4 — PAGE WRAPPER + SECTION ORDERING
-   .wiki-home is the flex-column wrapper that holds every section.
-   Order numbers are spaced generously (10, 20) so each wiki skin
-   can slot its own sections in between (15, 25, 30…).
+   §4 — PAGE WRAPPER + SECTION ORDERING  (THE WIKI-HOME CANON)
+   ════════════════════════════════════════════════════════════════════
+   .wiki-home is the flex-column wrapper that holds every section on a
+   wiki home page. Because it is the flex container, the `order:` values
+   below decide RENDER order regardless of the order sections appear in
+   the source HTML — so a contributor cannot break the canonical layout
+   by writing sections in the wrong order.
+
+   THE CANON (render order, top → bottom):
+     order   0   hero       — the page header                 [universal]
+     order  10   browse     — entry directory / index         [universal]
+     order  20   overview   — topic introduction              [universal]
+     order 30–80 freeform   — each wiki's own sections,        [skin-owned]
+                              ordered in its skin file via
+                              body.wiki-{name} .wiki-section[data-section=…]
+     order  90   seealso    — cross-references (optional)      [universal]
+     order 100   footer     — always dead last                [universal]
+
+   Contract: the first three (hero → browse → overview), seealso, and the
+   footer are FIXED here and identical on every wiki. Everything between
+   overview (20) and seealso (90) is the wiki's own — a skin assigns those
+   sections order values in the 30–80 band. Keep universal order numbers
+   spaced so skins have room (35, 40, 45…).
    ════════════════════════════════════════════════════════════════════ */
 
 .wiki-home {
