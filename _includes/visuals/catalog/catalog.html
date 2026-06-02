@@ -10,7 +10,7 @@
   card/pill only ever read `--cat-color` — the swatch set lives in the skin.
 
   Data shape (per category): name, color?, ribbon?, note?, items[]
-    item: name, status?, info?, desc, groups?[], callout?, cta?
+    item: name, status?, info?, desc, groups?[], callout?, notes?, cta?
       group: label, pills[]  (pill = "string" OR {text:, struck:true})
       callout: {label, text}
 {%- endcomment -%}
@@ -50,6 +50,7 @@
           <div>{%- for p in grp.pills -%}{%- if p.text -%}<span class="gpill{% if p.struck %} struck{% endif %}">{{ p.text }}</span>{%- else -%}<span class="gpill">{{ p }}</span>{%- endif -%}{%- endfor -%}</div>
         {%- endfor -%}
         {%- if item.callout -%}<div class="modal-callout"><div class="modal-callout-label">{{ item.callout.label }}</div><div class="modal-callout-text">{{ item.callout.text }}</div></div>{%- endif -%}
+        {%- if item.notes -%}<div class="modal-note">{{ item.notes }}</div>{%- endif -%}
         <a class="modal-cta" href="{{ item.cta | default: '#' }}">See full entry &rarr;</a>
         <span class="modal-cta-note">&#8627; auto-creates this item's page in the pages-builder, to fill out later</span>
       </div>

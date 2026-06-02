@@ -80,6 +80,12 @@ body.wiki-taco-bell {
   --cat-accent-6:#0891b2;  /* still cyan    */
   --cat-accent-7:#78350f;  /* coffee brown  */
   --cat-accent-8:#2563eb;  /* bottle blue   */
+  /* --- extended swatches (discontinued-drinks archive categories) --- */
+  --cat-accent-9:#993556;  /* frutista rose */
+  --cat-accent-10:#0f6e56; /* freeze teal   */
+  --cat-accent-11:#5a8a1a; /* limeade olive */
+  --cat-accent-12:#854f0b; /* defunct ochre */
+  --cat-accent-13:#185fa5; /* defunct blue  */
   /* pre-defined status states — label colors */
   --st-active-bg:#dcfce7;                   --st-active-fg:#166534;
   --st-discontinued-bg:rgba(42,31,21,0.08); --st-discontinued-fg:rgba(42,31,21,0.55);
