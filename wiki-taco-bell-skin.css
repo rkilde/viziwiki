@@ -66,6 +66,9 @@ body.wiki-taco-bell {
         and the pre-defined status states (catalog / expandable-card bank) ── */
   --divider:        color-mix(in oklab, var(--foreground) 10%, transparent);
   --ribbon-fg:      #ffffff;
+  /* locked "gone / phased out" ribbon grey — TB's warm desaturated tone
+     (the original hardcoded discontinued-ribbon color). Never colorful. */
+  --ribbon-gone-bg: rgba(42,31,21,0.72);
   /* category accent palette — the skin's CATEGORY SWATCH SET. A catalog
      category either references a swatch by number (`color: 3`, the future
      builder's color-picker pick) or, if it names none, auto-cycles through

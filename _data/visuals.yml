@@ -29,5 +29,6 @@ catalog:
   pairs_with: expandable-card          # each item opens this
   category_color: skin-swatch          # `color: N` -> --cat-accent-N (else auto-cycle)
   addons: [ribbon]                     # catalog-level add-ons
+  ribbon_tones: [accent, gone]         # accent = category color; gone = locked skin grey ("phased out")
   card_addons: [status, info-chip, pill-group, callout, notes]   # expandable-card add-ons
   status_states: [active, discontinued, retired, limited] # pre-defined set
