@@ -31,50 +31,16 @@
    `body.wiki-{name}` to re-flavor the entire hero in one place.
    -------------------------------------------------------------------- */
 :root {
-  /* ── divider that separates every <section> ── */
-  --hero-divider:                 rgba(0,0,0,.12);
-
-  /* ── eyebrow pill ── */
-  --hero-eyebrow-bg:              rgba(255,255,255,.06);
-  --hero-eyebrow-border:          rgba(255,255,255,.18);
-  --hero-eyebrow-text:            currentColor;
-  --hero-eyebrow-dot:             #ffb000;    /* matches H1 period */
-
-  /* ── H1 ── */
-  --hero-title-color:             currentColor;
-  --hero-title-accent:            #ffb000;    /* the period — same as dot */
-
-  /* ── description ── */
-  --hero-desc-color:              currentColor;
-
-  /* ── search bar ── */
+  /* ── search bar (HOME-ONLY hero element) ──
+     The search bar is a required element of HOME wiki heroes only — never on
+     sub-page / deeper-page heroes — so its tokens stay in the home layer.
+     All other hero tokens (eyebrow, title, desc, stat, spotlight) now live in
+     wiki-universals.css :root, because the hero itself is universal. */
   --hero-search-bg:               rgba(255,255,255,.06);
   --hero-search-border:           rgba(255,255,255,.18);
   --hero-search-text:             currentColor;
   --hero-search-placeholder:      rgba(255,255,255,.5);
   --hero-search-icon:             currentColor;
-
-  /* ── stat grid ── */
-  --hero-stat-wrapper-bg:         rgba(255,255,255,.18);  /* shows through gap-px gaps as dividers */
-  --hero-stat-wrapper-border:     rgba(255,255,255,.18);
-  --hero-stat-cell-bg:            rgba(0,0,0,.25);
-  --hero-stat-num:                currentColor;
-  --hero-stat-label:              rgba(255,255,255,.6);
-
-  /* ── spotlight card ── */
-  --hero-spotlight-bg:            rgba(255,255,255,.05);
-  --hero-spotlight-border:        rgba(255,255,255,.18);
-  --hero-spotlight-eyebrow:       rgba(255,255,255,.7);
-  --hero-spotlight-title:         currentColor;
-  --hero-spotlight-desc:          rgba(255,255,255,.75);
-
-  --hero-spotlight-tag-bg:        rgba(255,255,255,.08);
-  --hero-spotlight-tag-border:    rgba(255,255,255,.22);
-  --hero-spotlight-tag-text:      currentColor;
-
-  --hero-spotlight-cta-bg:        #ffb000;
-  --hero-spotlight-cta-text:      #0a0a0a;
-  --hero-spotlight-cta-hover-bg:  #ffffff;
 }
 
 
@@ -96,24 +62,15 @@
    wiki-universals.css §9 and applies to every hero. This file adds only
    the home hero's two-column grid layout (content + spotlight aside).
    ==================================================================== */
-.wiki-hero-inner {
-  display: grid;
-  gap: 32px;
-}
-
-@media (min-width: 768px) {
-  .wiki-hero-inner {
-    grid-template-columns: 1.5fr 1fr;
-  }
-}
+/* The 2-column hero layout (content | aside) moved to wiki-universals.css
+   §14 as an opt-in rule (.wiki-hero-inner:has(> .wiki-hero-aside)), so any
+   hero with a spotlight aside gets it — not just the home page. */
 
 
 /* ====================================================================
    4 · LEFT COLUMN  — content wrapper
    ==================================================================== */
-.wiki-hero-content {
-  min-width: 0;                /* lets max-w-xl children clamp inside the grid */
-}
+/* .wiki-hero-content moved to wiki-universals.css §14 (universal). */
 
 
 /* ====================================================================
@@ -177,92 +134,11 @@
 
 
 /* ====================================================================
-   10 · SPOTLIGHT ASIDE  — right column
-   Top-aligned. pr-4 (16px) pulls the card off the right edge.
+   10 · SPOTLIGHT ASIDE
+   Moved to wiki-universals.css §14 as the universal spotlight BANK
+   (.wiki-hero-aside + treatment 1 .wiki-hero-spotlight [this card] +
+   treatment 2 .wiki-hero-feature). Opt-in, swappable, skin-colored.
    ==================================================================== */
-.wiki-hero-aside {
-  align-self: start;
-  padding-right: 16px;
-}
-
-@media (max-width: 767px) {
-  /* on mobile, drop the padding so the card uses full width */
-  .wiki-hero-aside {
-    padding-right: 0;
-  }
-}
-
-.wiki-hero-spotlight {
-  padding: 20px;
-  border-radius: 4px;
-  border: 1px solid var(--hero-spotlight-border);
-  background: var(--hero-spotlight-bg);
-}
-
-.wiki-hero-spotlight-eyebrow {
-  margin-bottom: 12px;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: var(--hero-spotlight-eyebrow);
-}
-
-.wiki-hero-spotlight-title {
-  margin: 0;
-  font-family: 'Fraunces', Georgia, serif;
-  font-size: 30px;
-  font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
-  color: var(--hero-spotlight-title);
-}
-
-.wiki-hero-spotlight-desc {
-  margin: 8px 0 0;
-  font-size: 14px;
-  line-height: 1.55;
-  color: var(--hero-spotlight-desc);
-}
-
-.wiki-hero-spotlight-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 16px;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 9px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.wiki-hero-spotlight-tag {
-  padding: 2px 8px;
-  border-radius: 3px;
-  border: 1px solid var(--hero-spotlight-tag-border);
-  background: var(--hero-spotlight-tag-bg);
-  color: var(--hero-spotlight-tag-text);
-}
-
-.wiki-hero-spotlight-cta {
-  display: block;
-  width: 100%;
-  margin-top: 20px;
-  padding: 10px 16px;
-  border: 0;
-  border-radius: 4px;
-  background: var(--hero-spotlight-cta-bg);
-  color: var(--hero-spotlight-cta-text);
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  cursor: pointer;
-  transition: background .15s ease;
-}
-.wiki-hero-spotlight-cta:hover {
-  background: var(--hero-spotlight-cta-hover-bg);
-}
 
 
 /* ════════════════════════════════════════════════════════════════════

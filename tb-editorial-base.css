@@ -39,21 +39,15 @@ body.wiki-taco-bell {
 }
 
 /* ── Shared dark-hero text treatment ────────────────────────────────
-   These pages all use a custom dark gradient hero (set inline per page),
-   so the hero text reads white. Sets the base color + the universal hero
-   COLOR TOKENS the canon hero consumes. (The home pages get these tokens
-   from wiki-home.css; that file is NOT loaded on sub-pages, so the archive
-   heroes define them here — otherwise the accent period, eyebrow pill, and
-   dot fall back to undefined/white.) */
+   The archive sub-pages set a custom DARK gradient hero inline, so the hero
+   text must read white. wiki-home.css (which colors the home hero) is not
+   loaded here, so this sets the base text color + desc tone. The accent
+   period, eyebrow pill, and dot now come from the universal hero token
+   defaults (wiki-universals.css) + the Taco Bell skin (yellow accent). */
 .wiki-hero {
   color: #fff;
   --hero-title-color: #fff;
   --hero-desc-color: rgba(255,255,255,0.7);
-  --hero-title-accent: #fcd34d;                 /* the period — yellow */
-  --hero-eyebrow-bg: rgba(255,255,255,0.10);
-  --hero-eyebrow-border: rgba(255,255,255,0.30);
-  --hero-eyebrow-text: rgba(255,255,255,0.90);
-  --hero-eyebrow-dot: #fcd34d;                  /* yellow dot, matches period */
 }
 
 /* ── Shared font helpers ─────────────────────────────────────────────
