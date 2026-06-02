@@ -1,45 +1,13 @@
 ---
 permalink: /taco-bell-spiked-lemonade.html
-layout: default
+layout: class-tb-drink
 title: "Mtn Dew Spiked Lemonade — ViziWiki"
 body_class: "wiki-page wiki-taco-bell"
-extra_head: |
-  <link rel="stylesheet" href="/wiki-taco-bell-skin.css">
-  <link rel="stylesheet" href="/tb-discontinued-drinks.css">
 ---
 {% raw %}
 <meta charset="UTF-8">
-<style>
-:root{
-  --accent:#65a30d;--accent-light:#a3e635;--accent-dark:#365314;
-  --background:oklch(0.972 0.012 85);--foreground:oklch(0.18 0.02 60);--card:oklch(1 0 0);
-  --secondary:oklch(0.93 0.02 80);--muted-foreground:oklch(0.45 0.03 60);
-}
-body{font-family:'Spectral',Georgia,serif;color:var(--foreground);background:var(--background);}
-.fra{font-family:'Fraunces',Georgia,serif;}.mono{font-family:'JetBrains Mono',monospace;}
-
-/* ── Page-specific hero treatment (halftone + gradient overlay) ──
-   Structure/sizing comes from wiki-universals.css. These are this
-   drink's own visual flourishes + accent colors. */
-.wiki-hero{ color:#fff; }
-.wiki-hero::before{ content:''; position:absolute; inset:0; background-image:radial-gradient(color-mix(in srgb,var(--accent-light) 70%,white) 1.4px,transparent 1.6px); background-size:10px 10px; opacity:.12; mix-blend-mode:overlay; pointer-events:none; }
-.wiki-hero::after{ content:''; position:absolute; bottom:0; left:0; right:0; height:40%; background:linear-gradient(to top,rgba(0,0,0,.35),transparent); pointer-events:none; }
-.wiki-hero-inner > *{ position:relative; z-index:1; }
-
-/* This page drives the universal hero/section tokens from its OWN palette
-   (so the accent shows), EXCEPT the alternating panel tones, which come
-   from the Taco Bell skin so they stay consistent wiki-wide. */
-.wiki-hero{ --hero-title-color:#fff; --hero-desc-color:rgba(255,255,255,0.7); }
-
-.wiki-section-title{ color:var(--foreground); }
-.wiki-section-eyebrow{ color:var(--muted-foreground); }
-.wiki-section-eyebrow::before{ content:''; width:8px; height:8px; border-radius:50%; background:var(--accent); display:inline-block; flex:none; }
-.wiki-section-prose{ color:color-mix(in oklab,var(--foreground) 80%,transparent); font-size:15px; line-height:1.75; }
-.wiki-section-prose p+p{ margin-top:12px; }
-
-@media(max-width:768px){}
-
-</style>
+<!-- Per-drink accent only; everything else is in tb-drinks.css -->
+<style>:root{ --accent:#65a30d; --accent-light:#a3e635; --accent-dark:#365314; }</style>
 
 <!-- HERO -->
 <div class="wiki-hero" style="background:linear-gradient(135deg,#a3e635,#65a30d,#365314,#1a2e05);">
