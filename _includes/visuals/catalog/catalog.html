@@ -55,8 +55,8 @@
         {%- endfor -%}
         {%- if item.callout -%}<div class="modal-callout"><div class="modal-callout-label">{{ item.callout.label }}</div><div class="modal-callout-text">{{ item.callout.text }}</div></div>{%- endif -%}
         {%- if item.notes -%}<div class="modal-note">{{ item.notes }}</div>{%- endif -%}
-        <a class="modal-cta" href="{{ item.cta | default: '#' }}">See full entry &rarr;</a>
-        <span class="modal-cta-note">&#8627; auto-creates this item's page in the pages-builder, to fill out later</span>
+        {%- comment -%} CTA renders only when the item links to a real page; otherwise blank. {%- endcomment -%}
+        {%- if item.cta -%}<a class="modal-cta" href="{{ item.cta }}">See full entry &rarr;</a>{%- endif -%}
       </div>
     {%- endfor -%}
   {%- endfor -%}
