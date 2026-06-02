@@ -1,0 +1,127 @@
+# ViziWiki — Project Guide (read me first)
+
+ViziWiki is a hand-built Jekyll site (Cloudflare Pages, output `_site`) being
+converged into a **modular platform**: many crowdsourced, visually-designed
+wikis where *admins* own the design system and *contributors* eventually just
+supply content. Everything was hand-coded before the owner knew how to code;
+we are converging it into a clean, layered, single-source system.
+
+---
+
+## ★ The 1.0 north star (the ultimate goal — keep it in the background always)
+
+A **UI "wiki builder"**: a contributor clicks a blank dashed **"+"** slot, a
+side rail shows the **canon components allowed at that section/page level**,
+they pick one, fill a **simple form of fields**, and a live preview renders it
+— **the contributor never touches code, CSS, SVG, or a CDN.**
+
+**Standing directive:** evaluate everything we do against this goal. A change
+is "on path" if it keeps components **universal, typed into banks,
+data-driven (fields in → component renders its own HTML+CSS), and
+skin-colored.** If something the owner asks for would pull against it, **say
+so** and offer the builder-friendly alternative — then do what they decide
+(their call always wins). Things that conflict: one-off bespoke components,
+hardcoded colors/styles instead of skin tokens, hand-built-per-page layout
+that can't be form-driven, special-casing anything the universal layer
+defines, or layout that can't be validated/constrained.
+
+---
+
+## Architecture (the layers)
+
+Load order on every page: `wiki-typography.css → wiki-universals.css →
+wiki-home.css (home pages only) → wiki-{name}-skin.css`. All injected from
+`_layouts/default.html`. (`wiki-home.css` is loaded ONLY by home pages, via
+their `extra_head`.)
+
+- **Layer 0 — Universal** (`wiki-universals.css`): site-wide canon. Section
+  container/sizing, vertical rhythm, tonal alternation (`data-tone="a/b/special"`),
+  dividers, eyebrow/title/prose type, the **hero** (container + eyebrow + title +
+  desc + stat grid), the **spotlight bank**, the **infobox bank**, `.wiki-icon`,
+  full-bleed scroller. Owns **structure + token defaults**, never final colors.
+- **Layer 1 — Home canon** (`wiki-home.css`): home-page-only bits. The
+  **search bar** (a required element of HOME heroes only — never on sub-pages)
+  + its tokens, and the **canonical hero load-in animation** (`.hero-intro`-gated,
+  `.wiki-home`-scoped, Fallout's staggered rise).
+- **Layer 2 — Page classes** (`_layouts/class-*.html`): repeating page types
+  (e.g. `class-ipod-touch`, `class-tb-menu`, `class-tb-drink`) = structure once,
+  content-only pages.
+- **Layer 3 — Skins** (`wiki-{name}-skin.css`): **all color** via tokens under
+  `body.wiki-{name}`. Skins set, never the universal layer.
+
+### Banks (typed, reusable, single-source — the heart of 1.0)
+- **Infobox** (`.wiki-infobox`, universals §15-INFOBOX) — bank type #1. Its body
+  fills with `var(--panel-bg)` so it matches whatever toned panel it sits on
+  (each `.wiki-section[data-tone]` publishes `--panel-bg`).
+- **Spotlight** (universals §14) — swappable treatments: `.wiki-hero-spotlight`
+  (card / Cantina) and `.wiki-hero-feature` (Diablo). Skin tokens set colors.
+- **Icons** (`_includes/icon-sprite.html`) — one universal SVG sprite, each icon a
+  pinned `<symbol id="ic-NAME">` (Lucide paths copied under stable names, immune
+  to Lucide renames). Inject once in `<body>`; reference with
+  `<svg class="wiki-icon"><use href="#ic-NAME"></use></svg>` or `{% include
+  icon.html name="X" %}`. **No icon CDN.** Add an icon = add one `<symbol>`.
+
+### Terminology (be precise)
+- **Token** = a CSS custom property (`--section-title-color`, `--panel-bg`, …)
+  holding a design value. Skins set them; components read them.
+- **Utility class** = a Tailwind-style shorthand (`flex`, `px-6`). The
+  Tailwind-native archive pages freeze the ones they use into
+  `tb-tw-compat.css` so no Tailwind CDN is needed.
+
+### Supporting CSS
+- `tb-editorial-base.css` — shared base for the Taco Bell *archive* sub-pages
+  (light editorial palette + section-token mapping + dark-hero text + font
+  helpers + footer credit).
+- `tb-tw-compat.css` — frozen Tailwind utilities (+ a preflight reset) so the
+  de-Tailwinded pages render identically without the Tailwind CDN.
+- `tb-drinks.css`, `tb-menu-catalogue.css`, `tb-slogans.css` — page-specific
+  unique-visual components (bank candidates, deferred).
+
+---
+
+## Standing rules (the owner is emphatic about these)
+1. **No special cases.** Never a bespoke reimplementation of anything
+   `wiki-universals.css` already defines. Changing universals must change
+   literally every place.
+2. **Colors come from skin tokens only** — never hardcoded in a page, never set
+   in the universal layer. Visuals must conform to spacing AND all universal
+   standards too.
+3. **Data-driven components** (Level B): a page/contributor supplies data; the
+   component emits its own HTML + CSS. That's what makes the builder possible.
+4. Distinguish: (a) bespoke reimplementations of universal concepts → MUST
+   conform; (b) genuinely-unique visuals → become bank components (deferred);
+   (c) additive decorative flourishes (hero overlays, eyebrow dots) → allowed.
+
+## Workflow norms
+- Develop on branch `claude/quirky-carson-vKj8w`. Commit + push; owner previews
+  the Cloudflare deploy and merges PRs themselves (don't open PRs unless asked).
+- Cannot build Jekyll locally here — verify via the branch preview deploy.
+- Permalinks are explicit flat slugs (`permalink:`), decoupled from file path;
+  keep `.html` URLs.
+- Don't put the model identifier in commits/PRs/code.
+
+---
+
+## Convergence status
+
+**Done**
+- Phase 1: single source of truth + home canon (`.wiki-home` wrapper on all 5).
+- Phase 2: explicit permalinks.
+- Phase 3: page-class templates + full conformance — iPod ×6, drink-detail ×4,
+  menu item pages, and **all 5 Taco Bell listing pages** (menus, slogans,
+  sauces, drinks, discontinued-drinks) converged + de-Tailwinded; corrupted
+  files repaired (ipod CSS, discontinued-drinks DOCTYPE/dupes).
+- Hero + spotlight promoted to the universal layer; **panel-aware infobox**;
+  canonical **home-hero load-in** (back-button–aware); **universal icon sprite**
+  — lucide CDN removed from all 7 pages that loaded it.
+
+**Open**
+- Phase 4 visual bank: the taxonomy + remaining typed banks (lists, tables,
+  timelines, charts) — the big "decide the canonical set, then extract" effort.
+- Home pages still load the **Tailwind CDN** (separate from the de-Tailwinded
+  archive pages) — a future de-Tailwind pass.
+- Smurfs keeps its own small inline icon sprite (custom Smurf art) — optional
+  fold into the universal sprite.
+- The **builder UI** itself (the 1.0 product) — built once enough components are
+  data-driven banks.
+- **Vizi-verse** (the narrative side; currently only `top-10.html`) — deferred.
