@@ -55,8 +55,8 @@
         {%- endfor -%}
         {%- if item.callout -%}<div class="modal-callout"><div class="modal-callout-label">{{ item.callout.label }}</div><div class="modal-callout-text">{{ item.callout.text }}</div></div>{%- endif -%}
         {%- if item.notes -%}<div class="modal-note">{{ item.notes }}</div>{%- endif -%}
-        {%- comment -%} CTA renders only when the item links to a real page; otherwise blank. {%- endcomment -%}
-        {%- if item.cta -%}<a class="modal-cta" href="{{ item.cta }}">See full entry &rarr;</a>{%- endif -%}
+        {%- comment -%} CTA is canon — always present. Links only once the item has a real page; until then it's inert (click does nothing). {%- endcomment -%}
+        <a class="modal-cta"{% if item.cta %} href="{{ item.cta }}"{% endif %}>See full entry &rarr;</a>
       </div>
     {%- endfor -%}
   {%- endfor -%}
