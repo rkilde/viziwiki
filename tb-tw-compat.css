@@ -259,3 +259,9 @@ ol, ul { list-style: none; }
 @media (min-width: 1024px) {
   .lg\:grid-cols-\[1\.7fr_1fr\] { grid-template-columns: 1.7fr 1fr; }
 }
+
+/* ── Additional utilities used by taco-bell-discontinued-drinks ── */
+.text-foreground { color: var(--foreground); }
+.text-muted-foreground { color: var(--muted-foreground); }
+.bg-secondary\/40 { background-color: color-mix(in oklab, var(--secondary) 40%, transparent); }
+.bg-blue-950\/55 { background-color: rgb(23 37 84 / 0.55); }   /* Tailwind blue-950 @ 55% */
