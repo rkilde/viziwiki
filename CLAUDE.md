@@ -49,6 +49,22 @@ their `extra_head`.)
 - **Layer 3 — Skins** (`wiki-{name}-skin.css`): **all color** via tokens under
   `body.wiki-{name}`. Skins set, never the universal layer.
 
+### Type scale — DOCUMENT text only (`wiki-typography.css`)
+The universal type scale governs **only non-visual document text** — prose,
+body, eyebrows, and headings (the editorial reading layer). It is **8 roles**:
+`display · title · subtitle · lead · body · body-sm · caption · label`, each a
+size/leading/tracking/weight token set (`--t-<role>-*`, body uses the legacy
+`--wiki-prose-*` names) + a `.t-<role>` class. Change a value once → every
+document heading/body across the whole site updates. Sizes are universal
+(skins set color, never size).
+**Visual components do NOT use this scale.** Charts, timelines, stat tiles,
+spotlight/infobox panels, catalogues, swim diagrams — *any* data-viz — keep
+their own type, tuned to the component and controlled **in the bank** (Phase
+4). Forcing the universal scale onto dense widgets breaks their layouts (it
+did, on the iPod charts — hence this rule). **Rule of thumb: document text →
+`typography.css`; widget text → its bank.** (So `Numeral`/`Data`/`Micro` are
+*not* universal roles — they're widget concerns owned by each bank.)
+
 ### Banks (typed, reusable, single-source — the heart of 1.0)
 - **Infobox** (`.wiki-infobox`, universals §15-INFOBOX) — bank type #1. Its body
   fills with `var(--panel-bg)` so it matches whatever toned panel it sits on
@@ -114,10 +130,19 @@ their `extra_head`.)
 - Hero + spotlight promoted to the universal layer; **panel-aware infobox**;
   canonical **home-hero load-in** (back-button–aware); **universal icon sprite**
   — lucide CDN removed from all 7 pages that loaded it.
+- **Universal type scale (8 document roles)** established in `wiki-typography.css`;
+  document text (section eyebrow/H2/H3/prose, hero title/desc/eyebrow, archive
+  prose) reads it. Visual-component type was briefly wired to the scale then
+  **reverted** — it belongs to the bank, not the universal layer (see "Type
+  scale" above).
 
 **Open**
 - Phase 4 visual bank: the taxonomy + remaining typed banks (lists, tables,
   timelines, charts) — the big "decide the canonical set, then extract" effort.
+  **This is also where each visual component's TYPE gets centralized** (bank-owned).
+- Re-tokenize page-specific DOCUMENT text not yet on canonical `.wiki-*` classes
+  (e.g. the iPod page's own prose/eyebrows/headers reverted with its widgets).
+- Redo the iPod CSS block-dedupe (cfg/jb/lane) as a pure non-type cleanup.
 - Home pages still load the **Tailwind CDN** (separate from the de-Tailwinded
   archive pages) — a future de-Tailwind pass.
 - Smurfs keeps its own small inline icon sprite (custom Smurf art) — optional
