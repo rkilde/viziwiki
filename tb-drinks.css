@@ -13,49 +13,20 @@
    changes.
 
    IMPORTANT — conformance: this file does NOT override any universal
-   class. Section typography (eyebrow / title / prose) is driven purely
-   through the universal color TOKENS (--eyebrow-color,
-   --section-title-color, --prose-color), so editing wiki-universals.css
-   still changes every drink page. The only direct rules here are
-   genuinely ADDITIVE decorative flourishes (hero texture, accent dot).
+   class. The shared palette + universal section color TOKENS + dark-hero
+   text treatment live in tb-editorial-base.css (loaded first). This file
+   adds ONLY the genuinely ADDITIVE decorative flourishes specific to a
+   drink page (hero texture, accent dot).
    ════════════════════════════════════════════════════════════════════ */
-
-/* ── Drink palette ──────────────────────────────────────────────────
-   A lighter, warm editorial palette — distinct from the main Taco Bell
-   cream/purple home skin. This file is loaded only on drink pages, so
-   re-pointing the universal section tokens here affects drink pages
-   only. ────────────────────────────────────────────────────────────── */
-body.wiki-taco-bell {
-  --background:        oklch(0.972 0.012 85);
-  --foreground:        oklch(0.18 0.02 60);
-  --card:              oklch(1 0 0);
-  --secondary:         oklch(0.93 0.02 80);
-  --muted-foreground:  oklch(0.45 0.03 60);
-
-  /* drive the universal section color tokens from this palette
-     (sizing/spacing stays universal) */
-  --section-title-color: var(--foreground);
-  --eyebrow-color:       var(--muted-foreground);
-  --prose-color:         color-mix(in oklab, var(--foreground) 80%, transparent);
-
-  font-family: 'Spectral', Georgia, serif;
-  color: var(--foreground);
-  background: var(--background);
-}
 
 .fra  { font-family: 'Fraunces', Georgia, serif; }
 .mono { font-family: 'JetBrains Mono', monospace; }
 
 /* ── Hero — additive decorative flourishes only ─────────────────────
-   Structure/sizing comes from wiki-universals.css (.wiki-hero). These
-   add a halftone dot texture + a bottom gradient scrim, and set the
-   light-on-dark text tokens. The per-drink background gradient stays
-   inline on each page. ─────────────────────────────────────────────── */
-.wiki-hero {
-  color: #fff;
-  --hero-title-color: #fff;
-  --hero-desc-color: rgba(255,255,255,0.7);
-}
+   Structure/sizing comes from wiki-universals.css (.wiki-hero); the
+   light-on-dark text treatment comes from tb-editorial-base.css. These
+   add a halftone dot texture + a bottom gradient scrim. The per-drink
+   background gradient stays inline on each page. ───────────────────── */
 .wiki-hero::before {
   content: '';
   position: absolute;

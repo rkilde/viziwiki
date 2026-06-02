@@ -1,0 +1,49 @@
+/* ════════════════════════════════════════════════════════════════════
+   TACO BELL — EDITORIAL / ARCHIVE BASE
+   ════════════════════════════════════════════════════════════════════
+   Shared base for the Taco Bell *archive* sub-pages — the lighter,
+   editorial layer that sits apart from the main cream/purple home skin:
+     • the individual discontinued-drink profile pages   (tb-drinks.css)
+     • the listing / catalogue pages (menus, drinks, …)   (tb-menu-*.css)
+
+   It re-points the universal section color TOKENS to a warm light palette
+   and sets the shared dark-hero text treatment. This file is loaded ONLY
+   on those archive pages (after the skin), so it overrides the skin's
+   tokens for them and leaves the home/menu-item pages untouched.
+
+   Conformance: NO universal class is reimplemented here. Section typography
+   is driven purely through the universal color tokens, so editing
+   wiki-universals.css still changes every archive page. The single direct
+   rule (.wiki-hero color) sets the base text color the universal hero
+   tokens cascade from — not layout.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── Warm light editorial palette ───────────────────────────────────
+   Distinct from the main Taco Bell cream/purple home skin. */
+body.wiki-taco-bell {
+  --background:        oklch(0.972 0.012 85);
+  --foreground:        oklch(0.18 0.02 60);
+  --card:              oklch(1 0 0);
+  --secondary:         oklch(0.93 0.02 80);
+  --muted-foreground:  oklch(0.45 0.03 60);
+
+  /* drive the universal section color tokens from this palette
+     (sizing/spacing stays universal) */
+  --section-title-color: var(--foreground);
+  --eyebrow-color:       var(--muted-foreground);
+  --prose-color:         color-mix(in oklab, var(--foreground) 80%, transparent);
+
+  font-family: 'Spectral', Georgia, serif;
+  color: var(--foreground);
+  background: var(--background);
+}
+
+/* ── Shared dark-hero text treatment ────────────────────────────────
+   These pages all use a custom dark gradient hero (set inline per page),
+   so the hero text reads white. Sets the base color + the universal hero
+   text tokens; the hero's structure/sizing stays universal. */
+.wiki-hero {
+  color: #fff;
+  --hero-title-color: #fff;
+  --hero-desc-color: rgba(255,255,255,0.7);
+}
