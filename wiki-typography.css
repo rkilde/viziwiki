@@ -70,7 +70,7 @@ body {
    ════════════════════════════════════════════════════════════════════ */
 :root {
   /* ── Headings (Fraunces) ── */
-  --t-display-size:      clamp(40px, 6vw, 80px);
+  --t-display-size:      clamp(48px, 8vw, 96px);
   --t-display-leading:   1.05;
   --t-display-tracking:  -0.03em;
 
