@@ -157,9 +157,12 @@
    The hero does NOT participate — it has its own background system.
    ════════════════════════════════════════════════════════════════════ */
 
-.wiki-section[data-tone="a"]       { background: var(--section-tone-a); }
-.wiki-section[data-tone="b"]       { background: var(--section-tone-b); }
-.wiki-section[data-tone="special"] { background: var(--section-tone-special); }
+/* Each toned section also exposes its own background as --panel-bg, so a
+   panel-aware component (e.g. an infobox) can fill itself to match whatever
+   tone it is sitting on. */
+.wiki-section[data-tone="a"]       { background: var(--section-tone-a);       --panel-bg: var(--section-tone-a); }
+.wiki-section[data-tone="b"]       { background: var(--section-tone-b);       --panel-bg: var(--section-tone-b); }
+.wiki-section[data-tone="special"] { background: var(--section-tone-special); --panel-bg: var(--section-tone-special); }
 
 .wiki-section {
   border-bottom: 1px solid var(--section-divider, transparent);
