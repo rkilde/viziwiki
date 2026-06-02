@@ -48,10 +48,10 @@
 .cat-details{display:none}
 
 /* ── Expandable Card (modal) ────────────────────────────────────────── */
-/* z-index 101: above the page-title bar (99) and the top nav bar (100) so the
-   expanded card dims ALL page chrome (breadcrumb included) — but below the
-   left Contents/TOC rail (102), the one element that stays bright + operable. */
-.modal-ov{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;z-index:101;background:rgba(0,0,0,.45);backdrop-filter:blur(4px)}
+/* z-index 99: dims the page-title bar / breadcrumb (also 99 → overlay wins by
+   DOM order) and all page content, while staying BELOW the white top nav bar
+   (100) and the left Contents/TOC rail (102) — both stay bright + operable. */
+.modal-ov{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;z-index:99;background:rgba(0,0,0,.45);backdrop-filter:blur(4px)}
 .modal-ov.open{display:flex}
 .modal-card{position:relative;width:100%;max-width:460px;background:var(--card,#fff);border-radius:var(--card-shape,14px);border-left:5px solid var(--cat-color);box-shadow:0 24px 64px rgba(0,0,0,.28);overflow:clip}
 .modal-scroll{max-height:85vh;overflow-y:auto;padding:24px 24px 22px}
