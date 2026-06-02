@@ -56,9 +56,9 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
 .disc-title{font-family:'Fraunces',Georgia,serif;font-size:clamp(48px,6vw,72px);font-weight:700;letter-spacing:-.02em;line-height:.95;color:var(--foreground);margin:0 0 12px;}
 .disc-sub{font-family:'Spectral',Georgia,serif;font-style:italic;font-size:13.5px;line-height:1.7;color:color-mix(in oklab,var(--foreground) 50%,transparent);max-width:620px;}
 .disc-hero-divider{height:1px;background:color-mix(in oklab,var(--foreground) 7%,transparent);margin:20px 0;}
-.disc-hero-prose p{font-size:14px;line-height:1.82;color:color-mix(in oklab,var(--foreground) 76%,transparent);margin:0 0 12px;}
+.disc-hero-prose p{font-size:var(--wiki-prose-sm-size);line-height:var(--wiki-prose-leading);color:color-mix(in oklab,var(--foreground) 76%,transparent);margin:0 0 12px;}
 .disc-hero-prose p:last-child{margin-bottom:0;}
-.disc-hero-prose p{font-size:14px;line-height:1.82;color:color-mix(in oklab,var(--foreground) 76%,transparent);margin:0 0 12px;}
+.disc-hero-prose p{font-size:var(--wiki-prose-sm-size);line-height:var(--wiki-prose-leading);color:color-mix(in oklab,var(--foreground) 76%,transparent);margin:0 0 12px;}
 .disc-hero-prose p:last-child{margin-bottom:0;}
 
 /* ── MACRO OVERVIEW CARD ────────────────────────────── */
@@ -83,7 +83,7 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
 .disc-cat-badge{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 10px;border-radius:4px;}
 .disc-cat-dates{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.06em;color:var(--muted-foreground,rgba(42,31,21,0.4));}
 .disc-content{padding-top:16px;}
-.disc-prose{font-size:14px;line-height:1.7;color:rgba(42,31,21,0.75);margin-bottom:16px;}
+.disc-prose{font-size:var(--wiki-prose-sm-size);line-height:var(--wiki-prose-leading);color:rgba(42,31,21,0.75);margin-bottom:16px;}
 
 .disc-cat-num{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px;font-weight:500;}
 .disc-cat-name{font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.05;color:var(--foreground);margin:0 0 14px;}
@@ -184,7 +184,7 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
 .dtv-card-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:10px;}
 .dtv-card-chip{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;border-radius:4px;}
 .dtv-card-dates{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.06em;color:color-mix(in oklab,var(--foreground,#2a1f15) 40%,transparent);}
-.dtv-card-desc{margin-top:20px;font-size:14px;line-height:1.65;color:color-mix(in oklab,var(--foreground,#2a1f15) 70%,transparent);}
+.dtv-card-desc{margin-top:20px;font-size:var(--wiki-prose-sm-size);line-height:var(--wiki-prose-leading);color:color-mix(in oklab,var(--foreground,#2a1f15) 70%,transparent);}
 .dtv-card-callout{margin-top:14px;padding:14px 16px;border-radius:8px;border-left:3px solid;}
 .dtv-card-callout-label{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:color-mix(in oklab,var(--foreground,#2a1f15) 35%,transparent);margin-bottom:4px;}
 .dtv-card-callout-text{font-size:13px;line-height:1.5;color:color-mix(in oklab,var(--foreground,#2a1f15) 65%,transparent);}
@@ -527,7 +527,7 @@ document.addEventListener("DOMContentLoaded",function(){
     
   </div>
 
-  <p class="mt-4" style="margin-bottom:24px;font-size:15px;line-height:1.7;color:var(--muted-foreground);">The sections below chart every discontinued drink on a shared timeline spanning 1962 to 2025. Each swim lane maps one category's items from introduction to discontinuation — the length of the bar is the length of the run. Some bars span decades. Most are barely visible. Click any pill to open the full detail card for that item.</p>
+  <p class="mt-4" style="margin-bottom:24px;font-size:var(--wiki-prose-size);line-height:var(--wiki-prose-leading);color:var(--muted-foreground);">The sections below chart every discontinued drink on a shared timeline spanning 1962 to 2025. Each swim lane maps one category's items from introduction to discontinuation — the length of the bar is the length of the run. Some bars span decades. Most are barely visible. Click any pill to open the full detail card for that item.</p>
   </div>
 </div>
 </section>

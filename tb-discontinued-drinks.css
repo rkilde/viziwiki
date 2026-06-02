@@ -289,7 +289,7 @@
 .de-tl-item:last-child{margin-bottom:0;}
 .de-tl-date{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);font-weight:600;}
 .de-tl-title{font-family:'Fraunces',Georgia,serif;font-size:17px;font-weight:600;margin-top:2px;}
-.de-tl-desc{margin-top:4px;font-size:14px;line-height:1.6;color:color-mix(in oklab,var(--foreground) 70%,transparent);}
+.de-tl-desc{margin-top:4px;font-size:var(--wiki-prose-sm-size);line-height:var(--wiki-prose-leading);color:color-mix(in oklab,var(--foreground) 70%,transparent);}
 
 
 /* ════════════════════════════════════════════════════════════════════
@@ -309,7 +309,7 @@
 .de-quote{position:relative;background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-radius:12px;padding:28px 28px 28px 44px;margin:24px 0;overflow:hidden;}
 .de-quote::before{content:'\201c';position:absolute;top:12px;left:16px;font-family:'Fraunces',Georgia,serif;font-size:48px;font-weight:700;color:rgba(255,255,255,0.15);line-height:1;}
 .de-quote::after{content:'';position:absolute;inset:0;background-image:radial-gradient(color-mix(in srgb,var(--accent-light) 70%,white) 1.4px,transparent 1.6px);background-size:10px 10px;opacity:.08;mix-blend-mode:overlay;pointer-events:none;}
-.de-quote p{position:relative;font-style:italic;font-size:15px;line-height:1.6;}
+.de-quote p{position:relative;font-style:italic;font-size:var(--wiki-prose-size);line-height:var(--wiki-prose-leading);}
 .de-quote cite{position:relative;display:block;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.5);font-style:normal;}
 
 

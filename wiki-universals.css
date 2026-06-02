@@ -58,8 +58,14 @@
      (wiki-typography.css), so wiring this up changes nothing visually until
      a skin (or this default) repoints it. These are SIZE only — distinct
      type roles (eyebrows, titles, stat numbers, infobox values) keep their
-     own sizes by design. */
+     own sizes by design. Two prose tiers, both switchable:
+       --wiki-prose-size    → main body copy (the default reading size)
+       --wiki-prose-sm-size → secondary body copy (captions, modal text,
+                              comparison paragraphs, in-visual descriptions —
+                              text that reads as prose but a notch smaller)
+     Both share one leading so retuning rhythm is a single edit. */
   --wiki-prose-size:      15px;
+  --wiki-prose-sm-size:   14px;
   --wiki-prose-leading:   1.65;
 
   /* ── Hero color tokens (defaults; skins override) ──────────────────

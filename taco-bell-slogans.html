@@ -447,7 +447,7 @@ function buildAccordion() {
     quote.textContent = s.quote;
 
     var bodyP = document.createElement('p');
-    bodyP.style.cssText = "font-family:'Spectral',Georgia,serif;font-size:14px;line-height:1.7;max-width:56rem;margin-top:1rem";
+    bodyP.style.cssText = "font-family:'Spectral',Georgia,serif;font-size:var(--wiki-prose-sm-size);line-height:var(--wiki-prose-leading);max-width:56rem;margin-top:1rem";
     bodyP.textContent = s.body;
 
     var statsRow = document.createElement('div');
@@ -616,7 +616,7 @@ function openModal(idx) {
   document.getElementById('modal-title').textContent = ev.title;
   document.getElementById('modal-short').textContent = ev.short;
   var proseEl = document.getElementById('modal-prose');
-  proseEl.innerHTML = ev.prose.map(function(p){return '<p style="font-size:14px;line-height:1.72;margin-bottom:.75rem">'+p+'</p>';}).join('');
+  proseEl.innerHTML = ev.prose.map(function(p){return '<p style="font-size:var(--wiki-prose-sm-size);line-height:var(--wiki-prose-leading);margin-bottom:.75rem">'+p+'</p>';}).join('');
   var calloutEl = document.getElementById('modal-callout');
   if (ev.callout) { calloutEl.textContent = ev.callout; calloutEl.style.display='block'; }
   else { calloutEl.style.display='none'; }
