@@ -72,8 +72,9 @@ html, body { background: var(--background); color: var(--foreground); }
   border: 1px solid rgba(42,31,21,0.1);
   border-radius: 4px;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 10px;
-  letter-spacing: 0.04em;
+  font-size: var(--t-micro-size);
+  letter-spacing: var(--t-micro-tracking);
+  font-weight: var(--t-micro-weight);
   text-transform: uppercase;
   color: rgba(42,31,21,0.85);
   white-space: nowrap;
@@ -95,9 +96,10 @@ html, body { background: var(--background); color: var(--foreground); }
   align-items: center;
   gap: .5rem;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 10px;
+  font-size: var(--t-label-size);
   text-transform: uppercase;
-  letter-spacing: .25em;
+  letter-spacing: var(--t-label-tracking);
+  font-weight: var(--t-label-weight);
   color: var(--muted-foreground);
   margin-bottom: .5rem;
 }
@@ -131,16 +133,18 @@ html, body { background: var(--background); color: var(--foreground); }
 .cat-header-icon svg { width: 16px; height: 16px; color: #fff; }
 .cat-title {
   font-family: 'Fraunces', Georgia, serif;
-  font-size: 1.0625rem;
-  font-weight: 600;
+  font-size: var(--t-subtitle-size);
+  line-height: var(--t-subtitle-leading);
+  letter-spacing: var(--t-subtitle-tracking);
+  font-weight: var(--t-subtitle-weight);
   color: #fff;
-  letter-spacing: -.01em;
 }
 .cat-count {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 8px;
+  font-size: var(--t-micro-size);
   text-transform: uppercase;
-  letter-spacing: .2em;
+  letter-spacing: var(--t-micro-tracking);
+  font-weight: var(--t-micro-weight);
   color: rgba(255,255,255,.65);
   margin-left: auto;
 }
@@ -194,20 +198,22 @@ html, body { background: var(--background); color: var(--foreground); }
 }
 .item-cat-eye {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 7.5px;
+  font-size: var(--t-micro-size);
   text-transform: uppercase;
-  letter-spacing: .2em;
+  letter-spacing: var(--t-micro-tracking);
+  font-weight: var(--t-micro-weight);
   margin-bottom: .3rem;
 }
 .item-name {
   font-family: 'Fraunces', Georgia, serif;
-  font-size: 1.0625rem;
-  font-weight: 600;
-  line-height: 1.2;
+  font-size: var(--t-subtitle-size);
+  line-height: var(--t-subtitle-leading);
+  letter-spacing: var(--t-subtitle-tracking);
+  font-weight: var(--t-subtitle-weight);
 }
 .item-desc {
-  font-size: 12.5px;
-  line-height: 1.55;
+  font-size: var(--t-caption-size);
+  line-height: var(--t-caption-leading);
   color: color-mix(in oklab, var(--foreground) 72%, transparent);
   margin-top: .4rem;
   flex: 1;
@@ -220,9 +226,10 @@ html, body { background: var(--background); color: var(--foreground); }
 }
 .item-tag {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 7px;
+  font-size: var(--t-micro-size);
   text-transform: uppercase;
-  letter-spacing: .12em;
+  letter-spacing: var(--t-micro-tracking);
+  font-weight: var(--t-micro-weight);
   padding: 2px 7px;
   border-radius: 999px;
   border: 1px solid color-mix(in oklab, var(--foreground) 12%, transparent);
@@ -231,9 +238,10 @@ html, body { background: var(--background); color: var(--foreground); }
 }
 .item-badge {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 7px;
+  font-size: var(--t-micro-size);
   text-transform: uppercase;
-  letter-spacing: .12em;
+  letter-spacing: var(--t-micro-tracking);
+  font-weight: var(--t-micro-weight);
   padding: 2px 7px;
   border-radius: 999px;
   color: #fff;
@@ -255,16 +263,18 @@ html, body { background: var(--background); color: var(--foreground); }
 }
 .stat-v {
   font-family: 'Fraunces', Georgia, serif;
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: -.02em;
-  line-height: 1;
+  font-size: var(--t-numeral-size);
+  line-height: var(--t-numeral-leading);
+  letter-spacing: var(--t-numeral-tracking);
+  font-weight: var(--t-numeral-weight);
+  font-variant-numeric: tabular-nums;
 }
 .stat-k {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 8px;
+  font-size: var(--t-micro-size);
   text-transform: uppercase;
-  letter-spacing: .2em;
+  letter-spacing: var(--t-micro-tracking);
+  font-weight: var(--t-micro-weight);
   color: var(--muted-foreground);
   margin-top: .2rem;
 }
@@ -316,14 +326,16 @@ html, body { background: var(--background); color: var(--foreground); }
 }
 .catalogue-title {
   font-family: 'Fraunces', Georgia, serif;
-  font-size: 30px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-size: var(--t-title-size);
+  line-height: var(--t-title-leading);
+  letter-spacing: var(--t-title-tracking);
+  font-weight: var(--t-title-weight);
 }
 .catalogue-summary {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 10px;
-  letter-spacing: 0.1em;
+  font-size: var(--t-micro-size);
+  letter-spacing: var(--t-micro-tracking);
+  font-weight: var(--t-micro-weight);
   text-transform: uppercase;
   color: color-mix(in oklab, var(--foreground) 35%, transparent);
 }
@@ -350,8 +362,9 @@ html, body { background: var(--background); color: var(--foreground); }
 }
 .cat-card-count {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 9px;
-  letter-spacing: 0.12em;
+  font-size: var(--t-micro-size);
+  letter-spacing: var(--t-micro-tracking);
+  font-weight: var(--t-micro-weight);
   text-transform: uppercase;
   color: color-mix(in oklab, var(--foreground) 35%, transparent);
   margin-top: 2px;
