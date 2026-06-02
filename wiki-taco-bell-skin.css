@@ -29,6 +29,17 @@ body.wiki-taco-bell {
   --hero-text:    #ffffff;                          /* base light text on the dark gradient */
   --hero-divider: rgba(255,255,255,0.12);
 
+  /* Hero accent — the H1 period + eyebrow dot, in Taco Bell yellow.
+     Drives the universal hero tokens (wiki-universals.css §10–§14). */
+  --hero-title-accent: #fcd34d;
+  --hero-eyebrow-dot:  #fcd34d;
+
+  /* Spotlight treatment 2 (.wiki-hero-feature) — TB's feature-card look:
+     deep red → maroon fill + hot-pink halftone dots. Structure is universal
+     (§14); these tokens set the colors. */
+  --hero-feature-bg:       linear-gradient(to bottom right, #b91c1c, #4c0519);
+  --hero-feature-halftone: oklch(0.70 0.27 350);
+
   /* §12 section canon — alternating panel tones + divider */
   --section-tone-a:       #ffffff;                  /* warm white default panel */
   --section-tone-b:       #f4ede4;                  /* secondary cream alternation */
@@ -42,7 +53,7 @@ body.wiki-taco-bell {
   --prose-strong-color:   #2a1f15;                  /* full dark for emphasis */
 
   /* §16 overview infobox tokens — TB's signature purple gradient header */
-  --infobox-bg:            #f4ede4;
+  --infobox-bg:            var(--panel-bg, #f4ede4);   /* match the panel tone the infobox sits on */
   --infobox-border:        rgba(42,31,21,0.20);
   --infobox-header-bg:     linear-gradient(to bottom right, #c026d3, #581c87);
   --infobox-label-color:   rgba(255,255,255,0.7);

@@ -1,0 +1,61 @@
+/* ════════════════════════════════════════════════════════════════════
+   PAGE-CLASS: Taco Bell discontinued-DRINK profile pages
+   ════════════════════════════════════════════════════════════════════
+   Shared visual layer for the individual drink pages:
+     • taco-bell-brisk-raspberry
+     • taco-bell-pina-colada-frutista
+     • taco-bell-sangrita-blast
+     • taco-bell-spiked-lemonade
+
+   Each page now supplies ONLY its own accent trio
+   (--accent / --accent-light / --accent-dark) and its hero gradient,
+   inline. Everything shared lives here — edit once, every drink page
+   changes.
+
+   IMPORTANT — conformance: this file does NOT override any universal
+   class. The shared palette + universal section color TOKENS + dark-hero
+   text treatment live in tb-editorial-base.css (loaded first). This file
+   adds ONLY the genuinely ADDITIVE decorative flourishes specific to a
+   drink page (hero texture, accent dot).
+   ════════════════════════════════════════════════════════════════════ */
+
+.fra  { font-family: 'Fraunces', Georgia, serif; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+/* ── Hero — additive decorative flourishes only ─────────────────────
+   Structure/sizing comes from wiki-universals.css (.wiki-hero); the
+   light-on-dark text treatment comes from tb-editorial-base.css. These
+   add a halftone dot texture + a bottom gradient scrim. The per-drink
+   background gradient stays inline on each page. ───────────────────── */
+.wiki-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(color-mix(in srgb, var(--accent-light) 70%, white) 1.4px, transparent 1.6px);
+  background-size: 10px 10px;
+  opacity: .12;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+.wiki-hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 40%;
+  background: linear-gradient(to top, rgba(0,0,0,.35), transparent);
+  pointer-events: none;
+}
+.wiki-hero-inner > * { position: relative; z-index: 1; }
+
+/* ── Eyebrow accent dot — additive flourish ─────────────────────────
+   The universal eyebrow keeps its own sizing/weight/color token; this
+   just prepends a small accent-colored dot as the first flex child. ── */
+.wiki-section-eyebrow::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: inline-block;
+  flex: none;
+}

@@ -124,9 +124,6 @@ body.wiki-fallout{ background:#0b0f0a; }
 .fo-page .lift{transition:border-color .2s ease,box-shadow .2s ease,background .2s ease;}
 .fo-page .lift:hover{border-color:var(--phosphor);box-shadow:0 0 22px rgba(62,230,61,.1);}
 
-/* staggered boot-in */
-.fo-page .boot{opacity:0;transform:translateY(8px);animation:fo-boot .5s ease forwards;}
-@keyframes fo-boot{to{opacity:1;transform:translateY(0);}}
 
 .fo-page ::selection{background:rgba(62,230,61,.3);color:#eafff0;}
 </style>
@@ -150,29 +147,29 @@ body.wiki-fallout{ background:#0b0f0a; }
       <div class="wiki-hero-content">
 
         <!-- eyebrow pill: ● Visual Wiki · Vol. [N] -->
-        <div class="wiki-hero-eyebrow boot" style="animation-delay:.05s">
+        <div class="wiki-hero-eyebrow">
           <span class="wiki-hero-eyebrow-dot"></span>
           Visual Wiki · Vol. 2
         </div>
 
         <!-- H1 with accent period + skin-owned terminal cursor -->
-        <h1 class="wiki-hero-title boot glow" style="animation-delay:.12s">
+        <h1 class="wiki-hero-title glow">
           Fallout<span class="wiki-hero-title-accent glow-amber">.</span><span class="cursor align-baseline"></span>
         </h1>
 
         <!-- description -->
-        <p class="wiki-hero-desc boot" style="animation-delay:.2s">
+        <p class="wiki-hero-desc">
           A retro-future that never let go of <strong>1950s America</strong> — then dropped the bombs on it. Since <strong>1997</strong>, the post-nuclear RPG series indexed here entry by entry: every game, faction, vault, wasteland and walking horror, catalogued from the wrist up.
         </p>
 
         <!-- search bar (icon is skin-owned — Pip-Boy prompt) -->
-        <div class="wiki-hero-search boot scan" style="animation-delay:.28s">
+        <div class="wiki-hero-search scan">
           <span class="wiki-hero-search-icon">&gt;</span>
           <input class="wiki-hero-search-input" placeholder="QUERY 1,140 ENTRIES — try 'Deathclaw' or 'New Vegas'" />
         </div>
 
         <!-- 4-cell stat grid · cell 1 ALWAYS = entry count -->
-        <div class="wiki-hero-stats boot" style="animation-delay:.36s">
+        <div class="wiki-hero-stats">
           <div class="wiki-hero-stat">
             <div class="wiki-hero-stat-num">1,140</div>
             <div class="wiki-hero-stat-label">entries</div>
@@ -193,7 +190,7 @@ body.wiki-fallout{ background:#0b0f0a; }
       </div>
 
       <!-- spotlight aside -->
-      <aside class="wiki-hero-aside boot" style="animation-delay:.44s">
+      <aside class="wiki-hero-aside">
         <div class="wiki-hero-spotlight scan">
           <div class="wiki-hero-spotlight-eyebrow">★ Spotlight</div>
           <h3 class="wiki-hero-spotlight-title glow">Pip-Boy 3000</h3>

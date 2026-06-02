@@ -49,6 +49,51 @@
   --section-title-color:  currentColor;
   --prose-color:          currentColor;
   --prose-strong-color:   currentColor;
+
+  /* ── Hero color tokens (defaults; skins override) ──────────────────
+     The hero is a UNIVERSAL element (every wiki, home + sub-pages), so its
+     color defaults live here — not in the home layer. The hero STRUCTURE is
+     §9–§14 below. (Search-bar tokens are intentionally NOT here: the search
+     bar is a home-hero-only element and keeps its tokens in wiki-home.css.) */
+  --hero-divider:         rgba(0,0,0,.12);
+  --hero-eyebrow-bg:      rgba(255,255,255,.06);
+  --hero-eyebrow-border:  rgba(255,255,255,.18);
+  --hero-eyebrow-text:    currentColor;
+  --hero-eyebrow-dot:     #ffb000;      /* matches the H1 period */
+  --hero-title-color:     currentColor;
+  --hero-title-accent:    #ffb000;      /* the period — same as dot */
+  --hero-desc-color:      currentColor;
+  --hero-stat-wrapper-bg:     rgba(255,255,255,.18);
+  --hero-stat-wrapper-border: rgba(255,255,255,.18);
+  --hero-stat-cell-bg:        rgba(0,0,0,.25);
+  --hero-stat-num:            currentColor;
+  --hero-stat-label:          rgba(255,255,255,.6);
+
+  /* ── Spotlight bank tokens (defaults; skins override) ──────────────
+     Treatment 1 = card (the home/Cantina style). Treatment 2 = feature
+     (the Diablo style). Structure is §14; skins set the colors. */
+  --hero-spotlight-bg:           rgba(255,255,255,.05);
+  --hero-spotlight-border:       rgba(255,255,255,.18);
+  --hero-spotlight-eyebrow:      rgba(255,255,255,.7);
+  --hero-spotlight-title:        currentColor;
+  --hero-spotlight-desc:         rgba(255,255,255,.75);
+  --hero-spotlight-tag-bg:       rgba(255,255,255,.08);
+  --hero-spotlight-tag-border:   rgba(255,255,255,.22);
+  --hero-spotlight-tag-text:     currentColor;
+  --hero-spotlight-cta-bg:       #ffb000;
+  --hero-spotlight-cta-text:     #0a0a0a;
+  --hero-spotlight-cta-hover-bg: #ffffff;
+
+  --hero-feature-bg:        rgba(255,255,255,.05);   /* treatment 2 fill (skin: a gradient) */
+  --hero-feature-border:    rgba(255,255,255,.20);
+  --hero-feature-halftone:  rgba(255,255,255,.5);    /* dot-pattern color */
+  --hero-feature-label:     rgba(255,255,255,.8);
+  --hero-feature-title:     currentColor;
+  --hero-feature-desc:      rgba(255,255,255,.85);
+  --hero-feature-chip-bg:     rgba(255,255,255,.10);
+  --hero-feature-chip-border: rgba(255,255,255,.30);
+  --hero-feature-chip-key:    rgba(255,255,255,.6);
+  --hero-feature-chip-val:    #ffffff;
 }
 
 
@@ -94,12 +139,14 @@
    For horizontal scrollers (timelines, photo rails) meant to run off the
    screen edge. Put this on the SCROLL container, placed INSIDE a normal
    .wiki-section-inner — so the eyebrow/title above it keep the standard
-   gutters, and the scroller STARTS flush with the section's left gutter,
-   then breaks out to the right viewport edge and scrolls. One canonical
+   gutters, while the scroller itself spans the FULL viewport: it starts at
+   the left screen edge and runs off both edges as it scrolls. One canonical
    treatment for every full-bleed visual — edit here once.
    ════════════════════════════════════════════════════════════════════ */
 .wiki-section-bleed {
-  margin-right: calc(50% - 50vw);   /* left stays at the gutter; right edge → viewport */
+  margin-inline: calc(50% - 50vw);   /* full-viewport width: the track starts at the left
+                                        screen edge and runs off both edges (the eyebrow/title
+                                        above it keep the normal section gutters). */
 }
 
 
@@ -110,9 +157,12 @@
    The hero does NOT participate — it has its own background system.
    ════════════════════════════════════════════════════════════════════ */
 
-.wiki-section[data-tone="a"]       { background: var(--section-tone-a); }
-.wiki-section[data-tone="b"]       { background: var(--section-tone-b); }
-.wiki-section[data-tone="special"] { background: var(--section-tone-special); }
+/* Each toned section also exposes its own background as --panel-bg, so a
+   panel-aware component (e.g. an infobox) can fill itself to match whatever
+   tone it is sitting on. */
+.wiki-section[data-tone="a"]       { background: var(--section-tone-a);       --panel-bg: var(--section-tone-a); }
+.wiki-section[data-tone="b"]       { background: var(--section-tone-b);       --panel-bg: var(--section-tone-b); }
+.wiki-section[data-tone="special"] { background: var(--section-tone-special); --panel-bg: var(--section-tone-special); }
 
 .wiki-section {
   border-bottom: 1px solid var(--section-divider, transparent);
@@ -444,6 +494,158 @@
     font-size: 8px;
   }
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   §14 — HERO ASIDE + SPOTLIGHT BANK  (optional, universal)
+   ════════════════════════════════════════════════════════════════════
+   A hero may carry an optional aside holding a "spotlight". The spotlight
+   is a small BANK of swappable treatments — same idea as the infobox bank:
+     • treatment 1 — .wiki-hero-spotlight  (card: eyebrow/title/desc/tags/cta;
+                       the Taco Bell home "Cantina Chicken" style)
+     • treatment 2 — .wiki-hero-feature     (the Taco Bell sauces "Diablo"
+                       style: label row, big title, desc, 3 stat chips)
+   Structure is universal; every color comes from skin tokens. Opt into a
+   treatment by using its classes. The bank can grow over time.
+
+   Two-column hero is opt-in: when .wiki-hero-inner contains a
+   .wiki-hero-aside it becomes content | aside; otherwise single-column.
+   ════════════════════════════════════════════════════════════════════ */
+.wiki-hero-inner:has(> .wiki-hero-aside) { display: grid; gap: 32px; }
+@media (min-width: 768px) {
+  .wiki-hero-inner:has(> .wiki-hero-aside) { grid-template-columns: 1.5fr 1fr; }
+}
+.wiki-hero-content { min-width: 0; }   /* lets max-width children clamp in-grid */
+.wiki-hero-aside { align-self: start; padding-right: 16px; }
+@media (max-width: 767px) { .wiki-hero-aside { padding-right: 0; } }
+
+/* ── Spotlight treatment 1 — CARD ─────────────────────────────────── */
+.wiki-hero-spotlight {
+  padding: 20px;
+  border-radius: 4px;
+  border: 1px solid var(--hero-spotlight-border);
+  background: var(--hero-spotlight-bg);
+}
+.wiki-hero-spotlight-eyebrow {
+  margin-bottom: 12px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--hero-spotlight-eyebrow);
+}
+.wiki-hero-spotlight-title {
+  margin: 0;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--hero-spotlight-title);
+}
+.wiki-hero-spotlight-desc {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--hero-spotlight-desc);
+}
+.wiki-hero-spotlight-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.wiki-hero-spotlight-tag {
+  padding: 2px 8px;
+  border-radius: 3px;
+  border: 1px solid var(--hero-spotlight-tag-border);
+  background: var(--hero-spotlight-tag-bg);
+  color: var(--hero-spotlight-tag-text);
+}
+.wiki-hero-spotlight-cta {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--hero-spotlight-cta-bg);
+  color: var(--hero-spotlight-cta-text);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background .15s ease;
+}
+.wiki-hero-spotlight-cta:hover { background: var(--hero-spotlight-cta-hover-bg); }
+
+/* ── Spotlight treatment 2 — FEATURE (label row · big title · chips) ── */
+.wiki-hero-feature {
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  border-radius: 6px;
+  border: 1px solid var(--hero-feature-border);
+  background: var(--hero-feature-bg);
+}
+.wiki-hero-feature-halftone {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(var(--hero-feature-halftone) 1.4px, transparent 1.6px);
+  background-size: 10px 10px;
+  opacity: 0.25;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+.wiki-hero-feature-body { position: relative; }
+.wiki-hero-feature-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--hero-feature-label);
+}
+.wiki-hero-feature-title {
+  margin: 0;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--hero-feature-title);
+}
+.wiki-hero-feature-desc {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--hero-feature-desc);
+}
+.wiki-hero-feature-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 16px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.wiki-hero-feature-chip {
+  padding: 6px 8px;
+  border-radius: 2px;
+  border: 1px solid var(--hero-feature-chip-border);
+  background: var(--hero-feature-chip-bg);
+}
+.wiki-hero-feature-chip-key { color: var(--hero-feature-chip-key); }
+.wiki-hero-feature-chip-val { color: var(--hero-feature-chip-val); }
+
 
 /* ════════════════════════════════════════════════════════════════════
    FIRST-CHILD MARGIN RESET

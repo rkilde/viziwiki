@@ -1,0 +1,69 @@
+/* ════════════════════════════════════════════════════════════════════
+   TACO BELL — EDITORIAL / ARCHIVE BASE
+   ════════════════════════════════════════════════════════════════════
+   Shared base for the Taco Bell *archive* sub-pages — the lighter,
+   editorial layer that sits apart from the main cream/purple home skin:
+     • the individual discontinued-drink profile pages   (tb-drinks.css)
+     • the listing / catalogue pages (menus, drinks, …)   (tb-menu-*.css)
+
+   It re-points the universal section color TOKENS to a warm light palette
+   and sets the shared dark-hero text treatment. This file is loaded ONLY
+   on those archive pages (after the skin), so it overrides the skin's
+   tokens for them and leaves the home/menu-item pages untouched.
+
+   Conformance: NO universal class is reimplemented here. Section typography
+   is driven purely through the universal color tokens, so editing
+   wiki-universals.css still changes every archive page. The single direct
+   rule (.wiki-hero color) sets the base text color the universal hero
+   tokens cascade from — not layout.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── Warm light editorial palette ───────────────────────────────────
+   Distinct from the main Taco Bell cream/purple home skin. */
+body.wiki-taco-bell {
+  --background:        oklch(0.972 0.012 85);
+  --foreground:        oklch(0.18 0.02 60);
+  --card:              oklch(1 0 0);
+  --secondary:         oklch(0.93 0.02 80);
+  --muted-foreground:  oklch(0.45 0.03 60);
+
+  /* drive the universal section color tokens from this palette
+     (sizing/spacing stays universal) */
+  --section-title-color: var(--foreground);
+  --eyebrow-color:       var(--muted-foreground);
+  --prose-color:         color-mix(in oklab, var(--foreground) 80%, transparent);
+
+  font-family: 'Spectral', Georgia, serif;
+  color: var(--foreground);
+  background: var(--background);
+}
+
+/* ── Shared dark-hero text treatment ────────────────────────────────
+   The archive sub-pages set a custom DARK gradient hero inline, so the hero
+   text must read white. wiki-home.css (which colors the home hero) is not
+   loaded here, so this sets the base text color + desc tone. The accent
+   period, eyebrow pill, and dot now come from the universal hero token
+   defaults (wiki-universals.css) + the Taco Bell skin (yellow accent). */
+.wiki-hero {
+  color: #fff;
+  --hero-title-color: #fff;
+  --hero-desc-color: rgba(255,255,255,0.7);
+}
+
+/* ── Shared font helpers ─────────────────────────────────────────────
+   The display serif + mono accent, used in archive-page markup and the
+   JS-built visuals. Sizing/use stays local; this just names the family
+   (the fonts themselves load globally via wiki-typography.css). */
+.font-display { font-family: 'Fraunces', 'Spectral', Georgia, serif; font-optical-sizing: auto; font-variation-settings: "SOFT" 30, "WONK" 0; letter-spacing: -0.02em; }
+.font-mono-acc { font-family: 'JetBrains Mono', ui-monospace, monospace; letter-spacing: .05em; }
+
+/* ── Shared footer credit strip ─────────────────────────────────────
+   The thin mono credit line at the bottom of each archive/listing page. */
+.tb-footer-credit {
+  display: flex; align-items: center; gap: .5rem;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+.tb-footer-credit > svg,
+.tb-footer-credit > i { width: 12px; height: 12px; flex: none; }

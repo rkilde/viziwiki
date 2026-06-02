@@ -1,0 +1,168 @@
+/* ════════════════════════════════════════════════════════════════════
+   PAGE COMPONENT: Taco Bell MENU CATALOGUE (the menus listing page)
+   ════════════════════════════════════════════════════════════════════
+   The unique visual on taco-bell-menus.html: a status-grouped grid of
+   menu tiles. Shared palette / section tokens / dark-hero text come from
+   tb-editorial-base.css; section/hero/overview STRUCTURE comes from the
+   universal canon. This file holds ONLY the page's genuinely-unique
+   visual (the catalogue + tiles + status dots) and its hero decoration.
+
+   (When the visual bank is built, this catalogue/tile grid is a
+   candidate "card-grid" bank type. For now it lives here as a
+   self-contained component — no Tailwind, no universal-class overrides.)
+   ════════════════════════════════════════════════════════════════════ */
+
+:root { --hot-pink: rgba(255,100,180,.55); }
+
+/* ── Hero decoration (additive flourishes over the universal hero) ──
+   The per-page gradient is set inline on .wiki-hero; these layers add a
+   halftone texture, a left-edge darkener, and a faint corner glyph. */
+.menu-hero-halftone {
+  position: absolute; inset: 0; pointer-events: none;
+  mix-blend-mode: overlay; opacity: .2;
+  background-image: radial-gradient(var(--hot-pink) 1.4px, transparent 1.6px);
+  background-size: 10px 10px;
+}
+.menu-hero-shade {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to right, rgba(30,27,75,.6), rgba(112,32,130,.15), transparent);
+}
+.menu-hero-glyph {
+  position: absolute; top: -40px; right: -48px;
+  transform: rotate(8deg); opacity: .06; pointer-events: none;
+}
+
+/* ── Catalogue group header (Active / Retired bands) ──────────────── */
+.cat-group { margin-bottom: 56px; }
+.cat-group:last-child { margin-bottom: 0; }
+.cat-group-header {
+  display: flex; align-items: center; gap: .75rem;
+  margin-bottom: 1.5rem; padding-bottom: .75rem;
+  border-bottom: 1px solid color-mix(in oklab, var(--foreground) 12%, transparent);
+}
+.cat-group-label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px; text-transform: uppercase; letter-spacing: .22em;
+}
+.cat-group-note {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px; letter-spacing: .12em; font-style: italic;
+  color: var(--muted-foreground); margin-left: .5rem;
+}
+.cat-group-count {
+  margin-left: auto;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px; letter-spacing: .12em; color: var(--muted-foreground);
+}
+
+/* ── Tile grid ──────────────────────────────────────────────────── */
+.tile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+/* ── Menu tile ──────────────────────────────────────────────────── */
+.menu-tile {
+  position: relative; overflow: hidden; border-radius: 8px;
+  display: block; text-decoration: none; color: #fff; cursor: pointer;
+  padding: .875rem 1rem 1.125rem;
+  border: 1px solid rgba(255,255,255,.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,.12);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.menu-tile:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,.2); }
+
+/* tile decoration layers */
+.menu-tile-halftone {
+  position: absolute; inset: 0; pointer-events: none;
+  mix-blend-mode: overlay; opacity: .2;
+  background-image: radial-gradient(var(--hot-pink) 1.4px, transparent 1.6px);
+  background-size: 10px 10px;
+}
+.menu-tile-halftone.is-light {
+  mix-blend-mode: soft-light; opacity: .55;
+  background-image: radial-gradient(rgba(255,255,255,.55) 1.4px, transparent 1.6px);
+}
+.menu-tile-shade {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to right, rgba(0,0,0,.26) 0%, rgba(0,0,0,.05) 50%, transparent 100%);
+}
+.menu-tile-shade.is-soft {
+  background: linear-gradient(to right, rgba(0,0,0,.16) 0%, rgba(0,0,0,.03) 50%, transparent 100%);
+}
+.menu-tile-shade-b {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(0,0,0,.20) 0%, transparent 55%);
+}
+.menu-tile-glyph {
+  position: absolute; bottom: -8px; right: -8px;
+  width: 56px; height: 56px;
+  transform: rotate(12deg); color: rgba(255,255,255,.9);
+  pointer-events: none; filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+  transition: transform .3s ease;
+}
+.menu-tile:hover .menu-tile-glyph { transform: rotate(6deg) scale(1.1); }
+@media (min-width: 640px) {
+  .menu-tile-glyph { bottom: -12px; right: -12px; width: 80px; height: 80px; }
+}
+
+/* tile content */
+.menu-tile-content { position: relative; z-index: 1; }
+.tile-eyebrow {
+  display: flex; align-items: center;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 8px; text-transform: uppercase; letter-spacing: .22em;
+  color: rgba(255,255,255,.7);
+}
+.tile-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.1875rem; font-weight: 600; line-height: 1.2; margin-top: .3rem;
+}
+.tile-range {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 8.5px; color: rgba(255,255,255,.65); margin-top: .25rem; letter-spacing: .06em;
+}
+.tile-desc {
+  font-size: 12.5px; line-height: 1.55; color: rgba(255,255,255,.82);
+  margin-top: .625rem; max-width: 220px;
+}
+.tile-status-pill {
+  display: inline-flex; align-items: center; gap: 4px; margin-top: .75rem;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 7.5px; text-transform: uppercase; letter-spacing: .16em;
+  padding: 2px 7px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.3); background: rgba(255,255,255,.12); color: rgba(255,255,255,.85);
+}
+.tile-status-dot { width: 5px; height: 5px; border-radius: 50%; }
+
+/* ── Status dots (radar pulse) ──────────────────────────────────── */
+.dot-active, .dot-retired {
+  display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+  margin-right: 6px; vertical-align: middle; position: relative; flex-shrink: 0;
+}
+.cat-group-header .dot-active,
+.cat-group-header .dot-retired { width: 9px; height: 9px; margin-right: 0; }
+.dot-active  { background: #86efac; animation: radar-green 2.4s ease-out infinite; }
+.dot-retired { background: #f87171; animation: radar-red 2.8s ease-out infinite; animation-delay: .4s; }
+@keyframes radar-green {
+  0%   { box-shadow: 0 0 0 0 rgba(134,239,172,0.7); }
+  60%  { box-shadow: 0 0 0 5px rgba(134,239,172,0); }
+  100% { box-shadow: 0 0 0 0 rgba(134,239,172,0); }
+}
+@keyframes radar-red {
+  0%   { box-shadow: 0 0 0 0 rgba(248,113,113,0.65); }
+  60%  { box-shadow: 0 0 0 5px rgba(248,113,113,0); }
+  100% { box-shadow: 0 0 0 0 rgba(248,113,113,0); }
+}
+
+/* ── Mobile ─────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .tile-grid { grid-template-columns: 1fr 1fr; }
+  .menu-tile { padding: .625rem .75rem 2.75rem; }
+  .menu-tile-content { padding-right: 36px; }
+  .tile-title { font-size: .9375rem; }
+  .tile-desc { font-size: 10.5px; line-height: 1.45; margin-top: .3rem; max-width: 100%; }
+  .tile-status-pill { margin-top: .375rem; padding: 2px 6px; font-size: 7px; }
+  .tile-range { font-size: 7.5px; margin-top: .2rem; }
+}

@@ -241,7 +241,8 @@
   overflow-y:hidden;
   scrollbar-width:none;
   -webkit-overflow-scrolling:touch;
-  padding:8px 48px 8px 0;
+  padding-block:8px;
+  padding-right:48px;   /* left comes from .wiki-section-bleed (gutter-aligned start) */
 }
 .photo-rail-scroll::-webkit-scrollbar{display:none;}
 .photo-rail-card{
@@ -274,7 +275,7 @@
 
 .tl-hdr{max-width:1320px;margin:0 auto;padding:0 48px 32px;}
 .tl-scroll-hint{display:flex;align-items:center;gap:6px;font-family:"JetBrains Mono",monospace;font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:rgba(0,0,0,.35);margin-top:12px;}
-.tl-outer{overflow-x:auto;-webkit-overflow-scrolling:touch;cursor:grab;padding:0 0 36px;scrollbar-width:none;}
+.tl-outer{overflow-x:auto;-webkit-overflow-scrolling:touch;cursor:grab;padding-bottom:36px;scrollbar-width:none;}
 .tl-outer::-webkit-scrollbar{display:none;}
 .track{position:relative;display:block;}
 .tl-band{position:absolute;top:0;bottom:0;background:rgba(0,0,0,.025);pointer-events:none;}
