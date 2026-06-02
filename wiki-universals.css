@@ -94,13 +94,14 @@
    For horizontal scrollers (timelines, photo rails) meant to run off the
    screen edge. Put this on the SCROLL container, placed INSIDE a normal
    .wiki-section-inner — so the eyebrow/title above it keep the standard
-   gutters, and the scroller STARTS flush with the section's left gutter,
-   then breaks out to the right viewport edge and scrolls. One canonical
+   gutters, while the scroller itself spans the FULL viewport: it starts at
+   the left screen edge and runs off both edges as it scrolls. One canonical
    treatment for every full-bleed visual — edit here once.
    ════════════════════════════════════════════════════════════════════ */
 .wiki-section-bleed {
-  margin-inline: calc(50% - 50vw);          /* span the full viewport — bleeds off BOTH edges */
-  padding-inline-start: calc(50vw - 50%);   /* but the first item still starts flush with the gutter */
+  margin-inline: calc(50% - 50vw);   /* full-viewport width: the track starts at the left
+                                        screen edge and runs off both edges (the eyebrow/title
+                                        above it keep the normal section gutters). */
 }
 
 
