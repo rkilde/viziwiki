@@ -47,3 +47,21 @@ body.wiki-taco-bell {
   --hero-title-color: #fff;
   --hero-desc-color: rgba(255,255,255,0.7);
 }
+
+/* ── Shared font helpers ─────────────────────────────────────────────
+   The display serif + mono accent, used in archive-page markup and the
+   JS-built visuals. Sizing/use stays local; this just names the family
+   (the fonts themselves load globally via wiki-typography.css). */
+.font-display { font-family: 'Fraunces', 'Spectral', Georgia, serif; font-optical-sizing: auto; font-variation-settings: "SOFT" 30, "WONK" 0; letter-spacing: -0.02em; }
+.font-mono-acc { font-family: 'JetBrains Mono', ui-monospace, monospace; letter-spacing: .05em; }
+
+/* ── Shared footer credit strip ─────────────────────────────────────
+   The thin mono credit line at the bottom of each archive/listing page. */
+.tb-footer-credit {
+  display: flex; align-items: center; gap: .5rem;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+.tb-footer-credit > svg,
+.tb-footer-credit > i { width: 12px; height: 12px; flex: none; }

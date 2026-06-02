@@ -1,0 +1,104 @@
+/* ════════════════════════════════════════════════════════════════════
+   PAGE COMPONENTS: Taco Bell SLOGANS page
+   ════════════════════════════════════════════════════════════════════
+   The unique visuals on taco-bell-slogans.html: a slogan-index accordion,
+   a comparative swim chart, a lawsuit event-timeline + court record, and a
+   detail modal — most of them built by the page's inline JS. Shared palette
+   / section tokens / dark-hero text / font helpers come from
+   tb-editorial-base.css; section/hero/overview STRUCTURE comes from the
+   universal canon. This file holds ONLY the page's genuinely-unique
+   visuals and their responsive layout — no Tailwind, no universal-class
+   overrides.
+   ════════════════════════════════════════════════════════════════════ */
+
+.slogans-page { min-height: 100vh; }
+
+/* ── Hero decoration (additive flourishes over the universal hero) ── */
+.slogan-hero-halftone {
+  position: absolute; inset: 0; pointer-events: none;
+  mix-blend-mode: overlay; opacity: .2;
+  background-image: radial-gradient(rgba(255,255,255,.9) 1.3px, transparent 1.5px);
+  background-size: 10px 10px;
+}
+.slogan-hero-shade {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to right, rgba(30,27,75,.7), rgba(109,40,217,.15), transparent);
+}
+.slogan-hero-glyph {
+  position: absolute; top: -40px; right: -48px;
+  width: 440px; height: 440px;
+  transform: rotate(12deg); opacity: .06; pointer-events: none;
+  color: #fff;
+}
+
+/* ── Section header grids (eyebrow+title left, intro right) ───────── */
+.timeline-header-grid,
+.lawsuit-header-grid {
+  margin-bottom: 2rem; display: grid; gap: 2rem;
+  grid-template-columns: 1fr 1.3fr; align-items: start;
+}
+.slogan-head-intro {
+  font-family: 'Fraunces', 'Spectral', Georgia, serif;
+  font-size: 14px; font-style: italic; line-height: 1.7;
+  color: var(--muted-foreground); padding-top: 2rem;
+}
+/* Index header: title block + "click any row" hint */
+.slogan-index-head {
+  margin-bottom: 1.5rem; display: flex;
+  align-items: baseline; justify-content: space-between; gap: 1rem;
+}
+.slogan-index-hint {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted-foreground); white-space: nowrap;
+}
+
+/* ── Accordion ──────────────────────────────────────────────────── */
+.acc-chev { transition: transform .2s ease; }
+.acc-chev.open { transform: rotate(90deg); }
+
+/* ── Modal ──────────────────────────────────────────────────────── */
+#event-modal { display: none; }
+#event-modal.open { display: flex; }
+
+/* ── Desktop: accordion 4-column grid matching the header row ─────── */
+@media (min-width: 768px) {
+  .acc-btn {
+    grid-template-columns: 1fr 110px 70px 120px !important;
+    padding: 1.25rem 1.5rem !important;
+  }
+  .acc-btn .acc-desktop-cell { display: block !important; }
+}
+
+/* ── Mobile ─────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .timeline-header-grid,
+  .lawsuit-header-grid { display: block !important; }
+  .timeline-header-grid > .slogan-head-intro,
+  .lawsuit-header-grid > .slogan-head-intro { padding-top: 0 !important; margin-top: .75rem; }
+
+  /* Court steps: 2x2 on mobile */
+  .court-steps-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .court-steps-grid > div {
+    border-right: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent) !important;
+    border-bottom: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent) !important;
+  }
+  .court-steps-grid > div:nth-child(2),
+  .court-steps-grid > div:nth-child(4) { border-right: none !important; }
+  .court-steps-grid > div:nth-child(3),
+  .court-steps-grid > div:nth-child(4) { border-bottom: none !important; }
+
+  /* Jury questions: single column */
+  .jury-grid { grid-template-columns: 1fr !important; }
+  .jury-grid > div {
+    border-right: none !important;
+    border-bottom: 1px solid color-mix(in oklab, var(--foreground) 10%, transparent) !important;
+  }
+  .jury-grid > div:last-child { border-bottom: none !important; }
+
+  /* Slogan index header row: hide on mobile */
+  .acc-header-row { display: none !important; }
+
+  /* Accordion: tighter padding */
+  #acc-rows .acc-body { padding: 0 1rem 1.5rem !important; }
+}
