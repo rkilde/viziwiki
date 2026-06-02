@@ -321,7 +321,7 @@
 
 /* ── Generation delta ─────────────────────────────── */
 .delta-prose{max-width:720px;margin-bottom:36px;}
-.delta-prose p{font-size:15px;color:rgba(0,0,0,.78);line-height:1.78;margin-bottom:16px;}
+.delta-prose p{font-size:var(--wiki-prose-size);color:rgba(0,0,0,.78);line-height:var(--wiki-prose-leading);margin-bottom:16px;}
 .delta-prose p:last-child{margin-bottom:0;}
 .delta-prose p strong{color:#0a0a0a;font-weight:600;}
 .page-eyebrow{font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.3em;color:rgba(0,0,0,.4);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
@@ -380,7 +380,7 @@
 }
 
 .cfg-prose{max-width:720px;margin-bottom:36px;}
-.cfg-prose p{font-size:15px;color:rgba(0,0,0,.78);line-height:1.78;margin-bottom:16px;}
+.cfg-prose p{font-size:var(--wiki-prose-size);color:rgba(0,0,0,.78);line-height:var(--wiki-prose-leading);margin-bottom:16px;}
 .cfg-prose p:last-child{margin-bottom:0;}
 .cfg-prose p strong{color:#0a0a0a;font-weight:600;}
 .cfg-chart{background:#fff;border:1px solid rgba(0,0,0,.12);border-radius:14px;padding:24px;}
@@ -453,7 +453,7 @@
 
 /* ── OS Support section ─────────────────────────────── */
 .os-prose{max-width:720px;margin-bottom:40px;}
-.os-prose p{font-size:15px;color:rgba(0,0,0,.78);line-height:1.78;margin-bottom:16px;}
+.os-prose p{font-size:var(--wiki-prose-size);color:rgba(0,0,0,.78);line-height:var(--wiki-prose-leading);margin-bottom:16px;}
 .os-prose p:last-child{margin-bottom:0;}
 .os-prose p strong{color:#0a0a0a;font-weight:600;}
 .lane-wrap{background:#fafafa;border:1px solid rgba(0,0,0,.12);border-radius:14px;padding:24px 24px 20px;}
@@ -485,8 +485,8 @@
 .lane-leg-sw{width:12px;height:8px;border-radius:2px;}
 @media(max-width:600px){.os-inner{padding:0 16px;}.lane-wrap{padding:16px 14px 14px;}.lane-head{flex-direction:column;gap:4px;}.lane-title{font-size:14px;}.lane-notes{flex-direction:column;gap:10px;}.lane-note{max-width:100%;}.lane-legend{flex-wrap:wrap;gap:10px;}.lane-ver{padding-right:38px;}.lane-badge{font-size:5px;padding:1px 3px;letter-spacing:.04em;}.lane-seg{min-width:64px;}}
 
-.spec-eyebrow{font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.3em;color:rgba(255,255,255,.45);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
-.spec-title{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:clamp(28px,3.4vw,44px);font-weight:600;letter-spacing:-0.02em;line-height:1.05;color:#fff;margin-bottom:6px;}
+.spec-eyebrow{font-family:"JetBrains Mono",monospace;font-size:var(--t-label-size);text-transform:uppercase;letter-spacing:var(--t-label-tracking);color:rgba(255,255,255,.45);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.spec-title{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:var(--t-title-size);font-weight:var(--t-title-weight);letter-spacing:var(--t-title-tracking);line-height:var(--t-title-leading);color:#fff;margin-bottom:6px;}
 .spec-sub{font-family:"JetBrains Mono",monospace;font-size:9px;text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.4);margin-bottom:44px;}
 
 .spec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1);border-radius:16px;overflow:hidden;}

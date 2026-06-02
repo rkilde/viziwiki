@@ -183,7 +183,7 @@ body.wiki-smurfs-village {
 
 .sv-page .sechead{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:34px}
 .sv-page .sechead .l{flex:1}
-.sv-page .sechead .sub{font-size:16px;color:var(--ink-soft);margin-top:10px;max-width:56ch}
+.sv-page .sechead .sub{font-size:var(--wiki-prose-size);color:var(--ink-soft);margin-top:10px;max-width:56ch}
 .sv-page .ghost-word{color:var(--berry-deep);font-style:italic}
 .sv-page .count{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);white-space:nowrap;border:1px solid var(--hair-strong);border-radius:999px;padding:8px 15px}
 
