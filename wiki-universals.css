@@ -235,7 +235,7 @@
   align-items: center;
   gap: 8px;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 10px;
+  font-size: var(--t-label-size);   /* type scale · Label (size only — keeps the wide eyebrow tracking + pinned leading) */
   line-height: 12px;           /* pinned to icon height — do not change without
                                   also updating the infobox margin-top offset */
   letter-spacing: 0.3em;
@@ -263,18 +263,12 @@
   font-family: 'Fraunces', 'Spectral', Georgia, serif;
   font-optical-sizing: auto;
   font-variation-settings: "SOFT" 30, "WONK" 0;
-  font-size: 30px;             /* mobile default */
+  font-size: var(--t-title-size);   /* type scale · Title (30 → 36 ≥768, the token scales it) */
   font-weight: 600;
   line-height: 1.15;
   letter-spacing: -0.02em;
   margin-top: 0;               /* flush to eyebrow — reads as one unit */
   color: var(--section-title-color, currentColor);
-}
-
-@media (min-width: 768px) {
-  .wiki-section-title {
-    font-size: 36px;           /* desktop — more presence at wider viewports */
-  }
 }
 
 
@@ -294,7 +288,7 @@
   font-family: 'Fraunces', 'Spectral', Georgia, serif;
   font-optical-sizing: auto;
   font-variation-settings: "SOFT" 30, "WONK" 0;
-  font-size: 17px;
+  font-size: var(--t-subtitle-size);   /* type scale · Subtitle (17 → 19 ≥768) */
   font-weight: 600;
   line-height: 1.2;
   letter-spacing: -0.01em;
@@ -386,7 +380,7 @@
   background: var(--hero-eyebrow-bg);
   color: var(--hero-eyebrow-text);
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 10px;
+  font-size: var(--t-label-size);   /* type scale · Label (size only) */
   text-transform: uppercase;
   letter-spacing: 0.3em;
 }
@@ -410,7 +404,7 @@
 .wiki-hero-title {
   margin: 0;
   font-family: 'Fraunces', Georgia, serif;
-  font-size: clamp(64px, 7vw, 96px);
+  font-size: var(--t-display-size);   /* type scale · Display (clamp 48 → 96) */
   font-weight: 700;
   line-height: 0.95;
   letter-spacing: -0.02em;
@@ -432,7 +426,7 @@
 .wiki-hero-desc {
   margin: 24px 0 0;
   max-width: 36rem;
-  font-size: 18px;
+  font-size: var(--t-lead-size);   /* type scale · Lead (18, constant) */
   line-height: 1.6;
   color: var(--hero-desc-color);
 }
