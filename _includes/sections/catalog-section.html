@@ -16,6 +16,7 @@
   Data shape: title, unit?, visual?, tone?, footnote?, categories[] …
 {%- endcomment -%}
 {%- assign data = include.data -%}
+{%- assign visual = data.visual | default: 'catalog' -%}
 {%- assign unit = data.unit | default: 'item' -%}
 {%- assign ncats = data.categories | size -%}
 {%- assign total = 0 -%}
@@ -31,7 +32,7 @@
     </div>
 
     {%- comment -%} the slot: route the chosen visual + its data through the dispatcher {%- endcomment -%}
-    {% include visual.html type=data.visual | default: 'catalog' data=data %}
+    {% include visual.html type=visual data=data %}
 
     {%- if data.footnote -%}<div class="cat-footnote">{{ data.footnote }}</div>{%- endif -%}
   </div>
