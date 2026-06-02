@@ -99,7 +99,8 @@
    treatment for every full-bleed visual — edit here once.
    ════════════════════════════════════════════════════════════════════ */
 .wiki-section-bleed {
-  margin-right: calc(50% - 50vw);   /* left stays at the gutter; right edge → viewport */
+  margin-inline: calc(50% - 50vw);          /* span the full viewport — bleeds off BOTH edges */
+  padding-inline-start: calc(50vw - 50%);   /* but the first item still starts flush with the gutter */
 }
 
 
