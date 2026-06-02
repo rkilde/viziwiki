@@ -10,7 +10,6 @@ body_class: "no-facet-chrome"
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Spectral:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>
   :root{
     --background: oklch(0.972 0.012 85);
@@ -496,7 +495,7 @@ function coverTile(w){
   // themed cover — matches index exactly: genre + Indexed badge, title + tagline
   return `<a class="cover c-themed ${cat.grad}" href="${href}">
     <div class="sheen"></div>
-    <i data-lucide="${cat.icon}" class="glyph" stroke-width="1.5"></i>
+    <svg class="wiki-icon glyph"><use href="#ic-${cat.icon}"></use></svg>
     <div class="c-genre">${cat.label}</div>
     <span class="c-soon">Indexed</span>
     <div class="c-foot">
@@ -519,13 +518,11 @@ function renderList(){
     return;
   }
   el('list').innerHTML = `<div class="cover-grid">${ list.map(coverTile).join('') }</div>`;
-  if(window.lucide) lucide.createIcons();   // draw the genre glyphs on themed covers
 }
 
 el('q').addEventListener('input', e=>{ q=e.target.value; renderList(); });
 el('totalCount').textContent = WIKIS.length.toLocaleString();
 renderFilters(); renderList();
 
-lucide.createIcons();
 </script>
 {% endraw %}

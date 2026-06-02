@@ -10,7 +10,6 @@ extra_head: |
 ---
 {% raw %}
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>
   :root{
     --background: oklch(0.972 0.012 85);
@@ -359,9 +358,9 @@ extra_head: |
 </style>
 <div class="border-b border-foreground/15 bg-secondary/40">
   <div class="mx-auto flex max-w-[1500px] items-center gap-2 px-6 py-2 font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-    <a href="index.html" class="hover:text-foreground">ViziWiki</a><i data-lucide="chevron-right" class="h-3 w-3"></i>
-    <a href="browse.html" class="hover:text-foreground">Browse</a><i data-lucide="chevron-right" class="h-3 w-3"></i>
-    <span>Fast Food</span><i data-lucide="chevron-right" class="h-3 w-3"></i>
+    <a href="index.html" class="hover:text-foreground">ViziWiki</a><svg class="wiki-icon h-3 w-3" aria-hidden="true"><use href="#ic-chevron-right"></use></svg>
+    <a href="browse.html" class="hover:text-foreground">Browse</a><svg class="wiki-icon h-3 w-3" aria-hidden="true"><use href="#ic-chevron-right"></use></svg>
+    <span>Fast Food</span><svg class="wiki-icon h-3 w-3" aria-hidden="true"><use href="#ic-chevron-right"></use></svg>
     <span class="text-foreground">Taco Bell</span>
   </div>
 </div>
@@ -379,7 +378,7 @@ extra_head: |
   <div class="hero-bg-overlay-b" aria-hidden></div>
 
   <!-- skin-owned ghost watermark -->
-  <i data-lucide="bell" class="hero-watermark" aria-hidden="true" style="stroke-width:1.25"></i>
+  <svg class="wiki-icon hero-watermark" style="stroke-width:1.25" aria-hidden="true"><use href="#ic-bell"></use></svg>
 
   <div class="wiki-hero-inner">
     <div class="wiki-hero-content">
@@ -403,7 +402,7 @@ extra_head: |
       <!-- search bar (icon is skin-owned — magnifying glass) -->
       <div class="wiki-hero-search">
         <span class="wiki-hero-search-icon">
-          <i data-lucide="search" style="width:16px;height:16px"></i>
+          <svg class="wiki-icon" style="width:16px;height:16px" aria-hidden="true"><use href="#ic-search"></use></svg>
         </span>
         <input class="wiki-hero-search-input" placeholder="Search 1,284 entries — try 'Crunchwrap' or 'Baja Blast'…" />
       </div>
@@ -454,7 +453,7 @@ extra_head: |
 
       <div class="wiki-overview-prose">
         <div class="wiki-section-eyebrow">
-          <i data-lucide="book-open"></i> Overview
+          <svg class="wiki-icon" aria-hidden="true"><use href="#ic-book-open"></use></svg> Overview
         </div>
         <h2 class="wiki-section-title">An American chain that invented its own genre.</h2>
         <div class="wiki-section-prose">
@@ -495,7 +494,7 @@ extra_head: |
   <div class="wiki-section-inner">
   <div class="mb-6 flex items-baseline justify-between">
     <div>
-      <div class="wiki-section-eyebrow"><i data-lucide="folder-tree"></i> Directory</div>
+      <div class="wiki-section-eyebrow"><svg class="wiki-icon" aria-hidden="true"><use href="#ic-folder-tree"></use></svg> Directory</div>
       <h2 id="browse" class="wiki-section-title">Browse the wiki</h2>
     </div>
     <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">10 sections</span>
@@ -511,7 +510,7 @@ extra_head: |
     <div>
       <div class="mb-5 flex items-baseline justify-between">
         <div>
-          <div class="wiki-section-eyebrow"><i data-lucide="star"></i> Editor picks</div>
+          <div class="wiki-section-eyebrow"><svg class="wiki-icon" aria-hidden="true"><use href="#ic-star"></use></svg> Editor picks</div>
           <h2 id="hall-of-fame" class="wiki-section-title">Hall of fame</h2>
         </div>
         <a class="cursor-pointer font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground hover:text-foreground">See all →</a>
@@ -523,7 +522,7 @@ extra_head: |
             <div class="font-mono-acc text-[9px] uppercase tracking-[0.2em] text-white/70">Specialty</div>
             <div class="mt-2 font-display text-2xl font-semibold leading-tight">Mexican Pizza</div>
             <div class="mt-2 text-sm text-white/80">Returned 2022 after 2-year hiatus</div>
-            <div class="mt-4 inline-flex items-center gap-1 font-mono-acc text-[10px] uppercase tracking-wider">Read entry <i data-lucide="chevron-right" class="h-3 w-3"></i></div>
+            <div class="mt-4 inline-flex items-center gap-1 font-mono-acc text-[10px] uppercase tracking-wider">Read entry <svg class="wiki-icon h-3 w-3" aria-hidden="true"><use href="#ic-chevron-right"></use></svg></div>
           </div>
         </a>
         <a class="group relative overflow-hidden rounded-md border border-foreground/15 bg-gradient-to-br from-cyan-400 to-teal-800 p-5 text-white transition-transform hover:-translate-y-1 cursor-pointer">
@@ -532,7 +531,7 @@ extra_head: |
             <div class="font-mono-acc text-[9px] uppercase tracking-[0.2em] text-white/70">Drinks</div>
             <div class="mt-2 font-display text-2xl font-semibold leading-tight">Baja Blast</div>
             <div class="mt-2 text-sm text-white/80">Mountain Dew exclusive since 2004</div>
-            <div class="mt-4 inline-flex items-center gap-1 font-mono-acc text-[10px] uppercase tracking-wider">Read entry <i data-lucide="chevron-right" class="h-3 w-3"></i></div>
+            <div class="mt-4 inline-flex items-center gap-1 font-mono-acc text-[10px] uppercase tracking-wider">Read entry <svg class="wiki-icon h-3 w-3" aria-hidden="true"><use href="#ic-chevron-right"></use></svg></div>
           </div>
         </a>
         <a class="group relative overflow-hidden rounded-md border border-foreground/15 bg-gradient-to-br from-amber-500 to-orange-800 p-5 text-white transition-transform hover:-translate-y-1 cursor-pointer">
@@ -541,7 +540,7 @@ extra_head: |
             <div class="font-mono-acc text-[9px] uppercase tracking-[0.2em] text-white/70">Specialty</div>
             <div class="mt-2 font-display text-2xl font-semibold leading-tight">Crunchwrap Supreme</div>
             <div class="mt-2 text-sm text-white/80">The hexagonal handheld, est. 2005</div>
-            <div class="mt-4 inline-flex items-center gap-1 font-mono-acc text-[10px] uppercase tracking-wider">Read entry <i data-lucide="chevron-right" class="h-3 w-3"></i></div>
+            <div class="mt-4 inline-flex items-center gap-1 font-mono-acc text-[10px] uppercase tracking-wider">Read entry <svg class="wiki-icon h-3 w-3" aria-hidden="true"><use href="#ic-chevron-right"></use></svg></div>
           </div>
         </a>
         <a class="group relative overflow-hidden rounded-md border border-foreground/15 bg-gradient-to-br from-red-500 to-orange-700 p-5 text-white transition-transform hover:-translate-y-1 cursor-pointer">
@@ -550,14 +549,14 @@ extra_head: |
             <div class="font-mono-acc text-[9px] uppercase tracking-[0.2em] text-white/70">Tacos</div>
             <div class="mt-2 font-display text-2xl font-semibold leading-tight">Doritos Locos Tacos</div>
             <div class="mt-2 text-sm text-white/80">Nacho Cheese · Cool Ranch · Fiery</div>
-            <div class="mt-4 inline-flex items-center gap-1 font-mono-acc text-[10px] uppercase tracking-wider">Read entry <i data-lucide="chevron-right" class="h-3 w-3"></i></div>
+            <div class="mt-4 inline-flex items-center gap-1 font-mono-acc text-[10px] uppercase tracking-wider">Read entry <svg class="wiki-icon h-3 w-3" aria-hidden="true"><use href="#ic-chevron-right"></use></svg></div>
           </div>
         </a>
       </div>
     </div>
 
     <aside>
-      <div class="mb-5"><div class="wiki-section-eyebrow"><i data-lucide="trending-up"></i> This week</div><h2 id="trending" class="wiki-section-title">Trending</h2></div>
+      <div class="mb-5"><div class="wiki-section-eyebrow"><svg class="wiki-icon" aria-hidden="true"><use href="#ic-trending-up"></use></svg> This week</div><h2 id="trending" class="wiki-section-title">Trending</h2></div>
       <ol class="overflow-hidden rounded-md border border-foreground/15 bg-card">
         <li class="flex cursor-pointer items-center gap-4 border-b border-foreground/10 px-4 py-3 last:border-b-0 hover:bg-secondary/60"><span class="font-display text-2xl font-bold text-hp tabular-nums">01</span><div class="flex-1"><div class="font-display text-base font-semibold leading-tight">Mexican Pizza</div><div class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Specialty</div></div><span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">3.4M</span></li>
         <li class="flex cursor-pointer items-center gap-4 border-b border-foreground/10 px-4 py-3 last:border-b-0 hover:bg-secondary/60"><span class="font-display text-2xl font-bold text-hp tabular-nums">02</span><div class="flex-1"><div class="font-display text-base font-semibold leading-tight">Baja Blast</div><div class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Drinks</div></div><span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">2.8M</span></li>
@@ -575,7 +574,7 @@ extra_head: |
   <div class="wiki-section-inner">
   <div class="mb-6 flex items-baseline justify-between">
     <div>
-      <div class="wiki-section-eyebrow"><i data-lucide="flame"></i> Heat ladder</div>
+      <div class="wiki-section-eyebrow"><svg class="wiki-icon" aria-hidden="true"><use href="#ic-flame"></use></svg> Heat ladder</div>
       <h2 id="sauces" class="wiki-section-title">The sauce hierarchy</h2>
     </div>
     <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">4 packets · 1 truth</span>
@@ -619,7 +618,7 @@ extra_head: |
 
 <section class="wiki-section" data-section="patch-history" data-tone="a">
   <div class="wiki-section-inner">
-    <div class="mb-6"><div class="wiki-section-eyebrow"><i data-lucide="clock"></i> Patch history</div><h2 id="eras" class="wiki-section-title">Eras of the Bell</h2></div>
+    <div class="mb-6"><div class="wiki-section-eyebrow"><svg class="wiki-icon" aria-hidden="true"><use href="#ic-clock"></use></svg> Patch history</div><h2 id="eras" class="wiki-section-title">Eras of the Bell</h2></div>
     <div class="grid gap-4 md:grid-cols-3 lg:grid-cols-5">
       <article class="group relative overflow-hidden rounded-md border border-foreground/15 bg-card p-5 transition hover:border-foreground/40">
         <div class="flex items-baseline justify-between"><span class="font-display text-3xl font-bold tracking-tight">1962</span><span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Downey, CA</span></div>
@@ -653,7 +652,7 @@ extra_head: |
 <section class="wiki-section" data-section="footprint" data-tone="b">
   <div class="wiki-section-inner">
   <div class="mb-5">
-    <div class="wiki-section-eyebrow"><i data-lucide="map-pin"></i> Footprint</div>
+    <div class="wiki-section-eyebrow"><svg class="wiki-icon" aria-hidden="true"><use href="#ic-map-pin"></use></svg> Footprint</div>
     <h2 id="global" class="wiki-section-title">A purple sign in 31 countries.</h2>
     <p class="mt-2 max-w-3xl text-[15px] leading-relaxed text-foreground/85">Taco Bell operates more than 7,200 restaurants worldwide, the vast majority in the United States. International expansion has been famously bumpy — Mexico’s launch lasted just two years — but the chain has found steady growth across the UK, Spain, India, and the Middle East.</p>
   </div>
@@ -711,7 +710,7 @@ extra_head: |
     </div>
 
     <!-- Orienting paragraph -->
-    <p style="font-family:'Spectral',Georgia,serif;font-size:15px;line-height:1.75;color:var(--muted-foreground);max-width:56rem;margin-bottom:1.5rem">The <strong style="color:var(--foreground)">Cantina Chicken Menu</strong> — the slow-roasted chicken line launched in March 2024 — is the latest in a long series of dedicated sub-menus Taco Bell has built around a specific protein, price point, or dietary position. Before it came the Fresco Menu's fat-reduction modifier, the Volcano Menu's heat tier, and the $2 Meal Deals' Frito-Lay bundle. Each one defined a distinct eating occasion and left a documented operational footprint. Six are featured below — click any tile, or browse all fourteen on the <a href="taco-bell-menus.html" style="color:#702082;text-decoration:none;border-bottom:1px solid rgba(112,32,130,.3)">menus page</a>.</p>
+    <p style="font-family:'Spectral',Georgia,serif;font-size:var(--wiki-prose-size);line-height:var(--wiki-prose-leading);color:var(--muted-foreground);max-width:56rem;margin-bottom:1.5rem">The <strong style="color:var(--foreground)">Cantina Chicken Menu</strong> — the slow-roasted chicken line launched in March 2024 — is the latest in a long series of dedicated sub-menus Taco Bell has built around a specific protein, price point, or dietary position. Before it came the Fresco Menu's fat-reduction modifier, the Volcano Menu's heat tier, and the $2 Meal Deals' Frito-Lay bundle. Each one defined a distinct eating occasion and left a documented operational footprint. Six are featured below — click any tile, or browse all fourteen on the <a href="taco-bell-menus.html" style="color:#702082;text-decoration:none;border-bottom:1px solid rgba(112,32,130,.3)">menus page</a>.</p>
 
     <!-- Tile strip -->
     <div style="display:flex;gap:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;scrollbar-width:none;-ms-overflow-style:none" class="menus-scroll">
@@ -790,7 +789,7 @@ extra_head: |
   <div class="wiki-section-inner">
     <div class="mb-6">
       <div class="wiki-section-eyebrow">
-        <i data-lucide="megaphone"></i> Marketing · Slogans
+        <svg class="wiki-icon" aria-hidden="true"><use href="#ic-megaphone"></use></svg> Marketing · Slogans
       </div>
       <h2 id="slogans" class="wiki-section-title">From no tagline to <em class="italic">Live Más.</em></h2>
       <p class="font-body text-sm text-foreground/70 max-w-[68ch] leading-relaxed">Taco Bell has used eleven distinct taglines since 1962 — from no slogan at all through regional experiments, era-defining campaigns, and a landmark federal lawsuit, to the two-word brand identity still in use today. Each slogan marks a strategic shift in how the chain positioned itself to American consumers.</p>
@@ -1173,12 +1172,12 @@ extra_head: |
 <section class="wiki-section" data-section="in-media" data-tone="a">
   <div class="wiki-section-inner">
   <div class="mb-6 flex items-baseline justify-between">
-    <div><div class="wiki-section-eyebrow"><i data-lucide="tv"></i> In media</div><h2 id="cultural" class="wiki-section-title">Cultural footprint</h2></div>
+    <div><div class="wiki-section-eyebrow"><svg class="wiki-icon" aria-hidden="true"><use href="#ic-tv"></use></svg> In media</div><h2 id="cultural" class="wiki-section-title">Cultural footprint</h2></div>
     <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Film · TV · Music · Internet</span>
   </div>
   <div class="grid gap-3 md:grid-cols-2">
     <article class="group flex gap-4 rounded-md border border-foreground/15 bg-card p-5 transition hover:border-foreground/40">
-      <div class="flex h-12 w-12 flex-none items-center justify-center rounded-sm text-white" style="background:linear-gradient(to bottom right,#c026d3,#581c87);"><i data-lucide="tv" class="h-5 w-5" style="stroke-width:1.5"></i></div>
+      <div class="flex h-12 w-12 flex-none items-center justify-center rounded-sm text-white" style="background:linear-gradient(to bottom right,#c026d3,#581c87);"><svg class="wiki-icon h-5 w-5" style="stroke-width:1.5" aria-hidden="true"><use href="#ic-tv"></use></svg></div>
       <div>
         <div class="font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground">1993 film</div>
         <div class="mt-1 font-display text-xl font-semibold leading-tight">Demolition Man</div>
@@ -1186,7 +1185,7 @@ extra_head: |
       </div>
     </article>
     <article class="group flex gap-4 rounded-md border border-foreground/15 bg-card p-5 transition hover:border-foreground/40">
-      <div class="flex h-12 w-12 flex-none items-center justify-center rounded-sm text-white" style="background:linear-gradient(to bottom right,#c026d3,#581c87);"><i data-lucide="tv" class="h-5 w-5" style="stroke-width:1.5"></i></div>
+      <div class="flex h-12 w-12 flex-none items-center justify-center rounded-sm text-white" style="background:linear-gradient(to bottom right,#c026d3,#581c87);"><svg class="wiki-icon h-5 w-5" style="stroke-width:1.5" aria-hidden="true"><use href="#ic-tv"></use></svg></div>
       <div>
         <div class="font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground">TikTok / 2022</div>
         <div class="mt-1 font-display text-xl font-semibold leading-tight">Mexican Pizza: The Musical</div>
@@ -1194,7 +1193,7 @@ extra_head: |
       </div>
     </article>
     <article class="group flex gap-4 rounded-md border border-foreground/15 bg-card p-5 transition hover:border-foreground/40">
-      <div class="flex h-12 w-12 flex-none items-center justify-center rounded-sm text-white" style="background:linear-gradient(to bottom right,#c026d3,#581c87);"><i data-lucide="tv" class="h-5 w-5" style="stroke-width:1.5"></i></div>
+      <div class="flex h-12 w-12 flex-none items-center justify-center rounded-sm text-white" style="background:linear-gradient(to bottom right,#c026d3,#581c87);"><svg class="wiki-icon h-5 w-5" style="stroke-width:1.5" aria-hidden="true"><use href="#ic-tv"></use></svg></div>
       <div>
         <div class="font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Recurring</div>
         <div class="mt-1 font-display text-xl font-semibold leading-tight">The Simpsons</div>
@@ -1202,7 +1201,7 @@ extra_head: |
       </div>
     </article>
     <article class="group flex gap-4 rounded-md border border-foreground/15 bg-card p-5 transition hover:border-foreground/40">
-      <div class="flex h-12 w-12 flex-none items-center justify-center rounded-sm text-white" style="background:linear-gradient(to bottom right,#c026d3,#581c87);"><i data-lucide="tv" class="h-5 w-5" style="stroke-width:1.5"></i></div>
+      <div class="flex h-12 w-12 flex-none items-center justify-center rounded-sm text-white" style="background:linear-gradient(to bottom right,#c026d3,#581c87);"><svg class="wiki-icon h-5 w-5" style="stroke-width:1.5" aria-hidden="true"><use href="#ic-tv"></use></svg></div>
       <div>
         <div class="font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Annual / fan-led</div>
         <div class="mt-1 font-display text-xl font-semibold leading-tight">Baja Blast Day</div>
@@ -1215,7 +1214,7 @@ extra_head: |
 
 <section class="wiki-section" data-section="identity" data-tone="b">
   <div class="wiki-section-inner">
-    <div class="mb-6"><div class="wiki-section-eyebrow"><i data-lucide="palette"></i> Identity</div><h2 id="mascots" class="wiki-section-title">Mascots &amp; branding evolution</h2></div>
+    <div class="mb-6"><div class="wiki-section-eyebrow"><svg class="wiki-icon" aria-hidden="true"><use href="#ic-palette"></use></svg> Identity</div><h2 id="mascots" class="wiki-section-title">Mascots &amp; branding evolution</h2></div>
     <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
       <article class="group relative overflow-hidden rounded-md border border-foreground/15 bg-gradient-to-br from-amber-500 to-orange-700 p-5 text-white transition-transform hover:-translate-y-1">
         <div class="absolute inset-0 halftone opacity-15 mix-blend-overlay"></div>
@@ -1256,30 +1255,30 @@ extra_head: |
 <section class="wiki-section" data-section="cast" data-tone="a">
   <div class="wiki-section-inner">
   <div class="mb-6 flex items-baseline justify-between">
-    <div><div class="wiki-section-eyebrow"><i data-lucide="users"></i> Cast</div><h2 id="people" class="wiki-section-title">Notable people</h2></div>
+    <div><div class="wiki-section-eyebrow"><svg class="wiki-icon" aria-hidden="true"><use href="#ic-users"></use></svg> Cast</div><h2 id="people" class="wiki-section-title">Notable people</h2></div>
     <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Founders · operators · collaborators</span>
   </div>
   <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
     <article class="rounded-md border border-foreground/15 bg-card p-5">
-      <div class="flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-background"><i data-lucide="users" class="h-4 w-4"></i></div>
+      <div class="flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-background"><svg class="wiki-icon h-4 w-4" aria-hidden="true"><use href="#ic-users"></use></svg></div>
       <div class="mt-3 font-display text-lg font-semibold leading-tight">Glen Bell</div>
       <div class="font-mono-acc text-[10px] uppercase tracking-wider text-hp">Founder</div>
       <p class="mt-2 text-sm text-foreground/80">Opened the first Taco Bell in Downey, CA in 1962 after running hot dog and burger stands.</p>
     </article>
     <article class="rounded-md border border-foreground/15 bg-card p-5">
-      <div class="flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-background"><i data-lucide="users" class="h-4 w-4"></i></div>
+      <div class="flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-background"><svg class="wiki-icon h-4 w-4" aria-hidden="true"><use href="#ic-users"></use></svg></div>
       <div class="mt-3 font-display text-lg font-semibold leading-tight">Lorena Garcia</div>
       <div class="font-mono-acc text-[10px] uppercase tracking-wider text-hp">Chef partner</div>
       <p class="mt-2 text-sm text-foreground/80">Co-developed the Cantina Bell menu (2012), Taco Bell's first chef-driven line.</p>
     </article>
     <article class="rounded-md border border-foreground/15 bg-card p-5">
-      <div class="flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-background"><i data-lucide="users" class="h-4 w-4"></i></div>
+      <div class="flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-background"><svg class="wiki-icon h-4 w-4" aria-hidden="true"><use href="#ic-users"></use></svg></div>
       <div class="mt-3 font-display text-lg font-semibold leading-tight">Mark King</div>
       <div class="font-mono-acc text-[10px] uppercase tracking-wider text-hp">CEO 2019–2024</div>
       <p class="mt-2 text-sm text-foreground/80">Former Adidas exec. Oversaw Mexican Pizza return and Cantina Chicken launch.</p>
     </article>
     <article class="rounded-md border border-foreground/15 bg-card p-5">
-      <div class="flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-background"><i data-lucide="users" class="h-4 w-4"></i></div>
+      <div class="flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-background"><svg class="wiki-icon h-4 w-4" aria-hidden="true"><use href="#ic-users"></use></svg></div>
       <div class="mt-3 font-display text-lg font-semibold leading-tight">Doja Cat</div>
       <div class="font-mono-acc text-[10px] uppercase tracking-wider text-hp">Brand collaborator</div>
       <p class="mt-2 text-sm text-foreground/80">Starred in 'Mexican Pizza: The Musical' (2022) and the item's relaunch campaign.</p>
@@ -1291,7 +1290,7 @@ extra_head: |
 <section class="wiki-section" data-section="receipts" data-tone="b">
   <div class="wiki-section-inner">
     <div class="mb-6 flex items-baseline justify-between">
-      <div><div class="wiki-section-eyebrow"><i data-lucide="scale"></i> Receipts</div><h2 id="controversies" class="wiki-section-title">Controversies &amp; lawsuits</h2></div>
+      <div><div class="wiki-section-eyebrow"><svg class="wiki-icon" aria-hidden="true"><use href="#ic-scale"></use></svg> Receipts</div><h2 id="controversies" class="wiki-section-title">Controversies &amp; lawsuits</h2></div>
       <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Overview · see entries for full filings</span>
     </div>
     <div class="overflow-hidden rounded-md border border-foreground/15 bg-card">
@@ -1317,26 +1316,26 @@ extra_head: |
 
 <section class="wiki-section" data-section="seealso" data-tone="a">
   <div class="wiki-section-inner">
-  <div class="mb-6"><div class="wiki-section-eyebrow"><i data-lucide="link-2"></i> Cross-references</div><h2 id="see-also" class="wiki-section-title">See also</h2></div>
+  <div class="mb-6"><div class="wiki-section-eyebrow"><svg class="wiki-icon" aria-hidden="true"><use href="#ic-link-2"></use></svg> Cross-references</div><h2 id="see-also" class="wiki-section-title">See also</h2></div>
   <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
     <a class="group cursor-pointer rounded-md border border-foreground/15 bg-card p-5 transition hover:border-foreground/40 hover:bg-secondary/40">
       <div class="font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Parent company</div>
-      <div class="mt-1 flex items-baseline justify-between gap-2"><div class="font-display text-lg font-semibold leading-tight">Yum! Brands</div><i data-lucide="chevron-right" class="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1"></i></div>
+      <div class="mt-1 flex items-baseline justify-between gap-2"><div class="font-display text-lg font-semibold leading-tight">Yum! Brands</div><svg class="wiki-icon h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1" aria-hidden="true"><use href="#ic-chevron-right"></use></svg></div>
       <p class="mt-2 text-sm text-foreground/80">KFC, Pizza Hut, Habit Burger — Taco Bell's corporate sibling network.</p>
     </a>
     <a class="group cursor-pointer rounded-md border border-foreground/15 bg-card p-5 transition hover:border-foreground/40 hover:bg-secondary/40">
       <div class="font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Adjacent topic</div>
-      <div class="mt-1 flex items-baseline justify-between gap-2"><div class="font-display text-lg font-semibold leading-tight">Mexican-American cuisine</div><i data-lucide="chevron-right" class="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1"></i></div>
+      <div class="mt-1 flex items-baseline justify-between gap-2"><div class="font-display text-lg font-semibold leading-tight">Mexican-American cuisine</div><svg class="wiki-icon h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1" aria-hidden="true"><use href="#ic-chevron-right"></use></svg></div>
       <p class="mt-2 text-sm text-foreground/80">Tex-Mex, Cal-Mex, and the broader cultural lineage of the menu.</p>
     </a>
     <a class="group cursor-pointer rounded-md border border-foreground/15 bg-card p-5 transition hover:border-foreground/40 hover:bg-secondary/40">
       <div class="font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Beverage partner</div>
-      <div class="mt-1 flex items-baseline justify-between gap-2"><div class="font-display text-lg font-semibold leading-tight">Mountain Dew</div><i data-lucide="chevron-right" class="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1"></i></div>
+      <div class="mt-1 flex items-baseline justify-between gap-2"><div class="font-display text-lg font-semibold leading-tight">Mountain Dew</div><svg class="wiki-icon h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1" aria-hidden="true"><use href="#ic-chevron-right"></use></svg></div>
       <p class="mt-2 text-sm text-foreground/80">Baja Blast was created as a Taco Bell exclusive in 2004.</p>
     </a>
     <a class="group cursor-pointer rounded-md border border-foreground/15 bg-card p-5 transition hover:border-foreground/40 hover:bg-secondary/40">
       <div class="font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Co-brand</div>
-      <div class="mt-1 flex items-baseline justify-between gap-2"><div class="font-display text-lg font-semibold leading-tight">Doritos</div><i data-lucide="chevron-right" class="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1"></i></div>
+      <div class="mt-1 flex items-baseline justify-between gap-2"><div class="font-display text-lg font-semibold leading-tight">Doritos</div><svg class="wiki-icon h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1" aria-hidden="true"><use href="#ic-chevron-right"></use></svg></div>
       <p class="mt-2 text-sm text-foreground/80">Frito-Lay collab that produced Doritos Locos Tacos, Taco Bell's biggest launch ever.</p>
     </a>
   </div>
@@ -1347,7 +1346,7 @@ extra_head: |
   <div class="wiki-section-inner">
     <div class="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
     <div>
-      <div class="wiki-section-eyebrow"><i data-lucide="plus-circle"></i> Contribute</div>
+      <div class="wiki-section-eyebrow"><svg class="wiki-icon" aria-hidden="true"><use href="#ic-plus-circle"></use></svg> Contribute</div>
       <h2 id="discontinued" class="wiki-section-title">Remember a discontinued item?</h2>
       <p class="mt-2 max-w-xl" style="color:rgba(255,255,255,.7)">The Volcano Menu, Beefy Crunch Burrito, Lava Sauce — help the archive remember what corporate forgot.</p>
     </div>
@@ -1550,7 +1549,6 @@ _dg();
 })();
 </script>
 
-<script>lucide.createIcons();</script>
 
 <script>
 window.WIKI_TOC = {
@@ -1803,15 +1801,15 @@ CATS.forEach((cat, i) => {
   t.dataset.index = i;
   t.innerHTML = `
     <span class="dir-tile-halftone"></span>
-    <i data-lucide="${cat.icon}" class="dir-tile-icon" style="stroke-width:1.25"></i>
+    <svg class="wiki-icon dir-tile-icon" style="stroke-width:1.25" aria-hidden="true"><use href="#ic-${cat.icon}"></use></svg>
     <div class="dir-tile-body">
       <span class="dir-tile-name">${cat.name}</span>
-      <span class="dir-tile-pill"><i data-lucide="layers" style="stroke-width:2"></i>${cat.count} entries</span>
+      <span class="dir-tile-pill"><svg class="wiki-icon" style="stroke-width:2" aria-hidden="true"><use href="#ic-layers"></use></svg>${cat.count} entries</span>
       <div class="dir-tile-divider"></div>
       <span class="dir-tile-sub">${cat.sub}</span>
     </div>
     <span class="dir-tile-fold"></span>
-    <span class="dir-tile-fold-chev"><i data-lucide="chevron-down"></i></span>`;
+    <span class="dir-tile-fold-chev"><svg class="wiki-icon" aria-hidden="true"><use href="#ic-chevron-down"></use></svg></span>`;
   t.addEventListener("click", () => onTileClick(i));
   grid.appendChild(t);
   tiles.push(t);
@@ -1841,7 +1839,7 @@ function buildPanel(cat){
         const mini = (e.entries||[]).slice(0,4).map(fe => {
           const fSvg = fe.iconKey ? ICON_BANK[fe.iconKey] : null;
           if(fSvg) return '<span class="hm-folder-mini" style="background:none;overflow:hidden"><img src="' + fSvg + '" width="24" height="24" style="display:block"/></span>';
-          return '<span class="hm-folder-mini"><i data-lucide="' + fe.icon + '" style="stroke-width:1.5"></i></span>';
+          return '<span class="hm-folder-mini"><svg class="wiki-icon" style="stroke-width:1.5" aria-hidden="true"><use href="#ic-' + fe.icon + '"></use></svg></span>';
         }).join("");
         const iconDiv = folderSvg
           ? '<div class="hm-icon-custom"><img src="' + folderSvg + '" width="68" height="68" style="display:block"/></div>'
@@ -1852,7 +1850,7 @@ function buildPanel(cat){
       const ghost = '';
       const iconDiv = customSvg
         ? '<div class="hm-icon-custom"><img src="' + customSvg + '" width="68" height="68" style="display:block"/></div>'
-        : '<div class="hm-icon" style="background:linear-gradient(135deg,' + grad[0] + ',' + grad[1] + ')">' + '<i data-lucide="' + e.icon + '" style="stroke-width:1.5"></i></div>';
+        : '<div class="hm-icon" style="background:linear-gradient(135deg,' + grad[0] + ',' + grad[1] + ')">' + '<svg class="wiki-icon" style="stroke-width:1.5" aria-hidden="true"><use href="#ic-' + e.icon + '"></use></svg></div>';
       return '<a href="' + href + '" class="hm-cell"' + ghost + '>' + iconDiv + '<span class="hm-name">' + e.n + '</span></a>';
     }).join("");
 
@@ -1868,12 +1866,12 @@ function buildPanel(cat){
           <span class="hm-hero-title">${name}</span>
           <span class="hm-hero-sub">Overview, full catalogue &amp; every entry</span>
         </div>
-        <span class="hm-hero-btn">View full parent page <i data-lucide="arrow-right"></i></span>
+        <span class="hm-hero-btn">View full parent page <svg class="wiki-icon" aria-hidden="true"><use href="#ic-arrow-right"></use></svg></span>
       </a>
       <div class="hm-stage">
-        <button class="hm-arr hm-arr-l" aria-label="Scroll left"><i data-lucide="chevron-left"></i></button>
+        <button class="hm-arr hm-arr-l" aria-label="Scroll left"><svg class="wiki-icon" aria-hidden="true"><use href="#ic-chevron-left"></use></svg></button>
         <div class="hm-scroll"><div class="hm-strip">${cellsHTML}</div></div>
-        <button class="hm-arr hm-arr-r" aria-label="Scroll right"><i data-lucide="chevron-right"></i></button>
+        <button class="hm-arr hm-arr-r" aria-label="Scroll right"><svg class="wiki-icon" aria-hidden="true"><use href="#ic-chevron-right"></use></svg></button>
       </div>`;
 
     /* scroll arrow wiring */
@@ -1912,13 +1910,13 @@ function buildPanel(cat){
       <div class="dir-panel">
         <div class="dir-accentbar"></div>
         <div class="dir-phead">
-          <span class="dir-pchip" style="background:transparent;padding:0;overflow:hidden">${cat.iconKey && ICON_BANK[cat.iconKey] ? '<img src="' + ICON_BANK[cat.iconKey] + '" style="width:100%;height:100%;display:block"/>' : '<span style="display:grid;place-items:center;width:100%;height:100%;background:' + cat.accent + '"><i data-lucide="' + cat.icon + '" style="width:1.05rem;height:1.05rem;stroke-width:1.5;color:#fff"></i></span>'}</span>
+          <span class="dir-pchip" style="background:transparent;padding:0;overflow:hidden">${cat.iconKey && ICON_BANK[cat.iconKey] ? '<img src="' + ICON_BANK[cat.iconKey] + '" style="width:100%;height:100%;display:block"/>' : '<span style="display:grid;place-items:center;width:100%;height:100%;background:' + cat.accent + '"><svg class="wiki-icon" style="width:1.05rem;height:1.05rem;stroke-width:1.5;color:#fff" aria-hidden="true"><use href="#ic-' + cat.icon + '"></use></svg></span>'}</span>
           <span>
             <span class="dir-ptitle">${cat.name}</span>
             <span class="dir-pmeta">${cat.count} total</span>
           </span>
           <span class="dir-pspacer"></span>
-          <button class="dir-pclose" aria-label="Close"><i data-lucide="x"></i></button>
+          <button class="dir-pclose" aria-label="Close"><svg class="wiki-icon" aria-hidden="true"><use href="#ic-x"></use></svg></button>
         </div>
         <div class="hm-body"><div class="hm-slides"></div></div>
       </div>
@@ -1937,7 +1935,6 @@ function buildPanel(cat){
   function pushSubView(folder){
     subSlide = buildSlide(folder, false, null);
     slidesEl.appendChild(subSlide);
-    if(window.lucide) lucide.createIcons();
 
     requestAnimationFrame(() => {
       slidesEl.style.transform =
@@ -1952,11 +1949,10 @@ function buildPanel(cat){
     pchip.style.display = "none";
     const back = document.createElement("button");
     back.className = "dir-pback";
-    back.innerHTML = `<i data-lucide="arrow-left"></i>`;
+    back.innerHTML = `<svg class="wiki-icon" aria-hidden="true"><use href="#ic-arrow-left"></use></svg>`;
     back.setAttribute("aria-label", "Back to " + cat.name);
     back.addEventListener("click", popSubView);
     phead.insertBefore(back, phead.firstChild);
-    if(window.lucide) lucide.createIcons();
 
     ptitle.textContent = folder.n;
     pmeta.textContent  = folder.entries.length + " entries";
@@ -2013,7 +2009,6 @@ function open(index, fast){
   tiles[index].setAttribute("aria-expanded","true");
   openIndex = index;
 
-  if(window.lucide) lucide.createIcons();
 
   requestAnimationFrame(() => {
     panelWrap.classList.add("is-open");
@@ -2081,7 +2076,6 @@ function swapInPlace(index){
   /* re-enable transitions on the next frame */
   requestAnimationFrame(() => { panelWrap.style.transition = ""; });
 
-  if(window.lucide) lucide.createIcons();
   alignCaret(index);
   setTimeout(() => panelWrap._syncScroll?.(), 60);
 }
@@ -2104,7 +2098,6 @@ document.addEventListener("keydown", e => {
   if(e.key === "Escape" && openIndex !== null && !busy) collapse();
 });
 
-if(window.lucide) lucide.createIcons();
 });  /* end DOMContentLoaded */
 </script>
 </html>

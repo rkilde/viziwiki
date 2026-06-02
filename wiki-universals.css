@@ -50,6 +50,14 @@
   --prose-color:          currentColor;
   --prose-strong-color:   currentColor;
 
+  /* ── Prose / body sizing ──
+     The body roles — --wiki-prose-size (body), --wiki-prose-sm-size
+     (body-sm) and --wiki-prose-leading — now live with the full 8-role
+     type scale in wiki-typography.css (the single home for ALL type
+     sizing). Components in this file still read them via var(); they
+     resolve from the type canon (loaded first). Size is universal: skins
+     set color, never size. */
+
   /* ── Hero color tokens (defaults; skins override) ──────────────────
      The hero is a UNIVERSAL element (every wiki, home + sub-pages), so its
      color defaults live here — not in the home layer. The hero STRUCTURE is
@@ -227,10 +235,11 @@
   align-items: center;
   gap: 8px;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 10px;
+  font-size: var(--t-label-size);             /* type scale · Label */
+  font-weight: var(--t-label-weight);
   line-height: 12px;           /* pinned to icon height — do not change without
                                   also updating the infobox margin-top offset */
-  letter-spacing: 0.3em;
+  letter-spacing: var(--t-label-tracking);
   text-transform: uppercase;
   color: var(--eyebrow-color, currentColor);
 }
@@ -255,18 +264,12 @@
   font-family: 'Fraunces', 'Spectral', Georgia, serif;
   font-optical-sizing: auto;
   font-variation-settings: "SOFT" 30, "WONK" 0;
-  font-size: 30px;             /* mobile default */
-  font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  font-size: var(--t-title-size);   /* type scale · Title (30 → 36 ≥768, the token scales it) */
+  font-weight: var(--t-title-weight);
+  line-height: var(--t-title-leading);
+  letter-spacing: var(--t-title-tracking);
   margin-top: 0;               /* flush to eyebrow — reads as one unit */
   color: var(--section-title-color, currentColor);
-}
-
-@media (min-width: 768px) {
-  .wiki-section-title {
-    font-size: 36px;           /* desktop — more presence at wider viewports */
-  }
 }
 
 
@@ -286,10 +289,10 @@
   font-family: 'Fraunces', 'Spectral', Georgia, serif;
   font-optical-sizing: auto;
   font-variation-settings: "SOFT" 30, "WONK" 0;
-  font-size: 17px;
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
+  font-size: var(--t-subtitle-size);   /* type scale · Subtitle (17 → 19 ≥768) */
+  font-weight: var(--t-subtitle-weight);
+  line-height: var(--t-subtitle-leading);
+  letter-spacing: var(--t-subtitle-tracking);
   color: var(--section-title-color, currentColor);
 }
 .wiki-section-subtitle > i,
@@ -307,6 +310,8 @@
 .wiki-section-prose {
   margin-top: 24px;            /* breathing room from the title above */
   max-width: 65ch;             /* comfortable reading line length */
+  font-size: var(--wiki-prose-size);      /* the universal prose-size switch (§1 :root) */
+  line-height: var(--wiki-prose-leading);
   color: var(--prose-color, currentColor);
 }
 
@@ -376,9 +381,10 @@
   background: var(--hero-eyebrow-bg);
   color: var(--hero-eyebrow-text);
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 10px;
+  font-size: var(--t-label-size);             /* type scale · Label */
+  font-weight: var(--t-label-weight);
   text-transform: uppercase;
-  letter-spacing: 0.3em;
+  letter-spacing: var(--t-label-tracking);
 }
 
 .wiki-hero-eyebrow-dot {
@@ -400,10 +406,10 @@
 .wiki-hero-title {
   margin: 0;
   font-family: 'Fraunces', Georgia, serif;
-  font-size: clamp(64px, 7vw, 96px);
-  font-weight: 700;
-  line-height: 0.95;
-  letter-spacing: -0.02em;
+  font-size: var(--t-display-size);   /* type scale · Display (clamp 48 → 96) */
+  font-weight: var(--t-display-weight);
+  line-height: var(--t-display-leading);
+  letter-spacing: var(--t-display-tracking);
   color: var(--hero-title-color);
 }
 
@@ -422,8 +428,8 @@
 .wiki-hero-desc {
   margin: 24px 0 0;
   max-width: 36rem;
-  font-size: 18px;
-  line-height: 1.6;
+  font-size: var(--t-lead-size);   /* type scale · Lead (18, constant) */
+  line-height: var(--t-lead-leading);
   color: var(--hero-desc-color);
 }
 
@@ -828,4 +834,26 @@
   text-transform: uppercase;
   border: 1px solid var(--infobox-badge-border, var(--infobox-divider, currentColor));
   color: var(--infobox-badge-color, var(--infobox-key-color, currentColor));
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   §17 — UNIVERSAL ICON  (sprite-referenced inline SVG)
+   ════════════════════════════════════════════════════════════════════
+   The site's one icon mechanism: <svg class="wiki-icon"><use href="#ic-NAME">
+   </use></svg>, where every icon is defined once in _includes/icon-sprite.html
+   (injected per page from default.html). Stroke style matches the Lucide set.
+   Sizes to 1em by default; context can override (the section eyebrow sizes its
+   icon to 12px in §5). No CDN, no runtime JS.
+   ════════════════════════════════════════════════════════════════════ */
+.wiki-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }

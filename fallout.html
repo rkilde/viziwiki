@@ -8,7 +8,6 @@ extra_head: |
   <link rel="stylesheet" href="/wiki-fallout-skin.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>tailwind.config={corePlugins:{preflight:false}}</script>
-  <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
 ---
 
 <!-- ====================================================================
@@ -141,7 +140,7 @@ body.wiki-fallout{ background:#0b0f0a; }
        ================================================================ -->
   <section class="wiki-hero">
     <!-- skin-owned ghost watermark, set right -->
-    <i data-lucide="radiation" class="hero-watermark" aria-hidden="true" style="opacity:.05;stroke-width:.8"></i>
+    <svg class="wiki-icon hero-watermark" style="opacity:.05;stroke-width:.8" aria-hidden="true"><use href="#ic-radiation"></use></svg>
 
     <div class="wiki-hero-inner">
       <div class="wiki-hero-content">
@@ -215,7 +214,7 @@ body.wiki-fallout{ background:#0b0f0a; }
   <section class="wiki-section" id="browse" data-section="browse" data-tone="b">
     <div class="wiki-section-inner">
       <div class="wiki-section-eyebrow">
-        <i data-lucide="folder-tree"></i> Directory
+        <svg class="wiki-icon" aria-hidden="true"><use href="#ic-folder-tree"></use></svg> Directory
       </div>
       <div class="flex items-end justify-between">
         <h2 class="wiki-section-title glow">Browse the wiki</h2>
@@ -243,7 +242,7 @@ body.wiki-fallout{ background:#0b0f0a; }
 
         <div class="wiki-overview-prose">
           <div class="wiki-section-eyebrow">
-            <i data-lucide="book-open"></i> Overview
+            <svg class="wiki-icon" aria-hidden="true"><use href="#ic-book-open"></use></svg> Overview
           </div>
           <h2 class="wiki-section-title glow">
             War. War never changes — but the company that catalogues it does.
@@ -295,7 +294,7 @@ body.wiki-fallout{ background:#0b0f0a; }
   <section class="wiki-section" id="timeline" data-section="timeline" data-tone="b">
     <div class="wiki-section-inner">
       <div class="wiki-section-eyebrow">
-        <i data-lucide="clock"></i> Release timeline
+        <svg class="wiki-icon" aria-hidden="true"><use href="#ic-clock"></use></svg> Release timeline
       </div>
       <h2 class="wiki-section-title glow">Seven entries in the log.</h2>
 
@@ -312,7 +311,7 @@ body.wiki-fallout{ background:#0b0f0a; }
   <section class="wiki-section" id="factions" data-section="factions" data-tone="special">
     <div class="wiki-section-inner">
       <div class="wiki-section-eyebrow">
-        <i data-lucide="shield"></i> Factions
+        <svg class="wiki-icon" aria-hidden="true"><use href="#ic-shield"></use></svg> Factions
       </div>
       <h2 class="wiki-section-title glow">Who's left fighting over the ash.</h2>
       <div class="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-[4px] bg-line md:grid-cols-2 lg:grid-cols-3" id="factionGrid"></div>
@@ -327,7 +326,7 @@ body.wiki-fallout{ background:#0b0f0a; }
   <section class="wiki-section" id="chronology" data-section="chronology" data-tone="b">
     <div class="wiki-section-inner">
       <div class="wiki-section-eyebrow">
-        <i data-lucide="history"></i> In-universe
+        <svg class="wiki-icon" aria-hidden="true"><use href="#ic-history"></use></svg> In-universe
       </div>
       <h2 class="wiki-section-title glow">Chronology of the wasteland.</h2>
       <p class="mt-2 max-w-2xl font-mono-acc text-[11px] uppercase tracking-wide text-dim">
@@ -343,7 +342,7 @@ body.wiki-fallout{ background:#0b0f0a; }
   <section class="wiki-section" id="numbers" data-section="numbers" data-tone="a">
     <div class="wiki-section-inner">
       <div class="wiki-section-eyebrow">
-        <i data-lucide="bar-chart-3"></i> Numbers
+        <svg class="wiki-icon" aria-hidden="true"><use href="#ic-bar-chart-3"></use></svg> Numbers
       </div>
       <h2 class="wiki-section-title glow">The wasteland, quantified.</h2>
       <dl class="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-[4px] bg-line md:grid-cols-2 lg:grid-cols-3" id="numberGrid"></dl>
@@ -356,7 +355,7 @@ body.wiki-fallout{ background:#0b0f0a; }
   <section class="wiki-section" id="seealso" data-section="seealso" data-tone="b">
     <div class="wiki-section-inner">
       <div class="wiki-section-eyebrow">
-        <i data-lucide="link-2"></i> See also
+        <svg class="wiki-icon" aria-hidden="true"><use href="#ic-link-2"></use></svg> See also
       </div>
       <h2 class="wiki-section-title glow">Adjacent rabbit holes.</h2>
       <div class="mt-6 grid gap-3 md:grid-cols-3" id="seealsoGrid"></div>
@@ -449,12 +448,12 @@ function dirPanel(c){
   const kids = c.children.map(k =>
     `<li class="flex items-center gap-2 border-t border-line-soft px-4 py-2 font-mono-acc text-[11px] text-ink hover:text-phos hover:bg-surface cursor-pointer">
        <span class="text-phos">&#9492;&#9472;</span><span class="uppercase tracking-wide">${k}</span>
-       <i data-lucide="chevron-right" class="ml-auto h-3 w-3 text-dim"></i>
+       <svg class="wiki-icon ml-auto h-3 w-3 text-dim" aria-hidden="true"><use href="#ic-chevron-right"></use></svg>
      </li>`).join("");
   return `
   <div class="dir-panel scan rounded-[5px] border border-line bg-surface lift">
     <button class="dir-head flex w-full items-start gap-3 px-4 pt-4 pb-3 text-left">
-      <i data-lucide="${c.icon}" class="mt-0.5 h-5 w-5 shrink-0 text-phos" style="stroke-width:1.5"></i>
+      <svg class="wiki-icon mt-0.5 h-5 w-5 shrink-0 text-phos" style="stroke-width:1.5" aria-hidden="true"><use href="#ic-${c.icon}"></use></svg>
       <span class="flex-1">
         <span class="flex items-baseline justify-between gap-2">
           <span class="font-display text-xl font-semibold text-phos">${c.name}</span>
@@ -462,13 +461,13 @@ function dirPanel(c){
         </span>
         <span class="mt-1 block font-mono-acc text-[11px] leading-relaxed text-dim">${c.preview}</span>
       </span>
-      <i data-lucide="chevron-right" class="dir-caret mt-1 h-4 w-4 shrink-0 text-amber"></i>
+      <svg class="wiki-icon dir-caret mt-1 h-4 w-4 shrink-0 text-amber" aria-hidden="true"><use href="#ic-chevron-right"></use></svg>
     </button>
     <div class="dir-body">
       <div class="px-4 pb-1 font-mono-acc text-[9px] uppercase tracking-[0.25em] text-dim">&gt; nested nodes</div>
       <ul class="pb-2">${kids}</ul>
       <a href="#" class="flex items-center gap-1 border-t border-line px-4 py-2.5 font-mono-acc text-[10px] uppercase tracking-wider text-amber hover:text-phos">
-        Open full ${c.name} index <i data-lucide="arrow-right" class="h-3 w-3"></i>
+        Open full ${c.name} index <svg class="wiki-icon h-3 w-3" aria-hidden="true"><use href="#ic-arrow-right"></use></svg>
       </a>
     </div>
   </div>`;
@@ -516,12 +515,12 @@ document.getElementById("numberGrid").innerHTML = NUMBERS.map(([k,v]) => `
 
 document.getElementById("seealsoGrid").innerHTML = SEEALSO.map(l => `
   <a href="#" class="group flex items-center gap-4 rounded-[4px] border border-line bg-surface p-4 lift scan">
-    <i data-lucide="${l.icon}" class="h-7 w-7 shrink-0 text-phos" style="stroke-width:1.5"></i>
+    <svg class="wiki-icon h-7 w-7 shrink-0 text-phos" style="stroke-width:1.5" aria-hidden="true"><use href="#ic-${l.icon}"></use></svg>
     <div class="flex-1">
       <div class="font-display text-lg font-semibold leading-tight text-phos">${l.label}</div>
       <div class="text-sm text-dim">${l.note}</div>
     </div>
-    <i data-lucide="arrow-up-right" class="h-4 w-4 text-amber opacity-0 transition group-hover:opacity-100"></i>
+    <svg class="wiki-icon h-4 w-4 text-amber opacity-0 transition group-hover:opacity-100" aria-hidden="true"><use href="#ic-arrow-up-right"></use></svg>
   </a>`).join("");
 
 /* directory expand/collapse */
@@ -529,5 +528,4 @@ document.querySelectorAll(".dir-panel .dir-head").forEach(btn => {
   btn.addEventListener("click", () => btn.closest(".dir-panel").classList.toggle("is-open"));
 });
 
-lucide.createIcons();
 </script>
