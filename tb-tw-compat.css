@@ -212,3 +212,50 @@ ol, ul { list-style: none; }
 @media (min-width: 1024px) {
   .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   Additional utilities used by taco-bell-drinks (same Tailwind v3 values)
+   ════════════════════════════════════════════════════════════════════ */
+.flex-col { flex-direction: column; }
+.items-start { align-items: flex-start; }
+.font-medium { font-weight: 500; }
+.gap-10 { gap: 2.5rem; }
+.p-3 { padding: 0.75rem; }
+.mb-5 { margin-bottom: 1.25rem; }
+.max-w-3xl { max-width: 48rem; }
+.text-2xl { font-size: 1.5rem; line-height: 2rem; }
+.text-\[15px\] { font-size: 15px; }
+.leading-relaxed { line-height: 1.625; }
+.opacity-10 { opacity: 0.1; }
+.opacity-\[0\.06\] { opacity: 0.06; }
+.rotate-180 { transform: rotate(180deg); }
+.bg-cyan-300 { background-color: #67e8f9; }
+.text-cyan-200 { color: #a5f3fc; }
+.text-cyan-300 { color: #67e8f9; }
+.text-white\/90 { color: rgb(255 255 255 / 0.9); }
+.text-foreground\/80 { color: color-mix(in oklab, var(--foreground) 80%, transparent); }
+.text-foreground\/85 { color: color-mix(in oklab, var(--foreground) 85%, transparent); }
+.text-foreground\/90 { color: color-mix(in oklab, var(--foreground) 90%, transparent); }
+.grid-cols-\[1fr_1\.4fr\] { grid-template-columns: 1fr 1.4fr; }
+.grid-cols-\[1\.6fr_1fr_0\.7fr_0\.7fr_0\.7fr_1\.4fr\] { grid-template-columns: 1.6fr 1fr 0.7fr 0.7fr 0.7fr 1.4fr; }
+.hover\:text-foreground:hover { color: var(--foreground); }
+.divide-y > * + * { border-top-width: 1px; border-bottom-width: 0; border-style: solid; }
+.space-y-2 > * + * { margin-top: 0.5rem; }
+.space-y-3 > * + * { margin-top: 0.75rem; }
+.space-y-4 > * + * { margin-top: 1rem; }
+
+@media (min-width: 640px) {
+  .sm\:flex-row { flex-direction: row; }
+  .sm\:items-center { align-items: center; }
+  .sm\:justify-between { justify-content: space-between; }
+  .sm\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .sm\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .sm\:text-2xl { font-size: 1.5rem; line-height: 2rem; }
+  .sm\:text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+}
+@media (min-width: 768px) {
+  .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  .lg\:grid-cols-\[1\.7fr_1fr\] { grid-template-columns: 1.7fr 1fr; }
+}

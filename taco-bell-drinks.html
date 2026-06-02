@@ -5,12 +5,10 @@ title: "Taco Bell Drinks — Baja Blast & The Freezer Wall · ViziWiki"
 body_class: "wiki-page wiki-taco-bell"
 extra_head: |
   <link rel="stylesheet" href="/wiki-taco-bell-skin.css">
+  <link rel="stylesheet" href="/tb-editorial-base.css">
+  <link rel="stylesheet" href="/tb-tw-compat.css">
 ---
 {% raw %}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Spectral:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 <style>
 :root{--background:oklch(0.972 0.012 85);--foreground:oklch(0.18 0.02 60);--card:oklch(1 0 0);--secondary:oklch(0.93 0.02 80);--muted-foreground:oklch(0.45 0.03 60);--neon:oklch(0.65 0.26 5);--hot-pink:oklch(0.70 0.27 350);}
@@ -138,46 +136,34 @@ body{font-family:'Spectral',Georgia,serif;}
 </div>
 
 <!-- HERO -->
-<section class="relative overflow-hidden border-b border-foreground/20 text-white" style="background:linear-gradient(to bottom right,#22d3ee,#0f766e,#172554)">
+<section class="wiki-hero" style="background:linear-gradient(to bottom right,#22d3ee,#0f766e,#172554);--hero-title-accent:#67e8f9;--hero-eyebrow-dot:#67e8f9">
   <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(to bottom right,rgba(6,182,212,.65),rgba(15,118,110,.7),rgba(23,37,84,.85));mix-blend-mode:multiply"></div>
   <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(to right,rgba(23,37,84,.7),rgba(30,58,138,.25),transparent)"></div>
   <i data-lucide="cup-soda" stroke-width="1.25" class="pointer-events-none absolute -right-12 -top-10 rotate-12 text-white/10" style="height:440px;width:440px"></i>
-  <div class="relative mx-auto grid max-w-[1500px] gap-8 px-6 py-14 md:grid-cols-[1.4fr_1fr]">
-    <div>
-      <div class="mb-3 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-3 py-1 font-mono-acc text-[10px] uppercase tracking-[0.25em] backdrop-blur">
-        <span class="h-1.5 w-1.5 rounded-full bg-cyan-300"></span> Beverage · Fountain · Freeze
-      </div>
-      <h1 class="font-display hero-h1">Drinks<span class="text-cyan-300">.</span></h1>
-      <div class="mt-3 flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.2em] text-white/70">
-        <a href="taco-bell.html" class="hover:text-white">Taco Bell</a>
-        <i data-lucide="chevron-right" class="h-3 w-3"></i>
-        <span class="text-white">Drinks</span>
-      </div>
-      <p class="mt-4 max-w-xl text-lg text-white/85">One Mountain Dew exclusive that became a cult, three Freeze valves, four Pepsi standards, and roughly 24 million tropical-lime cups poured each year. Indexed, charted, and pour-tested.</p>
-      <!-- Stats grid: 2-col on mobile, 3-col on sm+ -->
-      <div class="mt-8 grid max-w-2xl grid-cols-2 gap-px overflow-hidden rounded-sm border border-white/20 bg-white/10 font-mono-acc text-[10px] uppercase tracking-wider sm:grid-cols-3">
-        <div class="px-3 py-3" style="background:rgba(23,37,84,.55)"><div class="font-display text-xl font-semibold normal-case tracking-tight text-white">~24M</div><div class="text-white/65">Baja Blast cups / yr</div></div>
-        <div class="px-3 py-3" style="background:rgba(23,37,84,.55)"><div class="font-display text-xl font-semibold normal-case tracking-tight text-white">2004</div><div class="text-white/65">Baja Blast debut</div></div>
-        <div class="px-3 py-3" style="background:rgba(23,37,84,.55)"><div class="font-display text-xl font-semibold normal-case tracking-tight text-white">77 g</div><div class="text-white/65">sugar · 20oz Baja</div></div>
-        <div class="px-3 py-3" style="background:rgba(23,37,84,.55)"><div class="font-display text-xl font-semibold normal-case tracking-tight text-white">7-Eleven</div><div class="text-white/65">only off-menu seller</div></div>
-        <div class="px-3 py-3" style="background:rgba(23,37,84,.55)"><div class="font-display text-xl font-semibold normal-case tracking-tight text-white">3</div><div class="text-white/65">active Freeze flavors</div></div>
-        <div class="px-3 py-3" style="background:rgba(23,37,84,.55)"><div class="font-display text-xl font-semibold normal-case tracking-tight text-white">1997</div><div class="text-white/65">Pepsi exclusivity</div></div>
+  <div class="wiki-hero-inner">
+    <div class="wiki-hero-content">
+      <div class="wiki-hero-eyebrow"><span class="wiki-hero-eyebrow-dot"></span> Beverage · Fountain · Freeze</div>
+      <h1 class="wiki-hero-title">Drinks<span class="wiki-hero-title-accent">.</span></h1>
+      <p class="wiki-hero-desc">One Mountain Dew exclusive that became a cult, three Freeze valves, four Pepsi standards, and roughly 24 million tropical-lime cups poured each year. Indexed, charted, and pour-tested.</p>
+      <div class="wiki-hero-stats">
+        <div class="wiki-hero-stat"><div class="wiki-hero-stat-num">~24M</div><div class="wiki-hero-stat-label">Baja cups / yr</div></div>
+        <div class="wiki-hero-stat"><div class="wiki-hero-stat-num">2004</div><div class="wiki-hero-stat-label">Baja Blast debut</div></div>
+        <div class="wiki-hero-stat"><div class="wiki-hero-stat-num">77 g</div><div class="wiki-hero-stat-label">sugar · 20oz Baja</div></div>
+        <div class="wiki-hero-stat"><div class="wiki-hero-stat-num">1997</div><div class="wiki-hero-stat-label">Pepsi since</div></div>
       </div>
     </div>
     <!-- Spotlight: Baja Blast — halftone style (matching Lovable) -->
-    <aside class="relative">
-      <div class="relative overflow-hidden rounded-md border border-white/20 p-5" style="background:linear-gradient(to bottom right,#22d3ee,#065f46)">
-        <div class="absolute inset-0 halftone opacity-25 mix-blend-overlay"></div>
-        <div class="relative">
-          <div class="mb-3 flex items-center justify-between font-mono-acc text-[10px] uppercase tracking-[0.2em] text-white/85">
-            <span>★ Flagship · Spotlight</span><span>Est. 2004</span>
-          </div>
-          <div class="font-display text-5xl font-bold leading-none">Baja Blast</div>
-          <p class="mt-3 text-sm text-white/90">The Mountain Dew variant engineered specifically to pair with Taco Bell food. Tropical lime, fluorescent cyan, exclusive to the chain at the fountain since launch.</p>
-          <div class="mt-4 grid grid-cols-3 gap-2 font-mono-acc text-[9px] uppercase tracking-wider">
-            <div class="rounded-sm border border-white/30 bg-white/10 px-2 py-1.5"><div class="text-white/65">Cal</div><div class="text-white">290</div></div>
-            <div class="rounded-sm border border-white/30 bg-white/10 px-2 py-1.5"><div class="text-white/65">Sugar</div><div class="text-white">77 g</div></div>
-            <div class="rounded-sm border border-white/30 bg-white/10 px-2 py-1.5"><div class="text-white/65">Caffeine</div><div class="text-white">92 mg</div></div>
+    <aside class="wiki-hero-aside">
+      <div class="wiki-hero-feature" style="--hero-feature-bg:linear-gradient(to bottom right,#22d3ee,#065f46)">
+        <div class="wiki-hero-feature-halftone"></div>
+        <div class="wiki-hero-feature-body">
+          <div class="wiki-hero-feature-head"><span>★ Flagship · Spotlight</span><span>Est. 2004</span></div>
+          <div class="wiki-hero-feature-title">Baja Blast</div>
+          <p class="wiki-hero-feature-desc">The Mountain Dew variant engineered specifically to pair with Taco Bell food. Tropical lime, fluorescent cyan, exclusive to the chain at the fountain since launch.</p>
+          <div class="wiki-hero-feature-stats">
+            <div class="wiki-hero-feature-chip"><div class="wiki-hero-feature-chip-key">Cal</div><div class="wiki-hero-feature-chip-val">290</div></div>
+            <div class="wiki-hero-feature-chip"><div class="wiki-hero-feature-chip-key">Sugar</div><div class="wiki-hero-feature-chip-val">77 g</div></div>
+            <div class="wiki-hero-feature-chip"><div class="wiki-hero-feature-chip-key">Caffeine</div><div class="wiki-hero-feature-chip-val">92 mg</div></div>
           </div>
         </div>
       </div>
@@ -186,12 +172,13 @@ body{font-family:'Spectral',Georgia,serif;}
 </section>
 
 <!-- OVERVIEW + INFOBOX -->
-<section id="overview" class="border-b border-foreground/15 bg-card">
-  <div class="mx-auto grid max-w-[1500px] gap-10 px-6 py-12 lg:grid-cols-[1.7fr_1fr]">
+<section id="overview" class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow"><i data-lucide="book-open" class="h-3 w-3"></i> Overview</div>
+    <h2 class="wiki-section-title">The only fast-food chain whose drink is its own brand.</h2>
+    <div class="wiki-overview">
     <div>
-      <div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><i data-lucide="book-open" class="h-3 w-3"></i> Overview</div>
-      <h2 class="mt-1 font-display text-3xl font-semibold leading-tight sm:text-4xl">The only fast-food chain whose drink is its own brand.</h2>
-      <div class="mt-4 space-y-4 text-[15px] leading-relaxed text-foreground/85">
+      <div class="wiki-section-prose">
         <p><strong>Taco Bell's beverage program</strong> is anchored by a single product nobody else can sell: <strong>Mountain Dew Baja Blast</strong>. Co-developed by PepsiCo and Taco Bell flavor R&amp;D in 2003 and launched in February 2004, it is the only Mountain Dew variant manufactured exclusively for a single restaurant chain — and it transformed Taco Bell from a Pepsi licensee into a beverage destination in its own right.</p>
         <p>The full lineup divides into six families: the <strong>Baja</strong> products (carbonated, freeze, and the growing retail bottle line), the <strong>Freeze wall</strong> (slushed Mountain Dew variants — currently Baja, Wild Cherry, and a rotating third valve), <strong>fountain Pepsi</strong> standards, the <strong>Brisk × Taco Bell</strong> juice and tea pairings, the <strong>breakfast coffee</strong> program introduced in 2014, and a small slate of bottled cooler drinks. The fountain has been all-Pepsi since the 1997 Tricon spinoff that created what is now <em>Yum! Brands</em>.</p>
         <p>Taken together, drinks generate roughly 18% of an average store's revenue and a disproportionate share of its margin — Baja Blast alone has been credited with carrying entire product launches (notably the Crunchwrap and Mexican Pizza relaunches), and the freezer-aisle bottle release has become its own annual cultural event.</p>
@@ -203,34 +190,36 @@ body{font-family:'Spectral',Georgia,serif;}
         <div class="rounded-sm border border-foreground/15 bg-secondary/40 p-3"><div class="font-mono-acc text-[9px] uppercase tracking-[0.2em] text-muted-foreground">Coffee program</div><div class="mt-0.5 font-display text-lg font-semibold leading-tight">Since 2014</div></div>
       </div>
     </div>
-    <aside class="rounded-md border border-foreground/20 bg-secondary/40">
-      <div class="border-b border-foreground/15 px-4 py-3 text-white" style="background:linear-gradient(to bottom right,#0891b2,#1e3a8a)">
-        <div class="font-mono-acc text-[9px] uppercase tracking-[0.25em] text-white/70">Infobox</div>
-        <div class="font-display text-xl font-semibold leading-tight">Drinks Program</div>
-        <div class="mt-1 font-mono-acc text-[10px] uppercase tracking-wider text-white/70">Beverage · Foodservice · Pepsi</div>
+    <div class="wiki-infobox" style="--infobox-header-bg:linear-gradient(to bottom right,#0891b2,#1e3a8a)">
+      <div class="wiki-infobox-header">
+        <div class="wiki-infobox-label">Infobox</div>
+        <div class="wiki-infobox-title">Drinks Program</div>
+        <div class="wiki-infobox-label" style="margin-top:4px">Beverage · Foodservice · Pepsi</div>
       </div>
-      <dl class="divide-y divide-foreground/10 px-4 py-2 text-sm">
-        <div class="grid grid-cols-[1fr_1.4fr] gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Categories</dt><dd class="font-medium">6 families</dd></div>
-        <div class="grid grid-cols-[1fr_1.4fr] gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Active SKUs</dt><dd class="font-medium">14 on menu</dd></div>
-        <div class="grid grid-cols-[1fr_1.4fr] gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Hero product</dt><dd class="font-medium">Baja Blast (since 2004)</dd></div>
-        <div class="grid grid-cols-[1fr_1.4fr] gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Pepsi exclusive</dt><dd class="font-medium">1997–present</dd></div>
-        <div class="grid grid-cols-[1fr_1.4fr] gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Freeze supplier</dt><dd class="font-medium">Taylor Company</dd></div>
-        <div class="grid grid-cols-[1fr_1.4fr] gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Coffee certif.</dt><dd class="font-medium">Rainforest Alliance</dd></div>
-        <div class="grid grid-cols-[1fr_1.4fr] gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Retail bottle</dt><dd class="font-medium">Permanent (2020)</dd></div>
-        <div class="grid grid-cols-[1fr_1.4fr] gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Annual Baja vol.</dt><dd class="font-medium">≈ 24M cups, U.S.</dd></div>
-        <div class="grid grid-cols-[1fr_1.4fr] gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Discontinued</dt><dd class="font-medium">6 known SKUs</dd></div>
-        <div class="grid grid-cols-[1fr_1.4fr] gap-3 py-2"><dt class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">See also</dt><dd class="font-medium">Mountain Dew, Yum! Brands</dd></div>
+      <dl class="wiki-infobox-data">
+        <dt>Categories</dt><dd>6 families</dd>
+        <dt>Active SKUs</dt><dd>14 on menu</dd>
+        <dt>Hero product</dt><dd>Baja Blast (since 2004)</dd>
+        <dt>Pepsi exclusive</dt><dd>1997–present</dd>
+        <dt>Freeze supplier</dt><dd>Taylor Company</dd>
+        <dt>Coffee certif.</dt><dd>Rainforest Alliance</dd>
+        <dt>Retail bottle</dt><dd>Permanent (2020)</dd>
+        <dt>Annual Baja vol.</dt><dd>≈ 24M cups, U.S.</dd>
+        <dt>Discontinued</dt><dd>6 known SKUs</dd>
+        <dt>See also</dt><dd>Mountain Dew, Yum! Brands</dd>
       </dl>
-    </aside>
+    </div>
+    </div>
   </div>
 </section>
 
 <!-- SIX FAMILIES -->
-<section id="families" class="mx-auto max-w-[1500px] px-6 py-12">
+<section id="families" class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
   <div class="mb-6 flex flex-wrap items-baseline justify-between gap-2">
     <div>
-      <div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><i data-lucide="hash" class="h-3 w-3"></i> The six families</div>
-      <h2 class="font-display text-3xl font-semibold">How the menu is organized</h2>
+      <div class="wiki-section-eyebrow"><i data-lucide="hash" class="h-3 w-3"></i> The six families</div>
+      <h2 class="wiki-section-title">How the menu is organized</h2>
     </div>
     <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">6 families · 14 active SKUs</span>
   </div>
@@ -242,10 +231,11 @@ body{font-family:'Spectral',Georgia,serif;}
     <div class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#b45309,#1c1917)"><div class="absolute inset-0 halftone opacity-20 mix-blend-overlay"></div><div class="relative"><div class="font-mono-acc text-[10px] uppercase tracking-[0.25em] text-white/80">2 entries</div><div class="mt-1 font-display text-xl font-bold leading-tight drop-shadow sm:text-2xl">Breakfast coffee</div><p class="mt-2 text-sm text-white/85">Rainforest Alliance hot coffee + Cinnabon Delights coffee. AM only.</p></div></div>
     <div class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#7dd3fc,#0369a1)"><div class="absolute inset-0 halftone opacity-20 mix-blend-overlay"></div><div class="relative"><div class="font-mono-acc text-[10px] uppercase tracking-[0.25em] text-white/80">2 entries</div><div class="mt-1 font-display text-xl font-bold leading-tight drop-shadow sm:text-2xl">Bottled &amp; cartons</div><p class="mt-2 text-sm text-white/85">Cooler-pulled stills: Aquafina, Tropicana.</p></div></div>
   </div>
+  </div>
 </section>
 
-<section id="catalog" style="border-top:1px solid rgba(42,31,21,0.15);border-bottom:1px solid rgba(42,31,21,0.15);background:color-mix(in oklab,var(--secondary) 40%,transparent);">
-  <div style="max-width:1500px;margin:0 auto;padding:48px 24px;">
+<section id="catalog" class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
     <div style="margin-bottom:24px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;">
       <div>
         <div style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(42,31,21,0.35);">
@@ -441,10 +431,10 @@ body{font-family:'Spectral',Georgia,serif;}
 
 <!-- SUGAR LADDER -->
 <!-- MOBILE FIX: .ladder-row CSS class handles 2-col (name+number) on mobile, 3-col with bar on sm+ -->
-<section id="sugar-ladder" class="border-y border-foreground/15 bg-secondary/40">
-  <div class="mx-auto max-w-[1500px] px-6 py-12">
+<section id="sugar-ladder" class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
     <div class="mb-6 flex flex-wrap items-baseline justify-between gap-2">
-      <div><div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><i data-lucide="droplet" class="h-3 w-3"></i> Sugar ladder</div><h2 class="font-display text-3xl font-semibold">Sweetness, charted</h2></div>
+      <div><div class="wiki-section-eyebrow"><i data-lucide="droplet" class="h-3 w-3"></i> Sugar ladder</div><h2 class="wiki-section-title">Sweetness, charted</h2></div>
       <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">grams per 20 oz / 16 oz</span>
     </div>
     <div class="overflow-hidden rounded-md border border-foreground/15 bg-card">
@@ -463,9 +453,10 @@ body{font-family:'Spectral',Georgia,serif;}
 
 <!-- CAFFEINE LADDER -->
 <!-- MOBILE FIX: same .ladder-row responsive approach -->
-<section id="caffeine-ladder" class="mx-auto max-w-[1500px] px-6 py-12">
+<section id="caffeine-ladder" class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
   <div class="mb-6 flex flex-wrap items-baseline justify-between gap-2">
-    <div><div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><i data-lucide="beaker" class="h-3 w-3"></i> Caffeine ladder</div><h2 class="font-display text-3xl font-semibold">From decaf to a hot coffee wall</h2></div>
+    <div><div class="wiki-section-eyebrow"><i data-lucide="beaker" class="h-3 w-3"></i> Caffeine ladder</div><h2 class="wiki-section-title">From decaf to a hot coffee wall</h2></div>
     <span class="font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">mg per serving</span>
   </div>
   <div class="overflow-hidden rounded-md border border-foreground/15 bg-card">
@@ -478,6 +469,7 @@ body{font-family:'Spectral',Georgia,serif;}
     <div class="ladder-row"><div class="font-display text-base font-semibold leading-tight">Diet Pepsi</div><div class="ladder-bar-col relative h-3 overflow-hidden rounded-full bg-secondary"><div class="absolute inset-y-0 left-0" style="width:30%;background:linear-gradient(to right,#64748b,#0f172a)"></div></div><div class="ladder-val">60 mg</div></div>
     <div class="ladder-row"><div class="font-display text-base font-semibold leading-tight">Brisk Raspberry Iced Tea</div><div class="ladder-bar-col relative h-3 overflow-hidden rounded-full bg-secondary"><div class="absolute inset-y-0 left-0" style="width:12%;background:linear-gradient(to right,#fb7185,#be185d)"></div></div><div class="ladder-val">25 mg</div></div>
     <div class="ladder-row"><div class="font-display text-base font-semibold leading-tight">Aquafina / Brisk Mango / OJ</div><div class="ladder-bar-col relative h-3 overflow-hidden rounded-full bg-secondary"><div class="absolute inset-y-0 left-0" style="width:0%"></div></div><div class="ladder-val">0 mg</div></div>
+  </div>
   </div>
 </section>
 
@@ -492,9 +484,9 @@ body{font-family:'Spectral',Georgia,serif;}
 
 <!-- BAJA BLAST DEEP DIVE -->
 <!-- MOBILE FIX: .lineage-row CSS handles vertical stack on mobile, 3-col on sm+ -->
-<section id="baja-lineage" class="relative overflow-hidden border-b border-foreground/15 text-white" style="background:linear-gradient(to bottom right,#22d3ee,#0f766e,#172554)">
+<section id="baja-lineage" class="wiki-section" style="background:linear-gradient(to bottom right,#22d3ee,#0f766e,#172554);color:#fff;position:relative;overflow:hidden">
   <div class="absolute inset-0 halftone opacity-10"></div>
-  <div class="relative mx-auto max-w-[1500px] px-6 py-14">
+  <div class="wiki-section-inner" style="position:relative">
     <div class="mb-6 flex flex-wrap items-baseline justify-between gap-2">
       <div><div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-cyan-200"><i data-lucide="trophy" class="h-3 w-3"></i> Hero entry</div><h2 class="font-display text-3xl font-semibold sm:text-4xl">The Baja Blast lineage</h2></div>
       <span class="font-mono-acc text-[10px] uppercase tracking-wider text-cyan-200">2003 → today</span>
@@ -515,7 +507,8 @@ body{font-family:'Spectral',Georgia,serif;}
 
 <!-- RETAIL SKUs -->
 <!-- MOBILE FIX: overflow-x scroll wrapper with min-width on inner grid -->
-<section id="retail" style="padding:48px 24px;max-width:1500px;margin:0 auto;">
+<section id="retail" class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
   <div style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:rgba(42,31,21,0.35);">
     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
     Retail runs
@@ -864,14 +857,15 @@ body{font-family:'Spectral',Georgia,serif;}
     <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(42,31,21,0.35);margin-bottom:4px;">Not Taco Bell drinks</div>
     <p style="font-size:12px;line-height:1.5;color:rgba(42,31,21,0.5);">Baja Flash, Baja Mango Gem, Baja Gold, Baja Deep Dive, Baja Passionfruit Punch, and other retail “Baja” variants are PepsiCo retail-only products. They were never available at Taco Bell and are not part of the Taco Bell drink program.</p>
   </div>
+  </div>
 </section>
 
 
 <!-- NUTRITION TABLE -->
 <!-- MOBILE FIX: overflow-x scroll with min-width -->
-<section id="nutrition" class="border-y border-foreground/15 bg-secondary/40">
-  <div class="mx-auto max-w-[1500px] px-6 py-12">
-    <div class="mb-6"><div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><i data-lucide="beaker" class="h-3 w-3"></i> Lab notes</div><h2 class="font-display text-3xl font-semibold">Nutrition at a glance</h2></div>
+<section id="nutrition" class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="mb-6"><div class="wiki-section-eyebrow"><i data-lucide="beaker" class="h-3 w-3"></i> Lab notes</div><h2 class="wiki-section-title">Nutrition at a glance</h2></div>
     <div class="mob-scroll overflow-hidden rounded-md border border-foreground/15 bg-card">
       <div class="mob-inner-xl">
         <div class="grid grid-cols-[1.6fr_1fr_0.7fr_0.7fr_0.7fr_1.4fr] gap-4 border-b border-foreground/15 bg-secondary/60 px-4 py-3 font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground"><div>Drink</div><div>Size</div><div>Cal</div><div>Sugar</div><div>Caf</div><div>Allergens</div></div>
@@ -891,8 +885,9 @@ body{font-family:'Spectral',Georgia,serif;}
 
 <!-- PAIRINGS -->
 <!-- MOBILE FIX: overflow-x scroll -->
-<section id="pairings" class="mx-auto max-w-[1500px] px-6 py-12">
-  <div class="mb-6"><div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><i data-lucide="flame" class="h-3 w-3"></i> Pairing guide</div><h2 class="font-display text-3xl font-semibold">What to drink with what</h2></div>
+<section id="pairings" class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+  <div class="mb-6"><div class="wiki-section-eyebrow"><i data-lucide="flame" class="h-3 w-3"></i> Pairing guide</div><h2 class="wiki-section-title">What to drink with what</h2></div>
   <div class="mob-scroll overflow-hidden rounded-md border border-foreground/15 bg-card">
     <div class="mob-inner">
       <div class="grid grid-cols-[1.4fr_1fr_1fr_1.4fr] gap-4 border-b border-foreground/15 bg-secondary/60 px-4 py-3 font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground"><div>Menu item</div><div>Best</div><div>Second</div><div>Avoid</div></div>
@@ -905,11 +900,12 @@ body{font-family:'Spectral',Georgia,serif;}
       <div class="grid grid-cols-[1.4fr_1fr_1fr_1.4fr] gap-4 border-b border-foreground/10 px-4 py-3 text-sm"><div class="font-display text-base font-semibold">Breakfast Crunchwrap</div><div class="text-foreground/90">Hot Coffee</div><div class="text-muted-foreground">OJ</div><div class="text-rose-600">Wild Cherry Freeze</div></div>
     </div>
   </div>
+  </div>
 </section>
 
 <!-- DISCONTINUED -->
-<section id="discontinued" class="border-y border-foreground/15 bg-secondary/40" style="border-color:color-mix(in oklab,var(--foreground) 15%,transparent);">
-  <div class="mx-auto max-w-[1500px] px-6 py-12">
+<section id="discontinued" class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
   <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:20px;">
     <div>
       <div style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--muted-foreground);">
@@ -982,7 +978,8 @@ body{font-family:'Spectral',Georgia,serif;}
 </section>
 
 <!-- TRIVIA -->
-<section id="trivia" class="mx-auto max-w-[1500px] px-6 py-12">
+<section id="trivia" class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
   <div class="mb-5 flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><i data-lucide="lightbulb" class="h-3 w-3"></i> Did you know</div>
   <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
     <div class="relative overflow-hidden rounded-md border border-foreground/15 bg-card p-5"><div class="absolute inset-0 halftone opacity-[0.06]"></div><div class="relative"><div class="flex items-center justify-between font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><span style="color:#0e7490">Drink fact</span><span class="tabular-nums">№ 01</span></div><p class="mt-3 text-[15px] leading-relaxed text-foreground/85">Baja Blast is the only soda PepsiCo manufactures exclusively for a single restaurant chain.</p></div></div>
@@ -993,12 +990,13 @@ body{font-family:'Spectral',Georgia,serif;}
     <div class="relative overflow-hidden rounded-md border border-foreground/15 bg-card p-5"><div class="absolute inset-0 halftone opacity-[0.06]"></div><div class="relative"><div class="flex items-center justify-between font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><span style="color:#0e7490">Drink fact</span><span class="tabular-nums">№ 06</span></div><p class="mt-3 text-[15px] leading-relaxed text-foreground/85">Taco Bell's only nationally rolled-back beverage decision is the 2020 Lipton Brisk Lemon → Raspberry swap, which still gets petitions.</p></div></div>
     <div class="relative overflow-hidden rounded-md border border-foreground/15 bg-card p-5"><div class="absolute inset-0 halftone opacity-[0.06]"></div><div class="relative"><div class="flex items-center justify-between font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><span style="color:#0e7490">Drink fact</span><span class="tabular-nums">№ 07</span></div><p class="mt-3 text-[15px] leading-relaxed text-foreground/85">A 30 oz Baja Blast Freeze contains roughly 110 g of sugar — more than two standard Snickers bars.</p></div></div>
   </div>
+  </div>
 </section>
 
 <!-- QUOTES -->
-<section id="quotes" class="border-y border-foreground/15 bg-secondary/40">
-  <div class="mx-auto max-w-[1500px] px-6 py-12">
-    <div class="mb-6"><div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><i data-lucide="quote" class="h-3 w-3"></i> On the record</div><h2 class="font-display text-3xl font-semibold">What people have said about it</h2></div>
+<section id="quotes" class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="mb-6"><div class="wiki-section-eyebrow"><i data-lucide="quote" class="h-3 w-3"></i> On the record</div><h2 class="wiki-section-title">What people have said about it</h2></div>
     <div class="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
       <div class="relative overflow-hidden rounded-md border border-foreground/15 bg-card p-5"><i data-lucide="quote" class="h-4 w-4" style="color:var(--neon)"></i><div class="mt-2 font-display text-lg font-semibold leading-snug">"It's the only soda I associate with a building."</div><div class="mt-3 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground">— Eater roundtable, 2019</div></div>
       <div class="relative overflow-hidden rounded-md border border-foreground/15 bg-card p-5"><i data-lucide="quote" class="h-4 w-4" style="color:var(--neon)"></i><div class="mt-2 font-display text-lg font-semibold leading-snug">"Baja Blast is what Mountain Dew tastes like in a parallel universe where soda is good for you."</div><div class="mt-3 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground">— Bon Appétit, 2017</div></div>
@@ -1010,8 +1008,9 @@ body{font-family:'Spectral',Georgia,serif;}
 </section>
 
 <!-- POP CULTURE -->
-<section id="pop-culture" class="mx-auto max-w-[1500px] px-6 py-12">
-  <div class="mb-6"><div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><i data-lucide="tv" class="h-3 w-3"></i> Beyond the cup</div><h2 class="font-display text-3xl font-semibold">Pop culture footprint</h2></div>
+<section id="pop-culture" class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+  <div class="mb-6"><div class="wiki-section-eyebrow"><i data-lucide="tv" class="h-3 w-3"></i> Beyond the cup</div><h2 class="wiki-section-title">Pop culture footprint</h2></div>
   <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
     <article class="rounded-md border border-foreground/15 bg-card p-5"><div class="font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Fan holiday · July 8</div><h3 class="mt-1 font-display text-lg font-semibold leading-tight">"Baja Blast Day"</h3><p class="mt-2 text-sm text-foreground/80">Marks the 2014 freezer-aisle bottle release. Trends every year.</p></article>
     <article class="rounded-md border border-foreground/15 bg-card p-5"><div class="font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Film · 1993</div><h3 class="mt-1 font-display text-lg font-semibold leading-tight">Demolition Man</h3><p class="mt-2 text-sm text-foreground/80">Predates Baja Blast but cemented Taco Bell as the cinematic future of food. Baja Blast is the franchise's unofficial drink.</p></article>
@@ -1020,13 +1019,14 @@ body{font-family:'Spectral',Georgia,serif;}
     <article class="rounded-md border border-foreground/15 bg-card p-5"><div class="font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Reddit</div><h3 class="mt-1 font-display text-lg font-semibold leading-tight">r/tacobell freeze rankings</h3><p class="mt-2 text-sm text-foreground/80">Weekly threads ranking Freeze flavors and lamenting regional pulls.</p></article>
     <article class="rounded-md border border-foreground/15 bg-card p-5"><div class="font-mono-acc text-[10px] uppercase tracking-[0.2em] text-muted-foreground">TV · 2024</div><h3 class="mt-1 font-display text-lg font-semibold leading-tight">Mtn Dew × NBA Finals</h3><p class="mt-2 text-sm text-foreground/80">Baja Midnight launched mid-finals as a shared brand moment with the league.</p></article>
   </div>
+  </div>
 </section>
 
 <!-- RANKINGS -->
 <!-- MOBILE FIX: .ranking-row CSS handles 2-col on mobile, 4-col on sm+ -->
-<section id="rankings" class="border-y border-foreground/15 bg-secondary/40">
-  <div class="mx-auto max-w-[1500px] px-6 py-12">
-    <div class="mb-6"><div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><i data-lucide="trophy" class="h-3 w-3"></i> Critics &amp; community</div><h2 class="font-display text-3xl font-semibold">How it ranks</h2></div>
+<section id="rankings" class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="mb-6"><div class="wiki-section-eyebrow"><i data-lucide="trophy" class="h-3 w-3"></i> Critics &amp; community</div><h2 class="wiki-section-title">How it ranks</h2></div>
     <ol class="overflow-hidden rounded-md border border-foreground/15 bg-card">
       <li class="ranking-row"><span class="font-display text-2xl font-bold tabular-nums" style="color:var(--neon)">01</span><span class="ranking-source font-display text-base font-semibold">Thrillist soda tier list</span><span class="ranking-year font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">2022</span><span class="ranking-verdict">Baja Blast S-tier, the only 'restaurant soda' to crack the top.</span></li>
       <li class="ranking-row"><span class="font-display text-2xl font-bold tabular-nums" style="color:var(--neon)">02</span><span class="ranking-source font-display text-base font-semibold">Eater readers' poll</span><span class="ranking-year font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">2021</span><span class="ranking-verdict">Baja Blast Freeze edged out the carbonated original by 4%.</span></li>
@@ -1038,8 +1038,9 @@ body{font-family:'Spectral',Georgia,serif;}
 </section>
 
 <!-- SAYINGS -->
-<section id="sayings" class="mx-auto max-w-[1500px] px-6 py-12">
-  <div class="mb-6"><div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><i data-lucide="globe-2" class="h-3 w-3"></i> Tagline archive</div><h2 class="font-display text-3xl font-semibold">Lines from the marketing</h2></div>
+<section id="sayings" class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+  <div class="mb-6"><div class="wiki-section-eyebrow"><i data-lucide="globe-2" class="h-3 w-3"></i> Tagline archive</div><h2 class="wiki-section-title">Lines from the marketing</h2></div>
   <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
     <div class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#06b6d4,#1e3a8a)"><div class="absolute inset-0 halftone opacity-15 mix-blend-overlay"></div><div class="relative"><div class="font-display text-xl font-semibold leading-snug">"Live Más, Drink Más."</div><div class="mt-3 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-cyan-200">Baja Blast Freeze launch · 2014</div></div></div>
     <div class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#06b6d4,#1e3a8a)"><div class="absolute inset-0 halftone opacity-15 mix-blend-overlay"></div><div class="relative"><div class="font-display text-xl font-semibold leading-snug">"It's not a soda. It's a souvenir."</div><div class="mt-3 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-cyan-200">Bottled Baja Day · 2020</div></div></div>
@@ -1047,13 +1048,14 @@ body{font-family:'Spectral',Georgia,serif;}
     <div class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#06b6d4,#1e3a8a)"><div class="absolute inset-0 halftone opacity-15 mix-blend-overlay"></div><div class="relative"><div class="font-display text-xl font-semibold leading-snug">"The only Mountain Dew with a passport."</div><div class="mt-3 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-cyan-200">Baja Bottled launch · 2014</div></div></div>
     <div class="relative overflow-hidden rounded-md border border-foreground/15 p-5 text-white" style="background:linear-gradient(to bottom right,#06b6d4,#1e3a8a)"><div class="absolute inset-0 halftone opacity-15 mix-blend-overlay"></div><div class="relative"><div class="font-display text-xl font-semibold leading-snug">"Tropical lime. Definitely not lime-flavored."</div><div class="mt-3 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-cyan-200">TikTok response · 2022</div></div></div>
   </div>
+  </div>
 </section>
 
 <!-- REFERENCES -->
 <!-- MOBILE FIX: .ref-row CSS handles 2-col on mobile, 4-col on sm+ -->
-<section id="references" class="border-y border-foreground/15 bg-secondary/40">
-  <div class="mx-auto max-w-[1500px] px-6 py-12">
-    <div class="mb-6"><div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><i data-lucide="list-ordered" class="h-3 w-3"></i> Sources</div><h2 class="font-display text-3xl font-semibold">References</h2></div>
+<section id="references" class="wiki-section" data-tone="b">
+  <div class="wiki-section-inner">
+    <div class="mb-6"><div class="wiki-section-eyebrow"><i data-lucide="list-ordered" class="h-3 w-3"></i> Sources</div><h2 class="wiki-section-title">References</h2></div>
     <ol class="space-y-2">
       <li class="ref-row"><span class="font-display text-base font-bold tabular-nums" style="color:var(--neon)">01</span><span class="ref-title">"The Strange Forever Romance Between Taco Bell and Baja Blast"</span><span class="ref-pub font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Eater</span><span class="ref-year font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">2019</span></li>
       <li class="ref-row"><span class="font-display text-base font-bold tabular-nums" style="color:var(--neon)">02</span><span class="ref-title">PepsiCo Annual Foodservice Report — fountain volume tables</span><span class="ref-pub font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">PepsiCo</span><span class="ref-year font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">2023</span></li>
@@ -1066,14 +1068,16 @@ body{font-family:'Spectral',Georgia,serif;}
 </section>
 
 <!-- SEE ALSO -->
-<section id="see-also" class="mx-auto max-w-[1500px] px-6 py-12">
-  <div class="mb-6"><div class="flex items-center gap-2 font-mono-acc text-[10px] uppercase tracking-[0.25em] text-muted-foreground"><i data-lucide="link-2" class="h-3 w-3"></i> Cross-reference</div><h2 class="font-display text-3xl font-semibold">See also</h2></div>
+<section id="see-also" class="wiki-section" data-tone="a">
+  <div class="wiki-section-inner">
+  <div class="mb-6"><div class="wiki-section-eyebrow"><i data-lucide="link-2" class="h-3 w-3"></i> Cross-reference</div><h2 class="wiki-section-title">See also</h2></div>
   <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
     <article class="rounded-md border border-foreground/15 bg-card p-5"><h3 class="font-display text-lg font-semibold leading-tight">Sauce Packets</h3><p class="mt-2 text-sm text-foreground/80">The Mild→Diablo packet ladder pairs across the entire drink lineup.</p></article>
     <article class="rounded-md border border-foreground/15 bg-card p-5"><h3 class="font-display text-lg font-semibold leading-tight">Crunchwrap Supreme</h3><p class="mt-2 text-sm text-foreground/80">The dish Baja Blast was effectively engineered to drink with.</p></article>
     <article class="rounded-md border border-foreground/15 bg-card p-5"><h3 class="font-display text-lg font-semibold leading-tight">Cinnabon Delights</h3><p class="mt-2 text-sm text-foreground/80">Why Cinnabon Coffee exists in the first place.</p></article>
     <article class="rounded-md border border-foreground/15 bg-card p-5"><h3 class="font-display text-lg font-semibold leading-tight">Mountain Dew</h3><p class="mt-2 text-sm text-foreground/80">The parent brand that made Baja exclusivity possible.</p></article>
     <article class="rounded-md border border-foreground/15 bg-card p-5"><h3 class="font-display text-lg font-semibold leading-tight">Yum! Brands</h3><p class="mt-2 text-sm text-foreground/80">The 1997 Tricon spinoff is the reason every fountain is Pepsi.</p></article>
+  </div>
   </div>
 </section>
 
