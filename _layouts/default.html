@@ -6,6 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ page.title | default: site.title }} · ViziWiki</title>
 
+  <!-- Hero load-in gate: play the home-hero entrance on a normal visit, but
+       NOT on browser Back/Forward (return to a page shows it instantly).
+       Runs here in <head>, before paint, so there is no flicker. -->
+  <script>
+    (function(){
+      try {
+        var n = performance.getEntriesByType('navigation')[0];
+        if (!n || n.type !== 'back_forward') document.documentElement.classList.add('hero-intro');
+      } catch (e) { document.documentElement.classList.add('hero-intro'); }
+    })();
+    addEventListener('pageshow', function(e){ if (e.persisted) document.documentElement.classList.remove('hero-intro'); });
+  </script>
+
   <!-- Fonts (loaded once for the whole site) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

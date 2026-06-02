@@ -479,8 +479,6 @@ body.wiki-doodle-jump{
 .dj-page .lift:hover{transform:translateY(-2px); box-shadow:3px 6px 0 rgba(0,0,0,.05), 6px 10px 22px rgba(80,140,40,.12);}
 
 /* staggered boot-in — "page being written" reveal */
-.dj-page .ink-in{opacity:0;transform:translateY(6px);animation:dj-inkin .6s ease forwards;}
-@keyframes dj-inkin{to{opacity:1;transform:translateY(0);}}
 
 /* highlighter swipe */
 .dj-page .hl{background:linear-gradient(180deg, transparent 0%, transparent 55%, var(--highlight) 55%, var(--highlight) 92%, transparent 92%);padding:0 .1em;}

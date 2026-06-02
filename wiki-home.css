@@ -159,3 +159,41 @@
    format is universal now — edit it there and it propagates everywhere.
    Colors still come from each skin's --overview-* tokens.
    ════════════════════════════════════════════════════════════════════ */
+
+/* ════════════════════════════════════════════════════════════════════
+   HERO LOAD-IN — canonical staggered rise (HOME heroes only)
+   ════════════════════════════════════════════════════════════════════
+   Every wiki HOME hero cascades its elements in on load: each child rises
+   8px and fades in, staggered ~.05s apart. This is the Fallout "boot"
+   treatment promoted to the canonical entrance for all home pages.
+
+   • Scoped to .wiki-home, so ONLY home-page heroes animate — never
+     sub-pages or deeper pages (their heroes have .wiki-hero-content too,
+     but no .wiki-home ancestor).
+   • Gated by .hero-intro on <html>, which the early nav-gate script in
+     default.html adds for normal navigations and DELIBERATELY withholds on
+     browser Back/Forward — so returning to a page shows it instantly,
+     with no replay.
+   • The stagger is automatic via :nth-child(), so pages need no per-element
+     animation classes.
+   ════════════════════════════════════════════════════════════════════ */
+@keyframes wiki-hero-rise { to { opacity: 1; transform: translateY(0); } }
+
+.hero-intro .wiki-home .wiki-hero-content > *,
+.hero-intro .wiki-home .wiki-hero-aside {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: wiki-hero-rise .5s ease forwards;
+}
+.hero-intro .wiki-home .wiki-hero-content > *:nth-child(1) { animation-delay: .05s; }
+.hero-intro .wiki-home .wiki-hero-content > *:nth-child(2) { animation-delay: .12s; }
+.hero-intro .wiki-home .wiki-hero-content > *:nth-child(3) { animation-delay: .20s; }
+.hero-intro .wiki-home .wiki-hero-content > *:nth-child(4) { animation-delay: .28s; }
+.hero-intro .wiki-home .wiki-hero-content > *:nth-child(5) { animation-delay: .36s; }
+.hero-intro .wiki-home .wiki-hero-aside { animation-delay: .44s; }
+
+/* Respect reduced-motion: show the hero instantly, no entrance. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-intro .wiki-home .wiki-hero-content > *,
+  .hero-intro .wiki-home .wiki-hero-aside { animation: none; opacity: 1; transform: none; }
+}
