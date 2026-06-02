@@ -829,3 +829,25 @@
   border: 1px solid var(--infobox-badge-border, var(--infobox-divider, currentColor));
   color: var(--infobox-badge-color, var(--infobox-key-color, currentColor));
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   §17 — UNIVERSAL ICON  (sprite-referenced inline SVG)
+   ════════════════════════════════════════════════════════════════════
+   The site's one icon mechanism: <svg class="wiki-icon"><use href="#ic-NAME">
+   </use></svg>, where every icon is defined once in _includes/icon-sprite.html
+   (injected per page from default.html). Stroke style matches the Lucide set.
+   Sizes to 1em by default; context can override (the section eyebrow sizes its
+   icon to 12px in §5). No CDN, no runtime JS.
+   ════════════════════════════════════════════════════════════════════ */
+.wiki-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
