@@ -9,7 +9,7 @@ extra_head: |
   <link rel="stylesheet" href="/bank-catalog.css">
 catalog:
   title: "Every active drink"
-  summary_note: "3 categories"
+  unit: drink
   footnote: "Pricing note: fountain drinks $1.99–$3.19 by size; free refills in-store. Discontinued and limited items are shown for reference and may not be orderable."
   categories:
     - name: "Fountain Classics"
@@ -72,4 +72,4 @@ catalog:
           desc: "A wild-cherry frozen beverage."
 ---
 
-{% include visual.html type="catalog" data=page.catalog %}
+{% include sections/catalog-section.html data=page.catalog %}

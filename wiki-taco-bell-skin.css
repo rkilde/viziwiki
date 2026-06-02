@@ -66,9 +66,20 @@ body.wiki-taco-bell {
         and the pre-defined status states (catalog / expandable-card bank) ── */
   --divider:        color-mix(in oklab, var(--foreground) 10%, transparent);
   --ribbon-fg:      #ffffff;
-  /* accent palette — categories auto-cycle through these (skin owns the set) */
-  --cat-accent-1:#b45309; --cat-accent-2:#3b6d11; --cat-accent-3:#9f1239;
-  --cat-accent-4:#0369a1; --cat-accent-5:#7c3aed; --cat-accent-6:#ca8a04;
+  /* category accent palette — the skin's CATEGORY SWATCH SET. A catalog
+     category either references a swatch by number (`color: 3`, the future
+     builder's color-picker pick) or, if it names none, auto-cycles through
+     them. The component only ever reads `--cat-color`; growing this set
+     (toward the dozens-of-swatches / generated-ramp / picker we want later)
+     is pure skin work and never touches the component. */
+  --cat-accent-1:#3b6d11;  /* dew green     */
+  --cat-accent-2:#0284c7;  /* fountain sky  */
+  --cat-accent-3:#7c3aed;  /* dirty violet  */
+  --cat-accent-4:#db2777;  /* freeze pink   */
+  --cat-accent-5:#059669;  /* refresca jade */
+  --cat-accent-6:#0891b2;  /* still cyan    */
+  --cat-accent-7:#78350f;  /* coffee brown  */
+  --cat-accent-8:#2563eb;  /* bottle blue   */
   /* pre-defined status states — label colors */
   --st-active-bg:#dcfce7;                   --st-active-fg:#166534;
   --st-discontinued-bg:rgba(42,31,21,0.08); --st-discontinued-fg:rgba(42,31,21,0.55);

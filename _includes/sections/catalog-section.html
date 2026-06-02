@@ -1,0 +1,38 @@
+{%- comment -%}
+  CATALOG SECTION  (a page-section type — the framing, not the visual)
+  --------------------------------------------------------------------
+  This is the chrome a contributor gets the moment they drop a "Catalog
+  section" onto a page, BEFORE they pick what fills it:
+    · the locked eyebrow  ("Full Catalog" + the list icon)   — top-left
+    · the auto-derived summary ("40 drinks · 9 categories")  — top-right
+    · an optional footnote                                    — bottom
+    · a SLOT that holds the chosen VISUAL (today: the catalog list;
+      tomorrow, any list-style visual — it's routed through the dispatcher)
+  The summary VALUES are derived from whatever visual's data sits in the
+  slot (total items + category count), so the count is always truthful and
+  the contributor never types it. `unit` (default "item") sets the noun.
+
+  Usage:  {% include sections/catalog-section.html data=page.catalog %}
+  Data shape: title, unit?, visual?, tone?, footnote?, categories[] …
+{%- endcomment -%}
+{%- assign data = include.data -%}
+{%- assign unit = data.unit | default: 'item' -%}
+{%- assign ncats = data.categories | size -%}
+{%- assign total = 0 -%}
+{%- for c in data.categories -%}{%- assign s = c.items | size -%}{%- assign total = total | plus: s -%}{%- endfor -%}
+<section class="wiki-section catalog" data-tone="{{ data.tone | default: 'b' }}">
+  <div class="wiki-section-inner">
+    <div class="cat-head">
+      <div>
+        <div class="wiki-section-eyebrow">{% include icon.html name="list-ordered" %} Full Catalog</div>
+        <h2 class="wiki-section-title">{{ data.title }}</h2>
+      </div>
+      <div class="cat-summary">{{ total }} {{ unit }}{% if total != 1 %}s{% endif %} &middot; {{ ncats }} categor{% if ncats == 1 %}y{% else %}ies{% endif %}</div>
+    </div>
+
+    {%- comment -%} the slot: route the chosen visual + its data through the dispatcher {%- endcomment -%}
+    {% include visual.html type=data.visual | default: 'catalog' data=data %}
+
+    {%- if data.footnote -%}<div class="cat-footnote">{{ data.footnote }}</div>{%- endif -%}
+  </div>
+</section>

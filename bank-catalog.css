@@ -3,14 +3,18 @@
    --------------------------------------------------------------------
    The first data-driven bank component. Structure + shape are universal;
    every color comes from skin/universal tokens (no hardcoded surfaces —
-   modest fallbacks only). The section eyebrow ("Full Catalog") and H2 use
-   the universal DOCUMENT classes (.wiki-section-eyebrow / -title); every-
-   thing below is widget type, owned here in the bank.
+   modest fallbacks only). The catalog SECTION (sections/catalog-section)
+   owns the framing — eyebrow ("Full Catalog") + the upper-right derived
+   summary, both on universal DOCUMENT classes; the VISUAL below is widget
+   type, owned here in the bank.
    ════════════════════════════════════════════════════════════════════ */
 
-/* ── Catalog (the masonry list) ─────────────────────────────────────── */
-.catalog .cat-summary{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-foreground,#777);margin-top:8px}
-.catalog .cat-masonry{columns:2;column-gap:16px;margin-top:26px}
+/* ── Catalog SECTION chrome — eyebrow (left) + summary (upper-right) ─── */
+.catalog .cat-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:24px}
+.catalog .cat-summary{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-foreground,#777)}
+
+/* ── Catalog VISUAL (the masonry list) ──────────────────────────────── */
+.catalog .cat-masonry{columns:2;column-gap:16px}
 
 .cat-card{position:relative;overflow:hidden;break-inside:avoid;margin-bottom:16px;
   background:var(--card,#fff);border:1px solid var(--divider,rgba(0,0,0,.1));border-left:4px solid var(--cat-color);
