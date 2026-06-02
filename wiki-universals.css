@@ -50,23 +50,13 @@
   --prose-color:          currentColor;
   --prose-strong-color:   currentColor;
 
-  /* ── Prose sizing (the ONE universal switch for body copy size) ──
-     Every piece of canonical prose reads these, so prose size/leading is
-     retuned in exactly one place. Anything that should track prose size
-     (e.g. prose-equivalent body text inside visuals) must reference these
-     tokens rather than hardcoding a px value. Default matches the body base
-     (wiki-typography.css), so wiring this up changes nothing visually until
-     a skin (or this default) repoints it. These are SIZE only — distinct
-     type roles (eyebrows, titles, stat numbers, infobox values) keep their
-     own sizes by design. Two prose tiers, both switchable:
-       --wiki-prose-size    → main body copy (the default reading size)
-       --wiki-prose-sm-size → secondary body copy (captions, modal text,
-                              comparison paragraphs, in-visual descriptions —
-                              text that reads as prose but a notch smaller)
-     Both share one leading so retuning rhythm is a single edit. */
-  --wiki-prose-size:      15px;
-  --wiki-prose-sm-size:   14px;
-  --wiki-prose-leading:   1.65;
+  /* ── Prose / body sizing ──
+     The body roles — --wiki-prose-size (body), --wiki-prose-sm-size
+     (body-sm) and --wiki-prose-leading — now live with the full 8-role
+     type scale in wiki-typography.css (the single home for ALL type
+     sizing). Components in this file still read them via var(); they
+     resolve from the type canon (loaded first). Size is universal: skins
+     set color, never size. */
 
   /* ── Hero color tokens (defaults; skins override) ──────────────────
      The hero is a UNIVERSAL element (every wiki, home + sub-pages), so its

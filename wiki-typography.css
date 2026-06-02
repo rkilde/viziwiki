@@ -47,3 +47,85 @@ body {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   letter-spacing: 0.05em;
 }
+
+
+/* ════════════════════════════════════════════════════════════════════
+   TYPE ROLE SYSTEM — the locked, universal typographic scale
+   ════════════════════════════════════════════════════════════════════
+   Every piece of text on the ViziWiki product (the whole repo EXCEPT the
+   top-10 vizi-verse page) is one of these EIGHT roles. Sizes are UNIVERSAL
+   and FIXED: a wiki/skin sets COLOR + decoration, never size. When the
+   builder ships, a contributor never chooses a size — the component they
+   drop in already maps its text to the correct role.
+
+   One source of truth (the tokens), delivered two ways:
+     • tokens  --t-<role>-size / -leading / -tracking   (components read these)
+     • class   .t-<role>                                 (markup / builder emit)
+
+   Roles, largest → smallest:
+     display · title · subtitle · body · body-sm · caption · label · micro
+   ════════════════════════════════════════════════════════════════════ */
+:root {
+  /* ── Headings (Fraunces) ── */
+  --t-display-size:      clamp(40px, 6vw, 80px);
+  --t-display-leading:   1.05;
+  --t-display-tracking:  -0.03em;
+
+  --t-title-size:        30px;          /* → 36px ≥768 (media block below) */
+  --t-title-leading:     1.15;
+  --t-title-tracking:    -0.02em;
+
+  --t-subtitle-size:     18px;          /* → 20px ≥768 (media block below) */
+  --t-subtitle-leading:  1.25;
+  --t-subtitle-tracking: -0.01em;
+
+  /* ── Reading text (Spectral) ──
+     Body + Body-sm keep their established --wiki-prose-* names (already
+     referenced sitewide) — they ARE the body roles. Defined here so ALL
+     type sizing lives in one file (the type canon). */
+  --wiki-prose-size:     15px;          /* = body    */
+  --wiki-prose-sm-size:  14px;          /* = body-sm */
+  --wiki-prose-leading:  1.65;          /* shared reading leading */
+  --t-caption-size:      13px;
+  --t-caption-leading:   1.5;
+
+  /* ── Labels (JetBrains Mono · uppercase · tracked) ── */
+  --t-label-size:        10px;
+  --t-label-tracking:    0.08em;
+  --t-micro-size:        9px;
+  --t-micro-tracking:    0.12em;
+}
+@media (min-width: 768px) {
+  :root {
+    --t-title-size:      36px;
+    --t-subtitle-size:   20px;
+  }
+}
+
+/* Role classes — one bundle each, every value read from the tokens above. */
+.t-display, .t-title, .t-subtitle {
+  font-family: 'Fraunces', 'Spectral', Georgia, serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+  font-weight: 600;
+}
+.t-display  { font-size: var(--t-display-size);  line-height: var(--t-display-leading);  letter-spacing: var(--t-display-tracking); }
+.t-title    { font-size: var(--t-title-size);    line-height: var(--t-title-leading);    letter-spacing: var(--t-title-tracking); }
+.t-subtitle { font-size: var(--t-subtitle-size); line-height: var(--t-subtitle-leading); letter-spacing: var(--t-subtitle-tracking); }
+
+.t-body, .t-body-sm, .t-caption {
+  font-family: 'Spectral', Georgia, serif;
+  font-weight: 400;
+}
+.t-body     { font-size: var(--wiki-prose-size);    line-height: var(--wiki-prose-leading); }
+.t-body-sm  { font-size: var(--wiki-prose-sm-size); line-height: var(--wiki-prose-leading); }
+.t-caption  { font-size: var(--t-caption-size);     line-height: var(--t-caption-leading); }
+
+.t-label, .t-micro {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-weight: 500;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+.t-label    { font-size: var(--t-label-size); letter-spacing: var(--t-label-tracking); }
+.t-micro    { font-size: var(--t-micro-size); letter-spacing: var(--t-micro-tracking); }
