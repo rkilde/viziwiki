@@ -17,6 +17,15 @@
    archive pages, so these generic class names never leak elsewhere.
    ════════════════════════════════════════════════════════════════════ */
 
+/* ── Preflight (Tailwind base reset essentials) ─────────────────────
+   The CDN script applied these globally; box-sizing + margin/padding are
+   already reset in default.html, but these two are not — without them the
+   <ol> shows default list numbers and `border-dashed` paints all four
+   sides (a box) because the default border-width isn't zeroed. Utility
+   classes below override the zero width on the sides they target. */
+*, ::before, ::after { border-width: 0; border-style: solid; border-color: currentColor; }
+ol, ul { list-style: none; }
+
 /* ── Display / position ─────────────────────────────────────────── */
 .relative { position: relative; }
 .absolute { position: absolute; }
