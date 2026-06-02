@@ -82,10 +82,7 @@
 .swim-year {
   flex: 1;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: var(--t-data-size);
-  letter-spacing: var(--t-data-tracking);
-  font-weight: var(--t-data-weight);
-  font-variant-numeric: tabular-nums;
+  font-size: 8px;
   color: var(--muted-foreground);
   text-align: center;          /* override to left/right on first/last inline */
 }
@@ -108,10 +105,7 @@
   width: var(--swim-gutter);
   flex-shrink: 0;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: var(--t-data-size);
-  letter-spacing: var(--t-data-tracking);
-  font-weight: var(--t-data-weight);
-  font-variant-numeric: tabular-nums;
+  font-size: 8px;
   text-align: right;
   padding-right: 10px;
   color: var(--foreground);
@@ -159,10 +153,7 @@
 
 .swim-bar-text {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: var(--t-data-size);
-  letter-spacing: var(--t-data-tracking);
-  font-weight: var(--t-data-weight);
-  font-variant-numeric: tabular-nums;
+  font-size: 7px;
   color: rgba(255, 255, 255, 0.85);
 }
 
@@ -172,10 +163,7 @@
   top: 50%;
   transform: translateY(-50%);
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: var(--t-data-size);
-  letter-spacing: var(--t-data-tracking);
-  font-weight: var(--t-data-weight);
-  font-variant-numeric: tabular-nums;
+  font-size: 7px;
   color: var(--muted-foreground);
 }
 
@@ -204,9 +192,6 @@
 }
 .swim-legend-label {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: var(--t-data-size);
-  letter-spacing: var(--t-data-tracking);
-  font-weight: var(--t-data-weight);
-  font-variant-numeric: tabular-nums;
+  font-size: 7px;
   color: var(--muted-foreground);
 }

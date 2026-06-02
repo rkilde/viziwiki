@@ -89,10 +89,8 @@ body {
   --t-subtitle-tracking: -0.01em;
   --t-subtitle-weight:   600;
 
-  /* Numeral — display figures (stat values); Fraunces, tabular nums.
-     Wide clamp so it serves both the 4-up stat grid (16px floor fits phones)
-     and standalone big figures (32px desktop). */
-  --t-numeral-size:      clamp(16px, 5vw, 32px);
+  /* Numeral — display figures (stat values); Fraunces, tabular nums */
+  --t-numeral-size:      clamp(24px, 3vw, 32px);
   --t-numeral-leading:   1;
   --t-numeral-tracking:  -0.03em;
   --t-numeral-weight:    600;
@@ -108,15 +106,16 @@ body {
   --t-caption-size:      13px;
   --t-caption-leading:   1.5;
 
-  /* ── Labels (JetBrains Mono · uppercase) — TWO tracking tiers ──
-     Label = standalone overlines/eyebrows (wide). Micro = in-component
-     tags / keys / sublabels / chips / badges (tight, a notch smaller). */
+  /* ── Labels (JetBrains Mono · uppercase · tracked) ──
+     NOTE: --t-label-tracking is grounded in the eyebrow (0.3em). Other
+     label-family uses today vary (stat sublabels ~0.05em, pills ~0.18em);
+     snapping them to one canonical value is a Step-2 decision (previewed). */
   --t-label-size:        10px;
-  --t-label-tracking:    0.25em;
+  --t-label-tracking:    0.3em;
   --t-label-weight:      400;
   --t-micro-size:        9px;
-  --t-micro-tracking:    0.1em;
-  --t-micro-weight:      400;
+  --t-micro-tracking:    0.12em;
+  --t-micro-weight:      500;
   --t-data-size:         7px;           /* chart axis / dense data labels (tabular) */
   --t-data-tracking:     0.04em;
   --t-data-weight:       400;

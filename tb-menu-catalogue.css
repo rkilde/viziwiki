@@ -42,7 +42,7 @@
 }
 .cat-group-label {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: var(--t-label-size); text-transform: uppercase; letter-spacing: var(--t-label-tracking); font-weight: var(--t-label-weight);
+  font-size: 10px; text-transform: uppercase; letter-spacing: .22em;
 }
 .cat-group-note {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
@@ -52,7 +52,7 @@
 .cat-group-count {
   margin-left: auto;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: var(--t-micro-size); letter-spacing: var(--t-micro-tracking); font-weight: var(--t-micro-weight); color: var(--muted-foreground);
+  font-size: 9px; letter-spacing: .12em; color: var(--muted-foreground);
 }
 
 /* ── Tile grid ──────────────────────────────────────────────────── */
@@ -112,25 +112,25 @@
 .tile-eyebrow {
   display: flex; align-items: center;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: var(--t-micro-size); text-transform: uppercase; letter-spacing: var(--t-micro-tracking); font-weight: var(--t-micro-weight);
+  font-size: 8px; text-transform: uppercase; letter-spacing: .22em;
   color: rgba(255,255,255,.7);
 }
 .tile-title {
   font-family: 'Fraunces', Georgia, serif;
-  font-size: var(--t-subtitle-size); line-height: var(--t-subtitle-leading); letter-spacing: var(--t-subtitle-tracking); font-weight: var(--t-subtitle-weight); margin-top: .3rem;
+  font-size: 1.1875rem; font-weight: 600; line-height: 1.2; margin-top: .3rem;
 }
 .tile-range {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: var(--t-data-size); color: rgba(255,255,255,.65); margin-top: .25rem; letter-spacing: var(--t-data-tracking); font-weight: var(--t-data-weight); font-variant-numeric: tabular-nums;
+  font-size: 8.5px; color: rgba(255,255,255,.65); margin-top: .25rem; letter-spacing: .06em;
 }
 .tile-desc {
-  font-size: var(--t-caption-size); line-height: var(--t-caption-leading); color: rgba(255,255,255,.82);
+  font-size: 12.5px; line-height: 1.55; color: rgba(255,255,255,.82);
   margin-top: .625rem; max-width: 220px;
 }
 .tile-status-pill {
   display: inline-flex; align-items: center; gap: 4px; margin-top: .75rem;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: var(--t-micro-size); text-transform: uppercase; letter-spacing: var(--t-micro-tracking); font-weight: var(--t-micro-weight);
+  font-size: 7.5px; text-transform: uppercase; letter-spacing: .16em;
   padding: 2px 7px; border-radius: 999px;
   border: 1px solid rgba(255,255,255,.3); background: rgba(255,255,255,.12); color: rgba(255,255,255,.85);
 }

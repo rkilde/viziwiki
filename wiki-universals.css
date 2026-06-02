@@ -466,20 +466,19 @@
   padding: 12px;
   background: var(--hero-stat-cell-bg, rgba(0,0,0,.25));
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: var(--t-micro-size);          /* type scale · Micro (stat sublabel) */
-  font-weight: var(--t-micro-weight);
+  font-size: 10px;
   text-transform: uppercase;
-  letter-spacing: var(--t-micro-tracking);
+  letter-spacing: 0.05em;
 }
 
 .wiki-hero-stat-num {
   font-family: 'Fraunces', Georgia, serif;
-  font-size: var(--t-numeral-size);        /* type scale · Numeral (clamp 16 → 32) */
-  font-weight: var(--t-numeral-weight);
-  letter-spacing: var(--t-numeral-tracking);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   text-transform: none;
   color: var(--hero-stat-num, currentColor);
-  line-height: var(--t-numeral-leading);
+  line-height: 1.1;
 }
 
 .wiki-hero-stat-label {
@@ -487,12 +486,18 @@
   color: var(--hero-stat-label, rgba(255,255,255,.6));
 }
 
-/* Mobile — stays 4 columns. Type sizes are now role-driven (Micro is
-   constant; Numeral's clamp does the mobile shrink), so only the cell
-   padding tightens here. */
+/* Mobile scaling — stays 4 columns, just smaller */
 @media (max-width: 767px) {
   .wiki-hero-stat {
     padding: 8px 6px;
+    font-size: 8px;
+    letter-spacing: 0.04em;
+  }
+  .wiki-hero-stat-num {
+    font-size: 16px;
+  }
+  .wiki-hero-stat-label {
+    font-size: 8px;
   }
 }
 
@@ -529,25 +534,24 @@
 .wiki-hero-spotlight-eyebrow {
   margin-bottom: 12px;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: var(--t-label-size);          /* type scale · Label */
-  font-weight: var(--t-label-weight);
+  font-size: 10px;
   text-transform: uppercase;
-  letter-spacing: var(--t-label-tracking);
+  letter-spacing: 0.2em;
   color: var(--hero-spotlight-eyebrow);
 }
 .wiki-hero-spotlight-title {
   margin: 0;
   font-family: 'Fraunces', Georgia, serif;
-  font-size: var(--t-title-size);          /* type scale · Title (30 → 36) */
-  font-weight: var(--t-title-weight);
-  line-height: var(--t-title-leading);
-  letter-spacing: var(--t-title-tracking);
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
   color: var(--hero-spotlight-title);
 }
 .wiki-hero-spotlight-desc {
   margin: 8px 0 0;
-  font-size: var(--wiki-prose-sm-size);    /* type scale · Body-sm */
-  line-height: var(--wiki-prose-leading);
+  font-size: 14px;
+  line-height: 1.55;
   color: var(--hero-spotlight-desc);
 }
 .wiki-hero-spotlight-tags {
@@ -556,10 +560,9 @@
   gap: 8px;
   margin-top: 16px;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: var(--t-micro-size);          /* type scale · Micro (tag) */
-  font-weight: var(--t-micro-weight);
+  font-size: 9px;
   text-transform: uppercase;
-  letter-spacing: var(--t-micro-tracking);
+  letter-spacing: 0.05em;
 }
 .wiki-hero-spotlight-tag {
   padding: 2px 8px;
@@ -578,10 +581,9 @@
   background: var(--hero-spotlight-cta-bg);
   color: var(--hero-spotlight-cta-text);
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: var(--t-micro-size);          /* type scale · Micro (CTA) */
-  font-weight: var(--t-micro-weight);
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: var(--t-micro-tracking);
+  letter-spacing: 0.05em;
   cursor: pointer;
   transition: background .15s ease;
 }
@@ -612,25 +614,23 @@
   justify-content: space-between;
   margin-bottom: 12px;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: var(--t-label-size);          /* type scale · Label */
-  font-weight: var(--t-label-weight);
+  font-size: 10px;
   text-transform: uppercase;
-  letter-spacing: var(--t-label-tracking);
+  letter-spacing: 0.2em;
   color: var(--hero-feature-label);
 }
 .wiki-hero-feature-title {
   margin: 0;
   font-family: 'Fraunces', Georgia, serif;
-  font-size: var(--t-title-size);          /* type scale · Title (was 48 → 30/36) */
-  font-weight: var(--t-title-weight);
-  line-height: var(--t-title-leading);
-  letter-spacing: var(--t-title-tracking);
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1;
   color: var(--hero-feature-title);
 }
 .wiki-hero-feature-desc {
   margin: 12px 0 0;
-  font-size: var(--wiki-prose-sm-size);    /* type scale · Body-sm */
-  line-height: var(--wiki-prose-leading);
+  font-size: 14px;
+  line-height: 1.55;
   color: var(--hero-feature-desc);
 }
 .wiki-hero-feature-stats {
@@ -639,10 +639,9 @@
   gap: 8px;
   margin-top: 16px;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: var(--t-micro-size);          /* type scale · Micro (chip) */
-  font-weight: var(--t-micro-weight);
+  font-size: 9px;
   text-transform: uppercase;
-  letter-spacing: var(--t-micro-tracking);
+  letter-spacing: 0.05em;
 }
 .wiki-hero-feature-chip {
   padding: 6px 8px;
@@ -750,9 +749,8 @@
 
 .wiki-infobox-label {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: var(--t-label-size);          /* type scale · Label */
-  font-weight: var(--t-label-weight);
-  letter-spacing: var(--t-label-tracking);
+  font-size: 9px;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--infobox-label-color, currentColor);
 }
@@ -761,10 +759,10 @@
   font-family: 'Fraunces', 'Spectral', Georgia, serif;
   font-optical-sizing: auto;
   font-variation-settings: "SOFT" 30, "WONK" 0;
-  font-size: var(--t-subtitle-size);       /* type scale · Subtitle (was 20 → 17/19) */
-  font-weight: var(--t-subtitle-weight);
-  line-height: var(--t-subtitle-leading);
-  letter-spacing: var(--t-subtitle-tracking);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
   margin-top: 2px;
   color: var(--infobox-title-color, currentColor);
 }
@@ -800,15 +798,14 @@
 
 .wiki-infobox-data > dt {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: var(--t-micro-size);          /* type scale · Micro (key) */
-  font-weight: var(--t-micro-weight);
-  letter-spacing: var(--t-micro-tracking);
+  font-size: 10px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--infobox-key-color, currentColor);
 }
 
 .wiki-infobox-data > dd {
-  font-size: var(--wiki-prose-sm-size);    /* type scale · Body-sm (value) */
+  font-size: 14px;
   color: var(--infobox-value-color, currentColor);
 }
 
@@ -832,9 +829,8 @@
   padding: 3px 8px;
   border-radius: 3px;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: var(--t-micro-size);          /* type scale · Micro (badge) */
-  font-weight: var(--t-micro-weight);
-  letter-spacing: var(--t-micro-tracking);
+  font-size: 9px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   border: 1px solid var(--infobox-badge-border, var(--infobox-divider, currentColor));
   color: var(--infobox-badge-color, var(--infobox-key-color, currentColor));
