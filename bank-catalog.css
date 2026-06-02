@@ -48,10 +48,13 @@
 .cat-details{display:none}
 
 /* ── Expandable Card (modal) ────────────────────────────────────────── */
-/* z-index 99: dims the page-title bar / breadcrumb (also 99 → overlay wins by
-   DOM order) and all page content, while staying BELOW the white top nav bar
-   (100) and the left Contents/TOC rail (102) — both stay bright + operable. */
-.modal-ov{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;z-index:99;background:rgba(0,0,0,.45);backdrop-filter:blur(4px)}
+/* z-index 98: below ALL of the page's nav chrome — the mobile top bar (99),
+   z-index 999: the expanded card sits ABOVE all page chrome — the top nav
+   (100), the Contents rail (110), every backdrop — so the WHOLE page dims and
+   goes inoperable behind it (the original hand-built behavior). fixed+inset:0
+   centers the card in the true viewport, unaffected by rail state or content
+   padding. Dim tint = the skin's own foreground (TB's warm brown), universal. */
+.modal-ov{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;z-index:999;background:color-mix(in oklab,var(--foreground,#000) 52%,transparent);backdrop-filter:blur(4px)}
 .modal-ov.open{display:flex}
 .modal-card{position:relative;width:100%;max-width:460px;background:var(--card,#fff);border-radius:var(--card-shape,14px);border-left:5px solid var(--cat-color);box-shadow:0 24px 64px rgba(0,0,0,.28);overflow:clip}
 .modal-scroll{max-height:85vh;overflow-y:auto;padding:24px 24px 22px}
