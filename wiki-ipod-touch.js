@@ -112,7 +112,7 @@ function paraList(paras){
 }
 
 function secLabel(icon, text){
-  return '<div class="sec-label">'+icon+text+'</div>';
+  return '<div class="wiki-section-eyebrow">'+icon+text+'</div>';
 }
 
 // ── renderHero ────────────────────────────────────────────────────────
@@ -122,19 +122,19 @@ function renderHero(){
   var el = document.getElementById('hero-content');
   if(!el) return;
   el.innerHTML =
-    '<div class="hero-eyebrow jb"><span class="eyebrow-dot"></span>'+h.eyebrow+'</div>'
-    +'<h1 class="hero-title fr">'+h.title+'</h1>'
+    '<div class="wiki-hero-eyebrow"><span class="wiki-hero-eyebrow-dot"></span>'+h.eyebrow+'</div>'
+    +'<h1 class="wiki-hero-title">'+h.title+'</h1>'
     +'<div class="hero-gen">'
     +'  <span class="hero-gen-name fr">'+h.gen+'</span>'
     +'  <span class="hero-gen-sep"> · </span>'
     +'  <span class="hero-gen-model jb">Model <span>'+h.model+'</span></span>'
     +'</div>'
-    +'<p class="hero-intro">'+h.intro+'</p>'
-    +'<div class="stats-grid">'
+    +'<p class="wiki-hero-desc">'+h.intro+'</p>'
+    +'<div class="wiki-hero-stats">'
     + h.stats.map(function(s){
-        return '<div class="stat-cell">'
-          +'<span class="stat-val fr">'+s.val+'</span>'
-          +'<span class="stat-lbl">'+s.lbl+'</span>'
+        return '<div class="wiki-hero-stat">'
+          +'<span class="wiki-hero-stat-num">'+s.val+'</span>'
+          +'<span class="wiki-hero-stat-label">'+s.lbl+'</span>'
           +'</div>';
       }).join('')
     +'</div>';
@@ -147,11 +147,12 @@ function renderOverview(){
   if(!el) return;
   var ib = o.infobox;
   el.innerHTML =
-    '<div class="ov-inner">'
-    +'<div class="ov-text">'
-    +'<div class="sec-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Overview</div>'
-    +'<h2 class="sec-h2 fr" style="margin-bottom:24px;">'+PAGE_DATA.overview.heading+'</h2>'
-    + paraList(o.paragraphs)
+    '<div class="wiki-section-inner">'
+    +'<div class="wiki-overview">'
+    +'<div class="wiki-overview-prose">'
+    +'<div class="wiki-section-eyebrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Overview</div>'
+    +'<h2 class="wiki-section-title" style="margin-bottom:24px;">'+PAGE_DATA.overview.heading+'</h2>'
+    +'<div class="wiki-section-prose">'+ paraList(o.paragraphs) +'</div>'
     +'</div>'
     +'<aside class="wiki-infobox">'
     +'  <div class="wiki-infobox-header">'
@@ -163,14 +164,15 @@ function renderOverview(){
     +'  </dl>'
     + (ib.discontinued ? '<span class="wiki-infobox-badge">'+ib.discontinued+'</span>' : '')
     +'</aside>'
-    +'</div>';
+    +'</div>'   /* close .wiki-overview */
+    +'</div>';  /* close .wiki-section-inner */
 }
 
 // ── renderPhotoRail ───────────────────────────────────────────────────
 function renderPhotoRail(){
   var el = document.getElementById('photo-rail-inner');
   if(!el) return;
-  el.innerHTML = '<div class="photo-rail-scroll" id="photoRailScroll">'
+  el.innerHTML = '<div class="photo-rail-scroll wiki-section-bleed" id="photoRailScroll">'
     +'<div class="photo-rail-label">Photo archive <span>→</span></div>'
     + PAGE_DATA.photos.map(function(im){
         return '<div class="photo-rail-card">'
@@ -223,11 +225,11 @@ function renderTLHeader(){
   if(!el) return;
   var tl = PAGE_DATA.timeline;
   el.innerHTML =
-    '<div class="sec-label tl-label">'+
+    '<div class="wiki-section-eyebrow tl-label">'+
     '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'
     +'History'
     +'</div>'
-    +'<h2 class="sec-h2 fr" style="margin-bottom:24px;">'+tl.heading+'</h2>'
+    +'<h2 class="wiki-section-title" style="margin-bottom:24px;">'+tl.heading+'</h2>'
     +'<div class="tl-scroll-hint jb">'+tl.hint+'</div>';
 }
 
@@ -267,12 +269,12 @@ function renderDelta(){
   var swIcon = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>';
 
   el.innerHTML =
-    '<div class="delta-inner">'
-    +'<div class="sec-label">'
+    '<div class="wiki-section-inner">'
+    +'<div class="wiki-section-eyebrow">'
     +'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>'
     +'Generation delta'
     +'</div>'
-    +'<h2 class="sec-h2 fr" style="margin-bottom:24px;">'+d.heading+'</h2>'
+    +'<h2 class="wiki-section-title" style="margin-bottom:24px;">'+d.heading+'</h2>'
     +(d.intro?'<div class="delta-prose"><p>'+d.intro+'</p></div>':'')
     +'<div class="gd-wrap">'
     +'<table class="gd"><colgroup><col class="gd-c1"><col class="gd-c2"><col class="gd-c3"></colgroup>'
@@ -329,12 +331,12 @@ function renderCfg(){
   }
 
   el.innerHTML =
-    '<div class="cfg-inner">'
-    +'<div class="sec-label">'
+    '<div class="wiki-section-inner">'
+    +'<div class="wiki-section-eyebrow">'
     +'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" x2="2" y1="12" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" x2="6.01" y1="16" y2="16"/><line x1="10" x2="10.01" y1="16" y2="16"/></svg>'
     +'Configurations'
     +'</div>'
-    +'<h2 class="sec-h2 fr" style="margin-bottom:24px;">'+c.heading+'</h2>'
+    +'<h2 class="wiki-section-title" style="margin-bottom:24px;">'+c.heading+'</h2>'
     +(c.intro && (c.intro[0]||c.intro[1])
       ? '<div class="cfg-prose">'
         +(c.intro[0]?'<p>'+c.intro[0]+'</p>':'')
@@ -363,9 +365,9 @@ function renderProseRail(elId, secData, labelIcon, labelText){
   el.innerHTML =
     '<div class="wiki-section-inner">'
     +'<div class="design-cols">'
-    +'<div class="wiki-prose-full">'
-    +'<div class="sec-label">'+labelIcon+labelText+'</div>'
-    +'<h2 class="sec-h2 fr" style="margin-bottom:24px;">'+secData.heading+'</h2>'
+    +'<div class="wiki-section-prose">'
+    +'<div class="wiki-section-eyebrow">'+labelIcon+labelText+'</div>'
+    +'<h2 class="wiki-section-title" style="margin-bottom:24px;">'+secData.heading+'</h2>'
     + paraList(secData.paragraphs)
     +'</div>'
     +'<div class="design-img-rail" id="'+elId+'Rail">'
@@ -391,13 +393,13 @@ function renderJailbreak(){
   }).join('');
   el.innerHTML =
     '<div class="wiki-section-inner">'
-    +'<div class="sec-label">'
+    +'<div class="wiki-section-eyebrow">'
     +'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>'
     +'Jailbreaking'
     +'</div>'
-    +'<h2 class="sec-h2 fr" style="margin-bottom:24px;">'+jb.heading+'</h2>'
+    +'<h2 class="wiki-section-title" style="margin-bottom:24px;">'+jb.heading+'</h2>'
     +'<div class="jb-two-col">'
-    +'<div class="wiki-prose">'+paraList(jb.paragraphs)+'</div>'
+    +'<div class="wiki-section-prose">'+paraList(jb.paragraphs)+'</div>'
     + JB_CHART_HTML
     +'</div>'
     +'<div class="jb-models">'+modelsHtml+'</div>'
@@ -411,12 +413,12 @@ function renderBudget(){
   if(!el) return;
   el.innerHTML =
     '<div class="wiki-section-inner">'
-    +'<div class="sec-label">'
+    +'<div class="wiki-section-eyebrow">'
     +'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>'
     +'Market positioning'
     +'</div>'
-    +'<h2 class="sec-h2 fr" style="margin-bottom:24px;">'+bu.heading+'</h2>'
-    +'<div class="wiki-prose-full">'+paraList(bu.paragraphs)+'</div>'
+    +'<h2 class="wiki-section-title" style="margin-bottom:24px;">'+bu.heading+'</h2>'
+    +'<div class="wiki-section-prose">'+paraList(bu.paragraphs)+'</div>'
     +'</div>';
 }
 
@@ -440,12 +442,12 @@ function renderOS(){
       +'</div>';
   }).join('');
   el.innerHTML =
-    '<div class="os-inner">'
-    +'<div class="sec-label">'
+    '<div class="wiki-section-inner">'
+    +'<div class="wiki-section-eyebrow">'
     +'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>'
     +'Operating system support'
     +'</div>'
-    +'<h2 class="sec-h2 fr" style="margin-bottom:24px;">'+os.heading+'</h2>'
+    +'<h2 class="wiki-section-title" style="margin-bottom:24px;">'+os.heading+'</h2>'
     +'<div class="os-prose">'+paraList(os.paragraphs)+'</div>'
     +'<div class="lane-wrap">'
     +'<div class="lane-head">'
@@ -470,17 +472,17 @@ function renderControversies(){
   if(!el) return;
   var subIcon = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>';
   var proseHtml = co.items.map(function(item, ci){
-    return '<div class="wiki-sub">'+(item.icon||subIcon)+item.title+'</div><p>'+item.body+'</p>';
+    return '<div class="wiki-section-subtitle">'+(item.icon||subIcon)+item.title+'</div><p>'+item.body+'</p>';
   }).join('\n');
   el.innerHTML =
     '<div class="wiki-section-inner">'
     +'<div class="design-cols">'
-    +'<div class="wiki-prose-full">'
-    +'<div class="sec-label">'
+    +'<div class="wiki-section-prose">'
+    +'<div class="wiki-section-eyebrow">'
     +'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>'
     +'Controversies'
     +'</div>'
-    +'<h2 class="sec-h2 fr" style="margin-bottom:24px;">'+co.heading+'</h2>'
+    +'<h2 class="wiki-section-title" style="margin-bottom:24px;">'+co.heading+'</h2>'
     + proseHtml
     +'</div>'
     +'<div class="design-img-rail" id="contrRail">'
@@ -500,7 +502,7 @@ function renderSpecs(){
   var eyebrowIcon = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>';
 
   el.innerHTML =
-    '<div class="spec-inner">'
+    '<div class="wiki-section-inner">'
     +'<div class="spec-eyebrow jb">'+eyebrowIcon+'Technical specifications</div>'
     +'<div class="spec-title fr">'+sp.specHeading+'</div>'
     +'<div class="spec-sub jb">'+sp.specSub+'</div>'

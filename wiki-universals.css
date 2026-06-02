@@ -89,6 +89,21 @@
 
 
 /* ════════════════════════════════════════════════════════════════════
+   §2-b — FULL-BLEED SCROLLER  (canonical edge-to-edge rail / timeline)
+   ════════════════════════════════════════════════════════════════════
+   For horizontal scrollers (timelines, photo rails) meant to run off the
+   screen edge. Put this on the SCROLL container, placed INSIDE a normal
+   .wiki-section-inner — so the eyebrow/title above it keep the standard
+   gutters, and the scroller STARTS flush with the section's left gutter,
+   then breaks out to the right viewport edge and scrolls. One canonical
+   treatment for every full-bleed visual — edit here once.
+   ════════════════════════════════════════════════════════════════════ */
+.wiki-section-bleed {
+  margin-right: calc(50% - 50vw);   /* left stays at the gutter; right edge → viewport */
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
    §3 — BACKGROUND TONAL ALTERNATION + SECTION DIVIDER
    Sections alternate between tone-a and tone-b panels. The divider
    is a 1px border-bottom whose color comes from the skin token.
@@ -203,6 +218,32 @@
     font-size: 36px;           /* desktop — more presence at wider viewports */
   }
 }
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §6-b — SECTION SUBTITLE  (the site's <h3>: a sub-heading)
+   ════════════════════════════════════════════════════════════════════
+   A sub-heading that introduces a sub-topic *within* a section's prose,
+   typically followed by body text (e.g. each item in a Controversies
+   section). One canonical style sitewide. Supports an optional 12×12 icon
+   as a direct child, like the eyebrow.
+   ════════════════════════════════════════════════════════════════════ */
+.wiki-section-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 32px 0 8px;
+  font-family: 'Fraunces', 'Spectral', Georgia, serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--section-title-color, currentColor);
+}
+.wiki-section-subtitle > i,
+.wiki-section-subtitle > svg { width: 12px; height: 12px; flex: none; }
 
 
 /* ════════════════════════════════════════════════════════════════════
