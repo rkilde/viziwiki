@@ -61,6 +61,19 @@ body.wiki-taco-bell {
   --infobox-key-color:     rgba(42,31,21,0.55);
   --infobox-value-color:   #2a1f15;
   --infobox-divider:       rgba(42,31,21,0.10);
+
+  /* ── Bank tokens: shared divider + ribbon + the category accent palette
+        and the pre-defined status states (catalog / expandable-card bank) ── */
+  --divider:        color-mix(in oklab, var(--foreground) 10%, transparent);
+  --ribbon-fg:      #ffffff;
+  /* accent palette — categories auto-cycle through these (skin owns the set) */
+  --cat-accent-1:#b45309; --cat-accent-2:#3b6d11; --cat-accent-3:#9f1239;
+  --cat-accent-4:#0369a1; --cat-accent-5:#7c3aed; --cat-accent-6:#ca8a04;
+  /* pre-defined status states — label colors */
+  --st-active-bg:#dcfce7;                   --st-active-fg:#166534;
+  --st-discontinued-bg:rgba(42,31,21,0.08); --st-discontinued-fg:rgba(42,31,21,0.55);
+  --st-retired-bg:#fef3c7;                  --st-retired-fg:#92400e;
+  --st-limited-bg:#fde68a;                  --st-limited-fg:#78350f;
 }
 
 /* §13 section ordering — Taco Bell-specific section orders.

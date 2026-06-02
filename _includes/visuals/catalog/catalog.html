@@ -1,0 +1,105 @@
+{%- comment -%}
+  CATALOG bank component (Level B: data in → HTML out).
+  Renders the masonry list + each item's hidden detail content + the shared
+  expandable-card modal. All color/shape comes from skin/universal tokens.
+  Data shape (page front-matter or _data):
+    title, summary_note?, footnote?, tone?, categories[]
+      category: name, ribbon?, note?, items[]
+        item: name, status?, info?, desc, groups?[], callout?, cta?
+          group: label, pills[]  (pill = "string" OR {text:, struck:true})
+          callout: {label, text}
+{%- endcomment -%}
+{%- assign data = include.data -%}
+{%- assign total = 0 -%}
+{%- for c in data.categories -%}{%- assign s = c.items | size -%}{%- assign total = total | plus: s -%}{%- endfor -%}
+<section class="wiki-section catalog" data-tone="{{ data.tone | default: 'b' }}">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">
+      {%- comment -%} locked: "Full Catalog" + canonical icon (TBD) {%- endcomment -%}
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      Full Catalog
+    </div>
+    <h2 class="wiki-section-title">{{ data.title }}</h2>
+    {%- if data.summary_note -%}<div class="cat-summary">{{ total }} items &middot; {{ data.summary_note }}</div>{%- endif -%}
+
+    <div class="cat-masonry">
+      {%- for cat in data.categories -%}
+        {%- assign cidx = forloop.index0 | modulo: 6 | plus: 1 -%}
+        {%- assign n = cat.items | size -%}
+        <div class="cat-card{% if cat.ribbon %} has-ribbon{% endif %}" style="--cat-color:var(--cat-accent-{{ cidx }})">
+          {%- if cat.ribbon -%}<div class="cat-ribbon"><span>{{ cat.ribbon }}</span></div>{%- endif -%}
+          <div class="cat-card-title">{{ cat.name }}</div>
+          <div class="cat-card-count">{{ n }} item{% if n != 1 %}s{% endif %}{% if cat.note %} &middot; {{ cat.note }}{% endif %}</div>
+          <div class="cat-card-divider"></div>
+          <div class="cat-card-pills">
+            {%- for item in cat.items -%}
+              <button type="button" class="cat-pill" data-detail="d-{{ forloop.parentloop.index0 }}-{{ forloop.index0 }}" data-color="var(--cat-accent-{{ cidx }})"{% if cat.ribbon %} data-ribbon="{{ cat.ribbon | escape }}"{% endif %}>{{ item.name }}</button>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if data.footnote -%}<div class="cat-footnote">{{ data.footnote }}</div>{%- endif -%}
+  </div>
+
+  {%- comment -%} hidden per-item detail content, cloned into the modal on click {%- endcomment -%}
+  <div class="cat-details">
+    {%- for cat in data.categories -%}
+      {%- for item in cat.items -%}
+        <div id="d-{{ forloop.parentloop.index0 }}-{{ forloop.index0 }}">
+          <div class="modal-headrow">
+            <span class="modal-eyebrow">{{ cat.name }}</span>
+            {%- if item.status -%}<span class="chip st-{{ item.status }}">{{ item.status | capitalize }}</span>{%- endif -%}
+            {%- if item.info -%}<span class="chip info">{{ item.info }}</span>{%- endif -%}
+          </div>
+          <h3 class="modal-title">{{ item.name }}</h3>
+          <p class="modal-desc">{{ item.desc }}</p>
+          {%- for grp in item.groups -%}
+            <div class="modal-group-label">{{ grp.label }}</div>
+            <div>{%- for p in grp.pills -%}{%- if p.text -%}<span class="gpill{% if p.struck %} struck{% endif %}">{{ p.text }}</span>{%- else -%}<span class="gpill">{{ p }}</span>{%- endif -%}{%- endfor -%}</div>
+          {%- endfor -%}
+          {%- if item.callout -%}<div class="modal-callout"><div class="modal-callout-label">{{ item.callout.label }}</div><div class="modal-callout-text">{{ item.callout.text }}</div></div>{%- endif -%}
+          <a class="modal-cta" href="{{ item.cta | default: '#' }}">See full entry &rarr;</a>
+          <span class="modal-cta-note">&#8627; auto-creates this item's page in the pages-builder, to fill out later</span>
+        </div>
+      {%- endfor -%}
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%} shared expandable-card modal shell {%- endcomment -%}
+  <div class="modal-ov" data-catalog-modal>
+    <div class="modal-card">
+      <div class="cat-ribbon" data-modal-ribbon></div>
+      <button type="button" class="modal-close" data-modal-close aria-label="Close">&times;</button>
+      <div class="modal-scroll" data-modal-body></div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  if(window.__catalogBank)return; window.__catalogBank=1;
+  function closeAll(){var o=document.querySelectorAll('[data-catalog-modal].open');for(var i=0;i<o.length;i++)o[i].classList.remove('open');}
+  document.addEventListener('click',function(e){
+    var pill=e.target.closest('.cat-pill[data-detail]');
+    if(pill){
+      var modal=document.querySelector('[data-catalog-modal]');
+      var card=modal.querySelector('.modal-card');
+      var d=document.getElementById(pill.getAttribute('data-detail'));
+      if(!d)return;
+      card.style.setProperty('--cat-color', pill.getAttribute('data-color')||'var(--cat-accent-1)');
+      var rb=pill.getAttribute('data-ribbon');
+      modal.querySelector('[data-modal-ribbon]').innerHTML = rb ? '<span>'+rb+'</span>' : '';
+      card.classList.toggle('has-ribbon', !!rb);
+      modal.querySelector('[data-modal-body]').innerHTML = d.innerHTML;
+      modal.querySelector('[data-modal-body]').scrollTop=0;
+      modal.classList.add('open');
+      return;
+    }
+    if(e.target.closest('[data-modal-close]')){closeAll();return;}
+    if(e.target.hasAttribute('data-catalog-modal')){closeAll();return;}
+  });
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAll();});
+})();
+</script>

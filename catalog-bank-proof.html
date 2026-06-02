@@ -1,0 +1,75 @@
+---
+permalink: /catalog-bank-proof.html
+layout: default
+title: "Catalog Bank — Live Engine Proof · ViziWiki"
+body_class: "wiki-page wiki-taco-bell"
+extra_head: |
+  <link rel="stylesheet" href="/tb-editorial-base.css">
+  <link rel="stylesheet" href="/wiki-taco-bell-skin.css">
+  <link rel="stylesheet" href="/bank-catalog.css">
+catalog:
+  title: "Every active drink"
+  summary_note: "3 categories"
+  footnote: "Pricing note: fountain drinks $1.99–$3.19 by size; free refills in-store. Discontinued and limited items are shown for reference and may not be orderable."
+  categories:
+    - name: "Fountain Classics"
+      items:
+        - name: "Baja Blast"
+          status: active
+          info: "$3.19 · 220 cal"
+          desc: "The Mountain Dew exclusive — a tropical-lime soda available only at Taco Bell since 2004. The chain's single most iconic beverage."
+          groups:
+            - label: "Ingredients"
+              pills: ["Carbonated water", "HFCS", "Citrus", "Natural flavor"]
+            - label: "Pairs with"
+              pills: ["Crunchwrap", "Nachos", "Cinnamon Twists"]
+        - name: "Mtn Dew"
+          status: active
+          info: "$2.49"
+          desc: "The standard Mountain Dew fountain pour."
+        - name: "Pepsi"
+          status: active
+          info: "$2.49"
+          desc: "Standard cola; the PepsiCo anchor of the fountain."
+        - name: "Sierra Mist"
+          status: discontinued
+          info: "–2023"
+          desc: "The lemon-lime option, retired chain-wide when PepsiCo rebranded it to Starry."
+    - name: "Mountain Dew Line"
+      ribbon: "Discontinued"
+      note: "limited run"
+      items:
+        - name: "Sangrita Blast"
+          status: discontinued
+          info: "2013–2017"
+          desc: "A strawberry-citrus Mountain Dew variant tied to the original Cantina Bell era. Rotated out when the fountain valves were reallocated."
+          callout:
+            label: "Replaced by"
+            text: "Sweet Lightning took over the dedicated Dew valve at many locations."
+        - name: "Baja Blast Zero"
+          status: active
+          info: "$3.19 · 0 cal"
+          desc: "The zero-sugar version of Baja Blast — added as a permanent fountain option."
+        - name: "Spiked Lemonade"
+          status: limited
+          info: "2024 · LTO"
+          desc: "An alcohol-flavored (non-alcoholic) lemonade pilot in select Cantina locations."
+          groups:
+            - label: "Standard inclusions"
+              pills:
+                - "Lemonade base"
+                - "Dew syrup"
+                - { text: "Alcohol-free version", struck: true }
+    - name: "Frozen"
+      items:
+        - name: "Baja Blast Freeze"
+          status: active
+          info: "$2.99"
+          desc: "The frozen, slushie form of Baja Blast."
+        - name: "Wild Cherry Freeze"
+          status: active
+          info: "$2.99"
+          desc: "A wild-cherry frozen beverage."
+---
+
+{% include visual.html type="catalog" data=page.catalog %}

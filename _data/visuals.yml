@@ -1,0 +1,18 @@
+# ════════════════════════════════════════════════════════════════════
+# VISUAL BANK REGISTRY  (the heart of the 1.0 builder)
+# --------------------------------------------------------------------
+# Maps a visual TYPE → its component partial + the add-ons it allows.
+# The dispatcher (_includes/visual.html) routes a {type, data} pair to
+# the right partial. The future builder reads THIS file to populate the
+# component picker and to validate which add-ons are legal per type.
+# Add a bank component = add one entry here + its partial under
+# _includes/visuals/<bank>/.
+# ════════════════════════════════════════════════════════════════════
+
+catalog:
+  bank: lists
+  partial: visuals/catalog/catalog.html
+  pairs_with: expandable-card          # each item opens this
+  addons: [ribbon, footnote]           # catalog-level add-ons
+  card_addons: [status, info-chip, pill-group, callout]   # expandable-card add-ons
+  status_states: [active, discontinued, retired, limited] # pre-defined set

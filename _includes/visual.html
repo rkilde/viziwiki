@@ -1,0 +1,12 @@
+{%- comment -%}
+  VISUAL DISPATCHER (Level-B engine entry point)
+  Usage:  {% include visual.html type="catalog" data=page.catalog %}
+  Routes a visual TYPE + its data to the matching bank component partial.
+  Registry of types lives in _data/visuals.yml. To add a bank, add a
+  `when` below + the partial (Jekyll's include needs a literal path, so the
+  routing is an explicit case rather than a dynamic include).
+{%- endcomment -%}
+{%- case include.type -%}
+  {%- when 'catalog' -%}{%- include visuals/catalog/catalog.html data=include.data -%}
+  {%- else -%}<!-- visual bank: unknown type "{{ include.type }}" (not in _data/visuals.yml) -->
+{%- endcase -%}
