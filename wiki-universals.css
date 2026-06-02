@@ -235,10 +235,11 @@
   align-items: center;
   gap: 8px;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: var(--t-label-size);   /* type scale · Label (size only — keeps the wide eyebrow tracking + pinned leading) */
+  font-size: var(--t-label-size);             /* type scale · Label */
+  font-weight: var(--t-label-weight);
   line-height: 12px;           /* pinned to icon height — do not change without
                                   also updating the infobox margin-top offset */
-  letter-spacing: 0.3em;
+  letter-spacing: var(--t-label-tracking);
   text-transform: uppercase;
   color: var(--eyebrow-color, currentColor);
 }
@@ -264,9 +265,9 @@
   font-optical-sizing: auto;
   font-variation-settings: "SOFT" 30, "WONK" 0;
   font-size: var(--t-title-size);   /* type scale · Title (30 → 36 ≥768, the token scales it) */
-  font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  font-weight: var(--t-title-weight);
+  line-height: var(--t-title-leading);
+  letter-spacing: var(--t-title-tracking);
   margin-top: 0;               /* flush to eyebrow — reads as one unit */
   color: var(--section-title-color, currentColor);
 }
@@ -289,9 +290,9 @@
   font-optical-sizing: auto;
   font-variation-settings: "SOFT" 30, "WONK" 0;
   font-size: var(--t-subtitle-size);   /* type scale · Subtitle (17 → 19 ≥768) */
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
+  font-weight: var(--t-subtitle-weight);
+  line-height: var(--t-subtitle-leading);
+  letter-spacing: var(--t-subtitle-tracking);
   color: var(--section-title-color, currentColor);
 }
 .wiki-section-subtitle > i,
@@ -380,9 +381,10 @@
   background: var(--hero-eyebrow-bg);
   color: var(--hero-eyebrow-text);
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: var(--t-label-size);   /* type scale · Label (size only) */
+  font-size: var(--t-label-size);             /* type scale · Label */
+  font-weight: var(--t-label-weight);
   text-transform: uppercase;
-  letter-spacing: 0.3em;
+  letter-spacing: var(--t-label-tracking);
 }
 
 .wiki-hero-eyebrow-dot {
@@ -405,9 +407,9 @@
   margin: 0;
   font-family: 'Fraunces', Georgia, serif;
   font-size: var(--t-display-size);   /* type scale · Display (clamp 48 → 96) */
-  font-weight: 700;
-  line-height: 0.95;
-  letter-spacing: -0.02em;
+  font-weight: var(--t-display-weight);
+  line-height: var(--t-display-leading);
+  letter-spacing: var(--t-display-tracking);
   color: var(--hero-title-color);
 }
 
@@ -427,7 +429,7 @@
   margin: 24px 0 0;
   max-width: 36rem;
   font-size: var(--t-lead-size);   /* type scale · Lead (18, constant) */
-  line-height: 1.6;
+  line-height: var(--t-lead-leading);
   color: var(--hero-desc-color);
 }
 
