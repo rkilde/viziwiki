@@ -28,7 +28,7 @@
         <div class="wiki-section-eyebrow">{% include icon.html name="list-ordered" %} Full Catalog</div>
         <h2 class="wiki-section-title">{{ data.title }}</h2>
       </div>
-      <div class="cat-summary">{{ total }} {{ unit }}{% if total != 1 %}s{% endif %} &middot; {{ ncats }} categor{% if ncats == 1 %}y{% else %}ies{% endif %}</div>
+      <div class="cat-summary">{{ total }} {{ unit }}{% if total != 1 %}s{% endif %} &middot; {{ ncats }} categor{% if ncats == 1 %}y{% else %}ies{% endif %}{% if data.note %} &middot; {{ data.note }}{% endif %}</div>
     </div>
 
     {%- comment -%} the slot: route the chosen visual + its data through the dispatcher {%- endcomment -%}

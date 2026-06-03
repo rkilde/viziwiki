@@ -89,6 +89,15 @@ body.wiki-taco-bell {
   --cat-accent-11:#5a8a1a; /* limeade olive */
   --cat-accent-12:#854f0b; /* defunct ochre */
   --cat-accent-13:#185fa5; /* defunct blue  */
+  /* --- extended swatches (menu sub-page categories) --- */
+  --cat-accent-14:#b45309; /* taco sienna   */
+  --cat-accent-15:#6d28d9; /* burrito violet*/
+  --cat-accent-16:#0c4a6e; /* specialty blue*/
+  --cat-accent-17:#a16207; /* value amber   */
+  --cat-accent-18:#92400e; /* big-bell umber*/
+  --cat-accent-19:#44403c; /* stone gray    */
+  --cat-accent-20:#4d7c0f; /* griller olive */
+  --cat-accent-21:#991b1b; /* brick red     */
   /* pre-defined status states — label colors */
   --st-active-bg:#dcfce7;                   --st-active-fg:#166534;
   --st-discontinued-bg:rgba(42,31,21,0.08); --st-discontinued-fg:rgba(42,31,21,0.55);
