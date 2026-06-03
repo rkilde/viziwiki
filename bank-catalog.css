@@ -26,10 +26,12 @@
 .cat-card-divider{height:1px;background:var(--divider,rgba(0,0,0,.1));margin:12px 0}
 .cat-card-pills{display:flex;flex-wrap:wrap}
 /* --cat-pill-fg: THE single tweak point for every item-pill's resting text
-   color, site-wide. Slightly dropped from full strength (foreground @ 85%);
-   each skin's --foreground flows through. Hover swaps to the category color. */
+   color, site-wide. Foreground blended 85% onto the card (sRGB) — the exact
+   equivalent of the original rgba(foreground, .85) over a white card, the
+   "slightly dropped" look. (Mixing with transparent in oklab darkened it.)
+   Each skin's --foreground + --card flow through. Hover swaps to --cat-color. */
 .cat-pill{display:inline-block;margin:0 6px 6px 0;padding:5px 12px;border:1px solid var(--divider,rgba(0,0,0,.1));border-radius:4px;
-  background:var(--card,#fff);color:var(--cat-pill-fg,color-mix(in oklab,var(--foreground,#222) 85%,transparent));font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
+  background:var(--card,#fff);color:var(--cat-pill-fg,color-mix(in srgb,var(--foreground,#2a1f15) 85%,var(--card,#fff)));font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
 .cat-pill:hover{background:color-mix(in oklab,var(--cat-color) 9%,var(--card,#fff));border-color:color-mix(in oklab,var(--cat-color) 45%,transparent);color:var(--cat-color)}
 
 /* ADD-ON: ribbon (corner banner, typed text) */
