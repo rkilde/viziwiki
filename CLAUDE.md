@@ -147,6 +147,16 @@ did, on the iPod charts — hence this rule). **Rule of thumb: document text →
   archive pages) — a future de-Tailwind pass.
 - Smurfs keeps its own small inline icon sprite (custom Smurf art) — optional
   fold into the universal sprite.
+- **Bank CSS as a universal layer (deferred for now — kept separate on
+  purpose for organization).** Each bank's stylesheet (e.g. `bank-catalog.css`)
+  is already the single source for its visual, but it's currently *loaded*
+  ad-hoc (per-page `extra_head` on drinks/discontinued/proof; via the
+  `class-tb-menu` layout on the 5 menu pages). Once the bank set is built out,
+  promote bank stylesheets to a first-class universal layer — loaded **once**
+  in `_layouts/default.html` (alongside `wiki-universals.css`), and drop the
+  scattered per-page/layout links — so any page can use a bank with zero CSS
+  wiring. (Content is already single-source; this only systematizes the
+  *loading*.)
 - The **builder UI** itself (the 1.0 product) — built once enough components are
   data-driven banks.
 - **Vizi-verse** (the narrative side; currently only `top-10.html`) — deferred.
