@@ -160,3 +160,23 @@ did, on the iPod charts — hence this rule). **Rule of thumb: document text →
 - The **builder UI** itself (the 1.0 product) — built once enough components are
   data-driven banks.
 - **Vizi-verse** (the narrative side; currently only `top-10.html`) — deferred.
+
+---
+
+## Reference snapshots (original hand-built code)
+
+The bank port replaced the hand-built catalogue markup/JS in the working
+tree; the originals live in git history (merging to main preserves them).
+Two anchor commits to compare against — `git show <sha>:<file>`:
+
+- **`e6e5b81`** — *original-handbuilt*: the pristine hand-coded import, every
+  page in its first form (pre-convergence).
+- **`910990e`** — *pre-bank-port*: the last all-hand-built state — the catalog
+  bank existed as scaffolding, but drinks / discontinued / the 5 menu pages
+  were still hand-built catalogues (with `showDrink` / `showItemCard` /
+  `FRESCO_ITEMS` etc.). Best "right before we banked it" reference.
+
+(This environment can't push git tags — the git proxy only accepts the work
+branch — so the SHAs are recorded here instead. To create real named tags
+locally: `git tag original-handbuilt e6e5b81 && git tag pre-bank-port 910990e
+&& git push origin --tags`.)
