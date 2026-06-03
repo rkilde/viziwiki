@@ -13,6 +13,7 @@ layout: default
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0;1,9..144,100..900,0..100,0&family=JetBrains+Mono:wght@400;500&family=Spectral:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/wiki-apple-skin.css">
 <link rel="stylesheet" href="/wiki-ipod-touch.css">
+{% if page.timeline %}<link rel="stylesheet" href="/bank-timeline.css">{% endif %}
 
 {{ content }}
 
@@ -173,6 +174,9 @@ layout: default
   <div id="photo-rail-inner" class="wiki-section-inner"></div>
 </section>
 
+{% if page.timeline %}
+{% include sections/timeline-section.html data=page.timeline %}
+{% else %}
 <section class="wiki-section" data-tone="b" id="tl-section">
   <div class="wiki-section-inner">
     <div id="tl-header" class="tl-hdr"></div>
@@ -181,6 +185,7 @@ layout: default
     </div>
   </div>
 </section>
+{% endif %}
 
 
 <section class="wiki-section" data-tone="a" id="delta-section">

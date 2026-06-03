@@ -21,6 +21,22 @@ sections:
     summary: derived                   # "{n} {unit}s · {m} categories"
     addons: [footnote]
     hosts: [catalog]                   # visuals legal in the slot
+  timeline-section:
+    partial: sections/timeline-section.html
+    eyebrow: "Timeline"                # locked
+    icon: move-horizontal              # locked
+    h2: optional
+    summary: derived                   # auto "Scroll · first → last"
+    full_bleed: true                   # locked edge-to-edge scroller
+    hosts: [timeline]                  # visuals legal in the slot
+
+timeline:
+  bank: timelines
+  partial: visuals/timeline/timeline.html
+  section: timeline-section
+  card_types: [station]                # only one card type for now
+  pairs_with: detail-modal             # each card opens this
+  event_fields: [month, day, year, tag, title, preview, body]
 
 catalog:
   bank: lists

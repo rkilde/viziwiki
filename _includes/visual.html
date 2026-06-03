@@ -8,5 +8,6 @@
 {%- endcomment -%}
 {%- case include.type -%}
   {%- when 'catalog' -%}{%- include visuals/catalog/catalog.html data=include.data -%}
+  {%- when 'timeline' -%}{%- include visuals/timeline/timeline.html data=include.data -%}
   {%- else -%}<!-- visual bank: unknown type "{{ include.type }}" (not in _data/visuals.yml) -->
 {%- endcase -%}

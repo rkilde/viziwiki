@@ -1,0 +1,122 @@
+{%- comment -%}
+  TIMELINE visual (Level B: data in → HTML out) — the canon horizontal,
+  full-bleed, date-positioned timeline (one card type for now). Renders the
+  station track + each event's hidden modal body + the shared detail modal.
+  Self-contained IIFE engine (own #bktl* ids so it never collides with the
+  legacy iPod JS engine). The section frame lives in
+  _includes/sections/timeline-section.html.
+  Data shape: events[] — each: month (3-letter), day?, year, tag, title,
+  preview (card line), body (modal HTML).
+{%- endcomment -%}
+{%- assign data = include.data -%}
+<div class="tl-outer wiki-section-bleed" id="bktlOuter">
+  <div class="track" id="bktlTrack">
+    {%- for e in data.events -%}
+      {%- assign n = forloop.index -%}
+      <div class="itl-station" data-date="{{ e.month }} {{ e.year }}" data-tag="{{ e.month }}{% if e.day %} {{ e.day }}{% endif %}, {{ e.year }} · {{ e.tag | escape }}" data-title="{{ e.title | escape }}" data-detail="bktld-{{ forloop.index0 }}" data-num="{% if n < 10 %}0{% endif %}{{ n }}">
+        <div class="itl-event-top">
+          <div class="sc-float-date"><span class="sc-float-month fr">{{ e.month }}</span> {% if e.day %}<span class="sc-float-day fr">{{ e.day }}</span> {% endif %}<span class="sc-float-year fr">{{ e.year }}</span></div>
+          <div class="itl-card">
+            <div class="sc-bar"></div>
+            <div class="sc-body">
+              <div class="sc-tag jb">{{ e.tag }}</div>
+              <div class="sc-title fr">{{ e.title }}</div>
+              <p class="sc-prose">{{ e.preview }}</p>
+              <div class="sc-footer">
+                <span class="sc-expand jb">Details <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+                <span class="sc-num jb">{% if n < 10 %}0{% endif %}{{ n }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="itl-spine"><div class="itl-dot"></div></div>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{%- comment -%} hidden per-event modal bodies, cloned into the modal on click {%- endcomment -%}
+<div class="tl-details">
+  {%- for e in data.events -%}<div id="bktld-{{ forloop.index0 }}">{{ e.body }}</div>{%- endfor -%}
+</div>
+
+<div class="tl-modal" id="bktlModal">
+  <div class="tl-modal-box">
+    <div class="tl-modal-bar"></div>
+    <div class="tl-modal-header">
+      <div class="tl-modal-tag jb" data-tl-tag></div>
+      <div class="tl-modal-title fr" data-tl-title></div>
+    </div>
+    <div class="tl-modal-body" data-tl-body></div>
+    <div class="tl-modal-footer">
+      <button class="tl-modal-close" data-tl-close><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Close</button>
+      <span class="tl-modal-page jb" data-tl-page></span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  if(window.__timelineBank)return; window.__timelineBank=1;
+  var dragged=false;
+  function position(){
+    var CARD_W=280,SLIM_W=68,PAD=24,SPINE_Y=339,TRACK_H=368;
+    var MO={Jan:1,Feb:2,Mar:3,Apr:4,May:5,Jun:6,Jul:7,Aug:8,Sep:9,Oct:10,Nov:11,Dec:12};
+    function pd(s){s=(s||"").trim();var m=s.match(/^(\w{3})\s+(\d{4})$/);if(m)return{y:+m[2],m:MO[m[1]]||1};var m2=s.match(/(\d{4})/);return m2?{y:+m2[1],m:1}:null;}
+    function dm(a,b){return(b.y-a.y)*12+(b.m-a.m);}
+    function fmt(n){if(n<1)return null;if(n===1)return"1 mo";if(n<12)return n+" mo";var y=Math.round(n/12);return y+" yr";}
+    var track=document.getElementById("bktlTrack");if(!track)return;
+    var stations=[].slice.call(track.querySelectorAll(".itl-station"));
+    var items=stations.map(function(el){return{el:el,d:pd(el.getAttribute("data-date"))};}).filter(function(x){return x.d;});
+    if(items.length<2)return;
+    var byYear={};items.forEach(function(it){(byYear[it.d.y]||(byYear[it.d.y]=[])).push(it);});
+    Object.values(byYear).forEach(function(g){g.sort(function(a,b){return a.d.m-b.d.m;});});
+    var firstYr=Math.min.apply(null,Object.keys(byYear).map(Number));
+    var lastYr=Math.max.apply(null,Object.keys(byYear).map(Number));
+    var yearX={},cur=PAD;
+    for(var yr=firstYr;yr<=lastYr;yr++){yearX[yr]=cur;var nn=(byYear[yr]||[]).length;cur+=(nn>0?nn*CARD_W:SLIM_W);}
+    var totalW=cur+PAD;
+    track.style.cssText="display:block;position:relative;width:"+totalW+"px;height:"+TRACK_H+"px;padding-bottom:34px;min-width:unset;box-sizing:content-box;";
+    var spine=document.createElement("div");
+    spine.style.cssText="position:absolute;left:0;right:0;top:"+SPINE_Y+"px;height:1px;background:rgba(0,0,0,.12);z-index:1;";
+    track.appendChild(spine);
+    var posX=new Map();
+    Object.keys(byYear).forEach(function(yr){var xw=yearX[+yr];byYear[+yr].forEach(function(it){it.el.style.position="absolute";it.el.style.top="0";it.el.style.left=xw+"px";it.el.style.width=CARD_W+"px";posX.set(it.el,xw);xw+=CARD_W;});});
+    var ruler=document.createElement("div");ruler.className="tl-ruler";
+    for(var y=firstYr;y<=lastYr;y++){var x=yearX[y];var nc=(byYear[y]||[]).length;var w=nc?nc*CARD_W:SLIM_W;var b=document.createElement("div");b.className="tl-band"+(y%2===0?" tl-band-even":"");b.style.cssText="left:"+x+"px;width:"+w+"px";track.appendChild(b);var tick=document.createElement("div");tick.className="tl-yr";tick.style.left=x+"px";tick.innerHTML="<span"+(nc===0?" style=\"opacity:.45;font-size:7px\"":"")+">"+y+"</span>";ruler.appendChild(tick);}
+    track.appendChild(ruler);
+    var chipY=160;
+    var sorted=items.slice().sort(function(a,b){return(a.d.y*12+a.d.m)-(b.d.y*12+b.d.m);});
+    for(var i=0;i<sorted.length-1;i++){var gap=dm(sorted[i].d,sorted[i+1].d);if(gap<1)continue;var label=fmt(gap);if(!label)continue;var cx1=(posX.get(sorted[i].el)||0)+CARD_W;var cx2=(posX.get(sorted[i+1].el)||0);var mid=(cx1+cx2)/2;var chip=document.createElement("div");chip.className="tl-gap";chip.style.cssText="left:"+mid+"px;top:"+chipY+"px";chip.textContent=label;track.appendChild(chip);}
+    stations.forEach(function(el){var card=el.querySelector(".itl-card");var sp=el.querySelector(".itl-spine");if(!card||!sp)return;var stRect=el.getBoundingClientRect();var cRect=card.getBoundingClientRect();var sRect=sp.getBoundingClientRect();var barTop=cRect.bottom-stRect.top;var barH=Math.max(0,(sRect.top+sRect.height/2)-cRect.bottom);if(barH<=0)return;var bar=document.createElement("div");bar.style.cssText="position:absolute;left:50%;transform:translateX(-50%);top:"+barTop+"px;width:1px;height:"+barH+"px;background:rgba(0,0,0,.15);pointer-events:none;z-index:1;";el.appendChild(bar);});
+    var outer=document.getElementById("bktlOuter");var dn=false,sx,sl,mx;
+    outer.addEventListener("mousedown",function(e){dn=true;dragged=false;sx=e.pageX-outer.offsetLeft;sl=outer.scrollLeft;mx=e.pageX;});
+    outer.addEventListener("mouseleave",function(){dn=false;});
+    outer.addEventListener("mouseup",function(){dn=false;});
+    outer.addEventListener("mousemove",function(e){if(!dn)return;var dx=e.pageX-mx;if(Math.abs(dx)>4){dragged=true;e.preventDefault();}outer.scrollLeft=sl-(e.pageX-outer.offsetLeft-sx)*1.2;});
+  }
+  function schedule(left){if(left<=0)return;var t=document.getElementById("bktlTrack");if(!t){setTimeout(function(){schedule(left-1);},100);return;}var fc=t.querySelector(".itl-card");if(!fc||fc.getBoundingClientRect().height===0){setTimeout(function(){schedule(left-1);},100);return;}position();}
+  var modal=document.getElementById("bktlModal");
+  function total(){return document.querySelectorAll("#bktlTrack .itl-station").length;}
+  function openCard(st){
+    var d=document.getElementById(st.getAttribute("data-detail"));var t=total();
+    modal.querySelector("[data-tl-tag]").textContent=st.getAttribute("data-tag");
+    modal.querySelector("[data-tl-title]").textContent=st.getAttribute("data-title");
+    modal.querySelector("[data-tl-body]").innerHTML=d?d.innerHTML:"";
+    modal.querySelector("[data-tl-body]").scrollTop=0;
+    modal.querySelector("[data-tl-page]").textContent=st.getAttribute("data-num")+" / "+(t<10?"0"+t:t);
+    modal.classList.add("open");document.body.style.overflow="hidden";
+  }
+  function close(){modal.classList.remove("open");document.body.style.overflow="";}
+  document.addEventListener("click",function(e){
+    var card=e.target.closest(".itl-card");var track=document.getElementById("bktlTrack");
+    if(card&&track&&track.contains(card)){if(dragged){dragged=false;return;}var st=card.closest(".itl-station");if(st)openCard(st);return;}
+    if(e.target.closest("[data-tl-close]")){close();return;}
+    if(e.target===modal){close();return;}
+  });
+  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&modal.classList.contains("open"))close();});
+  document.addEventListener("DOMContentLoaded",function(){schedule(20);});
+  window.addEventListener("load",function(){schedule(10);});
+  if(document.readyState!=="loading")schedule(20);
+})();
+</script>
