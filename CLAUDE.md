@@ -159,6 +159,26 @@ did, on the iPod charts — hence this rule). **Rule of thumb: document text →
   *loading*.)
 - The **builder UI** itself (the 1.0 product) — built once enough components are
   data-driven banks.
+- **Admin / builder back-end (master access + in-page edit mode).** The site is
+  static (Cloudflare Pages) and content is already data-in-git, so no DB is
+  needed to start — a "back-end" here = **auth + the builder writing data back +
+  redeploy**. Recommended path (keeps the static/git single-source model):
+  (1) **auth** — Cloudflare Access (Zero-Trust, owner-email gated) in front of an
+  `/admin` route + a Worker holding a **GitHub App** token server-side (keeps the
+  write token out of the browser); or GitHub OAuth in-browser as the simpler
+  bridge. Master = repo admin; contributors = restricted role / PR-only.
+  (2) **editor** — wire OUR builder kit to read a page's `catalog:` front-matter
+  and commit edits via the **GitHub Contents API** (`visuals.yml` is already the
+  registry it reads); a fast bridge is an off-the-shelf git CMS (Sveltia/Decap/
+  Tina) configured against the front-matter schema. (3) **edit mode** — admin-only
+  "Edit" affordance on any live page opens the builder pre-loaded with that page's
+  data. (4) **draft→publish** — saves land on a `draft` branch (preview deploy),
+  "Publish" = merge to main; Cloudflare already rebuilds on push. Trade-off: saves
+  cost a deploy cycle (seconds), not instant-live — fine for a wiki; true instant
+  editing would mean a dynamic app + DB (bigger leap, not now). NOTE: the auth/
+  OAuth/Access/GitHub-App pieces need setup in the owner's GitHub + Cloudflare
+  dashboards (can't be done from the agent env) — code can be built here, clicks
+  walked through.
 - **Vizi-verse** (the narrative side; currently only `top-10.html`) — deferred.
 
 ---
