@@ -1,0 +1,34 @@
+# ════════════════════════════════════════════════════════════════════
+# VISUAL BANK REGISTRY  (the heart of the 1.0 builder)
+# --------------------------------------------------------------------
+# Maps a visual TYPE → its component partial + the add-ons it allows.
+# The dispatcher (_includes/visual.html) routes a {type, data} pair to
+# the right partial. The future builder reads THIS file to populate the
+# component picker and to validate which add-ons are legal per type.
+# Add a bank component = add one entry here + its partial under
+# _includes/visuals/<bank>/.
+# ════════════════════════════════════════════════════════════════════
+
+# A SECTION frames a visual: it owns the chrome a contributor gets the
+# moment they drop the section (locked eyebrow + auto-derived summary +
+# footnote) and a SLOT routed through the dispatcher. The VISUAL is what
+# fills the slot. Summary values derive from the slotted visual's data, so
+# the count is never hand-typed (`unit` sets the noun, default "item").
+sections:
+  catalog-section:
+    partial: sections/catalog-section.html
+    eyebrow: "Full Catalog"            # locked
+    summary: derived                   # "{n} {unit}s · {m} categories"
+    addons: [footnote]
+    hosts: [catalog]                   # visuals legal in the slot
+
+catalog:
+  bank: lists
+  partial: visuals/catalog/catalog.html
+  section: catalog-section             # the framing it slots into
+  pairs_with: expandable-card          # each item opens this
+  category_color: skin-swatch          # `color: N` -> --cat-accent-N (else auto-cycle)
+  addons: [ribbon]                     # catalog-level add-ons
+  ribbon_tones: [accent, gone]         # accent = category color; gone = locked skin grey ("phased out")
+  card_addons: [status, info-chip, pill-group, callout, notes]   # expandable-card add-ons
+  status_states: [active, discontinued, retired, limited] # pre-defined set

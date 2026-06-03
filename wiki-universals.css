@@ -58,6 +58,14 @@
      resolve from the type canon (loaded first). Size is universal: skins
      set color, never size. */
 
+  /* ── Bank component shapes (universal; admin retunes) ──
+     The corner treatment shared across bank components — catalog cards and
+     the paired expandable card both read --card-shape (locked together);
+     status / info chips read --chip-shape. Change once → reshapes every
+     bank card/chip site-wide. */
+  --card-shape:  14px;     /* squircle — cards + expandable cards */
+  --chip-shape:  999px;    /* circular — status / info chips */
+
   /* ── Hero color tokens (defaults; skins override) ──────────────────
      The hero is a UNIVERSAL element (every wiki, home + sub-pages), so its
      color defaults live here — not in the home layer. The hero STRUCTURE is

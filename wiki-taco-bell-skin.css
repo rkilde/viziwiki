@@ -61,6 +61,48 @@ body.wiki-taco-bell {
   --infobox-key-color:     rgba(42,31,21,0.55);
   --infobox-value-color:   #2a1f15;
   --infobox-divider:       rgba(42,31,21,0.10);
+
+  /* ── Bank tokens: shared divider + ribbon + the category accent palette
+        and the pre-defined status states (catalog / expandable-card bank) ── */
+  --divider:        color-mix(in oklab, var(--foreground) 10%, transparent);
+  --ribbon-fg:      #ffffff;
+  /* locked "gone / phased out" ribbon grey — TB's warm desaturated tone
+     (the original hardcoded discontinued-ribbon color). Never colorful. */
+  --ribbon-gone-bg: rgba(42,31,21,0.72);
+  /* category accent palette — the skin's CATEGORY SWATCH SET. A catalog
+     category either references a swatch by number (`color: 3`, the future
+     builder's color-picker pick) or, if it names none, auto-cycles through
+     them. The component only ever reads `--cat-color`; growing this set
+     (toward the dozens-of-swatches / generated-ramp / picker we want later)
+     is pure skin work and never touches the component. */
+  --cat-accent-1:#3b6d11;  /* dew green     */
+  --cat-accent-2:#0284c7;  /* fountain sky  */
+  --cat-accent-3:#7c3aed;  /* dirty violet  */
+  --cat-accent-4:#db2777;  /* freeze pink   */
+  --cat-accent-5:#059669;  /* refresca jade */
+  --cat-accent-6:#0891b2;  /* still cyan    */
+  --cat-accent-7:#78350f;  /* coffee brown  */
+  --cat-accent-8:#2563eb;  /* bottle blue   */
+  /* --- extended swatches (discontinued-drinks archive categories) --- */
+  --cat-accent-9:#993556;  /* frutista rose */
+  --cat-accent-10:#0f6e56; /* freeze teal   */
+  --cat-accent-11:#5a8a1a; /* limeade olive */
+  --cat-accent-12:#854f0b; /* defunct ochre */
+  --cat-accent-13:#185fa5; /* defunct blue  */
+  /* --- extended swatches (menu sub-page categories) --- */
+  --cat-accent-14:#b45309; /* taco sienna   */
+  --cat-accent-15:#6d28d9; /* burrito violet*/
+  --cat-accent-16:#0c4a6e; /* specialty blue*/
+  --cat-accent-17:#a16207; /* value amber   */
+  --cat-accent-18:#92400e; /* big-bell umber*/
+  --cat-accent-19:#44403c; /* stone gray    */
+  --cat-accent-20:#4d7c0f; /* griller olive */
+  --cat-accent-21:#991b1b; /* brick red     */
+  /* pre-defined status states — label colors */
+  --st-active-bg:#dcfce7;                   --st-active-fg:#166534;
+  --st-discontinued-bg:rgba(42,31,21,0.08); --st-discontinued-fg:rgba(42,31,21,0.55);
+  --st-retired-bg:#fef3c7;                  --st-retired-fg:#92400e;
+  --st-limited-bg:#fde68a;                  --st-limited-fg:#78350f;
 }
 
 /* §13 section ordering — Taco Bell-specific section orders.

@@ -1,0 +1,103 @@
+{%- comment -%}
+  CATALOG visual (Level B: data in → HTML out) — the list that fills a
+  catalog-section's slot. It renders ONLY the visual: the masonry of
+  category cards, each item's hidden detail content, and the shared
+  expandable-card modal. The section's framing (eyebrow / summary / foot-
+  note) lives in _includes/sections/catalog-section.html, not here.
+
+  Colour: each category either references a skin swatch by number
+  (`color: 3`) or, if it names none, auto-cycles the skin palette. The
+  card/pill only ever read `--cat-color` — the swatch set lives in the skin.
+
+  Data shape (per category): name, color?, ribbon?, note?, items[]
+    ribbon: "string" (accent-colored) OR {text:, tone:}  (tone "gone" = grey)
+    item: name, status?, info?, desc, groups?[], callout?, notes?, cta?
+      group: label, pills[]  (pill = "string" OR {text:, struck:true})
+      callout: {label, text}
+{%- endcomment -%}
+{%- assign data = include.data -%}
+<div class="cat-masonry">
+  {%- for cat in data.categories -%}
+    {%- if cat.color -%}{%- assign accent = cat.color -%}{%- else -%}{%- assign accent = forloop.index0 | modulo: 8 | plus: 1 -%}{%- endif -%}
+    {%- assign n = cat.items | size -%}
+    {%- comment -%} ribbon can be a plain string (accent-colored) or {text, tone}. tone "gone" locks to the skin's grey "phased out" token. {%- endcomment -%}
+    {%- assign rb_text = cat.ribbon.text | default: cat.ribbon -%}
+    {%- assign rb_tone = cat.ribbon.tone | default: 'accent' -%}
+    <div class="cat-card{% if cat.ribbon %} has-ribbon{% endif %}" style="--cat-color:var(--cat-accent-{{ accent }})">
+      {%- if cat.ribbon -%}<div class="cat-ribbon{% if rb_tone == 'gone' %} ribbon-gone{% endif %}"><span>{{ rb_text }}</span></div>{%- endif -%}
+      <div class="cat-card-title">{{ cat.name }}</div>
+      <div class="cat-card-count">{{ n }} item{% if n != 1 %}s{% endif %}{% if cat.note %} &middot; {{ cat.note }}{% endif %}</div>
+      <div class="cat-card-divider"></div>
+      <div class="cat-card-pills">
+        {%- for item in cat.items -%}
+          <button type="button" class="cat-pill" data-detail="d-{{ forloop.parentloop.index0 }}-{{ forloop.index0 }}" data-color="var(--cat-accent-{{ accent }})"{% if cat.ribbon %} data-ribbon="{{ rb_text | escape }}" data-ribbon-tone="{{ rb_tone }}"{% endif %}>{{ item.name }}</button>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endfor -%}
+</div>
+
+{%- comment -%} hidden per-item detail content, cloned into the modal on click {%- endcomment -%}
+<div class="cat-details">
+  {%- for cat in data.categories -%}
+    {%- for item in cat.items -%}
+      <div id="d-{{ forloop.parentloop.index0 }}-{{ forloop.index0 }}">
+        <div class="modal-headrow">
+          <span class="modal-eyebrow">{{ cat.name }}</span>
+          {%- if item.status -%}<span class="chip st-{{ item.status }}">{{ item.status | capitalize }}</span>{%- endif -%}
+          {%- if item.info -%}<span class="chip info">{{ item.info }}</span>{%- endif -%}
+        </div>
+        <h3 class="modal-title">{{ item.name }}</h3>
+        <div class="modal-divider"></div>
+        <p class="modal-desc">{{ item.desc }}</p>
+        {%- for grp in item.groups -%}
+          <div class="modal-group-label">{{ grp.label }}</div>
+          <div>{%- for p in grp.pills -%}{%- if p.text -%}<span class="gpill{% if p.struck %} struck{% endif %}">{{ p.text }}</span>{%- else -%}<span class="gpill">{{ p }}</span>{%- endif -%}{%- endfor -%}</div>
+        {%- endfor -%}
+        {%- if item.callout -%}<div class="modal-callout"><div class="modal-callout-label">{{ item.callout.label }}</div><div class="modal-callout-text">{{ item.callout.text }}</div></div>{%- endif -%}
+        {%- if item.notes -%}<div class="modal-note">{{ item.notes }}</div>{%- endif -%}
+        {%- comment -%} CTA is canon — always present. Links only once the item has a real page; until then it's inert (click does nothing). {%- endcomment -%}
+        <div class="modal-divider is-inset"></div>
+        <a class="modal-cta"{% if item.cta %} href="{{ item.cta }}"{% endif %}>See full entry &rarr;</a>
+      </div>
+    {%- endfor -%}
+  {%- endfor -%}
+</div>
+
+{%- comment -%} shared expandable-card modal shell {%- endcomment -%}
+<div class="modal-ov" data-catalog-modal>
+  <div class="modal-card">
+    <div class="cat-ribbon" data-modal-ribbon></div>
+    <button type="button" class="modal-close" data-modal-close aria-label="Close">&times;</button>
+    <div class="modal-scroll" data-modal-body></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  if(window.__catalogBank)return; window.__catalogBank=1;
+  function closeAll(){var o=document.querySelectorAll('[data-catalog-modal].open');for(var i=0;i<o.length;i++)o[i].classList.remove('open');}
+  document.addEventListener('click',function(e){
+    var pill=e.target.closest('.cat-pill[data-detail]');
+    if(pill){
+      var modal=document.querySelector('[data-catalog-modal]');
+      var card=modal.querySelector('.modal-card');
+      var d=document.getElementById(pill.getAttribute('data-detail'));
+      if(!d)return;
+      card.style.setProperty('--cat-color', pill.getAttribute('data-color')||'var(--cat-accent-1)');
+      var rb=pill.getAttribute('data-ribbon');
+      var rbEl=modal.querySelector('[data-modal-ribbon]');
+      rbEl.innerHTML = rb ? '<span>'+rb+'</span>' : '';
+      rbEl.classList.toggle('ribbon-gone', pill.getAttribute('data-ribbon-tone')==='gone');
+      card.classList.toggle('has-ribbon', !!rb);
+      modal.querySelector('[data-modal-body]').innerHTML = d.innerHTML;
+      modal.querySelector('[data-modal-body]').scrollTop=0;
+      modal.classList.add('open');
+      return;
+    }
+    if(e.target.closest('[data-modal-close]')){closeAll();return;}
+    if(e.target.hasAttribute('data-catalog-modal')){closeAll();return;}
+  });
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAll();});
+})();
+</script>
