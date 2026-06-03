@@ -48,6 +48,7 @@
           {%- if item.info -%}<span class="chip info">{{ item.info }}</span>{%- endif -%}
         </div>
         <h3 class="modal-title">{{ item.name }}</h3>
+        <div class="modal-divider"></div>
         <p class="modal-desc">{{ item.desc }}</p>
         {%- for grp in item.groups -%}
           <div class="modal-group-label">{{ grp.label }}</div>
@@ -56,6 +57,7 @@
         {%- if item.callout -%}<div class="modal-callout"><div class="modal-callout-label">{{ item.callout.label }}</div><div class="modal-callout-text">{{ item.callout.text }}</div></div>{%- endif -%}
         {%- if item.notes -%}<div class="modal-note">{{ item.notes }}</div>{%- endif -%}
         {%- comment -%} CTA is canon — always present. Links only once the item has a real page; until then it's inert (click does nothing). {%- endcomment -%}
+        <div class="modal-divider is-inset"></div>
         <a class="modal-cta"{% if item.cta %} href="{{ item.cta }}"{% endif %}>See full entry &rarr;</a>
       </div>
     {%- endfor -%}

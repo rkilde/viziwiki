@@ -73,6 +73,12 @@
 .chip.st-retired{background:var(--st-retired-bg);color:var(--st-retired-fg)}
 .chip.st-limited{background:var(--st-limited-bg);color:var(--st-limited-fg)}
 .modal-title{font-family:'Fraunces',Georgia,serif;font-size:24px;font-weight:600;letter-spacing:-.01em;line-height:1.1;margin:10px 0 0;color:var(--foreground,#222)}
+/* hairline between the header (eyebrow+title) and the body — full card width
+   (breaks out of the .modal-scroll 24px padding); the inset variant is the
+   content-width rule that sets off the "See full entry" footer. One edit
+   here propagates to every catalog card sitewide. */
+.modal-divider{height:1px;background:var(--divider,rgba(0,0,0,.1));margin:16px -24px 0}
+.modal-divider.is-inset{margin:20px 0 0}
 .modal-desc{font-family:'Spectral',Georgia,serif;font-size:14px;line-height:1.55;color:color-mix(in oklab,var(--foreground,#222) 85%,transparent);margin-top:10px}
 .modal-group-label{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:8px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted-foreground,#777);margin:18px 0 8px}
 .gpill{display:inline-block;margin:0 5px 5px 0;padding:3px 9px;border-radius:3px;border:1px solid color-mix(in oklab,var(--cat-color) 25%,transparent);
@@ -83,7 +89,7 @@
 .modal-callout-label{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--cat-color);margin-bottom:5px}
 .modal-callout-text{font-family:'Spectral',Georgia,serif;font-size:14px;line-height:1.5;color:var(--foreground,#222)}
 .modal-note{margin-top:16px;padding-top:12px;border-top:1px solid var(--divider,rgba(0,0,0,.1));font-family:'Spectral',Georgia,serif;font-size:12.5px;font-style:italic;line-height:1.55;color:var(--muted-foreground,#777)}
-.modal-cta{display:inline-flex;align-items:center;gap:6px;margin-top:20px;padding-bottom:2px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cat-color);text-decoration:none;border-bottom:1px solid color-mix(in oklab,var(--cat-color) 32%,transparent)}
+.modal-cta{display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding-bottom:2px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cat-color);text-decoration:none;border-bottom:1px solid color-mix(in oklab,var(--cat-color) 32%,transparent)}
 
 /* ── Mobile — single column + tighter spacing + smaller ribbons ─────── */
 @media(max-width:640px){
