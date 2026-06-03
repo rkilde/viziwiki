@@ -1,0 +1,46 @@
+{%- comment -%}
+  TIMELINE card type: "station" — the one card design (collapsed face on the
+  track + its expanded detail modal). A second card type = another file like
+  this + a `when` in card.html. Engine contract (owned by the visual): the
+  face renders an .itl-station[data-date/-tag/-title/-detail/-num] with an
+  .itl-card and .itl-spine; the modal renders #bktlModal with the
+  [data-tl-tag/-title/-body/-page] hooks + [data-tl-close].
+  Params: mode (face|modal), event, index.
+{%- endcomment -%}
+{%- if include.mode == 'modal' -%}
+<div class="tl-modal" id="bktlModal">
+  <div class="tl-modal-box">
+    <div class="tl-modal-bar"></div>
+    <div class="tl-modal-header">
+      <div class="tl-modal-tag jb" data-tl-tag></div>
+      <div class="tl-modal-title fr" data-tl-title></div>
+    </div>
+    <div class="tl-modal-body" data-tl-body></div>
+    <div class="tl-modal-footer">
+      <button class="tl-modal-close" data-tl-close><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Close</button>
+      <span class="tl-modal-page jb" data-tl-page></span>
+    </div>
+  </div>
+</div>
+{%- else -%}
+{%- assign e = include.event -%}
+{%- assign n = include.index | plus: 1 -%}
+<div class="itl-station" data-date="{{ e.month }} {{ e.year }}" data-tag="{{ e.month }}{% if e.day %} {{ e.day }}{% endif %}, {{ e.year }} · {{ e.tag | escape }}" data-title="{{ e.title | escape }}" data-detail="bktld-{{ include.index }}" data-num="{% if n < 10 %}0{% endif %}{{ n }}">
+  <div class="itl-event-top">
+    <div class="sc-float-date"><span class="sc-float-month fr">{{ e.month }}</span> {% if e.day %}<span class="sc-float-day fr">{{ e.day }}</span> {% endif %}<span class="sc-float-year fr">{{ e.year }}</span></div>
+    <div class="itl-card">
+      <div class="sc-bar"></div>
+      <div class="sc-body">
+        <div class="sc-tag jb">{{ e.tag }}</div>
+        <div class="sc-title fr">{{ e.title }}</div>
+        <p class="sc-prose">{{ e.preview }}</p>
+        <div class="sc-footer">
+          <span class="sc-expand jb">Details <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>
+          <span class="sc-num jb">{% if n < 10 %}0{% endif %}{{ n }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="itl-spine"><div class="itl-dot"></div></div>
+</div>
+{%- endif -%}

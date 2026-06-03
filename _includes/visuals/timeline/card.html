@@ -1,0 +1,10 @@
+{%- comment -%}
+  TIMELINE CARD-TYPE dispatcher. Routes a card TYPE (+ mode/event/index) to
+  its card partial — the timeline's analogue of _includes/visual.html. One
+  card type today (station); add a card design = add a `when` + a partial
+  under cards/. Registry of card_types lives in _data/visuals.yml.
+{%- endcomment -%}
+{%- case include.type -%}
+  {%- when 'station' -%}{%- include visuals/timeline/cards/station.html mode=include.mode event=include.event index=include.index -%}
+  {%- else -%}<!-- timeline card type: unknown "{{ include.type }}" (not in _data/visuals.yml) -->
+{%- endcase -%}
