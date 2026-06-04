@@ -135,14 +135,38 @@ did, on the iPod charts — hence this rule). **Rule of thumb: document text →
   prose) reads it. Visual-component type was briefly wired to the scale then
   **reverted** — it belongs to the bank, not the universal layer (see "Type
   scale" above).
+- **Phase 4 — Catalog bank** (data-driven list + paired expandable card): built
+  + rolled out to **7 pages** (drinks, discontinued-drinks, the 5 menu
+  sub-pages). Section/visual split (`_includes/sections/` + `_includes/visuals/`
+  + the `visual.html` dispatcher + `_data/visuals.yml` registry); add-ons:
+  skin-swatch category colors, ribbon tones (accent / gone-grey),
+  status·info-chip·pill-groups(+struck)·callout·notes, header+footer hairlines,
+  auto-derived summary + optional note. `bank-catalog.css` = single source.
+- **Phase 4 — Timeline bank** (full-bleed, date-positioned scroller + station
+  card + detail modal): built + rolled out to **all 6 iPod pages**. New
+  `section: timeline` (locked eyebrow + `ic-move-horizontal`, optional H2,
+  auto-derived scroll-range hint, locked full-bleed). Extracted out of the iPod
+  JS engine into a Liquid bank (`bank-timeline.css` = single source; legacy
+  timeline JS / CSS / markup removed). `card_type` dispatch seam in place
+  (one type: `station`).
 
 **Open**
-- Phase 4 visual bank: the taxonomy + remaining typed banks (lists, tables,
-  timelines, charts) — the big "decide the canonical set, then extract" effort.
-  **This is also where each visual component's TYPE gets centralized** (bank-owned).
+- Phase 4 visual bank — **catalog + timeline banks DONE** (see Done). Remaining
+  typed banks to decide + extract:
+  - **swim-lane / proportional timeline** (discontinued swim-lanes, cantina
+    rollout phases, slogans, sauces) — also pays off the temporary
+    `ITEM_DB` / `ITEMS_DATA` duplication on discontinued + cantina.
+  - **ladder / ranking bars** (drinks sugar + caffeine, sauces heat).
+  - **tile directory** (menus listing page, sauces discontinued tiles).
+  - **comparison/delta table** + **config/storage chart** (iPod).
+  - **quote wall · pairing matrix · spec table** (sauces, iPod) — smaller.
+  Each bank is also where its component TYPE gets centralized (bank-owned).
 - Re-tokenize page-specific DOCUMENT text not yet on canonical `.wiki-*` classes
   (e.g. the iPod page's own prose/eyebrows/headers reverted with its widgets).
 - Redo the iPod CSS block-dedupe (cfg/jb/lane) as a pure non-type cleanup.
+- **Skin-tokenize the timeline colors** — `bank-timeline.css` keeps the iPod
+  monochrome values (kept identical on purpose); tokenize when a non-iPod wiki
+  adopts the timeline bank.
 - Home pages still load the **Tailwind CDN** (separate from the de-Tailwinded
   archive pages) — a future de-Tailwind pass.
 - Smurfs keeps its own small inline icon sprite (custom Smurf art) — optional
