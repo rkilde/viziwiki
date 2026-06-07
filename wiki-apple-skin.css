@@ -32,6 +32,17 @@ body.wiki-apple {
   --wiki-accent: #0071e3;               /* Apple blue — primary accent  */
 }
 
+/* Config-chart chrome — pinned to the original iPod values so the config
+   bank renders byte-identical on the iPod pages. Other wikis omit this and
+   fall through to bank-config.css's skin-derived defaults. */
+body.wiki-apple .config {
+  --cfg-surface: #ffffff;
+  --cfg-track:   #f4f4f6;
+  --cfg-bar:     #c7c7cc;
+  --cfg-ink:     #0a0a0a;
+  --cfg-line:    rgba(0,0,0,.1);
+}
+
 
 /* ====================================================================
    2 · BODY

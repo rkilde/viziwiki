@@ -1,0 +1,23 @@
+{%- comment -%}
+  CONFIG SECTION (a page-section type — the framing, not the chart).
+  The chrome a contributor gets on dropping a "Config section":
+    · locked eyebrow "Configurations" + the locked hard-drive icon
+    · a required H2 heading (contributor-named)
+    · optional intro paragraphs
+    · the chart (the visual) in the slot
+    · an optional footer spec line
+  Contained (not full-bleed). Usage:
+    {% include sections/config-section.html data=page.config %}
+  Data: heading (req), intro?[], footer?, tone?, visual?, chart_title, items[]
+{%- endcomment -%}
+{%- assign data = include.data -%}
+{%- assign visual = data.visual | default: 'config' -%}
+<section class="wiki-section config" data-tone="{{ data.tone | default: 'a' }}" id="cfg-section">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">{% include icon.html name="hard-drive" %} Configurations</div>
+    <h2 class="wiki-section-title" style="margin-bottom:24px;">{{ data.heading }}</h2>
+    {%- if data.intro -%}<div class="cfg-prose">{%- for p in data.intro -%}<p>{{ p }}</p>{%- endfor -%}</div>{%- endif -%}
+    {% include visual.html type=visual data=data %}
+    {%- if data.footer -%}<div class="cfg-footer">{{ data.footer }}</div>{%- endif -%}
+  </div>
+</section>
