@@ -25,8 +25,8 @@
         {%- assign divider_done = true -%}
       {%- endif -%}
       {%- if it.unit == 'TB' -%}{%- assign cg = it.capacity | times: 1000 -%}{%- else -%}{%- assign cg = it.capacity | times: 1 -%}{%- endif -%}
-      {%- assign w = cg | times: 100 | divided_by: maxgb -%}
-      {%- if w < 12 -%}{%- assign w = 12 -%}{%- endif -%}
+      {%- comment -%} bar width = exact proportion of the largest capacity (decimal, no floor) {%- endcomment -%}
+      {%- assign w = cg | times: 100.0 | divided_by: maxgb | round: 2 -%}
       <div class="cfg-row">
         <div class="cfg-cap fr">{{ it.capacity }}<span>{{ it.unit | default: 'GB' }}</span></div>
         <div class="cfg-track"><div class="cfg-fill{% if it.revised %} cfg-fill-rev{% endif %}" style="width:{{ w }}%">{% if it.model %}<span class="cfg-model">{{ it.model }}</span>{% endif %}</div></div>

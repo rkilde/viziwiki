@@ -41,7 +41,7 @@ config:
   bank: charts
   partial: visuals/config/config.html
   section: config-section
-  bar_fill: derived                    # width from capacity (GB/TB normalized) + min floor
+  bar_fill: derived                    # width = exact proportion of capacity (GB/TB normalized), no floor
   units: [GB, TB]
   addons: [revised, divider_label, price-drop, color-dots]
   colors: skin-derived                 # chrome via --cfg-* tokens; device dots are content hex
