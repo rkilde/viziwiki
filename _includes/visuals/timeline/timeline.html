@@ -47,7 +47,7 @@
     var totalW=cur+PAD;
     track.style.cssText="display:block;position:relative;width:"+totalW+"px;height:"+TRACK_H+"px;padding-bottom:34px;min-width:unset;box-sizing:content-box;";
     var spine=document.createElement("div");
-    spine.style.cssText="position:absolute;left:0;right:0;top:"+SPINE_Y+"px;height:1px;background:rgba(0,0,0,.12);z-index:1;";
+    spine.style.cssText="position:absolute;left:0;right:0;top:"+SPINE_Y+"px;height:1px;background:var(--tl-line);z-index:1;";
     track.appendChild(spine);
     var posX=new Map();
     Object.keys(byYear).forEach(function(yr){var xw=yearX[+yr];byYear[+yr].forEach(function(it){it.el.style.position="absolute";it.el.style.top="0";it.el.style.left=xw+"px";it.el.style.width=CARD_W+"px";posX.set(it.el,xw);xw+=CARD_W;});});
@@ -57,7 +57,7 @@
     var chipY=160;
     var sorted=items.slice().sort(function(a,b){return(a.d.y*12+a.d.m)-(b.d.y*12+b.d.m);});
     for(var i=0;i<sorted.length-1;i++){var gap=dm(sorted[i].d,sorted[i+1].d);if(gap<1)continue;var label=fmt(gap);if(!label)continue;var cx1=(posX.get(sorted[i].el)||0)+CARD_W;var cx2=(posX.get(sorted[i+1].el)||0);var mid=(cx1+cx2)/2;var chip=document.createElement("div");chip.className="tl-gap";chip.style.cssText="left:"+mid+"px;top:"+chipY+"px";chip.textContent=label;track.appendChild(chip);}
-    stations.forEach(function(el){var card=el.querySelector(".itl-card");var sp=el.querySelector(".itl-spine");if(!card||!sp)return;var stRect=el.getBoundingClientRect();var cRect=card.getBoundingClientRect();var sRect=sp.getBoundingClientRect();var barTop=cRect.bottom-stRect.top;var barH=Math.max(0,(sRect.top+sRect.height/2)-cRect.bottom);if(barH<=0)return;var bar=document.createElement("div");bar.style.cssText="position:absolute;left:50%;transform:translateX(-50%);top:"+barTop+"px;width:1px;height:"+barH+"px;background:rgba(0,0,0,.15);pointer-events:none;z-index:1;";el.appendChild(bar);});
+    stations.forEach(function(el){var card=el.querySelector(".itl-card");var sp=el.querySelector(".itl-spine");if(!card||!sp)return;var stRect=el.getBoundingClientRect();var cRect=card.getBoundingClientRect();var sRect=sp.getBoundingClientRect();var barTop=cRect.bottom-stRect.top;var barH=Math.max(0,(sRect.top+sRect.height/2)-cRect.bottom);if(barH<=0)return;var bar=document.createElement("div");bar.style.cssText="position:absolute;left:50%;transform:translateX(-50%);top:"+barTop+"px;width:1px;height:"+barH+"px;background:var(--tl-line);pointer-events:none;z-index:1;";el.appendChild(bar);});
     var outer=document.getElementById("bktlOuter");var dn=false,sx,sl,mx;
     outer.addEventListener("mousedown",function(e){dn=true;dragged=false;sx=e.pageX-outer.offsetLeft;sl=outer.scrollLeft;mx=e.pageX;});
     outer.addEventListener("mouseleave",function(){dn=false;});

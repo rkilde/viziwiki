@@ -43,6 +43,20 @@ body.wiki-apple .config {
   --cfg-line:    rgba(0,0,0,.1);
 }
 
+/* Timeline chrome — pinned to the original iPod monochrome so the timeline
+   bank renders unchanged here. The left-edge bar/dot/modal-bar stay black
+   (--tl-accent), NOT Apple blue. Other wikis derive from their own palette. */
+body.wiki-apple .timeline {
+  --tl-ink:     #0a0a0a;
+  --tl-surface: #ffffff;
+  --tl-accent:  #0a0a0a;
+  --tl-line:    rgba(0,0,0,.1);
+  --tl-band:    rgba(0,0,0,.025);
+  --tl-chip:    #e8e8ec;
+  --tl-footer:  #fafafa;
+  --tl-dim:     rgba(0,0,0,.45);
+}
+
 
 /* ====================================================================
    2 · BODY
