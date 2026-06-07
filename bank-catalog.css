@@ -50,8 +50,7 @@
 .cat-details{display:none}
 
 /* ── Expandable Card (modal) ────────────────────────────────────────── */
-/* z-index 98: below ALL of the page's nav chrome — the mobile top bar (99),
-   z-index 999: the expanded card sits ABOVE all page chrome — the top nav
+/* z-index 999: the expanded card sits ABOVE all page chrome — the top nav
    (100), the Contents rail (110), every backdrop — so the WHOLE page dims and
    goes inoperable behind it (the original hand-built behavior). fixed+inset:0
    centers the card in the true viewport, unaffected by rail state or content
