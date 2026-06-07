@@ -13,6 +13,8 @@ layout: default
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,100..900,0..100,0;1,9..144,100..900,0..100,0&family=JetBrains+Mono:wght@400;500&family=Spectral:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/wiki-apple-skin.css">
 <link rel="stylesheet" href="/wiki-ipod-touch.css">
+<link rel="stylesheet" href="/bank-timeline.css">
+<link rel="stylesheet" href="/bank-config.css">
 
 {{ content }}
 
@@ -173,23 +175,13 @@ layout: default
   <div id="photo-rail-inner" class="wiki-section-inner"></div>
 </section>
 
-<section class="wiki-section" data-tone="b" id="tl-section">
-  <div class="wiki-section-inner">
-    <div id="tl-header" class="tl-hdr"></div>
-    <div class="tl-outer wiki-section-bleed" id="tlOuter">
-      <div class="track" id="tlTrack"></div>
-    </div>
-  </div>
-</section>
-
+{% include sections/timeline-section.html data=page.timeline %}
 
 <section class="wiki-section" data-tone="a" id="delta-section">
   <div id="delta-content"></div>
 </section>
 
-<section class="wiki-section" data-tone="a" id="cfg-section">
-  <div id="cfg-content"></div>
-</section>
+{% include sections/config-section.html data=page.config %}
 
 <section class="gaming-section wiki-section" data-tone="a" id="gaming-section">
   <div id="gaming-content"></div>
@@ -224,32 +216,6 @@ layout: default
   <button class="lb-close" onclick="lbHide()">✕</button>
   <img class="lb-img" id="lbImg" src="" alt="" onclick="event.stopPropagation()">
   <div class="lb-caption" id="lbCaption"></div>
-</div>
-
-<div class="tl-modal" id="tlModal" onclick="if(event.target===this)closeTl()">
-  <div class="tl-modal-box">
-    <div class="tl-modal-bar"></div>
-    <div class="tl-modal-header">
-      <div class="tl-modal-tag jb" id="tlTag"></div>
-      <div class="tl-modal-title fr" id="tlTitle"></div>
-    </div>
-    <div class="tl-modal-body" id="tlBody"></div>
-    <div class="tl-modal-footer">
-      <button class="tl-modal-close" onclick="closeTl()"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Close</button>
-      <span class="tl-modal-page jb" id="tlPage"></span>
-    </div>
-  </div>
-</div>
-    <div class="tl-modal-body" id="tlBody"></div>
-    <div class="tl-modal-footer">
-      <button class="tl-modal-close" onclick="closeTl()">
-        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        Close
-      </button>
-      <span class="tl-modal-page jb" id="tlPage"></span>
-    </div>
-  </div>
-</div>
 </div>
 
 <!-- Shared render engine -->

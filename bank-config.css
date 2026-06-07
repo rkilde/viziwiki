@@ -1,0 +1,80 @@
+/* ════════════════════════════════════════════════════════════════════
+   BANK · CONFIG  (storage / configuration chart)
+   --------------------------------------------------------------------
+   A contained chart: capacity rows with proportional fill bars, price,
+   dates, and device-colour dots. Bar widths are DERIVED from capacity in
+   the visual (Liquid), so authors enter only the number.
+
+   Colours are SKIN-DERIVED. The chart reads a handful of --cfg-* tokens,
+   each defaulting to a sensible mix of the wiki's base palette
+   (--foreground / --card / --accent). A wiki that never touches a chart
+   still gets a coherent one (light chrome, an emphasis-coloured bar). A
+   skin can pin any token to lock an exact look — e.g. the Apple skin pins
+   the originals (#fff / #f4f4f6 / #c7c7cc / #0a0a0a) so the iPod chart is
+   byte-identical, via `body.wiki-apple .config { … }`.
+   Device-colour dots are CONTENT (real product hex), not theme.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── skin-derived chrome tokens (defined once; a skin can override) ──── */
+.config{
+  --cfg-ink:     var(--foreground, #0a0a0a);                                                  /* primary text  */
+  --cfg-surface: var(--card, #fff);                                                           /* chart box bg  */
+  --cfg-track:   color-mix(in oklab, var(--foreground, #0a0a0a) 4%, var(--card, #fff));       /* empty track   */
+  --cfg-bar:     var(--accent, color-mix(in oklab, var(--foreground, #0a0a0a) 22%, var(--card, #fff))); /* the fill — emphasis */
+  --cfg-bar-ink: color-mix(in oklab, var(--cfg-ink) 72%, transparent);                        /* text on the bar */
+  --cfg-line:    var(--divider, color-mix(in oklab, var(--foreground, #0a0a0a) 10%, transparent)); /* hairlines */
+}
+
+/* ── intro prose ────────────────────────────────────────────────────── */
+.cfg-prose{max-width:720px;margin-bottom:36px;}
+.cfg-prose p{font-size:var(--wiki-prose-size);color:color-mix(in oklab,var(--cfg-ink) 78%,transparent);line-height:var(--wiki-prose-leading);margin-bottom:16px;}
+.cfg-prose p:last-child{margin-bottom:0;}
+.cfg-prose p strong{color:var(--cfg-ink);font-weight:600;}
+
+/* ── chart box ──────────────────────────────────────────────────────── */
+.cfg-chart{background:var(--cfg-surface);border:1px solid var(--cfg-line);border-radius:14px;padding:24px;}
+.cfg-chart-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap;}
+.cfg-chart-title{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:16px;font-weight:600;letter-spacing:-0.01em;color:var(--cfg-ink);}
+.cfg-chart-sub{font-family:"JetBrains Mono",monospace;font-size:8px;text-transform:uppercase;letter-spacing:.14em;color:color-mix(in oklab,var(--cfg-ink) 38%,transparent);}
+.cfg-bars{display:flex;flex-direction:column;gap:10px;}
+.cfg-row{display:grid;grid-template-columns:56px 1fr 76px;row-gap:2px;column-gap:12px;align-items:center;}
+.cfg-date-row{grid-column:2 / -1;padding-left:4px;}
+.cfg-cap{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:22px;font-weight:700;letter-spacing:-0.03em;text-align:right;color:var(--cfg-ink);}
+.cfg-cap span{font-size:11px;font-weight:400;color:color-mix(in oklab,var(--cfg-ink) 35%,transparent);margin-left:1px;}
+.cfg-track{height:48px;background:var(--cfg-track);border-radius:8px;position:relative;overflow:hidden;border:1px solid var(--cfg-line);}
+.cfg-fill{height:100%;background:var(--cfg-bar);border-radius:7px;display:flex;align-items:center;padding:0 12px;gap:8px;}
+.cfg-fill-rev{background:repeating-linear-gradient(-45deg,var(--cfg-bar),var(--cfg-bar) 3px,color-mix(in oklab,var(--cfg-bar) 92%,#000) 3px,color-mix(in oklab,var(--cfg-bar) 92%,#000) 4px);}
+.cfg-fill .cfg-dates{display:none;}
+.cfg-model{font-family:"JetBrains Mono",monospace;font-size:7px;text-transform:uppercase;letter-spacing:.1em;color:var(--cfg-bar-ink);white-space:nowrap;}
+.cfg-dates{font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:.04em;color:color-mix(in oklab,var(--cfg-ink) 62%,transparent);white-space:nowrap;margin-top:3px;display:block;}
+.cfg-price{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:18px;font-weight:600;letter-spacing:-0.02em;text-align:right;color:var(--cfg-ink);white-space:nowrap;}
+.cfg-price-line{line-height:1.18;}
+.cfg-price-arrow{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:400;letter-spacing:0;vertical-align:middle;}
+
+/* ── revised-group divider ──────────────────────────────────────────── */
+.cfg-divider{height:1px;background:var(--cfg-line);margin:4px 0;}
+.cfg-divider-label{font-family:"JetBrains Mono",monospace;font-size:7px;text-transform:uppercase;letter-spacing:.14em;color:color-mix(in oklab,var(--cfg-ink) 32%,transparent);margin-top:6px;margin-bottom:2px;}
+
+/* ── device-colour dots (content hex, not theme) ────────────────────── */
+.cfg-colors{grid-column:2 / -1;display:flex;align-items:flex-start;gap:10px;justify-content:flex-start;flex-wrap:wrap;padding-left:4px;margin-top:2px;}
+.cfg-color{display:flex;flex-direction:column;align-items:center;gap:4px;width:34px;}
+.cfg-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0;box-shadow:0 1px 2px color-mix(in oklab,var(--cfg-ink) 12%,transparent);}
+.cfg-dot.ring{box-shadow:inset 0 0 0 1px color-mix(in oklab,var(--cfg-ink) 32%,transparent),0 1px 2px color-mix(in oklab,var(--cfg-ink) 8%,transparent);}
+.cfg-dot-name{font-family:"JetBrains Mono",monospace;font-size:8px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:color-mix(in oklab,var(--cfg-ink) 50%,transparent);text-align:center;line-height:1.2;width:100%;}
+
+/* ── footer spec line ───────────────────────────────────────────────── */
+.cfg-footer{margin-top:16px;padding-top:14px;border-top:1px solid var(--cfg-line);font-family:"JetBrains Mono",monospace;font-size:8px;text-transform:uppercase;letter-spacing:.12em;color:color-mix(in oklab,var(--cfg-ink) 35%,transparent);line-height:1.6;}
+
+@media(max-width:600px){
+  .cfg-chart{padding:16px;}
+  .cfg-row{grid-template-columns:44px minmax(0,1fr) auto;column-gap:10px;}
+  .cfg-cap{font-size:18px;}
+  .cfg-track{height:40px;min-width:0;}
+  .cfg-model{font-size:6px;}
+  .cfg-price-arrow{font-size:12px;}
+  .cfg-price{font-size:15px;}
+  .cfg-chart-head{flex-direction:column;gap:4px;}
+  .cfg-dot{width:15px;height:15px;}
+  .cfg-dot-name{font-size:7.5px;}
+  .cfg-colors{gap:8px;}
+}

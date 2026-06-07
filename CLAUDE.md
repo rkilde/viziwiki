@@ -12,8 +12,11 @@ we are converging it into a clean, layered, single-source system.
 
 A **UI "wiki builder"**: a contributor clicks a blank dashed **"+"** slot, a
 side rail shows the **canon components allowed at that section/page level**,
-they pick one, fill a **simple form of fields**, and a live preview renders it
-— **the contributor never touches code, CSS, SVG, or a CDN.**
+they pick one, and then **fill it out by editing the live component directly,
+in place — WYSIWYG / direct manipulation, NOT a form of blank fields.** Click
+the title to rename it, click a value to change it, click a swatch to recolor —
+**the live component itself is the editing surface.** The contributor never
+touches code, CSS, SVG, or a CDN.
 
 **Standing directive:** evaluate everything we do against this goal. A change
 is "on path" if it keeps components **universal, typed into banks,
@@ -22,8 +25,8 @@ skin-colored.** If something the owner asks for would pull against it, **say
 so** and offer the builder-friendly alternative — then do what they decide
 (their call always wins). Things that conflict: one-off bespoke components,
 hardcoded colors/styles instead of skin tokens, hand-built-per-page layout
-that can't be form-driven, special-casing anything the universal layer
-defines, or layout that can't be validated/constrained.
+that can't be data-driven / edited in place, special-casing anything the
+universal layer defines, or layout that can't be validated/constrained.
 
 ---
 
@@ -135,14 +138,46 @@ did, on the iPod charts — hence this rule). **Rule of thumb: document text →
   prose) reads it. Visual-component type was briefly wired to the scale then
   **reverted** — it belongs to the bank, not the universal layer (see "Type
   scale" above).
+- **Phase 4 — Catalog bank** (data-driven list + paired expandable card): built
+  + rolled out to **7 pages** (drinks, discontinued-drinks, the 5 menu
+  sub-pages). Section/visual split (`_includes/sections/` + `_includes/visuals/`
+  + the `visual.html` dispatcher + `_data/visuals.yml` registry); add-ons:
+  skin-swatch category colors, ribbon tones (accent / gone-grey),
+  status·info-chip·pill-groups(+struck)·callout·notes, header+footer hairlines,
+  auto-derived summary + optional note. `bank-catalog.css` = single source.
+- **Phase 4 — Timeline bank** (full-bleed, date-positioned scroller + station
+  card + detail modal): built + rolled out to **all 6 iPod pages**. New
+  `section: timeline` (locked eyebrow + `ic-move-horizontal`, optional H2,
+  auto-derived scroll-range hint, locked full-bleed). Extracted out of the iPod
+  JS engine into a Liquid bank (`bank-timeline.css` = single source; legacy
+  timeline JS / CSS / markup removed). `card_type` dispatch seam in place
+  (one type: `station`). **Skin-tokenized** — `--tl-*` tokens derive from the
+  wiki palette; Apple pinned to the original monochrome (`body.wiki-apple
+  .timeline`), so the iPod look is unchanged while other wikis auto-theme.
+- **Phase 4 — Config bank** (storage/configuration chart, no modal): built +
+  rolled out to **all 6 iPod pages**. New `section: config` (locked eyebrow +
+  `ic-hard-drive`, required H2 + chart-title, optional intro/footer, contained).
+  Bar widths **derived** from capacity (GB/TB normalized, exact proportion).
+  Revised-group (`revised` flag → striped bar + `divider_label`); price "old →
+  new" drops; device-colour dots are content hex. **Skin-tokenized** (`--cfg-*`,
+  Apple pinned) — first chart-bank themed from day one. Extracted out of the
+  iPod JS engine (`bank-config.css` = single source; legacy `renderCfg` / CSS /
+  placeholder removed).
 
 **Open**
-- Phase 4 visual bank: the taxonomy + remaining typed banks (lists, tables,
-  timelines, charts) — the big "decide the canonical set, then extract" effort.
-  **This is also where each visual component's TYPE gets centralized** (bank-owned).
+- Phase 4 visual bank — **catalog + timeline + config banks DONE** (see Done).
+  Remaining typed banks to decide + extract:
+  - **swim-lane / proportional timeline** (discontinued swim-lanes, cantina
+    rollout phases, slogans, sauces) — also pays off the temporary
+    `ITEM_DB` / `ITEMS_DATA` duplication on discontinued + cantina.
+  - **ladder / ranking bars** (drinks sugar + caffeine, sauces heat).
+  - **tile directory** (menus listing page, sauces discontinued tiles).
+  - **comparison/delta table** (iPod hw/sw rows).
+  - **quote wall · pairing matrix · spec table** (sauces, iPod) — smaller.
+  Each bank is also where its component TYPE gets centralized (bank-owned).
 - Re-tokenize page-specific DOCUMENT text not yet on canonical `.wiki-*` classes
   (e.g. the iPod page's own prose/eyebrows/headers reverted with its widgets).
-- Redo the iPod CSS block-dedupe (cfg/jb/lane) as a pure non-type cleanup.
+- Redo the iPod CSS block-dedupe (jb/lane) as a pure non-type cleanup.
 - Home pages still load the **Tailwind CDN** (separate from the de-Tailwinded
   archive pages) — a future de-Tailwind pass.
 - Smurfs keeps its own small inline icon sprite (custom Smurf art) — optional
@@ -159,6 +194,26 @@ did, on the iPod charts — hence this rule). **Rule of thumb: document text →
   *loading*.)
 - The **builder UI** itself (the 1.0 product) — built once enough components are
   data-driven banks.
+- **Admin / builder back-end (master access + in-page edit mode).** The site is
+  static (Cloudflare Pages) and content is already data-in-git, so no DB is
+  needed to start — a "back-end" here = **auth + the builder writing data back +
+  redeploy**. Recommended path (keeps the static/git single-source model):
+  (1) **auth** — Cloudflare Access (Zero-Trust, owner-email gated) in front of an
+  `/admin` route + a Worker holding a **GitHub App** token server-side (keeps the
+  write token out of the browser); or GitHub OAuth in-browser as the simpler
+  bridge. Master = repo admin; contributors = restricted role / PR-only.
+  (2) **editor** — wire OUR builder kit to read a page's `catalog:` front-matter
+  and commit edits via the **GitHub Contents API** (`visuals.yml` is already the
+  registry it reads); a fast bridge is an off-the-shelf git CMS (Sveltia/Decap/
+  Tina) configured against the front-matter schema. (3) **edit mode** — admin-only
+  "Edit" affordance on any live page opens the builder pre-loaded with that page's
+  data. (4) **draft→publish** — saves land on a `draft` branch (preview deploy),
+  "Publish" = merge to main; Cloudflare already rebuilds on push. Trade-off: saves
+  cost a deploy cycle (seconds), not instant-live — fine for a wiki; true instant
+  editing would mean a dynamic app + DB (bigger leap, not now). NOTE: the auth/
+  OAuth/Access/GitHub-App pieces need setup in the owner's GitHub + Cloudflare
+  dashboards (can't be done from the agent env) — code can be built here, clicks
+  walked through.
 - **Vizi-verse** (the narrative side; currently only `top-10.html`) — deferred.
 
 ---

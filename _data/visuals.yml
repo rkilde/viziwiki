@@ -21,6 +21,39 @@ sections:
     summary: derived                   # "{n} {unit}s · {m} categories"
     addons: [footnote]
     hosts: [catalog]                   # visuals legal in the slot
+  timeline-section:
+    partial: sections/timeline-section.html
+    eyebrow: "Timeline"                # locked
+    icon: move-horizontal              # locked
+    h2: optional
+    summary: derived                   # auto "Scroll · first → last"
+    full_bleed: true                   # locked edge-to-edge scroller
+    hosts: [timeline]                  # visuals legal in the slot
+  config-section:
+    partial: sections/config-section.html
+    eyebrow: "Configurations"          # locked
+    icon: hard-drive                   # locked
+    h2: required
+    contained: true                    # NOT full-bleed
+    hosts: [config]                    # visuals legal in the slot
+
+config:
+  bank: charts
+  partial: visuals/config/config.html
+  section: config-section
+  bar_fill: derived                    # width = exact proportion of capacity (GB/TB normalized), no floor
+  units: [GB, TB]
+  addons: [revised, divider_label, price-drop, color-dots]
+  colors: skin-derived                 # chrome via --cfg-* tokens; device dots are content hex
+  item_fields: [capacity, unit, model, price, dates, revised, colors]
+
+timeline:
+  bank: timelines
+  partial: visuals/timeline/timeline.html
+  section: timeline-section
+  card_types: [station]                # only one card type for now
+  pairs_with: detail-modal             # each card opens this
+  event_fields: [month, day, year, tag, title, preview, body]
 
 catalog:
   bank: lists

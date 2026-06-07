@@ -1,0 +1,48 @@
+{%- comment -%}
+  CONFIG visual (Level B) — the storage/configuration chart. One row per
+  config: capacity · a fill bar whose width is DERIVED from the capacity
+  (normalized to a common base so GB and TB stay proportional) · price
+  (supports an "old → new" drop) · dates · device-colour dots. A `revised`
+  flag stripes the bar and (on the first revised row) drops a labeled
+  divider. No modal. Static — all math in Liquid, no JS.
+  Item fields: capacity (number), unit? (GB|TB, default GB), model, price,
+  dates, revised?, colors?[]{name,hex,ring?}.
+{%- endcomment -%}
+{%- assign data = include.data -%}
+{%- comment -%} max capacity normalized to GB (1 TB = 1000 GB) for proportional bars {%- endcomment -%}
+{%- assign maxgb = 1 -%}
+{%- for it in data.items -%}
+  {%- if it.unit == 'TB' -%}{%- assign cg = it.capacity | times: 1000 -%}{%- else -%}{%- assign cg = it.capacity | times: 1 -%}{%- endif -%}
+  {%- if cg > maxgb -%}{%- assign maxgb = cg -%}{%- endif -%}
+{%- endfor -%}
+<div class="cfg-chart">
+  <div class="cfg-chart-head"><div class="cfg-chart-title fr">{{ data.chart_title }}</div></div>
+  <div class="cfg-bars">
+    {%- assign divider_done = false -%}
+    {%- for it in data.items -%}
+      {%- if it.revised and divider_done == false -%}
+        <div class="cfg-divider"></div>{%- if data.divider_label -%}<div class="cfg-divider-label jb">{{ data.divider_label }}</div>{%- endif -%}
+        {%- assign divider_done = true -%}
+      {%- endif -%}
+      {%- if it.unit == 'TB' -%}{%- assign cg = it.capacity | times: 1000 -%}{%- else -%}{%- assign cg = it.capacity | times: 1 -%}{%- endif -%}
+      {%- comment -%} bar width = exact proportion of the largest capacity (decimal, no floor) {%- endcomment -%}
+      {%- assign w = cg | times: 100.0 | divided_by: maxgb | round: 2 -%}
+      <div class="cfg-row">
+        <div class="cfg-cap fr">{{ it.capacity }}<span>{{ it.unit | default: 'GB' }}</span></div>
+        <div class="cfg-track"><div class="cfg-fill{% if it.revised %} cfg-fill-rev{% endif %}" style="width:{{ w }}%">{% if it.model %}<span class="cfg-model">{{ it.model }}</span>{% endif %}</div></div>
+        {%- if it.price contains '→' -%}
+          {%- assign pp = it.price | split: '→' -%}
+          <div class="cfg-price fr"><div class="cfg-price-line">{{ pp[0] | strip }}</div><div class="cfg-price-line"><span class="cfg-price-arrow">→</span> {{ pp[1] | strip }}</div></div>
+        {%- else -%}
+          <div class="cfg-price fr"><div class="cfg-price-line">{{ it.price }}</div></div>
+        {%- endif -%}
+        {%- if it.dates -%}<div class="cfg-date-row"><span class="cfg-dates">{{ it.dates }}</span></div>{%- endif -%}
+        {%- if it.colors -%}
+        <div class="cfg-colors">
+          {%- for c in it.colors -%}<div class="cfg-color"><span class="cfg-dot{% if c.ring %} ring{% endif %}" style="background:{{ c.hex }}"></span><span class="cfg-dot-name jb">{{ c.name }}</span></div>{%- endfor -%}
+        </div>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>

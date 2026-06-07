@@ -1,9 +1,10 @@
 /* ====================================================================
    wiki-ipod-touch.js
    ViziWiki · iPod touch wiki — shared render engine
-   All iPod touch gen pages load this file AFTER defining PAGE_DATA
-   and TIMELINE. Change any render function here and it propagates
-   to every gen page.
+   All iPod touch gen pages load this file AFTER defining PAGE_DATA.
+   Change any render function here and it propagates to every gen page.
+   (The timeline now lives in the Timeline bank — _includes/visuals/
+   timeline + bank-timeline.css — not here.)
 
    SECTIONS CONTROLLED BY PAGE_DATA FLAGS:
    • PAGE_DATA.gaming        — Cultural impact section
@@ -89,9 +90,6 @@ document.querySelectorAll('.design-img-rail, .photo-rail-scroll').forEach(addDra
 
 // JB chart static HTML — injected by renderJailbreak()
 var JB_CHART_HTML = '<div class="jb-chart">\n      <div class="jb-chart-head">\n        <div class="jb-chart-head-cell">Capability</div>\n        <div class="jb-chart-head-cell">Stock iOS</div>\n        <div class="jb-chart-head-cell jb-col">Jailbroken</div>\n      </div><div class="jb-row"><div class="jb-cell feature-name">Multitasking</div><div class="jb-cell"><span class="jb-no">&#10005;</span><span class="jb-note"> Excluded from 2G in iOS 4</span></div><div class="jb-cell"><span class="jb-yes">&#10003;</span><span class="jb-note"> Backgrounder app, full background processes</span></div></div>\n<div class="jb-row"><div class="jb-cell feature-name">Alternative app stores</div><div class="jb-cell"><span class="jb-no">&#10005;</span><span class="jb-note"> App Store only</span></div><div class="jb-cell"><span class="jb-yes">&#10003;</span><span class="jb-note"> Cydia, AppSync, Installous</span></div></div>\n<div class="jb-row"><div class="jb-cell feature-name">Visual theming</div><div class="jb-cell"><span class="jb-no">&#10005;</span><span class="jb-note"> No customisation</span></div><div class="jb-cell"><span class="jb-yes">&#10003;</span><span class="jb-note"> Winterboard — full icon packs, UI reskins</span></div></div>\n<div class="jb-row"><div class="jb-cell feature-name">Quick settings toggle</div><div class="jb-cell"><span class="jb-no">&#10005;</span><span class="jb-note"> Requires navigating to Settings app</span></div><div class="jb-cell"><span class="jb-yes">&#10003;</span><span class="jb-note"> SBSettings — pull-down overlay from anywhere</span></div></div>\n<div class="jb-row"><div class="jb-cell feature-name">WiFi tethering</div><div class="jb-cell"><span class="jb-no">&#10005;</span><span class="jb-note"> Not available (WiFi-only device)</span></div><div class="jb-cell"><span class="jb-yes">&#10003;</span><span class="jb-note"> PdaNet — USB tethering from device WiFi</span></div></div>\n<div class="jb-row"><div class="jb-cell feature-name">Home screen customisation</div><div class="jb-cell"><span class="jb-no">&#10005;</span><span class="jb-note"> Fixed grid, no widgets</span></div><div class="jb-cell"><span class="jb-yes">&#10003;</span><span class="jb-note"> Infinidock, FolderEnhancer, lockscreen widgets</span></div></div>\n<div class="jb-row"><div class="jb-cell feature-name">System file access</div><div class="jb-cell"><span class="jb-no">&#10005;</span><span class="jb-note"> Sandboxed, no root</span></div><div class="jb-cell"><span class="jb-yes">&#10003;</span><span class="jb-note"> SSH, iFile, terminal — full filesystem access</span></div></div>\n<div class="jb-row"><div class="jb-cell feature-name">3rd-party background audio</div><div class="jb-cell"><span class="jb-no">&#10005;</span><span class="jb-note"> Stock music app only</span></div><div class="jb-cell"><span class="jb-yes">&#10003;</span><span class="jb-note"> Any app, background playback via Backgrounder</span></div></div>\n<div class="jb-row"><div class="jb-cell feature-name">Custom wallpapers</div><div class="jb-cell"><span class="jb-no">&#10005;</span><span class="jb-note"> Excluded from 2G in iOS 4</span></div><div class="jb-cell"><span class="jb-yes">&#10003;</span><span class="jb-note"> Winterboard — any image, lock & home screen</span></div></div></div>';
-
-// Populated by renderTimeline()
-var TL = [];
 
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -185,54 +183,6 @@ function renderPhotoRail(){
   if(scroll) addDragScroll(scroll);
 }
 
-// ── renderTimeline ────────────────────────────────────────────────────
-function renderTimeline(){
-  var track = document.getElementById('tlTrack');
-  if(!track) return;
-  // Build TL modal array from TIMELINE
-  TL = TIMELINE.map(function(e){
-    return {tag:e.month+(e.day?' '+e.day:'')+', '+e.year+' \xb7 '+e.tag, title:e.title, body:e.body};
-  });
-  // Rebuild positioning after render
-  track.innerHTML = TIMELINE.map(function(e,i){
-    var daySpan = e.day ? '<span class="sc-float-day fr">'+e.day+'</span> ' : '';
-    return '<div class="itl-station" data-date="'+e.dateKey+'">'
-      +'<div class="itl-event-top">'
-      +'<div class="sc-float-date">'
-      +'<span class="sc-float-month fr">'+e.month+'</span> '
-      + daySpan
-      +'<span class="sc-float-year fr">'+e.year+'</span>'
-      +'</div>'
-      +'<div class="itl-card" onclick="openTl('+i+')">'
-      +'<div class="sc-bar"></div>'
-      +'<div class="sc-body">'
-      +'<div class="sc-tag jb">'+e.tag+'</div>'
-      +'<div class="sc-title fr">'+e.title+'</div>'
-      +'<p class="sc-prose">'+e.preview+'</p>'
-      +'<div class="sc-footer">'
-      +'<span class="sc-expand jb">Details <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span>'
-      +'<span class="sc-num jb">'+String(i+1).padStart(2,'0')+'</span>'
-      +'</div></div></div></div>'
-      +'<div class="itl-spine"><div class="itl-dot"></div></div>'
-      +'</div>';
-  }).join('\n');
-  // positionTimeline called on window.onload — see initPage()
-}
-
-// ── renderTLHeader ────────────────────────────────────────────────────
-function renderTLHeader(){
-  var el = document.getElementById('tl-header');
-  if(!el) return;
-  var tl = PAGE_DATA.timeline;
-  el.innerHTML =
-    '<div class="wiki-section-eyebrow tl-label">'+
-    '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'
-    +'History'
-    +'</div>'
-    +'<h2 class="wiki-section-title" style="margin-bottom:24px;">'+tl.heading+'</h2>'
-    +'<div class="tl-scroll-hint jb">'+tl.hint+'</div>';
-}
-
 // ── renderDelta ───────────────────────────────────────────────────────
 function renderDelta(){
   var d  = PAGE_DATA.delta;
@@ -305,57 +255,7 @@ function renderDelta(){
 }
 
 
-// ── renderCfg ─────────────────────────────────────────────────────────
-function renderCfg(){
-  var c  = PAGE_DATA.cfg;
-  var el = document.getElementById('cfg-content');
-  if(!el) return;
 
-  var regular = c.items.filter(function(it){ return !it.cls.includes('rev'); });
-  var revised  = c.items.filter(function(it){ return  it.cls.includes('rev'); });
-
-  function cfgRow(item){
-    var colorsHtml = (item.colors||[]).map(function(c){
-      return '<div class="cfg-color">'
-        +'<span class="cfg-dot'+(c.ring?' ring':'')+'" style="background:'+c.hex+'"></span>'
-        +'<span class="cfg-dot-name jb">'+c.name+'</span>'
-        +'</div>';
-    }).join('');
-    return '<div class="cfg-row">'
-      +(function(){var mobileColors='';if(item.colors&&item.colors.length){mobileColors='<div class="cfg-colors-mobile">'+item.colors.map(function(c){return '<div class="cfg-color-mobile">'+'<span class="cfg-dot-mobile'+(c.ring?' ring':'')+'" style="background:'+c.hex+'"></span>'+'<span class="cfg-dot-name-mobile">'+c.name+'</span>'+'</div>';}).join('')+'</div>';}return '<div class="cfg-cap fr">'+item.gb+'<span>GB</span>'+mobileColors+'</div>';})()
-      +'<div class="cfg-track"><div class="cfg-fill '+item.cls+'"><span class="cfg-model">'+item.model+'</span></div></div>'
-      +(function(){var parts=item.price.split('→');if(parts.length===2){return '<div class="cfg-price fr">'+'<div class="cfg-price-line">'+parts[0].trim()+'</div>'+'<div class="cfg-price-line"><span class="cfg-price-arrow">→</span> '+parts[1].trim()+'</div>'+'</div>';}return '<div class="cfg-price fr"><div class="cfg-price-line">'+item.price+'</div></div>';})()
-      +'<div class="cfg-date-row"><span class="cfg-dates">'+item.dates+'</span></div>'
-      +(colorsHtml?'<div class="cfg-colors">'+colorsHtml+'</div>':'')
-      +'</div>';
-  }
-
-  el.innerHTML =
-    '<div class="wiki-section-inner">'
-    +'<div class="wiki-section-eyebrow">'
-    +'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" x2="2" y1="12" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" x2="6.01" y1="16" y2="16"/><line x1="10" x2="10.01" y1="16" y2="16"/></svg>'
-    +'Configurations'
-    +'</div>'
-    +'<h2 class="wiki-section-title" style="margin-bottom:24px;">'+c.heading+'</h2>'
-    +(c.intro && (c.intro[0]||c.intro[1])
-      ? '<div class="cfg-prose">'
-        +(c.intro[0]?'<p>'+c.intro[0]+'</p>':'')
-        +(c.intro[1]?'<p>'+c.intro[1]+'</p>':'')
-        +'</div>'
-      : '')
-    +'<div class="cfg-chart">'
-    +'<div class="cfg-chart-head">'
-    +'<div class="cfg-chart-title fr">'+c.chartTitle+'</div>'
-    +'</div>'
-    +'<div class="cfg-bars">'
-    + regular.map(cfgRow).join('')
-    +(c.dividerLabel?'<div class="cfg-divider"></div><div class="cfg-divider-label jb">'+c.dividerLabel+'</div>':'')
-    + revised.map(cfgRow).join('')
-    +'</div>'
-    +'</div>'
-    +(c.footer?'<div class="cfg-footer">'+c.footer+'</div>':'')
-    +'</div>';
-}
 
 
 // ── renderSection (prose + right image rail) ──────────────────────────
@@ -538,10 +438,7 @@ function initPage(){
   renderHero();
   renderOverview();
   if(PAGE_DATA.photos && PAGE_DATA.photos.length) renderPhotoRail();
-  renderTLHeader();
-  renderTimeline();
   renderDelta();
-  renderCfg();
   if(PAGE_DATA.gaming) renderProseRail('gaming-content', PAGE_DATA.gaming,
     '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>',
     'Cultural impact');
@@ -556,86 +453,3 @@ function initPage(){
   if(PAGE_DATA.controversies) renderControversies();
   renderSpecs();
 }
-
-
-
-// Run everything
-
-var _tlDragged=false;
-function openTl(i){if(_tlDragged)return;var d=TL[i];document.getElementById("tlTag").textContent=d.tag;document.getElementById("tlTitle").textContent=d.title;document.getElementById("tlBody").innerHTML=d.body;document.getElementById("tlPage").textContent=(i+1).toString().padStart(2,"0")+" / "+TL.length;document.getElementById("tlModal").classList.add("open");document.body.style.overflow="hidden";}
-function closeTl(){document.getElementById("tlModal").classList.remove("open");document.body.style.overflow="";}
-document.addEventListener("keydown",function(e){if(e.key==="Escape")closeTl();});
-function positionTimeline(){
-
-  var CARD_W=280,SLIM_W=68,PAD=24,SPINE_Y=339,TRACK_H=368;
-  var MO={Jan:1,Feb:2,Mar:3,Apr:4,May:5,Jun:6,Jul:7,Aug:8,Sep:9,Oct:10,Nov:11,Dec:12};
-  function pd(s){s=(s||"").trim();var m=s.match(/^(\w{3})\s+(\d{4})$/);if(m)return{y:+m[2],m:MO[m[1]]||1};var m2=s.match(/(\d{4})/);return m2?{y:+m2[1],m:1}:null;}
-  function dm(a,b){return(b.y-a.y)*12+(b.m-a.m);}
-  function fmt(n){if(n<1)return null;if(n===1)return"1 mo";if(n<12)return n+" mo";var y=Math.round(n/12);return y+" yr";}
-  var track=document.getElementById("tlTrack");if(!track)return;
-  var stations=[].slice.call(track.querySelectorAll(".itl-station"));
-  var items=stations.map(function(el){return{el:el,d:pd(el.getAttribute("data-date"))};}).filter(function(x){return x.d;});
-  if(items.length<2)return;
-  var byYear={};
-  items.forEach(function(it){(byYear[it.d.y]||(byYear[it.d.y]=[])).push(it);});
-  Object.values(byYear).forEach(function(g){g.sort(function(a,b){return a.d.m-b.d.m;});});
-  var firstYr=Math.min.apply(null,Object.keys(byYear).map(Number));
-  var lastYr=Math.max.apply(null,Object.keys(byYear).map(Number));
-  var yearX={},cur=PAD;
-  for(var yr=firstYr;yr<=lastYr;yr++){yearX[yr]=cur;var n=(byYear[yr]||[]).length;cur+=(n>0?n*CARD_W:SLIM_W);}
-  var totalW=cur+PAD;
-  track.style.cssText="display:block;position:relative;width:"+totalW+"px;height:"+TRACK_H+"px;padding-bottom:34px;min-width:unset;box-sizing:content-box;";
-  var spine=document.createElement("div");
-  spine.style.cssText="position:absolute;left:0;right:0;top:"+SPINE_Y+"px;height:1px;background:rgba(0,0,0,.12);z-index:1;";
-  track.appendChild(spine);
-  var posX=new Map();
-  Object.keys(byYear).forEach(function(yr){var xw=yearX[+yr];byYear[+yr].forEach(function(it){it.el.style.position="absolute";it.el.style.top="0";it.el.style.left=xw+"px";it.el.style.width=CARD_W+"px";posX.set(it.el,xw);xw+=CARD_W;});});
-  var ruler=document.createElement("div");ruler.className="tl-ruler";
-  for(var y=firstYr;y<=lastYr;y++){var x=yearX[y];var nc=(byYear[y]||[]).length;var w=nc?nc*CARD_W:SLIM_W;var b=document.createElement("div");b.className="tl-band"+(y%2===0?" tl-band-even":"");b.style.cssText="left:"+x+"px;width:"+w+"px";track.appendChild(b);var tick=document.createElement("div");tick.className="tl-yr";tick.style.left=x+"px";tick.innerHTML="<span"+(nc===0?" style=\"opacity:.45;font-size:7px\"":"")+">"+y+"</span>";ruler.appendChild(tick);}
-  track.appendChild(ruler);
-  var chipY=160;
-  var sorted=items.slice().sort(function(a,b){return(a.d.y*12+a.d.m)-(b.d.y*12+b.d.m);});
-  for(var i=0;i<sorted.length-1;i++){var gap=dm(sorted[i].d,sorted[i+1].d);if(gap<1)continue;var label=fmt(gap);if(!label)continue;var cx1=(posX.get(sorted[i].el)||0)+CARD_W;var cx2=(posX.get(sorted[i+1].el)||0);var mid=(cx1+cx2)/2;var chip=document.createElement("div");chip.className="tl-gap";chip.style.cssText="left:"+mid+"px;top:"+chipY+"px";chip.textContent=label;track.appendChild(chip);}
-  stations.forEach(function(el){
-    var card=el.querySelector(".itl-card");
-    var spine=el.querySelector(".itl-spine");
-    if(!card||!spine)return;
-    // getBoundingClientRect forces layout sync — always accurate
-    var stRect=el.getBoundingClientRect();
-    var cRect=card.getBoundingClientRect();
-    var sRect=spine.getBoundingClientRect();
-    var barTop=cRect.bottom-stRect.top;
-    var barH=Math.max(0,(sRect.top+sRect.height/2)-cRect.bottom);
-    if(barH<=0)return;
-    var bar=document.createElement("div");
-    bar.style.cssText="position:absolute;left:50%;transform:translateX(-50%);top:"+barTop+"px;width:1px;height:"+barH+"px;background:rgba(0,0,0,.15);pointer-events:none;z-index:1;";
-    el.appendChild(bar);
-  });
-  var outer=document.getElementById("tlOuter");var dn=false,sx,sl,mx;
-  outer.addEventListener("mousedown",function(e){dn=true;_tlDragged=false;sx=e.pageX-outer.offsetLeft;sl=outer.scrollLeft;mx=e.pageX;});
-  outer.addEventListener("mouseleave",function(){dn=false;});
-  outer.addEventListener("mouseup",function(){dn=false;});
-  outer.addEventListener("mousemove",function(e){if(!dn)return;var dx=e.pageX-mx;if(Math.abs(dx)>4){_tlDragged=true;e.preventDefault();}outer.scrollLeft=sl-(e.pageX-outer.offsetLeft-sx)*1.2;});
-}
-
-// positionTimeline: retry until station cards have non-zero height,
-// which confirms CSS is applied and layout is computed.
-function schedulePositionTimeline(attemptsLeft) {
-  if (attemptsLeft <= 0) return;
-  var track = document.getElementById('tlTrack');
-  if (!track) { setTimeout(function(){ schedulePositionTimeline(attemptsLeft-1); }, 100); return; }
-  var firstCard = track.querySelector('.itl-card');
-  if (!firstCard || firstCard.getBoundingClientRect().height === 0) {
-    setTimeout(function(){ schedulePositionTimeline(attemptsLeft-1); }, 100);
-    return;
-  }
-  positionTimeline();
-}
-// Start trying on DOMContentLoaded, keep retrying up to 2 seconds
-document.addEventListener('DOMContentLoaded', function(){
-  schedulePositionTimeline(20);
-});
-window.addEventListener('load', function(){
-  schedulePositionTimeline(10);
-});
-

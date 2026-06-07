@@ -1,0 +1,25 @@
+{%- comment -%}
+  TIMELINE SECTION (a page-section type — the framing, not the visual).
+  The chrome a contributor gets on dropping a "Timeline section":
+    · locked eyebrow "Timeline" + the locked move-horizontal icon
+    · an OPTIONAL H2 heading
+    · an auto-derived scroll hint (first → last event date range)
+    · a full-bleed slot (the scroller bleeds edge-to-edge — locked)
+  The visual that fills the slot (today: the one timeline) is routed through
+  the dispatcher. Usage: {% include sections/timeline-section.html data=page.timeline %}
+  Data: heading?, visual?, tone?, events[]
+{%- endcomment -%}
+{%- assign data = include.data -%}
+{%- assign visual = data.visual | default: 'timeline' -%}
+{%- assign first = data.events | first -%}
+{%- assign last = data.events | last -%}
+<section class="wiki-section timeline" data-tone="{{ data.tone | default: 'b' }}" id="tl-section">
+  <div class="wiki-section-inner">
+    <div class="tl-hdr">
+      <div class="wiki-section-eyebrow tl-label">{% include icon.html name="move-horizontal" %} Timeline</div>
+      {%- if data.heading -%}<h2 class="wiki-section-title" style="margin-bottom:24px;">{{ data.heading }}</h2>{%- endif -%}
+      {%- if data.events.size > 1 -%}<div class="tl-scroll-hint jb">Scroll &middot; {{ first.month }} {{ first.year }} &ndash; {{ last.month }} {{ last.year }}</div>{%- endif -%}
+    </div>
+    {% include visual.html type=visual data=data %}
+  </div>
+</section>
