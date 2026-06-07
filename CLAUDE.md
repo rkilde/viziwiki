@@ -12,8 +12,11 @@ we are converging it into a clean, layered, single-source system.
 
 A **UI "wiki builder"**: a contributor clicks a blank dashed **"+"** slot, a
 side rail shows the **canon components allowed at that section/page level**,
-they pick one, fill a **simple form of fields**, and a live preview renders it
-— **the contributor never touches code, CSS, SVG, or a CDN.**
+they pick one, and then **fill it out by editing the live component directly,
+in place — WYSIWYG / direct manipulation, NOT a form of blank fields.** Click
+the title to rename it, click a value to change it, click a swatch to recolor —
+**the live component itself is the editing surface.** The contributor never
+touches code, CSS, SVG, or a CDN.
 
 **Standing directive:** evaluate everything we do against this goal. A change
 is "on path" if it keeps components **universal, typed into banks,
@@ -22,8 +25,8 @@ skin-colored.** If something the owner asks for would pull against it, **say
 so** and offer the builder-friendly alternative — then do what they decide
 (their call always wins). Things that conflict: one-off bespoke components,
 hardcoded colors/styles instead of skin tokens, hand-built-per-page layout
-that can't be form-driven, special-casing anything the universal layer
-defines, or layout that can't be validated/constrained.
+that can't be data-driven / edited in place, special-casing anything the
+universal layer defines, or layout that can't be validated/constrained.
 
 ---
 
