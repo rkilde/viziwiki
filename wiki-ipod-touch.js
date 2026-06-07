@@ -255,57 +255,7 @@ function renderDelta(){
 }
 
 
-// ── renderCfg ─────────────────────────────────────────────────────────
-function renderCfg(){
-  var c  = PAGE_DATA.cfg;
-  var el = document.getElementById('cfg-content');
-  if(!el) return;
 
-  var regular = c.items.filter(function(it){ return !it.cls.includes('rev'); });
-  var revised  = c.items.filter(function(it){ return  it.cls.includes('rev'); });
-
-  function cfgRow(item){
-    var colorsHtml = (item.colors||[]).map(function(c){
-      return '<div class="cfg-color">'
-        +'<span class="cfg-dot'+(c.ring?' ring':'')+'" style="background:'+c.hex+'"></span>'
-        +'<span class="cfg-dot-name jb">'+c.name+'</span>'
-        +'</div>';
-    }).join('');
-    return '<div class="cfg-row">'
-      +(function(){var mobileColors='';if(item.colors&&item.colors.length){mobileColors='<div class="cfg-colors-mobile">'+item.colors.map(function(c){return '<div class="cfg-color-mobile">'+'<span class="cfg-dot-mobile'+(c.ring?' ring':'')+'" style="background:'+c.hex+'"></span>'+'<span class="cfg-dot-name-mobile">'+c.name+'</span>'+'</div>';}).join('')+'</div>';}return '<div class="cfg-cap fr">'+item.gb+'<span>GB</span>'+mobileColors+'</div>';})()
-      +'<div class="cfg-track"><div class="cfg-fill '+item.cls+'"><span class="cfg-model">'+item.model+'</span></div></div>'
-      +(function(){var parts=item.price.split('→');if(parts.length===2){return '<div class="cfg-price fr">'+'<div class="cfg-price-line">'+parts[0].trim()+'</div>'+'<div class="cfg-price-line"><span class="cfg-price-arrow">→</span> '+parts[1].trim()+'</div>'+'</div>';}return '<div class="cfg-price fr"><div class="cfg-price-line">'+item.price+'</div></div>';})()
-      +'<div class="cfg-date-row"><span class="cfg-dates">'+item.dates+'</span></div>'
-      +(colorsHtml?'<div class="cfg-colors">'+colorsHtml+'</div>':'')
-      +'</div>';
-  }
-
-  el.innerHTML =
-    '<div class="wiki-section-inner">'
-    +'<div class="wiki-section-eyebrow">'
-    +'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" x2="2" y1="12" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" x2="6.01" y1="16" y2="16"/><line x1="10" x2="10.01" y1="16" y2="16"/></svg>'
-    +'Configurations'
-    +'</div>'
-    +'<h2 class="wiki-section-title" style="margin-bottom:24px;">'+c.heading+'</h2>'
-    +(c.intro && (c.intro[0]||c.intro[1])
-      ? '<div class="cfg-prose">'
-        +(c.intro[0]?'<p>'+c.intro[0]+'</p>':'')
-        +(c.intro[1]?'<p>'+c.intro[1]+'</p>':'')
-        +'</div>'
-      : '')
-    +'<div class="cfg-chart">'
-    +'<div class="cfg-chart-head">'
-    +'<div class="cfg-chart-title fr">'+c.chartTitle+'</div>'
-    +'</div>'
-    +'<div class="cfg-bars">'
-    + regular.map(cfgRow).join('')
-    +(c.dividerLabel?'<div class="cfg-divider"></div><div class="cfg-divider-label jb">'+c.dividerLabel+'</div>':'')
-    + revised.map(cfgRow).join('')
-    +'</div>'
-    +'</div>'
-    +(c.footer?'<div class="cfg-footer">'+c.footer+'</div>':'')
-    +'</div>';
-}
 
 
 // ── renderSection (prose + right image rail) ──────────────────────────
@@ -489,7 +439,6 @@ function initPage(){
   renderOverview();
   if(PAGE_DATA.photos && PAGE_DATA.photos.length) renderPhotoRail();
   renderDelta();
-  renderCfg();
   if(PAGE_DATA.gaming) renderProseRail('gaming-content', PAGE_DATA.gaming,
     '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>',
     'Cultural impact');

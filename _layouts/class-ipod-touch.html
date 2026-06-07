@@ -14,7 +14,7 @@ layout: default
 <link rel="stylesheet" href="/wiki-apple-skin.css">
 <link rel="stylesheet" href="/wiki-ipod-touch.css">
 <link rel="stylesheet" href="/bank-timeline.css">
-{% if page.config %}<link rel="stylesheet" href="/bank-config.css">{% endif %}
+<link rel="stylesheet" href="/bank-config.css">
 
 {{ content }}
 
@@ -181,13 +181,7 @@ layout: default
   <div id="delta-content"></div>
 </section>
 
-{% if page.config %}
 {% include sections/config-section.html data=page.config %}
-{% else %}
-<section class="wiki-section" data-tone="a" id="cfg-section">
-  <div id="cfg-content"></div>
-</section>
-{% endif %}
 
 <section class="gaming-section wiki-section" data-tone="a" id="gaming-section">
   <div id="gaming-content"></div>
