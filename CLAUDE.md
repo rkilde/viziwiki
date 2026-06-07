@@ -164,9 +164,13 @@ did, on the iPod charts — hence this rule). **Rule of thumb: document text →
 - Re-tokenize page-specific DOCUMENT text not yet on canonical `.wiki-*` classes
   (e.g. the iPod page's own prose/eyebrows/headers reverted with its widgets).
 - Redo the iPod CSS block-dedupe (cfg/jb/lane) as a pure non-type cleanup.
-- **Skin-tokenize the timeline colors** — `bank-timeline.css` keeps the iPod
-  monochrome values (kept identical on purpose); tokenize when a non-iPod wiki
-  adopts the timeline bank.
+- **Skin-tokenize the timeline colors (same pattern as the config chart).**
+  Today `bank-timeline.css` hardcodes the iPod monochrome. Convert to skin
+  tokens exactly like config: **Apple's timeline pinned** to its current values
+  (byte-identical), every other wiki **derives** from its own palette —
+  preserving the general scheme (alternating year background panels as the
+  years alternate, the relevant accent on each card's left edge, light chrome).
+  Do this AFTER the config chart proves the pattern.
 - Home pages still load the **Tailwind CDN** (separate from the de-Tailwinded
   archive pages) — a future de-Tailwind pass.
 - Smurfs keeps its own small inline icon sprite (custom Smurf art) — optional
