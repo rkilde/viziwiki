@@ -76,6 +76,59 @@ timeline:
     title: iOS 6.1.6 — goto fail. The final update.
     preview: Critical SSL patch. The last code Apple ever delivered to this hardware.
     body: '<p>iOS 6.1.6 was released February 21, 2014 — the same goto fail SSL security patch issued simultaneously for the iPhone 3GS. It addressed a severe certificate verification vulnerability that had been discovered in Apple''s TLS implementation.</p><p>This was the absolute final software update Apple delivered to the 4th generation iPod touch. The device''s software history ends here: a security patch, not a feature, as the last act. The hardware had been discontinued nine months prior. The final update arrived nearly 3.5 years after launch.</p>'
+config:
+  heading: Three years. Four tiers. Two phases.
+  visual: config
+  chart_title: Storage configurations and launch pricing
+  intro:
+  - The iPod touch 4th generation had the most complex SKU history of any iPod touch to that point. It launched in three capacities in September 2010, received a price reduction on the entry tier in October 2010, added a white colour option in October 2011, added a 16 GB mid-tier in September 2012, and discontinued the 8 GB and 64 GB in the same month.
+  - The 16 and 32 GB models continued until May 29, 2013 — the longest any 4th gen SKU stayed on sale, at nearly three years. The final lineup before discontinuation was 16 GB at $199 and 32 GB at $249.
+  footer: 'All configurations: 800 MHz Apple A4 · 256 MB RAM · 3.5&Prime; Retina 960&times;640 · 326 ppi · 0.7 MP + 0.3 MP cameras · 7.2 mm · 86.3 g'
+  items:
+  - capacity: 8
+    unit: GB
+    model: MC540LL/A
+    price: $229 → $199
+    dates: Sep 2010 &ndash; Oct 2012
+    colors:
+    - name: Black
+      hex: '#1d1d1f'
+    - name: White
+      hex: '#f5f5f7'
+      ring: true
+  - capacity: 16
+    unit: GB
+    model: ME178LL/A
+    price: $199
+    dates: Sep 2012 &ndash; May 2013
+    colors:
+    - name: Black
+      hex: '#1d1d1f'
+    - name: White
+      hex: '#f5f5f7'
+      ring: true
+  - capacity: 32
+    unit: GB
+    model: MC544LL/A
+    price: $299 → $249
+    dates: Sep 2010 &ndash; May 2013
+    colors:
+    - name: Black
+      hex: '#1d1d1f'
+    - name: White
+      hex: '#f5f5f7'
+      ring: true
+  - capacity: 64
+    unit: GB
+    model: MC547LL/A
+    price: $399
+    dates: Sep 2010 &ndash; Oct 2012
+    colors:
+    - name: Black
+      hex: '#1d1d1f'
+    - name: White
+      hex: '#f5f5f7'
+      ring: true
 ---
 
 <!-- ═══════════════════════════════════════════════════════════════
@@ -216,19 +269,6 @@ var PAGE_DATA = {
   },
 
   // ── Configurations ───────────────────────────────────────────────
-  cfg: {
-    heading:      "Three years. Four tiers. Two phases.",
-    chartTitle:   "Storage configurations and launch pricing",
-    intro:        ["The iPod touch 4th generation had the most complex SKU history of any iPod touch to that point. It launched in three capacities in September 2010, received a price reduction on the entry tier in October 2010, added a white colour option in October 2011, added a 16 GB mid-tier in September 2012, and discontinued the 8 GB and 64 GB in the same month.", "The 16 and 32 GB models continued until May 29, 2013 — the longest any 4th gen SKU stayed on sale, at nearly three years. The final lineup before discontinuation was 16 GB at $199 and 32 GB at $249."],
-    dividerLabel:  "",
-    footer:       "All configurations: 800 MHz Apple A4 · 256 MB RAM · 3.5&Prime; Retina 960&times;640 · 326 ppi · 0.7 MP + 0.3 MP cameras · 7.2 mm · 86.3 g",
-    items: [
-      {gb:"8",  cls:"cfg-fill-10",  model:"MC540LL/A", price:"$229 → $199", dates:"Sep 2010 &ndash; Oct 2012", colors:[{name:"Black", hex:"#1d1d1f"}, {name:"White", hex:"#f5f5f7", ring:true}]},
-      {gb:"16", cls:"cfg-fill-25",  model:"ME178LL/A", price:"$199",        dates:"Sep 2012 &ndash; May 2013", colors:[{name:"Black", hex:"#1d1d1f"}, {name:"White", hex:"#f5f5f7", ring:true}]},
-      {gb:"32", cls:"cfg-fill-50",  model:"MC544LL/A", price:"$299 → $249", dates:"Sep 2010 &ndash; May 2013", colors:[{name:"Black", hex:"#1d1d1f"}, {name:"White", hex:"#f5f5f7", ring:true}]},
-      {gb:"64", cls:"cfg-fill-100", model:"MC547LL/A", price:"$399",        dates:"Sep 2010 &ndash; Oct 2012", colors:[{name:"Black", hex:"#1d1d1f"}, {name:"White", hex:"#f5f5f7", ring:true}]},
-    ],
-  },
 
   // ── Cultural impact — FaceTime for everyone ───────────────────────
   gaming: {

@@ -105,6 +105,33 @@ timeline:
     title: iOS 5.1.1 (9B206) — the goto fail patch.
     preview: Apple patches a critical SSL vulnerability in a surprise legacy update. The absolute final code delivery to this hardware.
     body: <p>In an unexpected move, Apple pushed a revised build of iOS 5.1.1 — build 9B206 — specifically to patch a severe SSL/TLS certificate verification vulnerability known as "goto fail." The bug allowed man-in-the-middle attacks against secure connections on affected devices.</p><p>This was the absolute final software modification Apple ever delivered to 3rd generation iPod touch hardware. No subsequent updates of any kind were issued. The device's software history ends here — a security patch, not a feature, as the last chapter.</p>
+config:
+  heading: Two SKUs. No entry tier.
+  visual: config
+  chart_title: Storage configurations and launch pricing
+  intro:
+  - The iPod touch 3rd generation was sold in two storage configurations only — <strong>32 GB and 64 GB</strong>. The 8 GB tier was dropped entirely, and the 16 GB tier was never offered. This was the first iPod touch to ship without a sub-$300 option.
+  - The 64 GB model was the highest-capacity iPod touch Apple had ever shipped at the time, and would remain so until the 4th generation. Both models launched September 9, 2009 and were discontinued simultaneously on September 1, 2010 — a lifespan of exactly one year.
+  footer: 'All configurations: 600 MHz ARMv7 · 256 MB RAM · 3.5&Prime; IPS 480&times;320 · 30h audio · 115 g · Curved stainless steel · Black front bezel'
+  items:
+  - capacity: 32
+    unit: GB
+    model: MC008LL/A
+    price: $299
+    dates: Sep 2009 &ndash; Sep 2010
+    colors:
+    - name: Silver
+      hex: '#d4d4d8'
+      ring: true
+  - capacity: 64
+    unit: GB
+    model: MC011LL/A
+    price: $399
+    dates: Sep 2009 &ndash; Sep 2010
+    colors:
+    - name: Silver
+      hex: '#d4d4d8'
+      ring: true
 ---
 
 <!-- ═══════════════════════════════════════════════════════════════
@@ -241,17 +268,6 @@ var PAGE_DATA = {
   },
 
   // ── Configurations ───────────────────────────────────────────────
-  cfg: {
-    heading:      "Two SKUs. No entry tier.",
-    chartTitle:   "Storage configurations and launch pricing",
-    intro:        ["The iPod touch 3rd generation was sold in two storage configurations only — <strong>32 GB and 64 GB</strong>. The 8 GB tier was dropped entirely, and the 16 GB tier was never offered. This was the first iPod touch to ship without a sub-$300 option.", "The 64 GB model was the highest-capacity iPod touch Apple had ever shipped at the time, and would remain so until the 4th generation. Both models launched September 9, 2009 and were discontinued simultaneously on September 1, 2010 — a lifespan of exactly one year."],
-    dividerLabel:  "",
-    footer:       "All configurations: 600 MHz ARMv7 · 256 MB RAM · 3.5&Prime; IPS 480&times;320 · 30h audio · 115 g · Curved stainless steel · Black front bezel",
-    items: [
-      {gb:"32", cls:"cfg-fill-50",  model:"MC008LL/A", price:"$299", dates:"Sep 2009 &ndash; Sep 2010", colors:[{name:"Silver", hex:"#d4d4d8", ring:true}]},
-      {gb:"64", cls:"cfg-fill-100", model:"MC011LL/A", price:"$399", dates:"Sep 2009 &ndash; Sep 2010", colors:[{name:"Silver", hex:"#d4d4d8", ring:true}]},
-    ],
-  },
 
   // ── Cultural impact / gaming ─────────────────────────────────────
   gaming: {

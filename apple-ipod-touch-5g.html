@@ -68,6 +68,83 @@ timeline:
     title: iOS 9.3.5 — the final update.
     preview: Critical security patch. The last code Apple ever shipped to this hardware.
     body: <p>Apple released iOS 9.3.5 on August 25, 2016 — a security patch for a critical vulnerability in WebKit and the kernel, discovered by the Citizen Lab and used in targeted attacks. It was delivered to the 5th generation iPod touch, the iPhone 4S, and other 32-bit devices that had already been excluded from iOS 10.</p><p>This was the last software update Apple delivered to the 5th generation. iOS 10, released three weeks later on September 13, 2016, dropped all 32-bit devices. The 5G's software history ends here.</p>
+config:
+  heading: Six colours. Three tiers. One stripped-down exception.
+  visual: config
+  chart_title: Storage configurations and launch pricing
+  intro:
+  - 'The 5th generation iPod touch launched in two capacities — 32 GB and 64 GB — in five colours. The 16 GB tier arrived later in two distinct phases: first as the A1509, a stripped-down model without a rear camera or loop button, then as the full-featured A1421 with all six colours restored.'
+  - 'All A1421 configurations share the same hardware. The A1509 was the sole exception: same chassis, same display, same processor, but without the rear camera, without the LED flash, and without the loop button — and sold only in Silver.'
+  divider_label: BUDGET MODEL (A1509) · No rear camera · No loop
+  footer: 'A1421: Apple A5 · 512 MB RAM · 4&Prime; Retina 1136&times;640 · 5 MP + 1.2 MP cameras · Lightning · 6.1 mm &middot; A1509: same except no rear camera, no LED flash, no loop'
+  items:
+  - capacity: 16
+    unit: GB
+    model: A1421 · MD717LL/A
+    price: $229 → $199
+    dates: Jun 2014 &ndash; Jul 2015
+    colors:
+    - name: Slate
+      hex: '#4a4a4f'
+    - name: Silver
+      hex: '#d8d8dc'
+      ring: true
+    - name: Pink
+      hex: '#f472b6'
+    - name: Yellow
+      hex: '#facc15'
+    - name: Blue
+      hex: '#60a5fa'
+    - name: (RED)
+      hex: '#e3001b'
+  - capacity: 32
+    unit: GB
+    model: A1421 · MD723LL/A
+    price: $299 → $249
+    dates: Oct 2012 &ndash; Jul 2015
+    colors:
+    - name: Slate
+      hex: '#4a4a4f'
+    - name: Silver
+      hex: '#d8d8dc'
+      ring: true
+    - name: Pink
+      hex: '#f472b6'
+    - name: Yellow
+      hex: '#facc15'
+    - name: Blue
+      hex: '#60a5fa'
+    - name: (RED)
+      hex: '#e3001b'
+  - capacity: 64
+    unit: GB
+    model: A1421 · MD717LL/A
+    price: $399 → $299
+    dates: Oct 2012 &ndash; Jul 2015
+    colors:
+    - name: Slate
+      hex: '#4a4a4f'
+    - name: Silver
+      hex: '#d8d8dc'
+      ring: true
+    - name: Pink
+      hex: '#f472b6'
+    - name: Yellow
+      hex: '#facc15'
+    - name: Blue
+      hex: '#60a5fa'
+    - name: (RED)
+      hex: '#e3001b'
+  - capacity: 16
+    unit: GB
+    model: A1509 · ME643LL/A &middot; Budget
+    price: $229
+    dates: May 2013 &ndash; Jun 2014
+    revised: true
+    colors:
+    - name: Silver
+      hex: '#d8d8dc'
+      ring: true
 ---
 <!-- ═══════════════════════════════════════════════════════════════
      WIKI CHROME CONFIG
@@ -207,23 +284,6 @@ var PAGE_DATA = {
     footnote: "Specs: iPod touch 4th gen (A1367) · Sep 12, 2010 &nbsp;/&nbsp; iPod touch 5th gen (A1421) · Oct 11, 2012",
   },
 
-  cfg: {
-    heading:     "Six colours. Three tiers. One stripped-down exception.",
-    chartTitle:  "Storage configurations and launch pricing",
-    intro:       ["The 5th generation iPod touch launched in two capacities — 32 GB and 64 GB — in five colours. The 16 GB tier arrived later in two distinct phases: first as the A1509, a stripped-down model without a rear camera or loop button, then as the full-featured A1421 with all six colours restored.", "All A1421 configurations share the same hardware. The A1509 was the sole exception: same chassis, same display, same processor, but without the rear camera, without the LED flash, and without the loop button — and sold only in Silver."],
-    dividerLabel: "BUDGET MODEL (A1509) · No rear camera · No loop",
-    footer:       "A1421: Apple A5 · 512 MB RAM · 4&Prime; Retina 1136&times;640 · 5 MP + 1.2 MP cameras · Lightning · 6.1 mm &middot; A1509: same except no rear camera, no LED flash, no loop",
-    items: [
-      {gb:"16", cls:"cfg-fill-25",  model:"A1421 · MD717LL/A", price:"$229 → $199", dates:"Jun 2014 &ndash; Jul 2015",
-       colors:[{name:"Slate",   hex:"#4a4a4f"},{name:"Silver",hex:"#d8d8dc",ring:true},{name:"Pink",hex:"#f472b6"},{name:"Yellow",hex:"#facc15"},{name:"Blue",hex:"#60a5fa"},{name:"(RED)",hex:"#e3001b"}]},
-      {gb:"32", cls:"cfg-fill-50",  model:"A1421 · MD723LL/A", price:"$299 → $249", dates:"Oct 2012 &ndash; Jul 2015",
-       colors:[{name:"Slate",   hex:"#4a4a4f"},{name:"Silver",hex:"#d8d8dc",ring:true},{name:"Pink",hex:"#f472b6"},{name:"Yellow",hex:"#facc15"},{name:"Blue",hex:"#60a5fa"},{name:"(RED)",hex:"#e3001b"}]},
-      {gb:"64", cls:"cfg-fill-100", model:"A1421 · MD717LL/A", price:"$399 → $299", dates:"Oct 2012 &ndash; Jul 2015",
-       colors:[{name:"Slate",   hex:"#4a4a4f"},{name:"Silver",hex:"#d8d8dc",ring:true},{name:"Pink",hex:"#f472b6"},{name:"Yellow",hex:"#facc15"},{name:"Blue",hex:"#60a5fa"},{name:"(RED)",hex:"#e3001b"}]},
-      {gb:"16", cls:"cfg-fill-25 cfg-fill-rev", model:"A1509 · ME643LL/A &middot; Budget", price:"$229", dates:"May 2013 &ndash; Jun 2014",
-       colors:[{name:"Silver",  hex:"#d8d8dc",ring:true}]},
-    ],
-  },
 
   gaming: {
     heading: "The colour of a generation.",

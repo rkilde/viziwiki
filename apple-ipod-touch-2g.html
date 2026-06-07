@@ -97,6 +97,53 @@ timeline:
     title: End of life. 60M units.
     preview: Total iPod touch sales surpass 60 million. The 2G was the primary driver.
     body: <p>As the 2nd generation reached true end-of-life status, Apple’s metrics showed total iPod touch sales across all generations had surpassed 60 million units worldwide. The 2nd generation had been the primary driver of adoption.</p>
+config:
+  heading: Four SKUs. One finish.<br>Only storage differs.
+  visual: config
+  chart_title: Storage configurations and launch pricing
+  intro:
+  - 'The iPod touch 2nd generation was sold in a single finish — polished stainless steel with a black front bezel — across four distinct SKUs. At launch in September 2008, three storage tiers were available: <strong>8 GB, 16 GB, and 32 GB</strong>, priced at $229, $299, and $399 respectively. Every unit shared the same processor, RAM, display, speaker, Nike+ wireless, and battery.'
+  - All three launch models were discontinued simultaneously in September 2009, replaced by a single revised <strong>8 GB "MC" model</strong> at a new entry price of $199. The revision patched a hardware-level jailbreak exploit and shipped with iPhone OS 3.1 pre-installed.
+  divider_label: Revised model &middot; Sep 2009
+  footer: 'All configurations: 533 MHz ARM &middot; 128 MB RAM &middot; 3.5&Prime; IPS 480&times;320 &middot; 36h audio &middot; 115 g &middot; Polished stainless steel &middot; Black front bezel'
+  items:
+  - capacity: 8
+    unit: GB
+    model: MB528LL/A
+    price: $229
+    dates: Sep 2008 &ndash; Sep 2009
+    colors:
+    - name: Silver
+      hex: '#d4d4d8'
+      ring: true
+  - capacity: 16
+    unit: GB
+    model: MB533LL/A
+    price: $299
+    dates: Sep 2008 &ndash; Sep 2009
+    colors:
+    - name: Silver
+      hex: '#d4d4d8'
+      ring: true
+  - capacity: 32
+    unit: GB
+    model: MB376LL/A
+    price: $399
+    dates: Sep 2008 &ndash; Sep 2009
+    colors:
+    - name: Silver
+      hex: '#d4d4d8'
+      ring: true
+  - capacity: 8
+    unit: GB
+    model: MC086LL/A &middot; Rev.
+    price: $199
+    dates: Sep 2009 &ndash; Sep 2010
+    revised: true
+    colors:
+    - name: Silver
+      hex: '#d4d4d8'
+      ring: true
 ---
 
 <!-- ═══════════════════════════════════════════════════════════════
@@ -245,21 +292,6 @@ var PAGE_DATA = {
   },
 
   // ── Configurations ─────────────────────────────────────────────
-  cfg: {
-    heading:      "Four SKUs. One finish.<br>Only storage differs.",
-    chartTitle:   "Storage configurations and launch pricing",
-    intro:        ["The iPod touch 2nd generation was sold in a single finish — polished stainless steel with a black front bezel — across four distinct SKUs. At launch in September 2008, three storage tiers were available: <strong>8 GB, 16 GB, and 32 GB</strong>, priced at $229, $299, and $399 respectively. Every unit shared the same processor, RAM, display, speaker, Nike+ wireless, and battery.","All three launch models were discontinued simultaneously in September 2009, replaced by a single revised <strong>8 GB \"MC\" model</strong> at a new entry price of $199. The revision patched a hardware-level jailbreak exploit and shipped with iPhone OS 3.1 pre-installed."],
-    dividerLabel: "Revised model &middot; Sep 2009",
-    footer:       "All configurations: 533 MHz ARM &middot; 128 MB RAM &middot; 3.5&Prime; IPS 480&times;320 &middot; 36h audio &middot; 115 g &middot; Polished stainless steel &middot; Black front bezel",
-    // cls: cfg-fill-25 (8GB) · cfg-fill-50 (16GB) · cfg-fill-100 (32GB)
-    // add cfg-fill-rev to cls for revised/striped model
-    items: [
-      {gb:"8", cls:"cfg-fill-25", model:"MB528LL/A", price:"$229", dates:"Sep 2008 &ndash; Sep 2009", colors:[{name:"Silver", hex:"#d4d4d8", ring:true}]},
-      {gb:"16", cls:"cfg-fill-50", model:"MB533LL/A", price:"$299", dates:"Sep 2008 &ndash; Sep 2009", colors:[{name:"Silver", hex:"#d4d4d8", ring:true}]},
-      {gb:"32", cls:"cfg-fill-100", model:"MB376LL/A", price:"$399", dates:"Sep 2008 &ndash; Sep 2009", colors:[{name:"Silver", hex:"#d4d4d8", ring:true}]},
-      {gb:"8", cls:"cfg-fill-25 cfg-fill-rev", model:"MC086LL/A &middot; Rev.", price:"$199", dates:"Sep 2009 &ndash; Sep 2010", colors:[{name:"Silver", hex:"#d4d4d8", ring:true}]},
-    ],
-  },
 
   // ── Cultural impact / gaming ───────────────────────────────────
   gaming: {
