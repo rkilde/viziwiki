@@ -37,10 +37,14 @@
 {%- assign dmo = durmo | modulo: 12 -%}
 {%- capture dur -%}{% if dyr > 0 %}{{ dyr }} yr {% endif %}{% if dmo > 0 %}{{ dmo }} mo{% endif %}{% if dyr == 0 and dmo == 0 %}&lt;1 mo{% endif %}{%- endcapture -%}
 {%- assign dur = dur | strip -%}
+{%- comment -%} version count = distinct MAJOR versions received (non-dropped tiles) {%- endcomment -%}
+{%- assign majors = "" -%}
+{%- for s in segs -%}{%- unless s.type == 'dropped' -%}{%- assign mj = s.ver | split: '.' | first -%}{%- assign majors = majors | append: mj | append: ',' -%}{%- endunless -%}{%- endfor -%}
+{%- assign vcount = majors | split: ',' | uniq | size -%}
 <div class="lane-wrap">
   <div class="lane-head">
     <div class="lane-title fr">{{ d.title }}</div>
-    <div class="lane-range jb">{{ segs.first.date }} &rarr; {{ enddate }} &middot; {{ dur }}{% if d.range_note %} &middot; {{ d.range_note }}{% endif %}</div>
+    <div class="lane-range jb">{{ segs.first.date }} &rarr; {{ enddate }} &middot; {{ dur }} &middot; {{ vcount }} versions{% if d.range_note %} &middot; {{ d.range_note }}{% endif %}</div>
   </div>
   <div class="lane-scroll"><div class="lane {% if d.weighted %}weighted{% else %}uniform{% endif %}">
     {%- for s in segs -%}

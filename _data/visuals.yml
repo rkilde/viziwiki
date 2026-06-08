@@ -113,7 +113,7 @@ lifecycle-lane:
   partial: visuals/lifecycle-lane/lifecycle-lane.html
   section: os-section
   width_model: [uniform, weighted]     # weighted = width ∝ date gap (opt-in via `weighted: true` + dates)
-  range: derived                       # auto "launch → drop" + duration; post-drop security tiles excluded from the count
+  range: derived                       # auto "launch → drop · duration · N versions" (N = distinct majors received); post-drop security tiles excluded from the count
   legend: derived                      # auto from the support types present
   segment_fields: [ver, date, type, badge, badge_type]
   types: [full, partial, dropped, security]  # support tier → fill colour; `security` = post-EOL patch (place AFTER the drop)
