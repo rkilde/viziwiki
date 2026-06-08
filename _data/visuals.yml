@@ -15,6 +15,17 @@
 # fills the slot. Summary values derive from the slotted visual's data, so
 # the count is never hand-typed (`unit` sets the noun, default "item").
 sections:
+  hero:
+    partial: sections/hero.html
+    variants: [home, page]             # home adds search + (usually) a spotlight aside
+    parts:                             # each is its own single-source partial
+      stats: hero/stats.html           # 1×4 key-numbers grid (canon = exactly 4)
+      search: hero/search.html         # HOME heroes only
+      spotlight: hero/spotlight.html   # aside treatment 1 — card
+      feature: hero/feature.html       # aside treatment 2 — feature
+    content_fields: [title, eyebrow, desc, stats, search, spotlight, feature]
+    decoration_fields: [bg, accent, icon, overlays, watermark, id, class]  # skin/admin
+    locked: [title-period, eyebrow-dot, search-icon]   # decorations, not editable
   catalog-section:
     partial: sections/catalog-section.html
     eyebrow: "Full Catalog"            # locked

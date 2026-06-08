@@ -1,0 +1,46 @@
+{%- comment -%}
+  HERO — the page header band. UNIVERSAL: one include for BOTH variants
+  (home page AND interior/sub-page). Structure is single-source here; each
+  sub-piece (stats, search, spotlight, feature) is its own partial under
+  _includes/hero/ so editing any one place propagates to every page — and
+  to the build kit, which emits this same `hero:` data contract.
+
+  Usage:  {% include sections/hero.html data=page.hero %}
+
+  Data (all optional unless noted):
+    ── CONTENT (contributor) ──
+    title        REQUIRED — H1 (the trailing period accent is automatic)
+    eyebrow      small mono category tag
+    desc         one-paragraph lead
+    search       true → render the search bar (HOME heroes only)
+    search_placeholder   the search input placeholder
+    stats        list of { num, label } (the 1×4 grid)
+    feature      treatment-2 aside (see hero/feature.html)   } pick at most
+    spotlight    treatment-1 aside (see hero/spotlight.html) } one aside
+    ── DECORATION (skin / admin) ──
+    bg           hero background (colour/gradient)
+    accent       sets --hero-title-accent + --hero-eyebrow-dot
+    icon         corner wiki-icon sprite name
+    overlays     list of inline-style strings → decorative overlay divs
+    watermark    raw HTML for a skin ghost watermark
+    id           section id (e.g. "overview")
+    class        extra classes for skin flourishes (e.g. "scan")
+{%- endcomment -%}
+{%- assign h = include.data -%}
+{%- capture herostyle -%}{%- if h.bg %}background:{{ h.bg }};{% endif %}{%- if h.accent %}--hero-title-accent:{{ h.accent }};--hero-eyebrow-dot:{{ h.accent }};{% endif %}{%- endcapture -%}
+{%- assign herostyle = herostyle | split: ';' | join: ';' -%}<section class="wiki-hero{% if h.class %} {{ h.class }}{% endif %}"{% if h.id %} id="{{ h.id }}"{% endif %}{% if herostyle != "" %} style="{{ herostyle }}"{% endif %}>
+  {%- if h.watermark %}{{ h.watermark }}{% endif -%}
+  {%- if h.overlays %}{% for ov in h.overlays %}<div class="pointer-events-none absolute inset-0" style="{{ ov }}"></div>{% endfor %}{% endif -%}
+  {%- if h.icon %}{% include icon.html name=h.icon %}{% endif -%}
+  <div class="wiki-hero-inner">
+    <div class="wiki-hero-content">
+      {%- if h.eyebrow %}<div class="wiki-hero-eyebrow"><span class="wiki-hero-eyebrow-dot"></span> {{ h.eyebrow }}</div>{% endif -%}
+      <h1 class="wiki-hero-title">{{ h.title }}<span class="wiki-hero-title-accent">.</span></h1>
+      {%- if h.desc %}<p class="wiki-hero-desc">{{ h.desc }}</p>{% endif -%}
+      {%- if h.search %}{% include hero/search.html data=h %}{% endif -%}
+      {%- if h.stats %}{% include hero/stats.html data=h.stats %}{% endif -%}
+    </div>
+    {%- if h.feature %}<aside class="wiki-hero-aside">{% include hero/feature.html data=h.feature %}</aside>{% endif -%}
+    {%- if h.spotlight %}<aside class="wiki-hero-aside">{% include hero/spotlight.html data=h.spotlight %}</aside>{% endif -%}
+  </div>
+</section>

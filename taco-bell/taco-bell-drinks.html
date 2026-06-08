@@ -3,6 +3,31 @@ permalink: /taco-bell-drinks.html
 layout: default
 title: "Taco Bell Drinks — Baja Blast & The Freezer Wall · ViziWiki"
 body_class: "wiki-page wiki-taco-bell"
+hero:
+  bg: "linear-gradient(to bottom right,#22d3ee,#0f766e,#172554)"
+  accent: "#67e8f9"
+  icon: cup-soda
+  overlays:
+    - "background:linear-gradient(to bottom right,rgba(6,182,212,.65),rgba(15,118,110,.7),rgba(23,37,84,.85));mix-blend-mode:multiply"
+    - "background:linear-gradient(to right,rgba(23,37,84,.7),rgba(30,58,138,.25),transparent)"
+  eyebrow: "Beverage · Fountain · Freeze"
+  title: "Drinks"
+  desc: "One Mountain Dew exclusive that became a cult, three Freeze valves, four Pepsi standards, and roughly 24 million tropical-lime cups poured each year. Indexed, charted, and pour-tested."
+  stats:
+    - { num: "~24M", label: "Baja cups / yr" }
+    - { num: "2004", label: "Baja Blast debut" }
+    - { num: "77 g", label: "sugar · 20oz Baja" }
+    - { num: "1997", label: "Pepsi since" }
+  feature:
+    bg: "linear-gradient(to bottom right,#22d3ee,#065f46)"
+    head_left: "★ Flagship · Spotlight"
+    head_right: "Est. 2004"
+    title: "Baja Blast"
+    desc: "The Mountain Dew variant engineered specifically to pair with Taco Bell food. Tropical lime, fluorescent cyan, exclusive to the chain at the fountain since launch."
+    chips:
+      - { key: "Cal", val: "290" }
+      - { key: "Sugar", val: "77 g" }
+      - { key: "Caffeine", val: "92 mg" }
 extra_head: |
   <link rel="stylesheet" href="/wiki-taco-bell-skin.css">
   <link rel="stylesheet" href="/tb-editorial-base.css">
@@ -275,40 +300,7 @@ body{font-family:'Spectral',Georgia,serif;}
 </div>
 
 <!-- HERO -->
-<section class="wiki-hero" style="background:linear-gradient(to bottom right,#22d3ee,#0f766e,#172554);--hero-title-accent:#67e8f9;--hero-eyebrow-dot:#67e8f9">
-  <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(to bottom right,rgba(6,182,212,.65),rgba(15,118,110,.7),rgba(23,37,84,.85));mix-blend-mode:multiply"></div>
-  <div class="pointer-events-none absolute inset-0" style="background:linear-gradient(to right,rgba(23,37,84,.7),rgba(30,58,138,.25),transparent)"></div>
-  <svg class="wiki-icon" aria-hidden="true"><use href="#ic-cup-soda"></use></svg>
-  <div class="wiki-hero-inner">
-    <div class="wiki-hero-content">
-      <div class="wiki-hero-eyebrow"><span class="wiki-hero-eyebrow-dot"></span> Beverage · Fountain · Freeze</div>
-      <h1 class="wiki-hero-title">Drinks<span class="wiki-hero-title-accent">.</span></h1>
-      <p class="wiki-hero-desc">One Mountain Dew exclusive that became a cult, three Freeze valves, four Pepsi standards, and roughly 24 million tropical-lime cups poured each year. Indexed, charted, and pour-tested.</p>
-      <div class="wiki-hero-stats">
-        <div class="wiki-hero-stat"><div class="wiki-hero-stat-num">~24M</div><div class="wiki-hero-stat-label">Baja cups / yr</div></div>
-        <div class="wiki-hero-stat"><div class="wiki-hero-stat-num">2004</div><div class="wiki-hero-stat-label">Baja Blast debut</div></div>
-        <div class="wiki-hero-stat"><div class="wiki-hero-stat-num">77 g</div><div class="wiki-hero-stat-label">sugar · 20oz Baja</div></div>
-        <div class="wiki-hero-stat"><div class="wiki-hero-stat-num">1997</div><div class="wiki-hero-stat-label">Pepsi since</div></div>
-      </div>
-    </div>
-    <!-- Spotlight: Baja Blast — halftone style (matching Lovable) -->
-    <aside class="wiki-hero-aside">
-      <div class="wiki-hero-feature" style="--hero-feature-bg:linear-gradient(to bottom right,#22d3ee,#065f46)">
-        <div class="wiki-hero-feature-halftone"></div>
-        <div class="wiki-hero-feature-body">
-          <div class="wiki-hero-feature-head"><span>★ Flagship · Spotlight</span><span>Est. 2004</span></div>
-          <div class="wiki-hero-feature-title">Baja Blast</div>
-          <p class="wiki-hero-feature-desc">The Mountain Dew variant engineered specifically to pair with Taco Bell food. Tropical lime, fluorescent cyan, exclusive to the chain at the fountain since launch.</p>
-          <div class="wiki-hero-feature-stats">
-            <div class="wiki-hero-feature-chip"><div class="wiki-hero-feature-chip-key">Cal</div><div class="wiki-hero-feature-chip-val">290</div></div>
-            <div class="wiki-hero-feature-chip"><div class="wiki-hero-feature-chip-key">Sugar</div><div class="wiki-hero-feature-chip-val">77 g</div></div>
-            <div class="wiki-hero-feature-chip"><div class="wiki-hero-feature-chip-key">Caffeine</div><div class="wiki-hero-feature-chip-val">92 mg</div></div>
-          </div>
-        </div>
-      </div>
-    </aside>
-  </div>
-</section>
+{% endraw %}{% include sections/hero.html data=page.hero %}{% raw %}
 
 <!-- OVERVIEW + INFOBOX -->
 <section id="overview" class="wiki-section" data-tone="a">
