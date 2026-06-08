@@ -1,0 +1,19 @@
+{%- comment -%}
+  INFOBOX — bank type #1 (universals §15-INFOBOX). A parent-agnostic
+  key/value fact panel: header (locked "Infobox" label + title) + dl rows
+  + an OPTIONAL status badge. Single source — edit here, every infobox updates.
+  data:
+    title   (req)  the panel title (e.g. "Apple Inc.")
+    label?         header label (default "Infobox")
+    rows    list of [key, value] pairs
+    badge?         optional status chip (e.g. "Discontinued · July 2015")
+{%- endcomment -%}
+{%- assign ib = include.data -%}
+<aside class="wiki-infobox">
+  <div class="wiki-infobox-header">
+    <div class="wiki-infobox-label">{{ ib.label | default: 'Infobox' }}</div>
+    <div class="wiki-infobox-title">{{ ib.title }}</div>
+  </div>
+  <dl class="wiki-infobox-data">{% for r in ib.rows %}<dt>{{ r[0] }}</dt><dd>{{ r[1] }}</dd>{% endfor %}</dl>
+  {%- if ib.badge %}<span class="wiki-infobox-badge">{{ ib.badge }}</span>{% endif -%}
+</aside>

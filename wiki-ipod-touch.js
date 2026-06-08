@@ -114,33 +114,6 @@ function secLabel(icon, text){
 }
 
 
-// ── renderOverview ────────────────────────────────────────────────────
-function renderOverview(){
-  var o = PAGE_DATA.overview;
-  var el = document.getElementById('overview-content');
-  if(!el) return;
-  var ib = o.infobox;
-  el.innerHTML =
-    '<div class="wiki-section-inner">'
-    +'<div class="wiki-overview">'
-    +'<div class="wiki-overview-prose">'
-    +'<div class="wiki-section-eyebrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Overview</div>'
-    +'<h2 class="wiki-section-title" style="margin-bottom:24px;">'+PAGE_DATA.overview.heading+'</h2>'
-    +'<div class="wiki-section-prose">'+ paraList(o.paragraphs) +'</div>'
-    +'</div>'
-    +'<aside class="wiki-infobox">'
-    +'  <div class="wiki-infobox-header">'
-    +'    <div class="wiki-infobox-label">Infobox</div>'
-    +'    <div class="wiki-infobox-title">'+ib.name+'</div>'
-    +'  </div>'
-    +'  <dl class="wiki-infobox-data">'
-    + ib.rows.map(function(r){ return '<dt>'+r[0]+'</dt><dd>'+r[1]+'</dd>'; }).join('')
-    +'  </dl>'
-    + (ib.discontinued ? '<span class="wiki-infobox-badge">'+ib.discontinued+'</span>' : '')
-    +'</aside>'
-    +'</div>'   /* close .wiki-overview */
-    +'</div>';  /* close .wiki-section-inner */
-}
 
 // ── renderPhotoRail ───────────────────────────────────────────────────
 function renderPhotoRail(){
@@ -411,7 +384,6 @@ function renderWIKI_TOC(){
 // ── INIT ──────────────────────────────────────────────────────────────
 function initPage(){
   renderWIKI_TOC();
-  renderOverview();
   if(PAGE_DATA.photos && PAGE_DATA.photos.length) renderPhotoRail();
   renderDelta();
   if(PAGE_DATA.gaming) renderProseRail('gaming-content', PAGE_DATA.gaming,

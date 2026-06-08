@@ -26,6 +26,15 @@ sections:
     content_fields: [title, eyebrow, desc, stats, search, spotlight, feature]
     decoration_fields: [bg, accent, icon, overlays, watermark, id, class]  # skin/admin
     locked: [title-period, eyebrow-dot, search-icon]   # decorations, not editable
+  overview-section:
+    partial: sections/overview.html
+    eyebrow: "Overview"                # locked
+    icon: book-open                    # locked
+    h2: required                       # contributor-named
+    parts:
+      infobox: overview/infobox.html   # optional fact panel (bank type #1)
+    content_fields: [heading, paragraphs, infobox]
+    config_fields: [tone, id, eyebrow]
   catalog-section:
     partial: sections/catalog-section.html
     eyebrow: "Full Catalog"            # locked
