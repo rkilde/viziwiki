@@ -3,6 +3,13 @@ permalink: /taco-bell-pina-colada-frutista.html
 layout: class-tb-drink
 title: "Piña Colada Frutista Freeze — ViziWiki"
 body_class: "wiki-page wiki-taco-bell"
+hero:
+  bg: "linear-gradient(135deg,#fbbf24,#f59e0b,#b45309,#78350f)"
+  accent: "#fcd34d"
+  eyebrow: "Frutista Freeze · Taco Bell · 2009–2013"
+  title: "Piña Colada<br>Frutista Freeze"
+  desc: "A hand-blended pineapple-coconut frozen drink produced exclusively for Taco Bell as part of the Frutista Freeze program (2008–2013)."
+  extra: '<div class="de-chip-row"><span class="de-pill">Discontinued</span><span class="de-pill">Taco Bell exclusive</span><span class="de-pill">Blender program</span></div>'
 ---
 {% raw %}
 <meta charset="UTF-8">
@@ -10,19 +17,7 @@ body_class: "wiki-page wiki-taco-bell"
 <style>:root{ --accent:#b45309; --accent-light:#fbbf24; --accent-dark:#78350f; }</style>
 
 <!-- HERO -->
-<div class="wiki-hero" style="background:linear-gradient(135deg,#fbbf24,#f59e0b,#b45309,#78350f);">
-  <div class="wiki-hero-inner">
-    <div class="wiki-hero-eyebrow">
-      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
-      Frutista Freeze · Taco Bell · 2009–2013
-    </div>
-    <h1 class="wiki-hero-title">Piña Colada<br>Frutista Freeze</h1>
-    <p class="wiki-hero-desc">A hand-blended pineapple-coconut frozen drink produced exclusively for Taco Bell as part of the Frutista Freeze program (2008–2013).</p>
-    <div class="de-chip-row">
-      <span class="de-pill">Discontinued</span><span class="de-pill">Taco Bell exclusive</span><span class="de-pill">Blender program</span>
-    </div>
-  </div>
-</div>
+{% endraw %}{% include sections/hero.html data=page.hero %}{% raw %}
 
 <!-- AT A GLANCE -->
 <div class="wiki-section" data-tone="a">

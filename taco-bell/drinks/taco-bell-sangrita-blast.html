@@ -3,6 +3,13 @@ permalink: /taco-bell-sangrita-blast.html
 layout: class-tb-drink
 title: "Mtn Dew Sangrita Blast — ViziWiki"
 body_class: "wiki-page wiki-taco-bell"
+hero:
+  bg: "linear-gradient(135deg,#881337,#9f1239,#4c0519,#0f172a)"
+  accent: "#fb7185"
+  eyebrow: "Mountain Dew · PepsiCo · 2013–2017"
+  title: "Mtn Dew<br>Sangrita Blast"
+  desc: "A cherry-citrus punch soda produced by PepsiCo under the Mountain Dew brand. Introduced in December 2013 and discontinued in 2017."
+  extra: '<div class="de-chip-row"><span class="de-pill">Discontinued</span><span class="de-pill">Taco Bell exclusive</span><span class="de-pill">PepsiCo · Mountain Dew</span></div>'
 ---
 {% raw %}
 <meta charset="UTF-8">
@@ -10,19 +17,7 @@ body_class: "wiki-page wiki-taco-bell"
 <style>:root{ --accent:#9f1239; --accent-light:#fb7185; --accent-dark:#4c0519; }</style>
 
 <!-- HERO -->
-<div class="wiki-hero" style="background:linear-gradient(135deg,#881337,#9f1239,#4c0519,#0f172a);">
-  <div class="wiki-hero-inner">
-    <div class="wiki-hero-eyebrow">
-      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
-      Mountain Dew · PepsiCo · 2013–2017
-    </div>
-    <h1 class="wiki-hero-title">Mtn Dew<br>Sangrita Blast</h1>
-    <p class="wiki-hero-desc">A cherry-citrus punch soda produced by PepsiCo under the Mountain Dew brand. Introduced in December 2013 and discontinued in 2017.</p>
-    <div class="de-chip-row">
-      <span class="de-pill">Discontinued</span><span class="de-pill">Taco Bell exclusive</span><span class="de-pill">PepsiCo · Mountain Dew</span>
-    </div>
-  </div>
-</div>
+{% endraw %}{% include sections/hero.html data=page.hero %}{% raw %}
 
 <!-- AT A GLANCE -->
 <div class="wiki-section" data-tone="a">

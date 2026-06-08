@@ -39,12 +39,13 @@
   {%- if h.icon %}{% include icon.html name=h.icon %}{% endif -%}
   <div class="wiki-hero-inner">
     <div class="wiki-hero-content">
-      {%- if h.eyebrow %}<div class="wiki-hero-eyebrow"><span class="wiki-hero-eyebrow-dot"></span> {{ h.eyebrow }}</div>{% endif -%}
+      {%- if h.eyebrow %}<div class="wiki-hero-eyebrow"><span class="wiki-hero-eyebrow-dot"{% if h.dot %} style="background:{{ h.dot }}"{% endif %}></span> {{ h.eyebrow }}</div>{% endif -%}
       <h1 class="wiki-hero-title">{{ h.title }}<span class="wiki-hero-title-accent">.</span></h1>
       {%- if h.subtitle %}<div class="wiki-hero-subtitle">{{ h.subtitle }}{% if h.subtitle_meta %}<span class="wiki-hero-subtitle-sep"> · </span><span class="wiki-hero-subtitle-meta">{{ h.subtitle_meta }}</span>{% endif %}</div>{% endif -%}
       {%- if h.desc %}<p class="wiki-hero-desc">{{ h.desc }}</p>{% endif -%}
       {%- if h.search %}{% include hero/search.html data=h %}{% endif -%}
       {%- if h.stats %}{% include hero/stats.html data=h.stats %}{% endif -%}
+      {%- if h.extra %}{{ h.extra }}{% endif -%}
     </div>
     {%- if h.feature %}<aside class="wiki-hero-aside">{% include hero/feature.html data=h.feature %}</aside>{% endif -%}
     {%- if h.spotlight %}<aside class="wiki-hero-aside">{% include hero/spotlight.html data=h.spotlight %}</aside>{% endif -%}

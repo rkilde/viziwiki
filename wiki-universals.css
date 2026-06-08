@@ -462,6 +462,25 @@
   color: var(--hero-subtitle-meta, var(--hero-desc-color));
 }
 
+/* ════════════════════════════════════════════════════════════════════
+   §11c — DARK HERO TREATMENT  (.wiki-hero.hero-dark)
+   Opt-in modifier for heroes on a dark background that don't get their
+   text colour from a skin sheet: flips text to white-on-dark and gives
+   the eyebrow a frosted-glass fill. (Stat-grid tokens already default to
+   the dark-hero palette, so they're left untouched.) Skins/pages that set
+   their own hero colours don't need this.
+   ════════════════════════════════════════════════════════════════════ */
+.wiki-hero.hero-dark {
+  color: #ffffff;
+  --hero-desc-color:     rgba(255,255,255,.85);
+  --hero-eyebrow-bg:     rgba(255,255,255,.1);
+  --hero-eyebrow-border: rgba(255,255,255,.3);
+}
+.wiki-hero.hero-dark .wiki-hero-eyebrow {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
 
 /* ════════════════════════════════════════════════════════════════════
    §12 — HERO DESCRIPTION

@@ -3,6 +3,13 @@ permalink: /taco-bell-spiked-lemonade.html
 layout: class-tb-drink
 title: "Mtn Dew Spiked Lemonade — ViziWiki"
 body_class: "wiki-page wiki-taco-bell"
+hero:
+  bg: "linear-gradient(135deg,#a3e635,#65a30d,#365314,#1a2e05)"
+  accent: "#a3e635"
+  eyebrow: "Mountain Dew · PepsiCo · 2017–2019"
+  title: "Mtn Dew<br>Spiked Lemonade"
+  desc: "A non-alcoholic lemonade soda with prickly pear cactus juice, produced by PepsiCo under the Mountain Dew brand. Available from 2017 to 2019."
+  extra: '<div class="de-chip-row"><span class="de-pill">Discontinued</span><span class="de-pill">Taco Bell exclusive (fountain)</span><span class="de-pill">PepsiCo · Mountain Dew</span></div>'
 ---
 {% raw %}
 <meta charset="UTF-8">
@@ -10,19 +17,7 @@ body_class: "wiki-page wiki-taco-bell"
 <style>:root{ --accent:#65a30d; --accent-light:#a3e635; --accent-dark:#365314; }</style>
 
 <!-- HERO -->
-<div class="wiki-hero" style="background:linear-gradient(135deg,#a3e635,#65a30d,#365314,#1a2e05);">
-  <div class="wiki-hero-inner">
-    <div class="wiki-hero-eyebrow">
-      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
-      Mountain Dew · PepsiCo · 2017–2019
-    </div>
-    <h1 class="wiki-hero-title">Mtn Dew<br>Spiked Lemonade</h1>
-    <p class="wiki-hero-desc">A non-alcoholic lemonade soda with prickly pear cactus juice, produced by PepsiCo under the Mountain Dew brand. Available from 2017 to 2019.</p>
-    <div class="de-chip-row">
-      <span class="de-pill">Discontinued</span><span class="de-pill">Taco Bell exclusive (fountain)</span><span class="de-pill">PepsiCo · Mountain Dew</span>
-    </div>
-  </div>
-</div>
+{% endraw %}{% include sections/hero.html data=page.hero %}{% raw %}
 
 <!-- AT A GLANCE -->
 <div class="wiki-section" data-tone="a">
