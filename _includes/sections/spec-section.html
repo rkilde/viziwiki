@@ -11,7 +11,7 @@
 {%- endcomment -%}
 {%- assign data = include.data -%}
 {%- assign visual = data.visual | default: 'spec' -%}
-<section class="wiki-section spec" data-tone="{{ data.tone | default: 'a' }}" id="spec-section">
+<section class="wiki-section spec" data-tone="{{ data.tone | default: 'special' }}" id="spec-section">
   <div class="wiki-section-inner">
     <div class="wiki-section-eyebrow">{% include icon.html name="file-text" %} Specifications Sheet</div>
     <h2 class="wiki-section-title" style="margin-bottom:6px;">{{ data.heading }}</h2>

@@ -18,6 +18,15 @@
   --spec-divider: color-mix(in oklab, var(--foreground, #0a0a0a) 8%,  transparent);    /* the grid gaps */
 }
 
+/* INVERTED look on the dark "special" band (the spec sheet's signature):
+   flip the card tokens to dark cards + light text. One place → all pages. */
+.spec[data-tone="special"]{
+  --spec-ink:     var(--card, #fff);
+  --spec-surface: color-mix(in oklab, var(--foreground, #0a0a0a) 93%, var(--card, #fff));
+  --spec-line:    color-mix(in oklab, var(--card, #fff) 12%, transparent);
+  --spec-divider: color-mix(in oklab, var(--card, #fff) 10%, transparent);
+}
+
 /* required device sub-line (name · model number) */
 .spec-sub{font-family:"JetBrains Mono",monospace;font-size:9px;text-transform:uppercase;letter-spacing:.16em;color:color-mix(in oklab,var(--spec-ink) 42%,transparent);margin:0 0 36px;}
 
