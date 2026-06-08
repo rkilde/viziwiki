@@ -3,6 +3,15 @@ permalink: /taco-bell-discontinued-drinks.html
 layout: default
 title: "Discontinued Drinks — Taco Bell"
 body_class: "wiki-page wiki-taco-bell"
+overview:
+  tone: a
+  id: overview
+  heading: 60+ discontinued drinks
+  paragraphs:
+  - Taco Bell has discontinued more than sixty beverages since the chain first opened in 1962. Some lasted decades. Others survived a single summer. A few were killed before most customers knew they existed. This archive documents every one of them.
+  - What makes Taco Bell's drink history unusual isn't the number of casualties — any fast-food chain cycles through products. It's that nearly all of these drinks died for reasons that had nothing to do with customer demand. They died because a corporate parent changed its soda portfolio overnight. Because a machine was replaced and the old recipes didn't fit the new hardware. Because a brand partnership expired and the valve was reassigned to the next exclusive. The drinks themselves were often popular right up until the moment they vanished.
+  - 'The archive spans six categories: Mountain Dew exclusives created specifically for Taco Bell fountains, the entire Frutista Freeze program that ran from 2008 to 2013, more than two dozen Freeze machine LTOs and brand collaborations, hand-mixed Limeade Sparklers, hot beverages from the chain''s brief coffee experiments, iced teas and lemonades that quietly rotated off the menu, and a handful of defunct fountain sodas dating back to the original Coca-Cola era.'
+  - Below, you'll find a full catalogue of every item by category, a dedicated section on the Freeze machine's brand collaborations, and then the deep-dive swim-lane charts that map each drink's lifespan on a shared timeline. Every item is clickable — tap any pill or card for the full story.
 hero:
   bg: "linear-gradient(to bottom right,#22d3ee,#0f766e,#172554)"
   accent: "#67e8f9"
@@ -721,24 +730,7 @@ html,body{background:var(--background);color:var(--foreground);margin:0;padding:
 {% endraw %}{% include sections/hero.html data=page.hero %}{% raw %}
 
 <!-- OVERVIEW + CHART -->
-<section id="overview" class="wiki-section" data-tone="a">
-  <div class="wiki-section-inner">
-    
-
-    <div class="wiki-section-eyebrow">
-      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-      Overview
-    </div>
-    <h2 class="wiki-section-title">60+ discontinued drinks</h2>
-    
-    <div class="mt-4 space-y-4 text-[15px] leading-relaxed" style="color:color-mix(in oklab,var(--foreground) 76%,transparent);">
-      <p>Taco Bell has discontinued more than sixty beverages since the chain first opened in 1962. Some lasted decades. Others survived a single summer. A few were killed before most customers knew they existed. This archive documents every one of them.</p>
-      <p>What makes Taco Bell's drink history unusual isn't the number of casualties — any fast-food chain cycles through products. It's that nearly all of these drinks died for reasons that had nothing to do with customer demand. They died because a corporate parent changed its soda portfolio overnight. Because a machine was replaced and the old recipes didn't fit the new hardware. Because a brand partnership expired and the valve was reassigned to the next exclusive. The drinks themselves were often popular right up until the moment they vanished.</p>
-      <p>The archive spans six categories: Mountain Dew exclusives created specifically for Taco Bell fountains, the entire Frutista Freeze program that ran from 2008 to 2013, more than two dozen Freeze machine LTOs and brand collaborations, hand-mixed Limeade Sparklers, hot beverages from the chain's brief coffee experiments, iced teas and lemonades that quietly rotated off the menu, and a handful of defunct fountain sodas dating back to the original Coca-Cola era.</p>
-      <p>Below, you'll find a full catalogue of every item by category, a dedicated section on the Freeze machine's brand collaborations, and then the deep-dive swim-lane charts that map each drink's lifespan on a shared timeline. Every item is clickable — tap any pill or card for the full story.</p>
-    </div>
-  </div>
-</section>
+{% endraw %}{% include sections/overview.html data=page.overview %}{% raw %}
 
 <div id="dtv-macro-wrap" class="disc-macro-wrap" style="display:none;"></div>
 <!-- CATALOGUE (JS-driven from ITEM_DB) -->
