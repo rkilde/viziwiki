@@ -3,6 +3,18 @@ permalink: /taco-bell-slogans.html
 layout: default
 title: "Taco Bell Slogans — Through the Ages · ViziWiki"
 body_class: "wiki-page wiki-taco-bell"
+hero:
+  id: overview
+  bg: "linear-gradient(135deg,#c026d3 0%,#7c3aed 55%,#1e1b4b 100%)"
+  chrome: tb-slogans
+  eyebrow: "Marketing · From the Archive"
+  title: "Taco Bell Slogans"
+  desc: "Nine slogans across sixty-four years — the full archive of every era, from the 1977 debut tagline to Live Más, including the $42M lawsuit that ended the chihuahua campaign."
+  stats:
+    - { num: "9", label: "Slogans" }
+    - { num: "62 yr", label: "Span" }
+    - { num: "1962", label: "Founded" }
+    - { num: "$42M", label: "Lawsuit" }
 extra_head: |
   <link rel="stylesheet" href="/wiki-taco-bell-skin.css">
   <link rel="stylesheet" href="/tb-editorial-base.css">
@@ -50,27 +62,7 @@ window.WIKI_TOC = {
 <div class="slogans-page">
 
 <!-- ═══════════════════════ HERO ═══════════════════════ -->
-<section id="overview" class="wiki-hero" style="background:linear-gradient(135deg,#c026d3 0%,#7c3aed 55%,#1e1b4b 100%)">
-  <div class="slogan-hero-halftone"></div>
-  <div class="slogan-hero-shade"></div>
-  <svg class="wiki-icon" aria-hidden="true"><use href="#ic-message-square-quote"></use></svg>
-  <div class="wiki-hero-inner">
-    <div class="wiki-hero-eyebrow">
-      <span class="wiki-hero-eyebrow-dot"></span>
-      Marketing · From the Archive
-    </div>
-    <h1 class="wiki-hero-title">Taco Bell Slogans<span class="wiki-hero-title-accent">.</span></h1>
-    <p class="wiki-hero-desc">
-      Nine slogans across sixty-four years — the full archive of every era, from the 1977 debut tagline to Live Más, including the $42M lawsuit that ended the chihuahua campaign.
-    </p>
-    <div class="wiki-hero-stats">
-      <div class="wiki-hero-stat"><div class="wiki-hero-stat-num">9</div><div class="wiki-hero-stat-label">Slogans</div></div>
-      <div class="wiki-hero-stat"><div class="wiki-hero-stat-num">62 yr</div><div class="wiki-hero-stat-label">Span</div></div>
-      <div class="wiki-hero-stat"><div class="wiki-hero-stat-num">1962</div><div class="wiki-hero-stat-label">Founded</div></div>
-      <div class="wiki-hero-stat"><div class="wiki-hero-stat-num">$42M</div><div class="wiki-hero-stat-label">Lawsuit</div></div>
-    </div>
-  </div>
-</section>
+{% endraw %}{% include sections/hero.html data=page.hero %}{% raw %}
 
 <!-- ═══════════════════════ OVERVIEW ═══════════════════════ -->
 <section class="wiki-section" data-tone="b">

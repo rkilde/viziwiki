@@ -34,7 +34,7 @@
 {%- capture herostyle -%}{%- if h.bg %}background:{{ h.bg }};{% endif %}{%- if h.accent %}--hero-title-accent:{{ h.accent }};--hero-eyebrow-dot:{{ h.accent }};{% endif %}{%- endcapture -%}
 {%- assign herostyle = herostyle | split: ';' | join: ';' -%}<section class="wiki-hero{% if h.class %} {{ h.class }}{% endif %}"{% if h.id %} id="{{ h.id }}"{% endif %}{% if herostyle != "" %} style="{{ herostyle }}"{% endif %}>
   {%- if h.watermark %}{{ h.watermark }}{% endif -%}
-  {%- if h.chrome == "ipod" %}{% include hero/chrome-ipod.html %}{% endif -%}
+  {%- if h.chrome %}{% capture chromefile %}hero/chrome-{{ h.chrome }}.html{% endcapture %}{% include {{ chromefile }} %}{% endif -%}
   {%- if h.overlays %}{% for ov in h.overlays %}<div class="pointer-events-none absolute inset-0" style="{{ ov }}"></div>{% endfor %}{% endif -%}
   {%- if h.icon %}{% include icon.html name=h.icon %}{% endif -%}
   <div class="wiki-hero-inner">
