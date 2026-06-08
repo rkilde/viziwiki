@@ -3,6 +3,102 @@ permalink: /apple-ipod-touch-2g.html
 layout: class-ipod-touch
 title: "iPod touch (2nd generation)"
 body_class: wiki-page wiki-apple
+delta:
+  heading: "What changed.<br>1st &#8594; 2nd generation."
+  intro: "The iPod touch 2nd generation was not a reinvention of the first — it was a completion of it. Every significant gap in the original was addressed: the missing speaker, the missing volume buttons, the recessed headphone jack, the external Nike+ receiver, the flat back that didn’t sit well in the hand. On the software side, the 2G shipped into a live App Store with 60 million downloads already recorded, with access included free on day one — no paid upgrade required."
+  footnote: "Specs: iPod touch 1st gen (A1213) · Sep 5, 2007 · $299 (8 GB), $399 (16 GB) &nbsp;/&nbsp; iPod touch 2nd gen (A1288) · Sep 9, 2008 · $229 (8 GB), $299 (16 GB), $399 (32 GB)"
+  prev: { tag: "Previous", name: "iPod touch (1st gen)", year: "September 2007" }
+  current: { tag: "Current", name: "iPod touch (2nd gen)", year: "September 2008" }
+  hardware:
+    - label: "Back design"
+      desc: "Material & form factor"
+      old: "Flat polished aluminum, uniform thickness throughout"
+      new: "<strong>Curved polished stainless steel</strong>, tapered toward edges — same profile as iPhone 3G"
+      chip: changed
+      chip_text: "Redesigned"
+    - label: "Speaker"
+      desc: "Audio output"
+      old: "Not present. Headphones required for all audio."
+      new: "<strong>Built-in mono speaker</strong> — grille at top rear of device"
+      no_old: true
+      chip: better
+      chip_text: "New"
+    - label: "Volume buttons"
+      desc: "Physical controls"
+      old: "Not present. Volume controlled via on-screen slider only."
+      new: "<strong>Physical volume up/down</strong> on left edge"
+      no_old: true
+      chip: better
+      chip_text: "New"
+    - label: "Headphone jack"
+      desc: "3.5 mm port depth"
+      old: "Recessed — standard plugs didn’t fit. Required a flush adapter accessory."
+      new: "<strong>Flush with casing</strong> — any standard 3.5 mm plug fits directly"
+      chip: better
+      chip_text: "Flush"
+    - label: "Nike+ wireless"
+      desc: "Fitness sensor link"
+      old: "Supported via external dock connector receiver sold separately"
+      new: "<strong>Built-in wireless module</strong> — no adapter or accessory required"
+      chip: feature
+      chip_text: "Native"
+    - label: "Processor"
+      desc: "CPU clock speed"
+      old: "Samsung ARM11 · 400 MHz"
+      new: "Samsung ARM11 · <strong>533 MHz</strong> — 33% faster"
+      chip: better
+      chip_text: "+33%"
+    - label: "Bluetooth chip"
+      desc: "Hardware presence"
+      old: "No Bluetooth hardware present at all"
+      new: "<strong>Samsung/Broadcom chip present</strong> — dormant at launch, unlocked via iPhone OS 3.0 in June 2009"
+      no_old: true
+      chip: better
+      chip_text: "New"
+    - label: "Weight"
+      desc: "Without accessories"
+      old: "120 g (4.23 oz)"
+      new: "<strong>115 g</strong> (4.05 oz) — 5 g lighter"
+      chip: better
+      chip_text: "−5 g"
+  software:
+    - label: "Launch OS"
+      desc: "Ships out of box with"
+      old: "iPhone OS 1.1 — no App Store, no third-party apps"
+      new: "<strong>iPhone OS 2.1.1</strong> — App Store included, third-party apps from day one"
+      chip: better
+      chip_text: "Newer"
+    - label: "App Store access"
+      desc: "At time of purchase"
+      old: "Not available at launch. Required a $9.95 paid upgrade when App Store launched July 2008."
+      new: "<strong>Included free from day one</strong> — no paid upgrade required"
+      chip: better
+      chip_text: "Free"
+    - label: "Third-party apps"
+      desc: "Developer ecosystem"
+      old: "None at launch. Web apps only. Paid update added access eight months in."
+      new: "<strong>Available at launch</strong> — 500+ apps on day one, 60M+ downloads already recorded by launch date"
+      chip: better
+      chip_text: "Day one"
+    - label: "Maximum OS"
+      desc: "Final supported version"
+      old: "iPhone OS 3.1.3 — dropped before iOS 4"
+      new: "<strong>iOS 4.2.1</strong> — one full major version further, support until November 2010"
+      chip: better
+      chip_text: "Further"
+    - label: "Bluetooth"
+      desc: "Wireless connectivity"
+      old: "Never available — no hardware present"
+      new: "Chip present at launch. <strong>Unlocked via iPhone OS 3.0</strong> (June 2009) — peer-to-peer gaming, Bluetooth accessories"
+      no_old: true
+      chip: better
+      chip_text: "New"
+    - label: "Nike+ integration"
+      desc: "Fitness tracking"
+      old: "Supported via accessory. Required dock connector receiver; no native wireless support."
+      new: "<strong>Native wireless support</strong> — no receiver needed, works out of box with Nike+ sensor shoes"
+      chip: feature
+      chip_text: "Native"
 overview:
   tone: a
   heading: "The first iPod touch that felt finished."
@@ -261,32 +357,6 @@ var PAGE_DATA = {
   // ── Timeline header ────────────────────────────────────────────
 
   // ── Generation delta ───────────────────────────────────────────
-  delta: {
-    heading: "What changed.<br>1st &#8594; 2nd generation.",
-    intro:   "The iPod touch 2nd generation was not a reinvention of the first — it was a completion of it. Every significant gap in the original was addressed: the missing speaker, the missing volume buttons, the recessed headphone jack, the external Nike+ receiver, the flat back that didn’t sit well in the hand. On the software side, the 2G shipped into a live App Store with 60 million downloads already recorded, with access included free on day one — no paid upgrade required.",
-    prevGen: {name:"iPod touch (1st gen)", year:"September 2007", tag:"Previous"},
-    thisGen: {name:"iPod touch (2nd gen)", year:"September 2008", tag:"Current"},
-    // chipCls: chip-new · chip-improved · chip-changed
-    hwRows: [
-      {label:"Back design", desc:"Material & form factor", noOld:false, oldText:"Flat polished aluminum, uniform thickness throughout", newHtml:"<strong>Curved polished stainless steel</strong>, tapered toward edges — same profile as iPhone 3G", chipCls:"chip-changed", chipText:"Redesigned"},
-      {label:"Speaker", desc:"Audio output", noOld:true, oldText:"Not present. Headphones required for all audio.", newHtml:"<strong>Built-in mono speaker</strong> — grille at top rear of device", chipCls:"chip-new", chipText:"New"},
-      {label:"Volume buttons", desc:"Physical controls", noOld:true, oldText:"Not present. Volume controlled via on-screen slider only.", newHtml:"<strong>Physical volume up/down</strong> on left edge", chipCls:"chip-new", chipText:"New"},
-      {label:"Headphone jack", desc:"3.5 mm port depth", noOld:false, oldText:"Recessed — standard plugs didn’t fit. Required a flush adapter accessory.", newHtml:"<strong>Flush with casing</strong> — any standard 3.5 mm plug fits directly", chipCls:"chip-improved", chipText:"Improved"},
-      {label:"Nike+ wireless", desc:"Fitness sensor link", noOld:false, oldText:"Supported via external dock connector receiver sold separately", newHtml:"<strong>Built-in wireless module</strong> — no adapter or accessory required", chipCls:"chip-improved", chipText:"Native"},
-      {label:"Processor", desc:"CPU clock speed", noOld:false, oldText:"Samsung ARM11 · 400 MHz", newHtml:"Samsung ARM11 · <strong>533 MHz</strong> — 33% faster", chipCls:"chip-improved", chipText:"+33%"},
-      {label:"Bluetooth chip", desc:"Hardware presence", noOld:true, oldText:"No Bluetooth hardware present at all", newHtml:"<strong>Samsung/Broadcom chip present</strong> — dormant at launch, unlocked via iPhone OS 3.0 in June 2009", chipCls:"chip-new", chipText:"New"},
-      {label:"Weight", desc:"Without accessories", noOld:false, oldText:"120 g (4.23 oz)", newHtml:"<strong>115 g</strong> (4.05 oz) — 5 g lighter", chipCls:"chip-improved", chipText:"−5 g"},
-    ],
-    swRows: [
-      {label:"Launch OS", desc:"Ships out of box with", noOld:false, oldText:"iPhone OS 1.1 — no App Store, no third-party apps", newHtml:"<strong>iPhone OS 2.1.1</strong> — App Store included, third-party apps from day one", chipCls:"chip-improved", chipText:"Newer"},
-      {label:"App Store access", desc:"At time of purchase", noOld:false, oldText:"Not available at launch. Required a $9.95 paid upgrade when App Store launched July 2008.", newHtml:"<strong>Included free from day one</strong> — no paid upgrade required", chipCls:"chip-improved", chipText:"Free"},
-      {label:"Third-party apps", desc:"Developer ecosystem", noOld:false, oldText:"None at launch. Web apps only. Paid update added access eight months in.", newHtml:"<strong>Available at launch</strong> — 500+ apps on day one, 60M+ downloads already recorded by launch date", chipCls:"chip-new", chipText:"Day one"},
-      {label:"Maximum OS", desc:"Final supported version", noOld:false, oldText:"iPhone OS 3.1.3 — dropped before iOS 4", newHtml:"<strong>iOS 4.2.1</strong> — one full major version further, support until November 2010", chipCls:"chip-improved", chipText:"Further"},
-      {label:"Bluetooth", desc:"Wireless connectivity", noOld:true, oldText:"Never available — no hardware present", newHtml:"Chip present at launch. <strong>Unlocked via iPhone OS 3.0</strong> (June 2009) — peer-to-peer gaming, Bluetooth accessories", chipCls:"chip-new", chipText:"New"},
-      {label:"Nike+ integration", desc:"Fitness tracking", noOld:false, oldText:"Supported via accessory. Required dock connector receiver; no native wireless support.", newHtml:"<strong>Native wireless support</strong> — no receiver needed, works out of box with Nike+ sensor shoes", chipCls:"chip-improved", chipText:"Native"},
-    ],
-    footnote: "Specs: iPod touch 1st gen (A1213) · Sep 5, 2007 · $299 (8 GB), $399 (16 GB) &nbsp;/&nbsp; iPod touch 2nd gen (A1288) · Sep 9, 2008 · $229 (8 GB), $299 (16 GB), $399 (32 GB)",
-  },
 
   // ── Configurations ─────────────────────────────────────────────
 

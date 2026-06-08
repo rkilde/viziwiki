@@ -1,0 +1,24 @@
+{%- comment -%}
+  DELTA SECTION (a page-section type — the framing, not the table).
+  The chrome a contributor gets on dropping a "Changes & Improvements section":
+    · locked eyebrow "Changes & Improvements" + the locked chart-column-stacked icon
+    · a required H2 heading
+    · optional intro prose
+    · the comparison table (the visual) in the slot
+    · an optional footnote
+  Contained (not full-bleed). Usage:
+    {% include sections/delta-section.html data=page.delta %}
+  Data: heading (req), intro?, footnote?, tone?, visual?, prev{tag,name,year},
+        current{tag,name,year}, hardware[], software[]
+{%- endcomment -%}
+{%- assign data = include.data -%}
+{%- assign visual = data.visual | default: 'delta' -%}
+<section class="wiki-section delta" data-tone="{{ data.tone | default: 'a' }}" id="delta-section">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">{% include icon.html name="chart-column-stacked" %} Changes &amp; Improvements</div>
+    <h2 class="wiki-section-title" style="margin-bottom:24px;">{{ data.heading }}</h2>
+    {%- if data.intro -%}<div class="delta-prose"><p>{{ data.intro }}</p></div>{%- endif -%}
+    {% include visual.html type=visual data=data %}
+    {%- if data.footnote -%}<div class="gd-foot">{{ data.footnote }}</div>{%- endif -%}
+  </div>
+</section>

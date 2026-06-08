@@ -49,6 +49,14 @@ sections:
     summary: derived                   # auto "Scroll · first → last"
     full_bleed: true                   # locked edge-to-edge scroller
     hosts: [timeline]                  # visuals legal in the slot
+  delta-section:
+    partial: sections/delta-section.html
+    eyebrow: "Changes & Improvements"  # locked
+    icon: chart-column-stacked         # locked
+    h2: required
+    contained: true                    # NOT full-bleed
+    addons: [intro, footnote]
+    hosts: [delta]                     # visuals legal in the slot
   config-section:
     partial: sections/config-section.html
     eyebrow: "Configurations"          # locked
@@ -66,6 +74,16 @@ config:
   addons: [revised, divider_label, price-drop, color-dots]
   colors: skin-derived                 # chrome via --cfg-* tokens; device dots are content hex
   item_fields: [capacity, unit, model, price, dates, revised, colors]
+
+delta:
+  bank: comparisons
+  partial: visuals/delta/delta.html
+  section: delta-section
+  axes: [prev, current]
+  row_groups: [hardware, software]
+  row_fields: [label, desc, old, new, no_old, chip, chip_text]
+  chips: [better, feature, changed, worse, same]   # colour = the change direction; text = the value
+  colors: skin-derived                              # chrome via --gd-* tokens (Apple pinned)
 
 timeline:
   bank: timelines

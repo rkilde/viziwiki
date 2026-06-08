@@ -3,6 +3,97 @@ permalink: /apple-ipod-touch-4g.html
 layout: class-ipod-touch
 title: "iPod touch (4th generation)"
 body_class: wiki-page wiki-apple
+delta:
+  heading: "What changed.<br>3rd &#8594; 4th generation."
+  intro: "The third generation changed nothing on the outside. The fourth generation changed almost everything — the display, the cameras, the thickness, the weight. For the first time, the iPod touch looked and felt like a genuinely new product rather than an internal upgrade."
+  footnote: "Specs: iPod touch 3rd gen (A1318) · Sep 9, 2009 · $299 / $399 &nbsp;/&nbsp; iPod touch 4th gen (A1367) · Sep 12, 2010 · $229 / $299 / $399"
+  prev: { tag: "Previous", name: "iPod touch (3rd gen)", year: "September 2009" }
+  current: { tag: "Current", name: "iPod touch (4th gen)", year: "September 2010" }
+  hardware:
+    - label: "Display"
+      desc: "Screen resolution & density"
+      old: "480×320 · 163 ppi · TFT LCD"
+      new: "<strong>960×640 · 326 ppi · Retina</strong> — 4× pixel count"
+      chip: feature
+      chip_text: "Retina"
+    - label: "Processor"
+      desc: "CPU speed"
+      old: "Cortex-A8 600 MHz"
+      new: "Apple A4 <strong>Cortex-A8 800 MHz</strong> — 33% faster"
+      chip: better
+      chip_text: "+33%"
+    - label: "RAM"
+      desc: "System memory"
+      old: "256 MB DRAM"
+      new: "<strong>256 MB DRAM</strong> — unchanged"
+      chip: same
+      chip_text: "Same"
+    - label: "Rear camera"
+      desc: "Still & video"
+      old: "No camera."
+      new: "<strong>0.7 MP · 720p video</strong> — first in iPod touch line"
+      no_old: true
+      chip: better
+      chip_text: "New"
+    - label: "Front camera"
+      desc: "FaceTime / selfie"
+      old: "No front camera."
+      new: "<strong>0.3 MP FaceTime camera</strong> — first in iPod touch line"
+      no_old: true
+      chip: better
+      chip_text: "New"
+    - label: "Gyroscope"
+      desc: "Motion sensing"
+      old: "Accelerometer only."
+      new: "<strong>3-axis gyroscope</strong> + accelerometer"
+      no_old: true
+      chip: better
+      chip_text: "New"
+    - label: "Microphone"
+      desc: "Audio input"
+      old: "Via earbuds remote only."
+      new: "<strong>Built-in microphone</strong>"
+      no_old: true
+      chip: better
+      chip_text: "New"
+    - label: "Wi-Fi"
+      desc: "Wireless standard"
+      old: "802.11 b/g"
+      new: "<strong>802.11 b/g/n</strong> — 802.11n added"
+      chip: better
+      chip_text: "802.11n"
+    - label: "Thickness"
+      desc: "Device depth"
+      old: "8.5 mm"
+      new: "<strong>7.2 mm</strong> — 15% thinner"
+      chip: better
+      chip_text: "-15%"
+    - label: "Weight"
+      desc: "Without accessories"
+      old: "115 g (4.05 oz)"
+      new: "<strong>86.3 g</strong> (3.04 oz) — 25% lighter"
+      chip: better
+      chip_text: "-25%"
+  software:
+    - label: "Launch OS"
+      desc: "Ships out of box"
+      old: "iPhone OS 3.1.1"
+      new: "<strong>iOS 4.1</strong>"
+      chip: better
+      chip_text: "Newer"
+    - label: "FaceTime"
+      desc: "Video calling"
+      old: "Not supported."
+      new: "<strong>FaceTime over Wi-Fi</strong> — first iPod touch"
+      no_old: true
+      chip: better
+      chip_text: "New"
+    - label: "Maximum OS"
+      desc: "Final OS version"
+      old: "iOS 5.1.1"
+      new: "<strong>iOS 6.1.6</strong> — one major generation further"
+      chip: better
+      chip_text: "Further"
 overview:
   tone: a
   heading: "The iPhone 4, without the phone."
@@ -241,30 +332,6 @@ var PAGE_DATA = {
   // ── Timeline header ──────────────────────────────────────────────
 
   // ── Generation delta ─────────────────────────────────────────────
-  delta: {
-    heading: "What changed.<br>3rd &#8594; 4th generation.",
-    intro:   "The third generation changed nothing on the outside. The fourth generation changed almost everything — the display, the cameras, the thickness, the weight. For the first time, the iPod touch looked and felt like a genuinely new product rather than an internal upgrade.",
-    prevGen: {name:"iPod touch (3rd gen)", year:"September 2009", tag:"Previous"},
-    thisGen: {name:"iPod touch (4th gen)", year:"September 2010", tag:"Current"},
-    hwRows: [
-      {label:"Display",         desc:"Screen resolution & density", noOld:false, oldText:"480×320 · 163 ppi · TFT LCD",          newHtml:"<strong>960×640 · 326 ppi · Retina</strong> — 4× pixel count",           chipCls:"chip-improved", chipText:"Retina"},
-      {label:"Processor",       desc:"CPU speed",                   noOld:false, oldText:"Cortex-A8 600 MHz",                     newHtml:"Apple A4 <strong>Cortex-A8 800 MHz</strong> — 33% faster",              chipCls:"chip-improved", chipText:"+33%"},
-      {label:"RAM",             desc:"System memory",               noOld:false, oldText:"256 MB DRAM",                           newHtml:"<strong>256 MB DRAM</strong> — unchanged",                              chipCls:"chip-changed",  chipText:"Same"},
-      {label:"Rear camera",     desc:"Still & video",               noOld:true,  oldText:"No camera.",                            newHtml:"<strong>0.7 MP · 720p video</strong> — first in iPod touch line",       chipCls:"chip-new",      chipText:"New"},
-      {label:"Front camera",    desc:"FaceTime / selfie",           noOld:true,  oldText:"No front camera.",                      newHtml:"<strong>0.3 MP FaceTime camera</strong> — first in iPod touch line",   chipCls:"chip-new",      chipText:"New"},
-      {label:"Gyroscope",       desc:"Motion sensing",              noOld:true,  oldText:"Accelerometer only.",                   newHtml:"<strong>3-axis gyroscope</strong> + accelerometer",                     chipCls:"chip-new",      chipText:"New"},
-      {label:"Microphone",      desc:"Audio input",                 noOld:true,  oldText:"Via earbuds remote only.",              newHtml:"<strong>Built-in microphone</strong>",                                  chipCls:"chip-new",      chipText:"New"},
-      {label:"Wi-Fi",           desc:"Wireless standard",           noOld:false, oldText:"802.11 b/g",                            newHtml:"<strong>802.11 b/g/n</strong> — 802.11n added",                        chipCls:"chip-improved", chipText:"802.11n"},
-      {label:"Thickness",       desc:"Device depth",                noOld:false, oldText:"8.5 mm",                                newHtml:"<strong>7.2 mm</strong> — 15% thinner",                                chipCls:"chip-improved", chipText:"-15%"},
-      {label:"Weight",          desc:"Without accessories",         noOld:false, oldText:"115 g (4.05 oz)",                       newHtml:"<strong>86.3 g</strong> (3.04 oz) — 25% lighter",                     chipCls:"chip-improved", chipText:"-25%"},
-    ],
-    swRows: [
-      {label:"Launch OS",       desc:"Ships out of box",            noOld:false, oldText:"iPhone OS 3.1.1",                       newHtml:"<strong>iOS 4.1</strong>",                                             chipCls:"chip-new",      chipText:"Newer"},
-      {label:"FaceTime",        desc:"Video calling",               noOld:true,  oldText:"Not supported.",                        newHtml:"<strong>FaceTime over Wi-Fi</strong> — first iPod touch",              chipCls:"chip-new",      chipText:"New"},
-      {label:"Maximum OS",      desc:"Final OS version",            noOld:false, oldText:"iOS 5.1.1",                             newHtml:"<strong>iOS 6.1.6</strong> — one major generation further",            chipCls:"chip-improved", chipText:"Further"},
-    ],
-    footnote: "Specs: iPod touch 3rd gen (A1318) · Sep 9, 2009 · $299 / $399 &nbsp;/&nbsp; iPod touch 4th gen (A1367) · Sep 12, 2010 · $229 / $299 / $399",
-  },
 
   // ── Configurations ───────────────────────────────────────────────
 

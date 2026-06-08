@@ -15,6 +15,7 @@ layout: default
 <link rel="stylesheet" href="/wiki-ipod-touch.css">
 <link rel="stylesheet" href="/bank-timeline.css">
 <link rel="stylesheet" href="/bank-config.css">
+<link rel="stylesheet" href="/bank-delta.css">
 
 {{ content }}
 
@@ -35,9 +36,7 @@ layout: default
 
 {% include sections/timeline-section.html data=page.timeline %}
 
-<section class="wiki-section" data-tone="a" id="delta-section">
-  <div id="delta-content"></div>
-</section>
+{% include sections/delta-section.html data=page.delta %}
 
 {% include sections/config-section.html data=page.config %}
 
