@@ -3,6 +3,28 @@ permalink: /doodle-jump.html
 layout: default
 title: Doodle Jump
 body_class: wiki-page wiki-doodle-jump
+hero:
+  id: overview
+  class: "paper grain"
+  chrome: doodle-home
+  eyebrow: "Visual Wiki · Vol. 5"
+  title: '<span class="marker-underline">Doodle</span><br><span class="dj-title-jump">Jump</span>'
+  desc: 'A four-legged green creature, an infinite ladder of <span class="hl">green platforms</span>, and a phone tilted just so. Lima Sky''s pocket-sized obsession — every monster, power-up, and platform variant indexed here, drawn from the margins up.'
+  search: true
+  search_placeholder: "Search 318 entries — try 'Doodler', 'spring', 'UFO'…"
+  stats:
+    - { num: "318", label: "entries" }
+    - { num: "2009", label: "debut" }
+    - { num: "15M+", label: "downloads" }
+    - { num: "∞", label: "high score" }
+  spotlight:
+    class: "sticky tilt-r"
+    art_inc: art-doodle-doodler
+    eyebrow: "★ Spotlight"
+    title: "The Doodler"
+    desc: 'The wiki''s namesake creature — four legs, two eyes, one impossibly long nose. Lima Sky''s <span class="hl">unnamed protagonist</span> has been launching himself off green platforms for over fifteen years, and still won''t tell anyone what he is.'
+    tags: ["Character", "Iconic", "Lima Sky"]
+    cta: "Open entry &nbsp;→"
 extra_head: |
   <link rel="stylesheet" href="/wiki-home.css">
   <link rel="stylesheet" href="/wiki-doodle-jump-skin.css">
@@ -64,94 +86,7 @@ window.WIKI_TOC = {
                   ghost watermark, doodler character peek, sticky-note
                   spotlight treatment, all colors via --hero-* tokens.
        ================================================================ -->
-  <section id="overview" class="wiki-hero paper grain">
-    <!-- skin-owned ghost watermark (gamepad) -->
-    <svg class="wiki-icon hero-watermark" style="stroke-width:1.25" aria-hidden="true"><use href="#ic-gamepad-2"></use></svg>
-
-    <div class="wiki-hero-inner">
-      <div class="wiki-hero-content">
-
-        <!-- eyebrow pill: ● Visual Wiki · Vol. [N] -->
-        <div class="wiki-hero-eyebrow">
-          <span class="wiki-hero-eyebrow-dot"></span>
-          Visual Wiki · Vol. 5
-        </div>
-
-        <!-- H1 + accent period — DJ skin: marker-underline on "Doodle", green "Jump", forced two-line -->
-        <h1 class="wiki-hero-title">
-          <span class="marker-underline">Doodle</span><br>
-          <span class="dj-title-jump">Jump</span><span class="wiki-hero-title-accent">.</span>
-        </h1>
-
-        <!-- description -->
-        <p class="wiki-hero-desc">
-          A four-legged green creature, an infinite ladder of <span class="hl">green platforms</span>, and a phone tilted just so. Lima Sky's pocket-sized obsession — every monster, power-up, and platform variant indexed here, drawn from the margins up.
-        </p>
-
-        <!-- search bar (icon is skin-owned — search glass) -->
-        <div class="wiki-hero-search">
-          <span class="wiki-hero-search-icon">
-            <svg class="wiki-icon" style="width:16px;height:16px" aria-hidden="true"><use href="#ic-search"></use></svg>
-          </span>
-          <input class="wiki-hero-search-input" placeholder="Search 318 entries — try 'Doodler', 'spring', 'UFO'…" />
-        </div>
-
-        <!-- 4-cell stat grid · cell 1 ALWAYS = entry count -->
-        <div class="wiki-hero-stats">
-          <div class="wiki-hero-stat">
-            <div class="wiki-hero-stat-num">318</div>
-            <div class="wiki-hero-stat-label">entries</div>
-          </div>
-          <div class="wiki-hero-stat">
-            <div class="wiki-hero-stat-num">2009</div>
-            <div class="wiki-hero-stat-label">debut</div>
-          </div>
-          <div class="wiki-hero-stat">
-            <div class="wiki-hero-stat-num">15M+</div>
-            <div class="wiki-hero-stat-label">downloads</div>
-          </div>
-          <div class="wiki-hero-stat">
-            <div class="wiki-hero-stat-num">∞</div>
-            <div class="wiki-hero-stat-label">high score</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- spotlight aside — DJ skin: sticky note + Doodler peek -->
-      <aside class="wiki-hero-aside">
-        <div class="wiki-hero-spotlight sticky tilt-r">
-          <!-- skin-owned decorations: sticky tape + Doodler character peeking from behind -->
-          <span class="tape" style="top:-9px;left:30%;transform:rotate(-3deg);"></span>
-          <div class="doodler doodler-bob" aria-hidden="true">
-            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <ellipse cx="50" cy="55" rx="32" ry="28" fill="#6bb84a" stroke="#2c3a1e" stroke-width="2.5"/>
-              <ellipse cx="50" cy="62" rx="20" ry="14" fill="#8ed268" opacity=".55"/>
-              <path d="M 28 78 Q 24 86 28 92 M 40 82 Q 38 90 42 94 M 58 82 Q 60 90 58 94 M 72 78 Q 76 86 72 92" stroke="#2c3a1e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-              <ellipse cx="62" cy="56" rx="11" ry="9" fill="#6bb84a" stroke="#2c3a1e" stroke-width="2.5"/>
-              <circle cx="60" cy="56" r="1.4" fill="#2c3a1e"/>
-              <circle cx="65" cy="58" r="1.4" fill="#2c3a1e"/>
-              <circle cx="42" cy="42" r="9" fill="#fff" stroke="#2c3a1e" stroke-width="2.5"/>
-              <circle cx="44" cy="44" r="4" fill="#2c3a1e"/>
-              <circle cx="58" cy="40" r="9" fill="#fff" stroke="#2c3a1e" stroke-width="2.5"/>
-              <circle cx="60" cy="42" r="4" fill="#2c3a1e"/>
-            </svg>
-          </div>
-
-          <div class="wiki-hero-spotlight-eyebrow">★ Spotlight</div>
-          <h3 class="wiki-hero-spotlight-title">The Doodler</h3>
-          <p class="wiki-hero-spotlight-desc">
-            The wiki's namesake creature — four legs, two eyes, one impossibly long nose. Lima Sky's <span class="hl">unnamed protagonist</span> has been launching himself off green platforms for over fifteen years, and still won't tell anyone what he is.
-          </p>
-          <div class="wiki-hero-spotlight-tags">
-            <span class="wiki-hero-spotlight-tag">Character</span>
-            <span class="wiki-hero-spotlight-tag">Iconic</span>
-            <span class="wiki-hero-spotlight-tag">Lima Sky</span>
-          </div>
-          <button class="wiki-hero-spotlight-cta">Open entry &nbsp;→</button>
-        </div>
-      </aside>
-    </div>
-  </section>
+  {% include sections/hero.html data=page.hero %}
 
   <!-- ================================================================
        BROWSE THE WIKI  (shared nav slot — sticky-note directory grid)

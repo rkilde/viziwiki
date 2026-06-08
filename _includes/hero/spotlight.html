@@ -7,8 +7,9 @@
     cta?       -> button label; cta_href? makes it a link instead of a button
 {%- endcomment -%}
 {%- assign s = include.data -%}
-<div class="wiki-hero-spotlight">
+<div class="wiki-hero-spotlight{% if s.class %} {{ s.class }}{% endif %}">
   {%- if s.eyebrow -%}<div class="wiki-hero-spotlight-eyebrow">{{ s.eyebrow }}</div>{%- endif -%}
+  {%- if s.art_inc -%}{% capture af %}hero/{{ s.art_inc }}.html{% endcapture %}{% include {{ af }} %}{%- elsif s.art -%}{{ s.art }}{%- endif -%}
   <h3 class="wiki-hero-spotlight-title">{{ s.title }}</h3>
   {%- if s.desc -%}<p class="wiki-hero-spotlight-desc">{{ s.desc }}</p>{%- endif -%}
   {%- if s.tags -%}<div class="wiki-hero-spotlight-tags">{%- for t in s.tags -%}<span class="wiki-hero-spotlight-tag">{{ t }}</span>{%- endfor -%}</div>{%- endif -%}
