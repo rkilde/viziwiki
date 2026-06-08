@@ -113,12 +113,12 @@ lifecycle-lane:
   partial: visuals/lifecycle-lane/lifecycle-lane.html
   section: os-section
   width_model: [uniform, weighted]     # weighted = width ∝ date gap (opt-in via `weighted: true` + dates)
-  range: derived                       # auto "first date → last supported date" (+ optional range_note)
+  range: derived                       # auto "launch → drop" + duration; post-drop security tiles excluded from the count
   legend: derived                      # auto from the support types present
   segment_fields: [ver, date, type, badge, badge_type]
-  types: [full, partial, dropped]      # support tier → fill colour
-  badge_types: [ship, paid, limited, final, dropped]
-  note_fields: [status, label, text]   # status → dot colour (full/partial/limited/final/dropped)
+  types: [full, partial, dropped, security]  # support tier → fill colour; `security` = post-EOL patch (place AFTER the drop)
+  badge_types: [ship, paid, limited, final, dropped, security]
+  note_fields: [status, label, text]   # status → dot colour (full/partial/limited/final/dropped/security)
   colors: skin-derived                 # chrome via --lane-* tokens; support palette = semantic defaults
 
 timeline:

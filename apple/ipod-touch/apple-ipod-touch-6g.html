@@ -16,13 +16,13 @@ os:
     - { ver: "10.0",   date: "Sep 2016", type: full }
     - { ver: "11.0",   date: "Sep 2017", type: full }
     - { ver: "12.0",   date: "Sep 2018", type: full }
-    - { ver: "12.5.8", date: "Jan 2026", type: full, badge: "Final", badge_type: final }
-    - { ver: "13.0",   date: "Sep 2019", type: dropped, badge: "Dropped", badge_type: dropped }
+    - { ver: "13.0",   date: "Sep 2019", type: dropped,  badge: "Dropped", badge_type: dropped }
+    - { ver: "12.5.8", date: "Jan 2026", type: security, badge: "Security patch", badge_type: security }
   notes:
-    - { status: full,    label: "iOS 8–12",   text: "Full support — five major versions. The A8 and 1 GB RAM kept it current far longer than the 5G." }
-    - { status: full,    label: "iOS 10.3",   text: "The 6G was the oldest device Apple supported on iOS 10.3 — a 64-bit-only release." }
-    - { status: final,   label: "iOS 12.5.8", text: "Final update — a certificate keep-alive patch, January 2026. Over a decade after launch." }
-    - { status: dropped, label: "iOS 13",     text: "Excluded — required hardware the 6G lacked. The A10-based 7th gen carried the line forward." }
+    - { status: full,     label: "iOS 8–12",   text: "Full support — five major versions. The A8 and 1 GB RAM kept it current far longer than the 5G." }
+    - { status: full,     label: "iOS 10.3",   text: "The 6G was the oldest device Apple supported on iOS 10.3 — a 64-bit-only release." }
+    - { status: dropped,  label: "iOS 13",     text: "Excluded — required hardware the 6G lacked. The A10-based 7th gen carried the line forward." }
+    - { status: security, label: "iOS 12.5.8", text: "Post-EOL security patch — a certificate keep-alive update, January 2026. Over a decade after launch." }
 spec:
   heading: "The complete sheet."
   device: "iPod touch (6th generation) · A1574"

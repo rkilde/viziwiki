@@ -14,12 +14,12 @@ os:
     - { ver: "4.1",   date: "Sep 2010", type: full, badge: "Launch", badge_type: ship }
     - { ver: "5.0",   date: "Oct 2011", type: full }
     - { ver: "6.0",   date: "Sep 2012", type: partial }
-    - { ver: "6.1.6", date: "Feb 2014", type: partial, badge: "Final", badge_type: final }
-    - { ver: "7.0",   date: "Sep 2013", type: dropped, badge: "Dropped", badge_type: dropped }
+    - { ver: "7.0",   date: "Sep 2013", type: dropped,  badge: "Dropped", badge_type: dropped }
+    - { ver: "6.1.6", date: "Feb 2014", type: security, badge: "Security patch", badge_type: security }
   notes:
-    - { status: partial, label: "iOS 6.0",   text: "Partial iOS 6 support — Maps, Passbook, Siri dictation (not full assistant). Last major version." }
-    - { status: final,   label: "iOS 6.1.6", text: "goto fail SSL patch, Feb 21 2014. Final Apple software delivery to this hardware." }
-    - { status: dropped, label: "iOS 7",     text: "Excluded — 256 MB RAM vs required 512 MB. iPhone 4 with same A4 SoC received iOS 7." }
+    - { status: partial,  label: "iOS 6.0",   text: "Partial iOS 6 support — Maps, Passbook, Siri dictation (not full assistant). Last major version." }
+    - { status: dropped,  label: "iOS 7",     text: "Excluded — 256 MB RAM vs required 512 MB. iPhone 4 with same A4 SoC received iOS 7." }
+    - { status: security, label: "iOS 6.1.6", text: "Post-EOL security patch — the goto fail SSL fix, Feb 21 2014. Final Apple software delivery to this hardware." }
 spec:
   heading: "The complete sheet."
   device: "iPod touch (4th generation) · A1367"
