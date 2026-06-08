@@ -201,49 +201,6 @@ function renderBudget(){
     +'</div>';
 }
 
-// ── renderOS ──────────────────────────────────────────────────────────
-function renderOS(){
-  var os = PAGE_DATA.os;
-  var el = document.getElementById('os-content');
-  if(!el) return;
-  var lanesHtml = os.lanes.map(function(l){
-    var badgeHtml = l.badge ? '<span class="lane-badge '+l.badgeType+'">'+l.badge+'</span>' : '';
-    return '<div class="lane-seg '+l.type+'" style="'+l.style+'">'
-      + badgeHtml
-      +'<div class="lane-ver fr">'+l.ver+'</div>'
-      +'<div class="lane-date jb">'+l.date+'</div>'
-      +'</div>';
-  }).join('');
-  var notesHtml = os.notes.map(function(n){
-    return '<div class="lane-note">'
-      +'<span class="lane-note-dot" style="background:'+n.color+'"></span>'
-      +'<span><strong>'+n.label+'</strong> &mdash; '+n.text+'</span>'
-      +'</div>';
-  }).join('');
-  el.innerHTML =
-    '<div class="wiki-section-inner">'
-    +'<div class="wiki-section-eyebrow">'
-    +'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>'
-    +'Operating system support'
-    +'</div>'
-    +'<h2 class="wiki-section-title" style="margin-bottom:24px;">'+os.heading+'</h2>'
-    +'<div class="os-prose">'+paraList(os.paragraphs)+'</div>'
-    +'<div class="lane-wrap">'
-    +'<div class="lane-head">'
-    +'<div class="lane-title fr">'+os.title+'</div>'
-    +'<div class="lane-range jb">'+os.range+'</div>'
-    +'</div>'
-    +'<div class="lane-scroll"><div class="lane">'+lanesHtml+'</div></div>'
-    +'<div class="lane-notes">'+notesHtml+'</div>'
-    +'<div class="lane-legend">'
-    +'<div class="lane-leg"><div class="lane-leg-sw" style="background:#d1fae5;border:1px solid #a7f3d0;"></div>Full support</div>'
-    +'<div class="lane-leg"><div class="lane-leg-sw" style="background:#fef3c7;border:1px solid #fde68a;"></div>Partial</div>'
-    +'<div class="lane-leg"><div class="lane-leg-sw" style="background:#f4f4f6;border:1px dashed rgba(0,0,0,.15);"></div>Not supported</div>'
-    +'</div>'
-    +'</div>'
-    +'</div>';
-}
-
 // ── renderControversies ───────────────────────────────────────────────
 function renderControversies(){
   var co = PAGE_DATA.controversies;
@@ -272,38 +229,6 @@ function renderControversies(){
   if(rail) addDragScroll(rail);
 }
 
-// ── renderSpecs ───────────────────────────────────────────────────────
-function renderSpecs(){
-  var sp = PAGE_DATA;
-  var el = document.getElementById('specs-content');
-  if(!el) return;
-
-  var eyebrowIcon = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>';
-
-  el.innerHTML =
-    '<div class="wiki-section-inner">'
-    +'<div class="spec-eyebrow jb">'+eyebrowIcon+'Technical specifications</div>'
-    +'<div class="spec-title fr">'+sp.specHeading+'</div>'
-    +'<div class="spec-sub jb">'+sp.specSub+'</div>'
-    +'<div class="spec-grid">'
-    + sp.specs.map(function(card, ci){
-        var rowsHtml = card.rows.map(function(r){
-          return '<div class="spec-row">'
-            +'<dt class="spec-k">'+r[0]+'</dt>'
-            +'<dd class="spec-v">'+r[1]+'</dd>'
-            +'</div>';
-        }).join('');
-        return '<div class="spec-card">'
-          +'<div class="spec-card-head">'
-          +(card.icon||'')
-          +'<span>'+card.title+'</span>'
-          +'</div>'
-          +'<dl class="spec-list">'+rowsHtml+'</dl>'
-          +'</div>';
-      }).join('')
-    +'</div>'
-    +'</div>';
-}
 
 
 // ── renderWIKI_TOC ────────────────────────────────────────────────────
@@ -325,7 +250,5 @@ function initPage(){
   if(PAGE_DATA.design) renderProseRail('design-content', PAGE_DATA.design,
     '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>',
     'Industrial design');
-  renderOS();
   if(PAGE_DATA.controversies) renderControversies();
-  renderSpecs();
 }

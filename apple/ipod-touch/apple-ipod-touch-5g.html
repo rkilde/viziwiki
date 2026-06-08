@@ -3,6 +3,99 @@ permalink: /apple-ipod-touch-5g.html
 layout: class-ipod-touch
 title: "iPod touch (5th generation)"
 body_class: wiki-page wiki-apple
+os:
+  heading: "Three full versions. One partial. Then the 32-bit cliff."
+  title: "Software lifecycle: iOS 6.0 through iOS 9.3.5"
+  paragraphs:
+    - "The 5th generation iPod touch launched with iOS 6 and received three full major versions — iOS 6, 7, and 8 — before hitting partial support in iOS 9. It was the first iPod touch to support Siri, Maps turn-by-turn navigation, and Panorama camera from day one. It received every major iOS feature through iOS 8 that its hardware could support: AirDrop, Touch ID activation (though it had no sensor, the framework was present), Continuity, and App Extensions."
+    - "iOS 9 (September 2015) was the first version where the 5G's support became meaningfully incomplete. The device ran iOS 9 but did not support the Transit feature in Maps — the real-time public transport navigation that required server-side infrastructure Apple had not built out for all devices. All other iOS 9 features ran correctly."
+    - "The iOS 10 exclusion was categorical. iOS 10 (September 2016) dropped all 32-bit devices — the iPhone 4S, iPad 2, iPad mini (1st gen), and the iPod touch 5th gen among them. Apple's stated reason was 64-bit architecture requirements. The A5 was a 32-bit processor and could not run iOS 10's 64-bit-required kernel. iOS 9.3.5, released August 25, 2016, was the final update — a security patch for a critical kernel vulnerability, delivered to the device after it had already been excluded from iOS 10."
+  segments:
+    - { ver: "6.0",   date: "Oct 2012", type: full, badge: "Launch", badge_type: ship }
+    - { ver: "7.0",   date: "Sep 2013", type: full }
+    - { ver: "8.0",   date: "Sep 2014", type: full }
+    - { ver: "9.0",   date: "Sep 2015", type: partial }
+    - { ver: "9.3.5", date: "Aug 2016", type: partial, badge: "Final", badge_type: final }
+    - { ver: "10.0",  date: "Sep 2016", type: dropped, badge: "Dropped", badge_type: dropped }
+  notes:
+    - { status: full,    label: "iOS 6–8",   text: "Full support — Siri, Maps turn-by-turn, AirDrop, Continuity, App Extensions. All flagship features." }
+    - { status: partial, label: "iOS 9",     text: "Partial — all features except Transit in Maps. Device ran iOS 9 well; A5's 512 MB held up." }
+    - { status: final,   label: "iOS 9.3.5", text: "Final update — security patch for critical kernel vulnerability. Aug 25, 2016." }
+    - { status: dropped, label: "iOS 10",    text: "Excluded — 32-bit A5 dropped system-wide. iPhone 4S, iPad mini (1st gen) fell simultaneously." }
+spec:
+  heading: "The complete sheet."
+  device: "iPod touch (5th generation) · A1421 / A1509"
+  cards:
+    - title: "General Device Info"
+      icon: globe
+      rows:
+        - ["Model numbers", "A1421 (main) · A1509 (budget 16 GB)"]
+        - ["Codename", "iPod5,1 · N78AP (A1421) · N78aAP (A1509)"]
+        - ["Generation", "5th"]
+        - ["Announced", "September 12, 2012"]
+        - ["Released", "October 11, 2012"]
+        - ["Discontinued", "July 14, 2015"]
+    - title: "Processor & memory"
+      icon: cpu
+      rows:
+        - ["CPU", "Apple A5 · dual-core Cortex-A9"]
+        - ["Clock speed", "1 GHz"]
+        - ["RAM", "512 MB LPDDR2"]
+        - ["GPU", "PowerVR SGX543MP2 (dual-core)"]
+    - title: "Display"
+      icon: monitor
+      rows:
+        - ["Size", "4.0 inches"]
+        - ["Type", "IPS Retina LCD"]
+        - ["Resolution", "1136 × 640 px"]
+        - ["Density", "326 ppi"]
+        - ["Aspect ratio", "16:9 widescreen"]
+        - ["Coating", "Oleophobic"]
+    - title: "Storage"
+      icon: hard-drive
+      rows:
+        - ["Tiers", "16 GB · 32 GB · 64 GB"]
+        - ["Type", "NAND flash"]
+        - ["Expandable", "No"]
+    - title: "Connectivity"
+      icon: radio
+      rows:
+        - ["Wi-Fi", "802.11 a/b/g/n · 2.4 & 5 GHz"]
+        - ["Bluetooth", "4.0"]
+        - ["Connector", "Lightning"]
+        - ["Audio", "3.5 mm headphone jack"]
+    - title: "Camera & sensors"
+      icon: camera
+      rows:
+        - ["Rear camera", "5 MP · f/2.4 · LED flash · 1080p @ 30fps"]
+        - ["Panorama", "Yes"]
+        - ["Front camera", "1.2 MP FaceTime HD · 720p"]
+        - ["Gyroscope", "3-axis"]
+        - ["Accelerometer", "3-axis"]
+        - ["Microphone", "Built-in"]
+    - title: "Physical"
+      icon: smartphone
+      rows:
+        - ["Height", "123.4 mm"]
+        - ["Width", "58.6 mm"]
+        - ["Depth", "6.1 mm"]
+        - ["Weight", "88 g (3.1 oz)"]
+        - ["Rear casing", "Anodised aluminium"]
+        - ["Colors", "Slate · Silver · Pink · Yellow · Blue · PRODUCT(RED)"]
+    - title: "Power"
+      icon: zap
+      rows:
+        - ["Battery", "Built-in Li-ion"]
+        - ["Audio", "Up to 40 hours"]
+        - ["Video", "Up to 8 hours"]
+        - ["Charging", "Lightning"]
+    - title: "Software"
+      icon: layers
+      rows:
+        - ["Shipped with", "iOS 6.0"]
+        - ["Final version", "iOS 9.3.5"]
+        - ["Major versions", "iOS 6 · 7 · 8 (full) · iOS 9 (partial)"]
+        - ["Excluded from", "iOS 10 — 32-bit A5 dropped"]
 delta:
   heading: "What changed.<br>4th &#8594; 5th generation."
   intro: "The fourth generation doubled down on cameras and display quality. The fifth generation doubled everything else — processor cores, RAM, camera resolution, Wi-Fi bands, Bluetooth version, and colour options — while simultaneously moving to a new taller screen format and a new connector. It was the largest generational leap in the iPod touch's history."
@@ -11,107 +104,90 @@ delta:
   current: { tag: "Current", name: "iPod touch (5th gen)", year: "October 2012" }
   hardware:
     - label: "Display size"
-      desc: "Screen diagonal"
       old: "3.5 inches · 3:2"
       new: "<strong>4.0 inches · 16:9</strong> — taller widescreen format"
       chip: feature
       chip_text: "4-inch"
     - label: "Resolution"
-      desc: "Pixel count"
       old: "960×640 · 326 ppi"
       new: "<strong>1136×640 · 326 ppi</strong> — same density, 18% more screen"
       chip: feature
       chip_text: "Taller"
     - label: "Processor"
-      desc: "CPU"
       old: "A4 · single-core 800 MHz"
       new: "<strong>A5 · dual-core 1 GHz</strong> — two cores, 25% faster per core"
       chip: better
       chip_text: "Dual-core"
     - label: "RAM"
-      desc: "System memory"
       old: "256 MB"
       new: "<strong>512 MB</strong> — doubled"
       chip: better
       chip_text: "2×"
     - label: "GPU"
-      desc: "Graphics chip"
       old: "PowerVR SGX535"
       new: "<strong>PowerVR SGX543MP2</strong> — 7× graphics performance"
       chip: better
       chip_text: "7×"
     - label: "Rear camera"
-      desc: "Still & video"
       old: "0.7 MP · 720p"
       new: "<strong>5 MP · f/2.4 · LED flash · 1080p</strong>"
       chip: better
       chip_text: "5 MP"
     - label: "Front camera"
-      desc: "FaceTime"
       old: "0.3 MP · 720p (no flash)"
       new: "<strong>1.2 MP FaceTime HD · 720p</strong>"
       chip: better
       chip_text: "1.2 MP"
     - label: "Wi-Fi"
-      desc: "Wireless standard"
       old: "802.11 b/g/n · 2.4 GHz only"
       new: "<strong>802.11 a/b/g/n · dual-band 2.4 &amp; 5 GHz</strong>"
       chip: better
       chip_text: "Dual-band"
-    - label: "Bluetooth"
-      desc: "Version"
+    - label: "Bluetooth version"
       old: "2.1 + EDR"
       new: "<strong>Bluetooth 4.0</strong>"
       chip: better
       chip_text: "4.0"
     - label: "Connector"
-      desc: "Dock port"
       old: "30-pin dock connector"
       new: "<strong>Lightning</strong> — reversible, first iPod touch"
       chip: changed
       chip_text: "Lightning"
     - label: "Siri"
-      desc: "Voice assistant"
       old: "Not available."
       new: "<strong>Siri</strong> — first iPod touch with full voice assistant"
       no_old: true
       chip: better
       chip_text: "New"
     - label: "Colors"
-      desc: "Available finishes"
       old: "Black · White"
       new: "<strong>Slate · Silver · Pink · Yellow · Blue · PRODUCT(RED)</strong>"
       chip: changed
       chip_text: "6 colors"
-    - label: "Loop"
-      desc: "Wrist attachment"
+    - label: "Wrist loop"
       old: "Not available."
       new: "<strong>iPod touch Loop</strong> — pop-out button on rear"
       no_old: true
       chip: better
       chip_text: "New"
     - label: "Thickness"
-      desc: "Device depth"
       old: "7.2 mm"
       new: "<strong>6.1 mm</strong> — 15% thinner"
       chip: better
       chip_text: "-15%"
   software:
     - label: "Launch OS"
-      desc: "Ships out of box"
       old: "iOS 4.1"
       new: "<strong>iOS 6.0</strong> — includes Siri, Maps, Passbook"
       chip: better
       chip_text: "iOS 6"
-    - label: "Turn-by-turn"
-      desc: "Maps navigation"
+    - label: "Turn-by-turn navigation"
       old: "Not supported on 4G."
       new: "<strong>Turn-by-turn navigation</strong> — full Maps support"
       no_old: true
       chip: better
       chip_text: "New"
     - label: "Maximum OS"
-      desc: "Final version"
       old: "iOS 6.1.6 (partial)"
       new: "<strong>iOS 9.3.5</strong> — three additional major versions"
       chip: better
@@ -400,34 +476,6 @@ var PAGE_DATA = {
     ],
   },
 
-  os: {
-    heading: "Three full versions. One partial. Then the 32-bit cliff.",
-    title:   "Software lifecycle: iOS 6.0 through iOS 9.3.5",
-    range:   "Oct 2012 &rarr; Aug 2016 &middot; ~46 months &middot; Full iOS 6, 7, 8 &middot; Partial iOS 9",
-    paragraphs: [
-      "The 5th generation iPod touch launched with iOS 6 and received three full major versions — iOS 6, 7, and 8 — before hitting partial support in iOS 9. It was the first iPod touch to support Siri, Maps turn-by-turn navigation, and Panorama camera from day one. It received every major iOS feature through iOS 8 that its hardware could support: AirDrop, Touch ID activation (though it had no sensor, the framework was present), Continuity, and App Extensions.",
-      "iOS 9 (September 2015) was the first version where the 5G\'s support became meaningfully incomplete. The device ran iOS 9 but did not support the Transit feature in Maps — the real-time public transport navigation that required server-side infrastructure Apple had not built out for all devices. All other iOS 9 features ran correctly.",
-      "The iOS 10 exclusion was categorical. iOS 10 (September 2016) dropped all 32-bit devices — the iPhone 4S, iPad 2, iPad mini (1st gen), and the iPod touch 5th gen among them. Apple\'s stated reason was 64-bit architecture requirements. The A5 was a 32-bit processor and could not run iOS 10\'s 64-bit-required kernel. iOS 9.3.5, released August 25, 2016, was the final update — a security patch for a critical kernel vulnerability, delivered to the device after it had already been excluded from iOS 10."
-    ],
-    lanes: [
-      {type:"full",    ver:"6.0",   date:"Oct 2012", badgeType:"ship",  badge:"Launch", style:"flex:40;"},
-      {type:"full",    ver:"6.1",   date:"Jan 2013", badgeType:"",      badge:"",       style:"flex:60;"},
-      {type:"full",    ver:"7.0",   date:"Sep 2013", badgeType:"",      badge:"",       style:"flex:40;"},
-      {type:"full",    ver:"7.1",   date:"Mar 2014", badgeType:"",      badge:"",       style:"flex:80;"},
-      {type:"full",    ver:"8.0",   date:"Sep 2014", badgeType:"",      badge:"",       style:"flex:40;"},
-      {type:"full",    ver:"8.4",   date:"Jun 2015", badgeType:"",      badge:"",       style:"flex:80;"},
-      {type:"partial", ver:"9.0",   date:"Sep 2015", badgeType:"",      badge:"",       style:"flex:40;"},
-      {type:"partial", ver:"9.3.5", date:"Aug 2016", badgeType:"final", badge:"Final",  style:"flex:80;"},
-      {type:"dropped", ver:"10.0",  date:"Sep 2016", badgeType:"",      badge:"Dropped",style:"opacity:.45;flex:20;min-width:52px;"},
-    ],
-    notes: [
-      {label:"iOS 6–8",   text:"Full support — Siri, Maps turn-by-turn, AirDrop, Continuity, App Extensions. All flagship features.", color:"#6ee7b7"},
-      {label:"iOS 9",     text:"Partial — all features except Transit in Maps. Device ran iOS 9 well; A5\'s 512 MB held up.",           color:"#fde68a"},
-      {label:"iOS 9.3.5", text:"Final update — security patch for critical kernel vulnerability. Aug 25, 2016.",                        color:"#fbbf24"},
-      {label:"iOS 10",    text:"Excluded — 32-bit A5 dropped system-wide. iPhone 4S, iPad mini (1st gen) fell simultaneously.",         color:"rgba(0,0,0,.12)"},
-    ],
-  },
-
   controversies: {
     heading: "Three things Apple got wrong.",
     items: [
@@ -452,80 +500,6 @@ var PAGE_DATA = {
     ],
   },
 
-  specHeading: "The complete sheet.",
-  specSub:     "iPod touch (5th generation) · A1421 / A1509 · iPod5,1",
-  specs: [
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>',
-     title:"Identity", rows:[
-      ["Model numbers", "A1421 (main) · A1509 (budget 16 GB)"],
-      ["Codename",      "iPod5,1 · N78AP (A1421) · N78aAP (A1509)"],
-      ["Generation",    "5th"],
-      ["Announced",     "September 12, 2012"],
-      ["Released",      "October 11, 2012"],
-      ["Discontinued",  "July 14, 2015"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/></svg>',
-     title:"Processor & memory", rows:[
-      ["CPU",           "Apple A5 · dual-core Cortex-A9"],
-      ["Clock speed",   "1 GHz"],
-      ["RAM",           "512 MB LPDDR2"],
-      ["GPU",           "PowerVR SGX543MP2 (dual-core)"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>',
-     title:"Display", rows:[
-      ["Size",          "4.0 inches"],
-      ["Type",          "IPS Retina LCD"],
-      ["Resolution",    "1136 × 640 px"],
-      ["Density",       "326 ppi"],
-      ["Aspect ratio",  "16:9 widescreen"],
-      ["Coating",       "Oleophobic"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" x2="2" y1="12" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>',
-     title:"Storage", rows:[
-      ["Tiers",         "16 GB · 32 GB · 64 GB"],
-      ["Type",          "NAND flash"],
-      ["Expandable",    "No"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><circle cx="12" cy="12" r="2"/></svg>',
-     title:"Connectivity", rows:[
-      ["Wi-Fi",         "802.11 a/b/g/n · 2.4 & 5 GHz"],
-      ["Bluetooth",     "4.0"],
-      ["Connector",     "Lightning"],
-      ["Audio",         "3.5 mm headphone jack"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>',
-     title:"Camera & sensors", rows:[
-      ["Rear camera",   "5 MP · f/2.4 · LED flash · 1080p @ 30fps"],
-      ["Panorama",      "Yes"],
-      ["Front camera",  "1.2 MP FaceTime HD · 720p"],
-      ["Gyroscope",     "3-axis"],
-      ["Accelerometer", "3-axis"],
-      ["Microphone",    "Built-in"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>',
-     title:"Physical", rows:[
-      ["Height",        "123.4 mm"],
-      ["Width",         "58.6 mm"],
-      ["Depth",         "6.1 mm"],
-      ["Weight",        "88 g (3.1 oz)"],
-      ["Rear casing",   "Anodised aluminium"],
-      ["Colors",        "Slate · Silver · Pink · Yellow · Blue · PRODUCT(RED)"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>',
-     title:"Power", rows:[
-      ["Battery",       "Built-in Li-ion"],
-      ["Audio",         "Up to 40 hours"],
-      ["Video",         "Up to 8 hours"],
-      ["Charging",      "Lightning"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>',
-     title:"Software", rows:[
-      ["Shipped with",  "iOS 6.0"],
-      ["Final version", "iOS 9.3.5"],
-      ["Major versions","iOS 6 · 7 · 8 (full) · iOS 9 (partial)"],
-      ["Excluded from", "iOS 10 — 32-bit A5 dropped"],
-    ]},
-  ],
 
 };
 

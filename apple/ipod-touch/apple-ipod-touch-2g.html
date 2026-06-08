@@ -3,6 +3,97 @@ permalink: /apple-ipod-touch-2g.html
 layout: class-ipod-touch
 title: "iPod touch (2nd generation)"
 body_class: wiki-page wiki-apple
+os:
+  heading: "Three major versions. Two eras.<br>One hardware ceiling."
+  title: "Software lifecycle: iPhone OS 2.1.1 through iOS 4.2.1"
+  paragraphs:
+    - "The iPod touch 2nd generation shipped with <strong>iPhone OS 2.1.1</strong> in September 2008 and received its final update, <strong>iOS 4.2.1</strong>, in November 2010 — a support window of just over two years across ten distinct OS versions."
+    - "When <strong>iOS 4.0</strong> arrived in June 2010, it was the first major upgrade delivered free to iPod touch users. But the 2G received the new interface without three of iOS 4’s headline features: <strong>multitasking, custom home screen wallpapers, and Bluetooth keyboard support</strong>. The hardware’s memory and processor architecture simply could not sustain them."
+    - "When iOS 4.3 shipped in March 2011, the iPod touch 2nd generation was absent from the compatibility list entirely — not partially supported, simply gone. The App Store ecosystem began to move away within months."
+  segments:
+    - { ver: "2.1.1", date: "Sep 2008", type: full,    badge: "Launch",  badge_type: ship }
+    - { ver: "3.0",   date: "Jun 2009", type: full,    badge: "$9.95",   badge_type: paid }
+    - { ver: "4.0",   date: "Jun 2010", type: partial, badge: "Limited", badge_type: limited }
+    - { ver: "4.2.1", date: "Nov 2010", type: partial, badge: "Final",   badge_type: final }
+    - { ver: "4.3",   date: "Mar 2011", type: dropped, badge: "Dropped", badge_type: dropped }
+  notes:
+    - { status: final,   label: "OS 3.0",   text: "$9.95 paid upgrade for iPod touch users. Unlocked a dormant Bluetooth chip present since launch." }
+    - { status: limited, label: "iOS 4.0+",  text: "No multitasking, no wallpapers, no Bluetooth keyboard. 128 MB RAM ceiling." }
+    - { status: final,   label: "iOS 4.2.1", text: "Final update — a maintenance release, November 2010. The last build the 2nd generation ever ran." }
+    - { status: dropped, label: "iOS 4.3",   text: "Device omitted from compatibility list. All future support ended." }
+spec:
+  heading: "The complete sheet."
+  device: "iPod touch (2nd generation) · A1288"
+  cards:
+    - title: "General Device Info"
+      icon: globe
+      rows:
+        - ["Model number", "A1288"]
+        - ["Codename", "iPod2,1"]
+        - ["Generation", "2nd"]
+        - ["Released", "September 9, 2008"]
+    - title: "Processor & memory"
+      icon: cpu
+      rows:
+        - ["CPU", "Samsung S5L8720 · ARM11"]
+        - ["Clock speed", "533 MHz"]
+        - ["RAM", "128 MB DRAM"]
+        - ["GPU", "PowerVR MBX Lite"]
+        - ["Architecture", "ARMv6 (32-bit)"]
+    - title: "Display"
+      icon: monitor
+      rows:
+        - ["Size", "3.5 inches"]
+        - ["Type", "TFT LCD, backlit"]
+        - ["Resolution", "480 × 320 px"]
+        - ["Density", "163 ppi"]
+        - ["Input", "Capacitive multi-touch"]
+    - title: "Storage & capacity"
+      icon: hard-drive
+      rows:
+        - ["Launch tiers", "8 / 16 / 32 GB"]
+        - ["Revised model", "8 GB (MC086LL/A)"]
+        - ["Type", "NAND flash"]
+        - ["Expandable", "No"]
+    - title: "Connectivity"
+      icon: radio
+      rows:
+        - ["Wi-Fi", "802.11 b/g"]
+        - ["Bluetooth", "2.1 + EDR (unlocked iOS 3.0)"]
+        - ["Cellular", "None"]
+        - ["GPS", "None"]
+        - ["Port", "30-pin dock connector"]
+        - ["Audio jack", "3.5 mm (flush)"]
+    - title: "Audio & sensors"
+      icon: music
+      rows:
+        - ["Speaker", "Built-in mono"]
+        - ["Accelerometer", "Yes (3-axis)"]
+        - ["Nike+", "Built-in wireless"]
+        - ["Formats", "AAC, MP3, ALAC, AIFF, WAV"]
+    - title: "Physical"
+      icon: smartphone
+      rows:
+        - ["Height", "110.0 mm"]
+        - ["Width", "61.8 mm"]
+        - ["Depth", "8.5 mm"]
+        - ["Weight", "115 g"]
+        - ["Casing", "Polished stainless steel"]
+        - ["Front bezel", "Black"]
+    - title: "Power"
+      icon: zap
+      rows:
+        - ["Battery", "Built-in Li-ion rechargeable"]
+        - ["Audio playback", "Up to 36 hours"]
+        - ["Video playback", "Up to 6 hours"]
+        - ["Charging", "USB / dock connector"]
+    - title: "Software"
+      icon: layers
+      rows:
+        - ["Shipped with", "iPhone OS 2.1.1"]
+        - ["Final version", "iOS 4.2.1"]
+        - ["Major versions", "2.x · 3.x · 4.x"]
+        - ["Support window", "Sep 2008 – Nov 2010"]
 delta:
   heading: "What changed.<br>1st &#8594; 2nd generation."
   intro: "The iPod touch 2nd generation was not a reinvention of the first — it was a completion of it. Every significant gap in the original was addressed: the missing speaker, the missing volume buttons, the recessed headphone jack, the external Nike+ receiver, the flat back that didn’t sit well in the hand. On the software side, the 2G shipped into a live App Store with 60 million downloads already recorded, with access included free on day one — no paid upgrade required."
@@ -11,90 +102,76 @@ delta:
   current: { tag: "Current", name: "iPod touch (2nd gen)", year: "September 2008" }
   hardware:
     - label: "Back design"
-      desc: "Material & form factor"
       old: "Flat polished aluminum, uniform thickness throughout"
       new: "<strong>Curved polished stainless steel</strong>, tapered toward edges — same profile as iPhone 3G"
       chip: changed
       chip_text: "Redesigned"
     - label: "Speaker"
-      desc: "Audio output"
       old: "Not present. Headphones required for all audio."
       new: "<strong>Built-in mono speaker</strong> — grille at top rear of device"
       no_old: true
       chip: better
       chip_text: "New"
     - label: "Volume buttons"
-      desc: "Physical controls"
       old: "Not present. Volume controlled via on-screen slider only."
       new: "<strong>Physical volume up/down</strong> on left edge"
       no_old: true
       chip: better
       chip_text: "New"
     - label: "Headphone jack"
-      desc: "3.5 mm port depth"
       old: "Recessed — standard plugs didn’t fit. Required a flush adapter accessory."
       new: "<strong>Flush with casing</strong> — any standard 3.5 mm plug fits directly"
       chip: better
       chip_text: "Flush"
     - label: "Nike+ wireless"
-      desc: "Fitness sensor link"
       old: "Supported via external dock connector receiver sold separately"
       new: "<strong>Built-in wireless module</strong> — no adapter or accessory required"
       chip: feature
       chip_text: "Native"
     - label: "Processor"
-      desc: "CPU clock speed"
       old: "Samsung ARM11 · 400 MHz"
       new: "Samsung ARM11 · <strong>533 MHz</strong> — 33% faster"
       chip: better
       chip_text: "+33%"
     - label: "Bluetooth chip"
-      desc: "Hardware presence"
       old: "No Bluetooth hardware present at all"
       new: "<strong>Samsung/Broadcom chip present</strong> — dormant at launch, unlocked via iPhone OS 3.0 in June 2009"
       no_old: true
       chip: better
       chip_text: "New"
     - label: "Weight"
-      desc: "Without accessories"
       old: "120 g (4.23 oz)"
       new: "<strong>115 g</strong> (4.05 oz) — 5 g lighter"
       chip: better
       chip_text: "−5 g"
   software:
     - label: "Launch OS"
-      desc: "Ships out of box with"
       old: "iPhone OS 1.1 — no App Store, no third-party apps"
       new: "<strong>iPhone OS 2.1.1</strong> — App Store included, third-party apps from day one"
       chip: better
       chip_text: "Newer"
     - label: "App Store access"
-      desc: "At time of purchase"
       old: "Not available at launch. Required a $9.95 paid upgrade when App Store launched July 2008."
       new: "<strong>Included free from day one</strong> — no paid upgrade required"
       chip: better
       chip_text: "Free"
     - label: "Third-party apps"
-      desc: "Developer ecosystem"
       old: "None at launch. Web apps only. Paid update added access eight months in."
       new: "<strong>Available at launch</strong> — 500+ apps on day one, 60M+ downloads already recorded by launch date"
       chip: better
       chip_text: "Day one"
     - label: "Maximum OS"
-      desc: "Final supported version"
       old: "iPhone OS 3.1.3 — dropped before iOS 4"
       new: "<strong>iOS 4.2.1</strong> — one full major version further, support until November 2010"
       chip: better
       chip_text: "Further"
     - label: "Bluetooth"
-      desc: "Wireless connectivity"
       old: "Never available — no hardware present"
       new: "Chip present at launch. <strong>Unlocked via iPhone OS 3.0</strong> (June 2009) — peer-to-peer gaming, Bluetooth accessories"
       no_old: true
       chip: better
       chip_text: "New"
     - label: "Nike+ integration"
-      desc: "Fitness tracking"
       old: "Supported via accessory. Required dock connector receiver; no native wireless support."
       new: "<strong>Native wireless support</strong> — no receiver needed, works out of box with Nike+ sensor shoes"
       chip: feature
@@ -423,37 +500,6 @@ var PAGE_DATA = {
     ],
   },
 
-  // ── OS support lifecycle ───────────────────────────────────────
-  os: {
-    heading: "Nine versions. Two eras.<br>One hardware ceiling.",
-    title:   "Software lifecycle: iPhone OS 2.1.1 through iOS 4.2.1",
-    range:   "Sep 2008 &rarr; Mar 2011 &middot; 908 days &middot; 10 versions",
-    paragraphs: [
-      "The iPod touch 2nd generation shipped with <strong>iPhone OS 2.1.1</strong> in September 2008 and received its final update, <strong>iOS 4.2.1</strong>, in November 2010 — a support window of just over two years across ten distinct OS versions.",
-      "When <strong>iOS 4.0</strong> arrived in June 2010, it was the first major upgrade delivered free to iPod touch users. But the 2G received the new interface without three of iOS 4’s headline features: <strong>multitasking, custom home screen wallpapers, and Bluetooth keyboard support</strong>. The hardware’s memory and processor architecture simply could not sustain them.",
-      "When iOS 4.3 shipped in March 2011, the iPod touch 2nd generation was absent from the compatibility list entirely — not partially supported, simply gone. The App Store ecosystem began to move away within months.",
-    ],
-    // type: full · partial · dropped  |  badgeType: ship · paid · limited · final
-    lanes: [
-      {type:"full", ver:"2.1.1", date:"Sep 2008", badgeType:"ship", badge:"Launch", style:"flex:70;"},
-      {type:"full", ver:"2.2", date:"Nov 2008", badgeType:"", badge:"", style:"flex:67;"},
-      {type:"full", ver:"2.2.1", date:"Jan 2009", badgeType:"", badge:"", style:"flex:141;"},
-      {type:"full", ver:"3.0", date:"Jun 2009", badgeType:"paid", badge:"$9.95", style:"flex:84;"},
-      {type:"full", ver:"3.1", date:"Sep 2009", badgeType:"", badge:"", style:"flex:29;min-width:52px;"},
-      {type:"full", ver:"3.1.2", date:"Oct 2009", badgeType:"", badge:"", style:"flex:117;"},
-      {type:"full", ver:"3.1.3", date:"Feb 2010", badgeType:"", badge:"", style:"flex:139;"},
-      {type:"partial", ver:"4.0", date:"Jun 2010", badgeType:"limited", badge:"Limited", style:"flex:79;"},
-      {type:"partial", ver:"4.1", date:"Sep 2010", badgeType:"", badge:"", style:"flex:75;"},
-      {type:"partial", ver:"4.2.1", date:"Nov 2010", badgeType:"final", badge:"Final", style:"flex:107;"},
-      {type:"dropped", ver:"4.3", date:"Mar 2011", badgeType:"none", badge:"Dropped", style:"opacity:.45;flex:20;min-width:52px;"},
-    ],
-    notes: [
-      {label:"OS 3.0", text:"$9.95 paid upgrade for iPod touch users. Unlocked a dormant Bluetooth chip present since launch.", color:"#fbbf24"},
-      {label:"iOS 4.0+", text:"No multitasking, no wallpapers, no Bluetooth keyboard. 128 MB RAM ceiling.", color:"#f59e0b"},
-      {label:"iOS 4.3", text:"Device omitted from compatibility list. All future support ended.", color:"rgba(0,0,0,.12)"},
-    ],
-  },
-
   // ── Controversies ──────────────────────────────────────────────
   controversies: {
     heading: "Known issues and<br>public disputes.",
@@ -471,70 +517,6 @@ var PAGE_DATA = {
   },
 
   // ── Technical specifications ───────────────────────────────────
-  specHeading: "The complete sheet.",
-  specSub:     "iPod touch (2nd generation) · A1288 · iPod2,1",
-  specs: [
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>',title:"Identity", rows:[
-      ["Model number", "A1288"],
-      ["Codename", "iPod2,1"],
-      ["Generation", "2nd"],
-      ["Released", "September 9, 2008"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"/><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/><path d="M12 2v2"/><path d="M12 22v-2"/><path d="m17 20.66-1-1.73"/><path d="M11 10.27 7 3.34"/><path d="m20.66 17-1.73-1"/><path d="m3.34 7 1.73 1"/><path d="M14 12h8"/><path d="M2 12h2"/><path d="m20.66 7-1.73 1"/><path d="m3.34 17 1.73-1"/><path d="m17 3.34-1 1.73"/><path d="m11 13.73-4 6.93"/></svg>',title:"Processor & memory", rows:[
-      ["CPU", "Samsung S5L8720 · ARM11"],
-      ["Clock speed", "533 MHz"],
-      ["RAM", "128 MB DRAM"],
-      ["GPU", "PowerVR MBX Lite"],
-      ["Architecture", "ARMv6 (32-bit)"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>',title:"Display", rows:[
-      ["Size", "3.5 inches"],
-      ["Type", "TFT LCD, backlit"],
-      ["Resolution", "480 × 320 px"],
-      ["Density", "163 ppi"],
-      ["Input", "Capacitive multi-touch"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" x2="2" y1="12" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" x2="6.01" y1="16" y2="16"/><line x1="10" x2="10.01" y1="16" y2="16"/></svg>',title:"Storage & capacity", rows:[
-      ["Launch tiers", "8 / 16 / 32 GB"],
-      ["Revised model", "8 GB (MC086LL/A)"],
-      ["Type", "NAND flash"],
-      ["Expandable", "No"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/></svg>',title:"Connectivity", rows:[
-      ["Wi-Fi", "802.11 b/g"],
-      ["Bluetooth", "2.1 + EDR (unlocked iOS 3.0)"],
-      ["Cellular", "None"],
-      ["GPS", "None"],
-      ["Port", "30-pin dock connector"],
-      ["Audio jack", "3.5 mm (flush)"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',title:"Audio & sensors", rows:[
-      ["Speaker", "Built-in mono"],
-      ["Accelerometer", "Yes (3-axis)"],
-      ["Nike+", "Built-in wireless"],
-      ["Formats", "AAC, MP3, ALAC, AIFF, WAV"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>',title:"Physical", rows:[
-      ["Height", "110.0 mm"],
-      ["Width", "61.8 mm"],
-      ["Depth", "8.5 mm"],
-      ["Weight", "115 g"],
-      ["Casing", "Polished stainless steel"],
-      ["Front bezel", "Black"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>',title:"Power", rows:[
-      ["Battery", "Built-in Li-ion rechargeable"],
-      ["Audio playback", "Up to 36 hours"],
-      ["Video playback", "Up to 6 hours"],
-      ["Charging", "USB / dock connector"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>',title:"Software", rows:[
-      ["Shipped with", "iPhone OS 2.1.1"],
-      ["Final version", "iOS 4.2.1"],
-      ["Major versions", "2.x · 3.x · 4.x"],
-      ["Support window", "Sep 2008 – Nov 2010"],
-    ]},
-  ],
 
 }; // end PAGE_DATA
 

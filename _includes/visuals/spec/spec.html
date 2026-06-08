@@ -1,0 +1,15 @@
+{%- comment -%}
+  SPEC visual (Level B) — the grid of specification cards. Each card is an
+  icon + title + a list of key/value rows. The section frame (eyebrow / H2 /
+  device line) lives in _includes/sections/spec-section.html.
+  Data: cards[] — each: title, icon? (sprite name), rows[] of [key, value].
+{%- endcomment -%}
+{%- assign data = include.data -%}
+<div class="spec-grid">
+  {%- for card in data.cards -%}
+  <div class="spec-card">
+    <div class="spec-card-head">{% if card.icon %}{% include icon.html name=card.icon %}{% endif %}<span>{{ card.title }}</span></div>
+    <dl class="spec-list">{% for r in card.rows %}<div class="spec-row"><dt class="spec-k">{{ r[0] }}</dt><dd class="spec-v">{{ r[1] }}</dd></div>{% endfor %}</dl>
+  </div>
+  {%- endfor -%}
+</div>

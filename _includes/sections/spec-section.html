@@ -1,0 +1,21 @@
+{%- comment -%}
+  SPEC SECTION (a page-section type — the framing, not the grid).
+  The chrome a contributor gets on dropping a "Specifications Sheet section":
+    · locked eyebrow "Specifications Sheet" + the locked file-text icon
+    · a required H2 heading (contributor-named)
+    · a REQUIRED device line (name · model number)
+    · the card grid (the visual) in the slot
+  Contained, normal tone (light). Usage:
+    {% include sections/spec-section.html data=page.spec %}
+  Data: heading (req), device (req — "name · model"), tone?, visual?, cards[]
+{%- endcomment -%}
+{%- assign data = include.data -%}
+{%- assign visual = data.visual | default: 'spec' -%}
+<section class="wiki-section spec" data-tone="{{ data.tone | default: 'special' }}" id="spec-section">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">{% include icon.html name="file-text" %} Specifications Sheet</div>
+    <h2 class="wiki-section-title" style="margin-bottom:6px;">{{ data.heading }}</h2>
+    <div class="spec-sub jb">{{ data.device }}</div>
+    {% include visual.html type=visual data=data %}
+  </div>
+</section>

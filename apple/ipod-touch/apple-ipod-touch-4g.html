@@ -3,6 +3,100 @@ permalink: /apple-ipod-touch-4g.html
 layout: class-ipod-touch
 title: "iPod touch (4th generation)"
 body_class: wiki-page wiki-apple
+os:
+  heading: "Three major versions. One sharp cliff."
+  title: "Software lifecycle: iOS 4.1 through iOS 6.1.6"
+  paragraphs:
+    - "The 4th generation iPod touch launched on iOS 4.1 and received full support through iOS 5.1.1, and partial support in iOS 6 — three major iOS versions total, the longest software run of any iPod touch up to that point. It received every feature its hardware could support: iCloud, iMessage, Game Center, Siri (dictation only, not the full assistant), Maps, FaceTime improvements."
+    - "The iOS 7 exclusion was the defining controversy of the device's lifecycle. The 4G shared its Apple A4 processor architecture with the iPhone 4 — which received iOS 7. The difference was RAM: 256 MB on the iPod touch, 512 MB on the iPhone 4. Apple determined that iOS 7 was not viable on 256 MB, a judgment validated by independent testing showing the iPhone 4 itself ran iOS 7 poorly."
+    - "The timing was the problem. The 16 GB iPod touch 4th generation was sold as new hardware — at $199 — until May 29, 2013. Apple announced iOS 7 at WWDC on June 10, 2013: eleven days later. A customer who bought the device the day before discontinuation could not run the current iOS within two weeks of purchase. Apple offered no acknowledgment of the timing, no transition assistance, and no official comment."
+  segments:
+    - { ver: "4.1",   date: "Sep 2010", type: full, badge: "Launch", badge_type: ship }
+    - { ver: "5.0",   date: "Oct 2011", type: full }
+    - { ver: "6.0",   date: "Sep 2012", type: partial }
+    - { ver: "7.0",   date: "Sep 2013", type: dropped,  badge: "Dropped", badge_type: dropped }
+    - { ver: "6.1.6", date: "Feb 2014", type: security, badge: "Security", badge_type: security }
+  notes:
+    - { status: partial,  label: "iOS 6.0",   text: "Partial iOS 6 support — Maps, Passbook, Siri dictation (not full assistant). Last major version." }
+    - { status: dropped,  label: "iOS 7",     text: "Excluded — 256 MB RAM vs required 512 MB. iPhone 4 with same A4 SoC received iOS 7." }
+    - { status: security, label: "iOS 6.1.6", text: "Post-EOL security patch — the goto fail SSL fix, Feb 21 2014. Final Apple software delivery to this hardware." }
+spec:
+  heading: "The complete sheet."
+  device: "iPod touch (4th generation) · A1367"
+  cards:
+    - title: "General Device Info"
+      icon: globe
+      rows:
+        - ["Model number", "A1367"]
+        - ["Codename", "iPod4,1 / N81AP"]
+        - ["Generation", "4th"]
+        - ["Announced", "September 1, 2010"]
+        - ["Released", "September 12, 2010"]
+        - ["Discontinued", "May 30, 2013 (final SKUs)"]
+    - title: "Processor & memory"
+      icon: cpu
+      rows:
+        - ["CPU", "Apple A4 (Samsung-Intrinsity)"]
+        - ["Architecture", "ARM Cortex-A8 · 32-bit"]
+        - ["Clock speed", "800 MHz"]
+        - ["RAM", "256 MB DRAM"]
+        - ["GPU", "PowerVR SGX535"]
+    - title: "Display"
+      icon: monitor
+      rows:
+        - ["Size", "3.5 inches"]
+        - ["Type", "Retina IPS TFT LCD"]
+        - ["Resolution", "960 × 640 px"]
+        - ["Density", "326 ppi"]
+        - ["Coating", "Oleophobic fingerprint-resistant"]
+    - title: "Storage & capacity"
+      icon: hard-drive
+      rows:
+        - ["Launch tiers", "8 / 32 / 64 GB"]
+        - ["Added 2012", "16 GB"]
+        - ["Type", "NAND flash"]
+        - ["Expandable", "No"]
+    - title: "Connectivity"
+      icon: radio
+      rows:
+        - ["Wi-Fi", "802.11 b/g/n (2.4 GHz)"]
+        - ["Bluetooth", "2.1 + EDR"]
+        - ["Cellular", "None"]
+        - ["GPS", "None"]
+        - ["Port", "30-pin dock connector"]
+        - ["Audio jack", "3.5 mm (flush, bottom)"]
+    - title: "Camera & sensors"
+      icon: camera
+      rows:
+        - ["Rear camera", "0.7 MP · f/2.4 · 720p video @ 30fps"]
+        - ["Front camera", "0.3 MP · FaceTime"]
+        - ["Microphone", "Built-in"]
+        - ["Gyroscope", "3-axis"]
+        - ["Accelerometer", "3-axis"]
+        - ["Ambient light", "Yes"]
+    - title: "Physical"
+      icon: smartphone
+      rows:
+        - ["Height", "111.0 mm"]
+        - ["Width", "58.9 mm"]
+        - ["Depth", "7.2 mm"]
+        - ["Weight", "86.3 g"]
+        - ["Rear casing", "Polished aluminium"]
+        - ["Colors", "Black · White (Oct 2011+)"]
+    - title: "Power"
+      icon: zap
+      rows:
+        - ["Battery", "Built-in Li-ion · 930 mAh"]
+        - ["Audio", "Up to 40 hours"]
+        - ["Video", "Up to 7 hours"]
+        - ["Charging", "USB / 30-pin dock connector"]
+    - title: "Software"
+      icon: layers
+      rows:
+        - ["Shipped with", "iOS 4.1"]
+        - ["Final version", "iOS 6.1.6"]
+        - ["Major versions", "iOS 4 · 5 · 6"]
+        - ["Support window", "Sep 2010 – Feb 2014"]
 delta:
   heading: "What changed.<br>3rd &#8594; 4th generation."
   intro: "The third generation changed nothing on the outside. The fourth generation changed almost everything — the display, the cameras, the thickness, the weight. For the first time, the iPod touch looked and felt like a genuinely new product rather than an internal upgrade."
@@ -11,85 +105,72 @@ delta:
   current: { tag: "Current", name: "iPod touch (4th gen)", year: "September 2010" }
   hardware:
     - label: "Display"
-      desc: "Screen resolution & density"
       old: "480×320 · 163 ppi · TFT LCD"
       new: "<strong>960×640 · 326 ppi · Retina</strong> — 4× pixel count"
       chip: feature
       chip_text: "Retina"
     - label: "Processor"
-      desc: "CPU speed"
       old: "Cortex-A8 600 MHz"
       new: "Apple A4 <strong>Cortex-A8 800 MHz</strong> — 33% faster"
       chip: better
       chip_text: "+33%"
     - label: "RAM"
-      desc: "System memory"
       old: "256 MB DRAM"
       new: "<strong>256 MB DRAM</strong> — unchanged"
       chip: same
       chip_text: "Same"
     - label: "Rear camera"
-      desc: "Still & video"
       old: "No camera."
       new: "<strong>0.7 MP · 720p video</strong> — first in iPod touch line"
       no_old: true
       chip: better
       chip_text: "New"
     - label: "Front camera"
-      desc: "FaceTime / selfie"
       old: "No front camera."
       new: "<strong>0.3 MP FaceTime camera</strong> — first in iPod touch line"
       no_old: true
       chip: better
       chip_text: "New"
     - label: "Gyroscope"
-      desc: "Motion sensing"
       old: "Accelerometer only."
       new: "<strong>3-axis gyroscope</strong> + accelerometer"
       no_old: true
       chip: better
       chip_text: "New"
     - label: "Microphone"
-      desc: "Audio input"
       old: "Via earbuds remote only."
       new: "<strong>Built-in microphone</strong>"
       no_old: true
       chip: better
       chip_text: "New"
     - label: "Wi-Fi"
-      desc: "Wireless standard"
       old: "802.11 b/g"
       new: "<strong>802.11 b/g/n</strong> — 802.11n added"
       chip: better
       chip_text: "802.11n"
     - label: "Thickness"
-      desc: "Device depth"
       old: "8.5 mm"
       new: "<strong>7.2 mm</strong> — 15% thinner"
       chip: better
       chip_text: "-15%"
     - label: "Weight"
-      desc: "Without accessories"
       old: "115 g (4.05 oz)"
       new: "<strong>86.3 g</strong> (3.04 oz) — 25% lighter"
       chip: better
       chip_text: "-25%"
   software:
     - label: "Launch OS"
-      desc: "Ships out of box"
       old: "iPhone OS 3.1.1"
       new: "<strong>iOS 4.1</strong>"
       chip: better
       chip_text: "Newer"
     - label: "FaceTime"
-      desc: "Video calling"
       old: "Not supported."
       new: "<strong>FaceTime over Wi-Fi</strong> — first iPod touch"
       no_old: true
       chip: better
       chip_text: "New"
     - label: "Maximum OS"
-      desc: "Final OS version"
       old: "iOS 5.1.1"
       new: "<strong>iOS 6.1.6</strong> — one major generation further"
       chip: better
@@ -368,36 +449,6 @@ var PAGE_DATA = {
     ],
   },
 
-  // ── OS support ───────────────────────────────────────────────────
-  os: {
-    heading: "Three major versions. One sharp cliff.",
-    title:   "Software lifecycle: iOS 4.1 through iOS 6.1.6",
-    range:   "Sep 2010 &rarr; Feb 2014 &middot; ~41 months &middot; Full iOS 4, 5, 6",
-    paragraphs: [
-      "The 4th generation iPod touch launched on iOS 4.1 and received full support through iOS 5.1.1, and partial support in iOS 6 — three major iOS versions total, the longest software run of any iPod touch up to that point. It received every feature its hardware could support: iCloud, iMessage, Game Center, Siri (dictation only, not the full assistant), Maps, FaceTime improvements.",
-      "The iOS 7 exclusion was the defining controversy of the device\'s lifecycle. The 4G shared its Apple A4 processor architecture with the iPhone 4 — which received iOS 7. The difference was RAM: 256 MB on the iPod touch, 512 MB on the iPhone 4. Apple determined that iOS 7 was not viable on 256 MB, a judgment validated by independent testing showing the iPhone 4 itself ran iOS 7 poorly.",
-      "The timing was the problem. The 16 GB iPod touch 4th generation was sold as new hardware — at $199 — until May 29, 2013. Apple announced iOS 7 at WWDC on June 10, 2013: eleven days later. A customer who bought the device the day before discontinuation could not run the current iOS within two weeks of purchase. Apple offered no acknowledgment of the timing, no transition assistance, and no official comment."
-    ],
-    lanes: [
-      {type:"full",    ver:"4.1",   date:"Sep 2010", badgeType:"ship",  badge:"Launch", style:"flex:40;"},
-      {type:"full",    ver:"4.2.1", date:"Nov 2010", badgeType:"",      badge:"",       style:"flex:50;"},
-      {type:"full",    ver:"4.3",   date:"Mar 2011", badgeType:"",      badge:"",       style:"flex:90;"},
-      {type:"full",    ver:"5.0",   date:"Oct 2011", badgeType:"",      badge:"",       style:"flex:40;"},
-      {type:"full",    ver:"5.0.1", date:"Nov 2011", badgeType:"",      badge:"",       style:"flex:50;"},
-      {type:"full",    ver:"5.1.1", date:"May 2012", badgeType:"",      badge:"",       style:"flex:90;"},
-      {type:"partial", ver:"6.0",   date:"Sep 2012", badgeType:"",      badge:"",       style:"flex:30;min-width:52px;"},
-      {type:"partial", ver:"6.1",   date:"Jan 2013", badgeType:"",      badge:"",       style:"flex:90;"},
-      {type:"partial", ver:"6.1.5", date:"Nov 2013", badgeType:"",      badge:"",       style:"flex:60;"},
-      {type:"partial", ver:"6.1.6", date:"Feb 2014", badgeType:"final", badge:"Final",  style:"flex:40;"},
-      {type:"dropped", ver:"7.0",   date:"Sep 2013", badgeType:"",      badge:"Dropped",style:"opacity:.45;flex:20;min-width:52px;"},
-    ],
-    notes: [
-      {label:"iOS 6.0",   text:"Partial iOS 6 support — Maps, Passbook, Siri dictation (not full assistant). Last major version.",  color:"#fde68a"},
-      {label:"iOS 6.1.6", text:"goto fail SSL patch, Feb 21 2014. Final Apple software delivery to this hardware.",              color:"#fbbf24"},
-      {label:"iOS 7",     text:"Excluded — 256 MB RAM vs required 512 MB. iPhone 4 with same A4 SoC received iOS 7.",           color:"rgba(0,0,0,.12)"},
-    ],
-  },
-
   // ── Controversies ─────────────────────────────────────────────────
   controversies: {
     heading: "The compromises behind the headlines.",
@@ -426,83 +477,6 @@ var PAGE_DATA = {
   },
 
   // ── Technical specifications ──────────────────────────────────────
-  specHeading: "The complete sheet.",
-  specSub:     "iPod touch (4th generation) · A1367 · iPod4,1",
-  specs: [
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>',
-     title:"Identity", rows:[
-      ["Model number",  "A1367"],
-      ["Codename",      "iPod4,1 / N81AP"],
-      ["Generation",    "4th"],
-      ["Announced",     "September 1, 2010"],
-      ["Released",      "September 12, 2010"],
-      ["Discontinued",  "May 30, 2013 (final SKUs)"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"/><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/><path d="M12 2v2"/><path d="M12 22v-2"/><path d="m17 20.66-1-1.73"/><path d="M11 10.27 7 3.34"/><path d="m20.66 17-1.73-1"/><path d="m3.34 7 1.73 1"/><path d="M14 12h8"/><path d="M2 12h2"/><path d="m20.66 7-1.73 1"/><path d="m3.34 17 1.73-1"/><path d="m17 3.34-1 1.73"/><path d="m11 13.73-4 6.93"/></svg>',
-     title:"Processor & memory", rows:[
-      ["CPU",           "Apple A4 (Samsung-Intrinsity)"],
-      ["Architecture",  "ARM Cortex-A8 · 32-bit"],
-      ["Clock speed",   "800 MHz"],
-      ["RAM",           "256 MB DRAM"],
-      ["GPU",           "PowerVR SGX535"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>',
-     title:"Display", rows:[
-      ["Size",          "3.5 inches"],
-      ["Type",          "Retina IPS TFT LCD"],
-      ["Resolution",    "960 × 640 px"],
-      ["Density",       "326 ppi"],
-      ["Coating",       "Oleophobic fingerprint-resistant"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" x2="2" y1="12" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" x2="6.01" y1="16" y2="16"/><line x1="10" x2="10.01" y1="16" y2="16"/></svg>',
-     title:"Storage & capacity", rows:[
-      ["Launch tiers",  "8 / 32 / 64 GB"],
-      ["Added 2012",    "16 GB"],
-      ["Type",          "NAND flash"],
-      ["Expandable",    "No"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/></svg>',
-     title:"Connectivity", rows:[
-      ["Wi-Fi",         "802.11 b/g/n (2.4 GHz)"],
-      ["Bluetooth",     "2.1 + EDR"],
-      ["Cellular",      "None"],
-      ["GPS",           "None"],
-      ["Port",          "30-pin dock connector"],
-      ["Audio jack",    "3.5 mm (flush, bottom)"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
-     title:"Camera & sensors", rows:[
-      ["Rear camera",   "0.7 MP · f/2.4 · 720p video @ 30fps"],
-      ["Front camera",  "0.3 MP · FaceTime"],
-      ["Microphone",    "Built-in"],
-      ["Gyroscope",     "3-axis"],
-      ["Accelerometer", "3-axis"],
-      ["Ambient light", "Yes"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>',
-     title:"Physical", rows:[
-      ["Height",        "111.0 mm"],
-      ["Width",         "58.9 mm"],
-      ["Depth",         "7.2 mm"],
-      ["Weight",        "86.3 g"],
-      ["Rear casing",   "Polished aluminium"],
-      ["Colors",        "Black · White (Oct 2011+)"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>',
-     title:"Power", rows:[
-      ["Battery",       "Built-in Li-ion · 930 mAh"],
-      ["Audio",         "Up to 40 hours"],
-      ["Video",         "Up to 7 hours"],
-      ["Charging",      "USB / 30-pin dock connector"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>',
-     title:"Software", rows:[
-      ["Shipped with",  "iOS 4.1"],
-      ["Final version", "iOS 6.1.6"],
-      ["Major versions","iOS 4 · 5 · 6"],
-      ["Support window","Sep 2010 – Feb 2014"],
-    ]},
-  ],
 
 }; // end PAGE_DATA
 

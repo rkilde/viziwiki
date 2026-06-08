@@ -75,7 +75,6 @@
 /* Data rows */
 .gd-label{padding:14px 20px;}
 .gd-label-name{display:block;font-family:"JetBrains Mono",monospace;font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:var(--gd-ink);}
-.gd-label-desc{display:block;font-size:11.5px;color:color-mix(in oklab,var(--gd-ink) 38%,transparent);line-height:1.4;font-style:italic;margin-top:3px;}
 .gd-old{padding:14px 20px;background:var(--gd-old-bg);}
 .gd-old-val{font-size:13px;color:color-mix(in oklab,var(--gd-ink) 72%,transparent);line-height:1.45;}
 .gd-old-val.missing{font-style:italic;color:color-mix(in oklab,var(--gd-ink) 55%,transparent);}
@@ -98,7 +97,6 @@
 @media(max-width:700px){
   .gd col.gd-c1{width:96px;}
   .gd td{padding:10px 10px !important;}
-  .gd-label-desc{display:none;}
   .gd-name{font-size:14px;}
   .gd-old-val,.gd-new-val{font-size:12px;}
 }

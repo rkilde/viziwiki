@@ -3,6 +3,96 @@ permalink: /apple-ipod-touch-3g.html
 layout: class-ipod-touch
 title: "iPod touch (3rd generation)"
 body_class: wiki-page wiki-apple
+os:
+  heading: "Three major versions. Nearly three years.<br>One cliff."
+  title: "Software lifecycle: iPhone OS 3.1.1 through iOS 5.1.1"
+  paragraphs:
+    - "The iPod touch 3rd generation launched on iPhone OS 3.1.1 and received full software support for nearly three years — a notably longer run than the 2nd generation's two-year window. The Cortex-A8 architecture gave it headroom the ARM11-based 2G lacked, enabling it to run iOS 4 without the feature exclusions that hobbled its predecessor."
+    - "Unlike the 2G, which received iOS 4 in a crippled form — no multitasking, no wallpapers, no Bluetooth keyboard — the 3G received iOS 4 fully. Multitasking, Game Center, FaceTime prep, AirPlay: all present. The 3G was the minimum viable platform for iOS 4's marquee features."
+    - "The end came with iOS 6 in September 2012. The 3G's ARMv7 architecture technically met iOS 6's baseline requirements, making the cutoff a product decision rather than a hardware necessity. Apple's stated reason was optimisation; the practical effect was that a device sold until September 2010 lost software support less than two years after discontinuation."
+  segments:
+    - { ver: "3.1.1", date: "Sep 2009", type: full, badge: "Launch", badge_type: ship }
+    - { ver: "4.0",   date: "Jun 2010", type: full }
+    - { ver: "5.0",   date: "Oct 2011", type: full }
+    - { ver: "5.1.1", date: "May 2012", type: full, badge: "Final", badge_type: final }
+    - { ver: "6.0",   date: "Sep 2012", type: dropped, badge: "Dropped", badge_type: dropped }
+  notes:
+    - { status: full,    label: "iOS 4.0",   text: "Full iOS 4 support — multitasking, wallpapers, Game Center. No feature exclusions unlike 2nd gen." }
+    - { status: final,   label: "iOS 5.1.1", text: "Final official update. May 7, 2012. ARMv7 architecture met iOS 6 requirements; Apple still cut it." }
+    - { status: dropped, label: "iOS 6",     text: "Device dropped from compatibility list. ARMv7 requirement met but Apple chose not to support." }
+spec:
+  heading: "The complete sheet."
+  device: "iPod touch (3rd generation) · A1318"
+  cards:
+    - title: "General Device Info"
+      icon: globe
+      rows:
+        - ["Model number", "A1318"]
+        - ["Codename", "iPod3,1 / N18"]
+        - ["Generation", "3rd"]
+        - ["Released", "September 9, 2009"]
+    - title: "Processor & memory"
+      icon: cpu
+      rows:
+        - ["CPU", "Samsung S5L8922 · ARMv7 Cortex-A8"]
+        - ["Clock speed", "600 MHz"]
+        - ["RAM", "256 MB DRAM"]
+        - ["GPU", "PowerVR SGX535"]
+        - ["Architecture", "ARMv7 (32-bit)"]
+    - title: "Display"
+      icon: monitor
+      rows:
+        - ["Size", "3.5 inches"]
+        - ["Type", "TFT LCD, backlit"]
+        - ["Resolution", "480 × 320 px"]
+        - ["Density", "163 ppi"]
+        - ["Input", "Capacitive multi-touch"]
+    - title: "Storage & capacity"
+      icon: hard-drive
+      rows:
+        - ["Launch tiers", "32 / 64 GB"]
+        - ["Type", "NAND flash"]
+        - ["Expandable", "No"]
+    - title: "Connectivity"
+      icon: radio
+      rows:
+        - ["Wi-Fi", "802.11 b/g"]
+        - ["Bluetooth", "2.1 + EDR"]
+        - ["Cellular", "None"]
+        - ["GPS", "None"]
+        - ["Port", "30-pin dock connector"]
+        - ["Audio jack", "3.5 mm (flush)"]
+    - title: "Audio & sensors"
+      icon: music
+      rows:
+        - ["Speaker", "Built-in mono"]
+        - ["Microphone", "None (via earbuds remote)"]
+        - ["Accelerometer", "Yes (3-axis)"]
+        - ["Ambient light", "Yes"]
+        - ["Formats", "AAC, MP3, ALAC, AIFF, WAV"]
+    - title: "Physical"
+      icon: smartphone
+      rows:
+        - ["Height", "110.0 mm"]
+        - ["Width", "61.8 mm"]
+        - ["Depth", "8.5 mm"]
+        - ["Weight", "115 g"]
+        - ["Casing", "Polished stainless steel"]
+        - ["Front bezel", "Black"]
+    - title: "Power"
+      icon: zap
+      rows:
+        - ["Battery", "Built-in Li-ion rechargeable"]
+        - ["Audio", "Up to 30 hours"]
+        - ["Video", "Up to 6 hours"]
+        - ["Charging", "USB / dock connector"]
+    - title: "Software"
+      icon: layers
+      rows:
+        - ["Shipped with", "iPhone OS 3.1.1"]
+        - ["Final version", "iOS 5.1.1"]
+        - ["Major versions", "3.x · 4.x · 5.x"]
+        - ["Support window", "Sep 2009 – May 2012"]
 delta:
   heading: "What changed.<br>2nd &#8594; 3rd generation."
   intro: "The exterior did not change by a single millimetre. The interior changed almost completely. Apple ported the iPhone 3GS's processor platform into the iPod touch chassis — delivering the first iPod touch capable of console-quality mobile gaming."
@@ -11,76 +101,64 @@ delta:
   current: { tag: "Current", name: "iPod touch (3rd gen)", year: "September 2009" }
   hardware:
     - label: "Processor"
-      desc: "CPU architecture"
       old: "Samsung ARM11 · 400 MHz"
       new: "Samsung <strong>ARMv7 Cortex-A8</strong> · 600 MHz — 50% faster"
       chip: better
       chip_text: "+50%"
     - label: "RAM"
-      desc: "System memory"
       old: "128 MB DRAM"
       new: "<strong>256 MB DRAM</strong> — doubled"
       chip: better
       chip_text: "×2"
     - label: "GPU"
-      desc: "Graphics processor"
       old: "PowerVR MBX Lite"
       new: "<strong>PowerVR SGX535</strong> — OpenGL ES 2.0"
       chip: better
       chip_text: "New"
     - label: "Storage tiers"
-      desc: "Available SKUs"
       old: "8 · 16 · 32 GB"
       new: "<strong>32 · 64 GB</strong> only — no entry tier"
       chip: changed
       chip_text: "No 8 GB"
     - label: "Included earbuds"
-      desc: "Bundled accessories"
       old: "Standard earbuds only"
       new: "<strong>Earbuds with remote + mic</strong> — first iPod touch"
       chip: better
       chip_text: "New"
     - label: "Back design"
-      desc: "Chassis material"
       old: "Curved polished stainless steel"
       new: "Curved polished stainless steel — <strong>unchanged</strong>"
       chip: same
       chip_text: "Same"
     - label: "Weight"
-      desc: "Without accessories"
       old: "115 g (4.05 oz)"
       new: "<strong>115 g</strong> (4.05 oz) — unchanged"
       chip: same
       chip_text: "Same"
   software:
     - label: "Launch OS"
-      desc: "Ships out of box"
       old: "iPhone OS 2.1.1"
       new: "<strong>iPhone OS 3.1.1</strong> — newer base"
       chip: better
       chip_text: "Newer"
     - label: "Voice Control"
-      desc: "Hands-free input"
       old: "Not present."
       new: "<strong>Voice Control</strong> — first iPod touch"
       no_old: true
       chip: better
       chip_text: "New"
     - label: "OpenGL ES 2.0"
-      desc: "Graphics API"
       old: "Not supported. ES 1.1 only."
       new: "<strong>OpenGL ES 2.0</strong> — shader support"
       no_old: true
       chip: better
       chip_text: "New"
     - label: "Maximum OS"
-      desc: "Final OS version"
       old: "iOS 4.2.1"
       new: "<strong>iOS 5.1.1</strong> — one major generation further"
       chip: better
       chip_text: "Further"
     - label: "Game Center"
-      desc: "Multiplayer gaming"
       old: "Not supported."
       new: "<strong>Game Center</strong> — iOS 4.1+"
       no_old: true
@@ -358,36 +436,6 @@ var PAGE_DATA = {
     images: [],  // ← add design images here
   },
 
-  // ── OS support lifecycle ─────────────────────────────────────────
-  os: {
-    heading: "Three years. Eleven versions. One cliff.",
-    title:   "Software lifecycle: iPhone OS 3.1.1 through iOS 5.1.1",
-    range:   "Sep 2009 &rarr; May 2012 &middot; ~32 months &middot; 11 versions",
-    paragraphs: [
-      "The iPod touch 3rd generation launched on iPhone OS 3.1.1 and received full software support for nearly three years — a notably longer run than the 2nd generation\'s two-year window. The Cortex-A8 architecture gave it headroom the ARM11-based 2G lacked, enabling it to run iOS 4 without the feature exclusions that hobbled its predecessor.",
-      "Unlike the 2G, which received iOS 4 in a crippled form — no multitasking, no wallpapers, no Bluetooth keyboard — the 3G received iOS 4 fully. Multitasking, Game Center, FaceTime prep, AirPlay: all present. The 3G was the minimum viable platform for iOS 4\'s marquee features.",
-      "The end came with iOS 6 in September 2012. The 3G\'s ARMv7 architecture technically met iOS 6\'s baseline requirements, making the cutoff a product decision rather than a hardware necessity. Apple\'s stated reason was optimisation; the practical effect was that a device sold until September 2010 lost software support less than two years after discontinuation."
-    ],
-    lanes: [
-      {type:"full",    ver:"3.1.1", date:"Sep 2009", badgeType:"ship",    badge:"Launch",  style:"flex:50;"},
-      {type:"full",    ver:"3.1.2", date:"Oct 2009", badgeType:"",        badge:"",        style:"flex:20;min-width:52px;"},
-      {type:"full",    ver:"3.1.3", date:"Feb 2010", badgeType:"",        badge:"",        style:"flex:70;"},
-      {type:"full",    ver:"4.0",   date:"Jun 2010", badgeType:"",        badge:"",        style:"flex:60;"},
-      {type:"full",    ver:"4.1",   date:"Sep 2010", badgeType:"",        badge:"",        style:"flex:25;min-width:52px;"},
-      {type:"full",    ver:"4.2.1", date:"Nov 2010", badgeType:"",        badge:"",        style:"flex:90;"},
-      {type:"full",    ver:"4.3",   date:"Mar 2011", badgeType:"",        badge:"",        style:"flex:110;"},
-      {type:"full",    ver:"4.3.5", date:"Jul 2011", badgeType:"",        badge:"",        style:"flex:60;"},
-      {type:"full",    ver:"5.0",   date:"Oct 2011", badgeType:"",        badge:"",        style:"flex:50;"},
-      {type:"full",    ver:"5.1.1", date:"May 2012", badgeType:"final",   badge:"Final",   style:"flex:90;"},
-      {type:"dropped", ver:"6.0",   date:"Sep 2012", badgeType:"",        badge:"Dropped", style:"opacity:.45;flex:20;min-width:52px;"},
-    ],
-    notes: [
-      {label:"iOS 4.0",   text:"Full iOS 4 support — multitasking, wallpapers, Game Center. No feature exclusions unlike 2nd gen.",    color:"#6ee7b7"},
-      {label:"iOS 5.1.1", text:"Final official update. May 7, 2012. ARMv7 architecture met iOS 6 requirements; Apple still cut it.",   color:"#fbbf24"},
-      {label:"iOS 6",     text:"Device dropped from compatibility list. ARMv7 requirement met but Apple chose not to support.",         color:"rgba(0,0,0,.12)"},
-    ],
-  },
-
   // ── Controversies ────────────────────────────────────────────────
   controversies: {
     heading: "Ghost in the machine.",
@@ -412,70 +460,6 @@ var PAGE_DATA = {
   },
 
   // ── Technical specifications ──────────────────────────────────────
-  specHeading: "The complete sheet.",
-  specSub:     "iPod touch (3rd generation) · A1318 · iPod3,1",
-  specs: [
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>',title:"Identity", rows:[
-      ["Model number",  "A1318"],
-      ["Codename",      "iPod3,1 / N18"],
-      ["Generation",    "3rd"],
-      ["Released",      "September 9, 2009"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z"/><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/><path d="M12 2v2"/><path d="M12 22v-2"/><path d="m17 20.66-1-1.73"/><path d="M11 10.27 7 3.34"/><path d="m20.66 17-1.73-1"/><path d="m3.34 7 1.73 1"/><path d="M14 12h8"/><path d="M2 12h2"/><path d="m20.66 7-1.73 1"/><path d="m3.34 17 1.73-1"/><path d="m17 3.34-1 1.73"/><path d="m11 13.73-4 6.93"/></svg>',title:"Processor & memory", rows:[
-      ["CPU",           "Samsung S5L8922 · ARMv7 Cortex-A8"],
-      ["Clock speed",   "600 MHz"],
-      ["RAM",           "256 MB DRAM"],
-      ["GPU",           "PowerVR SGX535"],
-      ["Architecture",  "ARMv7 (32-bit)"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>',title:"Display", rows:[
-      ["Size",          "3.5 inches"],
-      ["Type",          "TFT LCD, backlit"],
-      ["Resolution",    "480 × 320 px"],
-      ["Density",       "163 ppi"],
-      ["Input",         "Capacitive multi-touch"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" x2="2" y1="12" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" x2="6.01" y1="16" y2="16"/><line x1="10" x2="10.01" y1="16" y2="16"/></svg>',title:"Storage & capacity", rows:[
-      ["Launch tiers",  "32 / 64 GB"],
-      ["Type",          "NAND flash"],
-      ["Expandable",    "No"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/></svg>',title:"Connectivity", rows:[
-      ["Wi-Fi",         "802.11 b/g"],
-      ["Bluetooth",     "2.1 + EDR"],
-      ["Cellular",      "None"],
-      ["GPS",           "None"],
-      ["Port",          "30-pin dock connector"],
-      ["Audio jack",    "3.5 mm (flush)"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',title:"Audio & sensors", rows:[
-      ["Speaker",       "Built-in mono"],
-      ["Microphone",    "None (via earbuds remote)"],
-      ["Accelerometer", "Yes (3-axis)"],
-      ["Ambient light", "Yes"],
-      ["Formats",       "AAC, MP3, ALAC, AIFF, WAV"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>',title:"Physical", rows:[
-      ["Height",        "110.0 mm"],
-      ["Width",         "61.8 mm"],
-      ["Depth",         "8.5 mm"],
-      ["Weight",        "115 g"],
-      ["Casing",        "Polished stainless steel"],
-      ["Front bezel",   "Black"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>',title:"Power", rows:[
-      ["Battery",       "Built-in Li-ion rechargeable"],
-      ["Audio",         "Up to 30 hours"],
-      ["Video",         "Up to 6 hours"],
-      ["Charging",      "USB / dock connector"],
-    ]},
-    {icon:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>',title:"Software", rows:[
-      ["Shipped with",  "iPhone OS 3.1.1"],
-      ["Final version", "iOS 5.1.1"],
-      ["Major versions","3.x · 4.x · 5.x"],
-      ["Support window","Sep 2009 – May 2012"],
-    ]},
-  ],
 
 }; // end PAGE_DATA
 
