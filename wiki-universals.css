@@ -506,9 +506,10 @@
    Pages without it simply don't include the markup; the CSS is
    harmless. Sizing and structure are universal; colors are skin-owned.
 
-   Always 4 columns, single row — never collapses to 2×2.
-   The 1px gaps act as dividers via the wrapper background bleeding
-   through the gap (set --hero-stat-wrapper-bg in the skin).
+   Desktop: 4 columns, single row. Mobile (≤767px): a 2×2 grid (the 1×4
+   was too cramped on narrow screens). The 1px gaps act as dividers via the
+   wrapper background bleeding through the gap (set --hero-stat-wrapper-bg
+   in the skin).
 
    margin-top: 40px assumes placement after a description or search
    bar. Override locally if the grid appears in a different context.
@@ -550,18 +551,23 @@
   color: var(--hero-stat-label, rgba(255,255,255,.6));
 }
 
-/* Mobile scaling — stays 4 columns, just smaller */
+/* Mobile — break the 1×4 into a 2×2 grid so the cells aren't cramped.
+   The 1px gaps still bleed the wrapper bg → a centered divider cross.
+   (Desktop stays 1×4, untouched.) */
 @media (max-width: 767px) {
+  .wiki-hero-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
   .wiki-hero-stat {
-    padding: 8px 6px;
-    font-size: 8px;
-    letter-spacing: 0.04em;
+    padding: 14px 16px;
+    font-size: 9px;
+    letter-spacing: 0.05em;
   }
   .wiki-hero-stat-num {
-    font-size: 16px;
+    font-size: 22px;
   }
   .wiki-hero-stat-label {
-    font-size: 8px;
+    font-size: 9px;
   }
 }
 
