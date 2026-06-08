@@ -427,6 +427,62 @@
 
 
 /* ════════════════════════════════════════════════════════════════════
+   §11b — HERO SUB-H1 (subtitle line)
+   An optional secondary headline under the H1 — e.g. an edition, a
+   generation, a model line (the iPod "(7th generation) · Model A2178").
+   Uses the universal `title` document role so it's under master control
+   like every other heading. Optional mono `-meta` tag after a separator.
+   Color comes from the skin (--hero-subtitle-* tokens).
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-hero-subtitle {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: var(--t-title-size);        /* type scale · Title */
+  font-weight: var(--t-title-weight);
+  line-height: var(--t-title-leading);
+  letter-spacing: var(--t-title-tracking);
+  color: var(--hero-subtitle-color, var(--hero-title-color, currentColor));
+}
+
+.wiki-hero-subtitle-sep {
+  color: var(--hero-subtitle-sep, var(--hero-title-accent));
+}
+
+.wiki-hero-subtitle-meta {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: var(--t-label-size);        /* type scale · Label */
+  font-weight: var(--t-label-weight);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--hero-subtitle-meta, var(--hero-desc-color));
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   §11c — DARK HERO TREATMENT  (.wiki-hero.hero-dark)
+   Opt-in modifier for heroes on a dark background that don't get their
+   text colour from a skin sheet: flips text to white-on-dark and gives
+   the eyebrow a frosted-glass fill. (Stat-grid tokens already default to
+   the dark-hero palette, so they're left untouched.) Skins/pages that set
+   their own hero colours don't need this.
+   ════════════════════════════════════════════════════════════════════ */
+.wiki-hero.hero-dark {
+  color: #ffffff;
+  --hero-desc-color:     rgba(255,255,255,.85);
+  --hero-eyebrow-bg:     rgba(255,255,255,.1);
+  --hero-eyebrow-border: rgba(255,255,255,.3);
+}
+.wiki-hero.hero-dark .wiki-hero-eyebrow {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
    §12 — HERO DESCRIPTION
    The intro paragraph below the H1. 18px, capped at 36rem.
    Used on any hero that has a description — home or sub-page.
@@ -450,9 +506,10 @@
    Pages without it simply don't include the markup; the CSS is
    harmless. Sizing and structure are universal; colors are skin-owned.
 
-   Always 4 columns, single row — never collapses to 2×2.
-   The 1px gaps act as dividers via the wrapper background bleeding
-   through the gap (set --hero-stat-wrapper-bg in the skin).
+   Desktop: 4 columns, single row. Mobile (≤767px): a 2×2 grid (the 1×4
+   was too cramped on narrow screens). The 1px gaps act as dividers via the
+   wrapper background bleeding through the gap (set --hero-stat-wrapper-bg
+   in the skin).
 
    margin-top: 40px assumes placement after a description or search
    bar. Override locally if the grid appears in a different context.
@@ -494,18 +551,23 @@
   color: var(--hero-stat-label, rgba(255,255,255,.6));
 }
 
-/* Mobile scaling — stays 4 columns, just smaller */
+/* Mobile — break the 1×4 into a 2×2 grid so the cells aren't cramped.
+   The 1px gaps still bleed the wrapper bg → a centered divider cross.
+   (Desktop stays 1×4, untouched.) */
 @media (max-width: 767px) {
+  .wiki-hero-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
   .wiki-hero-stat {
-    padding: 8px 6px;
-    font-size: 8px;
-    letter-spacing: 0.04em;
+    padding: 14px 16px;
+    font-size: 9px;
+    letter-spacing: 0.05em;
   }
   .wiki-hero-stat-num {
-    font-size: 16px;
+    font-size: 22px;
   }
   .wiki-hero-stat-label {
-    font-size: 8px;
+    font-size: 9px;
   }
 }
 

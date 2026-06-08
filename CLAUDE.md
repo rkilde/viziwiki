@@ -175,6 +175,17 @@ did, on the iPod charts — hence this rule). **Rule of thumb: document text →
   - **comparison/delta table** (iPod hw/sw rows).
   - **quote wall · pairing matrix · spec table** (sauces, iPod) — smaller.
   Each bank is also where its component TYPE gets centralized (bank-owned).
+- **Hero → data-driven include** (`_includes/sections/hero.html` + `_includes/hero/*`):
+  DONE for the sub-pages, the 6 iPod pages (off the JS engine), the TB sub/detail
+  pages, and the apple/taco-bell home heroes. Remaining: fallout/smurfs/doodle home
+  heroes (per-element flourishes → skin selectors).
+- **QUEUED — Overview section → include.** Same treatment as the hero/banks: the
+  overview's *CSS* is centralized (`wiki-universals.css` §15 + §15-INFOBOX bank) but
+  its *markup* is still inline on ~13 pages and JS-rendered on the 6 iPod pages
+  (`renderOverview`). Build `_includes/sections/overview.html` (+ `_includes/overview/
+  infobox.html`) from an `overview:` front-matter block; migrate the inline pages and
+  pull the iPod overview off `renderOverview` (finishing the iPod's exit from its JS
+  engine, like the hero did).
 - Re-tokenize page-specific DOCUMENT text not yet on canonical `.wiki-*` classes
   (e.g. the iPod page's own prose/eyebrows/headers reverted with its widgets).
 - Redo the iPod CSS block-dedupe (jb/lane) as a pure non-type cleanup.

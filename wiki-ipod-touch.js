@@ -113,58 +113,7 @@ function secLabel(icon, text){
   return '<div class="wiki-section-eyebrow">'+icon+text+'</div>';
 }
 
-// ── renderHero ────────────────────────────────────────────────────────
-function renderHero(){
-  var h = PAGE_DATA.hero;
-  document.title = PAGE_DATA.pageTitle;
-  var el = document.getElementById('hero-content');
-  if(!el) return;
-  el.innerHTML =
-    '<div class="wiki-hero-eyebrow"><span class="wiki-hero-eyebrow-dot"></span>'+h.eyebrow+'</div>'
-    +'<h1 class="wiki-hero-title">'+h.title+'</h1>'
-    +'<div class="hero-gen">'
-    +'  <span class="hero-gen-name fr">'+h.gen+'</span>'
-    +'  <span class="hero-gen-sep"> · </span>'
-    +'  <span class="hero-gen-model jb">Model <span>'+h.model+'</span></span>'
-    +'</div>'
-    +'<p class="wiki-hero-desc">'+h.intro+'</p>'
-    +'<div class="wiki-hero-stats">'
-    + h.stats.map(function(s){
-        return '<div class="wiki-hero-stat">'
-          +'<span class="wiki-hero-stat-num">'+s.val+'</span>'
-          +'<span class="wiki-hero-stat-label">'+s.lbl+'</span>'
-          +'</div>';
-      }).join('')
-    +'</div>';
-}
 
-// ── renderOverview ────────────────────────────────────────────────────
-function renderOverview(){
-  var o = PAGE_DATA.overview;
-  var el = document.getElementById('overview-content');
-  if(!el) return;
-  var ib = o.infobox;
-  el.innerHTML =
-    '<div class="wiki-section-inner">'
-    +'<div class="wiki-overview">'
-    +'<div class="wiki-overview-prose">'
-    +'<div class="wiki-section-eyebrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Overview</div>'
-    +'<h2 class="wiki-section-title" style="margin-bottom:24px;">'+PAGE_DATA.overview.heading+'</h2>'
-    +'<div class="wiki-section-prose">'+ paraList(o.paragraphs) +'</div>'
-    +'</div>'
-    +'<aside class="wiki-infobox">'
-    +'  <div class="wiki-infobox-header">'
-    +'    <div class="wiki-infobox-label">Infobox</div>'
-    +'    <div class="wiki-infobox-title">'+ib.name+'</div>'
-    +'  </div>'
-    +'  <dl class="wiki-infobox-data">'
-    + ib.rows.map(function(r){ return '<dt>'+r[0]+'</dt><dd>'+r[1]+'</dd>'; }).join('')
-    +'  </dl>'
-    + (ib.discontinued ? '<span class="wiki-infobox-badge">'+ib.discontinued+'</span>' : '')
-    +'</aside>'
-    +'</div>'   /* close .wiki-overview */
-    +'</div>';  /* close .wiki-section-inner */
-}
 
 // ── renderPhotoRail ───────────────────────────────────────────────────
 function renderPhotoRail(){
@@ -183,76 +132,6 @@ function renderPhotoRail(){
   if(scroll) addDragScroll(scroll);
 }
 
-// ── renderDelta ───────────────────────────────────────────────────────
-function renderDelta(){
-  var d  = PAGE_DATA.delta;
-  var el = document.getElementById('delta-content');
-  if(!el) return;
-
-  function dataRow(r){
-    // noOld: show dot + italic missing text (or — if no text)
-    var oldCell = r.noOld
-      ? '<td class="gd-old"><span class="gd-dot"></span><span class="gd-old-val missing">'+(r.oldText||'—')+'</span></td>'
-      : '<td class="gd-old"><span class="gd-old-val">'+r.oldText+'</span></td>';
-    return '<tr class="gd-row">'
-      +'<td class="gd-label">'
-      +'<span class="gd-label-name jb">'+r.label+'</span>'
-      +'<span class="gd-label-desc">'+r.desc+'</span>'
-      +'</td>'
-      + oldCell
-      +'<td class="gd-new">'
-      +'<span class="gd-new-val">'+r.newHtml+'</span>'
-      +(r.chipCls?'<span class="'+r.chipCls+'">'+r.chipText+'</span>':'')
-      +'</td>'
-      +'</tr>';
-  }
-
-  function secRow(label, icon, col1, col2){
-    return '<tr class="gd-sec">'
-      +'<td class="gd-sec-main">'+icon+label+'</td>'
-      +'<td class="gd-sec-col">'+col1+'</td>'
-      +'<td class="gd-sec-col">'+col2+'</td>'
-      +'</tr>';
-  }
-
-  var hwIcon = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>';
-  var swIcon = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>';
-
-  el.innerHTML =
-    '<div class="wiki-section-inner">'
-    +'<div class="wiki-section-eyebrow">'
-    +'<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>'
-    +'Generation delta'
-    +'</div>'
-    +'<h2 class="wiki-section-title" style="margin-bottom:24px;">'+d.heading+'</h2>'
-    +(d.intro?'<div class="delta-prose"><p>'+d.intro+'</p></div>':'')
-    +'<div class="gd-wrap">'
-    +'<table class="gd"><colgroup><col class="gd-c1"><col class="gd-c2"><col class="gd-c3"></colgroup>'
-    +'<thead>'
-    +'<tr class="gd-gen">'
-    +'<td class="gd-gen-label"></td>'
-    +'<td class="gd-gen-old">'
-    +'<span class="gd-tag jb">'+d.prevGen.tag+'</span>'
-    +'<span class="gd-name fr">'+d.prevGen.name+'</span>'
-    +'<span class="gd-year jb">'+d.prevGen.year+'</span>'
-    +'</td>'
-    +'<td class="gd-gen-new">'
-    +'<span class="gd-tag jb">'+d.thisGen.tag+'</span>'
-    +'<span class="gd-name fr">'+d.thisGen.name+'</span>'
-    +'<span class="gd-year jb">'+d.thisGen.year+'</span>'
-    +'</td>'
-    +'</tr>'
-    +'</thead>'
-    +'<tbody>'
-    + secRow('Hardware', hwIcon, d.prevGen.name, d.thisGen.name)
-    + d.hwRows.map(dataRow).join('')
-    + secRow('Software', swIcon, d.prevGen.name, d.thisGen.name)
-    + d.swRows.map(dataRow).join('')
-    +'</tbody></table>'
-    +'</div>'
-    +(d.footnote?'<div class="gd-foot jb">'+d.footnote+'</div>':'')
-    +'</div>';
-}
 
 
 
@@ -435,10 +314,7 @@ function renderWIKI_TOC(){
 // ── INIT ──────────────────────────────────────────────────────────────
 function initPage(){
   renderWIKI_TOC();
-  renderHero();
-  renderOverview();
   if(PAGE_DATA.photos && PAGE_DATA.photos.length) renderPhotoRail();
-  renderDelta();
   if(PAGE_DATA.gaming) renderProseRail('gaming-content', PAGE_DATA.gaming,
     '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>',
     'Cultural impact');

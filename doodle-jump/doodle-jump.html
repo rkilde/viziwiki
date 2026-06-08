@@ -3,6 +3,57 @@ permalink: /doodle-jump.html
 layout: default
 title: Doodle Jump
 body_class: wiki-page wiki-doodle-jump
+overview:
+  tone: b
+  id: about
+  class: grain
+  heading: One button. One direction. <span class="marker-underline spring">Forever up.</span>
+  paragraphs:
+  - <strong>Doodle Jump</strong> is a vertical platformer for mobile, released by Croatian-American studio <strong>Lima Sky</strong> on April 6, <strong>2009</strong>. You tilt the phone to steer a creature called the <em>Doodler</em> left and right; he jumps automatically; the platforms keep coming; gravity always wins eventually.
+  - It became one of the App Store's first true cultural artifacts — a game that defined an era of one-handed, sketchbook-aesthetic mobile play. By 2010 it had sold over <strong>five million copies</strong>; by 2014, fifteen million. The procedurally-generated platforms, the rotating cast of monsters, the spring-shoes and jet-packs and rocket-power-ups — all of it drawn like a kid filling the margins of a school notebook.
+  - This wiki catalogues that notebook. Every platform variant, every monster, every seasonal theme (Easter, Halloween, Soccer, Underwater, Space), every <span class="hl">unlockable</span>. We're trying to do for Doodle Jump what its players have always done — fill the margins until there's no white space left.
+  infobox:
+    class: dj-infobox-sticky sticky tilt-l
+    art: <span class="tape" style="top:-9px;right:18%;transform:rotate(4deg);"></span>
+    label: Field card
+    title: The Doodle Jump series
+    rows:
+    - - Released
+      - April 6, 2009
+    - - Developer
+      - Lima Sky
+    - - Genre
+      - Vertical platformer
+    - - Platforms
+      - iOS · Android · BlackBerry · Symbian · Windows Phone
+    - - Controls
+      - Accelerometer tilt
+    - - Hero
+      - The Doodler (unnamed)
+    - - Sequel
+      - Doodle Jump 2 — 2021
+hero:
+  id: overview
+  class: "paper grain"
+  chrome: doodle-home
+  eyebrow: "Visual Wiki · Vol. 5"
+  title: '<span class="marker-underline">Doodle</span><br><span class="dj-title-jump">Jump</span>'
+  desc: 'A four-legged green creature, an infinite ladder of <span class="hl">green platforms</span>, and a phone tilted just so. Lima Sky''s pocket-sized obsession — every monster, power-up, and platform variant indexed here, drawn from the margins up.'
+  search: true
+  search_placeholder: "Search 318 entries — try 'Doodler', 'spring', 'UFO'…"
+  stats:
+    - { num: "318", label: "entries" }
+    - { num: "2009", label: "debut" }
+    - { num: "15M+", label: "downloads" }
+    - { num: "∞", label: "high score" }
+  spotlight:
+    class: "sticky tilt-r"
+    art_inc: art-doodle-doodler
+    eyebrow: "★ Spotlight"
+    title: "The Doodler"
+    desc: 'The wiki''s namesake creature — four legs, two eyes, one impossibly long nose. Lima Sky''s <span class="hl">unnamed protagonist</span> has been launching himself off green platforms for over fifteen years, and still won''t tell anyone what he is.'
+    tags: ["Character", "Iconic", "Lima Sky"]
+    cta: "Open entry &nbsp;→"
 extra_head: |
   <link rel="stylesheet" href="/wiki-home.css">
   <link rel="stylesheet" href="/wiki-doodle-jump-skin.css">
@@ -64,94 +115,7 @@ window.WIKI_TOC = {
                   ghost watermark, doodler character peek, sticky-note
                   spotlight treatment, all colors via --hero-* tokens.
        ================================================================ -->
-  <section id="overview" class="wiki-hero paper grain">
-    <!-- skin-owned ghost watermark (gamepad) -->
-    <svg class="wiki-icon hero-watermark" style="stroke-width:1.25" aria-hidden="true"><use href="#ic-gamepad-2"></use></svg>
-
-    <div class="wiki-hero-inner">
-      <div class="wiki-hero-content">
-
-        <!-- eyebrow pill: ● Visual Wiki · Vol. [N] -->
-        <div class="wiki-hero-eyebrow">
-          <span class="wiki-hero-eyebrow-dot"></span>
-          Visual Wiki · Vol. 5
-        </div>
-
-        <!-- H1 + accent period — DJ skin: marker-underline on "Doodle", green "Jump", forced two-line -->
-        <h1 class="wiki-hero-title">
-          <span class="marker-underline">Doodle</span><br>
-          <span class="dj-title-jump">Jump</span><span class="wiki-hero-title-accent">.</span>
-        </h1>
-
-        <!-- description -->
-        <p class="wiki-hero-desc">
-          A four-legged green creature, an infinite ladder of <span class="hl">green platforms</span>, and a phone tilted just so. Lima Sky's pocket-sized obsession — every monster, power-up, and platform variant indexed here, drawn from the margins up.
-        </p>
-
-        <!-- search bar (icon is skin-owned — search glass) -->
-        <div class="wiki-hero-search">
-          <span class="wiki-hero-search-icon">
-            <svg class="wiki-icon" style="width:16px;height:16px" aria-hidden="true"><use href="#ic-search"></use></svg>
-          </span>
-          <input class="wiki-hero-search-input" placeholder="Search 318 entries — try 'Doodler', 'spring', 'UFO'…" />
-        </div>
-
-        <!-- 4-cell stat grid · cell 1 ALWAYS = entry count -->
-        <div class="wiki-hero-stats">
-          <div class="wiki-hero-stat">
-            <div class="wiki-hero-stat-num">318</div>
-            <div class="wiki-hero-stat-label">entries</div>
-          </div>
-          <div class="wiki-hero-stat">
-            <div class="wiki-hero-stat-num">2009</div>
-            <div class="wiki-hero-stat-label">debut</div>
-          </div>
-          <div class="wiki-hero-stat">
-            <div class="wiki-hero-stat-num">15M+</div>
-            <div class="wiki-hero-stat-label">downloads</div>
-          </div>
-          <div class="wiki-hero-stat">
-            <div class="wiki-hero-stat-num">∞</div>
-            <div class="wiki-hero-stat-label">high score</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- spotlight aside — DJ skin: sticky note + Doodler peek -->
-      <aside class="wiki-hero-aside">
-        <div class="wiki-hero-spotlight sticky tilt-r">
-          <!-- skin-owned decorations: sticky tape + Doodler character peeking from behind -->
-          <span class="tape" style="top:-9px;left:30%;transform:rotate(-3deg);"></span>
-          <div class="doodler doodler-bob" aria-hidden="true">
-            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <ellipse cx="50" cy="55" rx="32" ry="28" fill="#6bb84a" stroke="#2c3a1e" stroke-width="2.5"/>
-              <ellipse cx="50" cy="62" rx="20" ry="14" fill="#8ed268" opacity=".55"/>
-              <path d="M 28 78 Q 24 86 28 92 M 40 82 Q 38 90 42 94 M 58 82 Q 60 90 58 94 M 72 78 Q 76 86 72 92" stroke="#2c3a1e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-              <ellipse cx="62" cy="56" rx="11" ry="9" fill="#6bb84a" stroke="#2c3a1e" stroke-width="2.5"/>
-              <circle cx="60" cy="56" r="1.4" fill="#2c3a1e"/>
-              <circle cx="65" cy="58" r="1.4" fill="#2c3a1e"/>
-              <circle cx="42" cy="42" r="9" fill="#fff" stroke="#2c3a1e" stroke-width="2.5"/>
-              <circle cx="44" cy="44" r="4" fill="#2c3a1e"/>
-              <circle cx="58" cy="40" r="9" fill="#fff" stroke="#2c3a1e" stroke-width="2.5"/>
-              <circle cx="60" cy="42" r="4" fill="#2c3a1e"/>
-            </svg>
-          </div>
-
-          <div class="wiki-hero-spotlight-eyebrow">★ Spotlight</div>
-          <h3 class="wiki-hero-spotlight-title">The Doodler</h3>
-          <p class="wiki-hero-spotlight-desc">
-            The wiki's namesake creature — four legs, two eyes, one impossibly long nose. Lima Sky's <span class="hl">unnamed protagonist</span> has been launching himself off green platforms for over fifteen years, and still won't tell anyone what he is.
-          </p>
-          <div class="wiki-hero-spotlight-tags">
-            <span class="wiki-hero-spotlight-tag">Character</span>
-            <span class="wiki-hero-spotlight-tag">Iconic</span>
-            <span class="wiki-hero-spotlight-tag">Lima Sky</span>
-          </div>
-          <button class="wiki-hero-spotlight-cta">Open entry &nbsp;→</button>
-        </div>
-      </aside>
-    </div>
-  </section>
+  {% include sections/hero.html data=page.hero %}
 
   <!-- ================================================================
        BROWSE THE WIKI  (shared nav slot — sticky-note directory grid)
@@ -232,45 +196,7 @@ window.WIKI_TOC = {
   <!-- ================================================================
        OVERVIEW  (canonical §16 — eyebrow + prose + infobox)
        ================================================================ -->
-  <section id="about" class="wiki-section grain" data-section="overview" data-tone="b">
-    <div class="wiki-section-inner wiki-overview dj-section-inner">
-      <div class="wiki-overview-prose">
-        <div class="wiki-section-eyebrow"><svg class="wiki-icon h-3 w-3" aria-hidden="true"><use href="#ic-book-open"></use></svg> Overview</div>
-        <h2 class="wiki-section-title">
-          One button. One direction. <span class="marker-underline spring">Forever up.</span>
-        </h2>
-        <div class="wiki-section-prose">
-          <p>
-            <strong>Doodle Jump</strong> is a vertical platformer for mobile, released by Croatian-American studio <strong>Lima Sky</strong> on April 6, <strong>2009</strong>. You tilt the phone to steer a creature called the <em>Doodler</em> left and right; he jumps automatically; the platforms keep coming; gravity always wins eventually.
-          </p>
-          <p>
-            It became one of the App Store's first true cultural artifacts — a game that defined an era of one-handed, sketchbook-aesthetic mobile play. By 2010 it had sold over <strong>five million copies</strong>; by 2014, fifteen million. The procedurally-generated platforms, the rotating cast of monsters, the spring-shoes and jet-packs and rocket-power-ups — all of it drawn like a kid filling the margins of a school notebook.
-          </p>
-          <p>
-            This wiki catalogues that notebook. Every platform variant, every monster, every seasonal theme (Easter, Halloween, Soccer, Underwater, Space), every <span class="hl">unlockable</span>. We're trying to do for Doodle Jump what its players have always done — fill the margins until there's no white space left.
-          </p>
-        </div>
-      </div>
-
-      <!-- Infobox — canon shell, sticky-note Tier-3 styling preserved -->
-      <aside class="wiki-infobox dj-infobox-sticky sticky tilt-l">
-        <span class="tape" style="top:-9px;right:18%;transform:rotate(4deg);"></span>
-        <div class="wiki-infobox-header">
-          <div class="wiki-infobox-label">Field card</div>
-          <div class="wiki-infobox-title">The Doodle Jump series</div>
-        </div>
-        <dl class="wiki-infobox-data">
-          <dt>Released</dt><dd>April 6, 2009</dd>
-          <dt>Developer</dt><dd>Lima Sky</dd>
-          <dt>Genre</dt><dd>Vertical platformer</dd>
-          <dt>Platforms</dt><dd>iOS · Android · BlackBerry · Symbian · Windows Phone</dd>
-          <dt>Controls</dt><dd>Accelerometer tilt</dd>
-          <dt>Hero</dt><dd>The Doodler (unnamed)</dd>
-          <dt>Sequel</dt><dd>Doodle Jump 2 — 2021</dd>
-        </dl>
-      </aside>
-    </div>
-  </section>
+  {% include sections/overview.html data=page.overview %}
 
 </div><!-- /.dj-page -->
 

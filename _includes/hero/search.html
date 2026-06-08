@@ -1,0 +1,10 @@
+{%- comment -%}
+  HERO SEARCH BAR — single source. HOME heroes only (never sub-pages).
+  data.search_placeholder = the placeholder string.
+  The magnifier icon is the canonical search glyph (locked).
+{%- endcomment -%}
+{%- assign h = include.data -%}
+<div class="wiki-hero-search">
+  <span class="wiki-hero-search-icon">{% if h.search_icon_inc %}{% capture sf %}hero/{{ h.search_icon_inc }}.html{% endcapture %}{% include {{ sf }} %}{% elsif h.search_icon %}{{ h.search_icon }}{% else %}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>{% endif %}</span>
+  <input class="wiki-hero-search-input" placeholder="{{ h.search_placeholder }}" />
+</div>

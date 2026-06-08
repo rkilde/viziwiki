@@ -3,6 +3,22 @@ permalink: /taco-bell-pina-colada-frutista.html
 layout: class-tb-drink
 title: "Piña Colada Frutista Freeze — ViziWiki"
 body_class: "wiki-page wiki-taco-bell"
+overview:
+  tone: b
+  id: story
+  heading: Background
+  paragraphs:
+  - The Piña Colada Frutista Freeze was a pineapple-coconut frozen beverage introduced in spring 2009 as part of Taco Bell’s Frutista Freeze program. It launched alongside the Strawberry Colada variant as part of the program’s tropical rotation.
+  - Frutista Freezes were hand-blended per order using a commercial blender with fruit syrups, ice, and real fruit toppings. The Piña Colada variant was topped with actual pineapple chunks.
+  - The Frutista Freeze program ran from May 2008 to late 2012, producing 13 flavors across seasonal rotations. In January 2013, Taco Bell replaced the commercial blenders with automated Taylor Freeze machines. A non-Frutista “Piña Colada Freeze” briefly appeared on the Taylor machine from January to September 2013 as a transitional product, but it was a different formulation without the hand-blended preparation or real fruit.
+  - The Piña Colada Frutista Freeze was never sold in retail (cans, bottles) or at any location outside Taco Bell.
+hero:
+  bg: "linear-gradient(135deg,#fbbf24,#f59e0b,#b45309,#78350f)"
+  accent: "#fcd34d"
+  eyebrow: "Frutista Freeze · Taco Bell · 2009–2013"
+  title: "Piña Colada<br>Frutista Freeze"
+  desc: "A hand-blended pineapple-coconut frozen drink produced exclusively for Taco Bell as part of the Frutista Freeze program (2008–2013)."
+  extra: '<div class="de-chip-row"><span class="de-pill">Discontinued</span><span class="de-pill">Taco Bell exclusive</span><span class="de-pill">Blender program</span></div>'
 ---
 {% raw %}
 <meta charset="UTF-8">
@@ -10,19 +26,7 @@ body_class: "wiki-page wiki-taco-bell"
 <style>:root{ --accent:#b45309; --accent-light:#fbbf24; --accent-dark:#78350f; }</style>
 
 <!-- HERO -->
-<div class="wiki-hero" style="background:linear-gradient(135deg,#fbbf24,#f59e0b,#b45309,#78350f);">
-  <div class="wiki-hero-inner">
-    <div class="wiki-hero-eyebrow">
-      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
-      Frutista Freeze · Taco Bell · 2009–2013
-    </div>
-    <h1 class="wiki-hero-title">Piña Colada<br>Frutista Freeze</h1>
-    <p class="wiki-hero-desc">A hand-blended pineapple-coconut frozen drink produced exclusively for Taco Bell as part of the Frutista Freeze program (2008–2013).</p>
-    <div class="de-chip-row">
-      <span class="de-pill">Discontinued</span><span class="de-pill">Taco Bell exclusive</span><span class="de-pill">Blender program</span>
-    </div>
-  </div>
-</div>
+{% endraw %}{% include sections/hero.html data=page.hero %}{% raw %}
 
 <!-- AT A GLANCE -->
 <div class="wiki-section" data-tone="a">
@@ -41,16 +45,7 @@ body_class: "wiki-page wiki-taco-bell"
 </div>
 
 <!-- OVERVIEW -->
-<div class="wiki-section" data-tone="b">
-  <div class="wiki-section-inner">
-    <div class="wiki-section-eyebrow">Overview</div>
-    <h2 id="story" class="wiki-section-title">Background</h2>
-    <div class="de-grid">
-      <div class="wiki-section-prose"><p>The Piña Colada Frutista Freeze was a pineapple-coconut frozen beverage introduced in spring 2009 as part of Taco Bell’s Frutista Freeze program. It launched alongside the Strawberry Colada variant as part of the program’s tropical rotation.</p><p>Frutista Freezes were hand-blended per order using a commercial blender with fruit syrups, ice, and real fruit toppings. The Piña Colada variant was topped with actual pineapple chunks.</p></div>
-      <div class="wiki-section-prose"><p>The Frutista Freeze program ran from May 2008 to late 2012, producing 13 flavors across seasonal rotations. In January 2013, Taco Bell replaced the commercial blenders with automated Taylor Freeze machines. A non-Frutista “Piña Colada Freeze” briefly appeared on the Taylor machine from January to September 2013 as a transitional product, but it was a different formulation without the hand-blended preparation or real fruit.</p><p>The Piña Colada Frutista Freeze was never sold in retail (cans, bottles) or at any location outside Taco Bell.</p></div>
-    </div>
-  </div>
-</div>
+{% endraw %}{% include sections/overview.html data=page.overview %}{% raw %}
 
 <!-- FLAVOR PROFILE -->
 <div class="wiki-section" data-tone="a">

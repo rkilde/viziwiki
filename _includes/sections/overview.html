@@ -1,0 +1,27 @@
+{%- comment -%}
+  OVERVIEW SECTION — the canonical "Overview" (universals §15).
+  A prose column (locked "Overview" eyebrow + book-open icon, H2, paragraphs)
+  plus an OPTIONAL infobox bank. Layout adapts: prose | infobox, or two-column
+  newspaper prose when there's no infobox. Single-source structure.
+  Usage:  {% include sections/overview.html data=page.overview %}
+  Data:
+    heading     REQUIRED  the H2
+    paragraphs  REQUIRED  list of paragraph strings (inline HTML ok)
+    tone?       section background tone a/b/special (default b)
+    id?         section id / anchor (default "overview")
+    eyebrow?    eyebrow label (default "Overview")
+    infobox?    optional fact panel → see overview/infobox.html
+{%- endcomment -%}
+{%- assign o = include.data -%}
+<section class="wiki-section{% if o.class %} {{ o.class }}{% endif %}" data-section="overview" id="{{ o.id | default: 'overview' }}" data-tone="{{ o.tone | default: 'b' }}">
+  <div class="wiki-section-inner">
+    <div class="wiki-overview">
+      <div class="wiki-overview-prose">
+        <div class="wiki-section-eyebrow">{% include icon.html name="book-open" %} {{ o.eyebrow | default: 'Overview' }}</div>
+        <h2 class="wiki-section-title">{{ o.heading }}</h2>
+        <div class="wiki-section-prose">{% for p in o.paragraphs %}<p>{{ p }}</p>{% endfor %}</div>
+      </div>
+      {%- if o.infobox %}{% include overview/infobox.html data=o.infobox %}{% endif -%}
+    </div>
+  </div>
+</section>

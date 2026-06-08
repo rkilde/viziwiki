@@ -15,6 +15,7 @@ layout: default
 <link rel="stylesheet" href="/wiki-ipod-touch.css">
 <link rel="stylesheet" href="/bank-timeline.css">
 <link rel="stylesheet" href="/bank-config.css">
+<link rel="stylesheet" href="/bank-delta.css">
 
 {{ content }}
 
@@ -25,151 +26,9 @@ layout: default
      PAGE DATA — edit ONLY this block for a new gen page
      ═══════════════════════════════════════════════════════════════ -->
 <!-- Shared render engine — do not edit -->
-<section class="wiki-hero" id="hero" style="background:#f4f4f6;border-bottom:2px solid rgba(0,0,0,.12)">
-  <div class="wiki-hero-inner">
-  <div class="hero-mob-wm" aria-hidden="true"><svg viewBox="0 0 220 392" fill="none" xmlns="http://www.w3.org/2000/svg">
+{% include sections/hero.html data=page.hero %}
 
-      <!-- Device body - slightly tapered at edges (2G design language) -->
-      <rect x="0" y="0" width="220" height="392" rx="34" fill="#0a0a0a"/>
-
-      <!-- Top bezel - thick, characteristic of early iPod touch -->
-      <!-- Screen area -->
-      <rect x="11" y="52" width="198" height="272" rx="3" fill="rgba(255,255,255,.12)"/>
-
-      <!-- Screen subtle inner gloss -->
-      <rect x="14" y="55" width="192" height="266" rx="2" fill="rgba(255,255,255,.04)"/>
-
-      <!-- Home screen icon grid — 4x4 subtle dots, makes it read as iPod -->
-      <!-- Row 1 -->
-      <rect x="35"  y="78"  width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <rect x="82"  y="78"  width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <rect x="129" y="78"  width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <rect x="176" y="78"  width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <!-- Row 2 -->
-      <rect x="35"  y="122" width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <rect x="82"  y="122" width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <rect x="129" y="122" width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <rect x="176" y="122" width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <!-- Row 3 -->
-      <rect x="35"  y="166" width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <rect x="82"  y="166" width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <rect x="129" y="166" width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <rect x="176" y="166" width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <!-- Row 4 -->
-      <rect x="35"  y="210" width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <rect x="82"  y="210" width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <rect x="129" y="210" width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <rect x="176" y="210" width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-
-      <!-- Dock bar at bottom of screen -->
-      <rect x="11" y="276" width="198" height="48" rx="0" fill="rgba(255,255,255,.04)"/>
-      <!-- 4 dock icons -->
-      <rect x="27"  y="286" width="28" height="28" rx="7" fill="rgba(255,255,255,.09)"/>
-      <rect x="74"  y="286" width="28" height="28" rx="7" fill="rgba(255,255,255,.09)"/>
-      <rect x="121" y="286" width="28" height="28" rx="7" fill="rgba(255,255,255,.09)"/>
-      <rect x="168" y="286" width="28" height="28" rx="7" fill="rgba(255,255,255,.09)"/>
-
-      <!-- Bottom bezel — thick (houses home button) -->
-      <!-- Home button outer ring — pre-Touch ID round button -->
-      <circle cx="110" cy="355" r="20" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.18)" stroke-width="1.5"/>
-      <!-- Home button inner detail ring -->
-      <circle cx="110" cy="355" r="13" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
-
-      <!-- NO front camera — clean top bezel (2G specific) -->
-      <!-- Just a tiny speaker indicator centered at top -->
-      <rect x="92" y="28" width="36" height="4" rx="2" fill="rgba(255,255,255,.2)"/>
-
-      <!-- Volume up button (left edge) -->
-      <rect x="0" y="130" width="4.5" height="34" rx="2.25" fill="rgba(255,255,255,.22)"/>
-      <!-- Volume down button (left edge) -->
-      <rect x="0" y="176" width="4.5" height="34" rx="2.25" fill="rgba(255,255,255,.22)"/>
-
-      <!-- Sleep/wake button (top-right edge) -->
-      <rect x="152" y="0" width="36" height="4.5" rx="2.25" fill="rgba(255,255,255,.22)"/>
-
-      <!-- 3.5mm headphone jack top-left — flush (2G specific) -->
-      <circle cx="38" cy="2.25" r="7" fill="rgba(0,0,0,.4)"/>
-
-      <!-- 30-pin dock connector slot (bottom centre) -->
-      <rect x="83" y="383.5" width="54" height="7" rx="3.5" fill="rgba(255,255,255,.18)"/>
-
-    </svg></div>
-  <div id="hero-content"></div>
-  </div>
-<div class="hero-device-icon" aria-hidden="true">
-    <svg viewBox="0 0 220 392" fill="none" xmlns="http://www.w3.org/2000/svg">
-
-      <!-- Device body - slightly tapered at edges (2G design language) -->
-      <rect x="0" y="0" width="220" height="392" rx="34" fill="#0a0a0a"/>
-
-      <!-- Top bezel - thick, characteristic of early iPod touch -->
-      <!-- Screen area -->
-      <rect x="11" y="52" width="198" height="272" rx="3" fill="rgba(255,255,255,.12)"/>
-
-      <!-- Screen subtle inner gloss -->
-      <rect x="14" y="55" width="192" height="266" rx="2" fill="rgba(255,255,255,.04)"/>
-
-      <!-- Home screen icon grid — 4x4 subtle dots, makes it read as iPod -->
-      <!-- Row 1 -->
-      <rect x="35"  y="78"  width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <rect x="82"  y="78"  width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <rect x="129" y="78"  width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <rect x="176" y="78"  width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <!-- Row 2 -->
-      <rect x="35"  y="122" width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <rect x="82"  y="122" width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <rect x="129" y="122" width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <rect x="176" y="122" width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <!-- Row 3 -->
-      <rect x="35"  y="166" width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <rect x="82"  y="166" width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <rect x="129" y="166" width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <rect x="176" y="166" width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <!-- Row 4 -->
-      <rect x="35"  y="210" width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <rect x="82"  y="210" width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <rect x="129" y="210" width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-      <rect x="176" y="210" width="28" height="28" rx="7" fill="rgba(255,255,255,.07)"/>
-
-      <!-- Dock bar at bottom of screen -->
-      <rect x="11" y="276" width="198" height="48" rx="0" fill="rgba(255,255,255,.04)"/>
-      <!-- 4 dock icons -->
-      <rect x="27"  y="286" width="28" height="28" rx="7" fill="rgba(255,255,255,.09)"/>
-      <rect x="74"  y="286" width="28" height="28" rx="7" fill="rgba(255,255,255,.09)"/>
-      <rect x="121" y="286" width="28" height="28" rx="7" fill="rgba(255,255,255,.09)"/>
-      <rect x="168" y="286" width="28" height="28" rx="7" fill="rgba(255,255,255,.09)"/>
-
-      <!-- Bottom bezel — thick (houses home button) -->
-      <!-- Home button outer ring — pre-Touch ID round button -->
-      <circle cx="110" cy="355" r="20" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.18)" stroke-width="1.5"/>
-      <!-- Home button inner detail ring -->
-      <circle cx="110" cy="355" r="13" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
-
-      <!-- NO front camera — clean top bezel (2G specific) -->
-      <!-- Just a tiny speaker indicator centered at top -->
-      <rect x="92" y="28" width="36" height="4" rx="2" fill="rgba(255,255,255,.2)"/>
-
-      <!-- Volume up button (left edge) -->
-      <rect x="0" y="130" width="4.5" height="34" rx="2.25" fill="rgba(255,255,255,.22)"/>
-      <!-- Volume down button (left edge) -->
-      <rect x="0" y="176" width="4.5" height="34" rx="2.25" fill="rgba(255,255,255,.22)"/>
-
-      <!-- Sleep/wake button (top-right edge) -->
-      <rect x="152" y="0" width="36" height="4.5" rx="2.25" fill="rgba(255,255,255,.22)"/>
-
-      <!-- 3.5mm headphone jack top-left — flush (2G specific) -->
-      <circle cx="38" cy="2.25" r="7" fill="rgba(0,0,0,.4)"/>
-
-      <!-- 30-pin dock connector slot (bottom centre) -->
-      <rect x="83" y="383.5" width="54" height="7" rx="3.5" fill="rgba(255,255,255,.18)"/>
-
-    </svg>
-  </div>
-</section>
-
-<section class="wiki-section" data-tone="a" id="overview">
-  <div id="overview-content"></div>
-</section>
+{% include sections/overview.html data=page.overview %}
 
 <section class="wiki-section" data-tone="special" id="photo-rail-section">
   <div id="photo-rail-inner" class="wiki-section-inner"></div>
@@ -177,9 +36,7 @@ layout: default
 
 {% include sections/timeline-section.html data=page.timeline %}
 
-<section class="wiki-section" data-tone="a" id="delta-section">
-  <div id="delta-content"></div>
-</section>
+{% include sections/delta-section.html data=page.delta %}
 
 {% include sections/config-section.html data=page.config %}
 

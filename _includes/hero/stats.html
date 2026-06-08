@@ -1,0 +1,10 @@
+{%- comment -%}
+  HERO STATS GRID — single source for the 1×4 key-numbers band.
+  Used by any hero (home + sub-page). Always exactly 4 cells (canon).
+  data = a list of { num, label }.
+  Edit this file once → every hero's stat grid updates everywhere.
+{%- endcomment -%}
+{%- assign stats = include.data -%}
+<div class="wiki-hero-stats">
+  {%- for s in stats -%}<div class="wiki-hero-stat"><div class="wiki-hero-stat-num"{% if s.color %} style="color:{{ s.color }}"{% endif %}>{{ s.num }}</div><div class="wiki-hero-stat-label">{{ s.label }}</div></div>{%- endfor -%}
+</div>

@@ -316,7 +316,8 @@ body.wiki-apple .wiki-hero {
 }
 
 /* Hero title — engage Fraunces SOFT axis (Apple house style) */
-body.wiki-apple .wiki-hero-title {
+body.wiki-apple .wiki-hero-title,
+body.wiki-apple .wiki-hero-subtitle {
   font-variation-settings: "SOFT" 30, "WONK" 0;
 }
 body.wiki-apple .wiki-hero-stat-num {
