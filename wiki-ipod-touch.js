@@ -113,30 +113,6 @@ function secLabel(icon, text){
   return '<div class="wiki-section-eyebrow">'+icon+text+'</div>';
 }
 
-// ── renderHero ────────────────────────────────────────────────────────
-function renderHero(){
-  var h = PAGE_DATA.hero;
-  document.title = PAGE_DATA.pageTitle;
-  var el = document.getElementById('hero-content');
-  if(!el) return;
-  el.innerHTML =
-    '<div class="wiki-hero-eyebrow"><span class="wiki-hero-eyebrow-dot"></span>'+h.eyebrow+'</div>'
-    +'<h1 class="wiki-hero-title">'+h.title+'</h1>'
-    +'<div class="hero-gen">'
-    +'  <span class="hero-gen-name fr">'+h.gen+'</span>'
-    +'  <span class="hero-gen-sep"> · </span>'
-    +'  <span class="hero-gen-model jb">Model <span>'+h.model+'</span></span>'
-    +'</div>'
-    +'<p class="wiki-hero-desc">'+h.intro+'</p>'
-    +'<div class="wiki-hero-stats">'
-    + h.stats.map(function(s){
-        return '<div class="wiki-hero-stat">'
-          +'<span class="wiki-hero-stat-num">'+s.val+'</span>'
-          +'<span class="wiki-hero-stat-label">'+s.lbl+'</span>'
-          +'</div>';
-      }).join('')
-    +'</div>';
-}
 
 // ── renderOverview ────────────────────────────────────────────────────
 function renderOverview(){
@@ -435,7 +411,6 @@ function renderWIKI_TOC(){
 // ── INIT ──────────────────────────────────────────────────────────────
 function initPage(){
   renderWIKI_TOC();
-  renderHero();
   renderOverview();
   if(PAGE_DATA.photos && PAGE_DATA.photos.length) renderPhotoRail();
   renderDelta();

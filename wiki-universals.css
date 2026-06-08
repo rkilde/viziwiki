@@ -427,6 +427,43 @@
 
 
 /* ════════════════════════════════════════════════════════════════════
+   §11b — HERO SUB-H1 (subtitle line)
+   An optional secondary headline under the H1 — e.g. an edition, a
+   generation, a model line (the iPod "(7th generation) · Model A2178").
+   Uses the universal `title` document role so it's under master control
+   like every other heading. Optional mono `-meta` tag after a separator.
+   Color comes from the skin (--hero-subtitle-* tokens).
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-hero-subtitle {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: var(--t-title-size);        /* type scale · Title */
+  font-weight: var(--t-title-weight);
+  line-height: var(--t-title-leading);
+  letter-spacing: var(--t-title-tracking);
+  color: var(--hero-subtitle-color, var(--hero-title-color, currentColor));
+}
+
+.wiki-hero-subtitle-sep {
+  color: var(--hero-subtitle-sep, var(--hero-title-accent));
+}
+
+.wiki-hero-subtitle-meta {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: var(--t-label-size);        /* type scale · Label */
+  font-weight: var(--t-label-weight);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--hero-subtitle-meta, var(--hero-desc-color));
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
    §12 — HERO DESCRIPTION
    The intro paragraph below the H1. 18px, capped at 36rem.
    Used on any hero that has a description — home or sub-page.

@@ -10,6 +10,9 @@
   Data (all optional unless noted):
     ── CONTENT (contributor) ──
     title        REQUIRED — H1 (the trailing period accent is automatic)
+    subtitle     optional sub-h1 line under the H1 (universal `title` role)
+    subtitle_meta  optional mono tag appended after a " · " separator
+                   (e.g. a model number / edition — the iPod "Model A2178")
     eyebrow      small mono category tag
     desc         one-paragraph lead
     search       true → render the search bar (HOME heroes only)
@@ -20,6 +23,7 @@
     ── DECORATION (skin / admin) ──
     bg           hero background (colour/gradient)
     accent       sets --hero-title-accent + --hero-eyebrow-dot
+    chrome       named shared decoration block (currently: "ipod" device art)
     icon         corner wiki-icon sprite name
     overlays     list of inline-style strings → decorative overlay divs
     watermark    raw HTML for a skin ghost watermark
@@ -30,12 +34,14 @@
 {%- capture herostyle -%}{%- if h.bg %}background:{{ h.bg }};{% endif %}{%- if h.accent %}--hero-title-accent:{{ h.accent }};--hero-eyebrow-dot:{{ h.accent }};{% endif %}{%- endcapture -%}
 {%- assign herostyle = herostyle | split: ';' | join: ';' -%}<section class="wiki-hero{% if h.class %} {{ h.class }}{% endif %}"{% if h.id %} id="{{ h.id }}"{% endif %}{% if herostyle != "" %} style="{{ herostyle }}"{% endif %}>
   {%- if h.watermark %}{{ h.watermark }}{% endif -%}
+  {%- if h.chrome == "ipod" %}{% include hero/chrome-ipod.html %}{% endif -%}
   {%- if h.overlays %}{% for ov in h.overlays %}<div class="pointer-events-none absolute inset-0" style="{{ ov }}"></div>{% endfor %}{% endif -%}
   {%- if h.icon %}{% include icon.html name=h.icon %}{% endif -%}
   <div class="wiki-hero-inner">
     <div class="wiki-hero-content">
       {%- if h.eyebrow %}<div class="wiki-hero-eyebrow"><span class="wiki-hero-eyebrow-dot"></span> {{ h.eyebrow }}</div>{% endif -%}
       <h1 class="wiki-hero-title">{{ h.title }}<span class="wiki-hero-title-accent">.</span></h1>
+      {%- if h.subtitle %}<div class="wiki-hero-subtitle">{{ h.subtitle }}{% if h.subtitle_meta %}<span class="wiki-hero-subtitle-sep"> · </span><span class="wiki-hero-subtitle-meta">{{ h.subtitle_meta }}</span>{% endif %}</div>{% endif -%}
       {%- if h.desc %}<p class="wiki-hero-desc">{{ h.desc }}</p>{% endif -%}
       {%- if h.search %}{% include hero/search.html data=h %}{% endif -%}
       {%- if h.stats %}{% include hero/stats.html data=h.stats %}{% endif -%}

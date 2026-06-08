@@ -1,8 +1,5 @@
-/* ── Hero generation line (name · Model ####) ──────────────────────── */
-.hero-gen{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:28px;}
-.hero-gen-sep{color:rgba(0,0,0,.25);}
-.hero-gen-model{font-family:"JetBrains Mono",monospace;font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:rgba(0,0,0,.38);}
-.hero-gen-model span{color:rgba(0,0,0,.55);}
+/* ── iPod hero surface (page-class look; content + sub-h1 are canonical) ── */
+.wiki-hero.ipod-hero{background:#f4f4f6;border-bottom:2px solid rgba(0,0,0,.12);}
 
 /* ====================================================================
    wiki-ipod-touch.css
@@ -32,8 +29,6 @@
 @media(max-width:600px){}
 @media(max-width:900px){}
 @media(max-width:600px){}
-.hero-gen-name{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:clamp(24px,3vw,36px);font-weight:600;letter-spacing:-0.02em;color:#0a0a0a;line-height:1;margin-bottom:10px;}
-.hero-model{font-family:"JetBrains Mono",monospace;font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:rgba(0,0,0,.38);margin-bottom:28px;display:inline-flex;align-items:center;gap:8px;}
 
 /* Spotlight card */
 
@@ -174,34 +169,6 @@
   pointer-events:none;
 }
 .design-img-card img{cursor:zoom-in;}
-
-/* ── Mobile hero watermark ─── */
-.hero-mob-wm{
-  display:none;
-}
-@media(max-width:600px){
-  .hero-mob-wm{
-    display:none !important;
-    position:absolute;
-    left:50%;
-    top:50%;
-    transform:translate(-50%,-50%);
-    width:180px;
-    height:320px;
-    overflow:hidden;
-    opacity:.07;
-    pointer-events:none;
-    user-select:none;
-    z-index:0;
-  }
-  .hero-mob-wm svg{
-    width:100%;
-    height:auto;
-    display:block;
-  }
-  /* ensure hero text sits above watermark */
-  .hero-inner > div{position:relative;z-index:1;}
-}
 
 /* ── Jailbreak two-col: prose left, chart right ─── */
 .jb-two-col{
