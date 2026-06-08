@@ -79,7 +79,7 @@ sections:
     h2: required
     paragraphs: optional               # lead prose above the ribbon
     contained: true                    # NOT full-bleed
-    hosts: [lane]                      # visuals legal in the slot
+    hosts: [lifecycle-lane]            # visuals legal in the slot
 
 config:
   bank: charts
@@ -108,9 +108,9 @@ spec:
   card_fields: [title, icon, rows]
   colors: skin-derived                              # chrome via --spec-* tokens
 
-lane:
+lifecycle-lane:
   bank: timelines
-  partial: visuals/lane/lane.html
+  partial: visuals/lifecycle-lane/lifecycle-lane.html
   section: os-section
   width_model: [uniform, weighted]     # weighted = width ∝ date gap (opt-in via `weighted: true` + dates)
   range: derived                       # auto "first date → last supported date" (+ optional range_note)

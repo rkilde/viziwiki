@@ -11,7 +11,7 @@
         (title, segments[], notes[], weighted?, range_note?)
 {%- endcomment -%}
 {%- assign data = include.data -%}
-{%- assign visual = data.visual | default: 'lane' -%}
+{%- assign visual = data.visual | default: 'lifecycle-lane' -%}
 <section class="wiki-section lane-section" data-tone="{{ data.tone | default: 'a' }}" id="os-section">
   <div class="wiki-section-inner">
     <div class="wiki-section-eyebrow">{% include icon.html name="layers" %} Operating system support</div>

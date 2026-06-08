@@ -12,6 +12,6 @@
   {%- when 'config' -%}{%- include visuals/config/config.html data=include.data -%}
   {%- when 'delta' -%}{%- include visuals/delta/delta.html data=include.data -%}
   {%- when 'spec' -%}{%- include visuals/spec/spec.html data=include.data -%}
-  {%- when 'lane' -%}{%- include visuals/lane/lane.html data=include.data -%}
+  {%- when 'lifecycle-lane' -%}{%- include visuals/lifecycle-lane/lifecycle-lane.html data=include.data -%}
   {%- else -%}<!-- visual bank: unknown type "{{ include.type }}" (not in _data/visuals.yml) -->
 {%- endcase -%}
