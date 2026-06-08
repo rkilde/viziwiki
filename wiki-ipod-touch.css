@@ -269,7 +269,8 @@
 
 /* Section label rows */
 .gd-sec td{background:#fafafa;padding:10px 20px;border-top:1px solid rgba(0,0,0,.1);border-bottom:1px solid rgba(0,0,0,.08);font-family:"JetBrains Mono",monospace;font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:#0a0a0a;}
-.gd-sec-main{display:flex;align-items:center;gap:6px;}
+.gd-sec-main{white-space:nowrap;}
+.gd-sec-main svg{vertical-align:-2px;margin-right:6px;}
 .gd-sec-col{letter-spacing:.14em;}
 
 /* Data rows */
