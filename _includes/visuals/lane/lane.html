@@ -1,0 +1,74 @@
+{%- comment -%}
+  LANE visual (Level B) — a horizontal lifecycle ribbon. Fills a lane host
+  section's slot. Renders the lane-head (title + AUTO-derived range), the
+  segmented ribbon, optional status notes, and an AUTO-derived legend.
+  The section frame (eyebrow / H2 / lead prose) lives in the host section
+  (e.g. _includes/sections/os-section.html).
+
+  Data:
+    title       (req)  lane-head left title
+    weighted    (opt)  true → width ∝ time-to-next-segment (needs parseable
+                       dates, e.g. "2019-05" or "May 1 2019"); default uniform
+    end         (opt)  weighted mode only — right-edge date for the last
+                       segment (else the last segment gets the median width)
+    range_note  (opt)  editorial suffix appended to the auto "start → end"
+    segments[]  (req)  each: ver, date, type(full|partial|dropped),
+                       badge?, badge_type?(ship|paid|limited|final|dropped)
+    notes[]     (opt)  each: status(full|partial|limited|final|dropped), label, text
+{%- endcomment -%}
+{%- assign d = include.data -%}
+{%- assign segs = d.segments -%}
+{%- assign supported = segs | where_exp: "s", "s.type != 'dropped'" -%}
+{%- comment -%} auto range: span + duration in years/months (rounded to nearest month) {%- endcomment -%}
+{%- assign e1 = segs.first.date | date: '%s' | plus: 0 -%}
+{%- assign e2 = supported.last.date | date: '%s' | plus: 0 -%}
+{%- assign durmo = e2 | minus: e1 | plus: 1314873 | divided_by: 2629746 -%}
+{%- assign dyr = durmo | divided_by: 12 -%}
+{%- assign dmo = durmo | modulo: 12 -%}
+{%- capture dur -%}{% if dyr > 0 %}{{ dyr }} yr {% endif %}{% if dmo > 0 %}{{ dmo }} mo{% endif %}{% if dyr == 0 and dmo == 0 %}&lt;1 mo{% endif %}{%- endcapture -%}
+{%- assign dur = dur | strip -%}
+<div class="lane-wrap">
+  <div class="lane-head">
+    <div class="lane-title fr">{{ d.title }}</div>
+    <div class="lane-range jb">{{ segs.first.date }} &rarr; {{ supported.last.date }} &middot; {{ dur }}{% if d.range_note %} &middot; {{ d.range_note }}{% endif %}</div>
+  </div>
+  <div class="lane-scroll"><div class="lane {% if d.weighted %}weighted{% else %}uniform{% endif %}">
+    {%- for s in segs -%}
+      {%- assign segstyle = '' -%}
+      {%- if d.weighted -%}
+        {%- if forloop.last -%}
+          {%- assign nextdate = d.end -%}
+        {%- else -%}
+          {%- assign ni = forloop.index0 | plus: 1 -%}
+          {%- assign nextdate = segs[ni].date -%}
+        {%- endif -%}
+        {%- if nextdate -%}
+          {%- assign e1 = s.date | date: '%s' | plus: 0 -%}
+          {%- assign e2 = nextdate | date: '%s' | plus: 0 -%}
+          {%- assign w = e2 | minus: e1 -%}
+          {%- if w > 0 -%}{%- assign segstyle = 'flex:' | append: w -%}{%- endif -%}
+        {%- endif -%}
+      {%- endif -%}
+      <div class="lane-seg {{ s.type }}"{% if segstyle != '' %} style="{{ segstyle }}"{% endif %}>
+        {%- if s.badge -%}<span class="lane-badge {{ s.badge_type | default: 'ship' }}">{{ s.badge }}</span>{%- endif -%}
+        <div class="lane-ver fr">{{ s.ver }}</div>
+        <div class="lane-date jb">{{ s.date }}</div>
+      </div>
+    {%- endfor -%}
+  </div></div>
+  {%- if d.notes -%}
+  <div class="lane-notes">
+    {%- for n in d.notes -%}
+    <div class="lane-note"><span class="lane-note-dot lane-dot-{{ n.status }}"></span><span><strong>{{ n.label }}</strong> &mdash; {{ n.text }}</span></div>
+    {%- endfor -%}
+  </div>
+  {%- endif -%}
+  {%- assign hasFull = segs | where: "type", "full" -%}
+  {%- assign hasPartial = segs | where: "type", "partial" -%}
+  {%- assign hasDropped = segs | where: "type", "dropped" -%}
+  <div class="lane-legend">
+    {%- if hasFull.size > 0 -%}<div class="lane-leg"><div class="lane-leg-sw lane-sw-full"></div>Full support</div>{%- endif -%}
+    {%- if hasPartial.size > 0 -%}<div class="lane-leg"><div class="lane-leg-sw lane-sw-partial"></div>Partial</div>{%- endif -%}
+    {%- if hasDropped.size > 0 -%}<div class="lane-leg"><div class="lane-leg-sw lane-sw-dropped"></div>Not supported</div>{%- endif -%}
+  </div>
+</div>

@@ -17,6 +17,7 @@ layout: default
 <link rel="stylesheet" href="/bank-config.css">
 <link rel="stylesheet" href="/bank-delta.css">
 <link rel="stylesheet" href="/bank-spec.css">
+<link rel="stylesheet" href="/bank-lane.css">
 
 {{ content }}
 
@@ -57,9 +58,7 @@ layout: default
   <div id="design-content"></div>
 </section>
 
-<section class="wiki-section" data-tone="a" id="os-section">
-  <div id="os-content"></div>
-</section>
+{% include sections/os-section.html data=page.os %}
 
 <section class="controversies-section wiki-section" data-tone="a" id="controversies-section">
   <div id="controversies-content"></div>

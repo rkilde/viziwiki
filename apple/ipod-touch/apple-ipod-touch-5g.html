@@ -3,6 +3,25 @@ permalink: /apple-ipod-touch-5g.html
 layout: class-ipod-touch
 title: "iPod touch (5th generation)"
 body_class: wiki-page wiki-apple
+os:
+  heading: "Three full versions. One partial. Then the 32-bit cliff."
+  title: "Software lifecycle: iOS 6.0 through iOS 9.3.5"
+  paragraphs:
+    - "The 5th generation iPod touch launched with iOS 6 and received three full major versions — iOS 6, 7, and 8 — before hitting partial support in iOS 9. It was the first iPod touch to support Siri, Maps turn-by-turn navigation, and Panorama camera from day one. It received every major iOS feature through iOS 8 that its hardware could support: AirDrop, Touch ID activation (though it had no sensor, the framework was present), Continuity, and App Extensions."
+    - "iOS 9 (September 2015) was the first version where the 5G's support became meaningfully incomplete. The device ran iOS 9 but did not support the Transit feature in Maps — the real-time public transport navigation that required server-side infrastructure Apple had not built out for all devices. All other iOS 9 features ran correctly."
+    - "The iOS 10 exclusion was categorical. iOS 10 (September 2016) dropped all 32-bit devices — the iPhone 4S, iPad 2, iPad mini (1st gen), and the iPod touch 5th gen among them. Apple's stated reason was 64-bit architecture requirements. The A5 was a 32-bit processor and could not run iOS 10's 64-bit-required kernel. iOS 9.3.5, released August 25, 2016, was the final update — a security patch for a critical kernel vulnerability, delivered to the device after it had already been excluded from iOS 10."
+  segments:
+    - { ver: "6.0",   date: "Oct 2012", type: full, badge: "Launch", badge_type: ship }
+    - { ver: "7.0",   date: "Sep 2013", type: full }
+    - { ver: "8.0",   date: "Sep 2014", type: full }
+    - { ver: "9.0",   date: "Sep 2015", type: partial }
+    - { ver: "9.3.5", date: "Aug 2016", type: partial, badge: "Final", badge_type: final }
+    - { ver: "10.0",  date: "Sep 2016", type: dropped, badge: "Dropped", badge_type: dropped }
+  notes:
+    - { status: full,    label: "iOS 6–8",   text: "Full support — Siri, Maps turn-by-turn, AirDrop, Continuity, App Extensions. All flagship features." }
+    - { status: partial, label: "iOS 9",     text: "Partial — all features except Transit in Maps. Device ran iOS 9 well; A5's 512 MB held up." }
+    - { status: final,   label: "iOS 9.3.5", text: "Final update — security patch for critical kernel vulnerability. Aug 25, 2016." }
+    - { status: dropped, label: "iOS 10",    text: "Excluded — 32-bit A5 dropped system-wide. iPhone 4S, iPad mini (1st gen) fell simultaneously." }
 spec:
   heading: "The complete sheet."
   device: "iPod touch (5th generation) · A1421 / A1509"
@@ -454,34 +473,6 @@ var PAGE_DATA = {
     images: [
       {src:"https://i.ebayimg.com/images/g/7RUAAOSw~KljofEp/s-l1200.jpg", alt:"iPod touch 5G back anodised aluminium", strong:"Anodised back",  caption:"· eBay"},
       {src:"https://i.redd.it/4xh3e2m1fqv41.jpg",                         alt:"iPod touch 5G loop detail",              strong:"Loop mechanism", caption:"· Reddit"},
-    ],
-  },
-
-  os: {
-    heading: "Three full versions. One partial. Then the 32-bit cliff.",
-    title:   "Software lifecycle: iOS 6.0 through iOS 9.3.5",
-    range:   "Oct 2012 &rarr; Aug 2016 &middot; ~46 months &middot; Full iOS 6, 7, 8 &middot; Partial iOS 9",
-    paragraphs: [
-      "The 5th generation iPod touch launched with iOS 6 and received three full major versions — iOS 6, 7, and 8 — before hitting partial support in iOS 9. It was the first iPod touch to support Siri, Maps turn-by-turn navigation, and Panorama camera from day one. It received every major iOS feature through iOS 8 that its hardware could support: AirDrop, Touch ID activation (though it had no sensor, the framework was present), Continuity, and App Extensions.",
-      "iOS 9 (September 2015) was the first version where the 5G\'s support became meaningfully incomplete. The device ran iOS 9 but did not support the Transit feature in Maps — the real-time public transport navigation that required server-side infrastructure Apple had not built out for all devices. All other iOS 9 features ran correctly.",
-      "The iOS 10 exclusion was categorical. iOS 10 (September 2016) dropped all 32-bit devices — the iPhone 4S, iPad 2, iPad mini (1st gen), and the iPod touch 5th gen among them. Apple\'s stated reason was 64-bit architecture requirements. The A5 was a 32-bit processor and could not run iOS 10\'s 64-bit-required kernel. iOS 9.3.5, released August 25, 2016, was the final update — a security patch for a critical kernel vulnerability, delivered to the device after it had already been excluded from iOS 10."
-    ],
-    lanes: [
-      {type:"full",    ver:"6.0",   date:"Oct 2012", badgeType:"ship",  badge:"Launch", style:"flex:40;"},
-      {type:"full",    ver:"6.1",   date:"Jan 2013", badgeType:"",      badge:"",       style:"flex:60;"},
-      {type:"full",    ver:"7.0",   date:"Sep 2013", badgeType:"",      badge:"",       style:"flex:40;"},
-      {type:"full",    ver:"7.1",   date:"Mar 2014", badgeType:"",      badge:"",       style:"flex:80;"},
-      {type:"full",    ver:"8.0",   date:"Sep 2014", badgeType:"",      badge:"",       style:"flex:40;"},
-      {type:"full",    ver:"8.4",   date:"Jun 2015", badgeType:"",      badge:"",       style:"flex:80;"},
-      {type:"partial", ver:"9.0",   date:"Sep 2015", badgeType:"",      badge:"",       style:"flex:40;"},
-      {type:"partial", ver:"9.3.5", date:"Aug 2016", badgeType:"final", badge:"Final",  style:"flex:80;"},
-      {type:"dropped", ver:"10.0",  date:"Sep 2016", badgeType:"",      badge:"Dropped",style:"opacity:.45;flex:20;min-width:52px;"},
-    ],
-    notes: [
-      {label:"iOS 6–8",   text:"Full support — Siri, Maps turn-by-turn, AirDrop, Continuity, App Extensions. All flagship features.", color:"#6ee7b7"},
-      {label:"iOS 9",     text:"Partial — all features except Transit in Maps. Device ran iOS 9 well; A5\'s 512 MB held up.",           color:"#fde68a"},
-      {label:"iOS 9.3.5", text:"Final update — security patch for critical kernel vulnerability. Aug 25, 2016.",                        color:"#fbbf24"},
-      {label:"iOS 10",    text:"Excluded — 32-bit A5 dropped system-wide. iPhone 4S, iPad mini (1st gen) fell simultaneously.",         color:"rgba(0,0,0,.12)"},
     ],
   },
 

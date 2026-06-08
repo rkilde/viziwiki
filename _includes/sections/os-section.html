@@ -1,0 +1,22 @@
+{%- comment -%}
+  OS SECTION (a page-section type — the framing, not the ribbon).
+  The chrome a contributor gets on dropping an "Operating system support section":
+    · locked eyebrow "Operating system support" + the locked layers icon
+    · a required H2 heading
+    · optional lead paragraphs (prose)
+    · the lifecycle ribbon (the lane visual) in the slot
+  Hosts the reusable `lane` visual. Usage:
+    {% include sections/os-section.html data=page.os %}
+  Data: heading (req), paragraphs?, tone?, visual?, + the lane data
+        (title, segments[], notes[], weighted?, range_note?)
+{%- endcomment -%}
+{%- assign data = include.data -%}
+{%- assign visual = data.visual | default: 'lane' -%}
+<section class="wiki-section lane-section" data-tone="{{ data.tone | default: 'a' }}" id="os-section">
+  <div class="wiki-section-inner">
+    <div class="wiki-section-eyebrow">{% include icon.html name="layers" %} Operating system support</div>
+    <h2 class="wiki-section-title" style="margin-bottom:24px;">{{ data.heading }}</h2>
+    {%- if data.paragraphs -%}<div class="lane-prose wiki-section-prose">{% for p in data.paragraphs %}<p>{{ p }}</p>{% endfor %}</div>{%- endif -%}
+    {% include visual.html type=visual data=data %}
+  </div>
+</section>

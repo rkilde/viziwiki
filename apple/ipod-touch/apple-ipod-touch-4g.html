@@ -3,6 +3,25 @@ permalink: /apple-ipod-touch-4g.html
 layout: class-ipod-touch
 title: "iPod touch (4th generation)"
 body_class: wiki-page wiki-apple
+os:
+  heading: "Three major versions. One sharp cliff."
+  title: "Software lifecycle: iOS 4.1 through iOS 6.1.6"
+  paragraphs:
+    - "The 4th generation iPod touch launched on iOS 4.1 and received full support through iOS 5.1.1, and partial support in iOS 6 — three major iOS versions total, the longest software run of any iPod touch up to that point. It received every feature its hardware could support: iCloud, iMessage, Game Center, Siri (dictation only, not the full assistant), Maps, FaceTime improvements."
+    - "The iOS 7 exclusion was the defining controversy of the device's lifecycle. The 4G shared its Apple A4 processor architecture with the iPhone 4 — which received iOS 7. The difference was RAM: 256 MB on the iPod touch, 512 MB on the iPhone 4. Apple determined that iOS 7 was not viable on 256 MB, a judgment validated by independent testing showing the iPhone 4 itself ran iOS 7 poorly."
+    - "The timing was the problem. The 16 GB iPod touch 4th generation was sold as new hardware — at $199 — until May 29, 2013. Apple announced iOS 7 at WWDC on June 10, 2013: eleven days later. A customer who bought the device the day before discontinuation could not run the current iOS within two weeks of purchase. Apple offered no acknowledgment of the timing, no transition assistance, and no official comment."
+  segments:
+    - { ver: "4.1",   date: "Sep 2010", type: full, badge: "Launch", badge_type: ship }
+    - { ver: "5.0",   date: "Oct 2011", type: full }
+    - { ver: "6.0",   date: "Sep 2012", type: partial }
+    - { ver: "6.1",   date: "Jan 2013", type: partial }
+    - { ver: "6.1.5", date: "Nov 2013", type: partial }
+    - { ver: "6.1.6", date: "Feb 2014", type: partial, badge: "Final", badge_type: final }
+    - { ver: "7.0",   date: "Sep 2013", type: dropped, badge: "Dropped", badge_type: dropped }
+  notes:
+    - { status: partial, label: "iOS 6.0",   text: "Partial iOS 6 support — Maps, Passbook, Siri dictation (not full assistant). Last major version." }
+    - { status: final,   label: "iOS 6.1.6", text: "goto fail SSL patch, Feb 21 2014. Final Apple software delivery to this hardware." }
+    - { status: dropped, label: "iOS 7",     text: "Excluded — 256 MB RAM vs required 512 MB. iPhone 4 with same A4 SoC received iOS 7." }
 spec:
   heading: "The complete sheet."
   device: "iPod touch (4th generation) · A1367"
@@ -429,36 +448,6 @@ var PAGE_DATA = {
     images: [
       {src:"https://i5.walmartimages.com/asr/652b28dd-e1ee-4161-b9d0-8bb4bc0a8e78.bf330e5ca0c05730b446eb0e5c9f3dcb.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF", alt:"iPod touch 4th generation design", strong:"7.2 mm profile.", caption:"The polished aluminium back and chamfered edges \u2014 15% thinner than the 3rd generation."},
       {src:"https://www.bhphotovideo.com/images/fb/Apple_MD057LL_A_8GB_iPod_touch_White_825484.jpg", alt:"iPod touch 4th generation white", strong:"White model.", caption:"Introduced October 2011, over a year after the black launch \u2014 the first white iPod touch."}
-    ],
-  },
-
-  // ── OS support ───────────────────────────────────────────────────
-  os: {
-    heading: "Three major versions. One sharp cliff.",
-    title:   "Software lifecycle: iOS 4.1 through iOS 6.1.6",
-    range:   "Sep 2010 &rarr; Feb 2014 &middot; ~41 months &middot; Full iOS 4, 5, 6",
-    paragraphs: [
-      "The 4th generation iPod touch launched on iOS 4.1 and received full support through iOS 5.1.1, and partial support in iOS 6 — three major iOS versions total, the longest software run of any iPod touch up to that point. It received every feature its hardware could support: iCloud, iMessage, Game Center, Siri (dictation only, not the full assistant), Maps, FaceTime improvements.",
-      "The iOS 7 exclusion was the defining controversy of the device\'s lifecycle. The 4G shared its Apple A4 processor architecture with the iPhone 4 — which received iOS 7. The difference was RAM: 256 MB on the iPod touch, 512 MB on the iPhone 4. Apple determined that iOS 7 was not viable on 256 MB, a judgment validated by independent testing showing the iPhone 4 itself ran iOS 7 poorly.",
-      "The timing was the problem. The 16 GB iPod touch 4th generation was sold as new hardware — at $199 — until May 29, 2013. Apple announced iOS 7 at WWDC on June 10, 2013: eleven days later. A customer who bought the device the day before discontinuation could not run the current iOS within two weeks of purchase. Apple offered no acknowledgment of the timing, no transition assistance, and no official comment."
-    ],
-    lanes: [
-      {type:"full",    ver:"4.1",   date:"Sep 2010", badgeType:"ship",  badge:"Launch", style:"flex:40;"},
-      {type:"full",    ver:"4.2.1", date:"Nov 2010", badgeType:"",      badge:"",       style:"flex:50;"},
-      {type:"full",    ver:"4.3",   date:"Mar 2011", badgeType:"",      badge:"",       style:"flex:90;"},
-      {type:"full",    ver:"5.0",   date:"Oct 2011", badgeType:"",      badge:"",       style:"flex:40;"},
-      {type:"full",    ver:"5.0.1", date:"Nov 2011", badgeType:"",      badge:"",       style:"flex:50;"},
-      {type:"full",    ver:"5.1.1", date:"May 2012", badgeType:"",      badge:"",       style:"flex:90;"},
-      {type:"partial", ver:"6.0",   date:"Sep 2012", badgeType:"",      badge:"",       style:"flex:30;min-width:52px;"},
-      {type:"partial", ver:"6.1",   date:"Jan 2013", badgeType:"",      badge:"",       style:"flex:90;"},
-      {type:"partial", ver:"6.1.5", date:"Nov 2013", badgeType:"",      badge:"",       style:"flex:60;"},
-      {type:"partial", ver:"6.1.6", date:"Feb 2014", badgeType:"final", badge:"Final",  style:"flex:40;"},
-      {type:"dropped", ver:"7.0",   date:"Sep 2013", badgeType:"",      badge:"Dropped",style:"opacity:.45;flex:20;min-width:52px;"},
-    ],
-    notes: [
-      {label:"iOS 6.0",   text:"Partial iOS 6 support — Maps, Passbook, Siri dictation (not full assistant). Last major version.",  color:"#fde68a"},
-      {label:"iOS 6.1.6", text:"goto fail SSL patch, Feb 21 2014. Final Apple software delivery to this hardware.",              color:"#fbbf24"},
-      {label:"iOS 7",     text:"Excluded — 256 MB RAM vs required 512 MB. iPhone 4 with same A4 SoC received iOS 7.",           color:"rgba(0,0,0,.12)"},
     ],
   },
 

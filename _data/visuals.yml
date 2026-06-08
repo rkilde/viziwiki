@@ -72,6 +72,14 @@ sections:
     h2: required
     contained: true                    # NOT full-bleed
     hosts: [config]                    # visuals legal in the slot
+  os-section:
+    partial: sections/os-section.html
+    eyebrow: "Operating system support"  # locked
+    icon: layers                       # locked
+    h2: required
+    paragraphs: optional               # lead prose above the ribbon
+    contained: true                    # NOT full-bleed
+    hosts: [lane]                      # visuals legal in the slot
 
 config:
   bank: charts
@@ -99,6 +107,19 @@ spec:
   section: spec-section
   card_fields: [title, icon, rows]
   colors: skin-derived                              # chrome via --spec-* tokens
+
+lane:
+  bank: timelines
+  partial: visuals/lane/lane.html
+  section: os-section
+  width_model: [uniform, weighted]     # weighted = width ∝ date gap (opt-in via `weighted: true` + dates)
+  range: derived                       # auto "first date → last supported date" (+ optional range_note)
+  legend: derived                      # auto from the support types present
+  segment_fields: [ver, date, type, badge, badge_type]
+  types: [full, partial, dropped]      # support tier → fill colour
+  badge_types: [ship, paid, limited, final, dropped]
+  note_fields: [status, label, text]   # status → dot colour (full/partial/limited/final/dropped)
+  colors: skin-derived                 # chrome via --lane-* tokens; support palette = semantic defaults
 
 timeline:
   bank: timelines

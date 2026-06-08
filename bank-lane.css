@@ -1,0 +1,104 @@
+/* ════════════════════════════════════════════════════════════════════
+   BANK · LANE  —  a horizontal lifecycle ribbon (segmented support timeline)
+   --------------------------------------------------------------------
+   A single horizontal lane of segments, each a labelled span (version +
+   date) coloured by a support TYPE (full / partial / dropped), optionally
+   carrying a corner BADGE (launch / final / paid / …). Below it: status
+   NOTES (dotted annotations) and an auto-derived LEGEND. The section frame
+   (locked eyebrow + H2 + lead prose) lives in a section partial that hosts
+   this visual (e.g. _includes/sections/os-section.html).
+
+   WIDTH MODEL — two modes (set on the .lane element):
+     · .lane.uniform   every segment equal width   (default; date = label only)
+     · .lane.weighted  width ∝ time to next segment (the visual.html computes
+                        the inline flex from each segment's date — optional,
+                        contributor opts in by setting `weighted: true` + dates)
+
+   Colours: chrome (wrap / lines / ink) is SKIN-DERIVED from the base palette
+   (--foreground / --card). The support palette (full=green, partial=amber,
+   dropped=grey) + badge/note colours are SEMANTIC defaults (like the delta
+   chips) a skin may pin. The Apple defaults reproduce the original iPod look,
+   so no skin pin is needed there.
+   ════════════════════════════════════════════════════════════════════ */
+
+.lane-wrap{
+  --lane-ink:       var(--foreground, #0a0a0a);
+  --lane-bg:        color-mix(in oklab, var(--foreground, #0a0a0a) 2%,  var(--card, #fff));
+  --lane-line:      color-mix(in oklab, var(--foreground, #0a0a0a) 12%, transparent);
+  --lane-line-soft: color-mix(in oklab, var(--foreground, #0a0a0a) 6%,  transparent);
+  /* support palette — semantic defaults; a skin may pin any of them */
+  --lane-full-bg:#d1fae5;    --lane-full-bd:#a7f3d0;    --lane-full-dot:#6ee7b7;
+  --lane-partial-bg:#fef3c7; --lane-partial-bd:#fde68a; --lane-partial-dot:#fde68a;
+  --lane-dropped-bg: color-mix(in oklab, var(--foreground, #0a0a0a) 3.5%, var(--card, #fff));
+  --lane-dropped-bd: color-mix(in oklab, var(--foreground, #0a0a0a) 15%, transparent);
+  --lane-dropped-dot:color-mix(in oklab, var(--foreground, #0a0a0a) 12%, transparent);
+  --lane-limited-dot:#f59e0b; --lane-final-dot:#fbbf24;
+  /* badges */
+  --lane-badge-ship-bg:    color-mix(in oklab, var(--foreground, #0a0a0a) 7%, transparent);
+  --lane-badge-ship-fg:    color-mix(in oklab, var(--foreground, #0a0a0a) 50%, transparent);
+  --lane-badge-paid-bg:#fbbf24;    --lane-badge-paid-fg:#78350f;
+  --lane-badge-limited-bg:#f59e0b; --lane-badge-limited-fg:#78350f;
+  --lane-badge-final-bg:   var(--foreground, #0a0a0a); --lane-badge-final-fg: var(--card, #fff);
+  --lane-badge-dropped-bg: transparent;
+  --lane-badge-dropped-bd: color-mix(in oklab, var(--foreground, #0a0a0a) 12%, transparent);
+  --lane-badge-dropped-fg: color-mix(in oklab, var(--foreground, #0a0a0a) 30%, transparent);
+}
+
+.lane-wrap{background:var(--lane-bg);border:1px solid var(--lane-line);border-radius:14px;padding:24px 24px 20px;}
+
+/* lead prose (optional, above the ribbon) */
+.lane-prose{max-width:720px;margin-bottom:40px;}
+
+.lane-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--lane-line) transparent;margin:0 -4px;padding:0 4px;}
+.lane-scroll::-webkit-scrollbar{height:2px;}
+.lane-scroll::-webkit-scrollbar-thumb{background:var(--lane-line);border-radius:1px;}
+
+.lane-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px;gap:12px;flex-wrap:wrap;}
+.lane-title{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:16px;font-weight:600;letter-spacing:-0.01em;color:var(--lane-ink);}
+.lane-range{font-family:"JetBrains Mono",monospace;font-size:8px;text-transform:uppercase;letter-spacing:.14em;color:color-mix(in oklab,var(--lane-ink) 38%,transparent);white-space:nowrap;}
+
+.lane{display:flex;gap:3px;min-width:680px;}
+.lane.uniform .lane-seg{flex:1 1 0;}
+.lane-seg{border-radius:3px;padding:8px 10px;display:flex;flex-direction:column;justify-content:space-between;min-height:64px;min-width:60px;position:relative;flex-shrink:0;overflow:hidden;}
+.lane-seg.full{background:var(--lane-full-bg);border:1px solid var(--lane-full-bd);}
+.lane-seg.partial{background:var(--lane-partial-bg);border:1px solid var(--lane-partial-bd);}
+.lane-seg.dropped{background:var(--lane-dropped-bg);border:1px dashed var(--lane-dropped-bd);opacity:.7;}
+.lane-ver{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:13px;font-weight:600;color:var(--lane-ink);line-height:1.1;padding-right:40px;}
+.lane-seg.dropped .lane-ver{color:color-mix(in oklab,var(--lane-ink) 28%,transparent);}
+.lane-date{font-family:"JetBrains Mono",monospace;font-size:6.5px;text-transform:uppercase;letter-spacing:.08em;color:color-mix(in oklab,var(--lane-ink) 38%,transparent);margin-top:auto;}
+
+.lane-badge{position:absolute;top:5px;right:5px;font-family:"JetBrains Mono",monospace;font-size:6px;text-transform:uppercase;letter-spacing:.06em;padding:2px 4px;border-radius:2px;white-space:nowrap;max-width:calc(100% - 10px);overflow:hidden;text-overflow:ellipsis;}
+.lane-badge.ship{background:var(--lane-badge-ship-bg);color:var(--lane-badge-ship-fg);}
+.lane-badge.paid{background:var(--lane-badge-paid-bg);color:var(--lane-badge-paid-fg);}
+.lane-badge.limited{background:var(--lane-badge-limited-bg);color:var(--lane-badge-limited-fg);}
+.lane-badge.final{background:var(--lane-badge-final-bg);color:var(--lane-badge-final-fg);}
+.lane-badge.dropped{background:var(--lane-badge-dropped-bg);border:1px solid var(--lane-badge-dropped-bd);color:var(--lane-badge-dropped-fg);}
+
+.lane-notes{margin-top:14px;display:flex;gap:16px;flex-wrap:wrap;}
+.lane-note{display:flex;align-items:flex-start;gap:5px;font-size:11.5px;color:color-mix(in oklab,var(--lane-ink) 60%,transparent);max-width:260px;line-height:1.45;}
+.lane-note strong{color:var(--lane-ink);font-weight:600;}
+.lane-note-dot{width:7px;height:7px;border-radius:2px;flex-shrink:0;margin-top:4px;}
+.lane-dot-full{background:var(--lane-full-dot);}
+.lane-dot-partial{background:var(--lane-partial-dot);}
+.lane-dot-limited{background:var(--lane-limited-dot);}
+.lane-dot-final{background:var(--lane-final-dot);}
+.lane-dot-dropped{background:var(--lane-dropped-dot);}
+
+.lane-legend{display:flex;gap:14px;margin-top:12px;padding-top:12px;border-top:1px solid var(--lane-line-soft);}
+.lane-leg{display:flex;align-items:center;gap:4px;font-family:"JetBrains Mono",monospace;font-size:7px;text-transform:uppercase;letter-spacing:.1em;color:color-mix(in oklab,var(--lane-ink) 42%,transparent);}
+.lane-leg-sw{width:12px;height:8px;border-radius:2px;}
+.lane-sw-full{background:var(--lane-full-bg);border:1px solid var(--lane-full-bd);}
+.lane-sw-partial{background:var(--lane-partial-bg);border:1px solid var(--lane-partial-bd);}
+.lane-sw-dropped{background:var(--lane-dropped-bg);border:1px dashed var(--lane-dropped-bd);}
+
+@media(max-width:600px){
+  .lane-wrap{padding:16px 14px 14px;}
+  .lane-head{flex-direction:column;gap:4px;}
+  .lane-title{font-size:14px;}
+  .lane-notes{flex-direction:column;gap:10px;}
+  .lane-note{max-width:100%;}
+  .lane-legend{flex-wrap:wrap;gap:10px;}
+  .lane-ver{padding-right:38px;}
+  .lane-badge{font-size:5px;padding:1px 3px;letter-spacing:.04em;}
+  .lane-seg{min-width:64px;}
+}

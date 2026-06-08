@@ -3,6 +3,24 @@ permalink: /apple-ipod-touch-2g.html
 layout: class-ipod-touch
 title: "iPod touch (2nd generation)"
 body_class: wiki-page wiki-apple
+os:
+  heading: "Ten versions. Two eras.<br>One hardware ceiling."
+  title: "Software lifecycle: iPhone OS 2.1.1 through iOS 4.2.1"
+  paragraphs:
+    - "The iPod touch 2nd generation shipped with <strong>iPhone OS 2.1.1</strong> in September 2008 and received its final update, <strong>iOS 4.2.1</strong>, in November 2010 — a support window of just over two years across ten distinct OS versions."
+    - "When <strong>iOS 4.0</strong> arrived in June 2010, it was the first major upgrade delivered free to iPod touch users. But the 2G received the new interface without three of iOS 4’s headline features: <strong>multitasking, custom home screen wallpapers, and Bluetooth keyboard support</strong>. The hardware’s memory and processor architecture simply could not sustain them."
+    - "When iOS 4.3 shipped in March 2011, the iPod touch 2nd generation was absent from the compatibility list entirely — not partially supported, simply gone. The App Store ecosystem began to move away within months."
+  segments:
+    - { ver: "2.1.1", date: "Sep 2008", type: full,    badge: "Launch",  badge_type: ship }
+    - { ver: "3.0",   date: "Jun 2009", type: full,    badge: "$9.95",   badge_type: paid }
+    - { ver: "4.0",   date: "Jun 2010", type: partial, badge: "Limited", badge_type: limited }
+    - { ver: "4.1",   date: "Sep 2010", type: partial }
+    - { ver: "4.2.1", date: "Nov 2010", type: partial, badge: "Final",   badge_type: final }
+    - { ver: "4.3",   date: "Mar 2011", type: dropped, badge: "Dropped", badge_type: dropped }
+  notes:
+    - { status: final,   label: "OS 3.0",   text: "$9.95 paid upgrade for iPod touch users. Unlocked a dormant Bluetooth chip present since launch." }
+    - { status: limited, label: "iOS 4.0+",  text: "No multitasking, no wallpapers, no Bluetooth keyboard. 128 MB RAM ceiling." }
+    - { status: dropped, label: "iOS 4.3",   text: "Device omitted from compatibility list. All future support ended." }
 spec:
   heading: "The complete sheet."
   device: "iPod touch (2nd generation) · A1288"
@@ -479,37 +497,6 @@ var PAGE_DATA = {
       {src:"https://media.guitarcenter.com/is/image/MMGS7/249993000000000-00-2000x2000.jpg", alt:"iPod touch 2nd generation", strong:"iPod touch 2G · 2008", caption:""},
       {src:"https://spaceforfreedom.wordpress.com/wp-content/uploads/2017/11/s-l1000.jpg?w=486&h=486", alt:"iPod touch 2nd generation detail", strong:"iPod touch 2G · detail", caption:""},
       {src:"https://www.slashgear.com/img/gallery/apple-ipod-touch-2g-video-unboxing/intro-import.jpg", alt:"iPod touch 2G unboxing", strong:"iPod touch 2G · unboxing", caption:""},
-    ],
-  },
-
-  // ── OS support lifecycle ───────────────────────────────────────
-  os: {
-    heading: "Nine versions. Two eras.<br>One hardware ceiling.",
-    title:   "Software lifecycle: iPhone OS 2.1.1 through iOS 4.2.1",
-    range:   "Sep 2008 &rarr; Mar 2011 &middot; 908 days &middot; 10 versions",
-    paragraphs: [
-      "The iPod touch 2nd generation shipped with <strong>iPhone OS 2.1.1</strong> in September 2008 and received its final update, <strong>iOS 4.2.1</strong>, in November 2010 — a support window of just over two years across ten distinct OS versions.",
-      "When <strong>iOS 4.0</strong> arrived in June 2010, it was the first major upgrade delivered free to iPod touch users. But the 2G received the new interface without three of iOS 4’s headline features: <strong>multitasking, custom home screen wallpapers, and Bluetooth keyboard support</strong>. The hardware’s memory and processor architecture simply could not sustain them.",
-      "When iOS 4.3 shipped in March 2011, the iPod touch 2nd generation was absent from the compatibility list entirely — not partially supported, simply gone. The App Store ecosystem began to move away within months.",
-    ],
-    // type: full · partial · dropped  |  badgeType: ship · paid · limited · final
-    lanes: [
-      {type:"full", ver:"2.1.1", date:"Sep 2008", badgeType:"ship", badge:"Launch", style:"flex:70;"},
-      {type:"full", ver:"2.2", date:"Nov 2008", badgeType:"", badge:"", style:"flex:67;"},
-      {type:"full", ver:"2.2.1", date:"Jan 2009", badgeType:"", badge:"", style:"flex:141;"},
-      {type:"full", ver:"3.0", date:"Jun 2009", badgeType:"paid", badge:"$9.95", style:"flex:84;"},
-      {type:"full", ver:"3.1", date:"Sep 2009", badgeType:"", badge:"", style:"flex:29;min-width:52px;"},
-      {type:"full", ver:"3.1.2", date:"Oct 2009", badgeType:"", badge:"", style:"flex:117;"},
-      {type:"full", ver:"3.1.3", date:"Feb 2010", badgeType:"", badge:"", style:"flex:139;"},
-      {type:"partial", ver:"4.0", date:"Jun 2010", badgeType:"limited", badge:"Limited", style:"flex:79;"},
-      {type:"partial", ver:"4.1", date:"Sep 2010", badgeType:"", badge:"", style:"flex:75;"},
-      {type:"partial", ver:"4.2.1", date:"Nov 2010", badgeType:"final", badge:"Final", style:"flex:107;"},
-      {type:"dropped", ver:"4.3", date:"Mar 2011", badgeType:"none", badge:"Dropped", style:"opacity:.45;flex:20;min-width:52px;"},
-    ],
-    notes: [
-      {label:"OS 3.0", text:"$9.95 paid upgrade for iPod touch users. Unlocked a dormant Bluetooth chip present since launch.", color:"#fbbf24"},
-      {label:"iOS 4.0+", text:"No multitasking, no wallpapers, no Bluetooth keyboard. 128 MB RAM ceiling.", color:"#f59e0b"},
-      {label:"iOS 4.3", text:"Device omitted from compatibility list. All future support ended.", color:"rgba(0,0,0,.12)"},
     ],
   },
 
