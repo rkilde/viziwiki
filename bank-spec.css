@@ -1,0 +1,48 @@
+/* ════════════════════════════════════════════════════════════════════
+   BANK · SPEC SHEET  (the full "Specifications Sheet" — a grid of cards)
+   --------------------------------------------------------------------
+   A grid of spec CARDS, each an icon + title + a list of key/value rows.
+   The section frame (locked "Specifications Sheet" eyebrow + file-text icon,
+   the H2 title, the required device sub-line) lives in
+   _includes/sections/spec-section.html; this file owns the grid + cards.
+
+   Colours are SKIN-DERIVED and NORMAL (light surface, dark text — not the
+   old inverted dark band). The chart reads --spec-* tokens defaulting from
+   the wiki's base palette (--foreground / --card); a skin can pin them.
+   ════════════════════════════════════════════════════════════════════ */
+
+.spec{
+  --spec-ink:     var(--foreground, #0a0a0a);                                          /* text */
+  --spec-surface: var(--card, #fff);                                                   /* card bg */
+  --spec-line:    color-mix(in oklab, var(--foreground, #0a0a0a) 12%, transparent);    /* borders */
+  --spec-divider: color-mix(in oklab, var(--foreground, #0a0a0a) 8%,  transparent);    /* the grid gaps */
+}
+
+/* required device sub-line (name · model number) */
+.spec-sub{font-family:"JetBrains Mono",monospace;font-size:9px;text-transform:uppercase;letter-spacing:.16em;color:color-mix(in oklab,var(--spec-ink) 42%,transparent);margin:0 0 36px;}
+
+/* card grid — the 1px gaps bleed the divider colour as hairlines */
+.spec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--spec-divider);border:1px solid var(--spec-line);border-radius:16px;overflow:hidden;}
+.spec-card{background:var(--spec-surface);padding:24px 24px 26px;}
+.spec-card-head{display:flex;align-items:center;gap:8px;font-family:"JetBrains Mono",monospace;font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:var(--spec-ink);margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--spec-line);}
+.spec-card-head svg,.spec-card-head .wiki-icon{width:13px;height:13px;color:color-mix(in oklab,var(--spec-ink) 55%,transparent);flex-shrink:0;}
+.spec-list{display:flex;flex-direction:column;gap:11px;margin:0;}
+.spec-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:0;}
+.spec-k{font-size:12.5px;color:color-mix(in oklab,var(--spec-ink) 48%,transparent);flex-shrink:0;margin:0;}
+.spec-v{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:13px;font-weight:500;color:var(--spec-ink);text-align:right;letter-spacing:-0.005em;line-height:1.35;margin:0;}
+
+/* ── Mobile: single-column stack with full-bleed dividers ──────────── */
+@media(max-width:760px){
+  .spec-sub{margin-bottom:28px;}
+  .spec-grid{grid-template-columns:1fr;gap:0;border-radius:14px;background:var(--spec-surface);}
+  .spec-card{padding:22px 18px;border-bottom:1px solid var(--spec-line);}
+  .spec-card:last-child{border-bottom:none;}
+  .spec-card-head{margin-bottom:14px;padding-bottom:12px;font-size:9.5px;letter-spacing:.16em;}
+  .spec-row{padding:2px 0;}
+  .spec-k{font-size:13px;}
+  .spec-v{font-size:14px;}
+}
+@media(max-width:380px){
+  .spec-row{flex-direction:column;align-items:flex-start;gap:2px;}
+  .spec-v{text-align:left;}
+}

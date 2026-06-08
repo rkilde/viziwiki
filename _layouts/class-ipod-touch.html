@@ -16,6 +16,7 @@ layout: default
 <link rel="stylesheet" href="/bank-timeline.css">
 <link rel="stylesheet" href="/bank-config.css">
 <link rel="stylesheet" href="/bank-delta.css">
+<link rel="stylesheet" href="/bank-spec.css">
 
 {{ content }}
 
@@ -64,9 +65,7 @@ layout: default
   <div id="controversies-content"></div>
 </section>
 
-<section class="wiki-section" data-tone="special" id="spec-section">
-  <div id="specs-content"></div>
-</section>
+{% include sections/spec-section.html data=page.spec %}
 
 <!-- Lightbox -->
 <div class="lb-backdrop" id="lb" onclick="lbClose(event)">

@@ -272,38 +272,6 @@ function renderControversies(){
   if(rail) addDragScroll(rail);
 }
 
-// ── renderSpecs ───────────────────────────────────────────────────────
-function renderSpecs(){
-  var sp = PAGE_DATA;
-  var el = document.getElementById('specs-content');
-  if(!el) return;
-
-  var eyebrowIcon = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>';
-
-  el.innerHTML =
-    '<div class="wiki-section-inner">'
-    +'<div class="spec-eyebrow jb">'+eyebrowIcon+'Technical specifications</div>'
-    +'<div class="spec-title fr">'+sp.specHeading+'</div>'
-    +'<div class="spec-sub jb">'+sp.specSub+'</div>'
-    +'<div class="spec-grid">'
-    + sp.specs.map(function(card, ci){
-        var rowsHtml = card.rows.map(function(r){
-          return '<div class="spec-row">'
-            +'<dt class="spec-k">'+r[0]+'</dt>'
-            +'<dd class="spec-v">'+r[1]+'</dd>'
-            +'</div>';
-        }).join('');
-        return '<div class="spec-card">'
-          +'<div class="spec-card-head">'
-          +(card.icon||'')
-          +'<span>'+card.title+'</span>'
-          +'</div>'
-          +'<dl class="spec-list">'+rowsHtml+'</dl>'
-          +'</div>';
-      }).join('')
-    +'</div>'
-    +'</div>';
-}
 
 
 // ── renderWIKI_TOC ────────────────────────────────────────────────────
@@ -327,5 +295,4 @@ function initPage(){
     'Industrial design');
   renderOS();
   if(PAGE_DATA.controversies) renderControversies();
-  renderSpecs();
 }

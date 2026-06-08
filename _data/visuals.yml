@@ -57,6 +57,14 @@ sections:
     contained: true                    # NOT full-bleed
     addons: [intro, footnote]
     hosts: [delta]                     # visuals legal in the slot
+  spec-section:
+    partial: sections/spec-section.html
+    eyebrow: "Specifications Sheet"    # locked
+    icon: file-text                    # locked
+    h2: required
+    device: required                   # the "name · model number" line
+    contained: true                    # NOT full-bleed; normal (light) tone
+    hosts: [spec]
   config-section:
     partial: sections/config-section.html
     eyebrow: "Configurations"          # locked
@@ -84,6 +92,13 @@ delta:
   row_fields: [label, desc, old, new, no_old, chip, chip_text]
   chips: [better, feature, changed, worse, same]   # colour = the change direction; text = the value
   colors: skin-derived                              # chrome via --gd-* tokens (Apple pinned)
+
+spec:
+  bank: spec-sheets
+  partial: visuals/spec/spec.html
+  section: spec-section
+  card_fields: [title, icon, rows]
+  colors: skin-derived                              # chrome via --spec-* tokens
 
 timeline:
   bank: timelines

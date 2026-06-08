@@ -302,36 +302,4 @@
 .lane-leg-sw{width:12px;height:8px;border-radius:2px;}
 @media(max-width:600px){.os-inner{padding:0 16px;}.lane-wrap{padding:16px 14px 14px;}.lane-head{flex-direction:column;gap:4px;}.lane-title{font-size:14px;}.lane-notes{flex-direction:column;gap:10px;}.lane-note{max-width:100%;}.lane-legend{flex-wrap:wrap;gap:10px;}.lane-ver{padding-right:38px;}.lane-badge{font-size:5px;padding:1px 3px;letter-spacing:.04em;}.lane-seg{min-width:64px;}}
 
-.spec-eyebrow{font-family:"JetBrains Mono",monospace;font-size:var(--t-label-size);text-transform:uppercase;letter-spacing:var(--t-label-tracking);color:rgba(255,255,255,.45);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
-.spec-title{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:var(--t-title-size);font-weight:var(--t-title-weight);letter-spacing:var(--t-title-tracking);line-height:var(--t-title-leading);color:#fff;margin-bottom:6px;}
-.spec-sub{font-family:"JetBrains Mono",monospace;font-size:9px;text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.4);margin-bottom:44px;}
-
-.spec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1);border-radius:16px;overflow:hidden;}
-.spec-card{background:#111;padding:24px 24px 26px;}
-.spec-card-head{display:flex;align-items:center;gap:8px;font-family:"JetBrains Mono",monospace;font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:#fff;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.1);}
-.spec-card-head svg{color:rgba(255,255,255,.55);flex-shrink:0;}
-.spec-list{display:flex;flex-direction:column;gap:11px;}
-.spec-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;}
-.spec-k{font-size:12.5px;color:rgba(255,255,255,.42);flex-shrink:0;}
-.spec-v{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:13px;font-weight:500;color:#fff;text-align:right;letter-spacing:-0.005em;line-height:1.35;}
-
-/* ── Mobile: bespoke single-column layout ──────────────── */
-@media(max-width:760px){
-  .spec-section{padding:56px 0 64px;}
-  .spec-inner{padding:0 16px;}
-  .spec-sub{margin-bottom:32px;}
-  /* Cards become a clean vertical stack with full-bleed dividers */
-  .spec-grid{grid-template-columns:1fr;gap:0;border-radius:14px;background:rgba(255,255,255,.08);}
-  .spec-card{padding:22px 18px;border-bottom:1px solid rgba(255,255,255,.08);}
-  .spec-card:last-child{border-bottom:none;}
-  .spec-card-head{margin-bottom:14px;padding-bottom:12px;font-size:9.5px;letter-spacing:.16em;}
-  /* Rows: key left, value right — but allow wrap gracefully */
-  .spec-row{padding:2px 0;}
-  .spec-k{font-size:13px;}
-  .spec-v{font-size:14px;}
-}
-@media(max-width:380px){
-  .spec-row{flex-direction:column;align-items:flex-start;gap:2px;}
-  .spec-v{text-align:left;}
-}
 
