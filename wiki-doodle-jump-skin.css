@@ -518,7 +518,8 @@ body.wiki-doodle-jump{
   .dj-page aside .doodler{ display:none !important; }
 
   /* Browse section: adjust left indent for mobile */
-  .dj-page .dj-section-inner{
+  .dj-page .dj-section-inner,
+  .dj-page section[data-section="overview"] > .wiki-section-inner{
     padding-left:1.25rem;
     padding-right:1.25rem;
   }
@@ -635,7 +636,8 @@ body.wiki-doodle-jump .dj-title-dot { color: #e6453a; }
    extra left indent so content clears the notebook margin line.
    Desktop only — the mobile override below resets it.            */
 @media (min-width: 768px) {
-  body.wiki-doodle-jump .dj-section-inner {
+  body.wiki-doodle-jump .dj-section-inner,
+  body.wiki-doodle-jump section[data-section="overview"] > .wiki-section-inner {
     padding-left: 112px;
   }
 }

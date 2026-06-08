@@ -3,6 +3,42 @@ permalink: /taco-bell.html
 layout: default
 title: "Taco Bell — Visual Wiki · ViziWiki"
 body_class: "wiki-page wiki-taco-bell"
+overview:
+  tone: b
+  heading: An American chain that invented its own genre.
+  paragraphs:
+  - <strong>Taco Bell</strong> is an American fast-food chain founded in 1962 by <strong>Glen Bell</strong> in Downey, California. Built on a single observation — that long lines at the Mexican restaurant across the street meant Americans wanted tacos faster — it became the country's largest Mexican-inspired quick-service chain and the only one to operate at national scale.
+  - 'More than a restaurant, Taco Bell functions as a cultural laboratory: a permanent menu of roughly 30 items rotated against a relentless churn of <a href="#" class="underline decoration-[var(--neon)] underline-offset-2">limited-time releases</a>, novelty crossovers (Doritos, Mountain Dew, Cheetos), and viral comebacks (Mexican Pizza, Volcano Menu). The chain pioneered the fourthmeal — a marketing-coined late-night occasion — and the concept of fast food as <em>fan culture</em>, complete with petitions, merch drops, and a musical.'
+  - 'Today the company operates over 7,200 restaurants across 31 countries under <strong>Yum! Brands</strong>, alongside KFC and Pizza Hut. Its reach extends well beyond the menu: into film cameos, sauce-packet fortune cookies, hotel residencies, a clothing line, and the only fast-food brand with a <em>nail polish collection</em>.'
+  infobox:
+    title: Taco Bell Corp.
+    rows:
+    - - Founder
+      - Glen Bell
+    - - Founded
+      - March 21, 1962
+    - - Origin
+      - Downey, California, U.S.
+    - - Headquarters
+      - Irvine, California, U.S.
+    - - Industry
+      - Fast food restaurants
+    - - Cuisine
+      - Tex-Mex / Cal-Mex
+    - - Locations
+      - 7,200+ (2024)
+    - - Areas served
+      - Worldwide (31 countries)
+    - - Key people
+      - Sean Tresvant (CEO)
+    - - Revenue
+      - US$13.8B (system, 2023)
+    - - Parent
+      - Yum! Brands
+    - - Slogan
+      - Live Más
+    - - Mascot (former)
+      - Gidget the Chihuahua
 hero:
   id: overview
   chrome: tb-home
@@ -392,47 +428,7 @@ extra_head: |
 <div class="wiki-home">
 {% endraw %}{% include sections/hero.html data=page.hero %}{% raw %}
 
-<section class="wiki-section" data-section="overview" data-tone="b">
-  <div class="wiki-section-inner">
-    <div class="wiki-overview">
-
-      <div class="wiki-overview-prose">
-        <div class="wiki-section-eyebrow">
-          <svg class="wiki-icon" aria-hidden="true"><use href="#ic-book-open"></use></svg> Overview
-        </div>
-        <h2 class="wiki-section-title">An American chain that invented its own genre.</h2>
-        <div class="wiki-section-prose">
-          <p><strong>Taco Bell</strong> is an American fast-food chain founded in 1962 by <strong>Glen Bell</strong> in Downey, California. Built on a single observation — that long lines at the Mexican restaurant across the street meant Americans wanted tacos faster — it became the country's largest Mexican-inspired quick-service chain and the only one to operate at national scale.</p>
-          <p>More than a restaurant, Taco Bell functions as a cultural laboratory: a permanent menu of roughly 30 items rotated against a relentless churn of <a href="#" class="underline decoration-[var(--neon)] underline-offset-2">limited-time releases</a>, novelty crossovers (Doritos, Mountain Dew, Cheetos), and viral comebacks (Mexican Pizza, Volcano Menu). The chain pioneered the fourthmeal — a marketing-coined late-night occasion — and the concept of fast food as <em>fan culture</em>, complete with petitions, merch drops, and a musical.</p>
-          <p>Today the company operates over 7,200 restaurants across 31 countries under <strong>Yum! Brands</strong>, alongside KFC and Pizza Hut. Its reach extends well beyond the menu: into film cameos, sauce-packet fortune cookies, hotel residencies, a clothing line, and the only fast-food brand with a <em>nail polish collection</em>.</p>
-        </div>
-      </div>
-
-      <aside class="wiki-infobox">
-        <div class="wiki-infobox-header">
-          <div class="wiki-infobox-label">Infobox</div>
-          <div class="wiki-infobox-title">Taco Bell Corp.</div>
-        </div>
-        <dl class="wiki-infobox-data">
-          <dt>Founder</dt>       <dd>Glen Bell</dd>
-          <dt>Founded</dt>       <dd>March 21, 1962</dd>
-          <dt>Origin</dt>        <dd>Downey, California, U.S.</dd>
-          <dt>Headquarters</dt>  <dd>Irvine, California, U.S.</dd>
-          <dt>Industry</dt>      <dd>Fast food restaurants</dd>
-          <dt>Cuisine</dt>       <dd>Tex-Mex / Cal-Mex</dd>
-          <dt>Locations</dt>     <dd>7,200+ (2024)</dd>
-          <dt>Areas served</dt>  <dd>Worldwide (31 countries)</dd>
-          <dt>Key people</dt>    <dd>Sean Tresvant (CEO)</dd>
-          <dt>Revenue</dt>       <dd>US$13.8B (system, 2023)</dd>
-          <dt>Parent</dt>        <dd>Yum! Brands</dd>
-          <dt>Slogan</dt>        <dd>Live Más</dd>
-          <dt>Mascot (former)</dt><dd>Gidget the Chihuahua</dd>
-        </dl>
-      </aside>
-
-    </div>
-  </div>
-</section>
+{% endraw %}{% include sections/overview.html data=page.overview %}{% raw %}
 
 <!-- ── BROWSE THE WIKI — home-screen directory ── -->
 <section class="wiki-section" id="dirSection" data-section="browse" data-tone="a">

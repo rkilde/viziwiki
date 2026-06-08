@@ -3,6 +3,32 @@ permalink: /fallout.html
 layout: default
 title: Fallout
 body_class: wiki-page wiki-fallout
+overview:
+  tone: a
+  id: overview
+  heading: War. War never changes — but the company that catalogues it does.
+  paragraphs:
+  - <strong>Fallout</strong> is a post-apocalyptic role-playing series set in a retro-futuristic United States — a timeline where transistor-era optimism and 1950s design never ended, and atomic power went everywhere before the bombs fell on October 23, <strong>2077</strong>.
+  - The series began in <strong>1997</strong> as an isometric RPG from Interplay's Black Isle Studios, built around the S.P.E.C.I.A.L. character system. After <em>Fallout 2</em>, the property passed to <strong>Bethesda Game Studios</strong>, which rebuilt it in first person with <em>Fallout 3</em> (2008). <em>New Vegas</em> (2010), developed by Obsidian, returned much of the original writing team to the Mojave.
+  - 'This wiki indexes the canon from the wrist up — every game, faction, vault, location, character, creature and piece of pre-war tech — and renders it the way a Pip-Boy would: green phosphor on a dark screen, organised as a directory you can drill straight into.'
+  infobox:
+    class: scan
+    title: The Fallout series
+    rows:
+    - - Debut
+      - Fallout — 1997
+    - - Genre
+      - Post-apocalyptic action RPG
+    - - Setting
+      - Retro-future post-nuclear USA
+    - - Developers
+      - Interplay · Bethesda · Obsidian
+    - - System
+      - S.P.E.C.I.A.L.
+    - - Great War
+      - October 23, 2077
+    - - Adaptation
+      - Fallout — TV series, 2024
 hero:
   chrome: fallout-home
   eyebrow: "Visual Wiki · Vol. 2"
@@ -137,6 +163,9 @@ body.wiki-fallout{ background:#0b0f0a; }
 .fo-page .wiki-hero-title-accent{text-shadow:0 0 10px rgba(255,176,0,.5),0 0 24px rgba(255,176,0,.22);}
 .fo-page .wiki-hero-title::after{content:"";display:inline-block;width:.55em;height:1em;background:var(--amber);transform:translateY(.12em);margin-left:.06em;animation:fo-blink 1.1s steps(1,end) infinite;box-shadow:0 0 12px rgba(255,176,0,.6);}
 .fo-page .wiki-hero-spotlight-title{text-shadow:0 0 10px rgba(62,230,61,.45),0 0 28px rgba(62,230,61,.18);}
+/* Section headings glow by selector too, so the canonical overview/section
+   include (which has no per-element 'glow' class) still gets the phosphor. */
+.fo-page .wiki-section-title{text-shadow:0 0 10px rgba(62,230,61,.45),0 0 28px rgba(62,230,61,.18);}
 
 /* directory expand */
 .fo-page .dir-body{max-height:0;overflow:hidden;transition:max-height .35s ease;}
@@ -195,57 +224,7 @@ body.wiki-fallout{ background:#0b0f0a; }
   <!-- ================================================================
        OVERVIEW  (▸ eyebrow + prose + infobox)
        ================================================================ -->
-  <section class="wiki-section" id="overview" data-section="overview" data-tone="a">
-    <div class="wiki-section-inner">
-      <div class="wiki-overview">
-
-        <div class="wiki-overview-prose">
-          <div class="wiki-section-eyebrow">
-            <svg class="wiki-icon" aria-hidden="true"><use href="#ic-book-open"></use></svg> Overview
-          </div>
-          <h2 class="wiki-section-title glow">
-            War. War never changes — but the company that catalogues it does.
-          </h2>
-          <div class="wiki-section-prose">
-            <p>
-              <strong>Fallout</strong> is a post-apocalyptic role-playing series set in a
-              retro-futuristic United States — a timeline where transistor-era optimism and 1950s design never
-              ended, and atomic power went everywhere before the bombs fell on October 23, <strong>2077</strong>.
-            </p>
-            <p>
-              The series began in <strong>1997</strong> as an isometric RPG from Interplay's
-              Black Isle Studios, built around the S.P.E.C.I.A.L. character system. After <em>Fallout 2</em>,
-              the property passed to <strong>Bethesda Game Studios</strong>, which rebuilt it
-              in first person with <em>Fallout 3</em> (2008). <em>New Vegas</em> (2010), developed by Obsidian,
-              returned much of the original writing team to the Mojave.
-            </p>
-            <p>
-              This wiki indexes the canon from the wrist up — every game, faction, vault, location, character,
-              creature and piece of pre-war tech — and renders it the way a Pip-Boy would: green phosphor on a
-              dark screen, organised as a directory you can drill straight into.
-            </p>
-          </div>
-        </div>
-
-        <aside class="wiki-infobox scan">
-          <div class="wiki-infobox-header">
-            <div class="wiki-infobox-label">Infobox</div>
-            <div class="wiki-infobox-title">The Fallout series</div>
-          </div>
-          <dl class="wiki-infobox-data">
-            <dt>Debut</dt>      <dd>Fallout — 1997</dd>
-            <dt>Genre</dt>      <dd>Post-apocalyptic action RPG</dd>
-            <dt>Setting</dt>    <dd>Retro-future post-nuclear USA</dd>
-            <dt>Developers</dt> <dd>Interplay · Bethesda · Obsidian</dd>
-            <dt>System</dt>     <dd>S.P.E.C.I.A.L.</dd>
-            <dt>Great War</dt>  <dd>October 23, 2077</dd>
-            <dt>Adaptation</dt> <dd>Fallout — TV series, 2024</dd>
-          </dl>
-        </aside>
-
-      </div>
-    </div>
-  </section>
+  {% include sections/overview.html data=page.overview %}
 
   <!-- ================================================================
        TIMELINE  (horizontal spine with markers)

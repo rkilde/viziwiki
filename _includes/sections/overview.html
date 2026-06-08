@@ -13,7 +13,7 @@
     infobox?    optional fact panel → see overview/infobox.html
 {%- endcomment -%}
 {%- assign o = include.data -%}
-<section class="wiki-section" data-section="overview" id="{{ o.id | default: 'overview' }}" data-tone="{{ o.tone | default: 'b' }}">
+<section class="wiki-section{% if o.class %} {{ o.class }}{% endif %}" data-section="overview" id="{{ o.id | default: 'overview' }}" data-tone="{{ o.tone | default: 'b' }}">
   <div class="wiki-section-inner">
     <div class="wiki-overview">
       <div class="wiki-overview-prose">

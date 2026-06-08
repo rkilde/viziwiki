@@ -3,6 +3,35 @@ permalink: /doodle-jump.html
 layout: default
 title: Doodle Jump
 body_class: wiki-page wiki-doodle-jump
+overview:
+  tone: b
+  id: about
+  class: grain
+  heading: One button. One direction. <span class="marker-underline spring">Forever up.</span>
+  paragraphs:
+  - <strong>Doodle Jump</strong> is a vertical platformer for mobile, released by Croatian-American studio <strong>Lima Sky</strong> on April 6, <strong>2009</strong>. You tilt the phone to steer a creature called the <em>Doodler</em> left and right; he jumps automatically; the platforms keep coming; gravity always wins eventually.
+  - It became one of the App Store's first true cultural artifacts — a game that defined an era of one-handed, sketchbook-aesthetic mobile play. By 2010 it had sold over <strong>five million copies</strong>; by 2014, fifteen million. The procedurally-generated platforms, the rotating cast of monsters, the spring-shoes and jet-packs and rocket-power-ups — all of it drawn like a kid filling the margins of a school notebook.
+  - This wiki catalogues that notebook. Every platform variant, every monster, every seasonal theme (Easter, Halloween, Soccer, Underwater, Space), every <span class="hl">unlockable</span>. We're trying to do for Doodle Jump what its players have always done — fill the margins until there's no white space left.
+  infobox:
+    class: dj-infobox-sticky sticky tilt-l
+    art: <span class="tape" style="top:-9px;right:18%;transform:rotate(4deg);"></span>
+    label: Field card
+    title: The Doodle Jump series
+    rows:
+    - - Released
+      - April 6, 2009
+    - - Developer
+      - Lima Sky
+    - - Genre
+      - Vertical platformer
+    - - Platforms
+      - iOS · Android · BlackBerry · Symbian · Windows Phone
+    - - Controls
+      - Accelerometer tilt
+    - - Hero
+      - The Doodler (unnamed)
+    - - Sequel
+      - Doodle Jump 2 — 2021
 hero:
   id: overview
   class: "paper grain"
@@ -167,45 +196,7 @@ window.WIKI_TOC = {
   <!-- ================================================================
        OVERVIEW  (canonical §16 — eyebrow + prose + infobox)
        ================================================================ -->
-  <section id="about" class="wiki-section grain" data-section="overview" data-tone="b">
-    <div class="wiki-section-inner wiki-overview dj-section-inner">
-      <div class="wiki-overview-prose">
-        <div class="wiki-section-eyebrow"><svg class="wiki-icon h-3 w-3" aria-hidden="true"><use href="#ic-book-open"></use></svg> Overview</div>
-        <h2 class="wiki-section-title">
-          One button. One direction. <span class="marker-underline spring">Forever up.</span>
-        </h2>
-        <div class="wiki-section-prose">
-          <p>
-            <strong>Doodle Jump</strong> is a vertical platformer for mobile, released by Croatian-American studio <strong>Lima Sky</strong> on April 6, <strong>2009</strong>. You tilt the phone to steer a creature called the <em>Doodler</em> left and right; he jumps automatically; the platforms keep coming; gravity always wins eventually.
-          </p>
-          <p>
-            It became one of the App Store's first true cultural artifacts — a game that defined an era of one-handed, sketchbook-aesthetic mobile play. By 2010 it had sold over <strong>five million copies</strong>; by 2014, fifteen million. The procedurally-generated platforms, the rotating cast of monsters, the spring-shoes and jet-packs and rocket-power-ups — all of it drawn like a kid filling the margins of a school notebook.
-          </p>
-          <p>
-            This wiki catalogues that notebook. Every platform variant, every monster, every seasonal theme (Easter, Halloween, Soccer, Underwater, Space), every <span class="hl">unlockable</span>. We're trying to do for Doodle Jump what its players have always done — fill the margins until there's no white space left.
-          </p>
-        </div>
-      </div>
-
-      <!-- Infobox — canon shell, sticky-note Tier-3 styling preserved -->
-      <aside class="wiki-infobox dj-infobox-sticky sticky tilt-l">
-        <span class="tape" style="top:-9px;right:18%;transform:rotate(4deg);"></span>
-        <div class="wiki-infobox-header">
-          <div class="wiki-infobox-label">Field card</div>
-          <div class="wiki-infobox-title">The Doodle Jump series</div>
-        </div>
-        <dl class="wiki-infobox-data">
-          <dt>Released</dt><dd>April 6, 2009</dd>
-          <dt>Developer</dt><dd>Lima Sky</dd>
-          <dt>Genre</dt><dd>Vertical platformer</dd>
-          <dt>Platforms</dt><dd>iOS · Android · BlackBerry · Symbian · Windows Phone</dd>
-          <dt>Controls</dt><dd>Accelerometer tilt</dd>
-          <dt>Hero</dt><dd>The Doodler (unnamed)</dd>
-          <dt>Sequel</dt><dd>Doodle Jump 2 — 2021</dd>
-        </dl>
-      </aside>
-    </div>
-  </section>
+  {% include sections/overview.html data=page.overview %}
 
 </div><!-- /.dj-page -->
 
