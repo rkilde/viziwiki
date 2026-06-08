@@ -163,29 +163,50 @@ did, on the iPod charts — hence this rule). **Rule of thumb: document text →
   Apple pinned) — first chart-bank themed from day one. Extracted out of the
   iPod JS engine (`bank-config.css` = single source; legacy `renderCfg` / CSS /
   placeholder removed).
+- **Phase 4 — Spec bank** (the "Specifications Sheet" card grid): built + rolled
+  out to **all 6 iPod pages**. New `section: spec` (locked eyebrow + `ic-file-text`,
+  required H2 + device line `name · model`, default `tone: special` = the dark
+  inverted signature band). Card grid of `[key, value]` rows; card icons from the
+  sprite. **Skin-tokenized** (`--spec-*`; the dark band re-derives the same tokens
+  light-on-dark in one block). `bank-spec.css` = single source.
+- **Phase 4 — Delta bank** (the "Changes & Improvements" comparison table): built +
+  rolled out to **all 6 iPod pages**. New `section: delta` (locked eyebrow +
+  `ic-chart-column-stacked`, required H2, optional intro/footnote). `prev → current`
+  rows in hardware/software groups; change chips (`better/feature/changed/worse/same`)
+  where colour = direction, text = value. **Skin-tokenized** (`--gd-*`, Apple pinned).
+  `bank-delta.css` = single source.
+- **Phase 4 — Lifecycle-lane bank** (the OS-support ribbon / "iOS versions chart"):
+  built + rolled out to **all 6 iPod pages**. New `section: os-section` (locked
+  eyebrow + `ic-layers`, required H2, optional lead prose, contained). A segmented
+  support ribbon: tiers `full/partial/dropped/security` (fill colour), corner badges,
+  an **auto-derived counter** (`launch → drop · duration · N major versions`, rounded
+  to the nearest month; post-drop `security` patches excluded), and an **auto legend**.
+  Width model `uniform` (default) or opt-in `weighted` (∝ date gap); `security` tile =
+  a post-EOL patch placed after the drop so the latest date stays last. Extracted off
+  the iPod JS engine (`renderOS` removed). **Skin-tokenized** (`--lane-*`; the semantic
+  support palette reproduces the Apple look, no pin needed). `bank-lifecycle-lane.css`
+  = single source. (Contributor handoff kit authored: markup + css + spec.md + tech.md.)
+- **Overview section → include** (`_includes/sections/overview.html` +
+  `_includes/overview/infobox.html`): DONE. New `overview-section` (locked "Overview"
+  eyebrow + `ic-book-open`, required H2 + paragraphs, optional **infobox** fact-panel
+  bank; prose|infobox or two-column newspaper layout). Driven by an `overview:`
+  front-matter block, **rolled out to ~24 pages** (6 iPod + the apple/smurfs/fallout/
+  doodle homes + every TB drink + menu page). iPod overview pulled off `renderOverview`.
 
 **Open**
-- Phase 4 visual bank — **catalog + timeline + config banks DONE** (see Done).
-  Remaining typed banks to decide + extract:
+- Phase 4 visual bank — **catalog + timeline + config + spec + delta +
+  lifecycle-lane banks DONE** (see Done). Remaining typed banks to decide + extract:
   - **swim-lane / proportional timeline** (discontinued swim-lanes, cantina
     rollout phases, slogans, sauces) — also pays off the temporary
     `ITEM_DB` / `ITEMS_DATA` duplication on discontinued + cantina.
   - **ladder / ranking bars** (drinks sugar + caffeine, sauces heat).
   - **tile directory** (menus listing page, sauces discontinued tiles).
-  - **comparison/delta table** (iPod hw/sw rows).
-  - **quote wall · pairing matrix · spec table** (sauces, iPod) — smaller.
+  - **quote wall · pairing matrix** (sauces, iPod) — smaller.
   Each bank is also where its component TYPE gets centralized (bank-owned).
 - **Hero → data-driven include** (`_includes/sections/hero.html` + `_includes/hero/*`):
   DONE for the sub-pages, the 6 iPod pages (off the JS engine), the TB sub/detail
   pages, and the apple/taco-bell home heroes. Remaining: fallout/smurfs/doodle home
   heroes (per-element flourishes → skin selectors).
-- **QUEUED — Overview section → include.** Same treatment as the hero/banks: the
-  overview's *CSS* is centralized (`wiki-universals.css` §15 + §15-INFOBOX bank) but
-  its *markup* is still inline on ~13 pages and JS-rendered on the 6 iPod pages
-  (`renderOverview`). Build `_includes/sections/overview.html` (+ `_includes/overview/
-  infobox.html`) from an `overview:` front-matter block; migrate the inline pages and
-  pull the iPod overview off `renderOverview` (finishing the iPod's exit from its JS
-  engine, like the hero did).
 - Re-tokenize page-specific DOCUMENT text not yet on canonical `.wiki-*` classes
   (e.g. the iPod page's own prose/eyebrows/headers reverted with its widgets).
 - Redo the iPod CSS block-dedupe (jb/lane) as a pure non-type cleanup.
