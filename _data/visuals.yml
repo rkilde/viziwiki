@@ -89,7 +89,7 @@ delta:
   section: delta-section
   axes: [prev, current]
   row_groups: [hardware, software]
-  row_fields: [label, desc, old, new, no_old, chip, chip_text]
+  row_fields: [label, old, new, no_old, chip, chip_text]
   chips: [better, feature, changed, worse, same]   # colour = the change direction; text = the value
   colors: skin-derived                              # chrome via --gd-* tokens (Apple pinned)
 
