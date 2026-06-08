@@ -59,3 +59,6 @@
   display: inline-block;
   flex: none;
 }
+/* …but suppress the dot when the eyebrow carries a real icon (e.g. the
+   canonical Overview's book-open), so it doesn't double up with it. */
+.wiki-section-eyebrow:has(> svg)::before { display: none; }

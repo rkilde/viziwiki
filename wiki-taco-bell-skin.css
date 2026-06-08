@@ -52,12 +52,12 @@ body.wiki-taco-bell {
   --prose-color:          rgba(42,31,21,0.85);      /* foreground/85 */
   --prose-strong-color:   #2a1f15;                  /* full dark for emphasis */
 
-  /* §16 overview infobox tokens — canonical clean infobox (no gradient header) */
+  /* §16 overview infobox tokens — TB's signature purple gradient header */
   --infobox-bg:            var(--panel-bg, #f4ede4);   /* match the panel tone the infobox sits on */
   --infobox-border:        rgba(42,31,21,0.20);
-  --infobox-header-bg:     transparent;                /* canon: no coloured header band */
-  --infobox-label-color:   rgba(42,31,21,0.55);
-  --infobox-title-color:   #2a1f15;
+  --infobox-header-bg:     linear-gradient(to bottom right, #c026d3, #581c87);
+  --infobox-label-color:   rgba(255,255,255,0.7);
+  --infobox-title-color:   #ffffff;
   --infobox-key-color:     rgba(42,31,21,0.55);
   --infobox-value-color:   #2a1f15;
   --infobox-divider:       rgba(42,31,21,0.10);
