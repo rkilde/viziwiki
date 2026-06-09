@@ -72,7 +72,10 @@ button{ font-family:inherit; }
 
 .status-badge{ font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.12em; text-transform:uppercase; padding:2px 6px; border-radius:4px; }
 .status-badge.live{ background:rgba(94,206,160,.14); color:var(--green); }
-.status-badge.draft{ background:rgba(248,188,66,.14); color:var(--amber); }
+.status-badge.stub{ background:rgba(138,130,117,.16); color:var(--muted); }
+.mil-count{ font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--dim); flex-shrink:0; }
+.mil-dot.stub{ background:transparent; border:1px solid var(--border3); }
+.mil-noh{ color:rgba(0,0,0,.45); font-style:italic; font-size:14px; line-height:1.5; font-family:'Spectral',serif; text-align:center; padding:28px; }
 
 /* ── the white mini-page in the preview (hero + section bands) ── */
 .pp{ width:900px; background:#fff; color:#1a1410; font-family:'Spectral',Georgia,serif; }

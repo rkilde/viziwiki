@@ -1,11 +1,9 @@
-// Build-time extraction: reads the real Taco Bell pages from the repo and emits
-// _builder/data/taco-bell.json (the wiki -> pages tree the Miller view consumes).
-//
-// HIERARCHY IS DERIVED, NOT HARD-CODED: top-level pages are taco-bell/*.html;
-// a detail page (in a subfolder) nests under whichever top-level page LINKS to
-// its permalink. (The current Jekyll pages carry no explicit parent field, so a
-// cross-link is the only real signal. Once content lives in the builder's data
-// model, parentage is an explicit property and this derivation goes away.)
+// Build-time extraction: the wiki's tree comes from its OWN directory/browse
+// data (the `CATS` array on the home page), NOT from the .html files. That
+// directory is the source of truth: the first column = the main category pages
+// listed in the browse section; entries/folders go deeper. A node is "live" if
+// it has a built page (pageUrl) — we then read that file for the hero/sections
+// preview; otherwise it's a "stub" (a directory entry not built yet).
 //
 // Run from _builder:  node scripts/extract-taco-bell.mjs
 import fs from 'node:fs';
@@ -14,62 +12,61 @@ import yaml from 'js-yaml';
 
 const ROOT = path.resolve(process.cwd(), '..');
 const TB = path.join(ROOT, 'taco-bell');
-const SUBDIRS = ['drinks', 'menus'];
+const HOME = path.join(TB, 'taco-bell.html');
 const SECTION_ORDER = ['hero', 'overview', 'spec', 'config', 'os', 'timeline', 'delta', 'catalog'];
 const SECTION_LABEL = { hero: 'Hero', overview: 'Overview', spec: 'Specifications', config: 'Configurations', os: 'OS support', timeline: 'Timeline', delta: 'Changes', catalog: 'Catalog' };
 
-const read = (f) => fs.readFileSync(f, 'utf8');
-const frontMatter = (txt) => {
-  const m = txt.match(/^---\n([\s\S]*?)\n---/);
-  if (!m) return {};
-  try { return yaml.load(m[1]) || {}; } catch { return {}; }
-};
-const cleanTitle = (fm) => fm.hero?.title || (fm.title || 'Untitled').split('·')[0].split(' — ')[0].trim();
+// 1) pull the CATS array literal off the home page and evaluate it (trusted, our content)
+const homeTxt = fs.readFileSync(HOME, 'utf8');
+const m = homeTxt.match(/const CATS = (\[[\s\S]*?\n\]);/);
+if (!m) { console.error('Could not find CATS in taco-bell.html'); process.exit(1); }
+const CATS = new Function('return ' + m[1])();
 
-function pageObj(relFile, txt) {
-  const fm = frontMatter(txt);
+// 2) index every built page file by its basename so a pageUrl resolves to a file
+const fileIndex = {};
+for (const dir of [TB, path.join(TB, 'drinks'), path.join(TB, 'menus')]) {
+  if (!fs.existsSync(dir)) continue;
+  for (const f of fs.readdirSync(dir)) if (f.endsWith('.html')) fileIndex[f] = path.join(dir, f);
+}
+
+const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+function builtPageData(pageUrl) {
+  const file = fileIndex[pageUrl];
+  if (!file) return null;
+  const txt = fs.readFileSync(file, 'utf8');
+  const fmMatch = txt.match(/^---\n([\s\S]*?)\n---/);
+  let fm = {};
+  try { fm = fmMatch ? (yaml.load(fmMatch[1]) || {}) : {}; } catch {}
   const h = fm.hero || {};
   return {
-    id: relFile.replace(/\.html$/, '').replace(/.*\//, ''),
-    title: cleanTitle(fm),
-    permalink: fm.permalink || null,
-    status: 'live',
     sections: SECTION_ORDER.filter((k) => fm[k] != null).map((k) => ({ type: k === 'os' ? 'lifecycle-lane' : k, label: SECTION_LABEL[k] })),
-    hero: {
-      eyebrow: h.eyebrow || null, title: h.title || null, subtitle: h.subtitle || null,
-      subtitle_meta: h.subtitle_meta || null, desc: h.desc || null,
-      stats: Array.isArray(h.stats) ? h.stats : [],
-    },
-    pages: [],
-    _raw: txt,
+    hero: { eyebrow: h.eyebrow || null, title: h.title || null, subtitle: h.subtitle || null, subtitle_meta: h.subtitle_meta || null, desc: h.desc || null, stats: Array.isArray(h.stats) ? h.stats : [] },
   };
 }
 
-// top-level pages (taco-bell/*.html)
-const tops = fs.readdirSync(TB).filter((f) => f.endsWith('.html'))
-  .map((f) => pageObj(f, read(path.join(TB, f))));
-
-// detail pages (subfolders)
-const details = SUBDIRS.flatMap((sub) => {
-  const dir = path.join(TB, sub);
-  return fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => f.endsWith('.html')).map((f) => pageObj(`${sub}/${f}`, read(path.join(dir, f)))) : [];
-});
-
-// nest each detail under the top page whose content LINKS to its permalink/slug
-for (const d of details) {
-  const needle = d.permalink || `/${d.id}.html`;
-  const parent = tops.find((t) => t._raw.includes(needle)) || tops.find((t) => t._raw.includes(d.id));
-  if (parent) parent.pages.push(d);
-  else { console.warn(`! no linking parent for ${d.id} — left at top level`); tops.push(d); }
+// 3) transform a directory node (category / entry / folder) into a page node
+function toNode(node) {
+  const pageUrl = node.pageUrl || null;
+  const built = pageUrl ? builtPageData(pageUrl) : null;
+  return {
+    id: pageUrl ? pageUrl.replace(/\.html$/, '') : slug(node.n || node.name),
+    title: node.name || node.n,
+    permalink: built ? '/' + pageUrl : null,
+    status: built ? 'live' : 'stub',
+    folder: !!node.isFolder,
+    count: typeof node.count === 'number' ? node.count : null,
+    accent: node.accent || (node.grad && node.grad[0]) || null,
+    sections: built ? built.sections : [],
+    hero: built ? built.hero : { eyebrow: null, title: null, subtitle: null, subtitle_meta: null, desc: null, stats: [] },
+    pages: (node.entries || []).map(toNode),
+  };
 }
 
-// home first, then by title
-tops.sort((a, b) => (a.id === 'taco-bell' ? -1 : b.id === 'taco-bell' ? 1 : a.title.localeCompare(b.title)));
-
-const strip = (p) => { const { _raw, ...rest } = p; rest.pages = rest.pages.map(strip); return rest; };
-const wiki = { id: 'taco-bell', name: 'Taco Bell', pages: tops.map(strip) };
+const wiki = { id: 'taco-bell', name: 'Taco Bell', pages: CATS.map(toNode) };
 
 fs.mkdirSync(path.join(process.cwd(), 'data'), { recursive: true });
 fs.writeFileSync(path.join(process.cwd(), 'data', 'taco-bell.json'), JSON.stringify(wiki, null, 2));
 const count = (ps) => ps.reduce((a, p) => a + 1 + count(p.pages), 0);
-console.log(`wrote data/taco-bell.json — ${wiki.pages.length} top-level, ${count(wiki.pages)} pages total`);
+const live = (ps) => ps.reduce((a, p) => a + (p.status === 'live' ? 1 : 0) + live(p.pages), 0);
+console.log(`wrote data/taco-bell.json — ${wiki.pages.length} categories, ${count(wiki.pages)} nodes, ${live(wiki.pages)} with built pages`);

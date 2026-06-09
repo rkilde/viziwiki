@@ -16,7 +16,10 @@ export type Page = {
   id: string;
   title: string;
   permalink: string | null;
-  status: string;
+  status: string;          // 'live' (built page) | 'stub' (directory entry, not built)
+  folder?: boolean;
+  count?: number | null;
+  accent?: string | null;
   sections: SectionRef[];
   hero: Hero;
   pages: Page[];

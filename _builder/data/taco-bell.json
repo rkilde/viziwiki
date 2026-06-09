@@ -3,188 +3,592 @@
   "name": "Taco Bell",
   "pages": [
     {
-      "id": "taco-bell",
-      "title": "Taco Bell",
-      "permalink": "/taco-bell.html",
-      "status": "live",
-      "sections": [
-        {
-          "type": "hero",
-          "label": "Hero"
-        },
-        {
-          "type": "overview",
-          "label": "Overview"
-        }
-      ],
+      "id": "tacos",
+      "title": "Tacos",
+      "permalink": null,
+      "status": "stub",
+      "folder": false,
+      "count": 38,
+      "accent": "#ea580c",
+      "sections": [],
       "hero": {
-        "eyebrow": "Visual Wiki · Vol. 1",
-        "title": "Taco Bell",
+        "eyebrow": null,
+        "title": null,
         "subtitle": null,
         "subtitle_meta": null,
-        "desc": "Every menu item, every limited-time release, every sauce-packet quote — the Live Más canon, indexed and illustrated since 1962.",
-        "stats": [
-          {
-            "num": "1,284",
-            "label": "entries"
-          },
-          {
-            "num": "1962",
-            "label": "since"
-          },
-          {
-            "num": "7,200+",
-            "label": "stores"
-          },
-          {
-            "num": "31",
-            "label": "countries"
-          }
-        ]
-      },
-      "pages": []
-    },
-    {
-      "id": "taco-bell-discontinued-drinks",
-      "title": "Discontinued<br>Drinks",
-      "permalink": "/taco-bell-discontinued-drinks.html",
-      "status": "live",
-      "sections": [
-        {
-          "type": "hero",
-          "label": "Hero"
-        },
-        {
-          "type": "overview",
-          "label": "Overview"
-        },
-        {
-          "type": "catalog",
-          "label": "Catalog"
-        }
-      ],
-      "hero": {
-        "eyebrow": "Discontinued · Archive · From the Vault",
-        "title": "Discontinued<br>Drinks",
-        "subtitle": null,
-        "subtitle_meta": null,
-        "desc": "Sixty-plus drinks that didn't survive — from pre-Pepsi Coca-Cola valves to last season's Freeze pull. Six categories, five decades, every item charted on a shared timeline.",
-        "stats": [
-          {
-            "num": "60+",
-            "label": "items archived"
-          },
-          {
-            "num": "6",
-            "label": "categories"
-          },
-          {
-            "num": "1962",
-            "label": "earliest entry"
-          },
-          {
-            "num": "2024",
-            "label": "most recent"
-          }
-        ]
+        "desc": null,
+        "stats": []
       },
       "pages": [
         {
-          "id": "taco-bell-brisk-raspberry",
-          "title": "Brisk Raspberry<br>Iced Tea",
-          "permalink": "/taco-bell-brisk-raspberry.html",
-          "status": "live",
-          "sections": [
-            {
-              "type": "hero",
-              "label": "Hero"
-            },
-            {
-              "type": "overview",
-              "label": "Overview"
-            }
-          ],
+          "id": "crunchy-taco",
+          "title": "Crunchy Taco",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
           "hero": {
-            "eyebrow": "Brisk · PepsiCo / Unilever · 1991–present",
-            "title": "Brisk Raspberry<br>Iced Tea",
+            "eyebrow": null,
+            "title": null,
             "subtitle": null,
             "subtitle_meta": null,
-            "desc": "A raspberry-flavored iced tea produced by the Pepsi Lipton Partnership (PepsiCo/Unilever). Available in retail since the 1990s; discontinued from Taco Bell fountains around 2020.",
+            "desc": null,
             "stats": []
           },
           "pages": []
         },
         {
-          "id": "taco-bell-pina-colada-frutista",
-          "title": "Piña Colada<br>Frutista Freeze",
-          "permalink": "/taco-bell-pina-colada-frutista.html",
-          "status": "live",
-          "sections": [
-            {
-              "type": "hero",
-              "label": "Hero"
-            },
-            {
-              "type": "overview",
-              "label": "Overview"
-            }
-          ],
+          "id": "soft-taco",
+          "title": "Soft Taco",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
           "hero": {
-            "eyebrow": "Frutista Freeze · Taco Bell · 2009–2013",
-            "title": "Piña Colada<br>Frutista Freeze",
+            "eyebrow": null,
+            "title": null,
             "subtitle": null,
             "subtitle_meta": null,
-            "desc": "A hand-blended pineapple-coconut frozen drink produced exclusively for Taco Bell as part of the Frutista Freeze program (2008–2013).",
+            "desc": null,
             "stats": []
           },
           "pages": []
         },
         {
-          "id": "taco-bell-sangrita-blast",
-          "title": "Mtn Dew<br>Sangrita Blast",
-          "permalink": "/taco-bell-sangrita-blast.html",
-          "status": "live",
-          "sections": [
-            {
-              "type": "hero",
-              "label": "Hero"
-            },
-            {
-              "type": "overview",
-              "label": "Overview"
-            }
-          ],
+          "id": "doritos-locos-taco",
+          "title": "Doritos Locos Taco",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
           "hero": {
-            "eyebrow": "Mountain Dew · PepsiCo · 2013–2017",
-            "title": "Mtn Dew<br>Sangrita Blast",
+            "eyebrow": null,
+            "title": null,
             "subtitle": null,
             "subtitle_meta": null,
-            "desc": "A cherry-citrus punch soda produced by PepsiCo under the Mountain Dew brand. Introduced in December 2013 and discontinued in 2017.",
+            "desc": null,
             "stats": []
           },
           "pages": []
         },
         {
-          "id": "taco-bell-spiked-lemonade",
-          "title": "Mtn Dew<br>Spiked Lemonade",
-          "permalink": "/taco-bell-spiked-lemonade.html",
-          "status": "live",
-          "sections": [
-            {
-              "type": "hero",
-              "label": "Hero"
-            },
-            {
-              "type": "overview",
-              "label": "Overview"
-            }
-          ],
+          "id": "crunchy-taco-supreme",
+          "title": "Crunchy Taco Supreme",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
           "hero": {
-            "eyebrow": "Mountain Dew · PepsiCo · 2017–2019",
-            "title": "Mtn Dew<br>Spiked Lemonade",
+            "eyebrow": null,
+            "title": null,
             "subtitle": null,
             "subtitle_meta": null,
-            "desc": "A non-alcoholic lemonade soda with prickly pear cactus juice, produced by PepsiCo under the Mountain Dew brand. Available from 2017 to 2019.",
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "cantina-chicken-crispy-taco",
+          "title": "Cantina Chicken Crispy Taco",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "double-decker-taco",
+          "title": "Double Decker Taco",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "volcano-taco",
+          "title": "Volcano Taco",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "spicy-potato-soft-taco",
+          "title": "Spicy Potato Soft Taco",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "cheesy-gordita-crunch",
+          "title": "Cheesy Gordita Crunch",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "double-stacked-taco",
+          "title": "Double Stacked Taco",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "naked-chicken-chalupa",
+          "title": "Naked Chicken Chalupa",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "steak-soft-taco",
+          "title": "Steak Soft Taco",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "chicken-chipotle-melt",
+          "title": "Chicken Chipotle Melt",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "crispy-chicken-taco",
+          "title": "Crispy Chicken Taco",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        }
+      ]
+    },
+    {
+      "id": "burritos",
+      "title": "Burritos",
+      "permalink": null,
+      "status": "stub",
+      "folder": false,
+      "count": 27,
+      "accent": "#e11d48",
+      "sections": [],
+      "hero": {
+        "eyebrow": null,
+        "title": null,
+        "subtitle": null,
+        "subtitle_meta": null,
+        "desc": null,
+        "stats": []
+      },
+      "pages": [
+        {
+          "id": "bean-burrito",
+          "title": "Bean Burrito",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "beefy-5-layer-burrito",
+          "title": "Beefy 5-Layer Burrito",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "7-layer-burrito",
+          "title": "7-Layer Burrito",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "quesarito",
+          "title": "Quesarito",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "grilled-cheese-burrito",
+          "title": "Grilled Cheese Burrito",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        }
+      ]
+    },
+    {
+      "id": "crunchwraps-co",
+      "title": "Crunchwraps & Co",
+      "permalink": null,
+      "status": "stub",
+      "folder": false,
+      "count": 14,
+      "accent": "#c026d3",
+      "sections": [],
+      "hero": {
+        "eyebrow": null,
+        "title": null,
+        "subtitle": null,
+        "subtitle_meta": null,
+        "desc": null,
+        "stats": []
+      },
+      "pages": [
+        {
+          "id": "crunchwrap-supreme",
+          "title": "Crunchwrap Supreme",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "mexican-pizza",
+          "title": "Mexican Pizza",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "breakfast-crunchwrap",
+          "title": "Breakfast Crunchwrap",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "spicy-crunchwrap",
+          "title": "Spicy Crunchwrap",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        }
+      ]
+    },
+    {
+      "id": "nachos-sides",
+      "title": "Nachos & Sides",
+      "permalink": null,
+      "status": "stub",
+      "folder": false,
+      "count": 19,
+      "accent": "#d97706",
+      "sections": [],
+      "hero": {
+        "eyebrow": null,
+        "title": null,
+        "subtitle": null,
+        "subtitle_meta": null,
+        "desc": null,
+        "stats": []
+      },
+      "pages": [
+        {
+          "id": "nachos-bellgrande",
+          "title": "Nachos BellGrande",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "nacho-fries",
+          "title": "Nacho Fries",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "cinnamon-twists",
+          "title": "Cinnamon Twists",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "cheesy-fiesta-potatoes",
+          "title": "Cheesy Fiesta Potatoes",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
             "stats": []
           },
           "pages": []
@@ -196,6 +600,9 @@
       "title": "Drinks",
       "permalink": "/taco-bell-drinks.html",
       "status": "live",
+      "folder": false,
+      "count": 22,
+      "accent": "#0891b2",
       "sections": [
         {
           "type": "hero",
@@ -235,13 +642,350 @@
           }
         ]
       },
-      "pages": []
+      "pages": [
+        {
+          "id": "baja-blast",
+          "title": "Baja Blast",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "baja-blast-freeze",
+          "title": "Baja Blast Freeze",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "pepsi",
+          "title": "Pepsi",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "wild-strawberry",
+          "title": "Wild Strawberry",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "baja-blast-zero",
+          "title": "Baja Blast Zero",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "wild-berry-frutista",
+          "title": "Wild Berry Frutista",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "mtn-dew-baja",
+          "title": "Mtn Dew Baja",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "tropicana-lemonade",
+          "title": "Tropicana Lemonade",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "sierra-mist",
+          "title": "Sierra Mist",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "taco-bell-discontinued-drinks",
+          "title": "Discontinued Drinks",
+          "permalink": "/taco-bell-discontinued-drinks.html",
+          "status": "live",
+          "folder": true,
+          "count": null,
+          "accent": "#64748b",
+          "sections": [
+            {
+              "type": "hero",
+              "label": "Hero"
+            },
+            {
+              "type": "overview",
+              "label": "Overview"
+            },
+            {
+              "type": "catalog",
+              "label": "Catalog"
+            }
+          ],
+          "hero": {
+            "eyebrow": "Discontinued · Archive · From the Vault",
+            "title": "Discontinued<br>Drinks",
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": "Sixty-plus drinks that didn't survive — from pre-Pepsi Coca-Cola valves to last season's Freeze pull. Six categories, five decades, every item charted on a shared timeline.",
+            "stats": [
+              {
+                "num": "60+",
+                "label": "items archived"
+              },
+              {
+                "num": "6",
+                "label": "categories"
+              },
+              {
+                "num": "1962",
+                "label": "earliest entry"
+              },
+              {
+                "num": "2024",
+                "label": "most recent"
+              }
+            ]
+          },
+          "pages": [
+            {
+              "id": "taco-bell-sangrita-blast",
+              "title": "Sangrita Blast",
+              "permalink": "/taco-bell-sangrita-blast.html",
+              "status": "live",
+              "folder": false,
+              "count": null,
+              "accent": null,
+              "sections": [
+                {
+                  "type": "hero",
+                  "label": "Hero"
+                },
+                {
+                  "type": "overview",
+                  "label": "Overview"
+                }
+              ],
+              "hero": {
+                "eyebrow": "Mountain Dew · PepsiCo · 2013–2017",
+                "title": "Mtn Dew<br>Sangrita Blast",
+                "subtitle": null,
+                "subtitle_meta": null,
+                "desc": "A cherry-citrus punch soda produced by PepsiCo under the Mountain Dew brand. Introduced in December 2013 and discontinued in 2017.",
+                "stats": []
+              },
+              "pages": []
+            },
+            {
+              "id": "taco-bell-brisk-raspberry",
+              "title": "Brisk Raspberry Tea",
+              "permalink": "/taco-bell-brisk-raspberry.html",
+              "status": "live",
+              "folder": false,
+              "count": null,
+              "accent": null,
+              "sections": [
+                {
+                  "type": "hero",
+                  "label": "Hero"
+                },
+                {
+                  "type": "overview",
+                  "label": "Overview"
+                }
+              ],
+              "hero": {
+                "eyebrow": "Brisk · PepsiCo / Unilever · 1991–present",
+                "title": "Brisk Raspberry<br>Iced Tea",
+                "subtitle": null,
+                "subtitle_meta": null,
+                "desc": "A raspberry-flavored iced tea produced by the Pepsi Lipton Partnership (PepsiCo/Unilever). Available in retail since the 1990s; discontinued from Taco Bell fountains around 2020.",
+                "stats": []
+              },
+              "pages": []
+            },
+            {
+              "id": "taco-bell-pina-colada-frutista",
+              "title": "Pina Colada Frutista",
+              "permalink": "/taco-bell-pina-colada-frutista.html",
+              "status": "live",
+              "folder": false,
+              "count": null,
+              "accent": null,
+              "sections": [
+                {
+                  "type": "hero",
+                  "label": "Hero"
+                },
+                {
+                  "type": "overview",
+                  "label": "Overview"
+                }
+              ],
+              "hero": {
+                "eyebrow": "Frutista Freeze · Taco Bell · 2009–2013",
+                "title": "Piña Colada<br>Frutista Freeze",
+                "subtitle": null,
+                "subtitle_meta": null,
+                "desc": "A hand-blended pineapple-coconut frozen drink produced exclusively for Taco Bell as part of the Frutista Freeze program (2008–2013).",
+                "stats": []
+              },
+              "pages": []
+            },
+            {
+              "id": "taco-bell-spiked-lemonade",
+              "title": "Spiked Lemonade",
+              "permalink": "/taco-bell-spiked-lemonade.html",
+              "status": "live",
+              "folder": false,
+              "count": null,
+              "accent": null,
+              "sections": [
+                {
+                  "type": "hero",
+                  "label": "Hero"
+                },
+                {
+                  "type": "overview",
+                  "label": "Overview"
+                }
+              ],
+              "hero": {
+                "eyebrow": "Mountain Dew · PepsiCo · 2017–2019",
+                "title": "Mtn Dew<br>Spiked Lemonade",
+                "subtitle": null,
+                "subtitle_meta": null,
+                "desc": "A non-alcoholic lemonade soda with prickly pear cactus juice, produced by PepsiCo under the Mountain Dew brand. Available from 2017 to 2019.",
+                "stats": []
+              },
+              "pages": []
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "taco-bell-sauces",
       "title": "Sauces",
       "permalink": "/taco-bell-sauces.html",
       "status": "live",
+      "folder": false,
+      "count": 9,
+      "accent": "#dc2626",
       "sections": [
         {
           "type": "hero",
@@ -273,13 +1017,150 @@
           }
         ]
       },
-      "pages": []
+      "pages": [
+        {
+          "id": "mild",
+          "title": "Mild",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "hot",
+          "title": "Hot",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "fire",
+          "title": "Fire",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "diablo",
+          "title": "Diablo",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "verde",
+          "title": "Verde",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "lava-sauce",
+          "title": "Lava Sauce",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "sauce-packet-quotes",
+          "title": "Sauce-Packet Quotes",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        }
+      ]
     },
     {
       "id": "taco-bell-menus",
-      "title": "Taco Bell Menus",
+      "title": "Menus",
       "permalink": "/taco-bell-menus.html",
       "status": "live",
+      "folder": false,
+      "count": 15,
+      "accent": "#059669",
       "sections": [
         {
           "type": "hero",
@@ -317,10 +1198,13 @@
       },
       "pages": [
         {
-          "id": "taco-bell-menu-2-dollar-deals",
-          "title": "$2 Meal Deals",
-          "permalink": "/taco-bell-menu-2-dollar-deals.html",
+          "id": "taco-bell-menus",
+          "title": "Menus Index",
+          "permalink": "/taco-bell-menus.html",
           "status": "live",
+          "folder": false,
+          "count": null,
+          "accent": null,
           "sections": [
             {
               "type": "hero",
@@ -329,82 +1213,30 @@
             {
               "type": "overview",
               "label": "Overview"
-            },
-            {
-              "type": "catalog",
-              "label": "Catalog"
             }
           ],
           "hero": {
-            "eyebrow": "Value · Retired · 2010–2013",
-            "title": "$2 Meal Deals",
+            "eyebrow": "Menu History · 1962 – Present",
+            "title": "Taco Bell Menus",
             "subtitle": null,
             "subtitle_meta": null,
-            "desc": "Three items for two dollars — an entrée, a small bag of Doritos chips, and a medium drink. A Frito-Lay partnership that gave Taco Bell a value story competitors couldn't replicate item-for-item.",
+            "desc": "Fourteen sub-menus across sixty-four years — from a five-item 19-cent founding card to today's Cantina Chicken line, every strategic menu move Taco Bell has ever made, catalogued and archived.",
             "stats": [
               {
-                "num": "$2",
-                "label": "Price point"
+                "num": "14",
+                "label": "Total menus"
               },
               {
-                "num": "3 yr",
-                "label": "Active run"
+                "num": "3",
+                "label": "Active today"
               },
               {
-                "num": "2010",
-                "label": "Launched"
+                "num": "1962",
+                "label": "First menu"
               },
               {
-                "num": "Retired",
-                "label": "Status",
-                "color": "#9ca3af"
-              }
-            ]
-          },
-          "pages": []
-        },
-        {
-          "id": "taco-bell-menu-big-bell-value",
-          "title": "Big Bell Value Menu",
-          "permalink": "/taco-bell-menu-big-bell-value.html",
-          "status": "live",
-          "sections": [
-            {
-              "type": "hero",
-              "label": "Hero"
-            },
-            {
-              "type": "overview",
-              "label": "Overview"
-            },
-            {
-              "type": "catalog",
-              "label": "Catalog"
-            }
-          ],
-          "hero": {
-            "eyebrow": "Value · Retired · 2004 – 2008",
-            "title": "Big Bell Value Menu",
-            "subtitle": null,
-            "subtitle_meta": null,
-            "desc": "The answer to McDonald's Dollar Menu wasn't a dollar — it was a half-pound. Launched February 2004, the Big Bell Value Menu won the early-2000s value war through sheer portion size rather than rock-bottom pricing.",
-            "stats": [
-              {
-                "num": "2004",
-                "label": "Launched"
-              },
-              {
-                "num": "99¢",
-                "label": "Starting price"
-              },
-              {
-                "num": "½ lb",
-                "label": "Signature format"
-              },
-              {
-                "num": "Retired",
-                "label": "Status",
-                "color": "#9ca3af"
+                "num": "64 yr",
+                "label": "Archive span"
               }
             ]
           },
@@ -412,9 +1244,12 @@
         },
         {
           "id": "taco-bell-menu-cantina-chicken",
-          "title": "Cantina Chicken Menu",
+          "title": "Cantina Chicken",
           "permalink": "/taco-bell-menu-cantina-chicken.html",
           "status": "live",
+          "folder": false,
+          "count": null,
+          "accent": null,
           "sections": [
             {
               "type": "hero",
@@ -458,10 +1293,63 @@
           "pages": []
         },
         {
+          "id": "taco-bell-menu-2-dollar-deals",
+          "title": "$2 Meal Deals",
+          "permalink": "/taco-bell-menu-2-dollar-deals.html",
+          "status": "live",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [
+            {
+              "type": "hero",
+              "label": "Hero"
+            },
+            {
+              "type": "overview",
+              "label": "Overview"
+            },
+            {
+              "type": "catalog",
+              "label": "Catalog"
+            }
+          ],
+          "hero": {
+            "eyebrow": "Value · Retired · 2010–2013",
+            "title": "$2 Meal Deals",
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": "Three items for two dollars — an entrée, a small bag of Doritos chips, and a medium drink. A Frito-Lay partnership that gave Taco Bell a value story competitors couldn't replicate item-for-item.",
+            "stats": [
+              {
+                "num": "$2",
+                "label": "Price point"
+              },
+              {
+                "num": "3 yr",
+                "label": "Active run"
+              },
+              {
+                "num": "2010",
+                "label": "Launched"
+              },
+              {
+                "num": "Retired",
+                "label": "Status",
+                "color": "#9ca3af"
+              }
+            ]
+          },
+          "pages": []
+        },
+        {
           "id": "taco-bell-menu-fresco",
           "title": "Fresco Menu",
           "permalink": "/taco-bell-menu-fresco.html",
           "status": "live",
+          "folder": false,
+          "count": null,
+          "accent": null,
           "sections": [
             {
               "type": "hero",
@@ -505,10 +1393,63 @@
           "pages": []
         },
         {
+          "id": "taco-bell-menu-big-bell-value",
+          "title": "Big Bell Value",
+          "permalink": "/taco-bell-menu-big-bell-value.html",
+          "status": "live",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [
+            {
+              "type": "hero",
+              "label": "Hero"
+            },
+            {
+              "type": "overview",
+              "label": "Overview"
+            },
+            {
+              "type": "catalog",
+              "label": "Catalog"
+            }
+          ],
+          "hero": {
+            "eyebrow": "Value · Retired · 2004 – 2008",
+            "title": "Big Bell Value Menu",
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": "The answer to McDonald's Dollar Menu wasn't a dollar — it was a half-pound. Launched February 2004, the Big Bell Value Menu won the early-2000s value war through sheer portion size rather than rock-bottom pricing.",
+            "stats": [
+              {
+                "num": "2004",
+                "label": "Launched"
+              },
+              {
+                "num": "99¢",
+                "label": "Starting price"
+              },
+              {
+                "num": "½ lb",
+                "label": "Signature format"
+              },
+              {
+                "num": "Retired",
+                "label": "Status",
+                "color": "#9ca3af"
+              }
+            ]
+          },
+          "pages": []
+        },
+        {
           "id": "taco-bell-menu-luxe-value",
           "title": "Luxe Value Menu",
           "permalink": "/taco-bell-menu-luxe-value.html",
           "status": "live",
+          "folder": false,
+          "count": null,
+          "accent": null,
           "sections": [
             {
               "type": "hero",
@@ -550,14 +1491,112 @@
             ]
           },
           "pages": []
+        },
+        {
+          "id": "why-pay-more-menu",
+          "title": "Why Pay More Menu",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "volcano-menu",
+          "title": "Volcano Menu",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "59-79-99-value-menu",
+          "title": "59/79/99 Value Menu",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "border-lights-menu",
+          "title": "Border Lights Menu",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "cantina-bell-menu",
+          "title": "Cantina Bell Menu",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
         }
       ]
     },
     {
       "id": "taco-bell-slogans",
-      "title": "Taco Bell Slogans",
+      "title": "Slogans",
       "permalink": "/taco-bell-slogans.html",
       "status": "live",
+      "folder": false,
+      "count": 24,
+      "accent": "#6d28d9",
       "sections": [
         {
           "type": "hero",
@@ -593,7 +1632,295 @@
           }
         ]
       },
-      "pages": []
+      "pages": [
+        {
+          "id": "live-mas",
+          "title": "Live Mas",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "think-outside-the-bun",
+          "title": "Think Outside the Bun",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "yo-quiero-taco-bell",
+          "title": "Yo Quiero Taco Bell",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "fourth-meal",
+          "title": "Fourth Meal",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "dollar-cravings",
+          "title": "Dollar Cravings",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        }
+      ]
+    },
+    {
+      "id": "breakfast",
+      "title": "Breakfast",
+      "permalink": null,
+      "status": "stub",
+      "folder": false,
+      "count": 16,
+      "accent": "#db5b1e",
+      "sections": [],
+      "hero": {
+        "eyebrow": null,
+        "title": null,
+        "subtitle": null,
+        "subtitle_meta": null,
+        "desc": null,
+        "stats": []
+      },
+      "pages": [
+        {
+          "id": "breakfast-crunchwrap",
+          "title": "Breakfast Crunchwrap",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "cinnabon-delights",
+          "title": "Cinnabon Delights",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "breakfast-burrito",
+          "title": "Breakfast Burrito",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "waffle-taco",
+          "title": "Waffle Taco",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        }
+      ]
+    },
+    {
+      "id": "miscellaneous",
+      "title": "Miscellaneous",
+      "permalink": null,
+      "status": "stub",
+      "folder": false,
+      "count": 47,
+      "accent": "#a21caf",
+      "sections": [],
+      "hero": {
+        "eyebrow": null,
+        "title": null,
+        "subtitle": null,
+        "subtitle_meta": null,
+        "desc": null,
+        "stats": []
+      },
+      "pages": [
+        {
+          "id": "glen-bell",
+          "title": "Glen Bell",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "taco-liberty-bell",
+          "title": "Taco Liberty Bell",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "taco-bell-hotel",
+          "title": "Taco Bell Hotel",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "tv-commercials",
+          "title": "TV Commercials",
+          "permalink": null,
+          "status": "stub",
+          "folder": false,
+          "count": null,
+          "accent": null,
+          "sections": [],
+          "hero": {
+            "eyebrow": null,
+            "title": null,
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": null,
+            "stats": []
+          },
+          "pages": []
+        }
+      ]
     }
   ]
 }
