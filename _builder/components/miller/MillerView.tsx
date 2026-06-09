@@ -31,37 +31,37 @@ function Column({ head, children }: { head: string; children: React.ReactNode })
 export function MillerView({ wiki }: { wiki: Wiki }) {
   const [path, setPath] = useState<string[]>([]);
 
-  const cat = wiki.categories.find((c) => c.id === path[0]) || null;
-  const page1 = cat?.pages.find((p) => p.id === path[1]) || null;
-  const page2 = page1?.pages.find((p) => p.id === path[2]) || null;
-  const selected = page2 || page1; // deepest selected real page
+  const sel0 = wiki.pages.find((p) => p.id === path[0]) || null;
+  const sel1 = sel0?.pages.find((p) => p.id === path[1]) || null;
+  const sel2 = sel1?.pages.find((p) => p.id === path[2]) || null;
+  const selected = sel2 || sel1 || sel0; // deepest selected page (all nodes are real pages)
 
   return (
     <div className="mil-cols">
-      {/* col 0 — categories */}
+      {/* col 0 — the wiki's top-level pages */}
       <Column head={wiki.name}>
-        {wiki.categories.map((c) => (
-          <Row key={c.id} title={c.title} dot="cat" hasChildren={c.pages.length > 0}
-            selected={path[0] === c.id} onClick={() => setPath([c.id])} />
+        {wiki.pages.map((p) => (
+          <Row key={p.id} title={p.title} dot="cat" hasChildren={p.pages.length > 0}
+            selected={path[0] === p.id} onClick={() => setPath([p.id])} />
         ))}
       </Column>
 
-      {/* col 1 — pages of the selected category */}
-      {cat && (
-        <Column head={cat.title}>
-          {cat.pages.map((p) => (
-            <Row key={p.id} title={p.title} dot="" hasChildren={p.pages.length > 0}
-              selected={path[1] === p.id} onClick={() => setPath([cat.id, p.id])} />
+      {/* col 1 — children of the selected top-level page */}
+      {sel0 && sel0.pages.length > 0 && (
+        <Column head={oneLine(sel0.title)}>
+          {sel0.pages.map((p) => (
+            <Row key={p.id} title={p.title} dot="sub" hasChildren={p.pages.length > 0}
+              selected={path[1] === p.id} onClick={() => setPath([sel0.id, p.id])} />
           ))}
         </Column>
       )}
 
-      {/* col 2 — subpages of the selected page */}
-      {page1 && page1.pages.length > 0 && (
-        <Column head={oneLine(page1.title)}>
-          {page1.pages.map((p) => (
+      {/* col 2 — children of the selected child */}
+      {sel1 && sel1.pages.length > 0 && (
+        <Column head={oneLine(sel1.title)}>
+          {sel1.pages.map((p) => (
             <Row key={p.id} title={p.title} dot="sub" hasChildren={false}
-              selected={path[2] === p.id} onClick={() => setPath([cat!.id, page1.id, p.id])} />
+              selected={path[2] === p.id} onClick={() => setPath([sel0!.id, sel1.id, p.id])} />
           ))}
         </Column>
       )}

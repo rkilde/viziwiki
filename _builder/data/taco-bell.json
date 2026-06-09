@@ -1,212 +1,325 @@
 {
   "id": "taco-bell",
   "name": "Taco Bell",
-  "categories": [
+  "pages": [
     {
-      "id": "home",
-      "title": "Home",
+      "id": "taco-bell",
+      "title": "Taco Bell",
+      "permalink": "/taco-bell.html",
       "status": "live",
-      "pages": [
+      "sections": [
         {
-          "id": "taco-bell",
-          "title": "Taco Bell",
-          "permalink": "/taco-bell.html",
-          "status": "live",
-          "sections": [
-            {
-              "type": "hero",
-              "label": "Hero"
-            },
-            {
-              "type": "overview",
-              "label": "Overview"
-            }
-          ],
-          "hero": {
-            "eyebrow": "Visual Wiki · Vol. 1",
-            "title": "Taco Bell",
-            "subtitle": null,
-            "subtitle_meta": null,
-            "desc": "Every menu item, every limited-time release, every sauce-packet quote — the Live Más canon, indexed and illustrated since 1962.",
-            "stats": [
-              {
-                "num": "1,284",
-                "label": "entries"
-              },
-              {
-                "num": "1962",
-                "label": "since"
-              },
-              {
-                "num": "7,200+",
-                "label": "stores"
-              },
-              {
-                "num": "31",
-                "label": "countries"
-              }
-            ]
-          },
-          "pages": []
-        }
-      ]
-    },
-    {
-      "id": "drinks",
-      "title": "Drinks",
-      "status": "live",
-      "pages": [
-        {
-          "id": "taco-bell-drinks",
-          "title": "Drinks",
-          "permalink": "/taco-bell-drinks.html",
-          "status": "live",
-          "sections": [
-            {
-              "type": "hero",
-              "label": "Hero"
-            },
-            {
-              "type": "overview",
-              "label": "Overview"
-            },
-            {
-              "type": "catalog",
-              "label": "Catalog"
-            }
-          ],
-          "hero": {
-            "eyebrow": "Beverage · Fountain · Freeze",
-            "title": "Drinks",
-            "subtitle": null,
-            "subtitle_meta": null,
-            "desc": "One Mountain Dew exclusive that became a cult, three Freeze valves, four Pepsi standards, and roughly 24 million tropical-lime cups poured each year. Indexed, charted, and pour-tested.",
-            "stats": [
-              {
-                "num": "~24M",
-                "label": "Baja cups / yr"
-              },
-              {
-                "num": "2004",
-                "label": "Baja Blast debut"
-              },
-              {
-                "num": "77 g",
-                "label": "sugar · 20oz Baja"
-              },
-              {
-                "num": "1997",
-                "label": "Pepsi since"
-              }
-            ]
-          },
-          "pages": [
-            {
-              "id": "taco-bell-spiked-lemonade",
-              "title": "Mtn Dew<br>Spiked Lemonade",
-              "permalink": "/taco-bell-spiked-lemonade.html",
-              "status": "live",
-              "sections": [
-                {
-                  "type": "hero",
-                  "label": "Hero"
-                },
-                {
-                  "type": "overview",
-                  "label": "Overview"
-                }
-              ],
-              "hero": {
-                "eyebrow": "Mountain Dew · PepsiCo · 2017–2019",
-                "title": "Mtn Dew<br>Spiked Lemonade",
-                "subtitle": null,
-                "subtitle_meta": null,
-                "desc": "A non-alcoholic lemonade soda with prickly pear cactus juice, produced by PepsiCo under the Mountain Dew brand. Available from 2017 to 2019.",
-                "stats": []
-              },
-              "pages": []
-            },
-            {
-              "id": "taco-bell-brisk-raspberry",
-              "title": "Brisk Raspberry<br>Iced Tea",
-              "permalink": "/taco-bell-brisk-raspberry.html",
-              "status": "live",
-              "sections": [
-                {
-                  "type": "hero",
-                  "label": "Hero"
-                },
-                {
-                  "type": "overview",
-                  "label": "Overview"
-                }
-              ],
-              "hero": {
-                "eyebrow": "Brisk · PepsiCo / Unilever · 1991–present",
-                "title": "Brisk Raspberry<br>Iced Tea",
-                "subtitle": null,
-                "subtitle_meta": null,
-                "desc": "A raspberry-flavored iced tea produced by the Pepsi Lipton Partnership (PepsiCo/Unilever). Available in retail since the 1990s; discontinued from Taco Bell fountains around 2020.",
-                "stats": []
-              },
-              "pages": []
-            },
-            {
-              "id": "taco-bell-sangrita-blast",
-              "title": "Mtn Dew<br>Sangrita Blast",
-              "permalink": "/taco-bell-sangrita-blast.html",
-              "status": "live",
-              "sections": [
-                {
-                  "type": "hero",
-                  "label": "Hero"
-                },
-                {
-                  "type": "overview",
-                  "label": "Overview"
-                }
-              ],
-              "hero": {
-                "eyebrow": "Mountain Dew · PepsiCo · 2013–2017",
-                "title": "Mtn Dew<br>Sangrita Blast",
-                "subtitle": null,
-                "subtitle_meta": null,
-                "desc": "A cherry-citrus punch soda produced by PepsiCo under the Mountain Dew brand. Introduced in December 2013 and discontinued in 2017.",
-                "stats": []
-              },
-              "pages": []
-            },
-            {
-              "id": "taco-bell-pina-colada-frutista",
-              "title": "Piña Colada<br>Frutista Freeze",
-              "permalink": "/taco-bell-pina-colada-frutista.html",
-              "status": "live",
-              "sections": [
-                {
-                  "type": "hero",
-                  "label": "Hero"
-                },
-                {
-                  "type": "overview",
-                  "label": "Overview"
-                }
-              ],
-              "hero": {
-                "eyebrow": "Frutista Freeze · Taco Bell · 2009–2013",
-                "title": "Piña Colada<br>Frutista Freeze",
-                "subtitle": null,
-                "subtitle_meta": null,
-                "desc": "A hand-blended pineapple-coconut frozen drink produced exclusively for Taco Bell as part of the Frutista Freeze program (2008–2013).",
-                "stats": []
-              },
-              "pages": []
-            }
-          ]
+          "type": "hero",
+          "label": "Hero"
         },
         {
-          "id": "taco-bell-discontinued-drinks",
-          "title": "Discontinued<br>Drinks",
-          "permalink": "/taco-bell-discontinued-drinks.html",
+          "type": "overview",
+          "label": "Overview"
+        }
+      ],
+      "hero": {
+        "eyebrow": "Visual Wiki · Vol. 1",
+        "title": "Taco Bell",
+        "subtitle": null,
+        "subtitle_meta": null,
+        "desc": "Every menu item, every limited-time release, every sauce-packet quote — the Live Más canon, indexed and illustrated since 1962.",
+        "stats": [
+          {
+            "num": "1,284",
+            "label": "entries"
+          },
+          {
+            "num": "1962",
+            "label": "since"
+          },
+          {
+            "num": "7,200+",
+            "label": "stores"
+          },
+          {
+            "num": "31",
+            "label": "countries"
+          }
+        ]
+      },
+      "pages": []
+    },
+    {
+      "id": "taco-bell-discontinued-drinks",
+      "title": "Discontinued<br>Drinks",
+      "permalink": "/taco-bell-discontinued-drinks.html",
+      "status": "live",
+      "sections": [
+        {
+          "type": "hero",
+          "label": "Hero"
+        },
+        {
+          "type": "overview",
+          "label": "Overview"
+        },
+        {
+          "type": "catalog",
+          "label": "Catalog"
+        }
+      ],
+      "hero": {
+        "eyebrow": "Discontinued · Archive · From the Vault",
+        "title": "Discontinued<br>Drinks",
+        "subtitle": null,
+        "subtitle_meta": null,
+        "desc": "Sixty-plus drinks that didn't survive — from pre-Pepsi Coca-Cola valves to last season's Freeze pull. Six categories, five decades, every item charted on a shared timeline.",
+        "stats": [
+          {
+            "num": "60+",
+            "label": "items archived"
+          },
+          {
+            "num": "6",
+            "label": "categories"
+          },
+          {
+            "num": "1962",
+            "label": "earliest entry"
+          },
+          {
+            "num": "2024",
+            "label": "most recent"
+          }
+        ]
+      },
+      "pages": [
+        {
+          "id": "taco-bell-brisk-raspberry",
+          "title": "Brisk Raspberry<br>Iced Tea",
+          "permalink": "/taco-bell-brisk-raspberry.html",
+          "status": "live",
+          "sections": [
+            {
+              "type": "hero",
+              "label": "Hero"
+            },
+            {
+              "type": "overview",
+              "label": "Overview"
+            }
+          ],
+          "hero": {
+            "eyebrow": "Brisk · PepsiCo / Unilever · 1991–present",
+            "title": "Brisk Raspberry<br>Iced Tea",
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": "A raspberry-flavored iced tea produced by the Pepsi Lipton Partnership (PepsiCo/Unilever). Available in retail since the 1990s; discontinued from Taco Bell fountains around 2020.",
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "taco-bell-pina-colada-frutista",
+          "title": "Piña Colada<br>Frutista Freeze",
+          "permalink": "/taco-bell-pina-colada-frutista.html",
+          "status": "live",
+          "sections": [
+            {
+              "type": "hero",
+              "label": "Hero"
+            },
+            {
+              "type": "overview",
+              "label": "Overview"
+            }
+          ],
+          "hero": {
+            "eyebrow": "Frutista Freeze · Taco Bell · 2009–2013",
+            "title": "Piña Colada<br>Frutista Freeze",
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": "A hand-blended pineapple-coconut frozen drink produced exclusively for Taco Bell as part of the Frutista Freeze program (2008–2013).",
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "taco-bell-sangrita-blast",
+          "title": "Mtn Dew<br>Sangrita Blast",
+          "permalink": "/taco-bell-sangrita-blast.html",
+          "status": "live",
+          "sections": [
+            {
+              "type": "hero",
+              "label": "Hero"
+            },
+            {
+              "type": "overview",
+              "label": "Overview"
+            }
+          ],
+          "hero": {
+            "eyebrow": "Mountain Dew · PepsiCo · 2013–2017",
+            "title": "Mtn Dew<br>Sangrita Blast",
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": "A cherry-citrus punch soda produced by PepsiCo under the Mountain Dew brand. Introduced in December 2013 and discontinued in 2017.",
+            "stats": []
+          },
+          "pages": []
+        },
+        {
+          "id": "taco-bell-spiked-lemonade",
+          "title": "Mtn Dew<br>Spiked Lemonade",
+          "permalink": "/taco-bell-spiked-lemonade.html",
+          "status": "live",
+          "sections": [
+            {
+              "type": "hero",
+              "label": "Hero"
+            },
+            {
+              "type": "overview",
+              "label": "Overview"
+            }
+          ],
+          "hero": {
+            "eyebrow": "Mountain Dew · PepsiCo · 2017–2019",
+            "title": "Mtn Dew<br>Spiked Lemonade",
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": "A non-alcoholic lemonade soda with prickly pear cactus juice, produced by PepsiCo under the Mountain Dew brand. Available from 2017 to 2019.",
+            "stats": []
+          },
+          "pages": []
+        }
+      ]
+    },
+    {
+      "id": "taco-bell-drinks",
+      "title": "Drinks",
+      "permalink": "/taco-bell-drinks.html",
+      "status": "live",
+      "sections": [
+        {
+          "type": "hero",
+          "label": "Hero"
+        },
+        {
+          "type": "overview",
+          "label": "Overview"
+        },
+        {
+          "type": "catalog",
+          "label": "Catalog"
+        }
+      ],
+      "hero": {
+        "eyebrow": "Beverage · Fountain · Freeze",
+        "title": "Drinks",
+        "subtitle": null,
+        "subtitle_meta": null,
+        "desc": "One Mountain Dew exclusive that became a cult, three Freeze valves, four Pepsi standards, and roughly 24 million tropical-lime cups poured each year. Indexed, charted, and pour-tested.",
+        "stats": [
+          {
+            "num": "~24M",
+            "label": "Baja cups / yr"
+          },
+          {
+            "num": "2004",
+            "label": "Baja Blast debut"
+          },
+          {
+            "num": "77 g",
+            "label": "sugar · 20oz Baja"
+          },
+          {
+            "num": "1997",
+            "label": "Pepsi since"
+          }
+        ]
+      },
+      "pages": []
+    },
+    {
+      "id": "taco-bell-sauces",
+      "title": "Sauces",
+      "permalink": "/taco-bell-sauces.html",
+      "status": "live",
+      "sections": [
+        {
+          "type": "hero",
+          "label": "Hero"
+        }
+      ],
+      "hero": {
+        "eyebrow": "Condiment · Packet · Cult",
+        "title": "Sauces",
+        "subtitle": null,
+        "subtitle_meta": null,
+        "desc": "Four packet tiers, ten in-restaurant condiments, six discontinued legends, and roughly 8 billion packets distributed every year. Sorted, scaled, and quoted.",
+        "stats": [
+          {
+            "num": "8.2B",
+            "label": "packets / yr"
+          },
+          {
+            "num": "0 cal",
+            "label": "Mild–Diablo"
+          },
+          {
+            "num": "~4,500",
+            "label": "Scoville · Diablo"
+          },
+          {
+            "num": "1980s",
+            "label": "Mild &amp; Hot debut"
+          }
+        ]
+      },
+      "pages": []
+    },
+    {
+      "id": "taco-bell-menus",
+      "title": "Taco Bell Menus",
+      "permalink": "/taco-bell-menus.html",
+      "status": "live",
+      "sections": [
+        {
+          "type": "hero",
+          "label": "Hero"
+        },
+        {
+          "type": "overview",
+          "label": "Overview"
+        }
+      ],
+      "hero": {
+        "eyebrow": "Menu History · 1962 – Present",
+        "title": "Taco Bell Menus",
+        "subtitle": null,
+        "subtitle_meta": null,
+        "desc": "Fourteen sub-menus across sixty-four years — from a five-item 19-cent founding card to today's Cantina Chicken line, every strategic menu move Taco Bell has ever made, catalogued and archived.",
+        "stats": [
+          {
+            "num": "14",
+            "label": "Total menus"
+          },
+          {
+            "num": "3",
+            "label": "Active today"
+          },
+          {
+            "num": "1962",
+            "label": "First menu"
+          },
+          {
+            "num": "64 yr",
+            "label": "Archive span"
+          }
+        ]
+      },
+      "pages": [
+        {
+          "id": "taco-bell-menu-2-dollar-deals",
+          "title": "$2 Meal Deals",
+          "permalink": "/taco-bell-menu-2-dollar-deals.html",
           "status": "live",
           "sections": [
             {
@@ -223,43 +336,37 @@
             }
           ],
           "hero": {
-            "eyebrow": "Discontinued · Archive · From the Vault",
-            "title": "Discontinued<br>Drinks",
+            "eyebrow": "Value · Retired · 2010–2013",
+            "title": "$2 Meal Deals",
             "subtitle": null,
             "subtitle_meta": null,
-            "desc": "Sixty-plus drinks that didn't survive — from pre-Pepsi Coca-Cola valves to last season's Freeze pull. Six categories, five decades, every item charted on a shared timeline.",
+            "desc": "Three items for two dollars — an entrée, a small bag of Doritos chips, and a medium drink. A Frito-Lay partnership that gave Taco Bell a value story competitors couldn't replicate item-for-item.",
             "stats": [
               {
-                "num": "60+",
-                "label": "items archived"
+                "num": "$2",
+                "label": "Price point"
               },
               {
-                "num": "6",
-                "label": "categories"
+                "num": "3 yr",
+                "label": "Active run"
               },
               {
-                "num": "1962",
-                "label": "earliest entry"
+                "num": "2010",
+                "label": "Launched"
               },
               {
-                "num": "2024",
-                "label": "most recent"
+                "num": "Retired",
+                "label": "Status",
+                "color": "#9ca3af"
               }
             ]
           },
           "pages": []
-        }
-      ]
-    },
-    {
-      "id": "menus",
-      "title": "Menus",
-      "status": "live",
-      "pages": [
+        },
         {
-          "id": "taco-bell-menus",
-          "title": "Taco Bell Menus",
-          "permalink": "/taco-bell-menus.html",
+          "id": "taco-bell-menu-big-bell-value",
+          "title": "Big Bell Value Menu",
+          "permalink": "/taco-bell-menu-big-bell-value.html",
           "status": "live",
           "sections": [
             {
@@ -269,327 +376,44 @@
             {
               "type": "overview",
               "label": "Overview"
+            },
+            {
+              "type": "catalog",
+              "label": "Catalog"
             }
           ],
           "hero": {
-            "eyebrow": "Menu History · 1962 – Present",
-            "title": "Taco Bell Menus",
+            "eyebrow": "Value · Retired · 2004 – 2008",
+            "title": "Big Bell Value Menu",
             "subtitle": null,
             "subtitle_meta": null,
-            "desc": "Fourteen sub-menus across sixty-four years — from a five-item 19-cent founding card to today's Cantina Chicken line, every strategic menu move Taco Bell has ever made, catalogued and archived.",
+            "desc": "The answer to McDonald's Dollar Menu wasn't a dollar — it was a half-pound. Launched February 2004, the Big Bell Value Menu won the early-2000s value war through sheer portion size rather than rock-bottom pricing.",
             "stats": [
               {
-                "num": "14",
-                "label": "Total menus"
+                "num": "2004",
+                "label": "Launched"
               },
               {
-                "num": "3",
-                "label": "Active today"
+                "num": "99¢",
+                "label": "Starting price"
               },
               {
-                "num": "1962",
-                "label": "First menu"
+                "num": "½ lb",
+                "label": "Signature format"
               },
               {
-                "num": "64 yr",
-                "label": "Archive span"
-              }
-            ]
-          },
-          "pages": [
-            {
-              "id": "taco-bell-menu-big-bell-value",
-              "title": "Big Bell Value Menu",
-              "permalink": "/taco-bell-menu-big-bell-value.html",
-              "status": "live",
-              "sections": [
-                {
-                  "type": "hero",
-                  "label": "Hero"
-                },
-                {
-                  "type": "overview",
-                  "label": "Overview"
-                },
-                {
-                  "type": "catalog",
-                  "label": "Catalog"
-                }
-              ],
-              "hero": {
-                "eyebrow": "Value · Retired · 2004 – 2008",
-                "title": "Big Bell Value Menu",
-                "subtitle": null,
-                "subtitle_meta": null,
-                "desc": "The answer to McDonald's Dollar Menu wasn't a dollar — it was a half-pound. Launched February 2004, the Big Bell Value Menu won the early-2000s value war through sheer portion size rather than rock-bottom pricing.",
-                "stats": [
-                  {
-                    "num": "2004",
-                    "label": "Launched"
-                  },
-                  {
-                    "num": "99¢",
-                    "label": "Starting price"
-                  },
-                  {
-                    "num": "½ lb",
-                    "label": "Signature format"
-                  },
-                  {
-                    "num": "Retired",
-                    "label": "Status",
-                    "color": "#9ca3af"
-                  }
-                ]
-              },
-              "pages": []
-            },
-            {
-              "id": "taco-bell-menu-luxe-value",
-              "title": "Luxe Value Menu",
-              "permalink": "/taco-bell-menu-luxe-value.html",
-              "status": "live",
-              "sections": [
-                {
-                  "type": "hero",
-                  "label": "Hero"
-                },
-                {
-                  "type": "overview",
-                  "label": "Overview"
-                },
-                {
-                  "type": "catalog",
-                  "label": "Catalog"
-                }
-              ],
-              "hero": {
-                "eyebrow": "Value · Active · Jan. 2026",
-                "title": "Luxe Value Menu",
-                "subtitle": null,
-                "subtitle_meta": null,
-                "desc": "Ten items. Three dollars or less. Five new creations paired with five Cravings Value Menu survivors — Taco Bell's direct answer to the 2025 fast-food value wars and a deliberate repositioning of what \"cheap\" can mean at the chain.",
-                "stats": [
-                  {
-                    "num": "$3",
-                    "label": "Price ceiling"
-                  },
-                  {
-                    "num": "10",
-                    "label": "Items"
-                  },
-                  {
-                    "num": "Jan '26",
-                    "label": "Launched"
-                  },
-                  {
-                    "num": "Active",
-                    "label": "Status",
-                    "color": "#86efac"
-                  }
-                ]
-              },
-              "pages": []
-            },
-            {
-              "id": "taco-bell-menu-cantina-chicken",
-              "title": "Cantina Chicken Menu",
-              "permalink": "/taco-bell-menu-cantina-chicken.html",
-              "status": "live",
-              "sections": [
-                {
-                  "type": "hero",
-                  "label": "Hero"
-                },
-                {
-                  "type": "overview",
-                  "label": "Overview"
-                },
-                {
-                  "type": "catalog",
-                  "label": "Catalog"
-                }
-              ],
-              "hero": {
-                "eyebrow": "Sub-brand · Active · Est. 2024",
-                "title": "Cantina Chicken Menu",
-                "subtitle": null,
-                "subtitle_meta": null,
-                "desc": "Slow-roasted chicken in garlic, onions, and Mexican chilies — across tacos, burritos, quesadillas, and bowls. Launched nationwide March 21, 2024.",
-                "stats": [
-                  {
-                    "num": "9",
-                    "label": "Menu items"
-                  },
-                  {
-                    "num": "5",
-                    "label": "Categories"
-                  },
-                  {
-                    "num": "2024",
-                    "label": "Launched"
-                  },
-                  {
-                    "num": "Active",
-                    "label": "Status",
-                    "color": "#c084fc"
-                  }
-                ]
-              },
-              "pages": []
-            },
-            {
-              "id": "taco-bell-menu-fresco",
-              "title": "Fresco Menu",
-              "permalink": "/taco-bell-menu-fresco.html",
-              "status": "live",
-              "sections": [
-                {
-                  "type": "hero",
-                  "label": "Hero"
-                },
-                {
-                  "type": "overview",
-                  "label": "Overview"
-                },
-                {
-                  "type": "catalog",
-                  "label": "Catalog"
-                }
-              ],
-              "hero": {
-                "eyebrow": "Health-Forward · Retired Aug. 2020 · Est. 2003",
-                "title": "Fresco Menu",
-                "subtitle": null,
-                "subtitle_meta": null,
-                "desc": "A dedicated sub-menu built around a single substitution: replace cheese and sauce with Fiesta Salsa — Taco Bell's fresh-daily blend of tomatoes, onions, cilantro, and chili. Every item under nine grams of fat. No upcharge.",
-                "stats": [
-                  {
-                    "num": "2003",
-                    "label": "Launched"
-                  },
-                  {
-                    "num": "&lt;9g",
-                    "label": "Fat per item"
-                  },
-                  {
-                    "num": "2010",
-                    "label": "Drive-Thru Diet"
-                  },
-                  {
-                    "num": "Retired",
-                    "label": "Status",
-                    "color": "#9ca3af"
-                  }
-                ]
-              },
-              "pages": []
-            },
-            {
-              "id": "taco-bell-menu-2-dollar-deals",
-              "title": "$2 Meal Deals",
-              "permalink": "/taco-bell-menu-2-dollar-deals.html",
-              "status": "live",
-              "sections": [
-                {
-                  "type": "hero",
-                  "label": "Hero"
-                },
-                {
-                  "type": "overview",
-                  "label": "Overview"
-                },
-                {
-                  "type": "catalog",
-                  "label": "Catalog"
-                }
-              ],
-              "hero": {
-                "eyebrow": "Value · Retired · 2010–2013",
-                "title": "$2 Meal Deals",
-                "subtitle": null,
-                "subtitle_meta": null,
-                "desc": "Three items for two dollars — an entrée, a small bag of Doritos chips, and a medium drink. A Frito-Lay partnership that gave Taco Bell a value story competitors couldn't replicate item-for-item.",
-                "stats": [
-                  {
-                    "num": "$2",
-                    "label": "Price point"
-                  },
-                  {
-                    "num": "3 yr",
-                    "label": "Active run"
-                  },
-                  {
-                    "num": "2010",
-                    "label": "Launched"
-                  },
-                  {
-                    "num": "Retired",
-                    "label": "Status",
-                    "color": "#9ca3af"
-                  }
-                ]
-              },
-              "pages": []
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "sauces",
-      "title": "Sauces",
-      "status": "live",
-      "pages": [
-        {
-          "id": "taco-bell-sauces",
-          "title": "Sauces",
-          "permalink": "/taco-bell-sauces.html",
-          "status": "live",
-          "sections": [
-            {
-              "type": "hero",
-              "label": "Hero"
-            }
-          ],
-          "hero": {
-            "eyebrow": "Condiment · Packet · Cult",
-            "title": "Sauces",
-            "subtitle": null,
-            "subtitle_meta": null,
-            "desc": "Four packet tiers, ten in-restaurant condiments, six discontinued legends, and roughly 8 billion packets distributed every year. Sorted, scaled, and quoted.",
-            "stats": [
-              {
-                "num": "8.2B",
-                "label": "packets / yr"
-              },
-              {
-                "num": "0 cal",
-                "label": "Mild–Diablo"
-              },
-              {
-                "num": "~4,500",
-                "label": "Scoville · Diablo"
-              },
-              {
-                "num": "1980s",
-                "label": "Mild &amp; Hot debut"
+                "num": "Retired",
+                "label": "Status",
+                "color": "#9ca3af"
               }
             ]
           },
           "pages": []
-        }
-      ]
-    },
-    {
-      "id": "slogans",
-      "title": "Slogans",
-      "status": "live",
-      "pages": [
+        },
         {
-          "id": "taco-bell-slogans",
-          "title": "Taco Bell Slogans",
-          "permalink": "/taco-bell-slogans.html",
+          "id": "taco-bell-menu-cantina-chicken",
+          "title": "Cantina Chicken Menu",
+          "permalink": "/taco-bell-menu-cantina-chicken.html",
           "status": "live",
           "sections": [
             {
@@ -599,36 +423,177 @@
             {
               "type": "overview",
               "label": "Overview"
+            },
+            {
+              "type": "catalog",
+              "label": "Catalog"
             }
           ],
           "hero": {
-            "eyebrow": "Marketing · From the Archive",
-            "title": "Taco Bell Slogans",
+            "eyebrow": "Sub-brand · Active · Est. 2024",
+            "title": "Cantina Chicken Menu",
             "subtitle": null,
             "subtitle_meta": null,
-            "desc": "Nine slogans across sixty-four years — the full archive of every era, from the 1977 debut tagline to Live Más, including the $42M lawsuit that ended the chihuahua campaign.",
+            "desc": "Slow-roasted chicken in garlic, onions, and Mexican chilies — across tacos, burritos, quesadillas, and bowls. Launched nationwide March 21, 2024.",
             "stats": [
               {
                 "num": "9",
-                "label": "Slogans"
+                "label": "Menu items"
               },
               {
-                "num": "62 yr",
-                "label": "Span"
+                "num": "5",
+                "label": "Categories"
               },
               {
-                "num": "1962",
-                "label": "Founded"
+                "num": "2024",
+                "label": "Launched"
               },
               {
-                "num": "$42M",
-                "label": "Lawsuit"
+                "num": "Active",
+                "label": "Status",
+                "color": "#c084fc"
+              }
+            ]
+          },
+          "pages": []
+        },
+        {
+          "id": "taco-bell-menu-fresco",
+          "title": "Fresco Menu",
+          "permalink": "/taco-bell-menu-fresco.html",
+          "status": "live",
+          "sections": [
+            {
+              "type": "hero",
+              "label": "Hero"
+            },
+            {
+              "type": "overview",
+              "label": "Overview"
+            },
+            {
+              "type": "catalog",
+              "label": "Catalog"
+            }
+          ],
+          "hero": {
+            "eyebrow": "Health-Forward · Retired Aug. 2020 · Est. 2003",
+            "title": "Fresco Menu",
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": "A dedicated sub-menu built around a single substitution: replace cheese and sauce with Fiesta Salsa — Taco Bell's fresh-daily blend of tomatoes, onions, cilantro, and chili. Every item under nine grams of fat. No upcharge.",
+            "stats": [
+              {
+                "num": "2003",
+                "label": "Launched"
+              },
+              {
+                "num": "&lt;9g",
+                "label": "Fat per item"
+              },
+              {
+                "num": "2010",
+                "label": "Drive-Thru Diet"
+              },
+              {
+                "num": "Retired",
+                "label": "Status",
+                "color": "#9ca3af"
+              }
+            ]
+          },
+          "pages": []
+        },
+        {
+          "id": "taco-bell-menu-luxe-value",
+          "title": "Luxe Value Menu",
+          "permalink": "/taco-bell-menu-luxe-value.html",
+          "status": "live",
+          "sections": [
+            {
+              "type": "hero",
+              "label": "Hero"
+            },
+            {
+              "type": "overview",
+              "label": "Overview"
+            },
+            {
+              "type": "catalog",
+              "label": "Catalog"
+            }
+          ],
+          "hero": {
+            "eyebrow": "Value · Active · Jan. 2026",
+            "title": "Luxe Value Menu",
+            "subtitle": null,
+            "subtitle_meta": null,
+            "desc": "Ten items. Three dollars or less. Five new creations paired with five Cravings Value Menu survivors — Taco Bell's direct answer to the 2025 fast-food value wars and a deliberate repositioning of what \"cheap\" can mean at the chain.",
+            "stats": [
+              {
+                "num": "$3",
+                "label": "Price ceiling"
+              },
+              {
+                "num": "10",
+                "label": "Items"
+              },
+              {
+                "num": "Jan '26",
+                "label": "Launched"
+              },
+              {
+                "num": "Active",
+                "label": "Status",
+                "color": "#86efac"
               }
             ]
           },
           "pages": []
         }
       ]
+    },
+    {
+      "id": "taco-bell-slogans",
+      "title": "Taco Bell Slogans",
+      "permalink": "/taco-bell-slogans.html",
+      "status": "live",
+      "sections": [
+        {
+          "type": "hero",
+          "label": "Hero"
+        },
+        {
+          "type": "overview",
+          "label": "Overview"
+        }
+      ],
+      "hero": {
+        "eyebrow": "Marketing · From the Archive",
+        "title": "Taco Bell Slogans",
+        "subtitle": null,
+        "subtitle_meta": null,
+        "desc": "Nine slogans across sixty-four years — the full archive of every era, from the 1977 debut tagline to Live Más, including the $42M lawsuit that ended the chihuahua campaign.",
+        "stats": [
+          {
+            "num": "9",
+            "label": "Slogans"
+          },
+          {
+            "num": "62 yr",
+            "label": "Span"
+          },
+          {
+            "num": "1962",
+            "label": "Founded"
+          },
+          {
+            "num": "$42M",
+            "label": "Lawsuit"
+          }
+        ]
+      },
+      "pages": []
     }
   ]
 }

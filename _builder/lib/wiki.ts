@@ -21,8 +21,7 @@ export type Page = {
   hero: Hero;
   pages: Page[];
 };
-export type Category = { id: string; title: string; status: string; pages: Page[] };
-export type Wiki = { id: string; name: string; categories: Category[] };
+export type Wiki = { id: string; name: string; pages: Page[] };
 
 export const WIKIS: Wiki[] = [tacoBell as unknown as Wiki];
 
