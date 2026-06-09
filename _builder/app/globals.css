@@ -40,6 +40,9 @@ body {
   background: #fff; border-radius: 18px; padding: 40px 36px;
   box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 8px 30px rgba(0,0,0,.04);
 }
+/* dark "special" band: when the spec inside is dark-toned, the whole host goes
+   dark so the (now-white) heading + device line are visible, matching the site. */
+.section-host:has(.spec[data-tone="special"]) { background: var(--foreground); }
 
 /* edit affordance: anything editable gets a soft hover + focus ring */
 [data-edit] { border-radius: 4px; transition: background .12s, box-shadow .12s; cursor: text; }
@@ -61,6 +64,8 @@ body {
   font-family: "JetBrains Mono", monospace; font-size: 11px; text-transform: uppercase; letter-spacing: .12em;
 }
 .add-card:hover { background: rgba(59,130,246,.06); color: rgba(59,130,246,.9); border-color: rgba(59,130,246,.4); }
+.spec[data-tone="special"] .add-card { border-color: rgba(255,255,255,.18); background: rgba(255,255,255,.03); color: rgba(255,255,255,.4); }
+.spec[data-tone="special"] .add-card:hover { background: rgba(59,130,246,.14); color: rgba(147,197,253,1); border-color: rgba(59,130,246,.6); }
 
 /* ════════════════════════════════════════════════════════════════════
    bank-spec.css (verbatim) — the spec card grid, single source
