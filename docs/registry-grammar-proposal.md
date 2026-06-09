@@ -19,32 +19,48 @@ and partial field lists) into three complete layers:
 
 ## Layer 1 — Page grammar  (what's legal where)
 
+**Just two page types.** An iPod page and a Taco Bell page are the *same kind of
+page* — both `standard`, both free to use the **same component canon**. There is
+no per-domain gating; a component built once is available on every page of every
+wiki. The only second type is the wiki's landing page.
+
 ```yaml
+canon: &canon                   # the full set of banks — shared by BOTH page types.
+  [hero, overview, spec, config, lifecycle-lane, timeline, delta, catalog]
+  # new banks join the canon here → instantly available on every page.
+
 page_types:
-  device:                       # class-ipod-touch
-    sections: [hero, overview, spec, config, lifecycle-lane, timeline, delta]
+
+  standard:        # EVERY content page (iPod, Taco Bell, anything). One canon, no gating.
+    hero_variant: standard
+    sections: *canon
     section_rules:
-      hero:           { min: 1, max: 1, locked_first: true }
-      overview:       { min: 0, max: 1 }
-      spec:           { min: 0, max: 1 }
-      config:         { min: 0, max: 1 }
-      lifecycle-lane: { min: 0, max: 1 }
-      timeline:       { min: 0, max: 1 }
-      delta:          { min: 0, max: 1 }
-  catalog_page:                 # class-tb-menu + listing pages
-    sections: [hero, overview, catalog]
+      hero: { min: 1, max: 1, locked_first: true, variant: standard }
+      "*":  { min: 0, max: unbounded }   # every other section optional + repeatable
+
+  home:            # the wiki's landing page — one per wiki. = a standard page PLUS the
+                   # search-bar hero (search is home-only canon).
+    hero_variant: search
+    sections: *canon
     section_rules:
-      hero:     { min: 1, max: 1, locked_first: true }
-      overview: { min: 0, max: 1 }
-      catalog:  { min: 1, max: 1 }
-  detail_page:                  # class-tb-drink
-    sections: [hero, overview]
-  home_page:                    # apple/taco-bell/fallout/smurfs/doodle
-    sections: [hero, overview]  # hero = search variant; bespoke blocks not yet banked
+      hero: { min: 1, max: 1, locked_first: true, variant: search }
+      "*":  { min: 0, max: unbounded }
 ```
 
-This is exactly what the **"+" slot** reads: stand in a device page, it offers the
-seven device sections (greying out any already at `max`).
+The **only** differences between the two types: the **hero variant** (`search` on
+home, `standard` elsewhere) and that `home` is the wiki's designated landing page.
+Everything else — the whole bank canon — is identical and shared.
+
+This is exactly what the **"+" slot** reads: on *any* page it offers the full canon
+(greying out only the singleton `hero` once placed). Default is "optional +
+repeatable" so a page can stack, say, two timelines or three catalogs; cap specific
+sections at `max: 1` later if you want (e.g. one `overview`).
+
+> **Architectural implication:** the per-domain layouts (`class-ipod-touch`,
+> `class-tb-menu`, `class-tb-drink`) collapse toward a **single standard-page
+> renderer** that just walks the page's ordered section list. That's the same
+> renderer the builder drives — so this simplification is directly on the 1.0 path,
+> not a detour. (Migrating the existing pages onto it is a later, separate step.)
 
 ---
 
