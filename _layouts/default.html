@@ -2440,6 +2440,18 @@
        can still override weights/sizes where it deviates. -->
   {% unless page.no_wiki_typography %}<link rel="stylesheet" href="/wiki-typography.css">{% endunless %}
 
+  <!-- Bank layer — every typed visual bank's stylesheet, loaded ONCE here so
+       any page can use any bank with ZERO css wiring (just front-matter + the
+       include). Each file is fully namespaced (.cat-/.cfg-/.gd-/.lane-/.spec-/
+       .itl- …), so it's harmless on pages that don't use it (rules match
+       nothing). Loads BEFORE extra_head so a skin can still pin bank tokens. -->
+  <link rel="stylesheet" href="/bank-catalog.css">
+  <link rel="stylesheet" href="/bank-timeline.css">
+  <link rel="stylesheet" href="/bank-config.css">
+  <link rel="stylesheet" href="/bank-delta.css">
+  <link rel="stylesheet" href="/bank-spec.css">
+  <link rel="stylesheet" href="/bank-lifecycle-lane.css">
+
   {% if page.extra_head %}{{ page.extra_head }}{% endif %}
 </head>
 

@@ -1,0 +1,103 @@
+/* Builder global styles. The .spec-* block is ViziWiki's bank-spec.css verbatim
+   (single source for the spec look), plus a token preamble + builder chrome so it
+   renders standalone in the app. When the site goes dynamic, this same CSS serves
+   the published pages too. */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root { --foreground: #0a0a0a; --card: #ffffff; }
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: #f4f4f5;
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── builder chrome ───────────────────────────────────────────────── */
+.builder-bar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 20px; background: #fff; border-bottom: 1px solid rgba(0,0,0,.08);
+  position: sticky; top: 0; z-index: 10;
+}
+.builder-bar h1 { font-size: 14px; font-weight: 600; margin: 0; letter-spacing: -.01em; }
+.builder-bar .tag {
+  font-family: "JetBrains Mono", monospace; font-size: 10px; text-transform: uppercase;
+  letter-spacing: .12em; color: rgba(0,0,0,.4); padding: 3px 7px;
+  background: rgba(0,0,0,.05); border-radius: 4px;
+}
+.builder-bar .spacer { flex: 1; }
+.builder-bar button {
+  font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 7px;
+  border: 1px solid rgba(0,0,0,.12); background: #fff; cursor: pointer;
+}
+.builder-bar button:hover { background: rgba(0,0,0,.03); }
+
+.canvas { max-width: 1040px; margin: 32px auto; padding: 0 24px 80px; }
+.section-host {
+  background: #fff; border-radius: 18px; padding: 40px 36px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 8px 30px rgba(0,0,0,.04);
+}
+
+/* edit affordance: anything editable gets a soft hover + focus ring */
+[data-edit] { border-radius: 4px; transition: background .12s, box-shadow .12s; cursor: text; }
+[data-edit]:hover { background: rgba(59,130,246,.08); }
+[data-edit]:focus { outline: none; background: rgba(59,130,246,.10); box-shadow: 0 0 0 2px rgba(59,130,246,.35); }
+
+.row-tools, .card-tools { display: inline-flex; gap: 4px; margin-left: 8px; vertical-align: middle; }
+.mini {
+  font-family: "JetBrains Mono", monospace; font-size: 10px; line-height: 1;
+  padding: 3px 6px; border-radius: 5px; border: 1px solid rgba(0,0,0,.14);
+  background: #fff; color: rgba(0,0,0,.55); cursor: pointer;
+}
+.spec[data-tone="special"] .mini { border-color: rgba(255,255,255,.2); background: transparent; color: rgba(255,255,255,.6); }
+.mini:hover { background: rgba(0,0,0,.05); }
+.add-card {
+  margin-top: 1px; display: flex; align-items: center; justify-content: center;
+  min-height: 80px; border: 1.5px dashed rgba(0,0,0,.18); border-radius: 0;
+  background: rgba(0,0,0,.015); color: rgba(0,0,0,.4); cursor: pointer;
+  font-family: "JetBrains Mono", monospace; font-size: 11px; text-transform: uppercase; letter-spacing: .12em;
+}
+.add-card:hover { background: rgba(59,130,246,.06); color: rgba(59,130,246,.9); border-color: rgba(59,130,246,.4); }
+
+/* ════════════════════════════════════════════════════════════════════
+   bank-spec.css (verbatim) — the spec card grid, single source
+   ════════════════════════════════════════════════════════════════════ */
+.spec {
+  --spec-ink:     var(--foreground, #0a0a0a);
+  --spec-surface: var(--card, #fff);
+  --spec-line:    color-mix(in oklab, var(--foreground, #0a0a0a) 12%, transparent);
+  --spec-divider: color-mix(in oklab, var(--foreground, #0a0a0a) 8%,  transparent);
+}
+.spec[data-tone="special"] {
+  --spec-ink:     var(--card, #fff);
+  --spec-surface: color-mix(in oklab, var(--foreground, #0a0a0a) 93%, var(--card, #fff));
+  --spec-line:    color-mix(in oklab, var(--card, #fff) 12%, transparent);
+  --spec-divider: color-mix(in oklab, var(--card, #fff) 10%, transparent);
+}
+.spec-eyebrow {
+  display: flex; align-items: center; gap: 7px; font-family: "JetBrains Mono", monospace;
+  font-size: 11px; text-transform: uppercase; letter-spacing: .18em;
+  color: color-mix(in oklab, var(--spec-ink) 55%, transparent); margin-bottom: 14px;
+}
+.spec-eyebrow svg { width: 13px; height: 13px; }
+.spec-heading {
+  font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 30px;
+  line-height: 1.15; letter-spacing: -.02em; color: var(--spec-ink); margin: 0 0 6px;
+}
+.spec-sub { font-family: "JetBrains Mono", monospace; font-size: 9px; text-transform: uppercase; letter-spacing: .16em; color: color-mix(in oklab, var(--spec-ink) 42%, transparent); margin: 0 0 36px; }
+.spec-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--spec-divider); border: 1px solid var(--spec-line); border-radius: 16px; overflow: hidden; }
+.spec-card { background: var(--spec-surface); padding: 24px 24px 26px; }
+.spec-card-head { display: flex; align-items: center; gap: 8px; font-family: "JetBrains Mono", monospace; font-size: 9px; text-transform: uppercase; letter-spacing: .18em; color: var(--spec-ink); margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--spec-line); }
+.spec-card-head svg { width: 13px; height: 13px; color: color-mix(in oklab, var(--spec-ink) 55%, transparent); flex-shrink: 0; }
+.spec-list { display: flex; flex-direction: column; gap: 11px; margin: 0; }
+.spec-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin: 0; }
+.spec-k { font-size: 12.5px; color: color-mix(in oklab, var(--spec-ink) 48%, transparent); flex-shrink: 0; margin: 0; }
+.spec-v { font-family: "Fraunces", Georgia, serif; font-size: 13px; font-weight: 500; color: var(--spec-ink); text-align: right; letter-spacing: -.005em; line-height: 1.35; margin: 0; }
+
+@media (max-width: 760px) {
+  .spec-grid { grid-template-columns: 1fr; gap: 0; border-radius: 14px; background: var(--spec-surface); }
+  .spec-card { padding: 22px 18px; border-bottom: 1px solid var(--spec-line); }
+}
