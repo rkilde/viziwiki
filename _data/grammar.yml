@@ -51,7 +51,7 @@ components:
   hero:
     is_section: true               # hero is itself the section (no separate frame)
     locked:                        # DECORATION — skin/admin owns these, not the contributor
-      [bg, accent, dot, chrome, icon, overlays, watermark, class, id]
+      [bg, accent, dot, chrome, icon, overlays, watermark, class, id, extra, search_icon, search_icon_inc]
     fields:
       title:         { type: text,     required: true, help: "Big H1 (the trailing period is automatic)" }
       eyebrow:       { type: text,     help: "Small category tag above the title" }
@@ -59,11 +59,13 @@ components:
       subtitle_meta: { type: text,     help: "Mono tag after a ' · ' (e.g. a model number)" }
       desc:          { type: richtext, help: "One-paragraph lead" }
       stats:         { type: "list<stat>", help: "The 1×4 number grid" }
-      aside:         { type: "enum[none,spotlight,feature]", default: none, help: "An optional card/feature beside the title (advanced)" }
-      search_placeholder: { type: text, help: "Search box placeholder — HOME pages only" }
+      search:        { type: bool, default: false, help: "Show the search bar — HOME pages only (page type sets this)" }
+      search_placeholder: { type: text, help: "Search box placeholder — home only" }
+      spotlight:     { type: spotlight, help: "Optional card aside (advanced — the spotlight bank)" }
+      feature:       { type: feature,   help: "Optional feature aside (advanced — the feature bank)" }
     subtypes:
       stat: { num: { type: text, required: true }, label: { type: text, required: true } }
-    note: "The search bar itself is set by page type (home = on), not a contributor toggle."
+    note: "spotlight/feature are mutually exclusive — at most one aside."
     seed:
       title: "New page title"
       eyebrow: "Category"
@@ -239,7 +241,9 @@ components:
     section: catalog-section
     fields:
       title:      { type: text, required: true, help: "The catalog heading" }
-      note:       { type: richtext, help: "Optional footnote" }
+      unit:       { type: text, default: "item", help: "The count noun (e.g. 'drink', 'sauce')" }
+      note:       { type: text, help: "Short suffix appended to the auto summary line (top)" }
+      footnote:   { type: richtext, help: "Optional footnote block under the catalog (bottom)" }
       categories: { type: "list<category>", required: true }
     subtypes:
       category:
