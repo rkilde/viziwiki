@@ -19,6 +19,7 @@
         "desc": null,
         "stats": []
       },
+      "overview": null,
       "pages": [
         {
           "id": "crunchy-taco",
@@ -37,6 +38,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -56,6 +58,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -75,6 +78,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -94,6 +98,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -113,6 +118,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -132,6 +138,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -151,6 +158,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -170,6 +178,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -189,6 +198,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -208,6 +218,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -227,6 +238,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -246,6 +258,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -265,6 +278,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -284,6 +298,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         }
       ]
@@ -305,6 +320,7 @@
         "desc": null,
         "stats": []
       },
+      "overview": null,
       "pages": [
         {
           "id": "bean-burrito",
@@ -323,6 +339,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -342,6 +359,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -361,6 +379,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -380,6 +399,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -399,6 +419,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         }
       ]
@@ -420,6 +441,7 @@
         "desc": null,
         "stats": []
       },
+      "overview": null,
       "pages": [
         {
           "id": "crunchwrap-supreme",
@@ -438,6 +460,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -457,6 +480,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -476,6 +500,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -495,6 +520,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         }
       ]
@@ -516,6 +542,7 @@
         "desc": null,
         "stats": []
       },
+      "overview": null,
       "pages": [
         {
           "id": "nachos-bellgrande",
@@ -534,6 +561,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -553,6 +581,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -572,6 +601,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -591,6 +621,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         }
       ]
@@ -642,6 +673,63 @@
           }
         ]
       },
+      "overview": {
+        "tone": "a",
+        "heading": "The only fast-food chain whose drink is its own brand.",
+        "paragraphs": [
+          "<strong>Taco Bell's beverage program</strong> is anchored by a single product nobody else can sell: <strong>Mountain Dew Baja Blast</strong>. Co-developed by PepsiCo and Taco Bell flavor R&amp;D in 2003 and launched in February 2004, it is the only Mountain Dew variant manufactured exclusively for a single restaurant chain — and it transformed Taco Bell from a Pepsi licensee into a beverage destination in its own right.",
+          "The full lineup divides into six families: the <strong>Baja</strong> products (carbonated, freeze, and the growing retail bottle line), the <strong>Freeze wall</strong> (slushed Mountain Dew variants — currently Baja, Wild Cherry, and a rotating third valve), <strong>fountain Pepsi</strong> standards, the <strong>Brisk × Taco Bell</strong> juice and tea pairings, the <strong>breakfast coffee</strong> program introduced in 2014, and a small slate of bottled cooler drinks. The fountain has been all-Pepsi since the 1997 Tricon spinoff that created what is now <em>Yum! Brands</em>.",
+          "Taken together, drinks generate roughly 18% of an average store's revenue and a disproportionate share of its margin — Baja Blast alone has been credited with carrying entire product launches (notably the Crunchwrap and Mexican Pizza relaunches), and the freezer-aisle bottle release has become its own annual cultural event."
+        ],
+        "infobox": {
+          "label": null,
+          "title": "Drinks Program",
+          "sublabel": null,
+          "rows": [
+            [
+              "Categories",
+              "6 families"
+            ],
+            [
+              "Active SKUs",
+              "14 on menu"
+            ],
+            [
+              "Hero product",
+              "Baja Blast (since 2004)"
+            ],
+            [
+              "Pepsi exclusive",
+              "1997–present"
+            ],
+            [
+              "Freeze supplier",
+              "Taylor Company"
+            ],
+            [
+              "Coffee certif.",
+              "Rainforest Alliance"
+            ],
+            [
+              "Retail bottle",
+              "Permanent (2020)"
+            ],
+            [
+              "Annual Baja vol.",
+              "≈ 24M cups, U.S."
+            ],
+            [
+              "Discontinued",
+              "6 known SKUs"
+            ],
+            [
+              "See also",
+              "Mountain Dew, Yum! Brands"
+            ]
+          ],
+          "badge": null
+        }
+      },
       "pages": [
         {
           "id": "baja-blast",
@@ -660,6 +748,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -679,6 +768,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -698,6 +788,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -717,6 +808,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -736,6 +828,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -755,6 +848,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -774,6 +868,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -793,6 +888,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -812,6 +908,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -861,6 +958,17 @@
               }
             ]
           },
+          "overview": {
+            "tone": "a",
+            "heading": "60+ discontinued drinks",
+            "paragraphs": [
+              "Taco Bell has discontinued more than sixty beverages since the chain first opened in 1962. Some lasted decades. Others survived a single summer. A few were killed before most customers knew they existed. This archive documents every one of them.",
+              "What makes Taco Bell's drink history unusual isn't the number of casualties — any fast-food chain cycles through products. It's that nearly all of these drinks died for reasons that had nothing to do with customer demand. They died because a corporate parent changed its soda portfolio overnight. Because a machine was replaced and the old recipes didn't fit the new hardware. Because a brand partnership expired and the valve was reassigned to the next exclusive. The drinks themselves were often popular right up until the moment they vanished.",
+              "The archive spans six categories: Mountain Dew exclusives created specifically for Taco Bell fountains, the entire Frutista Freeze program that ran from 2008 to 2013, more than two dozen Freeze machine LTOs and brand collaborations, hand-mixed Limeade Sparklers, hot beverages from the chain's brief coffee experiments, iced teas and lemonades that quietly rotated off the menu, and a handful of defunct fountain sodas dating back to the original Coca-Cola era.",
+              "Below, you'll find a full catalogue of every item by category, a dedicated section on the Freeze machine's brand collaborations, and then the deep-dive swim-lane charts that map each drink's lifespan on a shared timeline. Every item is clickable — tap any pill or card for the full story."
+            ],
+            "infobox": null
+          },
           "pages": [
             {
               "id": "taco-bell-sangrita-blast",
@@ -887,6 +995,17 @@
                 "subtitle_meta": null,
                 "desc": "A cherry-citrus punch soda produced by PepsiCo under the Mountain Dew brand. Introduced in December 2013 and discontinued in 2017.",
                 "stats": []
+              },
+              "overview": {
+                "tone": "b",
+                "heading": "Background",
+                "paragraphs": [
+                  "Mtn Dew Sangrita Blast was a franchise-exclusive Mountain Dew flavor produced by PepsiCo for Taco Bell restaurants. It launched in December 2013 as part of a six-drink PepsiCo fountain expansion that also included Diet Baja Blast, Brisk Iced Tea and Lemonade, Brisk Mango Fiesta, SoBe Lifewater Yumberry Pomegranate, and Kickstart Orange Citrus.",
+                  "The drink was maroon in color, achieved through a combination of Red 40 and Blue 1 dyes. PepsiCo’s official flavor descriptor was “citrus punch,” though consumer descriptions frequently referenced cherry, pomegranate, cranberry, and raspberry notes.",
+                  "In April 2015, PepsiCo released Sangrita Blast in cans and bottles alongside Baja Blast’s second retail run. This remains the only retail release of Sangrita Blast. A frozen Freeze variant was also available at Taco Bell from May to September 2015.",
+                  "Sangrita Blast was discontinued from Taco Bell fountains in 2017 and replaced by Mtn Dew Spiked (Lemonade). No official reason was given for the discontinuation. PepsiCo has not re-released the flavor in any format since."
+                ],
+                "infobox": null
               },
               "pages": []
             },
@@ -916,6 +1035,17 @@
                 "desc": "A raspberry-flavored iced tea produced by the Pepsi Lipton Partnership (PepsiCo/Unilever). Available in retail since the 1990s; discontinued from Taco Bell fountains around 2020.",
                 "stats": []
               },
+              "overview": {
+                "tone": "b",
+                "heading": "Background",
+                "paragraphs": [
+                  "Brisk Raspberry Iced Tea is a ready-to-drink flavored iced tea produced through the Pepsi Lipton Tea Partnership, a joint venture established in 1991 between PepsiCo and Unilever. The Brisk brand crossed $1 billion in annual revenue by 2012, making it one of PepsiCo’s 22 billion-dollar brands.",
+                  "The raspberry variant adds natural raspberry flavoring to the standard Brisk black tea base. It is available in retail as cans, bottles, and fountain syrup (3-gallon bag-in-box format distributed through PepsiCo Partners).",
+                  "Brisk Raspberry Iced Tea appeared on Taco Bell fountains around 2015 as part of the PepsiCo non-carbonated fountain portfolio. It was removed around 2020 during a routine portfolio refresh. The retail product was not affected and remains in active production.",
+                  "In late 2025, PepsiCo announced plans to eliminate approximately 20% of its U.S. product lineup by early 2026. Brisk Raspberry Iced Tea survived this cut in retail, though its presence at Taco Bell had already ended years earlier."
+                ],
+                "infobox": null
+              },
               "pages": []
             },
             {
@@ -944,6 +1074,17 @@
                 "desc": "A hand-blended pineapple-coconut frozen drink produced exclusively for Taco Bell as part of the Frutista Freeze program (2008–2013).",
                 "stats": []
               },
+              "overview": {
+                "tone": "b",
+                "heading": "Background",
+                "paragraphs": [
+                  "The Piña Colada Frutista Freeze was a pineapple-coconut frozen beverage introduced in spring 2009 as part of Taco Bell’s Frutista Freeze program. It launched alongside the Strawberry Colada variant as part of the program’s tropical rotation.",
+                  "Frutista Freezes were hand-blended per order using a commercial blender with fruit syrups, ice, and real fruit toppings. The Piña Colada variant was topped with actual pineapple chunks.",
+                  "The Frutista Freeze program ran from May 2008 to late 2012, producing 13 flavors across seasonal rotations. In January 2013, Taco Bell replaced the commercial blenders with automated Taylor Freeze machines. A non-Frutista “Piña Colada Freeze” briefly appeared on the Taylor machine from January to September 2013 as a transitional product, but it was a different formulation without the hand-blended preparation or real fruit.",
+                  "The Piña Colada Frutista Freeze was never sold in retail (cans, bottles) or at any location outside Taco Bell."
+                ],
+                "infobox": null
+              },
               "pages": []
             },
             {
@@ -971,6 +1112,17 @@
                 "subtitle_meta": null,
                 "desc": "A non-alcoholic lemonade soda with prickly pear cactus juice, produced by PepsiCo under the Mountain Dew brand. Available from 2017 to 2019.",
                 "stats": []
+              },
+              "overview": {
+                "tone": "b",
+                "heading": "Background",
+                "paragraphs": [
+                  "Mtn Dew Spiked was a lemonade-flavored Mountain Dew variant introduced in early 2017 as a replacement for Sangrita Blast on Taco Bell’s dedicated Mountain Dew fountain valve. The drink was marketed as being “spiked” with prickly pear cactus juice, though it contained no alcohol.",
+                  "PepsiCo simultaneously released retail 16-ounce cans in two flavors: Lemonade and Raspberry Lemonade. The drink was promoted during Comedy Central’s Colossal Clusterfest in 2017.",
+                  "A Freeze variant was available at Taco Bell from early 2017 through September 2017, when it was replaced by the Strawberry Poppin’ Candy Freeze. Retail cans were discontinued in 2018. The Taco Bell fountain version was phased out between December 2018 and March 2019 to make room for the introduction of Baja Blast Zero Sugar.",
+                  "In Canada, the product was sold under the name “Mtn Dew Extra (Lemonade)” to avoid confusion about the “Spiked” name’s implied alcohol content."
+                ],
+                "infobox": null
               },
               "pages": []
             }
@@ -1017,6 +1169,7 @@
           }
         ]
       },
+      "overview": null,
       "pages": [
         {
           "id": "mild",
@@ -1035,6 +1188,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -1054,6 +1208,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -1073,6 +1228,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -1092,6 +1248,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -1111,6 +1268,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -1130,6 +1288,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -1149,6 +1308,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         }
       ]
@@ -1196,6 +1356,17 @@
           }
         ]
       },
+      "overview": {
+        "tone": "b",
+        "heading": "Every sub-menu was a strategic move.",
+        "paragraphs": [
+          "Taco Bell doesn't launch sub-menus for variety's sake. Each one is a response to a specific pressure — a competitor move, a cultural moment, a demographic it isn't reaching. The <strong>Original 19-Cent Menu</strong> was a founding price signal; the <strong>59¢/79¢/99¢ Value Menu</strong> was a direct answer to McDonald's Dollar Menu dominance. When the industry went low-fat in the mid-'90s, Taco Bell had <strong>Border Lights</strong> within a year.",
+          "The pattern accelerates after 2008. As fast-casual began threatening the QSR segment, Taco Bell launched <strong>Cantina Bell</strong> with a celebrity chef and upmarket positioning — two years before Chipotle peaked. The <strong>National Breakfast Menu</strong> in 2014 was the most-watched single-day QSR expansion in industry history. What these moments share is timing: Taco Bell tends to move early, before the market confirms the opportunity is real.",
+          "Not every move lands. The <strong>Volcano Menu</strong> was retired in 2013 after five years, then revived in 2023 when demand signals made the case again. The <strong>$2 Meal Deals</strong> ran three years before being absorbed into a cleaner value structure. <strong>Fresco</strong> began as a POS modifier in 2003 and launched as a dedicated branded sub-menu nationwide in 2008, running until August 2020, when it was retired as part of a COVID-19 menu simplification. The \"Fresco Style\" modifier remains available as a digital ordering option. Failure has its own pattern here: menus that try to own a single attribute (heat, price, freshness) without a broader identity tend to age out faster.",
+          "The two active sub-brands today — <strong>National Breakfast</strong> and <strong>Cantina Chicken</strong> — both have dedicated sourcing, distinct positioning, and their own visual identity within Taco Bell's system. The newer <strong>Luxe Value Menu</strong> signals a return to tiered value as the broader QSR sector re-engages with price-sensitive customers. The archive below is organised by status: what's running now, and what ran before."
+        ],
+        "infobox": null
+      },
       "pages": [
         {
           "id": "taco-bell-menus",
@@ -1239,6 +1410,17 @@
                 "label": "Archive span"
               }
             ]
+          },
+          "overview": {
+            "tone": "b",
+            "heading": "Every sub-menu was a strategic move.",
+            "paragraphs": [
+              "Taco Bell doesn't launch sub-menus for variety's sake. Each one is a response to a specific pressure — a competitor move, a cultural moment, a demographic it isn't reaching. The <strong>Original 19-Cent Menu</strong> was a founding price signal; the <strong>59¢/79¢/99¢ Value Menu</strong> was a direct answer to McDonald's Dollar Menu dominance. When the industry went low-fat in the mid-'90s, Taco Bell had <strong>Border Lights</strong> within a year.",
+              "The pattern accelerates after 2008. As fast-casual began threatening the QSR segment, Taco Bell launched <strong>Cantina Bell</strong> with a celebrity chef and upmarket positioning — two years before Chipotle peaked. The <strong>National Breakfast Menu</strong> in 2014 was the most-watched single-day QSR expansion in industry history. What these moments share is timing: Taco Bell tends to move early, before the market confirms the opportunity is real.",
+              "Not every move lands. The <strong>Volcano Menu</strong> was retired in 2013 after five years, then revived in 2023 when demand signals made the case again. The <strong>$2 Meal Deals</strong> ran three years before being absorbed into a cleaner value structure. <strong>Fresco</strong> began as a POS modifier in 2003 and launched as a dedicated branded sub-menu nationwide in 2008, running until August 2020, when it was retired as part of a COVID-19 menu simplification. The \"Fresco Style\" modifier remains available as a digital ordering option. Failure has its own pattern here: menus that try to own a single attribute (heat, price, freshness) without a broader identity tend to age out faster.",
+              "The two active sub-brands today — <strong>National Breakfast</strong> and <strong>Cantina Chicken</strong> — both have dedicated sourcing, distinct positioning, and their own visual identity within Taco Bell's system. The newer <strong>Luxe Value Menu</strong> signals a return to tiered value as the broader QSR sector re-engages with price-sensitive customers. The archive below is organised by status: what's running now, and what ran before."
+            ],
+            "infobox": null
           },
           "pages": []
         },
@@ -1290,6 +1472,17 @@
               }
             ]
           },
+          "overview": {
+            "tone": "a",
+            "heading": "A protein pivot, not a variety play.",
+            "paragraphs": [
+              "Launched nationwide on <strong>March 21, 2024</strong>, the Cantina Chicken Menu is Taco Bell's most deliberate bid yet to compete at the fast-casual tier — not on price, but on ingredient quality. The strategic target was explicit: Chipotle, CAVA, and the broader daytime fast-casual segment that has eroded legacy QSR market share through the 2010s and early 2020s. The line debuted at Taco Bell's inaugural <em>Live Más LIVE</em> event in Las Vegas in February 2024, followed by a Taco Bell Rewards early-access window on March 14 and 18 before the full nationwide roll-out one week later.",
+              "The entire line is built around a single new protein: slow-roasted chicken prepared in a savory blend of garlic, onions, and authentic Mexican chilies. This is a distinct offering from the chain's standard shredded or grilled chicken — a separate preparation with its own seasoning profile and supply chain. Taco Bell deploys it across every major format in its menu architecture (tacos, burritos, quesadillas, bowls), which is the vertical logic of the sub-line: one elevated protein, maximum menu surface area.",
+              "To distinguish the line visually and texturally from standard builds, Taco Bell introduced a suite of fresh ingredients not previously deployed at scale: <strong>shredded purple cabbage</strong> for crunch and color, <strong>pico de gallo</strong> prepared fresh daily, <strong>white corn tortilla shells</strong> fried in-house daily for the crispy items, and the <strong>Avocado Verde Salsa</strong> — a new packet-based sauce formulated with real avocado pulp, tomatillos, and green chili peppers, included automatically with every Cantina order. The fresh-produce commitment alone projected 2.5 million additional pounds of usage in the first year.",
+              "The precedent is <strong>Cantina Bell</strong> (2012–2014), which attempted the same fast-casual pivot through a broader ingredient overhaul with chef Lorena Garcia. It lasted two years. Cantina Chicken narrows the bet to a single protein and owns the preparation rather than overhauling the entire ingredient stack. Consumer response to the initial five-item launch was strong enough that the culinary team permanently expanded the line — adding the <strong>Cantina Chicken Rolled Quesadilla</strong> and the <strong>Cantina Chicken Mexican Pizza</strong> to the permanent roster, raising the item count above the launch configuration catalogued here."
+            ],
+            "infobox": null
+          },
           "pages": []
         },
         {
@@ -1339,6 +1532,17 @@
                 "color": "#9ca3af"
               }
             ]
+          },
+          "overview": {
+            "tone": "a",
+            "heading": "The bundle as the differentiator.",
+            "paragraphs": [
+              "The $2 Meal Deals launched around 2010 as Taco Bell's most direct response to the dollar-menu wars being fought between McDonald's, Burger King, and Wendy's. Rather than matching competitors item-for-item at the dollar price point, Taco Bell offered something structurally different: three components for two dollars — an entrée, a small bag of Nacho Cheese Doritos, and a medium fountain drink. The Doritos inclusion was a Frito-Lay partnership and the key structural move. Dollar menus sold items; the $2 Meal Deals sold a complete occasion.",
+              "The operational logic was straightforward. Taco Bell's core items — the Crunchy Taco, the Soft Taco, the Bean Burrito — were already priced below a dollar individually at full margin. Bundling them with a fountain drink and a snack-size Doritos bag at two dollars gave the customer a perceived deal while maintaining reasonable unit economics — both chips and fountain drinks carry extremely low wholesale cost relative to perceived value. The format also gave Taco Bell a story: not \"we have cheap items,\" but \"we give you more.\"",
+              "The timing placed the $2 Meal Deals squarely within the <strong>Why Pay More!? / Big Bell Value Menu</strong> era — Taco Bell's broader early-2010s push to own the value segment outright. The two programs ran in parallel: the Big Bell Value Menu covered individual items at low price points; the $2 Meal Deals covered the bundle-and-drink occasion. Together they attempted to make Taco Bell the default answer to any fast-food budget decision.",
+              "The format was retired around 2013. Its replacement was the <strong>Cravings Value Menu</strong> (2014), which brought a cleaner tiered architecture — $1, $2, and $3 levels — that absorbed the bundle logic without requiring a dedicated program. The $2 Meal Deals served their purpose: they established the bundle as a legitimate value format at Taco Bell, and the Cravings menu inherited that framing at scale."
+            ],
+            "infobox": null
           },
           "pages": []
         },
@@ -1390,6 +1594,17 @@
               }
             ]
           },
+          "overview": {
+            "tone": "a",
+            "heading": "One swap. Nine items. No upcharge.",
+            "paragraphs": [
+              "The Fresco Menu launched in 2003 as Taco Bell's first dedicated health-oriented sub-line. The concept was structurally simple: any item served Fresco style had its cheese and sauce components removed and replaced with <strong>Fiesta Salsa</strong> — a fresh-daily preparation of diced tomatoes, white onions, cilantro, and chili seasonings. The result was a calorie and fat reduction of between 20 and 100 calories per item and up to 50% less fat, with no change to price. The Fresco menu was not a separate ordering system — it was a modifier applied to existing items, and kitchen staff were trained to execute it as a standard customisation.",
+              "The 2003 launch committed to a specific nutritional threshold: all items on the dedicated Fresco menu would come in under nine grams of fat. This was an unusual move for a QSR brand at the time. Fast food chains had experimented with \"lite\" or \"low-fat\" items before, but dedicated sub-menus with publicly enforced nutritional ceilings were rare in the segment. The Fresco Menu predated the broader fast-food health wave that would follow — Subway's Jared campaign had run since 2000, but no major QSR had operationalised a full modifiable sub-line with the same consistency.",
+              "The menu gained its highest national profile in January 2010 with the launch of the <strong>Drive-Thru Diet</strong> campaign — Taco Bell's most controversial marketing move in the Fresco line's history. The campaign featured Christine Dougherty, who claimed to have lost 54 pounds over two years by choosing Fresco items as part of a calorie-controlled diet. Taco Bell's own disclaimer acknowledged the results were not typical and that Fresco items were \"not a low calorie food\" — the campaign's value was in calorie <em>reduction relative to the standard menu</em>, not in positioning Taco Bell as a health food destination.",
+              "The standalone Fresco Menu — as a named, dedicated section on physical menu boards and digital drive-thrus — was permanently retired in <strong>August 2020</strong> as part of a sweeping corporate simplification driven by the COVID-19 pandemic. Taco Bell cut roughly 12 menu items and several sub-menu sections to reduce kitchen complexity and speed up service times. However, the <strong>\"Fresco Style\" modifier itself was not retired</strong>: it remains active today as a button on kitchen registers, digital kiosks, and the mobile app. The ingredient it substitutes changed in the same 2020 cut — Pico de Gallo (Fiesta Salsa) was discontinued, so ordering Fresco Style now replaces cheese and dairy with standard diced tomatoes rather than the original fresh-daily salsa preparation. The no-upcharge policy remains in place."
+            ],
+            "infobox": null
+          },
           "pages": []
         },
         {
@@ -1439,6 +1654,17 @@
                 "color": "#9ca3af"
               }
             ]
+          },
+          "overview": {
+            "tone": "a",
+            "heading": "Win on weight, not on cents.",
+            "paragraphs": [
+              "The Big Bell Value Menu launched on <strong>February 2004</strong> as Taco Bell's calculated response to the early-2000s fast-food value wars. McDonald's Dollar Menu — introduced in 2002 — had set the industry reference point: one dollar, one item, no negotiation. Burger King and Wendy's followed with comparable offerings. Rather than match them dollar-for-dollar, Taco Bell's strategy was to reframe the value equation entirely. Instead of asking \"is this cheap?\" the Big Bell Value Menu asked \"how much do you get?\" The answer, on most items, was a half pound — a portion size that made the comparable Dollar Menu burger look visibly inadequate.",
+              "The menu launched with nine permanent items, five of which were billed as \"grande\" or \"½ lb\" to foreground their size advantage — three half-pound burritos, the Grande Soft Taco, and the Double Decker Taco. The Cheesy Double Beef Burrito — filled with a double portion of seasoned beef and nacho cheese sauce — became the program's signature item and its most enduring legacy. The Caramel Apple Empanada anchored the dessert slot, and the Beef Combo Burrito gave the menu a low-cost beef-and-bean entry point at 99¢. Prices ranged from 99¢ to approximately $1.29 across the lineup.",
+              "The timing was deliberately competitive. In 2003, Taco Bell's same-store sales had been under pressure from the broader QSR value push, and the brand needed a value narrative that was both differentiated and operationally executable at scale. The Big Bell Value Menu achieved both: it used existing kitchen infrastructure and inventory, required no new equipment, and communicated its advantage through menu board language (\"grande,\" \"½ lb\") rather than through price comparison. <em>Volume</em> was the positioning — the consumer's sense that they were getting substantially more than a dollar could buy at a burger chain.",
+              "The program ran from 2003 until <strong>2008</strong>, when the 2008 recession prompted a strategic pivot. As consumer disposable income contracted sharply, the \"½ lb for 99¢\" pitch was superseded by a more urgent proposition: exact pocket-change pricing at three rigid tiers. The Big Bell Value Menu was retired and replaced by the <strong>79¢ / 89¢ / 99¢ \"Why Pay More!?\" Value Menu</strong> — same franchise, different economic moment, fundamentally different strategy. Several Big Bell items carried forward into the Why Pay More lineup, including the Cheesy Double Beef Burrito and Caramel Apple Empanada, but the \"grande\" branding and volume-first positioning did not."
+            ],
+            "infobox": null
           },
           "pages": []
         },
@@ -1490,6 +1716,17 @@
               }
             ]
           },
+          "overview": {
+            "tone": "a",
+            "heading": "Value that doesn't taste like it.",
+            "paragraphs": [
+              "The Luxe Value Menu launched nationwide on <strong>January 22, 2026</strong>, replacing the Cravings Value Menu that had anchored Taco Bell's value tier since 2014. The name was deliberate: \"luxe\" as a direct reframe of what fast-food value positioning could communicate. Where the Cravings menu had emphasised familiarity and affordability, the Luxe menu was designed to carry a premium connotation — the idea that a $2.49 item could feel like an indulgence rather than a fallback. The menu was first teased at Live Más Live 2025 and formally announced on January 13, 2026, with Rewards member early access running from January 16.",
+              "The programme was tested in <strong>Indianapolis, Indiana</strong> beginning July 17, 2025 — the same regional-test-then-national-rollout cadence Taco Bell used for the Cantina Chicken Menu in 2024. The Indianapolis test ran five new items alongside five Cravings holdovers, giving corporate a direct read on which innovations held up operationally before committing to a national launch. The nationwide rollout replicated the test menu's structure almost exactly: the same five new items, the same five carried-forward items, with the Avocado Ranch Chicken Stacker's name refined from \"Chipotle Ranch Chicken Stacker\" in the test to the final version.",
+              "The competitive context was explicit. By 2025, every major QSR chain had launched or reaffirmed a sub-$3 value tier in response to consumer price sensitivity following several years of industry-wide menu inflation. McDonald's, Burger King, and Wendy's had all made high-profile value commitments. Taco Bell's CMO Luis Restrepo framed the Luxe launch directly against this backdrop: <em>\"This isn't just a menu refresh, it's a new standard for value at Taco Bell and across the industry.\"</em> The ten-item ceiling of $3 — versus the previous Cravings menu's $1–$3 spread — positioned the Luxe menu as a more coherent, easier-to-communicate value proposition on the menu board.",
+              "The five carried-forward items — Cheesy Roll Up, Spicy Potato Soft Taco, Cheesy Bean and Rice Burrito, 3 Cheese Chicken Flatbread Melt, and Cheesy Double Beef Burrito — were not accidents. Each had ranked among the highest-volume items on the Cravings menu, meaning the transition preserved the operational infrastructure already in place while the five new items introduced the format diversity that justified the \"luxe\" positioning. The <strong>Salted Caramel Churros</strong>, the only limited-time item in the launch lineup and its lowest price point at $1.99, served as an accessible entry point and a social-media-friendly novelty simultaneously."
+            ],
+            "infobox": null
+          },
           "pages": []
         },
         {
@@ -1509,6 +1746,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -1528,6 +1766,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -1547,6 +1786,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -1566,6 +1806,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -1585,6 +1826,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         }
       ]
@@ -1632,6 +1874,17 @@
           }
         ]
       },
+      "overview": {
+        "tone": "b",
+        "heading": "From no tagline to Live Más.",
+        "paragraphs": [
+          "Taco Bell was founded by Glen Bell in Downey, California in 1962 and operated for fifteen years without a national advertising tagline, growing to more than a thousand locations on the strength of its menu and price point alone. That changed in 1977 when PepsiCo — which had acquired the chain the previous year — brought the marketing infrastructure required to push a coordinated national voice. <strong>The Fresh Food Place</strong> became the first tagline with genuine national reach.",
+          "What followed was a forty-year search for the right register. The 1980s moved quickly through four slogans in roughly a decade, each attempting to land on a differentiator — freshness, customisation, friendliness — before the chain discovered in 1988 that its most powerful advertising asset was atmosphere rather than product. <strong>Make a Run for the Border</strong> ran for six years and embedded itself in American vernacular, particularly among the late-night college audience.",
+          "The 1990s produced Taco Bell's most studied campaign: <strong>Yo Quiero Taco Bell</strong> and Gidget the Chihuahua. Brand awareness hit record highs while same-store sales declined — a real-world demonstration that recognition and purchase intent are distinct quantities. The campaign was retired in 2001 and became the subject of a $42 million lawsuit over creative ownership.",
+          "<strong>Think Outside the Bun</strong> then ran for eleven years, the longest primary slogan in the chain's history. In 2012, at the 50th anniversary mark, the chain replaced it with two words: <strong>Live Más.</strong> Launched alongside Doritos Locos Tacos — the best-selling product launch in fast-food history — the tagline repositioned Taco Bell from a food destination to a lifestyle brand. It is still active today."
+        ],
+        "infobox": null
+      },
       "pages": [
         {
           "id": "live-mas",
@@ -1650,6 +1903,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -1669,6 +1923,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -1688,6 +1943,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -1707,6 +1963,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -1726,6 +1983,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         }
       ]
@@ -1747,6 +2005,7 @@
         "desc": null,
         "stats": []
       },
+      "overview": null,
       "pages": [
         {
           "id": "breakfast-crunchwrap",
@@ -1765,6 +2024,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -1784,6 +2044,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -1803,6 +2064,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -1822,6 +2084,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         }
       ]
@@ -1843,6 +2106,7 @@
         "desc": null,
         "stats": []
       },
+      "overview": null,
       "pages": [
         {
           "id": "glen-bell",
@@ -1861,6 +2125,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -1880,6 +2145,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -1899,6 +2165,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         },
         {
@@ -1918,6 +2185,7 @@
             "desc": null,
             "stats": []
           },
+          "overview": null,
           "pages": []
         }
       ]

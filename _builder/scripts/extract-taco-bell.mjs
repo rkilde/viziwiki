@@ -39,9 +39,19 @@ function builtPageData(pageUrl) {
   let fm = {};
   try { fm = fmMatch ? (yaml.load(fmMatch[1]) || {}) : {}; } catch {}
   const h = fm.hero || {};
+  const ov = fm.overview || null;
   return {
     sections: SECTION_ORDER.filter((k) => fm[k] != null).map((k) => ({ type: k === 'os' ? 'lifecycle-lane' : k, label: SECTION_LABEL[k] })),
     hero: { eyebrow: h.eyebrow || null, title: h.title || null, subtitle: h.subtitle || null, subtitle_meta: h.subtitle_meta || null, desc: h.desc || null, stats: Array.isArray(h.stats) ? h.stats : [] },
+    overview: ov ? {
+      tone: ov.tone || 'b',
+      heading: ov.heading || '',
+      paragraphs: Array.isArray(ov.paragraphs) ? ov.paragraphs : [],
+      infobox: ov.infobox ? {
+        label: ov.infobox.label || null, title: ov.infobox.title || '', sublabel: ov.infobox.sublabel || null,
+        rows: Array.isArray(ov.infobox.rows) ? ov.infobox.rows : [], badge: ov.infobox.badge || null,
+      } : null,
+    } : null,
   };
 }
 
@@ -59,6 +69,7 @@ function toNode(node) {
     accent: node.accent || (node.grad && node.grad[0]) || null,
     sections: built ? built.sections : [],
     hero: built ? built.hero : { eyebrow: null, title: null, subtitle: null, subtitle_meta: null, desc: null, stats: [] },
+    overview: built ? built.overview : null,
     pages: (node.entries || []).map(toNode),
   };
 }

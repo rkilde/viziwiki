@@ -12,6 +12,9 @@ export type Hero = {
   stats: Stat[];
 };
 export type SectionRef = { type: string; label: string };
+export type InfoboxRow = [string, string];
+export type Infobox = { label: string | null; title: string; sublabel: string | null; rows: InfoboxRow[]; badge: string | null };
+export type Overview = { tone: string; heading: string; paragraphs: string[]; infobox: Infobox | null };
 export type Page = {
   id: string;
   title: string;
@@ -22,6 +25,7 @@ export type Page = {
   accent?: string | null;
   sections: SectionRef[];
   hero: Hero;
+  overview?: Overview | null;
   pages: Page[];
 };
 export type Wiki = { id: string; name: string; pages: Page[] };

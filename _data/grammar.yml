@@ -82,10 +82,14 @@ components:
       tone:       { type: "enum[a,b,special]", default: b }
       infobox:    { type: infobox, help: "Optional fact panel beside the prose" }
     subtypes:
-      infobox:
-        title: { type: text }
-        rows:  { type: "list<fact>" }
-      fact: { label: { type: text, required: true }, value: { type: richtext, required: true } }
+      infobox:                       # mirrors the canonical bank _includes/overview/infobox.html
+        label:    { type: text, default: "Infobox", help: "header label (default 'Infobox')" }
+        title:    { type: text, required: true }
+        sublabel: { type: text, help: "optional 2nd header label line" }
+        rows:     { type: "list<pair>", help: "[key, value] fact rows" }
+        badge:    { type: text, help: "optional status chip at the foot of the panel" }
+        # + skin/admin decoration passthroughs (NOT contributor-edited): class, style, art
+      pair: { key: { type: text, required: true }, value: { type: richtext, required: true } }
     seed:
       heading: "Overview"
       paragraphs: ["Write the overview here."]
