@@ -9,7 +9,7 @@ const Swatch = ({ color, label }: { color: string; label: string }) => (
 
 const WIKI_COLOR: Record<string, string> = { 'taco-bell': '#702082' };
 
-export function Topbar({ wikis, current }: { wikis: Wiki[]; current: Wiki }) {
+export function Topbar({ wikis, current, level, onLevel }: { wikis: Wiki[]; current: Wiki; level: number; onLevel: (n: number) => void }) {
   const [open, setOpen] = useState(false);
   const color = WIKI_COLOR[current.id] || '#9d7cf4';
 
@@ -39,6 +39,13 @@ export function Topbar({ wikis, current }: { wikis: Wiki[]; current: Wiki }) {
       <div id="view-toggle">
         <button className="vt-btn" disabled title="Coming soon">Tree</button>
         <button className="vt-btn active" data-mode="columns">Columns</button>
+      </div>
+
+      <div id="level-toggle" title="Admin only — preview the builder as a contributor access level">
+        <span className="lvl-label">Access</span>
+        {[1, 2, 3].map((n) => (
+          <button key={n} className={`vt-btn ${level === n ? 'active' : ''}`} onClick={() => onLevel(n)}>Level {n}</button>
+        ))}
       </div>
 
       <div id="topbar-kbd">

@@ -37,6 +37,9 @@ button{ font-family:inherit; }
 .vt-btn:hover{ color:var(--text); }
 .vt-btn.active{ background:var(--purple-bg); color:var(--purple); }
 .vt-btn:disabled{ opacity:.4; cursor:not-allowed; }
+/* admin-only access-level toggle (to the right of Tree/Columns) */
+#level-toggle{ display:flex; align-items:center; margin-left:14px; background:var(--bg3); border:1px solid var(--purple-bd); border-radius:7px; padding:2px; gap:2px; }
+#level-toggle .lvl-label{ font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:var(--dim); padding:0 8px; }
 #topbar-kbd{ margin-left:auto; display:flex; gap:10px; align-items:center; font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.1em; color:var(--dim); }
 .kbd{ display:inline-block; padding:2px 5px; border:1px solid var(--border2); border-radius:3px; background:var(--bg3); color:var(--muted); font-size:8px; }
 
