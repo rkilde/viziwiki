@@ -33,7 +33,7 @@ function Column({ head, children }: { head: string; children: React.ReactNode })
   );
 }
 
-export function MillerView({ wiki }: { wiki: Wiki }) {
+export function MillerView({ wiki, onOpen }: { wiki: Wiki; onOpen?: (page: Page) => void }) {
   const [path, setPath] = useState<string[]>([]);
 
   const sel0 = wiki.pages.find((p) => p.id === path[0]) || null;
@@ -81,11 +81,11 @@ export function MillerView({ wiki }: { wiki: Wiki }) {
               <PagePreview page={selected} />
             ) : (
               <div className="mil-preview-stage" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div className="mil-noh">“{oneLine(selected.title)}” is a directory entry that hasn’t been built yet.<br />Open &amp; edit would create it.</div>
+                <div className="mil-noh">“{oneLine(selected.title)}” hasn’t been built yet.<br />Open &amp; edit starts it with a hero + overview.</div>
               </div>
             )}
-            <button className="mil-open dummy" title="The page builder isn't wired up yet" onClick={() => {}}>
-              Open &amp; edit → (coming soon)
+            <button className="mil-open" onClick={() => onOpen?.(selected)}>
+              Open &amp; edit →
             </button>
           </div>
         ) : (
