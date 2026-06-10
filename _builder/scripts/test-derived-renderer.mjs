@@ -188,10 +188,12 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
     overview: { tone: 'b', heading: 'H', paragraphs: ['P'], infobox: null },
     sections: [{ type: 'catalog', data: { title: 'C', categories: [{ name: 'Cat', note: 'priced 99¢', items: [{ name: 'X', desc: 'd' }] }] } }],
   }, false);
-  const pn = dN.querySelector('.pe-note-chip.has');
-  ok(pn && pn.querySelector('.ce').textContent === 'priced 99¢', 'present note → editable chip with the text');
+  const pn = dN.querySelector('.cat-card-count .pe-note-chip.has');
+  ok(pn && pn.querySelector('.ce').textContent === 'priced 99¢', 'present note → editable chip, INLINE in the count line');
   ok(pn.querySelector('.pe-remove'), 'present note chip has a corner ×');
-  ok(!dN.querySelector('.cat-card-count').textContent.includes('priced'), 'note lifted out of the count line (shown once, in the chip)');
+  const cntTxt = dN.querySelector('.cat-card-count').childNodes[0].nodeValue;
+  ok(/·\s*$/.test(cntTxt.trim() + ' ') || cntTxt.includes('·'), 'count keeps the canon "·" before the note chip');
+  ok(dN.querySelector('.cat-card-count').textContent.replace(pn.textContent, '').indexOf('priced') === -1, 'note text appears once (only in the chip)');
   ok(!cat.querySelector('.cat-card > .pe-remove'), 'no corner × on the card (moved into the dock)');
   // pills: clickable openers + the "+ item" add pill
   ok(cat.querySelectorAll('.cat-pill:not(.cat-add-pill)').length === 2, 'two item pills');
@@ -274,7 +276,9 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   const modal = d.querySelector('[data-catalog-modal]');
   ok(modal.classList.contains('open'), 'clicking a pill opens the canonical modal (.open)');
   ok(modal.querySelector('[data-modal-body] [id="d-0-0"]'), 'detail moved into the modal body');
-  ok(modal.querySelector('[data-modal-ribbon]').classList.contains('ribbon-gone'), 'modal ribbon mirrors the pill (gone tone)');
+  const mrb = modal.querySelector('[data-modal-ribbon]');
+  ok(mrb.classList.contains('ribbon-gone'), 'modal ribbon mirrors the pill (gone tone)');
+  ok(mrb.querySelector('span') && mrb.querySelector('span').textContent === 'R', 'modal ribbon uses the canonical inner <span> (rotated banner)');
   modal.querySelector('[data-modal-close]').onclick();
   ok(!modal.classList.contains('open') && d.querySelector('.cat-details [id="d-0-0"]'), 'close returns the detail to its hidden home');
 }

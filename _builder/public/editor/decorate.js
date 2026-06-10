@@ -541,7 +541,9 @@
           if (modalCard && pill) modalCard.style.setProperty('--cat-color', pill.getAttribute('data-color') || '');
           if (modalRb) {
             var rb = pill && pill.getAttribute('data-ribbon');
-            modalRb.textContent = rb || ''; modalRb.style.display = rb ? '' : 'none';
+            // canon: the rotated banner needs an inner <span> (catalog.html L92)
+            modalRb.innerHTML = '';
+            if (rb) { var rsp = document.createElement('span'); rsp.textContent = rb; modalRb.appendChild(rsp); }
             modalRb.classList.toggle('ribbon-gone', !!pill && pill.getAttribute('data-ribbon-tone') === 'gone');
             if (modalCard) modalCard.classList.toggle('has-ribbon', !!rb);
           }
@@ -605,9 +607,11 @@
           if (cnt) {
             var noteChip;
             if (cdata.note != null) {
+              // canon: "N items · note". Keep "N items ·", lift the note text
+              // into an inline chip right after the dot.
               for (var q = cnt.childNodes.length - 1; q >= 0; q--) {
                 var nv = cnt.childNodes[q];
-                if (nv.nodeType === 3 && nv.nodeValue.indexOf('·') > -1) { nv.nodeValue = nv.nodeValue.slice(0, nv.nodeValue.lastIndexOf('·')); break; }
+                if (nv.nodeType === 3 && nv.nodeValue.indexOf('·') > -1) { nv.nodeValue = nv.nodeValue.slice(0, nv.nodeValue.lastIndexOf('·') + 1); break; }
               }
               noteChip = document.createElement('span'); noteChip.className = 'pe-note-chip has';
               var ceN = document.createElement('span'); ceN.className = 'ce'; ceN.setAttribute('contenteditable', 'true'); ceN.textContent = cdata.note;
@@ -618,7 +622,7 @@
               noteChip = document.createElement('button'); noteChip.className = 'pe-note-chip'; noteChip.textContent = '+ note';
               (function (p) { noteChip.onclick = function () { A('add:' + p); }; })(cpre + 'note');
             }
-            cnt.parentNode.insertBefore(noteChip, cnt.nextSibling);
+            cnt.appendChild(noteChip);   // INLINE in the count line (canon position)
           }
 
           // the glass dock (bottom-right): colour · ribbon · remove
