@@ -99,10 +99,11 @@ const lk = (tip: string) => `<span class="pe-lock" title="${tip}">${LOCK}</span>
 const add = (a: string, label: string, style = '') => `<div class="pe-addline"${style ? ` style="${style}"` : ''}><button class="pe-add" onclick="A('${a}')">${label}</button></div>`;
 const ce = (path: string, html: string | null) => `<span class="ce" contenteditable="true" onblur="P('${path}',this)">${html || ''}</span>`;
 
-// ── hero card (aside) ──
+// ── hero card (aside) ── both treatments are "cards": the Call-to-Action card
+// (spotlight, CTA required) and the Feature card (exactly 3 fixed chips).
 const asideCtrls = (variant: string) => `<div class="pe-aside-ctrls">
-  <button class="pe-chip ${variant === 'card' ? 'active' : ''}" onclick="A('switchAside:card')">card</button>
-  <button class="pe-chip ${variant === 'feature' ? 'active' : ''}" onclick="A('switchAside:feature')">feature</button>
+  <button class="pe-chip ${variant === 'card' ? 'active' : ''}" onclick="A('switchAside:card')">Call to Action Card</button>
+  <button class="pe-chip ${variant === 'feature' ? 'active' : ''}" onclick="A('switchAside:feature')">Feature Card</button>
   <button class="pe-chip" onclick="A('rmAside')">remove</button></div>`;
 
 function spotlightHTML(c: SpotlightDoc): string {
@@ -112,7 +113,7 @@ function spotlightHTML(c: SpotlightDoc): string {
       <h3 class="wiki-hero-spotlight-title">${ce('hero.aside.card.title', c.title)}</h3>
       ${c.desc != null ? `<div class="pe-removable"><p class="wiki-hero-spotlight-desc">${ce('hero.aside.card.desc', c.desc)}</p>${x('spRmDesc')}</div>` : add('spAddDesc', '+ description')}
       <div class="wiki-hero-spotlight-tags">${c.tags.map((t, i) => `<span class="wiki-hero-spotlight-tag pe-removable">${ce(`hero.aside.card.tags.${i}`, t)}<button class="pe-tag-rm" onclick="A('spRmTag:${i}')">×</button></span>`).join('')}<button class="pe-mini-add" onclick="A('spAddTag')">+ tag</button></div>
-      ${c.cta != null ? `<span class="pe-removable" style="display:inline-block">${`<button class="wiki-hero-spotlight-cta">${ce('hero.aside.card.cta', c.cta)}</button>`}${x('spRmCta')}</span>` : add('spAddCta', '+ button')}
+      <button class="wiki-hero-spotlight-cta">${ce('hero.aside.card.cta', c.cta)}</button>
     </div></aside>`;
 }
 
@@ -124,8 +125,7 @@ function featureHTML(f: FeatureDoc): string {
         <div class="wiki-hero-feature-head"><span>${ce('hero.aside.feature.headLeft', f.headLeft || '')}</span>${f.headRight != null ? `<span class="pe-removable" style="display:inline-block">${ce('hero.aside.feature.headRight', f.headRight)}<button class="pe-tag-rm" onclick="A('ftRmHeadRight')">×</button></span>` : `<button class="pe-mini-add" onclick="A('ftAddHeadRight')">+ right</button>`}</div>
         <div class="wiki-hero-feature-title">${ce('hero.aside.feature.title', f.title)}</div>
         ${f.desc != null ? `<div class="pe-removable"><p class="wiki-hero-feature-desc">${ce('hero.aside.feature.desc', f.desc)}</p>${x('ftRmDesc')}</div>` : add('ftAddDesc', '+ description')}
-        <div class="wiki-hero-feature-stats">${f.chips.map((c, i) => `<div class="wiki-hero-feature-chip pe-removable"><div class="wiki-hero-feature-chip-key">${ce(`hero.aside.feature.chips.${i}.key`, c.key)}</div><div class="wiki-hero-feature-chip-val">${ce(`hero.aside.feature.chips.${i}.val`, c.val)}</div>${x(`ftRmChip:${i}`)}</div>`).join('')}</div>
-        <div class="pe-addline"><button class="pe-mini-add" onclick="A('ftAddChip')">+ chip</button></div>
+        <div class="wiki-hero-feature-stats">${f.chips.map((c, i) => `<div class="wiki-hero-feature-chip"><div class="wiki-hero-feature-chip-key">${ce(`hero.aside.feature.chips.${i}.key`, c.key)}</div><div class="wiki-hero-feature-chip-val">${ce(`hero.aside.feature.chips.${i}.val`, c.val)}</div></div>`).join('')}</div>
       </div>
     </div></aside>`;
 }
@@ -134,7 +134,7 @@ function asideHTML(aside: HeroDoc['aside']): string {
   if (!aside) {
     return `<aside class="wiki-hero-aside"><div class="pe-aside-empty">
       <div class="pe-aside-empty-label">Hero card · optional</div>
-      <div class="pe-add-row"><button class="pe-add" onclick="A('addAside:card')">+ card</button><button class="pe-add" onclick="A('addAside:feature')">+ feature</button></div>
+      <div class="pe-add-row"><button class="pe-add" onclick="A('addAside:card')">+ Call to Action Card</button><button class="pe-add" onclick="A('addAside:feature')">+ Feature Card</button></div>
     </div></aside>`;
   }
   return aside.variant === 'card' ? spotlightHTML(aside.card) : featureHTML(aside.feature);
@@ -301,14 +301,12 @@ export function applyAction(doc: PageDoc, action: string): void {
     case 'spRmDesc': if (a) a.card.desc = null; break;
     case 'spAddTag': if (a) a.card.tags.push('Tag'); break;
     case 'spRmTag': if (a) a.card.tags.splice(Number(arg), 1); break;
-    case 'spAddCta': if (a) a.card.cta = 'Button label'; break;
-    case 'spRmCta': if (a) a.card.cta = null; break;
+    // CTA is REQUIRED on the Call-to-Action card (no add/remove — always present)
     case 'ftAddHeadRight': if (a) a.feature.headRight = 'Label'; break;
     case 'ftRmHeadRight': if (a) a.feature.headRight = null; break;
     case 'ftAddDesc': if (a) a.feature.desc = 'Write a short description.'; break;
     case 'ftRmDesc': if (a) a.feature.desc = null; break;
-    case 'ftAddChip': if (a) a.feature.chips.push({ key: 'Label', val: 'Value' }); break;
-    case 'ftRmChip': if (a) a.feature.chips.splice(Number(arg), 1); break;
+    // Feature card chips are FIXED at exactly 3 (no add/remove)
     // overview
     case 'setTone': ov.tone = arg; break;
     case 'addPara': ov.paragraphs.push('Write another paragraph here…'); break;

@@ -65,21 +65,21 @@ components:
       feature:       { type: feature,   help: "Optional feature aside (advanced — the feature bank)" }
     subtypes:
       stat: { num: { type: text, required: true }, label: { type: text, required: true } }
-      spotlight:                  # hero card — treatment 1 (wiki-hero-spotlight)
+      spotlight:                  # hero card — treatment 1 · CALL-TO-ACTION CARD (wiki-hero-spotlight)
         eyebrow:  { type: text }
         title:    { type: text, required: true }
         desc:     { type: richtext }
         tags:     { type: "list<text>" }
-        cta:      { type: text, help: "button label; cta_href makes it a link" }
+        cta:      { type: text, required: true, help: "REQUIRED button label (the call to action); cta_href makes it a link" }
         cta_href: { type: url }
-      feature:                    # hero card — treatment 2 (wiki-hero-feature)
+      feature:                    # hero card — treatment 2 · FEATURE CARD (wiki-hero-feature)
         head_left:  { type: text }
         head_right: { type: text }
         title:      { type: text, required: true }
         desc:       { type: richtext }
-        chips:      { type: "list<chip>", help: "the stat chips (key/value)" }
+        chips:      { type: "list<chip>", required: true, min: 3, max: 3, help: "EXACTLY 3 stat chips (key/value) — fixed, not addable/removable" }
       chip: { key: { type: text, required: true }, val: { type: text, required: true } }
-    note: "spotlight/feature are mutually exclusive — at most one aside (the 'hero card'). search is HOME-only."
+    note: "Both asides are 'hero cards' (mutually exclusive — at most one): spotlight = the Call-to-Action card (CTA required), feature = the Feature card (exactly 3 fixed chips). search is HOME-only."
     seed:
       title: "New page title"
       eyebrow: "Category"

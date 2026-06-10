@@ -5,9 +5,10 @@ import type { Page } from './wiki';
 
 export type Stat = { num: string; label: string };
 export type Chip = { key: string; val: string };
-// hero aside — canonical "hero card": spotlight (card) OR feature treatment
-export type SpotlightDoc = { eyebrow: string | null; title: string; desc: string | null; tags: string[]; cta: string | null };
-export type FeatureDoc = { headLeft: string | null; headRight: string | null; title: string; desc: string | null; chips: Chip[] };
+// hero aside — canonical "hero card": the Call-to-Action card (spotlight; cta
+// REQUIRED) or the Feature card (exactly 3 fixed chips).
+export type SpotlightDoc = { eyebrow: string | null; title: string; desc: string | null; tags: string[]; cta: string };
+export type FeatureDoc = { headLeft: string | null; headRight: string | null; title: string; desc: string | null; chips: Chip[] /* exactly 3 */ };
 export type AsideDoc = { variant: 'card' | 'feature'; card: SpotlightDoc; feature: FeatureDoc };
 export type HeroDoc = {
   eyebrow: string | null;
@@ -31,18 +32,33 @@ export type OverviewDoc = { tone: string; heading: string; paragraphs: string[];
 export type PageDoc = { hero: HeroDoc; overview: OverviewDoc };
 
 export const BLANK_CARD = (): SpotlightDoc => ({ eyebrow: 'Spotlight', title: 'Spotlight title', desc: 'Write a short description.', tags: ['Tag'], cta: 'Button label' });
-export const BLANK_FEATURE = (): FeatureDoc => ({ headLeft: 'Featured', headRight: null, title: 'Feature title', desc: 'Write a short description.', chips: [{ key: 'Label', val: 'Value' }] });
+export const BLANK_FEATURE = (): FeatureDoc => ({ headLeft: 'Featured', headRight: null, title: 'Feature title', desc: 'Write a short description.', chips: pad3([]) });
+
+// canon: the Feature card always shows EXACTLY 3 chips (fixed, not addable/removable)
+function pad3(chips: Chip[]): Chip[] {
+  const out = Array.isArray(chips) ? chips.slice(0, 3) : [];
+  while (out.length < 3) out.push({ key: 'Label', val: 'Value' });
+  return out;
+}
+// canon: the Call-to-Action card always has a CTA (required, can't be deleted)
+const reqCta = (cta: any): string => (typeof cta === 'string' && cta.length ? cta : 'Read more →');
 
 function buildAside(h: any): AsideDoc | null {
   if (h?.spotlight) {
     const s = h.spotlight;
-    return { variant: 'card', card: { eyebrow: s.eyebrow ?? null, title: s.title || 'Card title', desc: s.desc ?? null, tags: Array.isArray(s.tags) ? s.tags : [], cta: s.cta ?? null }, feature: BLANK_FEATURE() };
+    return { variant: 'card', card: { eyebrow: s.eyebrow ?? null, title: s.title || 'Card title', desc: s.desc ?? null, tags: Array.isArray(s.tags) ? s.tags : [], cta: reqCta(s.cta) }, feature: BLANK_FEATURE() };
   }
   if (h?.feature) {
     const f = h.feature;
-    return { variant: 'feature', card: BLANK_CARD(), feature: { headLeft: f.head_left ?? null, headRight: f.head_right ?? null, title: f.title || 'Feature title', desc: f.desc ?? null, chips: Array.isArray(f.chips) ? f.chips : [] } };
+    return { variant: 'feature', card: BLANK_CARD(), feature: { headLeft: f.head_left ?? null, headRight: f.head_right ?? null, title: f.title || 'Feature title', desc: f.desc ?? null, chips: pad3(f.chips) } };
   }
   return null;
+}
+
+// normalize an aside to the canon (3 chips, required cta) — guards stale saved docs
+export function normAside(a: AsideDoc | null): AsideDoc | null {
+  if (!a) return a;
+  return { ...a, card: { ...a.card, cta: reqCta(a.card.cta) }, feature: { ...a.feature, chips: pad3(a.feature.chips) } };
 }
 
 // Seed a doc from a page's extracted data — hero + overview always present.
@@ -72,7 +88,11 @@ const KEY = (id: string) => `viziwiki:page:${id}`;
 export function loadPageDoc(page: Page): PageDoc {
   try {
     const saved = localStorage.getItem(KEY(page.id));
-    if (saved) return JSON.parse(saved) as PageDoc;
+    if (saved) {
+      const doc = JSON.parse(saved) as PageDoc;
+      doc.hero.aside = normAside(doc.hero.aside); // bring older saves up to canon
+      return doc;
+    }
   } catch { /* ignore */ }
   return seedDoc(page);
 }

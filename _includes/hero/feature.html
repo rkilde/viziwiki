@@ -1,11 +1,12 @@
 {%- comment -%}
-  HERO SPOTLIGHT · treatment 2 — FEATURE (the Diablo / Baja-Blast style).
+  HERO SPOTLIGHT · treatment 2 — FEATURE CARD (the Diablo / Baja-Blast style).
   Single source. Goes in the hero aside. Edit once → propagates everywhere.
   data:
     bg?        -> --hero-feature-bg (gradient/colour, skin/admin decoration)
     head_left? · head_right?   (the small mono head row)
     title (req) · desc?
-    chips?     -> list of { key, val }  (the 3 stat chips)
+    chips  (REQUIRED) -> EXACTLY 3 stat chips { key, val } — fixed, the canon
+                         feature card always shows three (not addable/removable)
 {%- endcomment -%}
 {%- assign f = include.data -%}
 <div class="wiki-hero-feature"{% if f.bg %} style="--hero-feature-bg:{{ f.bg }}"{% endif %}>

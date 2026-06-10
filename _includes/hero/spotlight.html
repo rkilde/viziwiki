@@ -1,10 +1,11 @@
 {%- comment -%}
-  HERO SPOTLIGHT · treatment 1 — CARD (the Cantina / iPhone style).
+  HERO SPOTLIGHT · treatment 1 — CALL-TO-ACTION CARD (the Cantina / iPhone style).
   Single source. Goes in the hero aside. Edit once → propagates everywhere.
   data:
     eyebrow? · title (req) · desc?
     tags?      -> list of strings
-    cta?       -> button label; cta_href? makes it a link instead of a button
+    cta  (REQUIRED) -> button label (the call to action — every CTA card has one);
+                       cta_href? makes it a link instead of a button
 {%- endcomment -%}
 {%- assign s = include.data -%}
 <div class="wiki-hero-spotlight{% if s.class %} {{ s.class }}{% endif %}">
