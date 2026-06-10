@@ -2,13 +2,14 @@
 // for ContentStore (swaps to Supabase later, same calls). Hero + overview are
 // LOCKED/required on every page — seedDoc always returns both present.
 import type { Page } from './wiki';
+import { FEATURE_CHIP_COUNT } from './grammar';
 
 export type Stat = { num: string; label: string };
 export type Chip = { key: string; val: string };
 // hero aside — canonical "hero card": the Call-to-Action card (spotlight; cta
-// REQUIRED) or the Feature card (exactly 3 fixed chips).
+// REQUIRED) or the Feature card (a fixed number of chips — count from grammar).
 export type SpotlightDoc = { eyebrow: string | null; title: string; desc: string | null; tags: string[]; cta: string };
-export type FeatureDoc = { headLeft: string | null; headRight: string | null; title: string; desc: string | null; chips: Chip[] /* exactly 3 */ };
+export type FeatureDoc = { headLeft: string | null; headRight: string | null; title: string; desc: string | null; chips: Chip[] /* fixed count, from grammar */ };
 export type AsideDoc = { variant: 'card' | 'feature'; card: SpotlightDoc; feature: FeatureDoc };
 export type HeroDoc = {
   eyebrow: string | null;
@@ -32,12 +33,14 @@ export type OverviewDoc = { tone: string; heading: string; paragraphs: string[];
 export type PageDoc = { hero: HeroDoc; overview: OverviewDoc };
 
 export const BLANK_CARD = (): SpotlightDoc => ({ eyebrow: 'Spotlight', title: 'Spotlight title', desc: 'Write a short description.', tags: ['Tag'], cta: 'Button label' });
-export const BLANK_FEATURE = (): FeatureDoc => ({ headLeft: 'Featured', headRight: null, title: 'Feature title', desc: 'Write a short description.', chips: pad3([]) });
+export const BLANK_FEATURE = (): FeatureDoc => ({ headLeft: 'Featured', headRight: null, title: 'Feature title', desc: 'Write a short description.', chips: padChips([]) });
 
-// canon: the Feature card always shows EXACTLY 3 chips (fixed, not addable/removable)
-function pad3(chips: Chip[]): Chip[] {
-  const out = Array.isArray(chips) ? chips.slice(0, 3) : [];
-  while (out.length < 3) out.push({ key: 'Label', val: 'Value' });
+// canon: the Feature card shows a FIXED number of chips (not addable/removable).
+// The count is single-source — read from _data/grammar.yml, not hardcoded here.
+function padChips(chips: Chip[]): Chip[] {
+  const n = FEATURE_CHIP_COUNT;
+  const out = Array.isArray(chips) ? chips.slice(0, n) : [];
+  while (out.length < n) out.push({ key: 'Label', val: 'Value' });
   return out;
 }
 // canon: the Call-to-Action card always has a CTA (required, can't be deleted)
@@ -50,15 +53,15 @@ function buildAside(h: any): AsideDoc | null {
   }
   if (h?.feature) {
     const f = h.feature;
-    return { variant: 'feature', card: BLANK_CARD(), feature: { headLeft: f.head_left ?? null, headRight: f.head_right ?? null, title: f.title || 'Feature title', desc: f.desc ?? null, chips: pad3(f.chips) } };
+    return { variant: 'feature', card: BLANK_CARD(), feature: { headLeft: f.head_left ?? null, headRight: f.head_right ?? null, title: f.title || 'Feature title', desc: f.desc ?? null, chips: padChips(f.chips) } };
   }
   return null;
 }
 
-// normalize an aside to the canon (3 chips, required cta) — guards stale saved docs
+// normalize an aside to the canon (fixed chip count, required cta) — guards stale saved docs
 export function normAside(a: AsideDoc | null): AsideDoc | null {
   if (!a) return a;
-  return { ...a, card: { ...a.card, cta: reqCta(a.card.cta) }, feature: { ...a.feature, chips: pad3(a.feature.chips) } };
+  return { ...a, card: { ...a.card, cta: reqCta(a.card.cta) }, feature: { ...a.feature, chips: padChips(a.feature.chips) } };
 }
 
 // Seed a doc from a page's extracted data — hero + overview always present.

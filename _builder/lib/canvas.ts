@@ -11,8 +11,12 @@ import type { WikiSkin } from './wiki';
 const TACO_BELL_SKIN: WikiSkin = { bodyClass: 'wiki-page wiki-taco-bell', css: ['wiki-taco-bell-skin.css', 'tb-editorial-base.css'] };
 
 const AFFORDANCE = `
-  /* editing field: grey box on hover (= editable), blue box on click (= editing) */
-  .ce{ cursor:text; border-radius:3px; display:inline-block; max-width:100%;
+  /* editing field: grey box on hover (= editable), blue box on click (= editing).
+     overflow-wrap:anywhere keeps a long unbroken string from inflating the
+     field's min-content — without it the inline-block + fit-content sizing
+     blows out the canon's grid/flex tracks (the live site never sees this
+     because plain text wraps at spaces). Keeps the editor on the master format. */
+  .ce{ cursor:text; border-radius:3px; display:inline-block; max-width:100%; overflow-wrap:anywhere;
        outline:2px solid transparent; outline-offset:2px; transition:outline-color .12s; }
   .ce:hover{ outline-color:rgba(0,0,0,.18); }
   .ce:focus{ outline-color:rgba(0,113,227,.55); }

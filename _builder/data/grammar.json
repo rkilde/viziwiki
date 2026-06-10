@@ -1,0 +1,872 @@
+{
+  "field_types": {
+    "text": "single-line input",
+    "richtext": "small rich editor — inline HTML / bold / links",
+    "number": "number input",
+    "date": "month/date picker (stored as a display string e.g. 'May 2019')",
+    "bool": "toggle",
+    "enum": "fixed choice → dropdown, written enum[a,b,c]",
+    "list": "repeatable group (add/remove rows), written list<subtype>",
+    "media": "image/file upload → Supabase Storage",
+    "icon": "picker from the universal icon sprite",
+    "color": "swatch — a skin-token reference or a content hex",
+    "url": "validated link"
+  },
+  "canon": [
+    "hero",
+    "overview",
+    "spec",
+    "config",
+    "lifecycle-lane",
+    "timeline",
+    "delta",
+    "catalog"
+  ],
+  "page_types": {
+    "standard": {
+      "hero_variant": "standard",
+      "sections": [
+        "hero",
+        "overview",
+        "spec",
+        "config",
+        "lifecycle-lane",
+        "timeline",
+        "delta",
+        "catalog"
+      ],
+      "section_rules": {
+        "hero": {
+          "min": 1,
+          "max": 1,
+          "locked_first": true,
+          "variant": "standard"
+        },
+        "*": {
+          "min": 0,
+          "max": "unbounded"
+        }
+      }
+    },
+    "home": {
+      "hero_variant": "search",
+      "sections": [
+        "hero",
+        "overview",
+        "spec",
+        "config",
+        "lifecycle-lane",
+        "timeline",
+        "delta",
+        "catalog"
+      ],
+      "section_rules": {
+        "hero": {
+          "min": 1,
+          "max": 1,
+          "locked_first": true,
+          "variant": "search"
+        },
+        "*": {
+          "min": 0,
+          "max": "unbounded"
+        }
+      }
+    }
+  },
+  "components": {
+    "hero": {
+      "is_section": true,
+      "locked": [
+        "bg",
+        "accent",
+        "dot",
+        "chrome",
+        "icon",
+        "overlays",
+        "watermark",
+        "class",
+        "id",
+        "extra",
+        "search_icon",
+        "search_icon_inc"
+      ],
+      "fields": {
+        "title": {
+          "type": "text",
+          "required": true,
+          "help": "Big H1 (the trailing period is automatic)"
+        },
+        "eyebrow": {
+          "type": "text",
+          "help": "Small category tag above the title"
+        },
+        "subtitle": {
+          "type": "text",
+          "help": "A line under the H1"
+        },
+        "subtitle_meta": {
+          "type": "text",
+          "help": "Mono tag after a ' · ' (e.g. a model number)"
+        },
+        "desc": {
+          "type": "richtext",
+          "help": "One-paragraph lead"
+        },
+        "stats": {
+          "type": "list<stat>",
+          "help": "The 1×4 number grid"
+        },
+        "search": {
+          "type": "bool",
+          "default": false,
+          "help": "Show the search bar — HOME pages only (page type sets this)"
+        },
+        "search_placeholder": {
+          "type": "text",
+          "help": "Search box placeholder — home only"
+        },
+        "spotlight": {
+          "type": "spotlight",
+          "help": "Optional card aside (advanced — the spotlight bank)"
+        },
+        "feature": {
+          "type": "feature",
+          "help": "Optional feature aside (advanced — the feature bank)"
+        }
+      },
+      "subtypes": {
+        "stat": {
+          "num": {
+            "type": "text",
+            "required": true
+          },
+          "label": {
+            "type": "text",
+            "required": true
+          }
+        },
+        "spotlight": {
+          "eyebrow": {
+            "type": "text"
+          },
+          "title": {
+            "type": "text",
+            "required": true
+          },
+          "desc": {
+            "type": "richtext"
+          },
+          "tags": {
+            "type": "list<text>"
+          },
+          "cta": {
+            "type": "text",
+            "required": true,
+            "help": "REQUIRED button label (the call to action); cta_href makes it a link"
+          },
+          "cta_href": {
+            "type": "url"
+          }
+        },
+        "feature": {
+          "head_left": {
+            "type": "text"
+          },
+          "head_right": {
+            "type": "text"
+          },
+          "title": {
+            "type": "text",
+            "required": true
+          },
+          "desc": {
+            "type": "richtext"
+          },
+          "chips": {
+            "type": "list<chip>",
+            "required": true,
+            "min": 3,
+            "max": 3,
+            "help": "EXACTLY 3 stat chips (key/value) — fixed, not addable/removable"
+          }
+        },
+        "chip": {
+          "key": {
+            "type": "text",
+            "required": true
+          },
+          "val": {
+            "type": "text",
+            "required": true
+          }
+        }
+      },
+      "note": "Both asides are 'hero cards' (mutually exclusive — at most one): spotlight = the Call-to-Action card (CTA required), feature = the Feature card (exactly 3 fixed chips). search is HOME-only.",
+      "seed": {
+        "title": "New page title",
+        "eyebrow": "Category",
+        "desc": "A short lead sentence about this page."
+      },
+      "min": "title"
+    },
+    "overview": {
+      "section": "overview-section",
+      "locked": {
+        "eyebrow": "Overview",
+        "icon": "book-open"
+      },
+      "fields": {
+        "heading": {
+          "type": "text",
+          "required": true
+        },
+        "paragraphs": {
+          "type": "list<richtext>",
+          "required": true,
+          "help": "The overview body"
+        },
+        "tone": {
+          "type": "enum[a,b,special]",
+          "default": "b"
+        },
+        "infobox": {
+          "type": "infobox",
+          "help": "Optional fact panel beside the prose"
+        }
+      },
+      "subtypes": {
+        "infobox": {
+          "label": {
+            "type": "text",
+            "default": "Infobox",
+            "help": "header label (default 'Infobox')"
+          },
+          "title": {
+            "type": "text",
+            "required": true
+          },
+          "sublabel": {
+            "type": "text",
+            "help": "optional 2nd header label line"
+          },
+          "rows": {
+            "type": "list<pair>",
+            "help": "[key, value] fact rows"
+          },
+          "badge": {
+            "type": "text",
+            "help": "optional status chip at the foot of the panel"
+          }
+        },
+        "pair": {
+          "key": {
+            "type": "text",
+            "required": true
+          },
+          "value": {
+            "type": "richtext",
+            "required": true
+          }
+        }
+      },
+      "seed": {
+        "heading": "Overview",
+        "paragraphs": [
+          "Write the overview here."
+        ]
+      },
+      "min": "heading + one paragraph"
+    },
+    "spec": {
+      "section": "spec-section",
+      "locked": {
+        "eyebrow": "Specifications Sheet",
+        "icon": "file-text"
+      },
+      "fields": {
+        "heading": {
+          "type": "text",
+          "required": true
+        },
+        "device": {
+          "type": "text",
+          "required": true,
+          "help": "Identifier line: name · model number"
+        },
+        "tone": {
+          "type": "enum[a,b,special]",
+          "default": "special",
+          "help": "special = the dark signature band"
+        },
+        "cards": {
+          "type": "list<card>",
+          "required": true
+        }
+      },
+      "subtypes": {
+        "card": {
+          "title": {
+            "type": "text",
+            "required": true
+          },
+          "icon": {
+            "type": "icon"
+          },
+          "rows": {
+            "type": "list<pair>",
+            "required": true
+          }
+        },
+        "pair": {
+          "key": {
+            "type": "text",
+            "required": true
+          },
+          "value": {
+            "type": "text",
+            "required": true
+          }
+        }
+      },
+      "seed": {
+        "heading": "The complete sheet.",
+        "device": "New device · MODEL",
+        "cards": [
+          {
+            "title": "Display",
+            "icon": "monitor",
+            "rows": [
+              {
+                "key": "Size",
+                "value": "4-inch"
+              }
+            ]
+          }
+        ]
+      },
+      "min": "heading + device + one card with one row"
+    },
+    "config": {
+      "section": "config-section",
+      "locked": {
+        "eyebrow": "Configurations",
+        "icon": "hard-drive"
+      },
+      "fields": {
+        "heading": {
+          "type": "text",
+          "required": true
+        },
+        "chart_title": {
+          "type": "text",
+          "required": true
+        },
+        "intro": {
+          "type": "richtext"
+        },
+        "footer": {
+          "type": "richtext"
+        },
+        "divider_label": {
+          "type": "text",
+          "help": "Label on the revised-group divider"
+        },
+        "items": {
+          "type": "list<config_item>",
+          "required": true
+        }
+      },
+      "subtypes": {
+        "config_item": {
+          "capacity": {
+            "type": "number",
+            "required": true
+          },
+          "unit": {
+            "type": "enum[GB,TB]",
+            "default": "GB"
+          },
+          "model": {
+            "type": "text"
+          },
+          "price": {
+            "type": "text",
+            "help": "Supports an 'old → new' drop"
+          },
+          "dates": {
+            "type": "text"
+          },
+          "revised": {
+            "type": "bool",
+            "default": false,
+            "help": "Stripes the bar + drops a divider"
+          },
+          "colors": {
+            "type": "list<dot>",
+            "help": "Device-colour dots"
+          }
+        },
+        "dot": {
+          "name": {
+            "type": "text"
+          },
+          "hex": {
+            "type": "color"
+          },
+          "ring": {
+            "type": "bool",
+            "default": false
+          }
+        }
+      },
+      "derived": [
+        "bar width = exact proportion of the largest capacity"
+      ],
+      "seed": {
+        "heading": "Configurations",
+        "chart_title": "Capacities at launch",
+        "items": [
+          {
+            "capacity": 32,
+            "unit": "GB",
+            "model": "Base",
+            "price": "$199"
+          },
+          {
+            "capacity": 256,
+            "unit": "GB",
+            "model": "Top",
+            "price": "$399"
+          }
+        ]
+      },
+      "min": "heading + chart_title + one item with a capacity"
+    },
+    "lifecycle-lane": {
+      "section": "os-section",
+      "locked": {
+        "eyebrow": "Operating system support",
+        "icon": "layers"
+      },
+      "fields": {
+        "heading": {
+          "type": "richtext",
+          "required": true
+        },
+        "title": {
+          "type": "text",
+          "required": true,
+          "help": "The ribbon's left-hand title"
+        },
+        "paragraphs": {
+          "type": "list<richtext>",
+          "help": "Lead prose above the ribbon"
+        },
+        "tone": {
+          "type": "enum[a,b,special]",
+          "default": "a"
+        },
+        "weighted": {
+          "type": "bool",
+          "default": false,
+          "help": "On = tile width ∝ time between dates"
+        },
+        "end": {
+          "type": "date",
+          "help": "Weighted mode only — right edge for the last tile"
+        },
+        "range_note": {
+          "type": "text",
+          "help": "Optional suffix on the counter"
+        },
+        "segments": {
+          "type": "list<segment>",
+          "required": true,
+          "min": 2
+        },
+        "notes": {
+          "type": "list<note>"
+        }
+      },
+      "subtypes": {
+        "segment": {
+          "ver": {
+            "type": "text",
+            "required": true
+          },
+          "date": {
+            "type": "date",
+            "required": true
+          },
+          "type": {
+            "type": "enum[full,partial,dropped,security]",
+            "required": true,
+            "help": "full=green · partial=amber · dropped=grey cliff · security=blue post-EOL"
+          },
+          "badge": {
+            "type": "text"
+          },
+          "badge_type": {
+            "type": "enum[ship,paid,limited,final,dropped,security]",
+            "default": "ship"
+          }
+        },
+        "note": {
+          "status": {
+            "type": "enum[full,partial,limited,final,dropped,security]",
+            "required": true
+          },
+          "label": {
+            "type": "text",
+            "required": true
+          },
+          "text": {
+            "type": "richtext",
+            "required": true
+          }
+        }
+      },
+      "derived": [
+        "counter: launch → drop · duration · N major versions",
+        "legend: from the tile types present"
+      ],
+      "rules": [
+        "exactly one segment SHOULD be type:dropped (the cliff)",
+        "a security tile must be listed AFTER the dropped tile (latest date last)"
+      ],
+      "seed": {
+        "heading": "New software-support timeline",
+        "title": "Software lifecycle",
+        "segments": [
+          {
+            "ver": "1.0",
+            "date": "Jan 2020",
+            "type": "full",
+            "badge": "Launch",
+            "badge_type": "ship"
+          },
+          {
+            "ver": "2.0",
+            "date": "Jan 2023",
+            "type": "dropped",
+            "badge": "Dropped",
+            "badge_type": "dropped"
+          }
+        ]
+      },
+      "min": "heading + title + 2 segments"
+    },
+    "delta": {
+      "section": "delta-section",
+      "locked": {
+        "eyebrow": "Changes & Improvements",
+        "icon": "chart-column-stacked"
+      },
+      "fields": {
+        "heading": {
+          "type": "text",
+          "required": true
+        },
+        "intro": {
+          "type": "richtext"
+        },
+        "footnote": {
+          "type": "richtext"
+        },
+        "prev": {
+          "type": "axis",
+          "required": true,
+          "help": "The 'before' column header"
+        },
+        "current": {
+          "type": "axis",
+          "required": true,
+          "help": "The 'after' column header"
+        },
+        "hardware": {
+          "type": "list<delta_row>"
+        },
+        "software": {
+          "type": "list<delta_row>"
+        }
+      },
+      "subtypes": {
+        "axis": {
+          "tag": {
+            "type": "text"
+          },
+          "name": {
+            "type": "text",
+            "required": true
+          },
+          "year": {
+            "type": "text"
+          }
+        },
+        "delta_row": {
+          "label": {
+            "type": "text",
+            "required": true
+          },
+          "old": {
+            "type": "text"
+          },
+          "new": {
+            "type": "text"
+          },
+          "no_old": {
+            "type": "bool",
+            "default": false,
+            "help": "Hide the 'before' cell"
+          },
+          "chip": {
+            "type": "enum[better,feature,changed,worse,same]",
+            "help": "Colour = the direction of change"
+          },
+          "chip_text": {
+            "type": "text",
+            "help": "The short value shown in the chip"
+          }
+        }
+      },
+      "seed": {
+        "heading": "What changed.",
+        "prev": {
+          "tag": "Previous",
+          "name": "Old model",
+          "year": "2020"
+        },
+        "current": {
+          "tag": "Current",
+          "name": "New model",
+          "year": "2023"
+        },
+        "hardware": [
+          {
+            "label": "Chip",
+            "new": "Faster SoC",
+            "chip": "better",
+            "chip_text": "2×"
+          }
+        ]
+      },
+      "min": "heading + prev + current + one row"
+    },
+    "timeline": {
+      "section": "timeline-section",
+      "locked": {
+        "eyebrow": "Timeline",
+        "icon": "move-horizontal",
+        "full_bleed": true
+      },
+      "fields": {
+        "heading": {
+          "type": "text",
+          "help": "Optional H2 (omit for eyebrow-only)"
+        },
+        "tone": {
+          "type": "enum[a,b,special]",
+          "default": "b"
+        },
+        "card_type": {
+          "type": "enum[station]",
+          "default": "station"
+        },
+        "events": {
+          "type": "list<event>",
+          "required": true,
+          "min": 2
+        }
+      },
+      "subtypes": {
+        "event": {
+          "month": {
+            "type": "enum[Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec]",
+            "required": true
+          },
+          "day": {
+            "type": "text"
+          },
+          "year": {
+            "type": "text",
+            "required": true
+          },
+          "tag": {
+            "type": "text"
+          },
+          "title": {
+            "type": "text",
+            "required": true,
+            "help": "Card headline + modal title"
+          },
+          "preview": {
+            "type": "text",
+            "help": "One-line summary on the card face"
+          },
+          "body": {
+            "type": "richtext",
+            "help": "Full detail in the expandable card"
+          }
+        }
+      },
+      "derived": [
+        "scroll hint, year bands, positions, gap chips — all from the dates"
+      ],
+      "seed": {
+        "events": [
+          {
+            "month": "Jan",
+            "year": "2020",
+            "tag": "Launch",
+            "title": "First release.",
+            "preview": "It began here."
+          },
+          {
+            "month": "Jan",
+            "year": "2023",
+            "tag": "Update",
+            "title": "Major update.",
+            "preview": "Then this happened."
+          }
+        ]
+      },
+      "min": "≥2 events, each with month + year + title"
+    },
+    "catalog": {
+      "section": "catalog-section",
+      "fields": {
+        "title": {
+          "type": "text",
+          "required": true,
+          "help": "The catalog heading"
+        },
+        "unit": {
+          "type": "text",
+          "default": "item",
+          "help": "The count noun (e.g. 'drink', 'sauce')"
+        },
+        "note": {
+          "type": "text",
+          "help": "Short suffix appended to the auto summary line (top)"
+        },
+        "footnote": {
+          "type": "richtext",
+          "help": "Optional footnote block under the catalog (bottom)"
+        },
+        "categories": {
+          "type": "list<category>",
+          "required": true
+        }
+      },
+      "subtypes": {
+        "category": {
+          "name": {
+            "type": "text",
+            "required": true
+          },
+          "color": {
+            "type": "color",
+            "help": "Skin swatch number, or omit to auto-cycle the palette"
+          },
+          "ribbon": {
+            "type": "ribbon",
+            "help": "Optional corner ribbon"
+          },
+          "note": {
+            "type": "text"
+          },
+          "items": {
+            "type": "list<cat_item>",
+            "required": true
+          }
+        },
+        "ribbon": {
+          "text": {
+            "type": "text",
+            "required": true
+          },
+          "tone": {
+            "type": "enum[accent,gone]",
+            "default": "accent"
+          }
+        },
+        "cat_item": {
+          "name": {
+            "type": "text",
+            "required": true
+          },
+          "status": {
+            "type": "text"
+          },
+          "info": {
+            "type": "text"
+          },
+          "desc": {
+            "type": "richtext"
+          },
+          "groups": {
+            "type": "list<pill_group>"
+          },
+          "callout": {
+            "type": "callout"
+          },
+          "notes": {
+            "type": "richtext"
+          },
+          "cta": {
+            "type": "url"
+          }
+        },
+        "pill_group": {
+          "label": {
+            "type": "text"
+          },
+          "pills": {
+            "type": "list<pill>"
+          }
+        },
+        "pill": {
+          "text": {
+            "type": "text",
+            "required": true
+          },
+          "struck": {
+            "type": "bool",
+            "default": false
+          }
+        },
+        "callout": {
+          "label": {
+            "type": "text"
+          },
+          "text": {
+            "type": "richtext"
+          }
+        }
+      },
+      "derived": [
+        "per-category item count + the auto summary"
+      ],
+      "seed": {
+        "title": "Everything",
+        "categories": [
+          {
+            "name": "Category one",
+            "items": [
+              {
+                "name": "First item",
+                "desc": "What it is."
+              },
+              {
+                "name": "Second item",
+                "desc": "What it is."
+              }
+            ]
+          }
+        ]
+      },
+      "min": "title + one category with one item"
+    }
+  }
+}
