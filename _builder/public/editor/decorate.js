@@ -313,11 +313,12 @@
 
     // add-section seam (dotted circle +) — BELOW the overview only: canon
     // forbids adding above the hero or between hero and overview (both
-    // locked-first). Dummy for now — the section picker comes later.
+    // locked-first). Click → the add-section picker in the parent app.
     if (sec && !document.querySelector('.pe-add-section')) {
       var seam = document.createElement('div');
       seam.className = 'pe-add-section';
       seam.innerHTML = '<span class="pe-add-line"></span><button class="pe-add-dot" title="Add section">+</button><span class="pe-add-line"></span>';
+      seam.onclick = function () { try { window.parent.__peOpenPicker(); } catch (e) {} };
       sec.parentNode.insertBefore(seam, sec.nextSibling);
     }
 

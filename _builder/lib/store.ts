@@ -72,9 +72,16 @@ export function seedDoc(page: Page): PageDoc {
       feature: !s && f ? { head_left: f.head_left ?? null, head_right: f.head_right ?? null, title: f.title || blankOf('hero.feature.title'), desc: f.desc ?? null, chips: padChips(f.chips) } : null,
     },
     overview: ov
-      ? { tone: ov.tone || 'b', heading: ov.heading || blankOf('overview.heading'), paragraphs: ov.paragraphs.length ? ov.paragraphs : [...(ovSeed.paragraphs || [''])], infobox: ov.infobox }
-      : { tone: 'b', heading: blankOf('overview.heading'), paragraphs: [...(ovSeed.paragraphs || [''])], infobox: null },
+      ? { tone: ov.tone || 'b', heading: ov.heading || blankOf('overview.heading'), paragraphs: ov.paragraphs.length ? ov.paragraphs : [...(ovSeed.paragraphs || [''])], infobox: ov.infobox ?? blankInfobox() }
+      : { tone: 'b', heading: blankOf('overview.heading'), paragraphs: [...(ovSeed.paragraphs || [''])], infobox: blankInfobox() },
   };
+}
+
+// canon: the overview ships WITH its fact panel by default — a contributor
+// actively removes it. The starter panel comes from the grammar blank.
+function blankInfobox(): InfoboxDoc {
+  const b = blankOf('overview.infobox') || {};
+  return { label: b.label ?? 'Infobox', title: b.title ?? 'Infobox title', sublabel: b.sublabel ?? null, rows: b.rows ?? [], badge: b.badge ?? null };
 }
 
 // v2: the canonical-contract doc shape (v1 docs had a builder-only aside shape)
