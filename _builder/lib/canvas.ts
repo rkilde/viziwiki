@@ -16,6 +16,19 @@ const AFFORDANCE = `
        outline:2px solid transparent; outline-offset:2px; transition:outline-color .12s; }
   .ce:hover{ outline-color:rgba(0,0,0,.18); }
   .ce:focus{ outline-color:rgba(0,113,227,.55); }
+
+  /* overview prose: keep the canonical 20px inter-paragraph rhythm whether a
+     paragraph is added via "+ paragraph" (a separate pe-removable block — the
+     wrapper breaks the canon's "> p + p" adjacency, so restore it here) OR by
+     pressing Enter inside a paragraph box (the browser inserts block children,
+     which otherwise stack with no gap). Both paths now match each other + canon. */
+  .wiki-section-prose .pe-removable{ margin-top:20px; }
+  .wiki-section-prose .pe-removable:first-child{ margin-top:0; }
+  .wiki-section-prose .pe-removable > p{ margin:0; }
+  .wiki-section-prose .ce > div,
+  .wiki-section-prose .ce > p{ margin-top:20px; }
+  .wiki-section-prose .ce > div:first-child,
+  .wiki-section-prose .ce > p:first-child{ margin-top:0; }
   /* light pack — applied (via JS) when the field sits on a dark/gradient bg */
   .ce.on-dark:hover{ outline-color:rgba(255,255,255,.42); }
   .ce.on-dark:focus{ outline-color:rgba(130,185,255,.95); }
@@ -244,6 +257,9 @@ function COLORS(s){var out=[],re=/rgba?\\(([^)]+)\\)/g,m;while((m=re.exec(s))){v
 function effLum(el){var n=el;while(n&&n!==document.documentElement){var st=getComputedStyle(n);var bc=COLORS(st.backgroundColor);if(bc.length&&bc[0].a>0.35)return LUM(bc[0].r,bc[0].g,bc[0].b);var gc=COLORS(st.backgroundImage);if(gc.length){var t=0,c=0;for(var i=0;i<gc.length;i++){if(gc[i].a>0.1){t+=LUM(gc[i].r,gc[i].g,gc[i].b);c++}}if(c)return t/c}n=n.parentElement}return 1}
 // tag each edit box on-dark when it sits on a dark background → light color pack
 function tagDark(){var els=document.querySelectorAll('.ce,.pe-canon');for(var i=0;i<els.length;i++)els[i].classList.toggle('on-dark',effLum(els[i])<0.5)}
+// Enter inside a paragraph box → a block element (div), not a bare <br>, so the
+// new paragraph picks up the canonical inter-paragraph spacing (CSS above).
+try{document.execCommand('defaultParagraphSeparator',false,'div')}catch(e){}
 window.addEventListener('load',function(){H();tagDark();try{new ResizeObserver(H).observe(document.body)}catch(e){}try{new MutationObserver(function(){requestAnimationFrame(tagDark)}).observe(document.body,{childList:true,subtree:true})}catch(e){}});
 </script>
 </head>
