@@ -169,14 +169,17 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   const aLabels = [...cat.querySelectorAll('.pe-add, .pe-mini-add')].map((b) => b.textContent);
   ok(aLabels.includes('+ footnote'), '+ footnote slot (sentinel — seed has none)');
   ok(aLabels.includes('+ category'), '+ category button after the masonry');
-  ok(aLabels.includes('+ item'), '+ item button in the pills row');
-  ok(aLabels.includes('+ ribbon'), '+ ribbon button (seed category has none)');
-  ok(aLabels.filter((l) => l === '+ note').length === 2, '+ note twice: section toolbar + category count line');
   ok(cat.querySelector('.cat-card-title .ce'), 'category name editable');
-  ok(cat.querySelector('.cat-card.pe-removable > .pe-remove'), 'category removable (corner ×)');
-  ok(cat.querySelectorAll('.cat-pill .ce').length === 2, 'both item pills editable');
-  ok(cat.querySelectorAll('.cat-pill .pe-tag-rm:not(.pe-expand)').length === 2, 'items removable');
-  ok(cat.querySelectorAll('.cat-pill .pe-expand').length === 2, 'each pill has the ✎ detail opener');
+  // glass dock: colour / ribbon / note / remove
+  const dock = cat.querySelector('.cat-card .cc-dock');
+  ok(dock, 'glass dock present on the card');
+  ok(dock.querySelectorAll('.cc-btn').length === 4, 'dock has 4 controls (colour/ribbon/note/remove)');
+  ok(dock.querySelector('.cc-btn .cc-swatch'), 'colour control shows the swatch');
+  ok(dock.querySelector('.cc-btn.danger'), 'remove-category control (danger)');
+  ok(!cat.querySelector('.cat-card > .pe-remove'), 'no corner × on the card (moved into the dock)');
+  // pills: clickable openers + the "+ item" add pill
+  ok(cat.querySelectorAll('.cat-pill:not(.cat-add-pill)').length === 2, 'two item pills');
+  ok(cat.querySelector('.cat-pill.cat-add-pill'), '"+ item" add pill in the pills row');
   ok([...cat.querySelectorAll('.pe-sec-tools .pe-chip')].some((c) => c.textContent.startsWith('unit:')), 'unit toolbar editor');
   // seams: after overview (insert 0) AND after the catalog (insert 1)
   const seams = d.querySelectorAll('.pe-add-section');
@@ -208,27 +211,41 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   const d = renderAndDecorate(doc, false);
   const richDet = d.querySelector('[id="d-0-0"]');
   const bareDet = d.querySelector('[id="d-0-1"]');
+  ok(richDet.querySelector('.modal-title .ce'), 'item name editable (the modal title)');
   ok(richDet.querySelector('.modal-desc .ce'), 'desc editable');
-  const sel = richDet.querySelector('select.pe-select');
-  ok(sel && [...sel.options].map((o) => o.value).join(',') === 'active,discontinued,limited,retired', 'status DROPDOWN = grammar enum values');
-  ok(sel && sel.querySelector('option[value="active"]').selected, 'current status selected');
-  ok(richDet.querySelector('.chip.info .ce'), 'info chip editable');
+  // status is now a clickable chip opening a glass popover (no inline <select>)
+  const stChip = richDet.querySelector('.chip.st-active.pe-st-chip');
+  ok(stChip, 'status chip is a clickable popover trigger');
+  ok(!richDet.querySelector('select'), 'no inline <select> (replaced by popover)');
+  stChip.onclick();
+  const stPop = d.querySelector('.cc-pop.status-pop');
+  ok(stPop, 'clicking status opens the glass status popover');
+  ok([...stPop.querySelectorAll('.cc-status[data-s]')].map((b) => b.getAttribute('data-s')).filter(Boolean).join(',') === 'active,discontinued,limited,retired', 'popover lists the grammar enum');
+  ok(stPop.querySelector('.cc-status.none'), 'popover has a None option');
+  ok(stPop.querySelector('.cc-status.st-active.sel'), 'current status marked selected');
+  ok(richDet.querySelector('.chip.info .ce'), 'info chip editable (inline)');
   ok(richDet.querySelector('.modal-group-label .ce'), 'group label editable');
   ok(richDet.querySelectorAll('.gpill .ce').length === 2, 'string + object pills both editable');
   ok([...richDet.querySelectorAll('.gpill .pe-tag-rm')].some((b) => b.textContent === 'S'), 'struck toggle on the object pill');
-  ok([...richDet.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === '+ pill'), '+ pill');
-  ok([...richDet.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === '+ group'), '+ group');
+  ok([...richDet.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === '+ item'), '+ item (pill add)');
+  ok(richDet.querySelector('.pe-adds'), 'bottom adders row present');
+  ok([...richDet.querySelectorAll('.pe-adds .pe-mini-add')].some((b) => b.textContent === '+ group'), '+ group in adders row');
+  ok(richDet.querySelector('.pe-adds .pe-removeitem'), 'Remove item control in the editor');
   ok(richDet.querySelector('.modal-callout .ce') && richDet.querySelector('.modal-callout .pe-remove'), 'callout editable + removable');
   ok(richDet.querySelector('.modal-note .ce'), 'notes editable');
   ok(richDet.querySelector('.modal-cta.pe-canon .pe-lock'), 'CTA label locked (canon)');
   ok([...richDet.querySelectorAll('.pe-chip')].some((c) => c.textContent.startsWith('link:')), 'cta link editor chip');
-  const bLabels = [...bareDet.querySelectorAll('.pe-mini-add')].map((b) => b.textContent);
-  ['+ status', '+ info', '+ group', '+ callout', '+ notes', '+ link'].forEach((l) => ok(bLabels.includes(l), `bare item offers ${l}`));
-  // open the modal via the pill's ✎ and confirm the canonical mechanics
-  const ex = d.querySelector('.cat-pill .pe-expand');
-  ex.onclick({ stopPropagation: () => {} });
+  // bare item: + status chip in head, + callout/+notes/+link in adders
+  ok([...bareDet.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === '+ status'), 'bare item: + status');
+  ok([...bareDet.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === '+ info'), 'bare item: + info');
+  const bAdds = [...bareDet.querySelectorAll('.pe-adds .pe-mini-add')].map((b) => b.textContent);
+  ['+ group', '+ callout', '+ notes'].forEach((l) => ok(bAdds.includes(l), `bare item adders: ${l}`));
+  ok([...bareDet.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === '+ link'), 'bare item: + link');
+  // open the modal by clicking the pill; confirm canonical mechanics
+  const pill = d.querySelector('.cat-pill:not(.cat-add-pill)');
+  pill.dispatchEvent(new d.defaultView.Event('click'));
   const modal = d.querySelector('[data-catalog-modal]');
-  ok(modal.classList.contains('open'), '✎ opens the canonical modal (.open)');
+  ok(modal.classList.contains('open'), 'clicking a pill opens the canonical modal (.open)');
   ok(modal.querySelector('[data-modal-body] [id="d-0-0"]'), 'detail moved into the modal body');
   ok(modal.querySelector('[data-modal-ribbon]').classList.contains('ribbon-gone'), 'modal ribbon mirrors the pill (gone tone)');
   modal.querySelector('[data-modal-close]').onclick();
@@ -257,14 +274,15 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   const chips1 = [...secs[1].querySelectorAll('.pe-sec-tools .pe-chip')].map((c) => c.textContent);
   ok(!chips0.includes('↑') && chips0.includes('↓'), 'first section: ↓ only (nothing above it is movable)');
   ok(chips1.includes('↑') && !chips1.includes('↓'), 'last section: ↑ only');
-  const row = secs[0].querySelector('.pe-swatches');
-  ok(row, 'swatch row present');
-  ok(row.querySelectorAll('.pe-swatch:not(.auto)').length === 3, 'swatches = exactly the tokens the skin defines');
-  ok(row.querySelectorAll('.pe-swatch')[1].className.includes('on'), 'current swatch (color: 2) ringed');
-  ok(row.querySelector('.pe-swatch.auto'), 'auto (cycle) option present');
-  // no skin tokens → no swatch row, no crash
-  const d2 = renderAndDecorate(doc, false);
-  ok(!d2.querySelector('.pe-swatches'), 'no swatch row when the skin defines no palette');
+  // colour popover (opened from the dock) — swatches are skin-derived
+  const colorBtn = secs[0].querySelector('.cat-card .cc-dock .cc-btn');
+  ok(colorBtn && colorBtn.querySelector('.cc-swatch'), 'dock colour control present');
+  colorBtn.onclick.call(colorBtn);
+  const pop = d.querySelector('.cc-pop');
+  ok(pop, 'clicking colour opens the popover');
+  ok(pop.querySelectorAll('.cc-sw[data-i]').length === 3, 'swatches = exactly the 3 tokens the skin defines');
+  ok(pop.querySelector('.cc-sw[data-i="2"]').className.includes('sel'), 'current swatch (color: 2) marked selected');
+  ok(pop.querySelector('.cc-sw.auto'), 'auto (cycle) option present');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

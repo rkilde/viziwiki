@@ -46,32 +46,86 @@ const AFFORDANCE = `
   .wiki-infobox-data > dd.pe-removable{ width:auto; }
   .wiki-hero-search.pe-removable{ width:auto; }
   .wiki-hero-stats.pe-removable{ width:auto; }
-  /* catalog cards: keep masonry width; overflow:hidden is canon (crops the
-     ribbon) so the card's × sits INSET top-left (ribbon owns the top-right) */
   .cat-card.pe-removable{ width:auto; }
-  .cat-card > .pe-remove{ top:6px; left:6px; right:auto; }
-  /* toolbar editors (unit/note) — readable editable chips on the glass pill */
+  /* toolbar editors (unit/note) on the section glass pill */
   .pe-sec-tools .pe-chip .ce{ text-transform:none; letter-spacing:normal; min-width:18px; display:inline-block; }
   .pe-sec-tools .pe-chip{ display:inline-flex; align-items:center; gap:3px; }
-  .cat-ribbon .pe-tag-rm, .cat-ribbon .ce{ vertical-align:middle; }
-  /* the item-detail modal (editor-driven): enum dropdown + always-visible
-     affordances (no hover ancestor inside the modal flow) */
-  .pe-select{ font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.06em; text-transform:uppercase;
-    border:1px solid rgba(120,120,140,.4); border-radius:5px; background:#fff; color:rgba(60,60,75,.9); padding:2px 4px; margin-left:6px; cursor:pointer; }
-  .modal-scroll .pe-tag-rm, .modal-scroll .pe-mini-add{ opacity:.6; }
-  .modal-scroll .pe-tag-rm:hover, .modal-scroll .pe-mini-add:hover{ opacity:1; }
-  .modal-scroll .pe-chip{ display:inline-flex; align-items:center; gap:3px; margin-left:8px;
-    border:1px solid rgba(120,120,140,.3); border-radius:999px; padding:2px 8px;
-    font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.08em; text-transform:uppercase; color:rgba(90,90,110,.8); }
+
+  /* ════ catalog editor chrome — LIQUID GLASS (the standing UI direction) ════
+     A hover-revealed dock at each card's bottom-right (clear of the ribbon),
+     floating glass popovers, and a glass-chromed item editor. Designed as a
+     distinct UI layer over the page content. */
+  body{ --g-bg:rgba(250,250,253,.5); --g-blur:blur(28px) saturate(180%) brightness(1.05);
+    --g-edge:1px solid rgba(255,255,255,.6); --g-shadow:0 18px 48px rgba(20,16,10,.26),0 3px 9px rgba(20,16,10,.14);
+    --g-inset:inset 0 1px 0 rgba(255,255,255,.85); }
+  .cc-dock{ position:absolute; bottom:10px; right:10px; z-index:6; display:flex; align-items:center; gap:2px; padding:4px; border-radius:13px;
+    background:var(--g-bg); border:var(--g-edge); box-shadow:var(--g-shadow),var(--g-inset);
+    backdrop-filter:var(--g-blur); -webkit-backdrop-filter:var(--g-blur);
+    opacity:0; transform:translateY(6px) scale(.96); transform-origin:bottom right; pointer-events:none;
+    transition:opacity .18s ease, transform .2s cubic-bezier(.2,.7,.3,1); }
+  .cat-card:hover .cc-dock, .cc-dock.pinned{ opacity:1; transform:none; pointer-events:auto; }
+  .cc-btn{ width:28px; height:28px; border:none; border-radius:9px; cursor:pointer; background:transparent; color:#574c40;
+    display:flex; align-items:center; justify-content:center; transition:.12s; padding:0; }
+  .cc-btn:hover{ background:rgba(255,255,255,.55); color:#241a10; box-shadow:inset 0 0 0 1px rgba(255,255,255,.6); }
+  .cc-btn.on{ color:var(--cat-color); }
+  .cc-btn.danger:hover{ background:rgba(220,60,60,.16); color:#c0392b; }
+  .cc-btn svg{ width:15px; height:15px; }
+  .cc-swatch{ width:16px; height:16px; border-radius:50%; background:var(--cat-color);
+    box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.9), 0 0 0 1px rgba(0,0,0,.14); }
+  .cc-sep{ width:1px; height:18px; background:rgba(0,0,0,.12); margin:0 3px; }
+
+  .cc-pop{ position:fixed; z-index:1300; min-width:182px; padding:13px; border-radius:17px;
+    background:var(--g-bg,rgba(250,250,253,.5)); border:var(--g-edge,1px solid rgba(255,255,255,.6));
+    box-shadow:var(--g-shadow,0 18px 48px rgba(20,16,10,.26)),var(--g-inset,inset 0 1px 0 rgba(255,255,255,.85));
+    backdrop-filter:var(--g-blur,blur(28px) saturate(180%)); -webkit-backdrop-filter:var(--g-blur,blur(28px) saturate(180%));
+    opacity:0; transform:translateY(8px) scale(.92); transition:opacity .16s ease, transform .2s cubic-bezier(.2,.8,.2,1); }
+  .cc-pop.in{ opacity:1; transform:none; }
+  .cc-pop-label{ font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.18em; text-transform:uppercase; color:#6f6356; margin-bottom:10px; }
+  .cc-swatches{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+  .cc-sw{ width:30px; height:30px; border-radius:9px; cursor:pointer; position:relative; border:none; transition:transform .12s;
+    box-shadow:0 1px 3px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.3); }
+  .cc-sw:hover{ transform:scale(1.12); }
+  .cc-sw.sel{ box-shadow:0 0 0 2px #fff, 0 0 0 4px rgba(0,0,0,.2); }
+  .cc-sw.sel::after{ content:'✓'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:#fff; font-size:13px; font-weight:700; text-shadow:0 1px 2px rgba(0,0,0,.45); }
+  .cc-sw.auto{ background:#fff; color:rgba(0,0,0,.5); font:700 9px/1 'JetBrains Mono',monospace; display:flex; align-items:center; justify-content:center; }
+  .cc-ribbon-field{ display:flex; flex-direction:column; gap:9px; min-width:206px; }
+  .cc-ribbon-field input[type=text]{ font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase;
+    padding:8px 10px; border-radius:9px; border:1px solid rgba(0,0,0,.14); background:rgba(255,255,255,.66); outline:none; color:#2a1f15; }
+  .cc-ribbon-field input:focus{ border-color:var(--cat-color); box-shadow:0 0 0 3px color-mix(in oklab,var(--cat-color) 22%,transparent); }
+  .cc-tone{ display:flex; gap:6px; }
+  .cc-tone button{ flex:1; font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.1em; text-transform:uppercase; padding:7px;
+    border-radius:8px; border:1px solid rgba(0,0,0,.14); background:rgba(255,255,255,.5); cursor:pointer; color:#574c40; }
+  .cc-tone button.on{ background:var(--cat-color); color:#fff; border-color:transparent; }
+  .cc-rm{ border:1px dashed rgba(0,0,0,.22); background:none; padding:7px; border-radius:8px; cursor:pointer;
+    font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.1em; text-transform:uppercase; color:#a05a52; }
+  .cc-rm:hover{ background:rgba(160,90,82,.1); }
+  .cc-status{ display:block; width:100%; text-align:left; margin-top:6px; padding:7px 10px; border:0; border-radius:8px; cursor:pointer;
+    font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; position:relative; box-shadow:inset 0 0 0 1px rgba(0,0,0,.05); }
+  .cc-status:first-of-type{ margin-top:0; }
+  .cc-status.sel::after{ content:'✓'; position:absolute; right:9px; top:50%; transform:translateY(-50%); font-size:10px; }
+  .cc-status.none{ background:transparent; border:1px dashed rgba(0,0,0,.22); color:#8a7d70; box-shadow:none; margin-top:8px; }
+
+  /* item editor: restyle the CANONICAL modal as a glass-chromed editor (content
+     is the include's own .modal-* markup — edit = live). */
+  .modal-ov.open{ display:block !important; }
+  .modal-ov .modal-card{ position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); margin:0; }
+  /* status options carry the canonical st-* token colours (fallbacks match) */
+  .cc-status.st-active{ background:var(--st-active-bg,#dcfce7); color:var(--st-active-fg,#166534); }
+  .cc-status.st-discontinued{ background:var(--st-discontinued-bg,#fee2e2); color:var(--st-discontinued-fg,#991b1b); }
+  .cc-status.st-limited{ background:var(--st-limited-bg,#fef9c3); color:var(--st-limited-fg,#854d0e); }
+  .cc-status.st-retired{ background:var(--st-retired-bg,#f3f4f6); color:var(--st-retired-fg,#4b5563); }
+  .cat-add-pill{ border-style:dashed !important; color:rgba(0,0,0,.4) !important; background:transparent !important; }
+  .modal-scroll .pe-mini-add, .modal-scroll .pe-add{ opacity:.7; }
+  .modal-scroll .pe-mini-add:hover, .modal-scroll .pe-add:hover{ opacity:1; }
+  .modal-scroll .pe-chip{ display:inline-flex; align-items:center; gap:3px; margin-left:8px; border:1px solid rgba(120,120,140,.3); border-radius:999px;
+    padding:2px 8px; font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.08em; text-transform:uppercase; color:rgba(90,90,110,.8); }
   .modal-scroll .pe-chip .ce{ text-transform:none; letter-spacing:normal; min-width:18px; }
-  /* category colour swatches — SKIN-DERIVED (--cat-accent-N read at runtime);
-     a hover-reveal row at the foot of each card */
-  .pe-swatches{ display:flex; gap:4px; flex-wrap:wrap; margin-top:10px; opacity:0; transition:opacity .12s; }
-  .cat-card:hover .pe-swatches{ opacity:1; }
-  .pe-swatch{ width:14px; height:14px; border-radius:50%; border:1px solid rgba(0,0,0,.25); cursor:pointer; padding:0; flex:none; }
-  .pe-swatch.on{ outline:2px solid #0071e3; outline-offset:1px; }
-  .pe-swatch.auto{ background:#fff; font:600 8px/1 'JetBrains Mono',monospace; color:rgba(0,0,0,.55);
-    display:flex; align-items:center; justify-content:center; }
+  .pe-st-chip{ cursor:pointer; }
+  .pe-st-chip::after{ content:' ▾'; opacity:.6; }
+  .pe-adds{ display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; padding-top:14px; border-top:1px dashed rgba(0,0,0,.14); align-items:center; }
+  .pe-removeitem{ margin-left:auto; border:1px dashed rgba(160,90,82,.5); background:none; padding:7px 11px; border-radius:8px; cursor:pointer;
+    font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:#a05a52; }
+  .pe-removeitem:hover{ background:rgba(160,90,82,.1); }
   .pe-remove,.pe-lock{ position:absolute; top:-9px; right:-9px; width:18px; height:18px; border-radius:50%;
     display:flex; align-items:center; justify-content:center; line-height:1; opacity:0; transition:opacity .12s; z-index:4; }
   .pe-remove{ border:1px solid rgba(0,0,0,.18); background:#fff; color:rgba(0,0,0,.45); font-size:12px; cursor:pointer; }
@@ -160,6 +214,7 @@ window.__PE_POLICY=${JSON.stringify(POLICY)};
 window.__PE_REGISTRY=${JSON.stringify(REGISTRY)};
 window.__PE_SENT=${JSON.stringify(SENT_PREFIX)};
 function P(p,el){try{window.parent.__peField(p,el.innerHTML)}catch(e){}}
+function PV(p,v){try{window.parent.__peField(p,v)}catch(e){}}
 function A(a){try{window.parent.__peAction(a)}catch(e){}}
 function H(){try{window.parent.__peResize(document.documentElement.scrollHeight)}catch(e){}}
 // relative luminance (0=black,1=white) of "r,g,b" channels

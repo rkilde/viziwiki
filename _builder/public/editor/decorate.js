@@ -229,6 +229,68 @@
     else { el.classList.add('pe-removable'); el.appendChild(b); }
   }
 
+  // ── glass control system (liquid-glass chrome — the standing UI direction) ──
+  var CICON = {
+    palette: '<circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/>',
+    flag: '<circle cx="12" cy="8" r="6"/><path d="M8.5 13.5 7 22l5-3 5 3-1.5-8.5"/>',
+    hash: '<path d="M15.5 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5z"/><path d="M15 3v6h6"/>',
+    trash: '<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+  };
+  var csvg = function (d) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + d + '</svg>'; };
+  function dockBtn(icon, title, cls, onclick) {
+    var b = document.createElement('button');
+    b.className = 'cc-btn' + (cls ? ' ' + cls : '');
+    b.title = title; b.innerHTML = icon; b.onclick = onclick;
+    return b;
+  }
+
+  // floating glass popover (one at a time)
+  var pePop = null;
+  function closePop() { if (pePop) { var p = pePop; pePop = null; p.classList.remove('in'); setTimeout(function () { if (p.parentNode) p.parentNode.removeChild(p); }, 180); } }
+  function overlap(L, T, w, h, r) { var pad = 8; return !(L + w < r.left - pad || L > r.right + pad || T + h < r.top - pad || T > r.bottom + pad); }
+  function placeFloat(el, btn, avoid) {
+    var r = btn.getBoundingClientRect(); el.style.left = '0px'; el.style.top = '0px';
+    var w = el.offsetWidth, h = el.offsetHeight;
+    var left = r.left + r.width / 2 - w / 2, top = r.top - h - 12;
+    if (top < 10) top = r.bottom + 12;
+    left = Math.max(10, Math.min(left, window.innerWidth - w - 10));
+    if (avoid) { var av = avoid.getBoundingClientRect();
+      if (overlap(left, top, w, h, av)) { var tl = av.left - w - 12;
+        if (tl >= 10 && !overlap(tl, top, w, h, av)) left = tl;
+        else { top = av.bottom + 12; left = Math.max(10, Math.min(left, window.innerWidth - w - 10)); } } }
+    el.style.left = left + 'px'; el.style.top = top + 'px';
+  }
+  function placeLeft(el, btn) {
+    var r = btn.getBoundingClientRect(); el.style.left = '0px'; el.style.top = '0px';
+    var w = el.offsetWidth, h = el.offsetHeight; var left = r.left - w - 12; if (left < 10) left = r.right + 12;
+    el.style.left = left + 'px'; el.style.top = Math.max(10, Math.min(r.top + r.height / 2 - h / 2, window.innerHeight - h - 10)) + 'px';
+  }
+  function openPop(btn, accent, html, opts) {
+    closePop(); opts = opts || {};
+    var pop = document.createElement('div'); pop.className = 'cc-pop' + (opts.cls ? ' ' + opts.cls : '');
+    if (accent) pop.style.setProperty('--cat-color', accent);
+    pop.innerHTML = html; document.body.appendChild(pop);
+    (opts.place === 'left' ? placeLeft : placeFloat)(pop, btn, opts.avoid);
+    (window.requestAnimationFrame || function (f) { setTimeout(f, 0); })(function () { pop.classList.add("in"); });
+    pePop = pop; return pop;
+  }
+  document.addEventListener('mousedown', function (e) { if (pePop && !pePop.contains(e.target) && !(e.target.closest && e.target.closest('.cc-btn,.pe-st-chip,.im-info-chip'))) closePop(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePop(); });
+
+  // centre the item-editor modal card in the VISIBLE viewport (the canvas is a
+  // tall iframe scrolled by the parent — fixed/inset:0 alone would mis-centre)
+  function centreModal(card) {
+    try {
+      var fr = window.frameElement, ph = (window.parent && window.parent.innerHeight) || window.innerHeight;
+      var rect = fr.getBoundingClientRect();
+      var visTop = Math.max(0, -rect.top);
+      var visH = Math.min(rect.bottom, ph) - Math.max(rect.top, 0); if (visH <= 0) visH = ph;
+      card.style.top = (visTop + visH / 2) + 'px';
+      var sc = card.querySelector('.modal-scroll'); if (sc) sc.style.maxHeight = (visH - 44) + 'px';
+    } catch (e) { card.style.top = '50%'; }
+  }
+  var getDoc = function () { try { return window.__PE_DOC || (window.parent.__peDoc && window.parent.__peDoc()); } catch (e) { return null; } };
+
   // ── main ───────────────────────────────────────────────────────────────────
   window.__decorate = function () {
     var POLICY = window.__PE_POLICY || {};
@@ -438,304 +500,211 @@
         }
       }
 
-      // ── catalog: the full editing surface ──
+      // ── catalog: the full editing surface (liquid-glass controls) ──
       if (type === 'catalog') {
-        // the CANONICAL modal, driven by the editor (the live site's script is
-        // stripped — this re-implements open/close as editing chrome; the
-        // CONTENT shown is the include's own hidden detail markup, moved in)
+        // skin-derived swatch palette (read once from the loaded skin)
+        var swatches = window.__peSwatches;
+        if (swatches === undefined) {
+          swatches = []; var bcs = getComputedStyle(document.body);
+          for (var sn = 1; sn <= 24; sn++) { var sv = (bcs.getPropertyValue('--cat-accent-' + sn) || '').trim(); if (sv) swatches.push({ n: sn, v: sv }); }
+          window.__peSwatches = swatches;
+        }
+
+        // ── the CANONICAL item modal, editor-driven (content = the include's
+        // own hidden detail markup, moved in; chrome restyled to glass) ──
         var detRoot = qs('.cat-details', secEl);
         var modal = qs('[data-catalog-modal]', secEl);
-        var openItem = null, closeModal = null;
-        if (detRoot && modal) {
-          var modalBody = qs('[data-modal-body]', modal);
-          var modalCard = qs('.modal-card', modal);
-          var modalRb = qs('[data-modal-ribbon]', modal);
-          closeModal = function () {
-            var openDet = qs('[data-pe-detail-open]', modal);
-            if (openDet) { detRoot.appendChild(openDet); openDet.removeAttribute('data-pe-detail-open'); }
-            modal.classList.remove('open');
-            window.__peOpenItem = null;
-          };
-          openItem = function (j, k, pill) {
-            var det = qs('[id="d-' + j + '-' + k + '"]', secEl);
-            if (!det) return;
-            // mirror the live script's pill → modal chrome (colour + ribbon)
-            if (modalCard && pill) modalCard.style.setProperty('--cat-color', pill.getAttribute('data-color') || '');
-            if (modalRb) {
-              var rb = pill && pill.getAttribute('data-ribbon');
-              modalRb.textContent = rb || '';
-              modalRb.style.display = rb ? '' : 'none';
-              modalRb.classList.toggle('ribbon-gone', !!pill && pill.getAttribute('data-ribbon-tone') === 'gone');
-              if (modalCard) modalCard.classList.toggle('has-ribbon', !!rb);
-            }
-            det.setAttribute('data-pe-detail-open', '1');
-            modalBody.appendChild(det);
-            modal.classList.add('open');
-            window.__peOpenItem = { s: i, j: j, k: k };
-          };
-          var closeBtn = qs('[data-modal-close]', modal);
-          if (closeBtn) closeBtn.onclick = closeModal;
-          modal.addEventListener('mousedown', function (e) { if (e.target === modal) closeModal(); });
+        var modalBody = modal && qs('[data-modal-body]', modal);
+        var modalCard = modal && qs('.modal-card', modal);
+        var modalRb = modal && qs('[data-modal-ribbon]', modal);
+        var closeModal = function () {
+          var openDet = modal && qs('[data-pe-detail-open]', modal);
+          if (openDet && detRoot) { detRoot.appendChild(openDet); openDet.removeAttribute('data-pe-detail-open'); }
+          if (modal) modal.classList.remove('open');
+          window.__peOpenItem = null; closePop();
+        };
+        var openItem = function (j, k, pill) {
+          if (!modal || !modalBody) return;
+          var det = qs('[id="d-' + j + '-' + k + '"]', secEl); if (!det) return;
+          if (modalCard && pill) modalCard.style.setProperty('--cat-color', pill.getAttribute('data-color') || '');
+          if (modalRb) {
+            var rb = pill && pill.getAttribute('data-ribbon');
+            modalRb.textContent = rb || ''; modalRb.style.display = rb ? '' : 'none';
+            modalRb.classList.toggle('ribbon-gone', !!pill && pill.getAttribute('data-ribbon-tone') === 'gone');
+            if (modalCard) modalCard.classList.toggle('has-ribbon', !!rb);
+          }
+          det.setAttribute('data-pe-detail-open', '1'); modalBody.appendChild(det);
+          modal.classList.add('open'); if (modalCard) centreModal(modalCard);
+          window.__peOpenItem = { s: i, j: j, k: k };
+        };
+        if (modal) {
+          var cbn = qs('[data-modal-close]', modal); if (cbn) cbn.onclick = closeModal;
+          modal.onmousedown = function (e) { if (e.target === modal) closeModal(); };
         }
+
+        // ── popovers (defined before use) ──
+        var openColorPop = function (btn, cpre, accent, curColor) {
+          var html = '<div class="cc-pop-label">Category colour</div><div class="cc-swatches">' +
+            swatches.map(function (sw) { return '<button class="cc-sw' + (Number(curColor) === sw.n ? ' sel' : '') + '" style="background:' + sw.v + '" data-i="' + sw.n + '"></button>'; }).join('') +
+            '<button class="cc-sw auto' + (curColor == null ? ' sel' : '') + '" data-auto title="Auto-cycle the palette">A</button></div>';
+          var pop = openPop(btn, accent, html);
+          qsa('.cc-sw[data-i]', pop).forEach(function (s) { s.onclick = function () { closePop(); A('set:' + cpre + 'color:' + s.getAttribute('data-i')); }; });
+          var au = qs('[data-auto]', pop); if (au) au.onclick = function () { closePop(); A('rm:' + cpre + 'color'); };
+        };
+        var openRibbonPop = function (btn, cpre, accent, rb, card, j) {
+          if (rb == null) { window.__peReopen = { s: i, j: j, kind: 'ribbon' }; A('add:' + cpre + 'ribbon'); return; }
+          var isObj = (typeof rb === 'object');
+          var tones = (R('catalog.categories[].ribbon.tone').enum) || ['accent', 'gone'];
+          var tone = isObj ? (rb.tone || 'accent') : 'accent';
+          var html = '<div class="cc-pop-label">Ribbon</div><div class="cc-ribbon-field"><input type="text" placeholder="Ribbon text">' +
+            (isObj ? '<div class="cc-tone">' + tones.map(function (t) { return '<button data-t="' + t + '" class="' + (t === tone ? 'on' : '') + '">' + (t === 'gone' ? 'Grey' : t) + '</button>'; }).join('') + '</div>' : '') +
+            '<button class="cc-rm">Remove ribbon</button></div>';
+          var pop = openPop(btn, accent, html, { avoid: qs('.cat-ribbon', card) });
+          var input = qs('input', pop); input.value = isObj ? (rb.text || '') : rb;
+          input.addEventListener('input', function () { PV(cpre + (isObj ? 'ribbon.text' : 'ribbon'), input.value); var sp = qs('.cat-ribbon span', card); if (sp) sp.textContent = input.value; });
+          qsa('.cc-tone [data-t]', pop).forEach(function (b) { b.onclick = function () { var t = b.getAttribute('data-t'); PV(cpre + 'ribbon.tone', t); var rib = qs('.cat-ribbon', card); if (rib) rib.classList.toggle('ribbon-gone', t === 'gone'); qsa('.cc-tone [data-t]', pop).forEach(function (x) { x.classList.toggle('on', x === b); }); }; });
+          qs('.cc-rm', pop).onclick = function () { closePop(); A('rm:' + cpre + 'ribbon'); };
+        };
+        var stEnum = (R('catalog.categories[].items[].status').enum) || [];
+        var openStatusPop = function (btn, ipre, cur, accent) {
+          var html = '<div class="cc-pop-label">Status</div>' +
+            stEnum.map(function (s) { return '<button class="cc-status st-' + s + (s === cur ? ' sel' : '') + '" data-s="' + s + '">' + s + '</button>'; }).join('') +
+            '<button class="cc-status none' + (!cur ? ' sel' : '') + '" data-s="">None</button>';
+          var pop = openPop(btn, accent, html, { place: 'left', cls: 'status-pop' });
+          qsa('.cc-status', pop).forEach(function (b) { b.onclick = function () { var s = b.getAttribute('data-s'); closePop(); A(s ? 'set:' + ipre + 'status:' + s : 'rm:' + ipre + 'status'); }; });
+        };
 
         wrapCE(qs('.wiki-section-title', secEl), prefix + 'title');
         var fn = qs('.cat-footnote', secEl);
         if (fn) { wrapCE(fn, prefix + 'footnote'); makeRemovable(fn, 'rm:' + prefix + 'footnote'); }
 
-        // categories: name · ribbon (add/edit/tone/×) · note · items · ×
+        // ── per category card: name ce + glass dock ──
         qsa('.cat-masonry > .cat-card', secEl).forEach(function (card, j) {
           var cpre = prefix + 'categories.' + j + '.';
           var cdata = (sdata.categories && sdata.categories[j]) || {};
+          var accent = getComputedStyle(card).getPropertyValue('--cat-color');
           wrapCE(qs('.cat-card-title', card), cpre + 'name');
-          makeRemovable(card, 'rm:' + prefix + 'categories.' + j);
 
-          var rib = qs('.cat-ribbon', card);
-          if (rib) {
-            var rspan = qs('span', rib);
-            if (typeof cdata.ribbon === 'string') {
-              wrapCE(rspan, cpre + 'ribbon');     // legacy string form — text only
-            } else {
-              wrapCE(rspan, cpre + 'ribbon.text');
-              // tone: cycle through the grammar enum (accent/gone)
-              var tones = R('catalog.categories[].ribbon.tone').enum || [];
-              var curTone = (cdata.ribbon && cdata.ribbon.tone) || (R('catalog.categories[].ribbon.tone').blank || tones[0]);
-              if (tones.length) {
-                var tbtn = document.createElement('button');
-                tbtn.className = 'pe-tag-rm';
-                tbtn.style.width = 'auto';
-                tbtn.style.borderRadius = '4px';
-                tbtn.style.padding = '0 4px';
-                tbtn.textContent = curTone;
-                tbtn.title = 'Ribbon tone — click to cycle';
-                (function (p, list, cur) { tbtn.onclick = function () { A('set:' + p + ':' + list[(list.indexOf(cur) + 1) % list.length]); }; })(cpre + 'ribbon.tone', tones, curTone);
-                rib.appendChild(tbtn);
-              }
-            }
-            var rrm = document.createElement('button');
-            rrm.className = 'pe-tag-rm';
-            rrm.textContent = '×';
-            rrm.title = 'Remove ribbon';
-            (function (p) { rrm.onclick = function () { A('rm:' + p); }; })(cpre + 'ribbon');
-            rib.appendChild(rrm);
-          } else {
-            card.insertBefore(addBtn('add:' + cpre + 'ribbon', '+ ribbon', true), card.firstChild);
-          }
-
-          // category note: editable suffix inside the derived count line
+          // category note: editable inline in the derived count line (when present)
           var cnt = qs('.cat-card-count', card);
-          if (cnt) {
-            if (cdata.note != null) {
-              var node = null;
-              for (var q = cnt.childNodes.length - 1; q >= 0; q--) {
-                if (cnt.childNodes[q].nodeType === 3 && cnt.childNodes[q].nodeValue.indexOf('·') > -1) { node = cnt.childNodes[q]; break; }
-              }
-              if (node) {
-                var noteText = node.splitText(node.nodeValue.lastIndexOf('·') + 1);
-                var ceN = document.createElement('span');
-                ceN.className = 'ce';
-                ceN.setAttribute('contenteditable', 'true');
-                cnt.insertBefore(ceN, noteText);
-                ceN.appendChild(noteText);
-                (function (p, el) { el.addEventListener('blur', function () { P(p, el); }); })(cpre + 'note', ceN);
-                var nrm = document.createElement('button');
-                nrm.className = 'pe-tag-rm';
-                nrm.textContent = '×';
-                nrm.title = 'Remove note';
-                (function (p) { nrm.onclick = function () { A('rm:' + p); }; })(cpre + 'note');
-                cnt.appendChild(nrm);
-              }
-            } else {
-              cnt.appendChild(addBtn('add:' + cpre + 'note', '+ note', true));
+          if (cnt && cdata.note != null) {
+            var node = null;
+            for (var q = cnt.childNodes.length - 1; q >= 0; q--) { if (cnt.childNodes[q].nodeType === 3 && cnt.childNodes[q].nodeValue.indexOf('·') > -1) { node = cnt.childNodes[q]; break; } }
+            if (node) {
+              var noteText = node.splitText(node.nodeValue.lastIndexOf('·') + 1);
+              var ceN = document.createElement('span'); ceN.className = 'ce'; ceN.setAttribute('contenteditable', 'true');
+              cnt.insertBefore(ceN, noteText); ceN.appendChild(noteText);
+              (function (p, el) { el.addEventListener('blur', function () { P(p, el); }); })(cpre + 'note', ceN);
+              makeRemovable(ceN, 'rm:' + cpre + 'note', true);
             }
           }
 
-          // colour: SKIN-DERIVED swatch row — the swatches are whatever
-          // --cat-accent-N tokens the loaded skin defines (recolour the skin →
-          // every catalog AND this picker update; the data stores the NUMBER)
-          var swatches = window.__peSwatches;
-          if (swatches === undefined) {
-            swatches = [];
-            var bodyCS = getComputedStyle(document.body);
-            for (var sn = 1; sn <= 24; sn++) {
-              var sv = (bodyCS.getPropertyValue('--cat-accent-' + sn) || '').trim()
-                || (document.body.style.getPropertyValue('--cat-accent-' + sn) || '').trim();
-              if (sv) swatches.push({ n: sn, v: sv });
-            }
-            window.__peSwatches = swatches;
-          }
-          if (swatches.length) {
-            var srow = document.createElement('div');
-            srow.className = 'pe-swatches';
-            swatches.forEach(function (sw) {
-              var sb2 = document.createElement('button');
-              sb2.className = 'pe-swatch' + (Number(cdata.color) === sw.n ? ' on' : '');
-              sb2.style.background = sw.v;
-              sb2.title = 'Swatch ' + sw.n;
-              (function (p, n2) { sb2.onclick = function () { A('set:' + p + ':' + n2); }; })(cpre + 'color', sw.n);
-              srow.appendChild(sb2);
-            });
-            var ab = document.createElement('button');
-            ab.className = 'pe-swatch auto' + (cdata.color == null ? ' on' : '');
-            ab.textContent = 'A';
-            ab.title = 'Auto — cycle the skin palette';
-            (function (p) { ab.onclick = function () { A('rm:' + p); }; })(cpre + 'color');
-            srow.appendChild(ab);
-            card.appendChild(srow);
-          }
+          // the glass dock (bottom-right, clear of the ribbon)
+          var dock = document.createElement('div'); dock.className = 'cc-dock';
+          (function (cp, ac, cd) { dock.appendChild(dockBtn('<span class="cc-swatch"></span>', 'Colour', '', function () { openColorPop(this, cp, ac, cd.color); })); })(cpre, accent, cdata);
+          var sep = document.createElement('span'); sep.className = 'cc-sep'; dock.appendChild(sep);
+          (function (cp, ac, cd, jj) { dock.appendChild(dockBtn(csvg(CICON.flag), 'Ribbon', cd.ribbon ? 'on' : '', function () { openRibbonPop(this, cp, ac, cd.ribbon == null ? null : cd.ribbon, card, jj); })); })(cpre, accent, cdata, j);
+          (function (cp, cd) { dock.appendChild(dockBtn(csvg(CICON.hash), 'Note', cd.note != null ? 'on' : '', function () { if (cd.note == null) A('add:' + cp + 'note'); else { var n = qs('.cat-card-count .ce', card); if (n) n.focus(); } })); })(cpre, cdata);
+          (function (jj) { dock.appendChild(dockBtn(csvg(CICON.trash), 'Remove category', 'danger', function () { closePop(); A('rm:' + prefix + 'categories.' + jj); })); })(j);
+          card.appendChild(dock);
 
-          // items: pill face editable, ✎ opens the detail card, per-item ×, + item
+          // pills → open the item editor; "+ item"
           qsa('.cat-pill', card).forEach(function (pill, k) {
-            wrapCE(pill, cpre + 'items.' + k + '.name');
-            if (openItem) {
-              var ex = document.createElement('button');
-              ex.className = 'pe-tag-rm pe-expand';
-              ex.textContent = '✎';
-              ex.title = 'Edit item details';
-              (function (jj, kk, pp) { ex.onclick = function (e) { e.stopPropagation(); openItem(jj, kk, pp); }; })(j, k, pill);
-              pill.classList.add('pe-removable');
-              pill.appendChild(ex);
-            }
-            makeRemovable(pill, 'rm:' + cpre + 'items.' + k, true);
+            pill.style.cursor = 'pointer';
+            (function (jj, kk, pp) { pp.addEventListener('click', function () { openItem(jj, kk, pp); }); })(j, k, pill);
           });
           var pillsWrap = qs('.cat-card-pills', card);
-          if (pillsWrap) pillsWrap.appendChild(addBtn('push:' + cpre + 'items', '+ item', true));
+          if (pillsWrap) { var addP = addBtn('push:' + cpre + 'items', '+ item', true); addP.className = 'cat-pill cat-add-pill'; pillsWrap.appendChild(addP); }
         });
 
-        // ── item DETAIL (the expandable card content) — canonical hidden divs ──
-        var stEnum = R('catalog.categories[].items[].status').enum || [];
+        // ── item detail content (canonical hidden divs) ──
         qsa('.cat-details > div', secEl).forEach(function (det) {
-          var idm = /^d-(\d+)-(\d+)$/.exec(det.id || '');
-          if (!idm) return;
+          var idm = /^d-(\d+)-(\d+)$/.exec(det.id || ''); if (!idm) return;
           var dj = Number(idm[1]), dk = Number(idm[2]);
           var ipre = prefix + 'categories.' + dj + '.items.' + dk + '.';
-          var idata = ((sdata.categories || [])[dj] || {}).items;
-          idata = (idata || [])[dk] || {};
+          var idata = (((sdata.categories || [])[dj] || {}).items || [])[dk] || {};
           var head = qs('.modal-headrow', det);
-          var insetDiv = qs('.modal-divider.is-inset', det);
+          var mAccent = modalCard ? getComputedStyle(modalCard).getPropertyValue('--cat-color') : '';
 
+          wrapCE(qs('.modal-title', det), ipre + 'name');   // title = item.name (one field)
           wrapCE(qs('.modal-desc', det), ipre + 'desc');
 
-          // status: DROPDOWN of the grammar enum (the only styled values)
+          // status chip → glass popover (the enum is the only styled set)
           var stChip = qs('.chip[class*="st-"]', det);
-          if (stChip && head) {
-            var sel = document.createElement('select');
-            sel.className = 'pe-select';
-            stEnum.forEach(function (v) {
-              var o = document.createElement('option');
-              o.value = v; o.textContent = v;
-              if (idata.status === v) o.selected = true;
-              sel.appendChild(o);
-            });
-            (function (p) { sel.onchange = function () { A('set:' + p + ':' + sel.value); }; })(ipre + 'status');
-            head.insertBefore(sel, stChip.nextSibling);
-            makeRemovable(stChip, 'rm:' + ipre + 'status', true);
-          } else if (head) {
-            head.appendChild(addBtn('add:' + ipre + 'status', '+ status', true));
-          }
-          // info chip
+          if (stChip) { stChip.classList.add('pe-st-chip'); (function () { stChip.onclick = function () { openStatusPop(stChip, ipre, idata.status, mAccent); }; })(); }
+          else if (head) { var gs = document.createElement('button'); gs.className = 'pe-mini-add'; gs.textContent = '+ status'; gs.onclick = function () { openStatusPop(gs, ipre, null, mAccent); }; head.appendChild(gs); }
+
+          // info chip → inline ce (freeform); + info when absent
           var infoChip = qs('.chip.info', det);
           if (infoChip) { wrapCE(infoChip, ipre + 'info'); makeRemovable(infoChip, 'rm:' + ipre + 'info', true); }
-          else if (head) { head.appendChild(addBtn('add:' + ipre + 'info', '+ info', true)); }
+          else if (head) head.appendChild(addBtn('add:' + ipre + 'info', '+ info', true));
 
-          // pill groups: label, pills (string or {text, struck}), add/remove
-          var glabels = qsa('.modal-group-label', det);
-          glabels.forEach(function (gl, g) {
+          // pill groups: label, pills (string or {text,struck}), strike + remove, + pill
+          qsa('.modal-group-label', det).forEach(function (gl, g) {
             wrapCE(gl, ipre + 'groups.' + g + '.label');
-            var grm = document.createElement('button');
-            grm.className = 'pe-tag-rm';
-            grm.textContent = '×';
-            grm.title = 'Remove group';
-            (function (p) { grm.onclick = function () { A('rm:' + p); }; })(ipre + 'groups.' + g);
-            gl.classList.add('pe-removable');
-            gl.appendChild(grm);
+            (function (p) { makeRemovable(gl, 'rm:' + p, true); })(ipre + 'groups.' + g);
             var pillsDiv = gl.nextElementSibling;
             if (pillsDiv) {
               qsa('.gpill', pillsDiv).forEach(function (gp, pm) {
                 var pdata = (((idata.groups || [])[g] || {}).pills || [])[pm];
                 if (pdata && typeof pdata === 'object') {
-                  wrapCE(gp, ipre + 'groups.' + g + '.pills.' + pm + '.text');
-                  var sb = document.createElement('button');
-                  sb.className = 'pe-tag-rm';
-                  sb.textContent = 'S';
-                  sb.title = pdata.struck ? 'Un-strike' : 'Strike through';
+                  wrapCE(gp, ipre + 'groups.' + g + '.pills.' + pm + '.text'); gp.classList.add('pe-removable');
+                  var sb = document.createElement('button'); sb.className = 'pe-tag-rm'; sb.textContent = 'S'; sb.title = pdata.struck ? 'Un-strike' : 'Strike through';
                   (function (p, cur) { sb.onclick = function () { A('set:' + p + ':' + (!cur)); }; })(ipre + 'groups.' + g + '.pills.' + pm + '.struck', !!pdata.struck);
-                  gp.classList.add('pe-removable');
                   gp.appendChild(sb);
-                } else {
-                  wrapCE(gp, ipre + 'groups.' + g + '.pills.' + pm);
-                  gp.classList.add('pe-removable');
-                }
-                var prm = document.createElement('button');
-                prm.className = 'pe-tag-rm';
-                prm.textContent = '×';
-                prm.title = 'Remove pill';
-                (function (p) { prm.onclick = function () { A('rm:' + p); }; })(ipre + 'groups.' + g + '.pills.' + pm);
-                gp.appendChild(prm);
+                } else { wrapCE(gp, ipre + 'groups.' + g + '.pills.' + pm); gp.classList.add('pe-removable'); }
+                (function (p) { var prm = document.createElement('button'); prm.className = 'pe-tag-rm'; prm.textContent = '×'; prm.title = 'Remove pill'; prm.onclick = function () { A('rm:' + p); }; gp.appendChild(prm); })(ipre + 'groups.' + g + '.pills.' + pm);
               });
-              pillsDiv.appendChild(addBtn('push:' + ipre + 'groups.' + g + '.pills', '+ pill', true));
+              pillsDiv.appendChild(addBtn('push:' + ipre + 'groups.' + g + '.pills', '+ item', true));
             }
           });
-          // + group — after the last group (or after the desc)
-          var gAnchor = glabels.length ? glabels[glabels.length - 1].nextElementSibling : qs('.modal-desc', det);
-          if (gAnchor) gAnchor.parentNode.insertBefore(addBtn('push:' + ipre + 'groups', '+ group', true), gAnchor.nextSibling);
 
           // callout + notes
           var co = qs('.modal-callout', det);
-          if (co) {
-            wrapCE(qs('.modal-callout-label', co), ipre + 'callout.label');
-            wrapCE(qs('.modal-callout-text', co), ipre + 'callout.text');
-            makeRemovable(co, 'rm:' + ipre + 'callout');
-          } else if (insetDiv) {
-            insetDiv.parentNode.insertBefore(addBtn('add:' + ipre + 'callout', '+ callout', true), insetDiv);
-          }
+          if (co) { wrapCE(qs('.modal-callout-label', co), ipre + 'callout.label'); wrapCE(qs('.modal-callout-text', co), ipre + 'callout.text'); makeRemovable(co, 'rm:' + ipre + 'callout'); }
           var noEl = qs('.modal-note', det);
           if (noEl) { wrapCE(noEl, ipre + 'notes'); makeRemovable(noEl, 'rm:' + ipre + 'notes'); }
-          else if (insetDiv) { insetDiv.parentNode.insertBefore(addBtn('add:' + ipre + 'notes', '+ notes', true), insetDiv); }
 
-          // CTA: the label is locked canon; the LINK is the contributor field
+          // CTA: label locked; the LINK is the contributor field (inline editor)
           var cta = qs('.modal-cta', det);
           if (cta) {
             cta.classList.add('pe-canon');
-            var clk = document.createElement('span');
-            clk.className = 'pe-lock';
-            clk.title = 'Locked canonical label — set the link instead';
-            clk.innerHTML = LOCK;
-            cta.appendChild(clk);
+            var clk = document.createElement('span'); clk.className = 'pe-lock'; clk.title = 'Locked canonical label — set the link instead'; clk.innerHTML = LOCK; cta.appendChild(clk);
             if (idata.cta != null) {
-              var lc = document.createElement('span');
-              lc.className = 'pe-chip';
-              lc.appendChild(document.createTextNode('link: '));
-              var lce = document.createElement('span');
-              lce.className = 'ce';
-              lce.setAttribute('contenteditable', 'true');
-              lce.textContent = idata.cta;
-              (function (p, el) { el.addEventListener('blur', function () { P(p, el); }); })(ipre + 'cta', lce);
-              lc.appendChild(lce);
-              var lrm = document.createElement('button');
-              lrm.className = 'pe-tag-rm';
-              lrm.style.opacity = '1';
-              lrm.textContent = '×';
-              lrm.title = 'Remove link';
-              (function (p) { lrm.onclick = function () { A('rm:' + p); }; })(ipre + 'cta');
-              lc.appendChild(lrm);
+              var lc = document.createElement('span'); lc.className = 'pe-chip'; lc.appendChild(document.createTextNode('link: '));
+              var lce = document.createElement('span'); lce.className = 'ce'; lce.setAttribute('contenteditable', 'true'); lce.textContent = idata.cta;
+              (function (p, el) { el.addEventListener('blur', function () { P(p, el); }); })(ipre + 'cta', lce); lc.appendChild(lce);
+              (function (p) { var lrm = document.createElement('button'); lrm.className = 'pe-tag-rm'; lrm.style.opacity = '1'; lrm.textContent = '×'; lrm.title = 'Remove link'; lrm.onclick = function () { A('rm:' + p); }; lc.appendChild(lrm); })(ipre + 'cta');
               cta.parentNode.insertBefore(lc, cta.nextSibling);
-            } else {
-              cta.parentNode.insertBefore(addBtn('add:' + ipre + 'cta', '+ link', true), cta.nextSibling);
-            }
+            } else { cta.parentNode.insertBefore(addBtn('add:' + ipre + 'cta', '+ link', true), cta.nextSibling); }
           }
+
+          // bottom adders row + remove item
+          var adds = document.createElement('div'); adds.className = 'pe-adds';
+          adds.appendChild(addBtn('push:' + ipre + 'groups', '+ group', true));
+          if (!co) adds.appendChild(addBtn('add:' + ipre + 'callout', '+ callout', true));
+          if (!noEl) adds.appendChild(addBtn('add:' + ipre + 'notes', '+ notes', true));
+          (function (dj2, dk2) { var ri = document.createElement('button'); ri.className = 'pe-removeitem'; ri.textContent = 'Remove item'; ri.onclick = function () { A('rm:' + prefix + 'categories.' + dj2 + '.items.' + dk2); }; adds.appendChild(ri); })(dj, dk);
+          det.appendChild(adds);
         });
 
         // + category — after the masonry, where the new card lands
         var mas = qs('.cat-masonry', secEl);
         if (mas) mas.parentNode.insertBefore(addLine('push:' + prefix + 'categories', '+ category'), mas.nextSibling);
 
-        // a body re-render closes the modal — reopen the item being edited
+        // a body re-render closes the modal / popovers — reopen what was open
         var oi = window.__peOpenItem;
         if (oi && oi.s === i && openItem) {
           var rcard = qsa('.cat-masonry > .cat-card', secEl)[oi.j];
           var rpill = rcard && qsa('.cat-pill', rcard)[oi.k];
-          if (rpill) openItem(oi.j, oi.k, rpill);
-          else window.__peOpenItem = null;
+          if (rpill) openItem(oi.j, oi.k, rpill); else window.__peOpenItem = null;
+        }
+        var ro = window.__peReopen;
+        if (ro && ro.s === i && ro.kind === 'ribbon') {
+          window.__peReopen = null;
+          var rc = qsa('.cat-masonry > .cat-card', secEl)[ro.j];
+          var rb2 = rc && qs('.cc-dock .cc-btn[title="Ribbon"]', rc);
+          if (rb2) rb2.click();
         }
       }
     });
