@@ -76,8 +76,26 @@ button{ font-family:inherit; }
 .status-badge{ font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.12em; text-transform:uppercase; padding:2px 6px; border-radius:4px; }
 .status-badge.live{ background:rgba(94,206,160,.14); color:var(--green); }
 .status-badge.stub{ background:rgba(138,130,117,.16); color:var(--muted); }
+.status-badge.draft{ background:rgba(157,124,244,.16); color:var(--purple); }
 .mil-count{ font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--dim); flex-shrink:0; }
 .mil-dot.stub{ background:transparent; border:1px solid var(--border3); }
+.mil-dot.draft{ background:transparent; border:1px solid var(--purple); }
+
+/* ── column footer: + category / + page → inline title input ── */
+.mil-col-foot{ flex-shrink:0; padding:6px; border-top:1px solid var(--border); }
+.mil-add-row{ display:flex; gap:6px; }
+.mil-add-btn{ flex:1; cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--muted); background:var(--bg3); border:1px dashed var(--border3); border-radius:5px; padding:6px 4px; transition:color .12s,border-color .12s,background .12s; }
+.mil-add-btn:hover{ color:var(--purple); border-color:var(--purple-bd); background:var(--purple-bg); }
+.mil-add-input input{ width:100%; font-family:'Fraunces',serif; font-size:13px; color:var(--text); background:var(--bg);
+  border:1px solid var(--purple-bd); border-radius:5px; padding:7px 9px; outline:none; }
+.mil-add-input input::placeholder{ color:var(--dim); }
+
+/* ── "+ New wiki" in the wiki dropdown ── */
+.wdrop-divider{ height:1px; background:var(--border2); margin:6px 4px; }
+.wdrop-new-input{ width:100%; font-family:'Fraunces',serif; font-size:12px; font-weight:600; color:var(--text);
+  background:var(--bg); border:1px solid var(--purple-bd); border-radius:5px; padding:7px 9px; outline:none; }
+.wdrop-new-input::placeholder{ color:var(--dim); }
 .mil-noh{ color:rgba(0,0,0,.45); font-style:italic; font-size:14px; line-height:1.5; font-family:'Spectral',serif; text-align:center; padding:28px; }
 
 /* ── the white mini-page in the preview (hero + section bands) ── */

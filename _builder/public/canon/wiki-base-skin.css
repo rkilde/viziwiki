@@ -1,0 +1,119 @@
+/* ════════════════════════════════════════════════════════════════════
+   wiki-base-skin.css — THE NEUTRAL BASELINE SKIN  (Layer 3, default)
+
+   This is the skin a wiki gets when it has no skin of its own yet: a
+   brand-new, unstyled wiki. The universal layer (wiki-universals.css)
+   owns STRUCTURE and leaves color to skins; with no skin loaded, tone
+   panels collapse to transparent and a few accent tokens fall back to
+   leftover constants — so a skinless page looks half-painted, not clean.
+
+   This file is the fix: a COMPLETE, fully-achromatic token set so an
+   unskinned wiki renders as deliberate greyscale — banded tone panels,
+   neutral accents, mono everything. "No skin = the base skin = mono."
+   Designing a real skin = overriding these tokens with color.
+
+   Scoped to body.wiki-base so it only ever touches blank wikis (named
+   skins like body.wiki-apple are unaffected; this file isn't even loaded
+   for them). It also doubles as the canonical CHECKLIST of every token a
+   skin must set — the future skin-editor drives exactly this list.
+   ==================================================================== */
+
+body.wiki-base {
+  /* ── rail / chrome (TOC, bars) ───────────────────────────────────── */
+  --wiki-bg:     #ffffff;               /* surfaces — white               */
+  --wiki-fg:     #18181b;               /* primary text — near-black ink  */
+  --wiki-muted:  rgba(0,0,0,.45);       /* secondary / dim text           */
+  --wiki-faint:  rgba(0,0,0,.08);       /* hairlines, borders             */
+  --wiki-accent: #52525b;               /* NEUTRAL accent — mid grey, no hue */
+}
+
+/* ── HERO ─────────────────────────────────────────────────────────────
+   Every --hero-* token the universal hero reads, set to greyscale. The
+   amber period/dot/CTA that universals default to are overridden to ink. */
+body.wiki-base {
+  --hero-divider:                 rgba(0,0,0,.12);
+
+  --hero-eyebrow-bg:              #ffffff;
+  --hero-eyebrow-border:          rgba(0,0,0,.16);
+  --hero-eyebrow-text:            rgba(0,0,0,.42);
+  --hero-eyebrow-dot:             rgba(0,0,0,.30);   /* was amber default */
+
+  --hero-title-color:             #18181b;
+  --hero-title-accent:            rgba(0,0,0,.30);   /* the period — was amber */
+
+  --hero-desc-color:              rgba(0,0,0,.62);
+
+  --hero-search-bg:               #ffffff;
+  --hero-search-border:           rgba(0,0,0,.16);
+  --hero-search-text:             #18181b;
+  --hero-search-placeholder:      rgba(0,0,0,.4);
+  --hero-search-icon:             rgba(0,0,0,.45);
+
+  --hero-stat-wrapper-bg:         rgba(0,0,0,.10);
+  --hero-stat-wrapper-border:     rgba(0,0,0,.10);
+  --hero-stat-cell-bg:            #ffffff;
+  --hero-stat-num:                #18181b;
+  --hero-stat-label:              rgba(0,0,0,.42);
+
+  /* hero card — spotlight treatment */
+  --hero-spotlight-bg:            #ffffff;
+  --hero-spotlight-border:        rgba(0,0,0,.10);
+  --hero-spotlight-eyebrow:       rgba(0,0,0,.55);
+  --hero-spotlight-title:         #18181b;
+  --hero-spotlight-desc:          rgba(0,0,0,.62);
+  --hero-spotlight-tag-bg:        rgba(0,0,0,.04);
+  --hero-spotlight-tag-border:    rgba(0,0,0,.12);
+  --hero-spotlight-tag-text:      rgba(0,0,0,.6);
+  --hero-spotlight-cta-bg:        #3f3f46;           /* neutral ink, was amber */
+  --hero-spotlight-cta-text:      #ffffff;
+  --hero-spotlight-cta-hover-bg:  #18181b;
+
+  /* hero card — feature treatment */
+  --hero-feature-bg:        #fafafa;
+  --hero-feature-border:    rgba(0,0,0,.12);
+  --hero-feature-halftone:  rgba(0,0,0,.06);
+  --hero-feature-label:     rgba(0,0,0,.5);
+  --hero-feature-title:     #18181b;
+  --hero-feature-desc:      rgba(0,0,0,.62);
+  --hero-feature-chip-bg:     rgba(0,0,0,.04);
+  --hero-feature-chip-border: rgba(0,0,0,.12);
+  --hero-feature-chip-key:    rgba(0,0,0,.5);
+  --hero-feature-chip-val:    #18181b;
+}
+
+/* ── SECTIONS · TONE PANELS · TYPOGRAPHY · OVERVIEW INFOBOX ──────────── */
+body.wiki-base {
+  /* §12 — background panel alternation (the banded greyscale rhythm) */
+  --section-tone-a:        #ffffff;            /* white                       */
+  --section-tone-b:        #f5f5f5;            /* light grey                  */
+  --section-tone-special:  #18181b;            /* dark inverted band          */
+  --section-divider:       transparent;        /* tone alternation separates  */
+
+  /* §15 — section typography colors (sizing stays universal) */
+  --eyebrow-color:         rgba(0,0,0,.5);
+  --section-title-color:   #18181b;
+  --prose-color:           rgba(0,0,0,.78);
+  --prose-strong-color:    #18181b;
+
+  /* §16 — overview infobox tokens (achromatic, hairline-bordered) */
+  --infobox-bg:            #fafafa;
+  --infobox-border:        rgba(0,0,0,.14);
+  --infobox-header-bg:     transparent;
+  --infobox-label-color:   rgba(0,0,0,.4);
+  --infobox-title-color:   #18181b;
+  --infobox-key-color:     rgba(0,0,0,.44);
+  --infobox-value-color:   rgba(0,0,0,.82);
+  --infobox-divider:       rgba(0,0,0,.1);
+  --infobox-badge-border:  rgba(0,0,0,.22);    /* neutral, was amber */
+  --infobox-badge-color:   rgba(0,0,0,.55);
+}
+
+/* Special band — invert text light-on-dark over the dark grey background
+   (mirrors the Apple / Taco Bell special-tone pattern). */
+body.wiki-base .wiki-section[data-tone="special"] {
+  --eyebrow-color:        rgba(255,255,255,.55);
+  --section-title-color:  #ffffff;
+  --prose-color:          rgba(255,255,255,.75);
+  --prose-strong-color:   #ffffff;
+  color: #ffffff;
+}

@@ -9,9 +9,17 @@ const Swatch = ({ color, label }: { color: string; label: string }) => (
 
 const WIKI_COLOR: Record<string, string> = { 'taco-bell': '#702082', 'apple': '#1d1d1f' };
 
-export function Topbar({ wikis, current, onSwitch, level, onLevel }: { wikis: Wiki[]; current: Wiki; onSwitch: (w: Wiki) => void; level: number; onLevel: (n: number) => void }) {
+export function Topbar({ wikis, current, onSwitch, onNewWiki, level, onLevel }: { wikis: Wiki[]; current: Wiki; onSwitch: (w: Wiki) => void; onNewWiki: (name: string) => void; level: number; onLevel: (n: number) => void }) {
   const [open, setOpen] = useState(false);
+  const [naming, setNaming] = useState(false);
+  const [name, setName] = useState('');
   const color = WIKI_COLOR[current.id] || '#9d7cf4';
+
+  const commitNew = () => {
+    const n = name.trim();
+    if (n) { onNewWiki(n); setOpen(false); }
+    setNaming(false); setName('');
+  };
 
   return (
     <div id="topbar">
@@ -29,6 +37,20 @@ export function Topbar({ wikis, current, onSwitch, level, onLevel }: { wikis: Wi
                 <span className="wdrop-name">{w.name}</span>
               </button>
             ))}
+            <div className="wdrop-divider" />
+            {naming ? (
+              <input
+                className="wdrop-new-input" autoFocus value={name} placeholder="New wiki name…"
+                onChange={(e) => setName(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') commitNew(); if (e.key === 'Escape') { setNaming(false); setName(''); } }}
+                onBlur={commitNew}
+              />
+            ) : (
+              <button className="wdrop-item wdrop-new" onClick={() => setNaming(true)}>
+                <span className="wiki-btn-icon" style={{ background: 'transparent', border: '1px dashed var(--border3)', color: 'var(--muted)', fontWeight: 700 }}>+</span>
+                <span className="wdrop-name">New wiki</span>
+              </button>
+            )}
             <div style={{ padding: '8px 9px 4px', fontFamily: "'JetBrains Mono',monospace", fontSize: 9, letterSpacing: '.1em', color: 'var(--dim)', textTransform: 'uppercase' }}>
               more wikis load from the content store
             </div>

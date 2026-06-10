@@ -11,7 +11,7 @@ import path from 'node:path';
 const ROOT = path.resolve(process.cwd(), '..');
 const OUT = path.join(process.cwd(), 'public', 'canon');
 // the universal layer + every wiki's skin (order matches the live site load order)
-const FILES = ['wiki-typography.css', 'wiki-universals.css', 'wiki-taco-bell-skin.css', 'tb-editorial-base.css', 'wiki-apple-skin.css'];
+const FILES = ['wiki-typography.css', 'wiki-universals.css', 'wiki-taco-bell-skin.css', 'tb-editorial-base.css', 'wiki-apple-skin.css', 'wiki-base-skin.css'];
 
 fs.mkdirSync(OUT, { recursive: true });
 let n = 0;
