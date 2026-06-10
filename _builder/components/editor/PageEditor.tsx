@@ -45,18 +45,19 @@ export function PageEditor({ page, onClose }: { page: Page; onClose: () => void 
 
   return (
     <div id="pe-overlay">
-      <div className="pe-bar">
-        <span className="pe-ttl">{oneLine(page.title)}</span>
-        <span className="pe-canon-note">canonical CSS · hero + overview (locked)</span>
-        <span className="sp" />
-        {saved && <span className="saved">saved ✓</span>}
-        <button onClick={revert}>Revert</button>
-        <button onClick={onClose}>Close</button>
-        <button className="primary" onClick={save}>Save</button>
-      </div>
       <div className="pe-canvas-area">
         <iframe ref={iframeRef} className="pe-canvas" title="Page editor" srcDoc={srcDoc} style={{ height: 600 }} />
+      </div>
+      <div id="pe-chrome">
+        {saved && <span className="pe-chip-status"><IcCheck />saved</span>}
+        <button onClick={revert} title="Discard changes"><IcUndo />Revert</button>
+        <button onClick={onClose} title="Close (Esc)"><IcX />Close</button>
+        <button className="primary" onClick={save}><IcCheck />Save</button>
       </div>
     </div>
   );
 }
+
+const IcUndo = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M3 7v6h6" /><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" /></svg>);
+const IcX = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>);
+const IcCheck = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>);
