@@ -1,43 +1,38 @@
 // Builds the editor canvas as a full HTML document for an iframe. Loads the
 // CANONICAL stylesheets (copied from the repo) and emits the EXACT canonical
 // markup, so everything renders identically to the live site and tracks the
-// master format. Editable text is contenteditable; delete/add affordances match
-// the prototype: a corner × revealed only on hover of its own element (deletable),
-// or a corner padlock (canon/locked, inert). No pp-* copies.
-import type { PageDoc, HeroDoc, OverviewDoc, InfoboxDoc } from './store';
+// master format. Covers every canonical hero + overview element & add-on.
+// Editable text is contenteditable; +add/×remove call back via P()/A(). No pp-*.
+import type { PageDoc, HeroDoc, OverviewDoc, InfoboxDoc, SpotlightDoc, FeatureDoc } from './store';
+import { BLANK_CARD, BLANK_FEATURE } from './store';
 
 const AFFORDANCE = `
-  /* editing field: a light-blue BOX appears around the element ONLY on click
-     (focus) — "you're in edit mode here". No filled background, no hover state. */
+  /* editing field: grey box on hover (= editable), blue box on click (= editing) */
   .ce{ cursor:text; border-radius:3px; display:inline-block; max-width:100%;
        outline:2px solid transparent; outline-offset:2px; transition:outline-color .12s; }
-  .ce:hover{ outline-color:rgba(0,0,0,.18); }   /* grey box on hover = editable */
-  .ce:focus{ outline-color:rgba(0,113,227,.55); } /* blue box on click = editing */
+  .ce:hover{ outline-color:rgba(0,0,0,.18); }
+  .ce:focus{ outline-color:rgba(0,113,227,.55); }
 
   /* corner controls — hidden until you hover the element they belong to */
   .pe-removable,.pe-locked{ position:relative; }
   .pe-remove,.pe-lock{ position:absolute; top:-9px; right:-9px; width:18px; height:18px; border-radius:50%;
     display:flex; align-items:center; justify-content:center; line-height:1; opacity:0; transition:opacity .12s; z-index:4; }
   .pe-remove{ border:1px solid rgba(0,0,0,.18); background:#fff; color:rgba(0,0,0,.45); font-size:12px; cursor:pointer; }
-  .pe-removable:hover > .pe-remove{ opacity:1; }          /* direct child only → scoped to its own element */
+  .pe-removable:hover > .pe-remove{ opacity:1; }
   .pe-remove:hover{ border-color:#ef4444; color:#ef4444; }
   .pe-lock{ border:1px solid rgba(0,0,0,.12); background:#fff; color:rgba(0,0,0,.34); cursor:default; }
-  .pe-locked:hover > .pe-lock{ opacity:.9; }
   .pe-lock svg{ width:10px; height:10px; }
-  /* canon-locked (can't edit AND can't delete): a RED box appears on hover —
-     "don't bother clicking, this is locked" — paired with the padlock. */
+  /* canon-locked (can't edit AND can't delete): red box on hover + padlock */
   .pe-canon{ position:relative; width:fit-content; max-width:100%; cursor:not-allowed; border-radius:2px; }
   .pe-canon:hover{ outline:2px solid rgba(220,48,48,.5); outline-offset:2px; }
   .pe-canon:hover > .pe-lock{ opacity:.9; }
 
-  /* small inline × for the subtitle's meta */
   .pe-tag-rm{ display:inline-flex; align-items:center; justify-content:center; width:14px; height:14px; border-radius:50%;
     margin-left:6px; vertical-align:middle; border:1px solid rgba(0,0,0,.18); background:#fff; color:rgba(0,0,0,.5);
     font-size:9px; line-height:1; cursor:pointer; opacity:0; transition:opacity .12s; }
   .pe-removable:hover .pe-tag-rm{ opacity:1; }
   .pe-tag-rm:hover{ border-color:#ef4444; color:#ef4444; }
 
-  /* add affordances (unchanged) */
   .pe-add{ font-family:'JetBrains Mono',monospace; font-size:11px; cursor:pointer; border-radius:5px; padding:3px 9px;
     border:1px dashed rgba(120,120,140,.5); background:rgba(120,120,140,.06); color:rgba(90,90,110,.85); }
   .pe-add:hover{ border-color:#6366f1; color:#6366f1; }
@@ -45,11 +40,19 @@ const AFFORDANCE = `
     margin-left:6px; vertical-align:middle; border:1px dashed rgba(120,120,140,.5); background:transparent; color:rgba(90,90,110,.7); }
   .pe-mini-add:hover{ color:#6366f1; border-color:#6366f1; }
   .pe-addline{ margin:12px 0; }
-  /* the corner × / padlock hugs the field's CONTENT box (like the eyebrow),
-     not the full-width block — so it lands at the text's top-right, not the page edge */
   .pe-stats-wrap{ max-width:36rem; width:fit-content; }
   .wiki-hero-subtitle.pe-removable{ display:inline-flex; align-items:baseline; }
   .wiki-infobox-label.pe-removable{ width:fit-content; max-width:100%; }
+
+  /* hero card (aside) controls + empty slot */
+  .pe-aside-ctrls{ display:flex; gap:6px; justify-content:flex-end; margin-bottom:8px; }
+  .pe-chip{ cursor:pointer; border:1px solid rgba(120,120,140,.3); background:rgba(255,255,255,.72); border-radius:999px;
+    font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.1em; text-transform:uppercase; color:rgba(90,90,110,.72); padding:3px 9px; }
+  .pe-chip:hover{ border-color:rgba(90,90,110,.5); color:#333; }
+  .pe-chip.active{ background:#6366f1; color:#fff; border-color:#6366f1; }
+  .pe-aside-empty{ padding:22px; border:1.5px dashed rgba(120,120,140,.4); border-radius:10px; background:rgba(120,120,140,.04); }
+  .pe-aside-empty-label{ font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.16em; text-transform:uppercase; color:rgba(90,90,110,.5); margin-bottom:12px; }
+  .pe-add-row{ display:flex; gap:8px; flex-wrap:wrap; }
 
   /* section-level controls float in the section panel's upper-right (glass pill) */
   .pe-sec{ position:relative; }
@@ -63,37 +66,86 @@ const AFFORDANCE = `
 
 const BOOK = `<svg class="wiki-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>`;
 const LOCK = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`;
+const SEARCH_ICON = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>`;
 
-// corner × (delete) — place as a DIRECT child of a .pe-removable element
 const x = (a: string) => `<button class="pe-remove" title="Remove" onclick="A('${a}')">×</button>`;
-// corner padlock (canon, can't delete) — place as a direct child of a .pe-locked element
 const lk = (tip: string) => `<span class="pe-lock" title="${tip}">${LOCK}</span>`;
 const add = (a: string, label: string, style = '') => `<div class="pe-addline"${style ? ` style="${style}"` : ''}><button class="pe-add" onclick="A('${a}')">${label}</button></div>`;
-const ce = (path: string, html: string) => `<span class="ce" contenteditable="true" onblur="P('${path}',this)">${html}</span>`;
+const ce = (path: string, html: string | null) => `<span class="ce" contenteditable="true" onblur="P('${path}',this)">${html || ''}</span>`;
+
+// ── hero card (aside) ──
+const asideCtrls = (variant: string) => `<div class="pe-aside-ctrls">
+  <button class="pe-chip ${variant === 'card' ? 'active' : ''}" onclick="A('switchAside:card')">card</button>
+  <button class="pe-chip ${variant === 'feature' ? 'active' : ''}" onclick="A('switchAside:feature')">feature</button>
+  <button class="pe-chip" onclick="A('rmAside')">remove</button></div>`;
+
+function spotlightHTML(c: SpotlightDoc): string {
+  return `<aside class="wiki-hero-aside">${asideCtrls('card')}
+    <div class="wiki-hero-spotlight">
+      ${c.eyebrow != null ? `<div class="wiki-hero-spotlight-eyebrow pe-removable">${ce('hero.aside.card.eyebrow', c.eyebrow)}${x('spRmEyebrow')}</div>` : add('spAddEyebrow', '+ eyebrow')}
+      <h3 class="wiki-hero-spotlight-title">${ce('hero.aside.card.title', c.title)}</h3>
+      ${c.desc != null ? `<div class="pe-removable"><p class="wiki-hero-spotlight-desc">${ce('hero.aside.card.desc', c.desc)}</p>${x('spRmDesc')}</div>` : add('spAddDesc', '+ description')}
+      <div class="wiki-hero-spotlight-tags">${c.tags.map((t, i) => `<span class="wiki-hero-spotlight-tag pe-removable">${ce(`hero.aside.card.tags.${i}`, t)}<button class="pe-tag-rm" onclick="A('spRmTag:${i}')">×</button></span>`).join('')}<button class="pe-mini-add" onclick="A('spAddTag')">+ tag</button></div>
+      ${c.cta != null ? `<span class="pe-removable" style="display:inline-block">${`<button class="wiki-hero-spotlight-cta">${ce('hero.aside.card.cta', c.cta)}</button>`}${x('spRmCta')}</span>` : add('spAddCta', '+ button')}
+    </div></aside>`;
+}
+
+function featureHTML(f: FeatureDoc): string {
+  return `<aside class="wiki-hero-aside">${asideCtrls('feature')}
+    <div class="wiki-hero-feature">
+      <div class="wiki-hero-feature-halftone"></div>
+      <div class="wiki-hero-feature-body">
+        <div class="wiki-hero-feature-head"><span>${ce('hero.aside.feature.headLeft', f.headLeft || '')}</span>${f.headRight != null ? `<span class="pe-removable" style="display:inline-block">${ce('hero.aside.feature.headRight', f.headRight)}<button class="pe-tag-rm" onclick="A('ftRmHeadRight')">×</button></span>` : `<button class="pe-mini-add" onclick="A('ftAddHeadRight')">+ right</button>`}</div>
+        <div class="wiki-hero-feature-title">${ce('hero.aside.feature.title', f.title)}</div>
+        ${f.desc != null ? `<div class="pe-removable"><p class="wiki-hero-feature-desc">${ce('hero.aside.feature.desc', f.desc)}</p>${x('ftRmDesc')}</div>` : add('ftAddDesc', '+ description')}
+        <div class="wiki-hero-feature-stats">${f.chips.map((c, i) => `<div class="wiki-hero-feature-chip pe-removable"><div class="wiki-hero-feature-chip-key">${ce(`hero.aside.feature.chips.${i}.key`, c.key)}</div><div class="wiki-hero-feature-chip-val">${ce(`hero.aside.feature.chips.${i}.val`, c.val)}</div>${x(`ftRmChip:${i}`)}</div>`).join('')}</div>
+        <div class="pe-addline"><button class="pe-mini-add" onclick="A('ftAddChip')">+ chip</button></div>
+      </div>
+    </div></aside>`;
+}
+
+function asideHTML(aside: HeroDoc['aside']): string {
+  if (!aside) {
+    return `<aside class="wiki-hero-aside"><div class="pe-aside-empty">
+      <div class="pe-aside-empty-label">Hero card · optional</div>
+      <div class="pe-add-row"><button class="pe-add" onclick="A('addAside:card')">+ card</button><button class="pe-add" onclick="A('addAside:feature')">+ feature</button></div>
+    </div></aside>`;
+  }
+  return aside.variant === 'card' ? spotlightHTML(aside.card) : featureHTML(aside.feature);
+}
+
+function searchHTML(h: HeroDoc): string {
+  if (!h.search) return add('addSearch', '+ search bar (home pages)');
+  return `<div class="wiki-hero-search pe-removable"><span class="wiki-hero-search-icon">${SEARCH_ICON}</span><span class="wiki-hero-search-input ce" contenteditable="true" onblur="P('hero.search_placeholder',this)">${h.search_placeholder || 'Search…'}</span>${x('rmSearch')}</div>`;
+}
 
 function heroHTML(h: HeroDoc): string {
   return `
   <section class="wiki-hero">
-    <div class="wiki-hero-inner"><div class="wiki-hero-content">
-      ${h.eyebrow != null
-        ? `<div class="wiki-hero-eyebrow pe-removable"><span class="wiki-hero-eyebrow-dot"></span> ${ce('hero.eyebrow', h.eyebrow)}${x('rmEyebrow')}</div>`
-        : add('addEyebrow', '+ eyebrow')}
-      <h1 class="wiki-hero-title">${ce('hero.title', h.title)}<span class="wiki-hero-title-accent">.</span></h1>
-      ${h.subtitle != null
-        ? `<div class="wiki-hero-subtitle pe-removable">${ce('hero.subtitle', h.subtitle)}${
-            h.subtitle_meta != null
-              ? `<span class="wiki-hero-subtitle-sep"> · </span><span class="wiki-hero-subtitle-meta">${ce('hero.subtitle_meta', h.subtitle_meta)}</span><button class="pe-tag-rm" title="Remove meta" onclick="A('rmMeta')">×</button>`
-              : `<button class="pe-mini-add" onclick="A('addMeta')">+ meta</button>`
-          }${x('rmSubtitle')}</div>`
-        : add('addSubtitle', '+ subtitle')}
-      ${h.desc != null
-        ? `<div class="pe-removable" style="max-width:36rem;width:fit-content"><p class="wiki-hero-desc">${ce('hero.desc', h.desc)}</p>${x('rmDesc')}</div>`
-        : add('addDesc', '+ description')}
-      ${h.stats
-        ? `<div class="pe-removable pe-stats-wrap"><div class="wiki-hero-stats">${h.stats.map((s, i) =>
-            `<div class="wiki-hero-stat"><div class="wiki-hero-stat-num">${ce(`hero.stats.${i}.num`, s.num)}</div><div class="wiki-hero-stat-label">${ce(`hero.stats.${i}.label`, s.label)}</div></div>`).join('')}</div>${x('rmStats')}</div>`
-        : add('addStats', '+ stats (1×4)')}
-    </div></div>
+    <div class="wiki-hero-inner">
+      <div class="wiki-hero-content">
+        ${h.eyebrow != null
+          ? `<div class="wiki-hero-eyebrow pe-removable"><span class="wiki-hero-eyebrow-dot"></span> ${ce('hero.eyebrow', h.eyebrow)}${x('rmEyebrow')}</div>`
+          : add('addEyebrow', '+ eyebrow')}
+        <h1 class="wiki-hero-title">${ce('hero.title', h.title)}<span class="wiki-hero-title-accent">.</span></h1>
+        ${h.subtitle != null
+          ? `<div class="wiki-hero-subtitle pe-removable">${ce('hero.subtitle', h.subtitle)}${
+              h.subtitle_meta != null
+                ? `<span class="wiki-hero-subtitle-sep"> · </span><span class="wiki-hero-subtitle-meta">${ce('hero.subtitle_meta', h.subtitle_meta)}</span><button class="pe-tag-rm" title="Remove meta" onclick="A('rmMeta')">×</button>`
+                : `<button class="pe-mini-add" onclick="A('addMeta')">+ meta</button>`
+            }${x('rmSubtitle')}</div>`
+          : add('addSubtitle', '+ subtitle')}
+        ${h.desc != null
+          ? `<div class="pe-removable" style="max-width:36rem;width:fit-content"><p class="wiki-hero-desc">${ce('hero.desc', h.desc)}</p>${x('rmDesc')}</div>`
+          : add('addDesc', '+ description')}
+        ${searchHTML(h)}
+        ${h.stats
+          ? `<div class="pe-removable pe-stats-wrap"><div class="wiki-hero-stats">${h.stats.map((s, i) =>
+              `<div class="wiki-hero-stat"><div class="wiki-hero-stat-num">${ce(`hero.stats.${i}.num`, s.num)}</div><div class="wiki-hero-stat-label">${ce(`hero.stats.${i}.label`, s.label)}</div></div>`).join('')}</div>${x('rmStats')}</div>`
+          : add('addStats', '+ stats (1×4)')}
+      </div>
+      ${asideHTML(h.aside)}
+    </div>
   </section>`;
 }
 
@@ -141,13 +193,10 @@ function ovHTML(ov: OverviewDoc): string {
 
 const FONTS = `<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">`;
 
-// Just the <body> inner HTML — swapped in place on every change (no reload).
 export function buildBody(doc: PageDoc): string {
   return `${heroHTML(doc.hero)}${ovHTML(doc.overview)}`;
 }
 
-// The full document — built ONCE for the iframe's initial load. After that we only
-// swap buildBody() into the live body, so the CSS/fonts never reload (smooth).
 export function buildCanvas(doc: PageDoc): string {
   return `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>${FONTS}
@@ -176,6 +225,7 @@ export function setIn(doc: PageDoc, path: string, value: string): void {
 
 export function applyAction(doc: PageDoc, action: string): void {
   const h = doc.hero, ov = doc.overview;
+  const a = h.aside;
   const [name, arg] = action.split(':');
   switch (name) {
     case 'addEyebrow': h.eyebrow = 'Category'; break;
@@ -188,6 +238,27 @@ export function applyAction(doc: PageDoc, action: string): void {
     case 'rmDesc': h.desc = null; break;
     case 'addStats': h.stats = [{ num: '1', label: 'Stat' }, { num: '2', label: 'Stat' }, { num: '3', label: 'Stat' }, { num: '4', label: 'Stat' }]; break;
     case 'rmStats': h.stats = null; break;
+    case 'addSearch': h.search = true; if (!h.search_placeholder) h.search_placeholder = 'Search…'; break;
+    case 'rmSearch': h.search = false; break;
+    // hero card (aside)
+    case 'addAside': h.aside = { variant: arg === 'feature' ? 'feature' : 'card', card: BLANK_CARD(), feature: BLANK_FEATURE() }; break;
+    case 'switchAside': if (a) a.variant = arg as 'card' | 'feature'; break;
+    case 'rmAside': h.aside = null; break;
+    case 'spAddEyebrow': if (a) a.card.eyebrow = 'Eyebrow'; break;
+    case 'spRmEyebrow': if (a) a.card.eyebrow = null; break;
+    case 'spAddDesc': if (a) a.card.desc = 'A short description.'; break;
+    case 'spRmDesc': if (a) a.card.desc = null; break;
+    case 'spAddTag': if (a) a.card.tags.push('Tag'); break;
+    case 'spRmTag': if (a) a.card.tags.splice(Number(arg), 1); break;
+    case 'spAddCta': if (a) a.card.cta = 'Read more'; break;
+    case 'spRmCta': if (a) a.card.cta = null; break;
+    case 'ftAddHeadRight': if (a) a.feature.headRight = 'Right'; break;
+    case 'ftRmHeadRight': if (a) a.feature.headRight = null; break;
+    case 'ftAddDesc': if (a) a.feature.desc = 'A short description.'; break;
+    case 'ftRmDesc': if (a) a.feature.desc = null; break;
+    case 'ftAddChip': if (a) a.feature.chips.push({ key: 'Key', val: 'Value' }); break;
+    case 'ftRmChip': if (a) a.feature.chips.splice(Number(arg), 1); break;
+    // overview
     case 'setTone': ov.tone = arg; break;
     case 'addPara': ov.paragraphs.push('New paragraph.'); break;
     case 'rmPara': ov.paragraphs.splice(Number(arg), 1); break;

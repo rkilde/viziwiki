@@ -42,7 +42,7 @@ function builtPageData(pageUrl) {
   const ov = fm.overview || null;
   return {
     sections: SECTION_ORDER.filter((k) => fm[k] != null).map((k) => ({ type: k === 'os' ? 'lifecycle-lane' : k, label: SECTION_LABEL[k] })),
-    hero: { eyebrow: h.eyebrow || null, title: h.title || null, subtitle: h.subtitle || null, subtitle_meta: h.subtitle_meta || null, desc: h.desc || null, stats: Array.isArray(h.stats) ? h.stats : [] },
+    hero: { eyebrow: h.eyebrow || null, title: h.title || null, subtitle: h.subtitle || null, subtitle_meta: h.subtitle_meta || null, desc: h.desc || null, stats: Array.isArray(h.stats) ? h.stats : [], search: !!h.search, search_placeholder: h.search_placeholder || null, spotlight: h.spotlight || null, feature: h.feature || null },
     overview: ov ? {
       tone: ov.tone || 'b',
       heading: ov.heading || '',
@@ -68,7 +68,7 @@ function toNode(node) {
     count: typeof node.count === 'number' ? node.count : null,
     accent: node.accent || (node.grad && node.grad[0]) || null,
     sections: built ? built.sections : [],
-    hero: built ? built.hero : { eyebrow: null, title: null, subtitle: null, subtitle_meta: null, desc: null, stats: [] },
+    hero: built ? built.hero : { eyebrow: null, title: null, subtitle: null, subtitle_meta: null, desc: null, stats: [], search: false, search_placeholder: null, spotlight: null, feature: null },
     overview: built ? built.overview : null,
     pages: (node.entries || []).map(toNode),
   };

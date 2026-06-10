@@ -10,6 +10,10 @@ export type Hero = {
   subtitle_meta: string | null;
   desc: string | null;
   stats: Stat[];
+  search?: boolean;
+  search_placeholder?: string | null;
+  spotlight?: any | null;
+  feature?: any | null;
 };
 export type SectionRef = { type: string; label: string };
 export type InfoboxRow = [string, string];
