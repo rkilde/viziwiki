@@ -159,7 +159,7 @@ components:
       chart_title:   { type: text,     required: true }
       tone:          { type: "enum[a,b,special]", default: a }
       visual:  { type: text, locked: true, default: config, help: "The slot's visual type — registry hosts constrain it (admin)" }
-      intro:         { type: richtext }
+      intro:         { type: "list<richtext>", help: "Optional intro paragraphs above the chart" }
       footer:        { type: richtext }
       divider_label: { type: text, help: "Label on the revised-group divider" }
       items:         { type: "list<config_item>", required: true }

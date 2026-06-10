@@ -62,7 +62,7 @@ const visited = new Set();
 // analyze one include FILE. ctx = Map(includeParamName → type) — what the
 // caller passed (entry files get {data: componentRoot}). Follows sub-includes.
 function analyze(comp, file, ctx, subtypes) {
-  const vkey = file + '|' + [...ctx.entries()].map(([k, v]) => k + ':' + (v.name || v.kind)).sort().join(',');
+  const vkey = file + '|' + [...ctx.entries()].map(([k, v]) => k + ':' + ((v.t && (v.t.name || v.t.kind)) || 'scalar')).sort().join(',');
   if (visited.has(vkey)) return;
   visited.add(vkey);
 
@@ -72,11 +72,13 @@ function analyze(comp, file, ctx, subtypes) {
            .replace(/<script[\s\S]*?<\/script>/gi, ' ')
            .replace(/<style[\s\S]*?<\/style>/gi, ' ');
 
+  // frames hold { t: type, spec: grammarFieldSpec|null } so assigned vars keep
+  // their field identity (e.g. rb_tone = ribbon.tone | default → enum spec)
   const stack = [new Map()];
   const lookup = (n) => { for (let i = stack.length - 1; i >= 0; i--) if (stack[i].has(n)) return stack[i].get(n); return undefined; };
 
   // resolve a dotted path → { type, spec } (spec = grammar spec of the final
-  // segment, for default checks). Records reads + flags undeclared fields.
+  // segment, for default/enum checks). Records reads + flags undeclared fields.
   function resolve(pathStr) {
     const segs = pathStr.split('.');
     let cur, spec = null;
@@ -84,18 +86,22 @@ function analyze(comp, file, ctx, subtypes) {
     if (base === 'forloop') return { type: SCALAR, spec };
     if (base === 'include') {                       // include.<param>[.field…]
       const param = segs.shift();
-      cur = ctx.get(param) || SCALAR;
+      const ent = ctx.get(param);
+      cur = ent ? ent.t : SCALAR;
+      spec = ent ? ent.spec : null;
     } else {
-      cur = lookup(base);
-      if (cur === undefined) return { type: undefined, spec };   // unknown global
+      const ent = lookup(base);
+      if (ent === undefined) return { type: undefined, spec };   // unknown global
+      cur = ent.t;
+      spec = ent.spec;
     }
     for (const seg of segs) {
-      if (cur.kind === 'scalar' || cur.kind === 'forloop') return { type: SCALAR, spec };
+      if (cur.kind === 'scalar' || cur.kind === 'forloop') return { type: SCALAR, spec: null };
       if (cur.kind === 'list') {
-        if (seg === 'first' || seg === 'last') { cur = cur.el; continue; }
-        return { type: SCALAR, spec };              // .size / named field on list
+        if (seg === 'first' || seg === 'last') { cur = cur.el; spec = null; continue; }
+        return { type: SCALAR, spec: null };        // .size / named field on list
       }
-      if (BUILTIN.has(seg) && !cur.fields[seg]) { cur = SCALAR; continue; }
+      if (BUILTIN.has(seg) && !cur.fields[seg]) { cur = SCALAR; spec = null; continue; }
       if (cur.fields[seg]) {
         reads.add(cur.name + '::' + seg);
         spec = cur.fields[seg];
@@ -128,11 +134,36 @@ function analyze(comp, file, ctx, subtypes) {
     // Nth index reads the Nth declared field of that subtype
     let im; const IDX = /\b(\w+)\[(\d+)\]/g;
     while ((im = IDX.exec(cleaned))) {
-      const v = lookup(im[1]);
+      const ent = lookup(im[1]);
+      const v = ent && ent.t;
       if (v && v.kind === 'obj') {
         const f = Object.keys(v.fields)[Number(im[2])];
         if (f) reads.add(v.name + '::' + f);
       }
+    }
+  }
+
+  // ENUM membership: any `path == 'literal'` (or !=, either order) where the
+  // path's grammar type is enum[…] must compare against a member of that enum
+  function enumValues(spec) {
+    const e = /^enum\[(.*)\]$/.exec((spec && spec.type) || '');
+    return e ? e[1].split(',').map((s) => s.trim()) : null;
+  }
+  function checkEnumLiteral(refExpr, lit) {
+    if (!/^[a-zA-Z_][\w.]*$/.test(refExpr)) return;
+    const base = refExpr.split('.')[0];
+    if (base !== 'forloop' && base !== 'include' && lookup(base) === undefined) return;
+    const vals = enumValues(resolve(refExpr).spec);
+    if (vals && !vals.includes(lit)) {
+      flag(comp, file, `\`${refExpr}\` compared to '${lit}' — not in grammar enum [${vals.join(',')}]`);
+    }
+  }
+  function checkComparisons(expr) {
+    let cm;
+    const CMP = /([\w.]+)\s*(?:==|!=)\s*(['"])([^'"]*)\2|(['"])([^'"]*)\4\s*(?:==|!=)\s*([\w.]+)/g;
+    while ((cm = CMP.exec(expr))) {
+      if (cm[1] != null) checkEnumLiteral(cm[1], cm[3]);
+      else checkEnumLiteral(cm[6], cm[5]);
     }
   }
 
@@ -146,13 +177,15 @@ function analyze(comp, file, ctx, subtypes) {
     let pm; const PRE = /(\w+)\s*=\s*([^\s%]+)/g;
     while ((pm = PRE.exec(im[2]))) {
       const v = pm[2];
-      childCtx.set(pm[1], /^[a-zA-Z_][\w.]*$/.test(v) ? (resolve(v).type || SCALAR) : SCALAR);
+      const r = /^[a-zA-Z_][\w.]*$/.test(v) ? resolve(v) : { type: SCALAR, spec: null };
+      childCtx.set(pm[1], { t: r.type || SCALAR, spec: r.spec || null });
     }
     analyze(comp, file2, childCtx, subtypes);
   }
 
   const TOK = /\{%-?([\s\S]*?)-?%\}|\{\{-?([\s\S]*?)-?\}\}/g;
   let m;
+  const caseStack = []; // {% case X %} subjects, for {% when 'lit' %} enum checks
   while ((m = TOK.exec(src))) {
     if (m[2] !== undefined) { validateExpr(m[2]); continue; }
     const tag = m[1].trim();
@@ -161,7 +194,14 @@ function analyze(comp, file, ctx, subtypes) {
       const fm = /^\w+\s+(\w+)\s+in\s+([^\s|]+)/.exec(tag);
       validateExpr(tag.replace(/^\w+\s+\w+\s+in\s+/, ''));
       const frame = new Map();
-      if (fm) { const ct = resolve(fm[2]).type; frame.set(fm[1], ct && ct.kind === 'list' ? ct.el : SCALAR); }
+      if (fm) {
+        const r = resolve(fm[2]);
+        // SHAPE: looping a field grammar says is not a list
+        if (r.spec && r.spec.type && !/^list</.test(r.spec.type)) {
+          flag(comp, file, `loops over \`${fm[2]}\` — grammar declares it ${r.spec.type}, not a list`);
+        }
+        frame.set(fm[1], { t: r.type && r.type.kind === 'list' ? r.type.el : SCALAR, spec: null });
+      }
       stack.push(frame);
     } else if (kw === 'endfor' || kw === 'endtablerow') {
       if (stack.length > 1) stack.pop();
@@ -170,17 +210,38 @@ function analyze(comp, file, ctx, subtypes) {
       if (am) {
         validateExpr(am[2]);
         const rhs = am[2].trim();
-        const t = (!/\|/.test(rhs) && /^[a-zA-Z_][\w.]*$/.test(rhs)) ? (resolve(rhs).type || SCALAR) : SCALAR;
-        stack[0].set(am[1], t);
+        // a bare path keeps its type+spec; `path | default: …` keeps the
+        // FIELD's identity too (so enum vars stay checkable); else scalar
+        const bare = /^[a-zA-Z_][\w.]*$/.test(rhs) ? rhs
+          : (/^([a-zA-Z_][\w.]*)\s*\|\s*default:/.exec(rhs) || [])[1] || null;
+        const r = bare ? resolve(bare) : { type: SCALAR, spec: null };
+        stack[0].set(am[1], { t: r.type || SCALAR, spec: r.spec || null });
       }
     } else if (kw === 'capture') {
       const cm = /^capture\s+(\w+)/.exec(tag);
-      if (cm) stack[0].set(cm[1], SCALAR);
+      if (cm) stack[0].set(cm[1], { t: SCALAR, spec: null });
     } else if (kw === 'include') {
       validateExpr(tag.replace(/^include\s+\S+/, ''));   // validate param exprs
       followInclude(tag);
+    } else if (kw === 'case') {
+      const cs = /^case\s+([\w.]+)/.exec(tag);
+      caseStack.push(cs ? resolve(cs[1]).spec : null);
+      validateExpr(tag.replace(/^case\b/, ''));
+    } else if (kw === 'endcase') {
+      caseStack.pop();
+    } else if (kw === 'when') {
+      const subj = caseStack[caseStack.length - 1];
+      const vals = subj && /^enum\[(.*)\]$/.exec(subj.type || '');
+      if (vals) {
+        const members = vals[1].split(',').map((s) => s.trim());
+        let wm; const WL = /['"]([^'"]*)['"]/g;
+        while ((wm = WL.exec(tag))) {
+          if (!members.includes(wm[1])) flag(comp, file, `case/when '${wm[1]}' — not in grammar enum [${members.join(',')}]`);
+        }
+      }
     } else if (kw && !['endcapture', 'else', 'break', 'continue', 'raw', 'endraw'].includes(kw)) {
-      validateExpr(tag.replace(/^(if|unless|elsif|case|when|cycle|increment|decrement)\b/, ''));
+      checkComparisons(tag);
+      validateExpr(tag.replace(/^(if|unless|elsif|cycle|increment|decrement)\b/, ''));
     }
   }
 }
@@ -203,7 +264,7 @@ for (const [name, comp] of Object.entries(grammar.components || {})) {
   if (!comp || !comp.fields) continue;
   const subtypes = comp.subtypes || {};
   const root = objType(name, comp.fields, lockedSet(comp));
-  for (const file of entriesFor(name, comp)) analyze(name, file, new Map([['data', root]]), subtypes);
+  for (const file of entriesFor(name, comp)) analyze(name, file, new Map([['data', { t: root, spec: null }]]), subtypes);
 }
 
 // REVERSE — every declared field must be read somewhere (locked decoration is

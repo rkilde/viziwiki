@@ -518,7 +518,8 @@
           "help": "The slot's visual type — registry hosts constrain it (admin)"
         },
         "intro": {
-          "type": "richtext"
+          "type": "list<richtext>",
+          "help": "Optional intro paragraphs above the chart"
         },
         "footer": {
           "type": "richtext"
