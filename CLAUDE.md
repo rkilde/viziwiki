@@ -110,6 +110,21 @@ did, on the iPod charts — hence this rule). **Rule of thumb: document text →
 4. Distinguish: (a) bespoke reimplementations of universal concepts → MUST
    conform; (b) genuinely-unique visuals → become bank components (deferred);
    (c) additive decorative flourishes (hero overlays, eyebrow dots) → allowed.
+5. **The builder must be DERIVED, never restated (baseline rule for ALL
+   builder work).** Every builder behavior must trace to the canonical source
+   in the repo through a pipeline, not a copy typed into builder code. The
+   test: *could you change the behavior by editing only the canonical repo
+   file (universals/skin CSS, a Liquid include, `grammar.yml`), with zero
+   builder-code edits?* If implementing a builder feature requires writing
+   down a fact that already exists in the canon — a color, a count, a
+   structure, a default, a lock — that's a restatement and it's wrong.
+   The pipes: CSS → `copy-canon`; rules/constraints/seeds → `extract-grammar`
+   (`lib/grammar.ts`); wiki content → `extract-*`; markup → the Liquid
+   includes themselves (LiquidJS in the builder — in progress; until it
+   lands, `canvas.ts` mirrors the includes BY HAND and the includes are the
+   master whenever they disagree). Builder-only editing chrome (`pe-*`
+   affordances) is allowed, but WHAT it attaches to and WHAT it permits must
+   be derived (grammar fields/locks + canon class-name conventions).
 
 ## Workflow norms
 - Develop on branch `claude/quirky-carson-vKj8w`. Commit + push; owner previews
