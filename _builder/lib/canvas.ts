@@ -60,6 +60,10 @@ const AFFORDANCE = `
   .pe-chip:hover{ border-color:rgba(90,90,110,.5); color:#333; }
   .pe-chip.active{ background:#6366f1; color:#fff; border-color:#6366f1; }
   .pe-aside-empty{ padding:22px; border:1.5px dashed rgba(120,120,140,.4); border-radius:10px; background:rgba(120,120,140,.04); }
+  /* empty infobox slot: strip the real panel's fill/border so only the dashed
+     placeholder shows, while keeping .wiki-infobox so the overview :has() grid
+     still places it in the right column */
+  .wiki-infobox.pe-empty{ background:transparent !important; border:none !important; overflow:visible; }
   .pe-aside-empty-label{ font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.16em; text-transform:uppercase; color:rgba(90,90,110,.5); margin-bottom:12px; }
   .pe-add-row{ display:flex; gap:8px; flex-wrap:wrap; }
 
@@ -123,12 +127,15 @@ function asideHTML(aside: HeroDoc['aside']): string {
   return aside.variant === 'card' ? spotlightHTML(aside.card) : featureHTML(aside.feature);
 }
 
-function searchHTML(h: HeroDoc): string {
-  if (!h.search) return add('addSearch', '+ search bar (home pages)');
-  return `<div class="wiki-hero-search pe-removable"><span class="wiki-hero-search-icon">${SEARCH_ICON}</span><span class="wiki-hero-search-input ce" contenteditable="true" onblur="P('hero.search_placeholder',this)">${h.search_placeholder || 'Search…'}</span>${x('rmSearch')}</div>`;
+// HOME-ONLY canon: the search bar exists only on wiki home heroes. On every
+// other page type it isn't even offered (no add button).
+function searchHTML(h: HeroDoc, isHome: boolean): string {
+  if (!isHome) return '';
+  if (!h.search) return add('addSearch', '+ search bar');
+  return `<div class="wiki-hero-search pe-removable"><span class="wiki-hero-search-icon">${SEARCH_ICON}</span><span class="wiki-hero-search-input ce" contenteditable="true" onblur="P('hero.search_placeholder',this)">${h.search_placeholder || 'Search this wiki…'}</span>${x('rmSearch')}</div>`;
 }
 
-function heroHTML(h: HeroDoc): string {
+function heroHTML(h: HeroDoc, isHome: boolean): string {
   return `
   <section class="wiki-hero">
     <div class="wiki-hero-inner">
@@ -147,7 +154,7 @@ function heroHTML(h: HeroDoc): string {
         ${h.desc != null
           ? `<div class="pe-removable" style="max-width:36rem;width:fit-content"><p class="wiki-hero-desc">${ce('hero.desc', h.desc)}</p>${x('rmDesc')}</div>`
           : add('addDesc', '+ description')}
-        ${searchHTML(h)}
+        ${searchHTML(h, isHome)}
         ${h.stats
           ? `<div class="pe-removable pe-stats-wrap"><div class="wiki-hero-stats">${h.stats.map((s, i) =>
               `<div class="wiki-hero-stat"><div class="wiki-hero-stat-num">${ce(`hero.stats.${i}.num`, s.num)}</div><div class="wiki-hero-stat-label">${ce(`hero.stats.${i}.label`, s.label)}</div></div>`).join('')}</div>${x('rmStats')}</div>`
@@ -176,6 +183,17 @@ function infoboxHTML(ib: NonNullable<InfoboxDoc>): string {
   </aside>`;
 }
 
+// empty infobox slot — a .wiki-infobox so the overview's :has() grid still puts
+// it in the RIGHT column (where the real infobox would render), mirroring the
+// hero aside's empty "+ card / + feature" slot. The +button lives where the
+// element will actually appear, not at the bottom of the section.
+function infoboxEmpty(): string {
+  return `<aside class="wiki-infobox pe-empty"><div class="pe-aside-empty">
+    <div class="pe-aside-empty-label">Infobox · optional</div>
+    <div class="pe-add-row"><button class="pe-add" onclick="A('addInfobox')">+ infobox</button></div>
+  </div></aside>`;
+}
+
 function ovHTML(ov: OverviewDoc): string {
   const ib = ov.infobox;
   const tone = ov.tone || 'b';
@@ -184,7 +202,7 @@ function ovHTML(ov: OverviewDoc): string {
   <section class="wiki-section pe-sec" data-section="overview" data-tone="${tone}">
     ${toneBar}
     <div class="wiki-section-inner">
-      <div class="wiki-overview${ib ? ' has-infobox' : ' no-infobox'}">
+      <div class="wiki-overview">
         <div class="wiki-overview-prose">
           <div class="wiki-section-eyebrow pe-canon">${BOOK} Overview${lk('Locked — the canonical section label, can’t be edited or removed')}</div>
           <h2 class="wiki-section-title">${ce('overview.heading', ov.heading)}</h2>
@@ -193,20 +211,19 @@ function ovHTML(ov: OverviewDoc): string {
             ${add('addPara', '+ paragraph')}
           </div>
         </div>
-        ${ib ? infoboxHTML(ib) : ''}
+        ${ib ? infoboxHTML(ib) : infoboxEmpty()}
       </div>
-      ${!ib ? add('addInfobox', '+ infobox') : ''}
     </div>
   </section>`;
 }
 
 const FONTS = `<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">`;
 
-export function buildBody(doc: PageDoc): string {
-  return `${heroHTML(doc.hero)}${ovHTML(doc.overview)}`;
+export function buildBody(doc: PageDoc, isHome = false): string {
+  return `${heroHTML(doc.hero, isHome)}${ovHTML(doc.overview)}`;
 }
 
-export function buildCanvas(doc: PageDoc, skin: WikiSkin = TACO_BELL_SKIN): string {
+export function buildCanvas(doc: PageDoc, skin: WikiSkin = TACO_BELL_SKIN, isHome = false): string {
   const skinLinks = skin.css.map((f) => `<link rel="stylesheet" href="/canon/${f}">`).join('\n');
   return `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>${FONTS}
@@ -230,7 +247,7 @@ function tagDark(){var els=document.querySelectorAll('.ce,.pe-canon');for(var i=
 window.addEventListener('load',function(){H();tagDark();try{new ResizeObserver(H).observe(document.body)}catch(e){}try{new MutationObserver(function(){requestAnimationFrame(tagDark)}).observe(document.body,{childList:true,subtree:true})}catch(e){}});
 </script>
 </head>
-<body class="${skin.bodyClass}" style="overflow-x:hidden">${buildBody(doc)}</body></html>`;
+<body class="${skin.bodyClass}" style="overflow-x:hidden">${buildBody(doc, isHome)}</body></html>`;
 }
 
 // ── data sync (called from the React side) ──
@@ -246,47 +263,47 @@ export function applyAction(doc: PageDoc, action: string): void {
   const a = h.aside;
   const [name, arg] = action.split(':');
   switch (name) {
-    case 'addEyebrow': h.eyebrow = 'Category'; break;
+    case 'addEyebrow': h.eyebrow = 'Category label'; break;
     case 'rmEyebrow': h.eyebrow = null; break;
     case 'addSubtitle': h.subtitle = 'Subtitle'; break;
     case 'rmSubtitle': h.subtitle = null; h.subtitle_meta = null; break;
-    case 'addMeta': h.subtitle_meta = 'Model'; break;
+    case 'addMeta': h.subtitle_meta = 'Model number'; break;
     case 'rmMeta': h.subtitle_meta = null; break;
-    case 'addDesc': h.desc = 'Write a short lead sentence.'; break;
+    case 'addDesc': h.desc = 'Write a short lead paragraph for this page.'; break;
     case 'rmDesc': h.desc = null; break;
-    case 'addStats': h.stats = [{ num: '1', label: 'Stat' }, { num: '2', label: 'Stat' }, { num: '3', label: 'Stat' }, { num: '4', label: 'Stat' }]; break;
+    case 'addStats': h.stats = [{ num: 'Value', label: 'Stat label' }, { num: 'Value', label: 'Stat label' }, { num: 'Value', label: 'Stat label' }, { num: 'Value', label: 'Stat label' }]; break;
     case 'rmStats': h.stats = null; break;
-    case 'addSearch': h.search = true; if (!h.search_placeholder) h.search_placeholder = 'Search…'; break;
+    case 'addSearch': h.search = true; if (!h.search_placeholder) h.search_placeholder = 'Search this wiki…'; break;
     case 'rmSearch': h.search = false; break;
     // hero card (aside)
     case 'addAside': h.aside = { variant: arg === 'feature' ? 'feature' : 'card', card: BLANK_CARD(), feature: BLANK_FEATURE() }; break;
     case 'switchAside': if (a) a.variant = arg as 'card' | 'feature'; break;
     case 'rmAside': h.aside = null; break;
-    case 'spAddEyebrow': if (a) a.card.eyebrow = 'Eyebrow'; break;
+    case 'spAddEyebrow': if (a) a.card.eyebrow = 'Spotlight'; break;
     case 'spRmEyebrow': if (a) a.card.eyebrow = null; break;
-    case 'spAddDesc': if (a) a.card.desc = 'A short description.'; break;
+    case 'spAddDesc': if (a) a.card.desc = 'Write a short description.'; break;
     case 'spRmDesc': if (a) a.card.desc = null; break;
     case 'spAddTag': if (a) a.card.tags.push('Tag'); break;
     case 'spRmTag': if (a) a.card.tags.splice(Number(arg), 1); break;
-    case 'spAddCta': if (a) a.card.cta = 'Read more'; break;
+    case 'spAddCta': if (a) a.card.cta = 'Button label'; break;
     case 'spRmCta': if (a) a.card.cta = null; break;
-    case 'ftAddHeadRight': if (a) a.feature.headRight = 'Right'; break;
+    case 'ftAddHeadRight': if (a) a.feature.headRight = 'Label'; break;
     case 'ftRmHeadRight': if (a) a.feature.headRight = null; break;
-    case 'ftAddDesc': if (a) a.feature.desc = 'A short description.'; break;
+    case 'ftAddDesc': if (a) a.feature.desc = 'Write a short description.'; break;
     case 'ftRmDesc': if (a) a.feature.desc = null; break;
-    case 'ftAddChip': if (a) a.feature.chips.push({ key: 'Key', val: 'Value' }); break;
+    case 'ftAddChip': if (a) a.feature.chips.push({ key: 'Label', val: 'Value' }); break;
     case 'ftRmChip': if (a) a.feature.chips.splice(Number(arg), 1); break;
     // overview
     case 'setTone': ov.tone = arg; break;
-    case 'addPara': ov.paragraphs.push('New paragraph.'); break;
+    case 'addPara': ov.paragraphs.push('Write another paragraph here…'); break;
     case 'rmPara': ov.paragraphs.splice(Number(arg), 1); break;
-    case 'addInfobox': ov.infobox = { label: 'Infobox', title: 'Panel Title', sublabel: null, rows: [['Key', 'Value'], ['Key', 'Value']], badge: null }; break;
+    case 'addInfobox': ov.infobox = { label: 'Infobox', title: 'Infobox title', sublabel: null, rows: [['Label', 'Value'], ['Label', 'Value']], badge: null }; break;
     case 'rmInfobox': ov.infobox = null; break;
     case 'addSublabel': if (ov.infobox) ov.infobox.sublabel = 'Sub-label'; break;
     case 'rmSublabel': if (ov.infobox) ov.infobox.sublabel = null; break;
-    case 'addBadge': if (ov.infobox) ov.infobox.badge = 'Badge'; break;
+    case 'addBadge': if (ov.infobox) ov.infobox.badge = 'Status badge'; break;
     case 'rmBadge': if (ov.infobox) ov.infobox.badge = null; break;
-    case 'addRow': if (ov.infobox) ov.infobox.rows.push(['Key', 'Value']); break;
+    case 'addRow': if (ov.infobox) ov.infobox.rows.push(['Label', 'Value']); break;
     case 'rmRow': if (ov.infobox) ov.infobox.rows.splice(Number(arg), 1); break;
   }
 }

@@ -30,8 +30,8 @@ export type InfoboxDoc = {
 export type OverviewDoc = { tone: string; heading: string; paragraphs: string[]; infobox: InfoboxDoc };
 export type PageDoc = { hero: HeroDoc; overview: OverviewDoc };
 
-export const BLANK_CARD = (): SpotlightDoc => ({ eyebrow: 'Spotlight', title: 'Card title', desc: 'A short description.', tags: ['Tag'], cta: 'Read more' });
-export const BLANK_FEATURE = (): FeatureDoc => ({ headLeft: 'Featured', headRight: null, title: 'Feature title', desc: 'A short description.', chips: [{ key: 'Key', val: 'Value' }] });
+export const BLANK_CARD = (): SpotlightDoc => ({ eyebrow: 'Spotlight', title: 'Spotlight title', desc: 'Write a short description.', tags: ['Tag'], cta: 'Button label' });
+export const BLANK_FEATURE = (): FeatureDoc => ({ headLeft: 'Featured', headRight: null, title: 'Feature title', desc: 'Write a short description.', chips: [{ key: 'Label', val: 'Value' }] });
 
 function buildAside(h: any): AsideDoc | null {
   if (h?.spotlight) {
@@ -52,18 +52,18 @@ export function seedDoc(page: Page): PageDoc {
   return {
     hero: {
       eyebrow: h.eyebrow ?? null,
-      title: h.title || page.title || 'New page title',
+      title: h.title || page.title || 'Page title',
       subtitle: h.subtitle ?? null,
       subtitle_meta: h.subtitle_meta ?? null,
       desc: h.desc ?? null,
       stats: Array.isArray(h.stats) && h.stats.length ? h.stats : null,
       search: !!h.search,
-      search_placeholder: h.search_placeholder || 'Search…',
+      search_placeholder: h.search_placeholder || 'Search this wiki…',
       aside: buildAside(h),
     },
     overview: ov
-      ? { tone: ov.tone || 'b', heading: ov.heading || 'Overview', paragraphs: ov.paragraphs.length ? ov.paragraphs : ['Write the overview here.'], infobox: ov.infobox }
-      : { tone: 'b', heading: 'Overview', paragraphs: ['Write the overview here.'], infobox: null },
+      ? { tone: ov.tone || 'b', heading: ov.heading || 'Section heading', paragraphs: ov.paragraphs.length ? ov.paragraphs : ['Write the overview here…'], infobox: ov.infobox }
+      : { tone: 'b', heading: 'Section heading', paragraphs: ['Write the overview here…'], infobox: null },
   };
 }
 

@@ -17,14 +17,15 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
   const docRef = useRef<PageDoc>(loadPageDoc(page));
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [saved, setSaved] = useState(false);
+  const isHome = !!page.home; // home pages get home-only canon (e.g. the search bar)
 
   // built once — never changes, so the iframe never reloads
-  const srcDoc = useMemo(() => buildCanvas(docRef.current, skin), []); // eslint-disable-line react-hooks/exhaustive-deps
+  const srcDoc = useMemo(() => buildCanvas(docRef.current, skin, isHome), []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const swapBody = () => {
       const idoc = iframeRef.current?.contentDocument;
-      if (idoc?.body) idoc.body.innerHTML = buildBody(docRef.current);
+      if (idoc?.body) idoc.body.innerHTML = buildBody(docRef.current, isHome);
     };
     (window as any).__peField = (path: string, html: string) => { setIn(docRef.current, path, html); setSaved(false); };
     (window as any).__peAction = (action: string) => { applyAction(docRef.current, action); setSaved(false); swapBody(); };
@@ -40,7 +41,7 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
     docRef.current = seedDoc(page);
     setSaved(false);
     const idoc = iframeRef.current?.contentDocument;
-    if (idoc?.body) idoc.body.innerHTML = buildBody(docRef.current);
+    if (idoc?.body) idoc.body.innerHTML = buildBody(docRef.current, isHome);
   };
 
   return (
