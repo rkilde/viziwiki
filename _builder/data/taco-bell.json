@@ -1,6 +1,135 @@
 {
   "id": "taco-bell",
   "name": "Taco Bell",
+  "home": {
+    "id": "taco-bell-home",
+    "title": "Taco Bell",
+    "permalink": "/taco-bell.html",
+    "status": "live",
+    "home": true,
+    "folder": false,
+    "count": null,
+    "accent": null,
+    "sections": [
+      {
+        "type": "hero",
+        "label": "Hero"
+      },
+      {
+        "type": "overview",
+        "label": "Overview"
+      }
+    ],
+    "hero": {
+      "eyebrow": "Visual Wiki · Vol. 1",
+      "title": "Taco Bell",
+      "subtitle": null,
+      "subtitle_meta": null,
+      "desc": "Every menu item, every limited-time release, every sauce-packet quote — the Live Más canon, indexed and illustrated since 1962.",
+      "stats": [
+        {
+          "num": "1,284",
+          "label": "entries"
+        },
+        {
+          "num": "1962",
+          "label": "since"
+        },
+        {
+          "num": "7,200+",
+          "label": "stores"
+        },
+        {
+          "num": "31",
+          "label": "countries"
+        }
+      ],
+      "search": true,
+      "search_placeholder": "Search 1,284 entries — try 'Crunchwrap' or 'Baja Blast'…",
+      "spotlight": {
+        "eyebrow": "★ Spotlight",
+        "title": "Cantina Chicken Menu",
+        "desc": "Five new items built around slow-roasted, marinated chicken — including the Cantina Chicken Crispy Taco and a quesadilla with avocado verde sauce.",
+        "tags": [
+          "2024",
+          "Limited",
+          "5 items"
+        ],
+        "cta": "Open entry →"
+      },
+      "feature": null
+    },
+    "overview": {
+      "tone": "b",
+      "heading": "An American chain that invented its own genre.",
+      "paragraphs": [
+        "<strong>Taco Bell</strong> is an American fast-food chain founded in 1962 by <strong>Glen Bell</strong> in Downey, California. Built on a single observation — that long lines at the Mexican restaurant across the street meant Americans wanted tacos faster — it became the country's largest Mexican-inspired quick-service chain and the only one to operate at national scale.",
+        "More than a restaurant, Taco Bell functions as a cultural laboratory: a permanent menu of roughly 30 items rotated against a relentless churn of <a href=\"#\" class=\"underline decoration-[var(--neon)] underline-offset-2\">limited-time releases</a>, novelty crossovers (Doritos, Mountain Dew, Cheetos), and viral comebacks (Mexican Pizza, Volcano Menu). The chain pioneered the fourthmeal — a marketing-coined late-night occasion — and the concept of fast food as <em>fan culture</em>, complete with petitions, merch drops, and a musical.",
+        "Today the company operates over 7,200 restaurants across 31 countries under <strong>Yum! Brands</strong>, alongside KFC and Pizza Hut. Its reach extends well beyond the menu: into film cameos, sauce-packet fortune cookies, hotel residencies, a clothing line, and the only fast-food brand with a <em>nail polish collection</em>."
+      ],
+      "infobox": {
+        "label": null,
+        "title": "Taco Bell Corp.",
+        "sublabel": null,
+        "rows": [
+          [
+            "Founder",
+            "Glen Bell"
+          ],
+          [
+            "Founded",
+            "March 21, 1962"
+          ],
+          [
+            "Origin",
+            "Downey, California, U.S."
+          ],
+          [
+            "Headquarters",
+            "Irvine, California, U.S."
+          ],
+          [
+            "Industry",
+            "Fast food restaurants"
+          ],
+          [
+            "Cuisine",
+            "Tex-Mex / Cal-Mex"
+          ],
+          [
+            "Locations",
+            "7,200+ (2024)"
+          ],
+          [
+            "Areas served",
+            "Worldwide (31 countries)"
+          ],
+          [
+            "Key people",
+            "Sean Tresvant (CEO)"
+          ],
+          [
+            "Revenue",
+            "US$13.8B (system, 2023)"
+          ],
+          [
+            "Parent",
+            "Yum! Brands"
+          ],
+          [
+            "Slogan",
+            "Live Más"
+          ],
+          [
+            "Mascot (former)",
+            "Gidget the Chihuahua"
+          ]
+        ],
+        "badge": null
+      }
+    },
+    "pages": []
+  },
   "pages": [
     {
       "id": "tacos",

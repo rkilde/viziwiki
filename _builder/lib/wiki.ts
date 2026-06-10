@@ -24,7 +24,8 @@ export type Page = {
   id: string;
   title: string;
   permalink: string | null;
-  status: string;          // 'live' (built page) | 'stub' (directory entry, not built)
+  status: string;          // 'live' (built page) | 'stub' (directory entry, not built) | 'draft'
+  home?: boolean;          // the wiki's single home page
   folder?: boolean;
   count?: number | null;
   accent?: string | null;
@@ -36,7 +37,9 @@ export type Page = {
 // how the editor canvas should skin this wiki: the <body> class + the skin
 // stylesheets to load (on top of the universal layer), matching the live site.
 export type WikiSkin = { bodyClass: string; css: string[] };
-export type Wiki = { id: string; name: string; pages: Page[]; skin: WikiSkin };
+// every wiki has exactly one HOME page (hero + browse + overview canon) —
+// pinned, singular, always present.
+export type Wiki = { id: string; name: string; home: Page; pages: Page[]; skin: WikiSkin };
 
 export const WIKIS: Wiki[] = [
   { ...(tacoBell as unknown as Wiki), skin: { bodyClass: 'wiki-page wiki-taco-bell', css: ['wiki-taco-bell-skin.css', 'tb-editorial-base.css'] } },

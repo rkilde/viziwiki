@@ -1,6 +1,110 @@
 {
   "id": "apple",
   "name": "Apple",
+  "home": {
+    "id": "apple-home",
+    "title": "Apple",
+    "permalink": "/apple.html",
+    "status": "live",
+    "home": true,
+    "folder": false,
+    "count": null,
+    "accent": null,
+    "sections": [
+      {
+        "type": "hero",
+        "label": "Hero"
+      },
+      {
+        "type": "overview",
+        "label": "Overview"
+      }
+    ],
+    "hero": {
+      "eyebrow": "Visual Wiki · Vol. 3",
+      "title": "Apple",
+      "subtitle": null,
+      "subtitle_meta": null,
+      "desc": "Founded April 1, <strong>1976</strong> on Crist Drive in Los Altos by Steve <strong>Jobs</strong>, Steve Wozniak, and Ronald Wayne. Forty-nine years later the same company sells nearly a billion handheld computers a year and is, by market value, the largest single business in human history.",
+      "stats": [
+        {
+          "num": "1,142",
+          "label": "Entries"
+        },
+        {
+          "num": "1976",
+          "label": "Founded"
+        },
+        {
+          "num": "$3.66T",
+          "label": "Market cap"
+        },
+        {
+          "num": "164K",
+          "label": "Employees"
+        }
+      ],
+      "search": true,
+      "search_placeholder": "Search 1,142 entries — try 'iPhone', 'iPod touch 4G', 'Mac mini'…",
+      "spotlight": {
+        "eyebrow": "★ Spotlight",
+        "title": "iPhone",
+        "desc": "The handheld computer that redefined consumer electronics. Launched in 2007 — 18 years and 3 billion units later, Apple's most defining product and the largest single-revenue product line in human history.",
+        "tags": [
+          "2007",
+          "Flagship",
+          "$200B+/yr"
+        ],
+        "cta": "Open entry →"
+      },
+      "feature": null
+    },
+    "overview": {
+      "tone": "b",
+      "heading": "A company built on the bitten apple, the bezier curve, and the relentless deletion of anything that doesn't ship.",
+      "paragraphs": [
+        "<strong>Apple Inc.</strong> is an American technology company headquartered in Cupertino, California. It designs and sells consumer electronics, computer software, online services, and — since 2020 — its own silicon. The company is structured around vertical integration across hardware, software, and services, a model Steve Jobs called \"the whole widget.\"",
+        "Apple's history splits cleanly into five eras. The <strong>founding period</strong> (1976–1985) produced the Apple I, II, and the original 1984 Macintosh. The <strong>wilderness years</strong> (1985–1997) saw three CEOs and a billion-dollar loss. The <strong>restoration</strong> (1997–2007) brought the iMac, OS X, and the iPod. The <strong>iPhone era</strong> (2007–2011) reshaped consumer electronics globally. The <strong>Cook era</strong> (2011–present) made Apple the first company to cross $1T, $2T, and $3T in market capitalisation."
+      ],
+      "infobox": {
+        "label": null,
+        "title": "Apple Inc.",
+        "sublabel": null,
+        "rows": [
+          [
+            "Founded",
+            "April 1, 1976"
+          ],
+          [
+            "Founders",
+            "Jobs · Wozniak · Wayne"
+          ],
+          [
+            "HQ",
+            "1 Apple Park Way, Cupertino"
+          ],
+          [
+            "CEO",
+            "Tim Cook (Aug 2011 –)"
+          ],
+          [
+            "Ticker",
+            "NASDAQ: AAPL"
+          ],
+          [
+            "Revenue",
+            "$391.0B (FY24)"
+          ],
+          [
+            "Employees",
+            "164,000"
+          ]
+        ],
+        "badge": null
+      }
+    },
+    "pages": []
+  },
   "pages": [
     {
       "id": "mac",

@@ -22,8 +22,14 @@ export function blankPage(title: string): Page {
     count: null, accent: null, sections: [], hero: { ...EMPTY_HERO }, overview: null, pages: [],
   };
 }
+// a new wiki's HOME page — present from the start (every wiki has one). The
+// hero search bar + browse/directory are home-only canon (filled in later).
+function blankHome(name: string): Page {
+  return { id: uid('h-'), title: name, permalink: null, status: 'draft', home: true,
+    folder: false, count: null, accent: null, sections: [], hero: { ...EMPTY_HERO, search: true }, overview: null, pages: [] };
+}
 export function blankWiki(name: string): Wiki {
-  return { id: uid('w-'), name, pages: [], skin: BASE_SKIN };
+  return { id: uid('w-'), name, home: blankHome(name), pages: [], skin: BASE_SKIN };
 }
 
 // ── overlay model ──────────────────────────────────────────────────────

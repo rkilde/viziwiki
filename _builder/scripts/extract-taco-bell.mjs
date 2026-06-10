@@ -31,9 +31,7 @@ for (const dir of [TB, path.join(TB, 'drinks'), path.join(TB, 'menus')]) {
 
 const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
-function builtPageData(pageUrl) {
-  const file = fileIndex[pageUrl];
-  if (!file) return null;
+function parseFile(file) {
   const txt = fs.readFileSync(file, 'utf8');
   const fmMatch = txt.match(/^---\n([\s\S]*?)\n---/);
   let fm = {};
@@ -52,6 +50,21 @@ function builtPageData(pageUrl) {
         rows: Array.isArray(ov.infobox.rows) ? ov.infobox.rows : [], badge: ov.infobox.badge || null,
       } : null,
     } : null,
+  };
+}
+function builtPageData(pageUrl) {
+  const file = fileIndex[pageUrl];
+  if (!file) return null;
+  return parseFile(file);
+}
+
+// the wiki HOME page — a single, special page (hero + browse + overview canon).
+// Pinned at the top of the builder's main-category column.
+function homeNode(file, wikiId, name) {
+  const d = parseFile(file);
+  return {
+    id: `${wikiId}-home`, title: name, permalink: '/' + path.basename(file), status: 'live', home: true,
+    folder: false, count: null, accent: null, sections: d.sections, hero: d.hero, overview: d.overview, pages: [],
   };
 }
 
@@ -74,7 +87,7 @@ function toNode(node) {
   };
 }
 
-const wiki = { id: 'taco-bell', name: 'Taco Bell', pages: CATS.map(toNode) };
+const wiki = { id: 'taco-bell', name: 'Taco Bell', home: homeNode(HOME, 'taco-bell', 'Taco Bell'), pages: CATS.map(toNode) };
 
 fs.mkdirSync(path.join(process.cwd(), 'data'), { recursive: true });
 fs.writeFileSync(path.join(process.cwd(), 'data', 'taco-bell.json'), JSON.stringify(wiki, null, 2));
