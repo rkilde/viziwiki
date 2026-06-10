@@ -237,10 +237,11 @@
     trash: '<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
   };
   var csvg = function (d) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + d + '</svg>'; };
-  function dockBtn(icon, title, cls, onclick) {
+  function dockBtn(icon, tip, cls, onclick) {
     var b = document.createElement('button');
     b.className = 'cc-btn' + (cls ? ' ' + cls : '');
-    b.title = title; b.innerHTML = icon; b.onclick = onclick;
+    b.setAttribute('data-tip', tip);   // hover glass tooltip explainer
+    b.innerHTML = icon; b.onclick = onclick;
     return b;
   }
 
@@ -445,7 +446,8 @@
         unitCe.className = 'ce';
         unitCe.setAttribute('contenteditable', 'true');
         unitCe.textContent = sdata.unit != null ? sdata.unit : (R('catalog.unit').blank || '');
-        (function (p, el) { el.addEventListener('blur', function () { P(p, el); }); })(prefix + 'unit', unitCe);
+        // unit feeds the derived summary line — commit + re-render so it refreshes
+        (function (p, el) { el.addEventListener('blur', function () { P(p, el); A('commit'); }); })(prefix + 'unit', unitCe);
         unitChip.appendChild(unitCe);
         extras.push(unitChip);
         if (sdata.note != null) {
@@ -456,7 +458,7 @@
           noteCe.className = 'ce';
           noteCe.setAttribute('contenteditable', 'true');
           noteCe.textContent = sdata.note;
-          (function (p, el) { el.addEventListener('blur', function () { P(p, el); }); })(prefix + 'note', noteCe);
+          (function (p, el) { el.addEventListener('blur', function () { P(p, el); A('commit'); }); })(prefix + 'note', noteCe);
           noteChip.appendChild(noteCe);
           var noteRm = document.createElement('button');
           noteRm.className = 'pe-tag-rm';
@@ -609,13 +611,13 @@
             }
           }
 
-          // the glass dock (bottom-right, clear of the ribbon)
+          // the glass dock (bottom-right), with hover tooltips
           var dock = document.createElement('div'); dock.className = 'cc-dock';
-          (function (cp, ac, cd) { dock.appendChild(dockBtn('<span class="cc-swatch"></span>', 'Colour', '', function () { openColorPop(this, cp, ac, cd.color); })); })(cpre, accent, cdata);
+          (function (cp, ac, cd) { dock.appendChild(dockBtn('<span class="cc-swatch"></span>', 'Change colour', '', function () { openColorPop(this, cp, ac, cd.color); })); })(cpre, accent, cdata);
           var sep = document.createElement('span'); sep.className = 'cc-sep'; dock.appendChild(sep);
-          (function (cp, ac, cd, jj) { dock.appendChild(dockBtn(csvg(CICON.flag), 'Ribbon', cd.ribbon ? 'on' : '', function () { openRibbonPop(this, cp, ac, cd.ribbon == null ? null : cd.ribbon, card, jj); })); })(cpre, accent, cdata, j);
-          (function (cp, cd) { dock.appendChild(dockBtn(csvg(CICON.hash), 'Note', cd.note != null ? 'on' : '', function () { if (cd.note == null) A('add:' + cp + 'note'); else { var n = qs('.cat-card-count .ce', card); if (n) n.focus(); } })); })(cpre, cdata);
-          (function (jj) { dock.appendChild(dockBtn(csvg(CICON.trash), 'Remove category', 'danger', function () { closePop(); A('rm:' + prefix + 'categories.' + jj); })); })(j);
+          (function (cp, ac, cd, jj) { dock.appendChild(dockBtn(csvg(CICON.flag), cd.ribbon ? 'Edit ribbon' : 'Add a ribbon', cd.ribbon ? 'on' : '', function () { openRibbonPop(this, cp, ac, cd.ribbon == null ? null : cd.ribbon, card, jj); })); })(cpre, accent, cdata, j);
+          (function (cp, cd) { dock.appendChild(dockBtn(csvg(CICON.hash), 'Add a date or note', cd.note != null ? 'on' : '', function () { if (cd.note == null) A('add:' + cp + 'note'); else { var n = qs('.cat-card-count .ce', card); if (n) n.focus(); } })); })(cpre, cdata);
+          (function (jj) { dock.appendChild(dockBtn(csvg(CICON.trash), 'Delete entire category', 'danger', function () { closePop(); A('rm:' + prefix + 'categories.' + jj); })); })(j);
           card.appendChild(dock);
 
           // pills → open the item editor; "+ item"
@@ -624,7 +626,25 @@
             (function (jj, kk, pp) { pp.addEventListener('click', function () { openItem(jj, kk, pp); }); })(j, k, pill);
           });
           var pillsWrap = qs('.cat-card-pills', card);
-          if (pillsWrap) { var addP = addBtn('push:' + cpre + 'items', '+ item', true); addP.className = 'cat-pill cat-add-pill'; pillsWrap.appendChild(addP); }
+          var addP = null;
+          if (pillsWrap) { addP = addBtn('push:' + cpre + 'items', '+ item', true); addP.className = 'cat-pill cat-add-pill'; pillsWrap.appendChild(addP); }
+
+          // dock is overlay chrome — on hover, shift it (via --cc-shift) just
+          // enough to clear the card's own "+ item" pill, without altering the
+          // card's published layout (mockup behaviour)
+          if (addP) (function (dk, ad) {
+            card.onmouseenter = function () {
+              dk.style.setProperty('--cc-shift', 'none');
+              (window.requestAnimationFrame || function (f) { setTimeout(f, 0); })(function () {
+                var dr = dk.getBoundingClientRect(), ar = ad.getBoundingClientRect();
+                if (dr.right < ar.left - 6 || dr.left > ar.right + 6 || dr.bottom < ar.top - 6 || dr.top > ar.bottom + 6) return;
+                var dx = (ar.left - 8) - dr.right;
+                if (dr.left + dx > card.getBoundingClientRect().left + 8) dk.style.setProperty('--cc-shift', 'translateX(' + dx + 'px)');
+                else dk.style.setProperty('--cc-shift', 'translateY(' + ((ar.top - 8) - dr.bottom) + 'px)');
+              });
+            };
+            card.onmouseleave = function () { dk.style.setProperty('--cc-shift', 'none'); };
+          })(dock, addP);
         });
 
         // ── item detail content (canonical hidden divs) ──

@@ -55,7 +55,7 @@ const AFFORDANCE = `
      A hover-revealed dock at each card's bottom-right (clear of the ribbon),
      floating glass popovers, and a glass-chromed item editor. Designed as a
      distinct UI layer over the page content. */
-  body{ --g-bg:rgba(250,250,253,.5); --g-blur:blur(28px) saturate(180%) brightness(1.05);
+  body{ --g-bg:rgba(250,250,253,.5); --g-panel:#ffffff; --g-blur:blur(28px) saturate(180%) brightness(1.05);
     --g-edge:1px solid rgba(255,255,255,.6); --g-shadow:0 18px 48px rgba(20,16,10,.26),0 3px 9px rgba(20,16,10,.14);
     --g-inset:inset 0 1px 0 rgba(255,255,255,.85); }
   .cc-dock{ position:absolute; bottom:10px; right:10px; z-index:6; display:flex; align-items:center; gap:2px; padding:4px; border-radius:13px;
@@ -63,7 +63,19 @@ const AFFORDANCE = `
     backdrop-filter:var(--g-blur); -webkit-backdrop-filter:var(--g-blur);
     opacity:0; transform:translateY(6px) scale(.96); transform-origin:bottom right; pointer-events:none;
     transition:opacity .18s ease, transform .2s cubic-bezier(.2,.7,.3,1); }
-  .cat-card:hover .cc-dock, .cc-dock.pinned{ opacity:1; transform:none; pointer-events:auto; }
+  /* dock auto-shifts (--cc-shift, set by JS) to clear the "+ item" pill */
+  .cat-card:hover .cc-dock, .cc-dock.pinned{ opacity:1; transform:var(--cc-shift,none); pointer-events:auto; }
+  /* hover explainer tooltip — solid glass chip above each control */
+  .cc-btn[data-tip]::after{ content:attr(data-tip); position:absolute; bottom:calc(100% + 9px); left:50%;
+    transform:translateX(-50%) translateY(4px) scale(.96); white-space:nowrap; padding:5px 9px; border-radius:8px; pointer-events:none; z-index:60;
+    font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.08em; text-transform:uppercase; color:#241a10;
+    background:var(--g-panel); border:var(--g-edge); box-shadow:var(--g-shadow),var(--g-inset);
+    opacity:0; transition:opacity .14s ease, transform .16s cubic-bezier(.2,.8,.2,1); }
+  .cc-btn[data-tip]::before{ content:''; position:absolute; bottom:calc(100% + 4px); left:50%; transform:translateX(-50%) rotate(45deg);
+    width:8px; height:8px; pointer-events:none; z-index:60; background:var(--g-panel); border-right:var(--g-edge); border-bottom:var(--g-edge); opacity:0; transition:opacity .14s ease; }
+  .cc-btn[data-tip]:hover::after{ opacity:1; transform:translateX(-50%) translateY(0) scale(1); transition-delay:.25s; }
+  .cc-btn[data-tip]:hover::before{ opacity:1; transition-delay:.25s; }
+  .cc-btn{ position:relative; }
   .cc-btn{ width:28px; height:28px; border:none; border-radius:9px; cursor:pointer; background:transparent; color:#574c40;
     display:flex; align-items:center; justify-content:center; transition:.12s; padding:0; }
   .cc-btn:hover{ background:rgba(255,255,255,.55); color:#241a10; box-shadow:inset 0 0 0 1px rgba(255,255,255,.6); }
@@ -75,7 +87,7 @@ const AFFORDANCE = `
   .cc-sep{ width:1px; height:18px; background:rgba(0,0,0,.12); margin:0 3px; }
 
   .cc-pop{ position:fixed; z-index:1300; min-width:182px; padding:13px; border-radius:17px;
-    background:var(--g-bg,rgba(250,250,253,.5)); border:var(--g-edge,1px solid rgba(255,255,255,.6));
+    background:var(--g-panel,#fff); border:var(--g-edge,1px solid rgba(255,255,255,.6));
     box-shadow:var(--g-shadow,0 18px 48px rgba(20,16,10,.26)),var(--g-inset,inset 0 1px 0 rgba(255,255,255,.85));
     backdrop-filter:var(--g-blur,blur(28px) saturate(180%)); -webkit-backdrop-filter:var(--g-blur,blur(28px) saturate(180%));
     opacity:0; transform:translateY(8px) scale(.92); transition:opacity .16s ease, transform .2s cubic-bezier(.2,.8,.2,1); }
@@ -346,6 +358,7 @@ export function applyAction(doc: PageDoc, action: string): void {
       if (h.feature) stash.feature = h.feature;
       h.spotlight = null; h.feature = null;
       break;
+    case 'commit': break; // no-op: forces a re-render so derived displays refresh
     case 'setTone': doc.overview.tone = arg; break;
     // body sections (the ordered list after the locked hero+overview):
     //   secAdd:<index>:<type> → insert a grammar-seeded section at <index>

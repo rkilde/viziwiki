@@ -176,6 +176,9 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(dock.querySelectorAll('.cc-btn').length === 4, 'dock has 4 controls (colour/ribbon/note/remove)');
   ok(dock.querySelector('.cc-btn .cc-swatch'), 'colour control shows the swatch');
   ok(dock.querySelector('.cc-btn.danger'), 'remove-category control (danger)');
+  ok([...dock.querySelectorAll('.cc-btn')].every((b) => b.getAttribute('data-tip')), 'every dock control has a hover tooltip');
+  ok(dock.querySelector('.cc-btn[data-tip="Delete entire category"]'), 'descriptive tooltip text');
+  ok(typeof cat.querySelector('.cat-card').onmouseenter === 'function', 'card wires the dock-avoid (shift on hover)');
   ok(!cat.querySelector('.cat-card > .pe-remove'), 'no corner × on the card (moved into the dock)');
   // pills: clickable openers + the "+ item" add pill
   ok(cat.querySelectorAll('.cat-pill:not(.cat-add-pill)').length === 2, 'two item pills');
@@ -228,6 +231,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(richDet.querySelectorAll('.gpill .ce').length === 2, 'string + object pills both editable');
   const gpills = [...richDet.querySelectorAll('.gpill')];
   ok(gpills.every((g) => g.querySelector('.gpill-menu')), 'each pill has the ⋯ options menu');
+  ok(gpills[1].classList.contains('struck') && gpills[1].querySelector('.ce'), 'struck object pill carries the canon struck class (strikes the .ce)');
   const lastPop = () => [...d.querySelectorAll('.cc-pop.pill-pop')].pop();
   gpills[1].querySelector('.gpill-menu').onclick({ stopPropagation() {} });   // object (struck) pill
   let pp = lastPop();
