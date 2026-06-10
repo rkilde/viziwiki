@@ -51,8 +51,13 @@ const AFFORDANCE = `
   .wiki-hero-subtitle.pe-removable{ display:inline-flex; align-items:baseline; }
   .wiki-infobox-label.pe-removable{ width:fit-content; max-width:100%; }
 
-  .pe-toolbar{ font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:rgba(90,90,110,.7); margin-bottom:16px; display:inline-flex; align-items:center; gap:6px; }
-  .pe-tonebtn{ font:inherit; cursor:pointer; border:1px solid rgba(120,120,140,.35); background:#fff; border-radius:5px; padding:3px 9px; color:rgba(90,90,110,.85); text-transform:lowercase; }
+  /* section-level controls float in the section panel's upper-right (glass pill) */
+  .pe-sec{ position:relative; }
+  .pe-sec-tools{ position:absolute; top:12px; right:16px; z-index:6; display:inline-flex; align-items:center; gap:6px;
+    padding:5px 10px; border-radius:999px; background:rgba(130,130,145,.12); border:1px solid rgba(130,130,145,.22);
+    backdrop-filter:blur(8px) saturate(140%); -webkit-backdrop-filter:blur(8px) saturate(140%);
+    font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:rgba(90,90,110,.75); }
+  .pe-tonebtn{ font:inherit; cursor:pointer; border:1px solid rgba(120,120,140,.35); background:rgba(255,255,255,.72); border-radius:999px; padding:2px 8px; color:rgba(90,90,110,.85); text-transform:lowercase; }
   .pe-tonebtn.on{ background:#6366f1; border-color:#6366f1; color:#fff; }
 `;
 
@@ -113,11 +118,11 @@ function infoboxHTML(ib: NonNullable<InfoboxDoc>): string {
 function ovHTML(ov: OverviewDoc): string {
   const ib = ov.infobox;
   const tone = ov.tone || 'b';
-  const toneBar = `<div class="pe-toolbar">tone ${['a', 'b', 'special'].map((t) => `<button class="pe-tonebtn${tone === t ? ' on' : ''}" onclick="A('setTone:${t}')">${t}</button>`).join('')}</div>`;
+  const toneBar = `<div class="pe-sec-tools">tone ${['a', 'b', 'special'].map((t) => `<button class="pe-tonebtn${tone === t ? ' on' : ''}" onclick="A('setTone:${t}')">${t}</button>`).join('')}</div>`;
   return `
-  <section class="wiki-section" data-section="overview" data-tone="${tone}">
+  <section class="wiki-section pe-sec" data-section="overview" data-tone="${tone}">
+    ${toneBar}
     <div class="wiki-section-inner">
-      ${toneBar}
       <div class="wiki-overview${ib ? ' has-infobox' : ' no-infobox'}">
         <div class="wiki-overview-prose">
           <div class="wiki-section-eyebrow pe-canon">${BOOK} Overview${lk('Locked — the canonical section label, can’t be edited or removed')}</div>
