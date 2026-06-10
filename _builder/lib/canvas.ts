@@ -35,6 +35,15 @@ const AFFORDANCE = `
 
   /* corner controls — hidden until you hover the element they belong to */
   .pe-removable,.pe-locked{ position:relative; }
+  /* shrink-wrap every removable field to its content so the × sits on the
+     content's ACTUAL corner (like the heading box), no matter the text length */
+  .pe-removable{ width:fit-content; max-width:100%; }
+  /* exceptions — keep their layout width instead of shrinking to content:
+     the infobox panel (and stop its overflow:hidden clipping the corner ×),
+     the infobox value cells (grid-sized), and the search bar */
+  .wiki-infobox.pe-removable{ width:auto; overflow:visible; }
+  .wiki-infobox-data > dd.pe-removable{ width:auto; }
+  .wiki-hero-search.pe-removable{ width:auto; }
   .pe-remove,.pe-lock{ position:absolute; top:-9px; right:-9px; width:18px; height:18px; border-radius:50%;
     display:flex; align-items:center; justify-content:center; line-height:1; opacity:0; transition:opacity .12s; z-index:4; }
   .pe-remove{ border:1px solid rgba(0,0,0,.18); background:#fff; color:rgba(0,0,0,.45); font-size:12px; cursor:pointer; }
