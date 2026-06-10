@@ -16,15 +16,17 @@ const oneLine = (t: string) => t.replace(/<br\s*\/?>/gi, ' ');
  */
 export function PageEditor({ page, onClose }: { page: Page; onClose: () => void }) {
   const docRef = useRef<PageDoc>(loadPageDoc(page));
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const [rev, setRev] = useState(0);
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     (window as any).__peField = (path: string, html: string) => { setIn(docRef.current, path, html); setSaved(false); };
     (window as any).__peAction = (action: string) => { applyAction(docRef.current, action); setSaved(false); setRev((r) => r + 1); };
+    (window as any).__peResize = (h: number) => { if (iframeRef.current) iframeRef.current.style.height = Math.max(h, 480) + 'px'; };
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', onKey);
-    return () => { delete (window as any).__peField; delete (window as any).__peAction; window.removeEventListener('keydown', onKey); };
+    return () => { delete (window as any).__peField; delete (window as any).__peAction; delete (window as any).__peResize; window.removeEventListener('keydown', onKey); };
   }, [onClose]);
 
   const srcDoc = useMemo(() => buildCanvas(docRef.current), [rev]);
@@ -43,7 +45,9 @@ export function PageEditor({ page, onClose }: { page: Page; onClose: () => void 
         <button onClick={onClose}>Close</button>
         <button className="primary" onClick={save}>Save</button>
       </div>
-      <iframe className="pe-canvas" title="Page editor" srcDoc={srcDoc} />
+      <div className="pe-canvas-area">
+        <iframe ref={iframeRef} className="pe-canvas" title="Page editor" srcDoc={srcDoc} style={{ height: 600 }} />
+      </div>
     </div>
   );
 }
