@@ -7,9 +7,10 @@
 import type { PageDoc, HeroDoc, OverviewDoc, InfoboxDoc } from './store';
 
 const AFFORDANCE = `
-  .ce{ outline:none; cursor:text; border-radius:3px; transition:background .1s, box-shadow .1s; }
-  .ce:hover{ background:rgba(99,102,241,.10); }
-  .ce:focus{ background:rgba(99,102,241,.14); box-shadow:0 0 0 2px rgba(99,102,241,.5); }
+  /* editing field: a light-blue BOX appears around the element ONLY on click
+     (focus) — "you're in edit mode here". No filled background, no hover state. */
+  .ce{ outline:none; cursor:text; border-radius:2px; }
+  .ce:focus{ outline:2px solid rgba(0,113,227,.4); outline-offset:2px; }
 
   /* corner controls — hidden until you hover the element they belong to */
   .pe-removable,.pe-locked{ position:relative; }
@@ -21,6 +22,11 @@ const AFFORDANCE = `
   .pe-lock{ border:1px solid rgba(0,0,0,.12); background:#fff; color:rgba(0,0,0,.34); cursor:default; }
   .pe-locked:hover > .pe-lock{ opacity:.9; }
   .pe-lock svg{ width:10px; height:10px; }
+  /* canon-locked (can't edit AND can't delete): a RED box appears on hover —
+     "don't bother clicking, this is locked" — paired with the padlock. */
+  .pe-canon{ position:relative; width:fit-content; max-width:100%; cursor:not-allowed; border-radius:2px; }
+  .pe-canon:hover{ outline:2px solid rgba(220,48,48,.5); outline-offset:2px; }
+  .pe-canon:hover > .pe-lock{ opacity:.9; }
 
   /* small inline × for the subtitle's meta */
   .pe-tag-rm{ display:inline-flex; align-items:center; justify-content:center; width:14px; height:14px; border-radius:50%;
@@ -114,7 +120,7 @@ function ovHTML(ov: OverviewDoc): string {
       ${toneBar}
       <div class="wiki-overview${ib ? ' has-infobox' : ' no-infobox'}">
         <div class="wiki-overview-prose">
-          <div class="wiki-section-eyebrow">${BOOK} Overview</div>
+          <div class="wiki-section-eyebrow pe-canon">${BOOK} Overview${lk('Locked — the canonical section label, can’t be edited or removed')}</div>
           <h2 class="wiki-section-title pe-locked">${ce('overview.heading', ov.heading)}${lk('Required — every page has an overview heading')}</h2>
           <div class="wiki-section-prose">
             ${ov.paragraphs.map((p, i) => `<div class="pe-removable"><p>${ce(`overview.paragraphs.${i}`, p)}</p>${x(`rmPara:${i}`)}</div>`).join('')}
