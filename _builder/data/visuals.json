@@ -1,0 +1,276 @@
+{
+  "sections": {
+    "hero": {
+      "partial": "sections/hero.html",
+      "variants": [
+        "home",
+        "page"
+      ],
+      "parts": {
+        "stats": "hero/stats.html",
+        "search": "hero/search.html",
+        "spotlight": "hero/spotlight.html",
+        "feature": "hero/feature.html"
+      },
+      "content_fields": [
+        "title",
+        "eyebrow",
+        "desc",
+        "stats",
+        "search",
+        "spotlight",
+        "feature"
+      ],
+      "decoration_fields": [
+        "bg",
+        "accent",
+        "icon",
+        "overlays",
+        "watermark",
+        "id",
+        "class"
+      ],
+      "locked": [
+        "title-period",
+        "eyebrow-dot",
+        "search-icon"
+      ]
+    },
+    "overview-section": {
+      "partial": "sections/overview.html",
+      "eyebrow": "Overview",
+      "icon": "book-open",
+      "h2": "required",
+      "parts": {
+        "infobox": "overview/infobox.html"
+      },
+      "content_fields": [
+        "heading",
+        "paragraphs",
+        "infobox"
+      ],
+      "config_fields": [
+        "tone",
+        "id",
+        "eyebrow"
+      ]
+    },
+    "catalog-section": {
+      "partial": "sections/catalog-section.html",
+      "eyebrow": "Full Catalog",
+      "summary": "derived",
+      "addons": [
+        "footnote"
+      ],
+      "hosts": [
+        "catalog"
+      ]
+    },
+    "timeline-section": {
+      "partial": "sections/timeline-section.html",
+      "eyebrow": "Timeline",
+      "icon": "move-horizontal",
+      "h2": "optional",
+      "summary": "derived",
+      "full_bleed": true,
+      "hosts": [
+        "timeline"
+      ]
+    },
+    "delta-section": {
+      "partial": "sections/delta-section.html",
+      "eyebrow": "Changes & Improvements",
+      "icon": "chart-column-stacked",
+      "h2": "required",
+      "contained": true,
+      "addons": [
+        "intro",
+        "footnote"
+      ],
+      "hosts": [
+        "delta"
+      ]
+    },
+    "spec-section": {
+      "partial": "sections/spec-section.html",
+      "eyebrow": "Specifications Sheet",
+      "icon": "file-text",
+      "h2": "required",
+      "device": "required",
+      "contained": true,
+      "hosts": [
+        "spec"
+      ]
+    },
+    "config-section": {
+      "partial": "sections/config-section.html",
+      "eyebrow": "Configurations",
+      "icon": "hard-drive",
+      "h2": "required",
+      "contained": true,
+      "hosts": [
+        "config"
+      ]
+    },
+    "os-section": {
+      "partial": "sections/os-section.html",
+      "eyebrow": "Operating system support",
+      "icon": "layers",
+      "h2": "required",
+      "paragraphs": "optional",
+      "contained": true,
+      "hosts": [
+        "lifecycle-lane"
+      ]
+    }
+  },
+  "config": {
+    "bank": "charts",
+    "partial": "visuals/config/config.html",
+    "section": "config-section",
+    "bar_fill": "derived",
+    "units": [
+      "GB",
+      "TB"
+    ],
+    "addons": [
+      "revised",
+      "divider_label",
+      "price-drop",
+      "color-dots"
+    ],
+    "colors": "skin-derived",
+    "item_fields": [
+      "capacity",
+      "unit",
+      "model",
+      "price",
+      "dates",
+      "revised",
+      "colors"
+    ]
+  },
+  "delta": {
+    "bank": "comparisons",
+    "partial": "visuals/delta/delta.html",
+    "section": "delta-section",
+    "axes": [
+      "prev",
+      "current"
+    ],
+    "row_groups": [
+      "hardware",
+      "software"
+    ],
+    "row_fields": [
+      "label",
+      "old",
+      "new",
+      "no_old",
+      "chip",
+      "chip_text"
+    ],
+    "chips": [
+      "better",
+      "feature",
+      "changed",
+      "worse",
+      "same"
+    ],
+    "colors": "skin-derived"
+  },
+  "spec": {
+    "bank": "spec-sheets",
+    "partial": "visuals/spec/spec.html",
+    "section": "spec-section",
+    "card_fields": [
+      "title",
+      "icon",
+      "rows"
+    ],
+    "colors": "skin-derived"
+  },
+  "lifecycle-lane": {
+    "bank": "timelines",
+    "partial": "visuals/lifecycle-lane/lifecycle-lane.html",
+    "section": "os-section",
+    "width_model": [
+      "uniform",
+      "weighted"
+    ],
+    "range": "derived",
+    "legend": "derived",
+    "segment_fields": [
+      "ver",
+      "date",
+      "type",
+      "badge",
+      "badge_type"
+    ],
+    "types": [
+      "full",
+      "partial",
+      "dropped",
+      "security"
+    ],
+    "badge_types": [
+      "ship",
+      "paid",
+      "limited",
+      "final",
+      "dropped",
+      "security"
+    ],
+    "note_fields": [
+      "status",
+      "label",
+      "text"
+    ],
+    "colors": "skin-derived"
+  },
+  "timeline": {
+    "bank": "timelines",
+    "partial": "visuals/timeline/timeline.html",
+    "section": "timeline-section",
+    "card_types": [
+      "station"
+    ],
+    "pairs_with": "detail-modal",
+    "event_fields": [
+      "month",
+      "day",
+      "year",
+      "tag",
+      "title",
+      "preview",
+      "body"
+    ]
+  },
+  "catalog": {
+    "bank": "lists",
+    "partial": "visuals/catalog/catalog.html",
+    "section": "catalog-section",
+    "pairs_with": "expandable-card",
+    "category_color": "skin-swatch",
+    "addons": [
+      "ribbon"
+    ],
+    "ribbon_tones": [
+      "accent",
+      "gone"
+    ],
+    "card_addons": [
+      "status",
+      "info-chip",
+      "pill-group",
+      "callout",
+      "notes"
+    ],
+    "status_states": [
+      "active",
+      "discontinued",
+      "retired",
+      "limited"
+    ]
+  }
+}

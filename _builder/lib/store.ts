@@ -35,9 +35,12 @@ export type InfoboxDoc = {
   badge: string | null;
 } | null;
 export type OverviewDoc = { tone: string; heading: string; paragraphs: string[]; infobox: InfoboxDoc };
+// a contributor-added body section: its grammar component type + its data in
+// the canonical front-matter shape (exactly what the include consumes)
+export type SectionDoc = { type: string; data: any };
 // _stash holds the inactive aside variant so switching card<->feature keeps
 // your edits. Editor state only — never rendered, never part of the contract.
-export type PageDoc = { hero: HeroDoc; overview: OverviewDoc; _stash?: { spotlight?: SpotlightDoc; feature?: FeatureDoc } };
+export type PageDoc = { hero: HeroDoc; overview: OverviewDoc; sections: SectionDoc[]; _stash?: { spotlight?: SpotlightDoc; feature?: FeatureDoc } };
 
 // canon: the Feature card shows a FIXED number of chips (not addable/removable).
 // The count is single-source — read from _data/grammar.yml, not hardcoded here.
@@ -74,7 +77,16 @@ export function seedDoc(page: Page): PageDoc {
     overview: ov
       ? { tone: ov.tone || 'b', heading: ov.heading || blankOf('overview.heading'), paragraphs: ov.paragraphs.length ? ov.paragraphs : [...(ovSeed.paragraphs || [''])], infobox: ov.infobox ?? blankInfobox() }
       : { tone: 'b', heading: blankOf('overview.heading'), paragraphs: [...(ovSeed.paragraphs || [''])], infobox: blankInfobox() },
+    // contributor-added body sections, carried verbatim from the page's
+    // front-matter (deep-cloned — the editor mutates its copy)
+    sections: Array.isArray((page as any).body) ? JSON.parse(JSON.stringify((page as any).body)) : [],
   };
+}
+
+// a grammar-seeded NEW section instance (what the picker inserts)
+export function seedSection(type: string): SectionDoc {
+  const seed = GRAMMAR?.components?.[type]?.seed;
+  return { type, data: seed ? JSON.parse(JSON.stringify(seed)) : {} };
 }
 
 // canon: the overview ships WITH its fact panel by default — a contributor
@@ -92,9 +104,10 @@ export function loadPageDoc(page: Page): PageDoc {
     const saved = localStorage.getItem(KEY(page.id));
     if (saved) {
       const doc = JSON.parse(saved) as PageDoc;
-      // bring older saves up to canon (required cta, fixed chip count)
+      // bring older saves up to canon (required cta, fixed chip count, sections list)
       if (doc.hero.spotlight) doc.hero.spotlight.cta = reqCta(doc.hero.spotlight.cta);
       if (doc.hero.feature) doc.hero.feature.chips = padChips(doc.hero.feature.chips);
+      if (!Array.isArray(doc.sections)) doc.sections = [];
       return doc;
     }
   } catch { /* ignore */ }

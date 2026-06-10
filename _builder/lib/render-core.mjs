@@ -17,9 +17,12 @@ import { ruleFor } from './policy.mjs';
 
 export const SENT_PREFIX = '__PE_ADD__';
 
-export function createRenderer(includesData, policy) {
+export function createRenderer(includesData, policy, registry) {
   const INCLUDES = includesData.includes;
   const SPRITE = includesData.sprite;
+  // section type → canonical partial, from the visuals registry
+  // (_data/visuals.yml): the canon's own map, never restated here
+  const sectionPartial = (type) => ((registry || {}).sections || {})[type + '-section']?.partial || null;
 
   const engine = new Liquid({
     jekyllInclude: true,
@@ -36,9 +39,7 @@ export function createRenderer(includesData, policy) {
     },
   });
 
-  const PAGE_TPL = engine.parse(
-    '{% include sections/hero.html data=page.hero %}{% include sections/overview.html data=page.overview %}'
-  );
+  const HEAD_TPL = '{% include sections/hero.html data=page.hero %}{% include sections/overview.html data=page.overview %}';
 
   const SENT = (action) => `${SENT_PREFIX}${action}__`;
   // value for an optional-per-grammar field: the value, or a "+" sentinel.
@@ -94,10 +95,22 @@ export function createRenderer(includesData, policy) {
   }
 
   // render the page body from the CANONICAL templates (sprite first so the
-  // includes' <use href="#ic-*"> resolve after every body swap)
+  // includes' <use href="#ic-*"> resolve after every body swap). The locked
+  // hero+overview render first; then every body section routes through ITS
+  // canonical section partial (registry) → the dispatcher → the visual.
+  // <script> blocks are stripped: the editor canvas is deliberately inert
+  // (you edit the data; the live site runs the behaviour).
   function renderBody(doc, isHome = false) {
-    const page = { hero: projectHero(doc, isHome), overview: projectOverview(doc) };
-    return SPRITE + engine.renderSync(PAGE_TPL, { page });
+    const sections = doc.sections || [];
+    const tpl = HEAD_TPL + sections
+      .map((s, i) => {
+        const partial = sectionPartial(s.type);
+        return partial ? `{% include ${partial} data=page.sections[${i}].data %}` : '';
+      })
+      .join('');
+    const page = { hero: projectHero(doc, isHome), overview: projectOverview(doc), sections };
+    const out = engine.parseAndRenderSync(tpl, { page });
+    return SPRITE + out.replace(/<script[\s\S]*?<\/script>/gi, '');
   }
 
   return { renderBody, sprite: SPRITE };

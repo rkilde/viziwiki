@@ -43,8 +43,12 @@ function parseFile(file) {
   try { fm = fmMatch ? (yaml.load(fmMatch[1]) || {}) : {}; } catch {}
   const h = fm.hero || {};
   const ov = fm.overview || null;
+  // contributor-added body sections (beyond the locked hero+overview) the
+  // editor can render today — carried verbatim (canonical front-matter shape)
+  const BODY_TYPES = ['catalog'];
   return {
     sections: SECTION_ORDER.filter((k) => fm[k] != null).map((k) => ({ type: k === 'os' ? 'lifecycle-lane' : k, label: SECTION_LABEL[k] })),
+    body: BODY_TYPES.filter((k) => fm[k] != null).map((k) => ({ type: k, data: fm[k] })),
     hero: { eyebrow: h.eyebrow || null, title: h.title || null, subtitle: h.subtitle || null, subtitle_meta: h.subtitle_meta || null, desc: h.desc || null, stats: Array.isArray(h.stats) ? h.stats : [], search: !!h.search, search_placeholder: h.search_placeholder || null, spotlight: h.spotlight || null, feature: h.feature || null },
     overview: ov ? {
       tone: ov.tone || 'b',
@@ -69,7 +73,7 @@ function homeNode(file, wikiId, name) {
   const d = parseFile(file);
   return {
     id: `${wikiId}-home`, title: name, permalink: '/' + path.basename(file), status: 'live', home: true,
-    folder: false, count: null, accent: null, sections: d.sections, hero: d.hero, overview: d.overview, pages: [],
+    folder: false, count: null, accent: null, sections: d.sections, body: d.body, hero: d.hero, overview: d.overview, pages: [],
   };
 }
 
@@ -103,6 +107,7 @@ function toNode(node) {
     count: children.length || null,
     accent: null,
     sections: built ? built.sections : [],
+    body: built ? built.body : [],
     hero: built ? built.hero : EMPTY_HERO,
     overview: built ? built.overview : null,
     pages: children,

@@ -21,7 +21,8 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
   const docRef = useRef<PageDoc>(loadPageDoc(page));
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [saved, setSaved] = useState(false);
-  const [picker, setPicker] = useState(false); // add-section picker open
+  // add-section picker: null = closed, number = the insert index the seam carries
+  const [pickerAt, setPickerAt] = useState<number | null>(null);
   const isHome = !!page.home; // home pages get home-only canon (e.g. the search bar)
 
   // built once — never changes, so the iframe never reloads
@@ -37,7 +38,7 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
     (window as any).__peField = (path: string, html: string) => { setIn(docRef.current, path, html); setSaved(false); };
     (window as any).__peAction = (action: string) => { applyAction(docRef.current, action); setSaved(false); swapBody(); };
     (window as any).__peResize = (h: number) => { if (iframeRef.current) iframeRef.current.style.height = Math.max(h, 480) + 'px'; };
-    (window as any).__peOpenPicker = () => setPicker(true); // add-section seam → picker
+    (window as any).__peOpenPicker = (index: number) => setPickerAt(typeof index === 'number' ? index : 0); // seam → picker (carries insert position)
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', onKey);
     return () => { delete (window as any).__peField; delete (window as any).__peAction; delete (window as any).__peResize; delete (window as any).__peOpenPicker; window.removeEventListener('keydown', onKey); };
@@ -66,7 +67,12 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
         <button onClick={onClose} title="Close (Esc)"><IcX />Close</button>
         <button className="primary" onClick={save}><IcCheck />Save</button>
       </div>
-      {picker && <SectionPicker onClose={() => setPicker(false)} />}
+      {pickerAt != null && (
+        <SectionPicker
+          onClose={() => setPickerAt(null)}
+          onPick={(type) => { (window as any).__peAction?.(`secAdd:${pickerAt}:${type}`); setPickerAt(null); }}
+        />
+      )}
     </div>
   );
 }

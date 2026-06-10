@@ -5,9 +5,10 @@
 // resize, background-luminance tagging), and the data mutations.
 // NO canonical markup lives here — see CLAUDE.md standing rule #5.
 import type { PageDoc } from './store';
+import { seedSection } from './store';
 import type { WikiSkin } from './wiki';
 import { POLICY, rule, blankOf, itemBlankOf } from './grammar';
-import { SENT_PREFIX } from './render';
+import { SENT_PREFIX, REGISTRY } from './render';
 
 // default skin = Taco Bell (keeps existing single-arg callers working)
 const TACO_BELL_SKIN: WikiSkin = { bodyClass: 'wiki-page wiki-taco-bell', css: ['wiki-taco-bell-skin.css', 'tb-editorial-base.css'] };
@@ -125,10 +126,12 @@ export function buildCanvas(bodyHtml: string, skin: WikiSkin = TACO_BELL_SKIN): 
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>${FONTS}
 <link rel="stylesheet" href="/canon/wiki-typography.css">
 <link rel="stylesheet" href="/canon/wiki-universals.css">
+<link rel="stylesheet" href="/canon/bank-catalog.css">
 ${skinLinks}
 <style>${AFFORDANCE}</style>
 <script>
 window.__PE_POLICY=${JSON.stringify(POLICY)};
+window.__PE_REGISTRY=${JSON.stringify(REGISTRY)};
 window.__PE_SENT=${JSON.stringify(SENT_PREFIX)};
 function P(p,el){try{window.parent.__peField(p,el.innerHTML)}catch(e){}}
 function A(a){try{window.parent.__peAction(a)}catch(e){}}
@@ -227,5 +230,20 @@ export function applyAction(doc: PageDoc, action: string): void {
       h.spotlight = null; h.feature = null;
       break;
     case 'setTone': doc.overview.tone = arg; break;
+    // body sections (the ordered list after the locked hero+overview):
+    //   secAdd:<index>:<type> → insert a grammar-seeded section at <index>
+    //   secRm:<index>         → remove
+    //   secTone:<index>:<t>   → set that section's tone
+    case 'secAdd': {
+      const [idx, type] = arg.split(':');
+      doc.sections.splice(Number(idx), 0, seedSection(type));
+      break;
+    }
+    case 'secRm': doc.sections.splice(Number(arg), 1); break;
+    case 'secTone': {
+      const [idx, t] = arg.split(':');
+      if (doc.sections[Number(idx)]) doc.sections[Number(idx)].data.tone = t;
+      break;
+    }
   }
 }

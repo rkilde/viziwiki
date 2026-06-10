@@ -267,7 +267,8 @@ components:
   catalog:
     section: catalog-section
     fields:
-      title:      { type: text, required: true, help: "The catalog heading" }
+      title:      { type: text, required: true, blank: "Everything", help: "The catalog heading" }
+      tone:       { type: "enum[a,b,special]", default: b }
       unit:       { type: text, default: "item", help: "The count noun (e.g. 'drink', 'sauce')" }
       note:       { type: text, help: "Short suffix appended to the auto summary line (top)" }
       footnote:   { type: richtext, help: "Optional footnote block under the catalog (bottom)" }

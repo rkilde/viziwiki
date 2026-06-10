@@ -22,6 +22,10 @@ const FILES = [
   'hero/feature.html',
   'overview/infobox.html',
   'icon.html',
+  // catalog bank: section frame → dispatcher → visual
+  'sections/catalog-section.html',
+  'visual.html',
+  'visuals/catalog/catalog.html',
 ];
 
 const out = { includes: {}, sprite: '' };

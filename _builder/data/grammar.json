@@ -828,7 +828,12 @@
         "title": {
           "type": "text",
           "required": true,
+          "blank": "Everything",
           "help": "The catalog heading"
+        },
+        "tone": {
+          "type": "enum[a,b,special]",
+          "default": "b"
         },
         "unit": {
           "type": "text",

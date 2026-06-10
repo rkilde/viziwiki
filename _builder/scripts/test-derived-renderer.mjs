@@ -12,16 +12,18 @@ import { createRenderer, SENT_PREFIX } from '../lib/render-core.mjs';
 
 const includes = JSON.parse(fs.readFileSync('data/includes.json', 'utf8'));
 const grammar = JSON.parse(fs.readFileSync('data/grammar.json', 'utf8'));
+const registry = JSON.parse(fs.readFileSync('data/visuals.json', 'utf8'));
 const decorateSrc = fs.readFileSync('public/editor/decorate.js', 'utf8');
 
 function renderAndDecorate(doc, isHome, customGrammar) {
   const g = customGrammar || grammar;
   const policy = buildPolicy(g);
-  const renderer = createRenderer(includes, policy);
+  const renderer = createRenderer(includes, policy, registry);
   const body = renderer.renderBody(doc, isHome);
   const dom = new JSDOM(`<!doctype html><html><body>${body}</body></html>`, { runScripts: 'outside-only' });
   const w = dom.window;
   w.__PE_POLICY = policy;
+  w.__PE_REGISTRY = registry;
   w.__PE_SENT = SENT_PREFIX;
   w.A = () => {}; w.P = () => {}; w.__retag = () => {};
   w.eval(decorateSrc);
@@ -139,6 +141,35 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(!after2.querySelector('.wiki-hero-desc.pe-removable'), 'grammar-required desc: × gone on filled page');
   const base2 = renderAndDecorate(doc2, false);
   ok(base2.querySelector('.wiki-hero-desc.pe-removable'), 'baseline: filled desc removable');
+}
+
+// ── case 5: CATALOG — first contributor-added body section ──
+{
+  console.log('case 5: catalog body section (grammar-seeded, registry-routed)');
+  const catSeed = JSON.parse(JSON.stringify(grammar.components.catalog.seed));
+  const doc = {
+    hero: { eyebrow: null, title: 'T', subtitle: null, subtitle_meta: null, desc: 'D', stats: null, search: false, search_placeholder: '', spotlight: null, feature: null },
+    overview: { tone: 'b', heading: 'H', paragraphs: ['P1', 'P2'], infobox: null },
+    sections: [{ type: 'catalog', data: catSeed }],
+  };
+  const d = renderAndDecorate(doc, false);
+  const cat = d.querySelector('section.wiki-section.catalog');
+  ok(cat, 'catalog section rendered via its canonical include');
+  ok(d.querySelector('.cat-masonry') && d.querySelector('.cat-card'), 'catalog visual rendered through the dispatcher');
+  ok((cat.querySelector('.cat-summary') || {}).textContent.includes('2 items'), 'summary auto-derived from data (2 items)');
+  ok(cat.querySelector('.wiki-section-eyebrow.pe-canon .pe-lock'), 'catalog eyebrow locked (from the visuals registry)');
+  ok(cat.querySelector('.cat-summary.pe-canon .pe-lock'), 'derived summary locked (registry: derived)');
+  ok(cat.querySelector('.wiki-section-title .ce'), 'catalog title editable (bound to sections.0.data.title)');
+  ok([...cat.querySelectorAll('.pe-chip')].some((c) => c.textContent === 'remove section'), 'remove-section chip');
+  ok(cat.querySelectorAll('.pe-tonebtn').length === 3, 'catalog tone buttons from grammar enum');
+  ok(!d.querySelector('script'), 'editor canvas inert: <script> stripped');
+  // seams: after overview (insert 0) AND after the catalog (insert 1)
+  const seams = d.querySelectorAll('.pe-add-section');
+  ok(seams.length === 2, 'two seams: below overview + below the catalog');
+  const ovSec = d.querySelector('section[data-section="overview"]');
+  ok(ovSec.nextElementSibling.className === 'pe-add-section' && cat.nextElementSibling.className === 'pe-add-section', 'seams sit directly below each section');
+  // overview heading binding still hits the OVERVIEW h2, not the catalog's
+  ok(ovSec.querySelector('.wiki-section-title .ce'), 'overview heading still bound');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

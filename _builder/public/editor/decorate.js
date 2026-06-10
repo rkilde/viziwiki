@@ -291,13 +291,11 @@
       }
     }
 
-    // section tone toolbar — tones derived from the grammar enum
-    var sec = qs('section[data-section="overview"]');
-    if (sec) {
-      sec.classList.add('pe-sec');
-      var toneRule = ruleFor('overview.tone') || {};
+    // section tone toolbar (glass pill) — tones from the field's grammar enum
+    function toneBar(secEl, polPath, mkAction, extra) {
+      var toneRule = ruleFor(polPath) || {};
       var tones = toneRule.enum || ['a', 'b', 'special'];
-      var cur = sec.getAttribute('data-tone');
+      var cur = secEl.getAttribute('data-tone');
       var bar = document.createElement('div');
       bar.className = 'pe-sec-tools';
       bar.appendChild(document.createTextNode('tone '));
@@ -305,22 +303,84 @@
         var b = document.createElement('button');
         b.className = 'pe-tonebtn' + (cur === t ? ' on' : '');
         b.textContent = t;
-        b.onclick = function () { A('setTone:' + t); };
+        b.onclick = function () { A(mkAction(t)); };
         bar.appendChild(b);
       });
-      sec.insertBefore(bar, sec.firstChild);
+      (extra || []).forEach(function (el) { bar.appendChild(el); });
+      secEl.classList.add('pe-sec');
+      secEl.insertBefore(bar, secEl.firstChild);
     }
 
-    // add-section seam (dotted circle +) — BELOW the overview only: canon
-    // forbids adding above the hero or between hero and overview (both
-    // locked-first). Click → the add-section picker in the parent app.
-    if (sec && !document.querySelector('.pe-add-section')) {
+    var sec = qs('section[data-section="overview"]');
+    if (sec) toneBar(sec, 'overview.tone', function (t) { return 'setTone:' + t; });
+
+    // ── body sections (the ordered, contributor-added list after the locked
+    // hero+overview). DOM order maps 1:1 to doc.sections — every wiki-section
+    // after the overview is body section i. ──
+    var bodySecs = qsa('body > section.wiki-section').filter(function (s) {
+      return s.getAttribute('data-section') !== 'overview';
+    });
+    var REG_SECTIONS = (window.__PE_REGISTRY || {}).sections || {};
+    bodySecs.forEach(function (secEl, i) {
+      // identify the section's grammar type from its canonical class
+      // (catalog sections carry .catalog — the canon class contract)
+      var type = secEl.classList.contains('catalog') ? 'catalog' : null;
+      if (!type) return;
+      var prefix = 'sections.' + i + '.data.';
+      var reg = REG_SECTIONS[type + '-section'] || {};
+
+      // tone + remove (sections are min:0 per page_types → always removable)
+      var rmChip = document.createElement('button');
+      rmChip.className = 'pe-chip';
+      rmChip.textContent = 'remove section';
+      rmChip.onclick = function () { A('secRm:' + i); };
+      toneBar(secEl, type + '.tone', function (t) { return 'secTone:' + i + ':' + t; }, [rmChip]);
+
+      // locked chrome, from the REGISTRY: the eyebrow label and the
+      // auto-derived summary are canon — red box + padlock
+      if (reg.eyebrow) {
+        var eb = qs('.wiki-section-eyebrow', secEl);
+        if (eb) {
+          eb.classList.add('pe-canon');
+          var elk = document.createElement('span');
+          elk.className = 'pe-lock';
+          elk.title = 'Locked — the canonical section label, can’t be edited or removed';
+          elk.innerHTML = LOCK;
+          eb.appendChild(elk);
+        }
+      }
+      if (reg.summary === 'derived') {
+        var sum = qs('.cat-summary', secEl);
+        if (sum) {
+          sum.classList.add('pe-canon');
+          var slk = document.createElement('span');
+          slk.className = 'pe-lock';
+          slk.title = 'Auto-derived from the catalog data — never hand-typed';
+          slk.innerHTML = LOCK;
+          sum.appendChild(slk);
+        }
+      }
+
+      // editable bindings (v1: the section heading; deep item editing next)
+      if (type === 'catalog') {
+        wrapCE(qs('.wiki-section-title', secEl), prefix + 'title');
+        var fn = qs('.cat-footnote', secEl);
+        if (fn) wrapCE(fn, prefix + 'footnote');
+      }
+    });
+
+    // add-section seams (dotted circle +): BELOW the overview (insert at 0)
+    // and after every body section (insert at i+1). Never above the hero or
+    // between hero and overview — both locked-first per the canon.
+    function seamAfter(el, index) {
       var seam = document.createElement('div');
       seam.className = 'pe-add-section';
       seam.innerHTML = '<span class="pe-add-line"></span><button class="pe-add-dot" title="Add section">+</button><span class="pe-add-line"></span>';
-      seam.onclick = function () { try { window.parent.__peOpenPicker(); } catch (e) {} };
-      sec.parentNode.insertBefore(seam, sec.nextSibling);
+      seam.onclick = function () { try { window.parent.__peOpenPicker(index); } catch (e) {} };
+      el.parentNode.insertBefore(seam, el.nextSibling);
     }
+    if (sec) seamAfter(sec, 0);
+    bodySecs.forEach(function (s, i) { seamAfter(s, i + 1); });
 
     if (window.__retag) window.__retag();
   };
