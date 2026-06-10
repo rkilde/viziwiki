@@ -94,6 +94,24 @@ export function createRenderer(includesData, policy, registry) {
     };
   }
 
+  // body sections: policy-driven sentinels — an ABSENT optional field gets a
+  // "+" slot IF it renders as a standalone block (kind richtext, no include
+  // default, not locked/required — e.g. catalog.footnote). Fields embedded in
+  // derived lines (unit, note) or with include defaults self-render and get
+  // their affordances from the decorator instead.
+  function projectSections(doc) {
+    return (doc.sections || []).map((s, i) => {
+      const data = JSON.parse(JSON.stringify(s.data || {}));
+      for (const [key, r] of Object.entries(policy.fields)) {
+        const m = /^([\w-]+)\.(\w+)$/.exec(key);          // top-level fields only
+        if (!m || m[1] !== s.type) continue;
+        if (r.kind !== 'richtext' || r.required || r.locked || r.default != null) continue;
+        if (data[m[2]] == null) data[m[2]] = SENT(`add:sections.${i}.data.${m[2]}`);
+      }
+      return data;
+    });
+  }
+
   // render the page body from the CANONICAL templates (sprite first so the
   // includes' <use href="#ic-*"> resolve after every body swap). The locked
   // hero+overview render first; then every body section routes through ITS
@@ -108,7 +126,7 @@ export function createRenderer(includesData, policy, registry) {
         return partial ? `{% include ${partial} data=page.sections[${i}].data %}` : '';
       })
       .join('');
-    const page = { hero: projectHero(doc, isHome), overview: projectOverview(doc), sections };
+    const page = { hero: projectHero(doc, isHome), overview: projectOverview(doc), sections: projectSections(doc).map((data) => ({ data })) };
     const out = engine.parseAndRenderSync(tpl, { page });
     return SPRITE + out.replace(/<script[\s\S]*?<\/script>/gi, '');
   }

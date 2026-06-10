@@ -287,16 +287,18 @@ components:
       tone:       { type: "enum[a,b,special]", default: b }
       visual:  { type: text, locked: true, default: catalog, help: "The slot's visual type — registry hosts constrain it (admin)" }
       unit:       { type: text, default: "item", help: "The count noun (e.g. 'drink', 'sauce')" }
-      note:       { type: text, help: "Short suffix appended to the auto summary line (top)" }
-      footnote:   { type: richtext, help: "Optional footnote block under the catalog (bottom)" }
-      categories: { type: "list<category>", required: true }
+      note:       { type: text, blank: "Note", help: "Short suffix appended to the auto summary line (top)" }
+      footnote:   { type: richtext, blank: "Write a footnote here…", help: "Optional footnote block under the catalog (bottom)" }
+      categories: { type: "list<category>", required: true,
+                    item_blank: { name: "New category", items: [{ name: "New item", desc: "What it is." }] } }
     subtypes:
       category:
-        name:   { type: text, required: true }
+        name:   { type: text, required: true, blank: "New category" }
         color:  { type: color, help: "Skin swatch number, or omit to auto-cycle the palette" }
-        ribbon: { type: ribbon, help: "Optional corner ribbon" }
-        note:   { type: text }
-        items:  { type: "list<cat_item>", required: true }
+        ribbon: { type: ribbon, blank: { text: "Ribbon", tone: accent }, help: "Optional corner ribbon" }
+        note:   { type: text, blank: "Note" }
+        items:  { type: "list<cat_item>", required: true,
+                  item_blank: { name: "New item", desc: "What it is." } }
       ribbon: { text: { type: text, required: true }, tone: { type: "enum[accent,gone]", default: accent } }
       cat_item:
         name:    { type: text, required: true }

@@ -30,6 +30,8 @@ export function buildPolicy(grammar) {
       fields[path] = {
         kind: t.kind,
         required: !!spec.required,
+        locked: spec.locked === true,
+        default: spec.default ?? null,
         blank: spec.blank ?? spec.default ?? null,
         item_blank: spec.item_blank ?? null,
         min: spec.min ?? null,

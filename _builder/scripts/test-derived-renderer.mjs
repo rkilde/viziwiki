@@ -25,6 +25,7 @@ function renderAndDecorate(doc, isHome, customGrammar) {
   w.__PE_POLICY = policy;
   w.__PE_REGISTRY = registry;
   w.__PE_SENT = SENT_PREFIX;
+  w.__PE_DOC = doc;          // the decorator reads current values (toolbar editors)
   w.A = () => {}; w.P = () => {}; w.__retag = () => {};
   w.eval(decorateSrc);
   w.__decorate();
@@ -163,6 +164,18 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok([...cat.querySelectorAll('.pe-chip')].some((c) => c.textContent === 'remove section'), 'remove-section chip');
   ok(cat.querySelectorAll('.pe-tonebtn').length === 3, 'catalog tone buttons from grammar enum');
   ok(!d.querySelector('script'), 'editor canvas inert: <script> stripped');
+  // ── Phase A: the flat editing surface ──
+  const aLabels = [...cat.querySelectorAll('.pe-add, .pe-mini-add')].map((b) => b.textContent);
+  ok(aLabels.includes('+ footnote'), '+ footnote slot (sentinel — seed has none)');
+  ok(aLabels.includes('+ category'), '+ category button after the masonry');
+  ok(aLabels.includes('+ item'), '+ item button in the pills row');
+  ok(aLabels.includes('+ ribbon'), '+ ribbon button (seed category has none)');
+  ok(aLabels.filter((l) => l === '+ note').length === 2, '+ note twice: section toolbar + category count line');
+  ok(cat.querySelector('.cat-card-title .ce'), 'category name editable');
+  ok(cat.querySelector('.cat-card.pe-removable > .pe-remove'), 'category removable (corner ×)');
+  ok(cat.querySelectorAll('.cat-pill .ce').length === 2, 'both item pills editable');
+  ok(cat.querySelectorAll('.cat-pill .pe-tag-rm').length === 2, 'items removable');
+  ok([...cat.querySelectorAll('.pe-sec-tools .pe-chip')].some((c) => c.textContent.startsWith('unit:')), 'unit toolbar editor');
   // seams: after overview (insert 0) AND after the catalog (insert 1)
   const seams = d.querySelectorAll('.pe-add-section');
   ok(seams.length === 2, 'two seams: below overview + below the catalog');

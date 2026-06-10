@@ -71,6 +71,26 @@
     { path: 'overview.infobox.badge',  sel: '.wiki-infobox-badge' },
   ];
 
+  // "+" slots for BODY-SECTION fields, keyed by `<componentType>.<field>` —
+  // resolved dynamically from the sentinel's containing section
+  var SECTION_SLOTS = {
+    'catalog.footnote': { root: '.cat-footnote', label: '+ footnote' },
+  };
+
+  // a section element's component type, derived from the registry's section
+  // keys (the canon class contract: <type>-section frames carry class <type>)
+  function sectionTypeOf(secEl) {
+    var regs = (window.__PE_REGISTRY || {}).sections || {};
+    for (var key in regs) {
+      var t = key.replace(/-section$/, '');
+      if (secEl.classList.contains(t)) return t;
+    }
+    return null;
+  }
+
+  // grammar rule lookup by policy key (e.g. 'catalog.categories[].ribbon.tone')
+  function R(key) { return (((window.__PE_POLICY || {}).fields || {})[key]) || {}; }
+
   // removal roots: where the corner × attaches IF policy says the field is
   // optional (removability itself is computed, not listed). sibling = the ×
   // goes after the element (inline meta) instead of inside it.
@@ -133,6 +153,16 @@
       if (!f.m) return;
       var action = f.m[1];
       var spec = SLOTS[action];
+      if (!spec) {
+        // body-section field sentinel (add:sections.N.data.FIELD): resolve the
+        // slot through the containing section's component type
+        var sm = /^add:sections\.\d+\.data\.(\w+)$/.exec(action);
+        if (sm) {
+          var holder = f.el.closest('section.wiki-section');
+          var st = holder && sectionTypeOf(holder);
+          if (st) spec = SECTION_SLOTS[st + '.' + sm[1]];
+        }
+      }
       if (!spec) return;
       var target = spec.root ? (f.el.closest(spec.root) || f.el) : f.el;
       if (!target || !target.parentNode) return;
@@ -321,20 +351,59 @@
       return s.getAttribute('data-section') !== 'overview';
     });
     var REG_SECTIONS = (window.__PE_REGISTRY || {}).sections || {};
+    var DOC = null;
+    try { DOC = window.__PE_DOC || (window.parent.__peDoc && window.parent.__peDoc()); } catch (e) {}
     bodySecs.forEach(function (secEl, i) {
       // identify the section's grammar type from its canonical class
-      // (catalog sections carry .catalog — the canon class contract)
-      var type = secEl.classList.contains('catalog') ? 'catalog' : null;
+      var type = sectionTypeOf(secEl);
       if (!type) return;
       var prefix = 'sections.' + i + '.data.';
       var reg = REG_SECTIONS[type + '-section'] || {};
+      var sdata = (DOC && DOC.sections && DOC.sections[i] && DOC.sections[i].data) || {};
 
       // tone + remove (sections are min:0 per page_types → always removable)
+      var extras = [];
+      if (type === 'catalog') {
+        // unit + note live INSIDE the locked derived summary line — they get
+        // toolbar editors instead of in-place boxes (counts stay locked)
+        var unitChip = document.createElement('span');
+        unitChip.className = 'pe-chip';
+        unitChip.appendChild(document.createTextNode('unit: '));
+        var unitCe = document.createElement('span');
+        unitCe.className = 'ce';
+        unitCe.setAttribute('contenteditable', 'true');
+        unitCe.textContent = sdata.unit != null ? sdata.unit : (R('catalog.unit').blank || '');
+        (function (p, el) { el.addEventListener('blur', function () { P(p, el); }); })(prefix + 'unit', unitCe);
+        unitChip.appendChild(unitCe);
+        extras.push(unitChip);
+        if (sdata.note != null) {
+          var noteChip = document.createElement('span');
+          noteChip.className = 'pe-chip';
+          noteChip.appendChild(document.createTextNode('note: '));
+          var noteCe = document.createElement('span');
+          noteCe.className = 'ce';
+          noteCe.setAttribute('contenteditable', 'true');
+          noteCe.textContent = sdata.note;
+          (function (p, el) { el.addEventListener('blur', function () { P(p, el); }); })(prefix + 'note', noteCe);
+          noteChip.appendChild(noteCe);
+          var noteRm = document.createElement('button');
+          noteRm.className = 'pe-tag-rm';
+          noteRm.style.opacity = '1';
+          noteRm.textContent = '×';
+          noteRm.title = 'Remove note';
+          (function (p) { noteRm.onclick = function () { A('rm:' + p); }; })(prefix + 'note');
+          noteChip.appendChild(noteRm);
+          extras.push(noteChip);
+        } else {
+          extras.push(addBtn('add:' + prefix + 'note', '+ note', true));
+        }
+      }
       var rmChip = document.createElement('button');
       rmChip.className = 'pe-chip';
       rmChip.textContent = 'remove section';
       rmChip.onclick = function () { A('secRm:' + i); };
-      toneBar(secEl, type + '.tone', function (t) { return 'secTone:' + i + ':' + t; }, [rmChip]);
+      extras.push(rmChip);
+      toneBar(secEl, type + '.tone', function (t) { return 'secTone:' + i + ':' + t; }, extras);
 
       // locked chrome, from the REGISTRY: the eyebrow label and the
       // auto-derived summary are canon — red box + padlock
@@ -361,11 +430,91 @@
         }
       }
 
-      // editable bindings (v1: the section heading; deep item editing next)
+      // ── catalog: the full flat-field editing surface ──
       if (type === 'catalog') {
         wrapCE(qs('.wiki-section-title', secEl), prefix + 'title');
         var fn = qs('.cat-footnote', secEl);
-        if (fn) wrapCE(fn, prefix + 'footnote');
+        if (fn) { wrapCE(fn, prefix + 'footnote'); makeRemovable(fn, 'rm:' + prefix + 'footnote'); }
+
+        // categories: name · ribbon (add/edit/tone/×) · note · items · ×
+        qsa('.cat-masonry > .cat-card', secEl).forEach(function (card, j) {
+          var cpre = prefix + 'categories.' + j + '.';
+          var cdata = (sdata.categories && sdata.categories[j]) || {};
+          wrapCE(qs('.cat-card-title', card), cpre + 'name');
+          makeRemovable(card, 'rm:' + prefix + 'categories.' + j);
+
+          var rib = qs('.cat-ribbon', card);
+          if (rib) {
+            var rspan = qs('span', rib);
+            if (typeof cdata.ribbon === 'string') {
+              wrapCE(rspan, cpre + 'ribbon');     // legacy string form — text only
+            } else {
+              wrapCE(rspan, cpre + 'ribbon.text');
+              // tone: cycle through the grammar enum (accent/gone)
+              var tones = R('catalog.categories[].ribbon.tone').enum || [];
+              var curTone = (cdata.ribbon && cdata.ribbon.tone) || (R('catalog.categories[].ribbon.tone').blank || tones[0]);
+              if (tones.length) {
+                var tbtn = document.createElement('button');
+                tbtn.className = 'pe-tag-rm';
+                tbtn.style.width = 'auto';
+                tbtn.style.borderRadius = '4px';
+                tbtn.style.padding = '0 4px';
+                tbtn.textContent = curTone;
+                tbtn.title = 'Ribbon tone — click to cycle';
+                (function (p, list, cur) { tbtn.onclick = function () { A('set:' + p + ':' + list[(list.indexOf(cur) + 1) % list.length]); }; })(cpre + 'ribbon.tone', tones, curTone);
+                rib.appendChild(tbtn);
+              }
+            }
+            var rrm = document.createElement('button');
+            rrm.className = 'pe-tag-rm';
+            rrm.textContent = '×';
+            rrm.title = 'Remove ribbon';
+            (function (p) { rrm.onclick = function () { A('rm:' + p); }; })(cpre + 'ribbon');
+            rib.appendChild(rrm);
+          } else {
+            card.insertBefore(addBtn('add:' + cpre + 'ribbon', '+ ribbon', true), card.firstChild);
+          }
+
+          // category note: editable suffix inside the derived count line
+          var cnt = qs('.cat-card-count', card);
+          if (cnt) {
+            if (cdata.note != null) {
+              var node = null;
+              for (var q = cnt.childNodes.length - 1; q >= 0; q--) {
+                if (cnt.childNodes[q].nodeType === 3 && cnt.childNodes[q].nodeValue.indexOf('·') > -1) { node = cnt.childNodes[q]; break; }
+              }
+              if (node) {
+                var noteText = node.splitText(node.nodeValue.lastIndexOf('·') + 1);
+                var ceN = document.createElement('span');
+                ceN.className = 'ce';
+                ceN.setAttribute('contenteditable', 'true');
+                cnt.insertBefore(ceN, noteText);
+                ceN.appendChild(noteText);
+                (function (p, el) { el.addEventListener('blur', function () { P(p, el); }); })(cpre + 'note', ceN);
+                var nrm = document.createElement('button');
+                nrm.className = 'pe-tag-rm';
+                nrm.textContent = '×';
+                nrm.title = 'Remove note';
+                (function (p) { nrm.onclick = function () { A('rm:' + p); }; })(cpre + 'note');
+                cnt.appendChild(nrm);
+              }
+            } else {
+              cnt.appendChild(addBtn('add:' + cpre + 'note', '+ note', true));
+            }
+          }
+
+          // items: pill face editable, per-item ×, + item
+          qsa('.cat-pill', card).forEach(function (pill, k) {
+            wrapCE(pill, cpre + 'items.' + k + '.name');
+            makeRemovable(pill, 'rm:' + cpre + 'items.' + k, true);
+          });
+          var pillsWrap = qs('.cat-card-pills', card);
+          if (pillsWrap) pillsWrap.appendChild(addBtn('push:' + cpre + 'items', '+ item', true));
+        });
+
+        // + category — after the masonry, where the new card lands
+        var mas = qs('.cat-masonry', secEl);
+        if (mas) mas.parentNode.insertBefore(addLine('push:' + prefix + 'categories', '+ category'), mas.nextSibling);
       }
     });
 

@@ -46,6 +46,14 @@ const AFFORDANCE = `
   .wiki-infobox-data > dd.pe-removable{ width:auto; }
   .wiki-hero-search.pe-removable{ width:auto; }
   .wiki-hero-stats.pe-removable{ width:auto; }
+  /* catalog cards: keep masonry width; overflow:hidden is canon (crops the
+     ribbon) so the card's × sits INSET top-left (ribbon owns the top-right) */
+  .cat-card.pe-removable{ width:auto; }
+  .cat-card > .pe-remove{ top:6px; left:6px; right:auto; }
+  /* toolbar editors (unit/note) — readable editable chips on the glass pill */
+  .pe-sec-tools .pe-chip .ce{ text-transform:none; letter-spacing:normal; min-width:18px; display:inline-block; }
+  .pe-sec-tools .pe-chip{ display:inline-flex; align-items:center; gap:3px; }
+  .cat-ribbon .pe-tag-rm, .cat-ribbon .ce{ vertical-align:middle; }
   .pe-remove,.pe-lock{ position:absolute; top:-9px; right:-9px; width:18px; height:18px; border-radius:50%;
     display:flex; align-items:center; justify-content:center; line-height:1; opacity:0; transition:opacity .12s; z-index:4; }
   .pe-remove{ border:1px solid rgba(0,0,0,.18); background:#fff; color:rgba(0,0,0,.45); font-size:12px; cursor:pointer; }
@@ -172,6 +180,15 @@ export function setIn(doc: PageDoc, path: string, value: string): void {
   setAt(doc, path, value);
 }
 
+// a body-section data path ("sections.0.data.categories.1.name") resolves its
+// grammar rules under the section's COMPONENT type ("catalog.categories[].name")
+function polKeyFor(doc: PageDoc, path: string): string {
+  const m = /^sections\.(\d+)\.data\.(.+)$/.exec(path);
+  if (!m) return path;
+  const type = doc.sections[Number(m[1])]?.type;
+  return type ? type + '.' + m[2].replace(/\.\d+(?=\.|$)/g, '[]') : path;
+}
+
 /**
  * Apply an editor action. GENERIC actions are derived from grammar policy:
  *   add:<path>   → set the field to its grammar `blank`
@@ -190,7 +207,7 @@ export function applyAction(doc: PageDoc, action: string): void {
     case 'add': {
       // the search toggle seeds its placeholder alongside (home-variant canon)
       if (arg === 'hero.search') { h.search = true; if (!h.search_placeholder) h.search_placeholder = blankOf('hero.search_placeholder'); break; }
-      setAt(doc, arg, blankOf(arg));
+      setAt(doc, arg, blankOf(polKeyFor(doc, arg)));
       break;
     }
     case 'rm': {
@@ -201,7 +218,7 @@ export function applyAction(doc: PageDoc, action: string): void {
         if (Array.isArray(list)) list.splice(Number(last), 1);
         break;
       }
-      if (rule(arg).kind === 'bool') { setAt(doc, arg, false); break; }
+      if (rule(polKeyFor(doc, arg)).kind === 'bool') { setAt(doc, arg, false); break; }
       setAt(doc, arg, null);
       // cascade: null sibling fields that `requires` the removed one (grammar)
       const parent = parts.slice(0, -1).join('.');
@@ -212,7 +229,12 @@ export function applyAction(doc: PageDoc, action: string): void {
     }
     case 'push': {
       const list = getAt(doc, arg);
-      if (Array.isArray(list)) list.push(itemBlankOf(arg));
+      if (Array.isArray(list)) list.push(itemBlankOf(polKeyFor(doc, arg)));
+      break;
+    }
+    case 'set': { // set:<path>:<value> — e.g. cycling an enum (ribbon tone)
+      const ci2 = arg.lastIndexOf(':');
+      if (ci2 > 0) setAt(doc, arg.slice(0, ci2), arg.slice(ci2 + 1));
       break;
     }
     // hero card (aside): spotlight XOR feature (canon); the inactive variant

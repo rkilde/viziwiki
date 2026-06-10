@@ -39,9 +39,10 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
     (window as any).__peAction = (action: string) => { applyAction(docRef.current, action); setSaved(false); swapBody(); };
     (window as any).__peResize = (h: number) => { if (iframeRef.current) iframeRef.current.style.height = Math.max(h, 480) + 'px'; };
     (window as any).__peOpenPicker = (index: number) => setPickerAt(typeof index === 'number' ? index : 0); // seam → picker (carries insert position)
+    (window as any).__peDoc = () => docRef.current; // decorator reads current values (e.g. toolbar editors)
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', onKey);
-    return () => { delete (window as any).__peField; delete (window as any).__peAction; delete (window as any).__peResize; delete (window as any).__peOpenPicker; window.removeEventListener('keydown', onKey); };
+    return () => { delete (window as any).__peField; delete (window as any).__peAction; delete (window as any).__peResize; delete (window as any).__peOpenPicker; delete (window as any).__peDoc; window.removeEventListener('keydown', onKey); };
   }, [onClose, isHome]);
 
   const save = () => { savePageDoc(page.id, docRef.current); setSaved(true); };

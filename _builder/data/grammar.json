@@ -937,22 +937,34 @@
         },
         "note": {
           "type": "text",
+          "blank": "Note",
           "help": "Short suffix appended to the auto summary line (top)"
         },
         "footnote": {
           "type": "richtext",
+          "blank": "Write a footnote here…",
           "help": "Optional footnote block under the catalog (bottom)"
         },
         "categories": {
           "type": "list<category>",
-          "required": true
+          "required": true,
+          "item_blank": {
+            "name": "New category",
+            "items": [
+              {
+                "name": "New item",
+                "desc": "What it is."
+              }
+            ]
+          }
         }
       },
       "subtypes": {
         "category": {
           "name": {
             "type": "text",
-            "required": true
+            "required": true,
+            "blank": "New category"
           },
           "color": {
             "type": "color",
@@ -960,14 +972,23 @@
           },
           "ribbon": {
             "type": "ribbon",
+            "blank": {
+              "text": "Ribbon",
+              "tone": "accent"
+            },
             "help": "Optional corner ribbon"
           },
           "note": {
-            "type": "text"
+            "type": "text",
+            "blank": "Note"
           },
           "items": {
             "type": "list<cat_item>",
-            "required": true
+            "required": true,
+            "item_blank": {
+              "name": "New item",
+              "desc": "What it is."
+            }
           }
         },
         "ribbon": {
