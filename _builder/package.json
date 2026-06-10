@@ -4,7 +4,9 @@
   "private": true,
   "description": "ViziWiki 1.0 builder — Phase 1 vertical slice (spec grid). Run with `npm run dev`.",
   "scripts": {
+    "gen": "node scripts/copy-canon.mjs && node scripts/extract-taco-bell.mjs && node scripts/extract-apple.mjs",
     "dev": "next dev",
+    "prebuild": "npm run gen",
     "build": "next build",
     "start": "next start"
   },

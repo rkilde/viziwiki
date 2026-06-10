@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import type { Page } from '../../lib/wiki';
+import type { Page, WikiSkin } from '../../lib/wiki';
 import { loadPageDoc, savePageDoc, resetPageDoc, seedDoc, type PageDoc } from '../../lib/store';
 import { buildCanvas, buildBody, setIn, applyAction } from '../../lib/canvas';
 
@@ -13,13 +13,13 @@ const oneLine = (t: string) => t.replace(/<br\s*\/?>/gi, ' ');
  * edit just swaps the <body> in place (no reload → smooth, no flash). Field edits
  * sync via __peField; +add/×remove via __peAction; both update the live body.
  */
-export function PageEditor({ page, onClose }: { page: Page; onClose: () => void }) {
+export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin; onClose: () => void }) {
   const docRef = useRef<PageDoc>(loadPageDoc(page));
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [saved, setSaved] = useState(false);
 
   // built once — never changes, so the iframe never reloads
-  const srcDoc = useMemo(() => buildCanvas(docRef.current), []);
+  const srcDoc = useMemo(() => buildCanvas(docRef.current, skin), []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const swapBody = () => {

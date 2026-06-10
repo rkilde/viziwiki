@@ -5,6 +5,10 @@
 // Editable text is contenteditable; +add/×remove call back via P()/A(). No pp-*.
 import type { PageDoc, HeroDoc, OverviewDoc, InfoboxDoc, SpotlightDoc, FeatureDoc } from './store';
 import { BLANK_CARD, BLANK_FEATURE } from './store';
+import type { WikiSkin } from './wiki';
+
+// default skin = Taco Bell (keeps existing single-arg callers working)
+const TACO_BELL_SKIN: WikiSkin = { bodyClass: 'wiki-page wiki-taco-bell', css: ['wiki-taco-bell-skin.css', 'tb-editorial-base.css'] };
 
 const AFFORDANCE = `
   /* editing field: grey box on hover (= editable), blue box on click (= editing) */
@@ -202,13 +206,13 @@ export function buildBody(doc: PageDoc): string {
   return `${heroHTML(doc.hero)}${ovHTML(doc.overview)}`;
 }
 
-export function buildCanvas(doc: PageDoc): string {
+export function buildCanvas(doc: PageDoc, skin: WikiSkin = TACO_BELL_SKIN): string {
+  const skinLinks = skin.css.map((f) => `<link rel="stylesheet" href="/canon/${f}">`).join('\n');
   return `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>${FONTS}
 <link rel="stylesheet" href="/canon/wiki-typography.css">
 <link rel="stylesheet" href="/canon/wiki-universals.css">
-<link rel="stylesheet" href="/canon/tb-editorial-base.css">
-<link rel="stylesheet" href="/canon/wiki-taco-bell-skin.css">
+${skinLinks}
 <style>${AFFORDANCE}</style>
 <script>
 function P(p,el){try{window.parent.__peField(p,el.innerHTML)}catch(e){}}
@@ -226,7 +230,7 @@ function tagDark(){var els=document.querySelectorAll('.ce,.pe-canon');for(var i=
 window.addEventListener('load',function(){H();tagDark();try{new ResizeObserver(H).observe(document.body)}catch(e){}try{new MutationObserver(function(){requestAnimationFrame(tagDark)}).observe(document.body,{childList:true,subtree:true})}catch(e){}});
 </script>
 </head>
-<body class="wiki-page wiki-taco-bell" style="overflow-x:hidden">${buildBody(doc)}</body></html>`;
+<body class="${skin.bodyClass}" style="overflow-x:hidden">${buildBody(doc)}</body></html>`;
 }
 
 // ── data sync (called from the React side) ──

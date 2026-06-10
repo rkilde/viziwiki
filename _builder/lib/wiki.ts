@@ -1,6 +1,7 @@
 // Wiki data types + the loaded wikis. Today this imports the git-extracted
-// Taco Bell JSON; later the same shapes come from ContentStore (Supabase).
+// per-wiki JSON; later the same shapes come from ContentStore (Supabase).
 import tacoBell from '../data/taco-bell.json';
+import apple from '../data/apple.json';
 
 export type Stat = { num: string; label: string };
 export type Hero = {
@@ -32,9 +33,15 @@ export type Page = {
   overview?: Overview | null;
   pages: Page[];
 };
-export type Wiki = { id: string; name: string; pages: Page[] };
+// how the editor canvas should skin this wiki: the <body> class + the skin
+// stylesheets to load (on top of the universal layer), matching the live site.
+export type WikiSkin = { bodyClass: string; css: string[] };
+export type Wiki = { id: string; name: string; pages: Page[]; skin: WikiSkin };
 
-export const WIKIS: Wiki[] = [tacoBell as unknown as Wiki];
+export const WIKIS: Wiki[] = [
+  { ...(tacoBell as unknown as Wiki), skin: { bodyClass: 'wiki-page wiki-taco-bell', css: ['wiki-taco-bell-skin.css', 'tb-editorial-base.css'] } },
+  { ...(apple as unknown as Wiki), skin: { bodyClass: 'wiki-page wiki-apple', css: ['wiki-apple-skin.css'] } },
+];
 
 // strip inline <br> for single-line row titles
 export const oneLine = (t: string) => t.replace(/<br\s*\/?>/gi, ' ');

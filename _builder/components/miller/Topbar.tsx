@@ -7,9 +7,9 @@ const Swatch = ({ color, label }: { color: string; label: string }) => (
   <span className="wiki-btn-icon" style={{ background: color, color: '#fff', fontWeight: 700 }}>{label}</span>
 );
 
-const WIKI_COLOR: Record<string, string> = { 'taco-bell': '#702082' };
+const WIKI_COLOR: Record<string, string> = { 'taco-bell': '#702082', 'apple': '#1d1d1f' };
 
-export function Topbar({ wikis, current, level, onLevel }: { wikis: Wiki[]; current: Wiki; level: number; onLevel: (n: number) => void }) {
+export function Topbar({ wikis, current, onSwitch, level, onLevel }: { wikis: Wiki[]; current: Wiki; onSwitch: (w: Wiki) => void; level: number; onLevel: (n: number) => void }) {
   const [open, setOpen] = useState(false);
   const color = WIKI_COLOR[current.id] || '#9d7cf4';
 
@@ -24,7 +24,7 @@ export function Topbar({ wikis, current, level, onLevel }: { wikis: Wiki[]; curr
         {open && (
           <div id="wiki-dropdown">
             {wikis.map((w) => (
-              <button key={w.id} className={`wdrop-item ${w.id === current.id ? 'active' : ''}`} onClick={() => setOpen(false)}>
+              <button key={w.id} className={`wdrop-item ${w.id === current.id ? 'active' : ''}`} onClick={() => { setOpen(false); if (w.id !== current.id) onSwitch(w); }}>
                 <Swatch color={WIKI_COLOR[w.id] || '#9d7cf4'} label={w.name[0]} />
                 <span className="wdrop-name">{w.name}</span>
               </button>
