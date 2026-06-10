@@ -1,0 +1,249 @@
+/* =====================================================================
+   wiki-taco-bell-skin.css
+   ViziWiki · Taco Bell wiki chrome skin
+   ---------------------------------------------------------------------
+   Loaded per TB page via the `extra_head` front-matter hook.
+   Scoped entirely under `body.wiki-taco-bell` — nothing leaks.
+
+   The default.html chrome already uses a warm cream palette (#fdf8e7
+   background, #2a1f15 text) that suits Taco Bell well. This file
+   makes minimal, targeted overrides — it does NOT re-skin the bar or
+   drawer colour scheme, leaving those as the shared default.
+
+   Only two things change for Taco Bell:
+     1. The wiki-toc rail gets a TB-purple right-edge border for depth.
+     2. The active / accent colour swaps from the default pink to TB
+        purple, so highlighted section items feel on-brand.
+   ===================================================================== */
+
+
+/* ── 1. Accent token — active items in TB purple ── */
+body.wiki-taco-bell {
+  --wiki-accent: #702082;
+
+  /* Hero — base gradient beneath the luminosity photo (layer 1 of the
+     four-layer recipe in §3). Magenta → purple → deep indigo, on the
+     canonical to-bottom-right diagonal. The .wiki-hero rule in §3
+     consumes this token, so this line is the single place to retune it. */
+  --hero-bg:      linear-gradient(to bottom right, #c026d3, #7e22ce, #1e1b4b);
+  --hero-text:    #ffffff;                          /* base light text on the dark gradient */
+  --hero-divider: rgba(255,255,255,0.12);
+
+  /* Hero accent — the H1 period + eyebrow dot, in Taco Bell yellow.
+     Drives the universal hero tokens (wiki-universals.css §10–§14). */
+  --hero-title-accent: #fcd34d;
+  --hero-eyebrow-dot:  #fcd34d;
+
+  /* Spotlight treatment 2 (.wiki-hero-feature) — TB's feature-card look:
+     deep red → maroon fill + hot-pink halftone dots. Structure is universal
+     (§14); these tokens set the colors. */
+  --hero-feature-bg:       linear-gradient(to bottom right, #b91c1c, #4c0519);
+  --hero-feature-halftone: oklch(0.70 0.27 350);
+
+  /* §12 section canon — alternating panel tones + divider */
+  --section-tone-a:       #ffffff;                  /* warm white default panel */
+  --section-tone-b:       #f4ede4;                  /* secondary cream alternation */
+  --section-tone-special: #2a1f15;                  /* dark band — used for footer CTA */
+  --section-divider:      rgba(42,31,21,0.15);      /* subtle warm-brown hairline */
+
+  /* §15 section typography — color tokens (sizing is universal canon) */
+  --eyebrow-color:        rgba(42,31,21,0.55);      /* muted brown */
+  --section-title-color:  #2a1f15;                  /* warm near-black */
+  --prose-color:          rgba(42,31,21,0.85);      /* foreground/85 */
+  --prose-strong-color:   #2a1f15;                  /* full dark for emphasis */
+
+  /* §16 overview infobox tokens — TB's signature purple gradient header */
+  --infobox-bg:            var(--panel-bg, #f4ede4);   /* match the panel tone the infobox sits on */
+  --infobox-border:        rgba(42,31,21,0.20);
+  --infobox-header-bg:     linear-gradient(to bottom right, #c026d3, #581c87);
+  --infobox-label-color:   rgba(255,255,255,0.7);
+  --infobox-title-color:   #ffffff;
+  --infobox-key-color:     rgba(42,31,21,0.55);
+  --infobox-value-color:   #2a1f15;
+  --infobox-divider:       rgba(42,31,21,0.10);
+
+  /* ── Bank tokens: shared divider + ribbon + the category accent palette
+        and the pre-defined status states (catalog / expandable-card bank) ── */
+  --divider:        color-mix(in oklab, var(--foreground) 10%, transparent);
+  --ribbon-fg:      #ffffff;
+  /* locked "gone / phased out" ribbon grey — TB's warm desaturated tone
+     (the original hardcoded discontinued-ribbon color). Never colorful. */
+  --ribbon-gone-bg: rgba(42,31,21,0.72);
+  /* category accent palette — the skin's CATEGORY SWATCH SET. A catalog
+     category either references a swatch by number (`color: 3`, the future
+     builder's color-picker pick) or, if it names none, auto-cycles through
+     them. The component only ever reads `--cat-color`; growing this set
+     (toward the dozens-of-swatches / generated-ramp / picker we want later)
+     is pure skin work and never touches the component. */
+  --cat-accent-1:#3b6d11;  /* dew green     */
+  --cat-accent-2:#0284c7;  /* fountain sky  */
+  --cat-accent-3:#7c3aed;  /* dirty violet  */
+  --cat-accent-4:#db2777;  /* freeze pink   */
+  --cat-accent-5:#059669;  /* refresca jade */
+  --cat-accent-6:#0891b2;  /* still cyan    */
+  --cat-accent-7:#78350f;  /* coffee brown  */
+  --cat-accent-8:#2563eb;  /* bottle blue   */
+  /* --- extended swatches (discontinued-drinks archive categories) --- */
+  --cat-accent-9:#993556;  /* frutista rose */
+  --cat-accent-10:#0f6e56; /* freeze teal   */
+  --cat-accent-11:#5a8a1a; /* limeade olive */
+  --cat-accent-12:#854f0b; /* defunct ochre */
+  --cat-accent-13:#185fa5; /* defunct blue  */
+  /* --- extended swatches (menu sub-page categories) --- */
+  --cat-accent-14:#b45309; /* taco sienna   */
+  --cat-accent-15:#6d28d9; /* burrito violet*/
+  --cat-accent-16:#0c4a6e; /* specialty blue*/
+  --cat-accent-17:#a16207; /* value amber   */
+  --cat-accent-18:#92400e; /* big-bell umber*/
+  --cat-accent-19:#44403c; /* stone gray    */
+  --cat-accent-20:#4d7c0f; /* griller olive */
+  --cat-accent-21:#991b1b; /* brick red     */
+  /* pre-defined status states — label colors */
+  --st-active-bg:#dcfce7;                   --st-active-fg:#166534;
+  --st-discontinued-bg:rgba(42,31,21,0.08); --st-discontinued-fg:rgba(42,31,21,0.55);
+  --st-retired-bg:#fef3c7;                  --st-retired-fg:#92400e;
+  --st-limited-bg:#fde68a;                  --st-limited-fg:#78350f;
+}
+
+/* §13 section ordering — Taco Bell-specific section orders.
+   Canon owns browse=10, overview=20, seealso=90. */
+body.wiki-taco-bell .wiki-section[data-section="featured"]       { order: 30; }
+body.wiki-taco-bell .wiki-section[data-section="heat-ladder"]    { order: 35; }
+body.wiki-taco-bell .wiki-section[data-section="patch-history"]  { order: 40; }
+body.wiki-taco-bell .wiki-section[data-section="footprint"]      { order: 45; }
+body.wiki-taco-bell .wiki-section[data-section="menu-history"]   { order: 50; }
+body.wiki-taco-bell .wiki-section[data-section="marketing"]      { order: 55; }
+body.wiki-taco-bell .wiki-section[data-section="in-media"]       { order: 60; }
+body.wiki-taco-bell .wiki-section[data-section="identity"]       { order: 65; }
+body.wiki-taco-bell .wiki-section[data-section="cast"]           { order: 70; }
+body.wiki-taco-bell .wiki-section[data-section="receipts"]       { order: 75; }
+body.wiki-taco-bell .wiki-section[data-section="footer"]         { order: 99; }
+
+/* Special tone (footer) needs inverted text colors so eyebrow/title/prose
+   stay legible on the dark background. */
+body.wiki-taco-bell .wiki-section[data-tone="special"] {
+  --eyebrow-color:       rgba(255,255,255,0.6);
+  --section-title-color: #ffffff;
+  --prose-color:         rgba(255,255,255,0.7);
+  --prose-strong-color:  #ffffff;
+  color: #ffffff;
+}
+
+
+/* ── 2. TOC rail — TB-purple right-edge separator ── */
+body.wiki-taco-bell .wiki-toc {
+  border-right: 2px solid #702082;
+}
+
+
+/* ====================================================================
+   3 · HERO DECORATION  ·  the colorization recipe
+   --------------------------------------------------------------------
+   The wiki-home.css hero is a bare structural shell. Taco Bell's hero
+   personality is a FOUR-LAYER stack that wiki-home.css can't express
+   through --hero-* tokens alone (it needs real elements with their own
+   mix-blend-modes). The markup provides four hooks inside .wiki-hero:
+
+     <img class="hero-bg-photo">          ← layer 2
+     <div class="hero-bg-overlay-a">      ← layer 3
+     <div class="hero-bg-overlay-b">      ← layer 4
+     <i   class="hero-watermark">         ← bell ghost
+
+   Layer order (back to front):
+     1. .wiki-hero background      — base gradient (magenta→purple→indigo)
+     2. .hero-bg-photo             — food photo, desaturated via luminosity
+     3. .hero-bg-overlay-a         — purple multiply, re-colorizes the photo
+     4. .hero-bg-overlay-b         — left→right darkener for text legibility
+
+   Values are ported verbatim from the canonical TB hero so the look is
+   identical to the pre-refactor page.
+   ==================================================================== */
+
+/* Layer 1 — base gradient. Consumes the --hero-bg token defined in §1
+   (the canonical to-bottom-right magenta→purple→indigo recipe). Editing
+   the gradient is a one-line change at the token, not here. */
+body.wiki-taco-bell .wiki-hero {
+  background: var(--hero-bg);
+}
+
+/* Layer 2 — the photo. mix-blend luminosity strips the photo's own
+   color and keeps only its light/dark, so layer 3 can re-tint it.
+   The img already carries inset-0/h-full/w-full positioning utilities;
+   these rules guarantee the look even if those utilities are absent. */
+body.wiki-taco-bell .wiki-hero .hero-bg-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.60;
+  mix-blend-mode: luminosity;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Layer 3 — colorizer. Multiplies TB purple back over the now-greyscale
+   photo, restoring the brand color while keeping the photo's texture. */
+body.wiki-taco-bell .wiki-hero .hero-bg-overlay-a {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom right,
+    rgba(192, 38, 211, 0.75),
+    rgba(107, 33, 168, 0.70),
+    rgba(30, 27, 75, 0.80)
+  );
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Layer 4 — readability gradient. Darkens the left edge (where the H1,
+   description, search and stats live) and fades to transparent on the
+   right so the spotlight card still reads against lighter photo areas. */
+body.wiki-taco-bell .wiki-hero .hero-bg-overlay-b {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(59, 7, 100, 0.70),
+    rgba(88, 28, 135, 0.30),
+    transparent
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Bell ghost watermark — top-right, rotated, faint. Mirrors the Apple
+   and Fallout watermark pattern. */
+body.wiki-taco-bell .wiki-hero .hero-watermark {
+  position: absolute;
+  top: -40px;
+  right: -48px;
+  width: 440px;
+  height: 440px;
+  transform: rotate(12deg);
+  color: rgba(255, 255, 255, 0.10);
+  pointer-events: none;
+  z-index: 1;
+}
+@media (max-width: 768px) {
+  body.wiki-taco-bell .wiki-hero .hero-watermark { display: none; }
+}
+
+/* Lift the canonical hero content above all four decoration layers. */
+body.wiki-taco-bell .wiki-hero-inner {
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Frosted glass on the hero spotlight card ──────────────────────
+   Matches the .hm-hero-btn CTA buttons in the browse section exactly:
+   translucent white fill + 8px backdrop blur + matching hairline.
+   The card sits over the hero photo, so the blur frosts what's behind. */
+body.wiki-taco-bell .wiki-hero-spotlight {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}

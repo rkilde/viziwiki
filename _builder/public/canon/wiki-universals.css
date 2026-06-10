@@ -1,0 +1,929 @@
+/* ====================================================================
+   wiki-universals.css
+   ViziWiki · Universal spacing, sizing, and rhythm
+   --------------------------------------------------------------------
+   Loaded by EVERY wiki page (home pages AND all sub-pages) via
+   default.html. Controls the rules that should propagate sitewide
+   from a single file — edit once here, every page updates.
+
+   This file owns:
+     · Section container sizing (max-width, padding, centering)
+     · Vertical section rhythm (64px top/bottom padding)
+     · Horizontal side spacing (24px mobile / 72px desktop)
+     · Background tonal alternation (data-tone="a/b/special")
+     · Section divider lines
+     · Section ordering (the flex-column page wrapper)
+     · Section eyebrow typography (font, size, icon slot)
+     · Section H2 title typography (font, size, weight, spacing)
+     · Section prose (max-width, paragraph spacing)
+     · First-child margin resets
+
+   This file does NOT own:
+     · The hero (§2–§10 in wiki-home.css)
+     · The spotlight card (wiki-home.css)
+     · The stat grid (wiki-home.css)
+     · The search bar (wiki-home.css)
+     · The overview infobox layout (wiki-home.css for now)
+     · Colors of anything — skins own all color tokens
+     · Font loading — assumed loaded by default.html
+
+   Load order on every page:
+     wiki-universals.css → wiki-home.css (home only) → wiki-{name}-skin.css
+   ==================================================================== */
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §1 — UNIVERSAL CSS VARIABLE DEFAULTS
+   Spacing/color tokens that every page may need. Skins override these
+   under body.wiki-{name} in their own skin file.
+   ════════════════════════════════════════════════════════════════════ */
+:root {
+  /* ── Section tonal panels ── */
+  --section-tone-a:       transparent;   /* skin required */
+  --section-tone-b:       transparent;   /* skin required */
+  --section-tone-special: transparent;   /* skin optional */
+  --section-divider:      transparent;   /* skin colors it */
+
+  /* ── Section typography colors (defaults; skins override) ── */
+  --eyebrow-color:        currentColor;
+  --section-title-color:  currentColor;
+  --prose-color:          currentColor;
+  --prose-strong-color:   currentColor;
+
+  /* ── Prose / body sizing ──
+     The body roles — --wiki-prose-size (body), --wiki-prose-sm-size
+     (body-sm) and --wiki-prose-leading — now live with the full 8-role
+     type scale in wiki-typography.css (the single home for ALL type
+     sizing). Components in this file still read them via var(); they
+     resolve from the type canon (loaded first). Size is universal: skins
+     set color, never size. */
+
+  /* ── Bank component shapes (universal; admin retunes) ──
+     The corner treatment shared across bank components — catalog cards and
+     the paired expandable card both read --card-shape (locked together);
+     status / info chips read --chip-shape. Change once → reshapes every
+     bank card/chip site-wide. */
+  --card-shape:  14px;     /* squircle — cards + expandable cards */
+  --chip-shape:  999px;    /* circular — status / info chips */
+
+  /* ── Hero color tokens (defaults; skins override) ──────────────────
+     The hero is a UNIVERSAL element (every wiki, home + sub-pages), so its
+     color defaults live here — not in the home layer. The hero STRUCTURE is
+     §9–§14 below. (Search-bar tokens are intentionally NOT here: the search
+     bar is a home-hero-only element and keeps its tokens in wiki-home.css.) */
+  --hero-divider:         rgba(0,0,0,.12);
+  --hero-eyebrow-bg:      rgba(255,255,255,.06);
+  --hero-eyebrow-border:  rgba(255,255,255,.18);
+  --hero-eyebrow-text:    currentColor;
+  --hero-eyebrow-dot:     #ffb000;      /* matches the H1 period */
+  --hero-title-color:     currentColor;
+  --hero-title-accent:    #ffb000;      /* the period — same as dot */
+  --hero-desc-color:      currentColor;
+  --hero-stat-wrapper-bg:     rgba(255,255,255,.18);
+  --hero-stat-wrapper-border: rgba(255,255,255,.18);
+  --hero-stat-cell-bg:        rgba(0,0,0,.25);
+  --hero-stat-num:            currentColor;
+  --hero-stat-label:          rgba(255,255,255,.6);
+
+  /* ── Spotlight bank tokens (defaults; skins override) ──────────────
+     Treatment 1 = card (the home/Cantina style). Treatment 2 = feature
+     (the Diablo style). Structure is §14; skins set the colors. */
+  --hero-spotlight-bg:           rgba(255,255,255,.05);
+  --hero-spotlight-border:       rgba(255,255,255,.18);
+  --hero-spotlight-eyebrow:      rgba(255,255,255,.7);
+  --hero-spotlight-title:        currentColor;
+  --hero-spotlight-desc:         rgba(255,255,255,.75);
+  --hero-spotlight-tag-bg:       rgba(255,255,255,.08);
+  --hero-spotlight-tag-border:   rgba(255,255,255,.22);
+  --hero-spotlight-tag-text:     currentColor;
+  --hero-spotlight-cta-bg:       #ffb000;
+  --hero-spotlight-cta-text:     #0a0a0a;
+  --hero-spotlight-cta-hover-bg: #ffffff;
+
+  --hero-feature-bg:        rgba(255,255,255,.05);   /* treatment 2 fill (skin: a gradient) */
+  --hero-feature-border:    rgba(255,255,255,.20);
+  --hero-feature-halftone:  rgba(255,255,255,.5);    /* dot-pattern color */
+  --hero-feature-label:     rgba(255,255,255,.8);
+  --hero-feature-title:     currentColor;
+  --hero-feature-desc:      rgba(255,255,255,.85);
+  --hero-feature-chip-bg:     rgba(255,255,255,.10);
+  --hero-feature-chip-border: rgba(255,255,255,.30);
+  --hero-feature-chip-key:    rgba(255,255,255,.6);
+  --hero-feature-chip-val:    #ffffff;
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §2 — SECTION CONTAINER
+   Every section uses the same two-element wrapper:
+
+     <section class="wiki-section" data-tone="a">
+       <div class="wiki-section-inner">…content…</div>
+     </section>
+
+   .wiki-section       → outer; carries background + divider
+   .wiki-section-inner → inner; carries max-width + padding
+
+   Box rules mirror the hero container in wiki-home.css (§3) so
+   content edges align at every viewport size. If you change the
+   horizontal padding or max-width here, update wiki-home.css §3
+   to match (or centralise into a shared variable later).
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-section-inner {
+  margin-inline: auto;
+  max-width: 1320px;           /* default — laptop and below */
+  padding: 64px 24px;          /* mobile: 64px vertical, 24px horizontal */
+}
+
+@media (min-width: 768px) {
+  .wiki-section-inner {
+    padding: 64px 72px;        /* desktop: wider air at large viewports */
+  }
+}
+
+@media (min-width: 1600px) {
+  .wiki-section-inner {
+    max-width: 1500px;         /* big monitors get the wider cap */
+  }
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §2-b — FULL-BLEED SCROLLER  (canonical edge-to-edge rail / timeline)
+   ════════════════════════════════════════════════════════════════════
+   For horizontal scrollers (timelines, photo rails) meant to run off the
+   screen edge. Put this on the SCROLL container, placed INSIDE a normal
+   .wiki-section-inner — so the eyebrow/title above it keep the standard
+   gutters, while the scroller itself spans the FULL viewport: it starts at
+   the left screen edge and runs off both edges as it scrolls. One canonical
+   treatment for every full-bleed visual — edit here once.
+   ════════════════════════════════════════════════════════════════════ */
+.wiki-section-bleed {
+  margin-inline: calc(50% - 50vw);   /* full-viewport width: the track starts at the left
+                                        screen edge and runs off both edges (the eyebrow/title
+                                        above it keep the normal section gutters). */
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §3 — BACKGROUND TONAL ALTERNATION + SECTION DIVIDER
+   Sections alternate between tone-a and tone-b panels. The divider
+   is a 1px border-bottom whose color comes from the skin token.
+   The hero does NOT participate — it has its own background system.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* Each toned section also exposes its own background as --panel-bg, so a
+   panel-aware component (e.g. an infobox) can fill itself to match whatever
+   tone it is sitting on. */
+.wiki-section[data-tone="a"]       { background: var(--section-tone-a);       --panel-bg: var(--section-tone-a); }
+.wiki-section[data-tone="b"]       { background: var(--section-tone-b);       --panel-bg: var(--section-tone-b); }
+.wiki-section[data-tone="special"] { background: var(--section-tone-special); --panel-bg: var(--section-tone-special); }
+
+.wiki-section {
+  border-bottom: 1px solid var(--section-divider, transparent);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §4 — PAGE WRAPPER + SECTION ORDERING  (THE WIKI-HOME CANON)
+   ════════════════════════════════════════════════════════════════════
+   .wiki-home is the flex-column wrapper that holds every section on a
+   wiki home page. Because it is the flex container, the `order:` values
+   below decide RENDER order regardless of the order sections appear in
+   the source HTML — so a contributor cannot break the canonical layout
+   by writing sections in the wrong order.
+
+   THE CANON (render order, top → bottom):
+     order   0   hero       — the page header                 [universal]
+     order  10   browse     — entry directory / index         [universal]
+     order  20   overview   — topic introduction              [universal]
+     order 30–80 freeform   — each wiki's own sections,        [skin-owned]
+                              ordered in its skin file via
+                              body.wiki-{name} .wiki-section[data-section=…]
+     order  90   seealso    — cross-references (optional)      [universal]
+     order 100   footer     — always dead last                [universal]
+
+   Contract: the first three (hero → browse → overview), seealso, and the
+   footer are FIXED here and identical on every wiki. Everything between
+   overview (20) and seealso (90) is the wiki's own — a skin assigns those
+   sections order values in the 30–80 band. Keep universal order numbers
+   spaced so skins have room (35, 40, 45…).
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-home {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Hero pinned first — explicit order prevents footer floating up */
+.wiki-home > .wiki-hero  { order: 0; }
+
+/* Universal canon sections — scoped to .wiki-home so these order values
+   only apply on home pages. A sub-page's overview/other sections render
+   in normal document flow, unaffected by this ordering. */
+.wiki-home > .wiki-section[data-section="browse"]   { order: 10; }   /* entry directory */
+.wiki-home > .wiki-section[data-section="overview"] { order: 20; }   /* topic introduction */
+.wiki-home > .wiki-section[data-section="seealso"]  { order: 90; }   /* cross-references — always last */
+
+/* Footer pinned absolutely last */
+.wiki-home > footer { order: 100; }
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §5 — SECTION EYEBROW
+   The small mono label that sits above every section H2.
+   Supports an optional icon (12×12px) as a direct child <i> or <svg>.
+   line-height is pinned to 12px to match the icon height exactly,
+   which keeps dependent offsets (e.g. infobox margin-top) accurate.
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: var(--t-label-size);             /* type scale · Label */
+  font-weight: var(--t-label-weight);
+  line-height: 12px;           /* pinned to icon height — do not change without
+                                  also updating the infobox margin-top offset */
+  letter-spacing: var(--t-label-tracking);
+  text-transform: uppercase;
+  color: var(--eyebrow-color, currentColor);
+}
+
+/* Icon slot — each eyebrow can carry its own 12×12 icon */
+.wiki-section-eyebrow > i,
+.wiki-section-eyebrow > svg {
+  width: 12px;
+  height: 12px;
+  flex: none;
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §6 — SECTION H2 TITLE
+   Fraunces display serif. 30px mobile → 36px desktop.
+   Sits tight below the eyebrow (margin-top: 0) so the two read
+   as one typographic unit rather than separate elements.
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-section-title {
+  font-family: 'Fraunces', 'Spectral', Georgia, serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+  font-size: var(--t-title-size);   /* type scale · Title (30 → 36 ≥768, the token scales it) */
+  font-weight: var(--t-title-weight);
+  line-height: var(--t-title-leading);
+  letter-spacing: var(--t-title-tracking);
+  margin-top: 0;               /* flush to eyebrow — reads as one unit */
+  color: var(--section-title-color, currentColor);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §6-b — SECTION SUBTITLE  (the site's <h3>: a sub-heading)
+   ════════════════════════════════════════════════════════════════════
+   A sub-heading that introduces a sub-topic *within* a section's prose,
+   typically followed by body text (e.g. each item in a Controversies
+   section). One canonical style sitewide. Supports an optional 12×12 icon
+   as a direct child, like the eyebrow.
+   ════════════════════════════════════════════════════════════════════ */
+.wiki-section-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 32px 0 8px;
+  font-family: 'Fraunces', 'Spectral', Georgia, serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+  font-size: var(--t-subtitle-size);   /* type scale · Subtitle (17 → 19 ≥768) */
+  font-weight: var(--t-subtitle-weight);
+  line-height: var(--t-subtitle-leading);
+  letter-spacing: var(--t-subtitle-tracking);
+  color: var(--section-title-color, currentColor);
+}
+.wiki-section-subtitle > i,
+.wiki-section-subtitle > svg { width: 12px; height: 12px; flex: none; }
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §7 — SECTION PROSE
+   Body copy that follows a section title. Max-width keeps lines
+   readable (65ch ≈ 60–70 characters). Paragraph spacing is applied
+   via adjacent sibling selector so it only appears between paragraphs,
+   not after the last one.
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-section-prose {
+  margin-top: 24px;            /* breathing room from the title above */
+  max-width: 65ch;             /* comfortable reading line length */
+  font-size: var(--wiki-prose-size);      /* the universal prose-size switch (§1 :root) */
+  line-height: var(--wiki-prose-leading);
+  color: var(--prose-color, currentColor);
+}
+
+.wiki-section-prose > p + p {
+  margin-top: 20px;            /* inter-paragraph rhythm */
+}
+
+.wiki-section-prose strong {
+  color: var(--prose-strong-color, currentColor);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §9 — HERO CONTAINER SIZING
+   Shared dimensions for every wiki hero — home page AND sub-pages.
+   The horizontal padding matches the section container (§2) exactly
+   so all content edges align across every page type.
+
+   What stays in wiki-home.css:
+     · The two-column grid layout (1.5fr / 1fr) — home only
+     · The spotlight, stat grid, search bar components — home only
+     · Colors and backgrounds — skin's job
+
+   What lives here:
+     · The container dimensions any hero needs wherever it appears
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.wiki-hero-inner {
+  position: relative;
+  margin-inline: auto;
+  max-width: 1320px;
+  padding: 64px 24px;          /* mobile: matches section container */
+}
+
+@media (min-width: 768px) {
+  .wiki-hero-inner {
+    padding: 64px 72px;        /* desktop: matches section container */
+  }
+}
+
+@media (min-width: 1600px) {
+  .wiki-hero-inner {
+    max-width: 1500px;
+  }
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §10 — HERO EYEBROW PILL
+   The small mono pill that sits above the H1 on any hero.
+   Sizing and shape are universal; colors come from the skin.
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--hero-eyebrow-border);
+  background: var(--hero-eyebrow-bg);
+  color: var(--hero-eyebrow-text);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: var(--t-label-size);             /* type scale · Label */
+  font-weight: var(--t-label-weight);
+  text-transform: uppercase;
+  letter-spacing: var(--t-label-tracking);
+}
+
+.wiki-hero-eyebrow-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--hero-eyebrow-dot);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §11 — HERO H1 TITLE
+   Fraunces display serif, fluid size via clamp().
+   Used on every wiki hero — home, sub-pages, sub-sub-pages.
+   Color comes from the skin (--hero-title-color).
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-hero-title {
+  margin: 0;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: var(--t-display-size);   /* type scale · Display (clamp 48 → 96) */
+  font-weight: var(--t-display-weight);
+  line-height: var(--t-display-leading);
+  letter-spacing: var(--t-display-tracking);
+  color: var(--hero-title-color);
+}
+
+.wiki-hero-title-accent {
+  color: var(--hero-title-accent);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §11b — HERO SUB-H1 (subtitle line)
+   An optional secondary headline under the H1 — e.g. an edition, a
+   generation, a model line (the iPod "(7th generation) · Model A2178").
+   Uses the universal `title` document role so it's under master control
+   like every other heading. Optional mono `-meta` tag after a separator.
+   Color comes from the skin (--hero-subtitle-* tokens).
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-hero-subtitle {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: var(--t-title-size);        /* type scale · Title */
+  font-weight: var(--t-title-weight);
+  line-height: var(--t-title-leading);
+  letter-spacing: var(--t-title-tracking);
+  color: var(--hero-subtitle-color, var(--hero-title-color, currentColor));
+}
+
+.wiki-hero-subtitle-sep {
+  color: var(--hero-subtitle-sep, var(--hero-title-accent));
+}
+
+.wiki-hero-subtitle-meta {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: var(--t-label-size);        /* type scale · Label */
+  font-weight: var(--t-label-weight);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--hero-subtitle-meta, var(--hero-desc-color));
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   §11c — DARK HERO TREATMENT  (.wiki-hero.hero-dark)
+   Opt-in modifier for heroes on a dark background that don't get their
+   text colour from a skin sheet: flips text to white-on-dark and gives
+   the eyebrow a frosted-glass fill. (Stat-grid tokens already default to
+   the dark-hero palette, so they're left untouched.) Skins/pages that set
+   their own hero colours don't need this.
+   ════════════════════════════════════════════════════════════════════ */
+.wiki-hero.hero-dark {
+  color: #ffffff;
+  --hero-desc-color:     rgba(255,255,255,.85);
+  --hero-eyebrow-bg:     rgba(255,255,255,.1);
+  --hero-eyebrow-border: rgba(255,255,255,.3);
+}
+.wiki-hero.hero-dark .wiki-hero-eyebrow {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §12 — HERO DESCRIPTION
+   The intro paragraph below the H1. 18px, capped at 36rem.
+   Used on any hero that has a description — home or sub-page.
+   Color comes from the skin (--hero-desc-color).
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-hero-desc {
+  margin: 24px 0 0;
+  max-width: 36rem;
+  font-size: var(--t-lead-size);   /* type scale · Lead (18, constant) */
+  line-height: var(--t-lead-leading);
+  color: var(--hero-desc-color);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §13 — STAT GRID (1×4)
+   The four-cell band showing key numbers (entries, etc.).
+   Appears on main wiki heroes, sub-page heroes, and some sub-sub-
+   page heroes — wherever the HTML is included.
+   Pages without it simply don't include the markup; the CSS is
+   harmless. Sizing and structure are universal; colors are skin-owned.
+
+   Desktop: 4 columns, single row. Mobile (≤767px): a 2×2 grid (the 1×4
+   was too cramped on narrow screens). The 1px gaps act as dividers via the
+   wrapper background bleeding through the gap (set --hero-stat-wrapper-bg
+   in the skin).
+
+   margin-top: 40px assumes placement after a description or search
+   bar. Override locally if the grid appears in a different context.
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  overflow: hidden;
+  margin-top: 40px;
+  max-width: 36rem;
+  border-radius: 4px;
+  border: 1px solid var(--hero-stat-wrapper-border, rgba(255,255,255,.18));
+  background: var(--hero-stat-wrapper-bg, rgba(255,255,255,.18));
+}
+
+.wiki-hero-stat {
+  padding: 12px;
+  background: var(--hero-stat-cell-bg, rgba(0,0,0,.25));
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.wiki-hero-stat-num {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--hero-stat-num, currentColor);
+  line-height: 1.1;
+}
+
+.wiki-hero-stat-label {
+  margin-top: 2px;
+  color: var(--hero-stat-label, rgba(255,255,255,.6));
+}
+
+/* Mobile — break the 1×4 into a 2×2 grid so the cells aren't cramped.
+   The 1px gaps still bleed the wrapper bg → a centered divider cross.
+   (Desktop stays 1×4, untouched.) */
+@media (max-width: 767px) {
+  .wiki-hero-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .wiki-hero-stat {
+    padding: 14px 16px;
+    font-size: 9px;
+    letter-spacing: 0.05em;
+  }
+  .wiki-hero-stat-num {
+    font-size: 22px;
+  }
+  .wiki-hero-stat-label {
+    font-size: 9px;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   §14 — HERO ASIDE + SPOTLIGHT BANK  (optional, universal)
+   ════════════════════════════════════════════════════════════════════
+   A hero may carry an optional aside holding a "spotlight". The spotlight
+   is a small BANK of swappable treatments — same idea as the infobox bank:
+     • treatment 1 — .wiki-hero-spotlight  (card: eyebrow/title/desc/tags/cta;
+                       the Taco Bell home "Cantina Chicken" style)
+     • treatment 2 — .wiki-hero-feature     (the Taco Bell sauces "Diablo"
+                       style: label row, big title, desc, 3 stat chips)
+   Structure is universal; every color comes from skin tokens. Opt into a
+   treatment by using its classes. The bank can grow over time.
+
+   Two-column hero is opt-in: when .wiki-hero-inner contains a
+   .wiki-hero-aside it becomes content | aside; otherwise single-column.
+   ════════════════════════════════════════════════════════════════════ */
+.wiki-hero-inner:has(> .wiki-hero-aside) { display: grid; gap: 32px; }
+@media (min-width: 768px) {
+  .wiki-hero-inner:has(> .wiki-hero-aside) { grid-template-columns: 1.5fr 1fr; }
+}
+.wiki-hero-content { min-width: 0; }   /* lets max-width children clamp in-grid */
+.wiki-hero-aside { align-self: start; padding-right: 16px; }
+@media (max-width: 767px) { .wiki-hero-aside { padding-right: 0; } }
+
+/* ── Spotlight treatment 1 — CARD ─────────────────────────────────── */
+.wiki-hero-spotlight {
+  padding: 20px;
+  border-radius: 4px;
+  border: 1px solid var(--hero-spotlight-border);
+  background: var(--hero-spotlight-bg);
+}
+.wiki-hero-spotlight-eyebrow {
+  margin-bottom: 12px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--hero-spotlight-eyebrow);
+}
+.wiki-hero-spotlight-title {
+  margin: 0;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--hero-spotlight-title);
+}
+.wiki-hero-spotlight-desc {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--hero-spotlight-desc);
+}
+.wiki-hero-spotlight-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.wiki-hero-spotlight-tag {
+  padding: 2px 8px;
+  border-radius: 3px;
+  border: 1px solid var(--hero-spotlight-tag-border);
+  background: var(--hero-spotlight-tag-bg);
+  color: var(--hero-spotlight-tag-text);
+}
+.wiki-hero-spotlight-cta {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--hero-spotlight-cta-bg);
+  color: var(--hero-spotlight-cta-text);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background .15s ease;
+}
+.wiki-hero-spotlight-cta:hover { background: var(--hero-spotlight-cta-hover-bg); }
+
+/* ── Spotlight treatment 2 — FEATURE (label row · big title · chips) ── */
+.wiki-hero-feature {
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  border-radius: 6px;
+  border: 1px solid var(--hero-feature-border);
+  background: var(--hero-feature-bg);
+}
+.wiki-hero-feature-halftone {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(var(--hero-feature-halftone) 1.4px, transparent 1.6px);
+  background-size: 10px 10px;
+  opacity: 0.25;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+.wiki-hero-feature-body { position: relative; }
+.wiki-hero-feature-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--hero-feature-label);
+}
+.wiki-hero-feature-title {
+  margin: 0;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--hero-feature-title);
+}
+.wiki-hero-feature-desc {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--hero-feature-desc);
+}
+.wiki-hero-feature-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 16px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.wiki-hero-feature-chip {
+  padding: 6px 8px;
+  border-radius: 2px;
+  border: 1px solid var(--hero-feature-chip-border);
+  background: var(--hero-feature-chip-bg);
+}
+.wiki-hero-feature-chip-key { color: var(--hero-feature-chip-key); }
+.wiki-hero-feature-chip-val { color: var(--hero-feature-chip-val); }
+
+
+/* ════════════════════════════════════════════════════════════════════
+   FIRST-CHILD MARGIN RESET
+   When the eyebrow or title is the very first element inside
+   .wiki-section-inner, its top margin would add to the section's
+   64px padding — resulting in too much space. This reset removes
+   that margin so the first element always sits flush against the
+   64px top padding, keeping vertical rhythm consistent.
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-section-inner > *:first-child,
+.wiki-section-inner > *:first-child > *:first-child {
+  margin-top: 0;
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §15 — OVERVIEW (master section structure)
+   ════════════════════════════════════════════════════════════════════
+   The canonical Overview section: a content column (.wiki-overview-prose)
+   plus an OPTIONAL infobox (.wiki-infobox — defined as its own standalone
+   component in §15-INFOBOX below). The layout adapts to the infobox:
+     • WITH infobox    → prose (left) | infobox (right)
+     • WITHOUT infobox → body prose flows into two newspaper-style columns
+                         (eyebrow + title stay full-width above)
+   So the infobox is an opt-in slot, not a requirement.
+
+   This section owns ONLY the overview layout (the grid + how it positions
+   an embedded infobox). The infobox's own format lives in §15-INFOBOX so
+   it can be reused outside an overview.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── Grid wrapper ───────────────────────────────────────────────── */
+.wiki-overview {
+  display: grid;
+  gap: 48px;
+  grid-template-columns: 1fr;   /* default: single column (prose only) */
+}
+
+/* The infobox is an OPTIONAL slot; the overview adapts to its presence
+   with no modifier class (:has):
+     • WITH an infobox  → two columns: prose (left) | infobox (right)
+     • WITHOUT an infobox → the body prose flows into two newspaper-style
+       columns to fill the full width (eyebrow + title stay full-width above). */
+@media (min-width: 768px) {
+  .wiki-overview:has(> .wiki-infobox) {
+    grid-template-columns: 1.6fr 1fr;
+  }
+  .wiki-overview:not(:has(> .wiki-infobox)) .wiki-section-prose {
+    max-width: none;        /* drop the single-column reading cap */
+    columns: 2;
+    column-gap: 48px;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   §15-INFOBOX — INFOBOX (standalone bank component — BANK TYPE #1)
+   ════════════════════════════════════════════════════════════════════
+   A self-contained, parent-agnostic component: a key/value fact panel
+   with a header (label + title) and an OPTIONAL status badge (§15-b).
+   Used inside the overview today, but reusable anywhere. Edit here once
+   and every infobox sitewide updates. Colors come from skin tokens:
+     --infobox-bg / -border / -header-bg / -label-color / -title-color
+     --infobox-key-color / -value-color / -divider
+     --infobox-badge-border / -badge-color   (optional badge)
+   (When the bank grows, this block moves to its own _bank/infobox.css.)
+   ════════════════════════════════════════════════════════════════════ */
+/* ── Infobox container ──────────────────────────────────────────── */
+.wiki-infobox {
+  align-self: start;
+  background: var(--infobox-bg, transparent);
+  border: 1px solid var(--infobox-border, transparent);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* On desktop (side-by-side grid), drop the infobox down so it sits lower
+   in its column. On mobile the infobox stacks below the prose, so this
+   offset must NOT apply there. */
+@media (min-width: 768px) {
+  /* Scoped to the overview grid so the infobox COMPONENT stays
+     parent-agnostic — reusable in any layout without inheriting this
+     grid-specific offset. */
+  .wiki-overview > .wiki-infobox {
+    margin-top: 54px;
+  }
+}
+
+/* ── Infobox header band ────────────────────────────────────────── */
+.wiki-infobox-header {
+  padding: 12px 16px;
+  background: var(--infobox-header-bg, transparent);
+  border-bottom: 1px solid var(--infobox-divider, transparent);
+}
+
+.wiki-infobox-label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--infobox-label-color, currentColor);
+}
+
+.wiki-infobox-title {
+  font-family: 'Fraunces', 'Spectral', Georgia, serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-top: 2px;
+  color: var(--infobox-title-color, currentColor);
+}
+
+/* ── Infobox data list (dl) with row dividers ───────────────────── */
+.wiki-infobox-data {
+  margin: 0;
+  padding: 0 16px;
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  row-gap: 0;       /* no row gap — border-top handles separation */
+  column-gap: 0;    /* no column gap so border-top spans across both columns */
+}
+
+.wiki-infobox-data > dt,
+.wiki-infobox-data > dd {
+  padding: 12px 0;
+  margin: 0;
+  border-top: 1px solid var(--infobox-divider, transparent);
+}
+
+/* Visual column separation: pad <dt> on the right so key + value
+   aren't flush against each other (borders still connect underneath). */
+.wiki-infobox-data > dt {
+  padding-right: 16px;
+}
+
+/* Remove top border from first row (the row right under the header band) */
+.wiki-infobox-data > dt:first-of-type,
+.wiki-infobox-data > dt:first-of-type + dd {
+  border-top: 0;
+}
+
+.wiki-infobox-data > dt {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--infobox-key-color, currentColor);
+}
+
+.wiki-infobox-data > dd {
+  font-size: 14px;
+  color: var(--infobox-value-color, currentColor);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §15-b — OPTIONAL STATUS BADGE (chip)
+   ════════════════════════════════════════════════════════════════════
+   An OPT-IN slot of the infobox type: rendered only when an instance
+   supplies badge text (e.g. "Discontinued · July 2015"). Sits below the
+   data list. This is an optional add-on of the ONE canonical infobox —
+   not a separate variant. Colors come from skin tokens, with safe
+   fallbacks to the infobox's own divider/key colors.
+
+   Tokens (skin-defined, optional):
+     --infobox-badge-border
+     --infobox-badge-color
+   ════════════════════════════════════════════════════════════════════ */
+.wiki-infobox-badge {
+  display: inline-block;
+  margin: 14px 16px 16px;
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 1px solid var(--infobox-badge-border, var(--infobox-divider, currentColor));
+  color: var(--infobox-badge-color, var(--infobox-key-color, currentColor));
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   §17 — UNIVERSAL ICON  (sprite-referenced inline SVG)
+   ════════════════════════════════════════════════════════════════════
+   The site's one icon mechanism: <svg class="wiki-icon"><use href="#ic-NAME">
+   </use></svg>, where every icon is defined once in _includes/icon-sprite.html
+   (injected per page from default.html). Stroke style matches the Lucide set.
+   Sizes to 1em by default; context can override (the section eyebrow sizes its
+   icon to 12px in §5). No CDN, no runtime JS.
+   ════════════════════════════════════════════════════════════════════ */
+.wiki-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
