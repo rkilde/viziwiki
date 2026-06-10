@@ -199,6 +199,10 @@
           "label": {
             "type": "text",
             "required": true
+          },
+          "color": {
+            "type": "color",
+            "help": "Optional per-stat number colour (content hex or skin swatch)"
           }
         },
         "spotlight": {

@@ -72,7 +72,7 @@ components:
       feature:       { type: feature,   help: "Optional feature aside (advanced — the feature bank)",
                        blank: { head_left: "Featured", title: "Feature title", desc: "Write a short description.", chips: [{ key: "Label", val: "Value" }, { key: "Label", val: "Value" }, { key: "Label", val: "Value" }] } }
     subtypes:
-      stat: { num: { type: text, required: true }, label: { type: text, required: true } }
+      stat: { num: { type: text, required: true }, label: { type: text, required: true }, color: { type: color, help: "Optional per-stat number colour (content hex or skin swatch)" } }
       spotlight:                  # hero card — treatment 1 · CALL-TO-ACTION CARD (wiki-hero-spotlight)
         eyebrow:  { type: text, blank: "Spotlight" }
         title:    { type: text, required: true, blank: "Spotlight title" }
