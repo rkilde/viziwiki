@@ -12,6 +12,9 @@ const AFFORDANCE = `
        outline:2px solid transparent; outline-offset:2px; transition:outline-color .12s; }
   .ce:hover{ outline-color:rgba(0,0,0,.18); }
   .ce:focus{ outline-color:rgba(0,113,227,.55); }
+  /* light pack — applied (via JS) when the field sits on a dark/gradient bg */
+  .ce.on-dark:hover{ outline-color:rgba(255,255,255,.42); }
+  .ce.on-dark:focus{ outline-color:rgba(130,185,255,.95); }
 
   /* corner controls — hidden until you hover the element they belong to */
   .pe-removable,.pe-locked{ position:relative; }
@@ -23,8 +26,10 @@ const AFFORDANCE = `
   .pe-lock{ border:1px solid rgba(0,0,0,.12); background:#fff; color:rgba(0,0,0,.34); cursor:default; }
   .pe-lock svg{ width:10px; height:10px; }
   /* canon-locked (can't edit AND can't delete): red box on hover + padlock */
-  .pe-canon{ position:relative; width:fit-content; max-width:100%; cursor:not-allowed; border-radius:2px; }
-  .pe-canon:hover{ outline:2px solid rgba(220,48,48,.5); outline-offset:2px; }
+  .pe-canon{ position:relative; width:fit-content; max-width:100%; cursor:not-allowed; border-radius:2px;
+    outline:2px solid transparent; outline-offset:2px; transition:outline-color .12s; }
+  .pe-canon:hover{ outline-color:rgba(220,48,48,.5); }
+  .pe-canon.on-dark:hover{ outline-color:rgba(255,120,120,.85); }
   .pe-canon:hover > .pe-lock{ opacity:.9; }
 
   .pe-tag-rm{ display:inline-flex; align-items:center; justify-content:center; width:14px; height:14px; border-radius:50%;
@@ -209,7 +214,16 @@ export function buildCanvas(doc: PageDoc): string {
 function P(p,el){try{window.parent.__peField(p,el.innerHTML)}catch(e){}}
 function A(a){try{window.parent.__peAction(a)}catch(e){}}
 function H(){try{window.parent.__peResize(document.documentElement.scrollHeight)}catch(e){}}
-window.addEventListener('load',function(){H();try{new ResizeObserver(H).observe(document.body)}catch(e){}});
+// relative luminance (0=black,1=white) of "r,g,b" channels
+function LUM(r,g,b){var f=function(c){c/=255;return c<=0.03928?c/12.92:Math.pow((c+0.055)/1.055,2.4)};return 0.2126*f(r)+0.7152*f(g)+0.0722*f(b)}
+// pull every "rgb/rgba(r,g,b[,a])" out of a CSS value, return [{r,g,b,a}]
+function COLORS(s){var out=[],re=/rgba?\\(([^)]+)\\)/g,m;while((m=re.exec(s))){var p=m[1].split(',').map(function(v){return parseFloat(v)});out.push({r:p[0],g:p[1],b:p[2],a:p.length>3?p[3]:1})}return out}
+// effective background luminance behind an element: walk ancestors; first solid
+// bg-color (alpha>.35) wins; else average any gradient colors in bg-image. Default light.
+function effLum(el){var n=el;while(n&&n!==document.documentElement){var st=getComputedStyle(n);var bc=COLORS(st.backgroundColor);if(bc.length&&bc[0].a>0.35)return LUM(bc[0].r,bc[0].g,bc[0].b);var gc=COLORS(st.backgroundImage);if(gc.length){var t=0,c=0;for(var i=0;i<gc.length;i++){if(gc[i].a>0.1){t+=LUM(gc[i].r,gc[i].g,gc[i].b);c++}}if(c)return t/c}n=n.parentElement}return 1}
+// tag each edit box on-dark when it sits on a dark background → light color pack
+function tagDark(){var els=document.querySelectorAll('.ce,.pe-canon');for(var i=0;i<els.length;i++)els[i].classList.toggle('on-dark',effLum(els[i])<0.5)}
+window.addEventListener('load',function(){H();tagDark();try{new ResizeObserver(H).observe(document.body)}catch(e){}try{new MutationObserver(function(){requestAnimationFrame(tagDark)}).observe(document.body,{childList:true,subtree:true})}catch(e){}});
 </script>
 </head>
 <body class="wiki-page wiki-taco-bell" style="overflow-x:hidden">${buildBody(doc)}</body></html>`;
