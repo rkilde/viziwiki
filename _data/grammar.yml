@@ -307,7 +307,7 @@ components:
         info:    { type: text, blank: "Info" }
         desc:    { type: richtext, blank: "What it is." }
         groups:  { type: "list<pill_group>", item_blank: { label: "Group", pills: ["Pill"] } }
-        callout: { type: callout, blank: { label: "Callout", text: "Write the callout…" } }
+        callout: { type: callout, blank: { label: "Callout", text: "A short highlighted callout." } }
         notes:   { type: richtext, blank: "Write a note…" }
         cta:     { type: url, blank: "#", help: "Link for 'See full entry' — inert until the item has a page" }
       pill_group: { label: { type: text, blank: "Group" }, pills: { type: "list<pill>", item_blank: "Pill" } }

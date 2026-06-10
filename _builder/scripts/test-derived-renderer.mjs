@@ -226,7 +226,17 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(richDet.querySelector('.chip.info .ce'), 'info chip editable (inline)');
   ok(richDet.querySelector('.modal-group-label .ce'), 'group label editable');
   ok(richDet.querySelectorAll('.gpill .ce').length === 2, 'string + object pills both editable');
-  ok([...richDet.querySelectorAll('.gpill .pe-tag-rm')].some((b) => b.textContent === 'S'), 'struck toggle on the object pill');
+  const gpills = [...richDet.querySelectorAll('.gpill')];
+  ok(gpills.every((g) => g.querySelector('.gpill-menu')), 'each pill has the ⋯ options menu');
+  const lastPop = () => [...d.querySelectorAll('.cc-pop.pill-pop')].pop();
+  gpills[1].querySelector('.gpill-menu').onclick({ stopPropagation() {} });   // object (struck) pill
+  let pp = lastPop();
+  ok(pp, '⋯ opens the pill options popover');
+  ok([...pp.querySelectorAll('.cc-row')].some((r) => r.textContent === 'Remove strike'), 'struck object pill offers "Remove strike"');
+  ok(pp.querySelector('.cc-row.danger'), 'Remove (danger) row');
+  gpills[0].querySelector('.gpill-menu').onclick({ stopPropagation() {} });   // string pill
+  pp = lastPop();
+  ok(!pp.querySelector('[data-a="strike"]'), 'string pill: no strike option (only Remove)');
   ok([...richDet.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === '+ item'), '+ item (pill add)');
   ok(richDet.querySelector('.pe-adds'), 'bottom adders row present');
   ok([...richDet.querySelectorAll('.pe-adds .pe-mini-add')].some((b) => b.textContent === '+ group'), '+ group in adders row');

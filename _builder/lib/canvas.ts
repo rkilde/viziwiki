@@ -126,6 +126,23 @@ const AFFORDANCE = `
   .pe-removeitem{ margin-left:auto; border:1px dashed rgba(160,90,82,.5); background:none; padding:7px 11px; border-radius:8px; cursor:pointer;
     font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:#a05a52; }
   .pe-removeitem:hover{ background:rgba(160,90,82,.1); }
+  /* callout + note are full-width content BLOCKS (the box / hairline divider
+     span the card) — the text field inside stays content-width. Their × is
+     inset (they aren't shrink-wrapped). */
+  .modal-callout.pe-removable, .modal-note.pe-removable{ width:auto; max-width:none; }
+  .modal-scroll .pe-removable > .pe-remove{ top:6px; right:6px; left:auto; }
+  .gpill.struck .ce{ text-decoration:line-through; }
+  /* group-pill control: a hover ⋯ menu (→ strike / remove popover) */
+  .gpill{ position:relative; }
+  .gpill-menu{ border:0; background:transparent; color:inherit; cursor:pointer; font-size:12px; line-height:1; padding:0 0 0 2px; margin-left:1px;
+    opacity:0; max-width:0; overflow:hidden; transition:opacity .12s, max-width .12s; }
+  .gpill:hover .gpill-menu, .gpill:focus-within .gpill-menu{ opacity:.55; max-width:16px; }
+  .gpill-menu:hover{ opacity:1 !important; }
+  .cc-pop.pill-pop{ min-width:150px; padding:6px; }
+  .cc-row{ display:block; width:100%; text-align:left; padding:8px 10px; border:0; border-radius:8px; background:transparent; cursor:pointer;
+    font-family:'JetBrains Mono',monospace; font-size:9px; font-weight:500; letter-spacing:.08em; text-transform:uppercase; color:#574c40; }
+  .cc-row:hover{ background:rgba(255,255,255,.6); color:#241a10; }
+  .cc-row.danger{ color:#a0473f; } .cc-row.danger:hover{ background:rgba(160,71,63,.12); color:#922; }
   .pe-remove,.pe-lock{ position:absolute; top:-9px; right:-9px; width:18px; height:18px; border-radius:50%;
     display:flex; align-items:center; justify-content:center; line-height:1; opacity:0; transition:opacity .12s; z-index:4; }
   .pe-remove{ border:1px solid rgba(0,0,0,.18); background:#fff; color:rgba(0,0,0,.45); font-size:12px; cursor:pointer; }
@@ -301,8 +318,9 @@ export function applyAction(doc: PageDoc, action: string): void {
       break;
     }
     case 'push': {
-      const list = getAt(doc, arg);
-      if (Array.isArray(list)) list.push(itemBlankOf(polKeyFor(doc, arg)));
+      let list = getAt(doc, arg);
+      if (!Array.isArray(list)) { list = []; setAt(doc, arg, list); } // absent optional list → create it (e.g. + group on an item with none)
+      list.push(itemBlankOf(polKeyFor(doc, arg)));
       break;
     }
     case 'set': { // set:<path>:<value> — enum cycling / dropdowns / bool toggles

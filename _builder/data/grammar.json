@@ -1033,7 +1033,7 @@
             "type": "callout",
             "blank": {
               "label": "Callout",
-              "text": "Write the callout…"
+              "text": "A short highlighted callout."
             }
           },
           "notes": {

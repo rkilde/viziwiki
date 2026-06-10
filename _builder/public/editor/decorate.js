@@ -274,8 +274,18 @@
     (window.requestAnimationFrame || function (f) { setTimeout(f, 0); })(function () { pop.classList.add("in"); });
     pePop = pop; return pop;
   }
-  document.addEventListener('mousedown', function (e) { if (pePop && !pePop.contains(e.target) && !(e.target.closest && e.target.closest('.cc-btn,.pe-st-chip,.im-info-chip'))) closePop(); });
+  document.addEventListener('mousedown', function (e) { if (pePop && !pePop.contains(e.target) && !(e.target.closest && e.target.closest('.cc-btn,.pe-st-chip,.im-info-chip,.gpill-menu'))) closePop(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePop(); });
+
+  // group-pill action menu (mockup style): a small glass popover with
+  // Strike (object pills only) + Remove
+  function openPillPop(btn, accent, strikePath, isStruck, removePath) {
+    var html = (strikePath ? '<button class="cc-row" data-a="strike">' + (isStruck ? 'Remove strike' : 'Strike through') + '</button>' : '') +
+      '<button class="cc-row danger" data-a="remove">Remove</button>';
+    var pop = openPop(btn, accent, html, { cls: 'pill-pop' });
+    var st = pop.querySelector('[data-a="strike"]'); if (st) st.onclick = function () { closePop(); A('set:' + strikePath + ':' + (!isStruck)); };
+    pop.querySelector('[data-a="remove"]').onclick = function () { closePop(); A('rm:' + removePath); };
+  }
 
   // centre the item-editor modal card in the VISIBLE viewport (the canvas is a
   // tall iframe scrolled by the parent — fixed/inset:0 alone would mis-centre)
@@ -646,14 +656,13 @@
             var pillsDiv = gl.nextElementSibling;
             if (pillsDiv) {
               qsa('.gpill', pillsDiv).forEach(function (gp, pm) {
+                var ppath = ipre + 'groups.' + g + '.pills.' + pm;
                 var pdata = (((idata.groups || [])[g] || {}).pills || [])[pm];
-                if (pdata && typeof pdata === 'object') {
-                  wrapCE(gp, ipre + 'groups.' + g + '.pills.' + pm + '.text'); gp.classList.add('pe-removable');
-                  var sb = document.createElement('button'); sb.className = 'pe-tag-rm'; sb.textContent = 'S'; sb.title = pdata.struck ? 'Un-strike' : 'Strike through';
-                  (function (p, cur) { sb.onclick = function () { A('set:' + p + ':' + (!cur)); }; })(ipre + 'groups.' + g + '.pills.' + pm + '.struck', !!pdata.struck);
-                  gp.appendChild(sb);
-                } else { wrapCE(gp, ipre + 'groups.' + g + '.pills.' + pm); gp.classList.add('pe-removable'); }
-                (function (p) { var prm = document.createElement('button'); prm.className = 'pe-tag-rm'; prm.textContent = '×'; prm.title = 'Remove pill'; prm.onclick = function () { A('rm:' + p); }; gp.appendChild(prm); })(ipre + 'groups.' + g + '.pills.' + pm);
+                var isObj = pdata && typeof pdata === 'object';
+                wrapCE(gp, isObj ? ppath + '.text' : ppath);
+                var menu = document.createElement('button'); menu.className = 'gpill-menu'; menu.textContent = '⋯'; menu.title = 'Options'; menu.setAttribute('contenteditable', 'false');
+                (function (p, struck, obj) { menu.onclick = function (e) { e.stopPropagation(); openPillPop(menu, mAccent, obj ? p + '.struck' : null, !!struck, p); }; })(ppath, isObj && pdata.struck, isObj);
+                gp.appendChild(menu);
               });
               pillsDiv.appendChild(addBtn('push:' + ipre + 'groups.' + g + '.pills', '+ item', true));
             }
