@@ -1,13 +1,15 @@
 // THE DECORATOR — the builder's editing layer, attached AFTER the canonical
 // Liquid includes render the page. The markup it decorates comes from the
-// repo's own templates (see lib/render.ts); this file only adds editing
+// repo's own templates (see lib/render-core.mjs); this file only adds editing
 // affordances (grey/blue edit boxes, corner ×, padlocks, "+" slots) and binds
 // them to data paths.
 //
 // Derivation contract (CLAUDE.md standing rule #5):
 //  · WHAT renders + WHERE = the canonical includes (never restated here)
-//  · WHAT is allowed (locks, tone enum, fixed chip count) = window.__PE_GRAMMAR
-//    (generated from _data/grammar.yml)
+//  · WHAT is allowed = window.__PE_POLICY (flattened from _data/grammar.yml):
+//    removable = !required · list add/remove = min/max bounds · tone buttons =
+//    the enum · locks = the component's `locked` block. Flip a field's rule in
+//    grammar and this layer follows with NO edit here.
 //  · the tables below only REFERENCE canon identifiers (the wiki-* class names
 //    + data paths) to say where each affordance attaches — binding, not canon.
 //
@@ -17,24 +19,33 @@
 (function () {
   var LOCK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>';
 
-  // "+" slot specs, keyed by the add-action carried in the sentinel.
-  // root = the canonical element to replace (closest ancestor); no root =
-  // replace the sentinel-bearing element itself. kind: aside|infobox specials.
+  // policy lookup (mirror of lib/policy.mjs ruleFor — lookup protocol only,
+  // the RULES themselves live in the injected policy)
+  function ruleFor(path) {
+    var P = (window.__PE_POLICY || {}).fields || {};
+    var p = path.replace(/\.\d+(?=\.|$)/g, '[]');
+    return P[p] || (p.slice(-2) === '[]' ? P[p.slice(0, -2)] : null) || null;
+  }
+  var optional = function (path) { var r = ruleFor(path); return !r || !r.required; };
+
+  // "+" slot specs, keyed by the action carried in the sentinel. root = the
+  // canonical element to replace (closest ancestor); no root = replace the
+  // sentinel-bearing element itself. kind: aside|infobox specials.
   var SLOTS = {
-    addEyebrow:    { root: '.wiki-hero-eyebrow',           label: '+ eyebrow' },
-    addSubtitle:   { root: '.wiki-hero-subtitle',          label: '+ subtitle' },
-    addMeta:       { root: '.wiki-hero-subtitle-meta',     label: '+ meta', mini: true, alsoPrev: '.wiki-hero-subtitle-sep' },
-    addDesc:       { root: '.wiki-hero-desc',              label: '+ description' },
-    addSearch:     { root: '.wiki-hero-search',            label: '+ search bar' },
-    addStats:      { root: '.wiki-hero-stats',             label: '+ stats (1×4)' },
-    addAside:      { root: '.wiki-hero-aside',             kind: 'aside' },
-    spAddEyebrow:  { root: '.wiki-hero-spotlight-eyebrow', label: '+ eyebrow' },
-    spAddDesc:     { root: '.wiki-hero-spotlight-desc',    label: '+ description' },
-    ftAddHeadRight:{ label: '+ right', mini: true },
-    ftAddDesc:     { root: '.wiki-hero-feature-desc',      label: '+ description' },
-    addInfobox:    { root: '.wiki-infobox',                kind: 'infobox' },
-    addSublabel:   { label: '+ sublabel', mini: true },
-    addBadge:      { root: '.wiki-infobox-badge',          label: '+ badge', pad: '0 16px 14px' },
+    'add:hero.eyebrow':       { root: '.wiki-hero-eyebrow',           label: '+ eyebrow' },
+    'add:hero.subtitle':      { root: '.wiki-hero-subtitle',          label: '+ subtitle' },
+    'add:hero.subtitle_meta': { root: '.wiki-hero-subtitle-meta',     label: '+ meta', mini: true, alsoPrev: '.wiki-hero-subtitle-sep' },
+    'add:hero.desc':          { root: '.wiki-hero-desc',              label: '+ description' },
+    'add:hero.search':        { root: '.wiki-hero-search',            label: '+ search bar' },
+    'add:hero.stats':         { root: '.wiki-hero-stats',             label: '+ stats (1×4)' },
+    'addAside':               { root: '.wiki-hero-aside',             kind: 'aside' },
+    'add:hero.spotlight.eyebrow': { root: '.wiki-hero-spotlight-eyebrow', label: '+ eyebrow' },
+    'add:hero.spotlight.desc':    { root: '.wiki-hero-spotlight-desc',    label: '+ description' },
+    'add:hero.feature.head_right':{ label: '+ right', mini: true },
+    'add:hero.feature.desc':      { root: '.wiki-hero-feature-desc',      label: '+ description' },
+    'add:overview.infobox':       { root: '.wiki-infobox',                kind: 'infobox' },
+    'add:overview.infobox.sublabel': { label: '+ sublabel', mini: true },
+    'add:overview.infobox.badge':    { root: '.wiki-infobox-badge', label: '+ badge', pad: '0 16px 14px' },
   };
 
   // editable text bindings: data path ↔ canonical element (class-name contract)
@@ -44,7 +55,7 @@
     { path: 'hero.subtitle',           sel: '.wiki-hero-subtitle', excl: ['.wiki-hero-subtitle-sep', '.wiki-hero-subtitle-meta'] },
     { path: 'hero.subtitle_meta',      sel: '.wiki-hero-subtitle-meta' },
     { path: 'hero.desc',               sel: '.wiki-hero-desc' },
-    { path: 'hero.search_placeholder', sel: '.wiki-hero-search-input', input: true },
+    { path: 'hero.search_placeholder', sel: '.wiki-hero-search-input' },
     { path: 'hero.spotlight.eyebrow',  sel: '.wiki-hero-spotlight-eyebrow' },
     { path: 'hero.spotlight.title',    sel: '.wiki-hero-spotlight-title' },
     { path: 'hero.spotlight.desc',     sel: '.wiki-hero-spotlight-desc' },
@@ -60,20 +71,32 @@
     { path: 'overview.infobox.badge',  sel: '.wiki-infobox-badge' },
   ];
 
-  // removable elements (corner ×): canonical element ↔ remove action
-  var REMOVE = [
-    { sel: '.wiki-hero-eyebrow',           action: 'rmEyebrow' },
-    { sel: '.wiki-hero-subtitle',          action: 'rmSubtitle' },
-    { sel: '.wiki-hero-desc',              action: 'rmDesc' },
-    { sel: '.wiki-hero-search',            action: 'rmSearch' },
-    { sel: '.wiki-hero-stats',             action: 'rmStats' },
-    { sel: '.wiki-hero-spotlight-eyebrow', action: 'spRmEyebrow' },
-    { sel: '.wiki-hero-spotlight-desc',    action: 'spRmDesc' },
-    { sel: '.wiki-hero-feature-head > span:nth-child(2)', action: 'ftRmHeadRight', mini: true },
-    { sel: '.wiki-hero-feature-desc',      action: 'ftRmDesc' },
-    { sel: '.wiki-infobox',                action: 'rmInfobox' },
-    { sel: '.wiki-infobox-title ~ .wiki-infobox-label', action: 'rmSublabel' },
-    { sel: '.wiki-infobox-badge',          action: 'rmBadge' },
+  // removal roots: where the corner × attaches IF policy says the field is
+  // optional (removability itself is computed, not listed). sibling = the ×
+  // goes after the element (inline meta) instead of inside it.
+  var RM_ROOTS = [
+    { path: 'hero.eyebrow',           sel: '.wiki-hero-eyebrow' },
+    { path: 'hero.subtitle',          sel: '.wiki-hero-subtitle' },
+    { path: 'hero.subtitle_meta',     sel: '.wiki-hero-subtitle-meta', mini: true, sibling: true },
+    { path: 'hero.desc',              sel: '.wiki-hero-desc' },
+    { path: 'hero.search',            sel: '.wiki-hero-search' },
+    { path: 'hero.stats',             sel: '.wiki-hero-stats' },
+    { path: 'hero.spotlight.eyebrow', sel: '.wiki-hero-spotlight-eyebrow' },
+    { path: 'hero.spotlight.desc',    sel: '.wiki-hero-spotlight-desc' },
+    { path: 'hero.spotlight.cta',     sel: '.wiki-hero-spotlight-cta' }, // grammar: required → no × renders
+    { path: 'hero.feature.head_right', sel: '.wiki-hero-feature-head > span:nth-child(2)', mini: true, sibling: true },
+    { path: 'hero.feature.desc',      sel: '.wiki-hero-feature-desc' },
+    { path: 'overview.infobox',       sel: '.wiki-infobox' },
+    { path: 'overview.infobox.sublabel', sel: '.wiki-infobox-title ~ .wiki-infobox-label' },
+    { path: 'overview.infobox.badge', sel: '.wiki-infobox-badge' },
+  ];
+
+  // list bindings: items indexed by DOM order; add/remove per grammar bounds
+  var LISTS = [
+    { path: 'hero.stats',            item: '.wiki-hero-stat', parts: { num: '.wiki-hero-stat-num', label: '.wiki-hero-stat-label' } },
+    { path: 'hero.spotlight.tags',   container: '.wiki-hero-spotlight-tags', item: '.wiki-hero-spotlight-tag', whole: true, addLabel: '+ tag', mini: true },
+    { path: 'hero.feature.chips',    item: '.wiki-hero-feature-chip', parts: { key: '.wiki-hero-feature-chip-key', val: '.wiki-hero-feature-chip-val' } },
+    { path: 'overview.paragraphs',   container: '.wiki-section-prose', item: '.wiki-section-prose > p', whole: true, addLabel: '+ paragraph' },
   ];
 
   var qs = function (s, r) { return (r || document).querySelector(s); };
@@ -97,15 +120,13 @@
   // ── 1) sentinel pass: turn each sentinel-rendered element into a "+" slot ──
   function sentinelPass() {
     var token = window.__PE_SENT;
-    var re = new RegExp(token + '([A-Za-z:]+?)__');
+    var re = new RegExp(token + '([A-Za-z0-9_.:]+?)__');
     var found = [];
     qsa('*').forEach(function (el) {
-      // direct text children
       for (var i = 0; i < el.childNodes.length; i++) {
         var n = el.childNodes[i];
         if (n.nodeType === 3 && n.nodeValue.indexOf(token) > -1) { found.push({ el: el, m: re.exec(n.nodeValue) }); return; }
       }
-      // attributes (e.g. the search input's placeholder)
       if (el.placeholder && el.placeholder.indexOf(token) > -1) found.push({ el: el, m: re.exec(el.placeholder) });
     });
     found.forEach(function (f) {
@@ -123,7 +144,7 @@
       } else if (spec.kind === 'infobox') {
         target.className = 'wiki-infobox pe-empty';
         target.innerHTML = '<div class="pe-aside-empty"><div class="pe-aside-empty-label">Infobox · optional</div><div class="pe-add-row"></div></div>';
-        qs('.pe-add-row', target).appendChild(addBtn('addInfobox', '+ infobox'));
+        qs('.pe-add-row', target).appendChild(addBtn(action, '+ infobox'));
       } else {
         if (spec.alsoPrev && target.previousElementSibling && target.previousElementSibling.matches(spec.alsoPrev)) {
           target.previousElementSibling.remove();
@@ -166,21 +187,21 @@
     ce.addEventListener('blur', function () { P(path, ce); });
   }
 
-  // ── 3) removable → corner × ────────────────────────────────────────────────
-  function makeRemovable(el, action, mini, title) {
+  // ── 3) removable → corner × (only when grammar says the field is optional) ─
+  function makeRemovable(el, action, mini, sibling) {
     if (!el) return;
-    el.classList.add('pe-removable');
     var b = document.createElement('button');
     b.className = mini ? 'pe-tag-rm' : 'pe-remove';
-    b.title = title || 'Remove';
+    b.title = 'Remove';
     b.textContent = '×';
     b.onclick = function () { A(action); };
-    el.appendChild(b);
+    if (sibling) { el.parentNode.insertBefore(b, el.nextSibling); }
+    else { el.classList.add('pe-removable'); el.appendChild(b); }
   }
 
   // ── main ───────────────────────────────────────────────────────────────────
   window.__decorate = function () {
-    var G = window.__PE_GRAMMAR || {};
+    var POLICY = window.__PE_POLICY || {};
     sentinelPass();
 
     // hero card controls (both treatments are "cards" — canon naming)
@@ -206,79 +227,76 @@
     // editable fields
     EDIT.forEach(function (b) { wrapCE(qs(b.sel), b.path, b.excl); });
 
-    // lists (canonical structures, indexed by DOM order)
-    qsa('.wiki-hero-stat').forEach(function (item, i) {
-      wrapCE(qs('.wiki-hero-stat-num', item), 'hero.stats.' + i + '.num');
-      wrapCE(qs('.wiki-hero-stat-label', item), 'hero.stats.' + i + '.label');
-    });
-    var tags = qs('.wiki-hero-spotlight-tags');
-    if (tags) {
-      qsa('.wiki-hero-spotlight-tag', tags).forEach(function (t, i) {
-        wrapCE(t, 'hero.spotlight.tags.' + i);
-        makeRemovable(t, 'spRmTag:' + i, true);
+    // lists: item cells editable; add/remove COMPUTED from grammar min/max
+    LISTS.forEach(function (L) {
+      var items = qsa(L.item);
+      var bounds = ruleFor(L.path) || {};
+      var fixed = bounds.min != null && bounds.min === bounds.max;
+      var canRemove = !fixed && (bounds.min == null || items.length > bounds.min);
+      var canAdd = !fixed && (bounds.max == null || items.length < bounds.max);
+      items.forEach(function (item, i) {
+        if (L.whole) {
+          wrapCE(item, L.path + '.' + i);
+          if (canRemove) makeRemovable(item, 'rm:' + L.path + '.' + i, L.mini);
+        } else {
+          for (var part in L.parts) wrapCE(qs(L.parts[part], item), L.path + '.' + i + '.' + part);
+          if (canRemove) makeRemovable(item, 'rm:' + L.path + '.' + i, L.mini);
+        }
       });
-      tags.appendChild(addBtn('spAddTag', '+ tag', true));
-    }
-    // feature chips: count is FIXED by grammar (min==max) → no add/remove
-    var chipSpec = (((G.components || {}).hero || {}).subtypes || {}).feature; chipSpec = chipSpec && chipSpec.chips;
-    var chipsFixed = !chipSpec || chipSpec.min === chipSpec.max;
-    qsa('.wiki-hero-feature-chip').forEach(function (c, i) {
-      wrapCE(qs('.wiki-hero-feature-chip-key', c), 'hero.feature.chips.' + i + '.key');
-      wrapCE(qs('.wiki-hero-feature-chip-val', c), 'hero.feature.chips.' + i + '.val');
-      if (!chipsFixed) makeRemovable(c, 'ftRmChip:' + i);
+      if (canAdd && L.container && L.addLabel) {
+        var cont = qs(L.container);
+        if (cont) cont.appendChild(L.mini ? addBtn('push:' + L.path, L.addLabel, true) : addLine('push:' + L.path, L.addLabel));
+      }
     });
-    var prose = qs('.wiki-section-prose');
-    if (prose) {
-      qsa('.wiki-section-prose > p').forEach(function (p, i) {
-        wrapCE(p, 'overview.paragraphs.' + i);
-        makeRemovable(p, 'rmPara:' + i);
-      });
-      prose.appendChild(addLine('addPara', '+ paragraph'));
-    }
+    // infobox rows: dt/dd pairs (the [key, value] canon shape)
     var ibox = qs('.wiki-infobox');
     if (ibox && !ibox.classList.contains('pe-empty')) {
-      qsa('.wiki-infobox-data > dt', ibox).forEach(function (dt, i) {
+      var rowsRule = ruleFor('overview.infobox.rows') || {};
+      var dts = qsa('.wiki-infobox-data > dt', ibox);
+      dts.forEach(function (dt, i) {
         wrapCE(dt, 'overview.infobox.rows.' + i + '.0');
         var dd = dt.nextElementSibling;
-        if (dd) { wrapCE(dd, 'overview.infobox.rows.' + i + '.1'); makeRemovable(dd, 'rmRow:' + i); }
+        if (dd) {
+          wrapCE(dd, 'overview.infobox.rows.' + i + '.1');
+          if (rowsRule.min == null || dts.length > rowsRule.min) makeRemovable(dd, 'rm:overview.infobox.rows.' + i);
+        }
       });
-      var dl = qs('.wiki-infobox-data', ibox);
-      if (dl) dl.parentNode.insertBefore(addLine('addRow', '+ row', '8px 16px'), dl.nextSibling);
+      if (rowsRule.max == null || dts.length < rowsRule.max) {
+        var dl = qs('.wiki-infobox-data', ibox);
+        if (dl) dl.parentNode.insertBefore(addLine('push:overview.infobox.rows', '+ row', '8px 16px'), dl.nextSibling);
+      }
     }
 
-    // removables (skip ones the sentinel pass already replaced)
-    REMOVE.forEach(function (r) {
+    // removables — × attaches only where grammar says optional
+    RM_ROOTS.forEach(function (r) {
+      if (!optional(r.path)) return;
       var el = qs(r.sel);
       if (!el) return;
-      if (r.sel === '.wiki-infobox' && el.classList.contains('pe-empty')) return;
-      makeRemovable(el, r.action, r.mini);
+      if (r.path === 'overview.infobox' && el.classList.contains('pe-empty')) return;
+      makeRemovable(el, 'rm:' + r.path, r.mini, r.sibling);
     });
-    // subtitle meta: its own mini × beside the meta span
-    var meta = qs('.wiki-hero-subtitle-meta');
-    if (meta) {
-      var mb = document.createElement('button');
-      mb.className = 'pe-tag-rm'; mb.title = 'Remove meta'; mb.textContent = '×';
-      mb.onclick = function () { A('rmMeta'); };
-      meta.parentNode.insertBefore(mb, meta.nextSibling);
-    }
 
-    // locked canon (red box + padlock): the overview's section label
-    var eyebrow = qs('section[data-section="overview"] .wiki-section-eyebrow');
-    if (eyebrow) {
-      eyebrow.classList.add('pe-canon');
-      var lk = document.createElement('span');
-      lk.className = 'pe-lock';
-      lk.title = 'Locked — the canonical section label, can’t be edited or removed';
-      lk.innerHTML = LOCK;
-      eyebrow.appendChild(lk);
+    // locked canon (red box + padlock) — driven by the component's grammar
+    // `locked` block (e.g. overview's locked eyebrow)
+    var lockedOv = (POLICY.locked || {}).overview;
+    if (lockedOv && lockedOv.eyebrow) {
+      var eyebrow = qs('section[data-section="overview"] .wiki-section-eyebrow');
+      if (eyebrow) {
+        eyebrow.classList.add('pe-canon');
+        var lk = document.createElement('span');
+        lk.className = 'pe-lock';
+        lk.title = 'Locked — the canonical section label, can’t be edited or removed';
+        lk.innerHTML = LOCK;
+        eyebrow.appendChild(lk);
+      }
     }
 
     // section tone toolbar — tones derived from the grammar enum
     var sec = qs('section[data-section="overview"]');
     if (sec) {
       sec.classList.add('pe-sec');
-      var toneType = ((((G.components || {}).overview || {}).fields || {}).tone || {}).type || 'enum[a,b,special]';
-      var tones = (/enum\[(.*)\]/.exec(toneType) || [0, 'a,b,special'])[1].split(',');
+      var toneRule = ruleFor('overview.tone') || {};
+      var tones = toneRule.enum || ['a', 'b', 'special'];
       var cur = sec.getAttribute('data-tone');
       var bar = document.createElement('div');
       bar.className = 'pe-sec-tools';

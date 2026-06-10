@@ -1,62 +1,29 @@
-// Smoke test for the DERIVED renderer pipeline: render a doc through the
-// repo's actual Liquid includes, run the decorator over the result in jsdom,
-// and assert the editing affordances landed in their canonical positions.
+// Smoke test for the DERIVED renderer pipeline: render docs through the
+// repo's actual Liquid includes (the REAL lib/render-core.mjs — no fixture
+// copy), run the decorator over the result in jsdom, and assert the editing
+// affordances landed in their canonical positions AND that policy is truly
+// computed from grammar (flipping a grammar rule changes builder behaviour).
 //
 // Run from _builder:  node scripts/test-derived-renderer.mjs
 import fs from 'node:fs';
-import path from 'node:path';
-import { Liquid } from 'liquidjs';
 import { JSDOM } from 'jsdom';
+import { buildPolicy } from '../lib/policy.mjs';
+import { createRenderer, SENT_PREFIX } from '../lib/render-core.mjs';
 
-const inc = JSON.parse(fs.readFileSync('data/includes.json', 'utf8'));
-const G = JSON.parse(fs.readFileSync('data/grammar.json', 'utf8'));
-const SENT_PREFIX = '__PE_ADD__';
-const SENT = (a) => `${SENT_PREFIX}${a}__`;
+const includes = JSON.parse(fs.readFileSync('data/includes.json', 'utf8'));
+const grammar = JSON.parse(fs.readFileSync('data/grammar.json', 'utf8'));
+const decorateSrc = fs.readFileSync('public/editor/decorate.js', 'utf8');
 
-const engine = new Liquid({
-  jekyllInclude: true, extname: '.html', relativeReference: false,
-  fs: {
-    readFileSync: (f) => inc.includes[f] ?? '', existsSync: (f) => f in inc.includes,
-    readFile: async (f) => inc.includes[f] ?? '', exists: async (f) => f in inc.includes,
-    resolve: (_d, f, ext) => (f.endsWith('.html') ? f : f + ext), sep: '/', contains: () => true,
-  },
-});
-const TPL = engine.parse('{% include sections/hero.html data=page.hero %}{% include sections/overview.html data=page.overview %}');
-
-// mirror lib/render.ts projection (kept in sync by reading the same contract)
-function project(doc, isHome) {
-  const h = doc.hero, s = h.spotlight, f = h.feature, noAside = !s && !f;
-  const o = doc.overview, ib = o.infobox;
-  return {
-    hero: {
-      title: h.title,
-      eyebrow: h.eyebrow ?? SENT('addEyebrow'),
-      subtitle: h.subtitle ?? SENT('addSubtitle'),
-      subtitle_meta: h.subtitle != null ? (h.subtitle_meta ?? SENT('addMeta')) : null,
-      desc: h.desc ?? SENT('addDesc'),
-      search: isHome,
-      search_placeholder: !isHome ? null : h.search ? h.search_placeholder : SENT('addSearch'),
-      stats: h.stats ?? [{ num: SENT('addStats'), label: '' }],
-      spotlight: s ? { eyebrow: s.eyebrow ?? SENT('spAddEyebrow'), title: s.title, desc: s.desc ?? SENT('spAddDesc'), tags: s.tags, cta: s.cta } : noAside ? { title: SENT('addAside') } : null,
-      feature: f ? { head_left: f.head_left ?? '', head_right: f.head_right ?? SENT('ftAddHeadRight'), title: f.title, desc: f.desc ?? SENT('ftAddDesc'), chips: f.chips } : null,
-    },
-    overview: {
-      tone: o.tone || 'b', heading: o.heading, paragraphs: o.paragraphs,
-      infobox: ib
-        ? { label: ib.label ?? undefined, title: ib.title, sublabel: ib.sublabel ?? SENT('addSublabel'), rows: ib.rows, badge: ib.badge ?? SENT('addBadge') }
-        : { title: SENT('addInfobox'), rows: [] },
-    },
-  };
-}
-
-function renderAndDecorate(doc, isHome) {
-  const body = inc.sprite + engine.renderSync(TPL, { page: project(doc, isHome) });
+function renderAndDecorate(doc, isHome, customGrammar) {
+  const g = customGrammar || grammar;
+  const policy = buildPolicy(g);
+  const renderer = createRenderer(includes, policy);
+  const body = renderer.renderBody(doc, isHome);
   const dom = new JSDOM(`<!doctype html><html><body>${body}</body></html>`, { runScripts: 'outside-only' });
   const w = dom.window;
-  w.__PE_GRAMMAR = G;
+  w.__PE_POLICY = policy;
   w.__PE_SENT = SENT_PREFIX;
   w.A = () => {}; w.P = () => {}; w.__retag = () => {};
-  const decorateSrc = fs.readFileSync('public/editor/decorate.js', 'utf8');
   w.eval(decorateSrc);
   w.__decorate();
   return w.document;
@@ -83,19 +50,20 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(d.querySelector('.wiki-hero-title .wiki-hero-title-accent'), 'title accent preserved outside ce');
   ok(!d.querySelector('.wiki-hero-search'), 'NO search on non-home page (not even a + slot)');
   ok(d.querySelectorAll('.wiki-hero-stat .ce').length === 8, 'all 8 stat cells editable');
-  ok(d.querySelector('.wiki-hero-stats.pe-removable .pe-remove'), 'stats grid removable as a whole');
-  ok(d.querySelector('.wiki-hero-spotlight-cta.ce') || d.querySelector('.wiki-hero-spotlight-cta .ce'), 'CTA editable');
-  ok(!d.querySelector('.wiki-hero-spotlight-cta .pe-remove') && !d.querySelector('.wiki-hero-spotlight-cta.pe-removable'), 'CTA NOT removable (required)');
+  ok(!d.querySelector('.wiki-hero-stat .pe-remove'), 'stat CELLS not removable (grammar min==max)');
+  ok(d.querySelector('.wiki-hero-stats.pe-removable > .pe-remove'), 'stats grid removable as a whole (grammar optional)');
+  ok(d.querySelector('.wiki-hero-spotlight-cta .ce'), 'CTA editable');
+  ok(!d.querySelector('.wiki-hero-spotlight-cta .pe-remove') && !d.querySelector('.wiki-hero-spotlight-cta.pe-removable'), 'CTA NOT removable (grammar required)');
   ok(d.querySelectorAll('.wiki-hero-spotlight-tag .pe-tag-rm').length === 2, 'tags removable');
   ok([...d.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === '+ tag'), '+ tag add button');
-  ok(d.querySelectorAll('.wiki-section-prose > p.pe-removable').length === 2, 'paragraphs removable');
+  ok(d.querySelectorAll('.wiki-section-prose > p.pe-removable').length === 2, 'paragraphs removable (above grammar min)');
   ok([...d.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ paragraph'), '+ paragraph button');
   ok(d.querySelector('.wiki-infobox.pe-removable'), 'infobox removable');
   ok(d.querySelector('.wiki-infobox-data > dt .ce') && d.querySelector('.wiki-infobox-data > dd .ce'), 'infobox row editable');
   ok([...d.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ row'), '+ row button');
   ok([...d.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === '+ sublabel'), '+ sublabel slot (sentinel)');
   ok([...d.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ badge'), '+ badge slot (sentinel)');
-  ok(d.querySelector('.wiki-section-eyebrow.pe-canon .pe-lock'), 'overview eyebrow locked (padlock + red box)');
+  ok(d.querySelector('.wiki-section-eyebrow.pe-canon .pe-lock'), 'overview eyebrow locked (from grammar locked block)');
   ok(d.querySelector('.pe-sec-tools'), 'tone toolbar present');
   ok(d.querySelectorAll('.pe-tonebtn').length === 3, 'tone buttons from grammar enum (a/b/special)');
   ok([...d.querySelectorAll('.pe-chip')].some((c) => c.textContent === 'Call to Action Card' && c.className.includes('active')), 'aside chip active = CTA card');
@@ -114,10 +82,11 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(labels.includes('+ eyebrow'), '+ eyebrow slot');
   ok(labels.includes('+ subtitle'), '+ subtitle slot');
   ok(labels.includes('+ description'), '+ description slot');
-  ok(labels.includes('+ search bar'), '+ search bar slot (HOME only)');
+  ok(labels.includes('+ search bar'), '+ search bar slot (HOME only — grammar hero_variant)');
   ok(labels.includes('+ stats (1×4)'), '+ stats slot');
   ok(labels.includes('+ Call to Action Card') && labels.includes('+ Feature Card'), 'aside empty slot (both cards)');
   ok(d.querySelector('.wiki-infobox.pe-empty'), 'infobox + slot keeps .wiki-infobox (right-column grid)');
+  ok(!d.querySelector('.wiki-section-prose > p .pe-remove') && !d.querySelector('.wiki-section-prose > p.pe-removable'), 'single paragraph NOT removable (grammar min: 1)');
   ok(!d.body.textContent.includes(SENT_PREFIX), 'no sentinel text leaked');
   const input = d.querySelector('input.wiki-hero-search-input');
   ok(!input || !(input.getAttribute('placeholder') || '').includes(SENT_PREFIX), 'no sentinel in attributes');
@@ -144,6 +113,29 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(d.querySelector('.wiki-hero-subtitle-meta + .pe-tag-rm'), 'meta mini ×');
   ok([...d.querySelectorAll('.pe-chip')].some((c) => c.textContent === 'Feature Card' && c.className.includes('active')), 'aside chip active = Feature card');
   ok(d.querySelector('section[data-section="overview"]').getAttribute('data-tone') === 'special', 'tone special rendered');
+}
+
+// ── case 4: DERIVATION — flip a grammar rule, builder behaviour follows ──
+{
+  console.log('case 4: grammar flip (desc → required) changes the builder');
+  const g2 = JSON.parse(JSON.stringify(grammar));
+  g2.components.hero.fields.desc.required = true;
+  const doc = {
+    hero: { eyebrow: null, title: 'T', subtitle: null, subtitle_meta: null, desc: null, stats: null, search: false, search_placeholder: '', spotlight: null, feature: null },
+    overview: { tone: 'b', heading: 'H', paragraphs: ['P'], infobox: null },
+  };
+  const before = renderAndDecorate(doc, false);
+  ok([...before.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ description'), 'baseline: desc optional → + slot');
+  const after = renderAndDecorate(doc, false, g2);
+  ok(![...after.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ description'), 'grammar-required desc: no + slot');
+  ok(after.querySelector('.wiki-hero-desc .ce'), 'grammar-required desc: element present (blank backfilled), editable');
+  ok(!after.querySelector('.wiki-hero-desc.pe-removable'), 'grammar-required desc: not removable');
+  // and the doc that HAS a desc loses its × too
+  const doc2 = JSON.parse(JSON.stringify(doc)); doc2.hero.desc = 'Lead.';
+  const after2 = renderAndDecorate(doc2, false, g2);
+  ok(!after2.querySelector('.wiki-hero-desc.pe-removable'), 'grammar-required desc: × gone on filled page');
+  const base2 = renderAndDecorate(doc2, false);
+  ok(base2.querySelector('.wiki-hero-desc.pe-removable'), 'baseline: filled desc removable');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

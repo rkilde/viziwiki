@@ -52,37 +52,45 @@ components:
     is_section: true               # hero is itself the section (no separate frame)
     locked:                        # DECORATION — skin/admin owns these, not the contributor
       [bg, accent, dot, chrome, icon, overlays, watermark, class, id, extra, search_icon, search_icon_inc]
+    # `blank` = the starter value the builder seeds when a contributor adds the
+    # field; `item_blank` = the starter for one new list item. Single-source:
+    # the builder reads these (never hardcodes placeholder content).
+    # `requires` = this field only exists alongside another (removing the
+    # parent removes it too).
     fields:
-      title:         { type: text,     required: true, help: "Big H1 (the trailing period is automatic)" }
-      eyebrow:       { type: text,     help: "Small category tag above the title" }
-      subtitle:      { type: text,     help: "A line under the H1" }
-      subtitle_meta: { type: text,     help: "Mono tag after a ' · ' (e.g. a model number)" }
-      desc:          { type: richtext, help: "One-paragraph lead" }
-      stats:         { type: "list<stat>", help: "The 1×4 number grid" }
+      title:         { type: text,     required: true, blank: "Page title", help: "Big H1 (the trailing period is automatic)" }
+      eyebrow:       { type: text,     blank: "Category label", help: "Small category tag above the title" }
+      subtitle:      { type: text,     blank: "Subtitle", help: "A line under the H1" }
+      subtitle_meta: { type: text,     blank: "Model number", requires: subtitle, help: "Mono tag after a ' · ' (e.g. a model number)" }
+      desc:          { type: richtext, blank: "Write a short lead paragraph for this page.", help: "One-paragraph lead" }
+      stats:         { type: "list<stat>", min: 4, max: 4, help: "The 1×4 number grid — always exactly 4 cells (canon)",
+                       blank: [{ num: "Value", label: "Stat label" }, { num: "Value", label: "Stat label" }, { num: "Value", label: "Stat label" }, { num: "Value", label: "Stat label" }] }
       search:        { type: bool, default: false, help: "Show the search bar — HOME pages only (page type sets this)" }
-      search_placeholder: { type: text, help: "Search box placeholder — home only" }
-      spotlight:     { type: spotlight, help: "Optional card aside (advanced — the spotlight bank)" }
-      feature:       { type: feature,   help: "Optional feature aside (advanced — the feature bank)" }
+      search_placeholder: { type: text, blank: "Search this wiki…", help: "Search box placeholder — home only" }
+      spotlight:     { type: spotlight, help: "Optional card aside (advanced — the spotlight bank)",
+                       blank: { eyebrow: "Spotlight", title: "Spotlight title", desc: "Write a short description.", tags: ["Tag"], cta: "Button label" } }
+      feature:       { type: feature,   help: "Optional feature aside (advanced — the feature bank)",
+                       blank: { head_left: "Featured", title: "Feature title", desc: "Write a short description.", chips: [{ key: "Label", val: "Value" }, { key: "Label", val: "Value" }, { key: "Label", val: "Value" }] } }
     subtypes:
       stat: { num: { type: text, required: true }, label: { type: text, required: true } }
       spotlight:                  # hero card — treatment 1 · CALL-TO-ACTION CARD (wiki-hero-spotlight)
-        eyebrow:  { type: text }
-        title:    { type: text, required: true }
-        desc:     { type: richtext }
-        tags:     { type: "list<text>" }
-        cta:      { type: text, required: true, help: "REQUIRED button label (the call to action); cta_href makes it a link" }
+        eyebrow:  { type: text, blank: "Spotlight" }
+        title:    { type: text, required: true, blank: "Spotlight title" }
+        desc:     { type: richtext, blank: "Write a short description." }
+        tags:     { type: "list<text>", item_blank: "Tag" }
+        cta:      { type: text, required: true, blank: "Button label", help: "REQUIRED button label (the call to action); cta_href makes it a link" }
         cta_href: { type: url }
       feature:                    # hero card — treatment 2 · FEATURE CARD (wiki-hero-feature)
-        head_left:  { type: text }
-        head_right: { type: text }
-        title:      { type: text, required: true }
-        desc:       { type: richtext }
+        head_left:  { type: text, blank: "Featured" }
+        head_right: { type: text, blank: "Label" }
+        title:      { type: text, required: true, blank: "Feature title" }
+        desc:       { type: richtext, blank: "Write a short description." }
         chips:      { type: "list<chip>", required: true, min: 3, max: 3, help: "EXACTLY 3 stat chips (key/value) — fixed, not addable/removable" }
       chip: { key: { type: text, required: true }, val: { type: text, required: true } }
     note: "Both asides are 'hero cards' (mutually exclusive — at most one): spotlight = the Call-to-Action card (CTA required), feature = the Feature card (exactly 3 fixed chips). search is HOME-only."
     seed:
       title: "New page title"
-      eyebrow: "Category"
+      eyebrow: "Category label"
       desc: "A short lead sentence about this page."
     min: "title"
 
@@ -91,22 +99,23 @@ components:
     section: overview-section
     locked: { eyebrow: "Overview", icon: book-open }
     fields:
-      heading:    { type: text,            required: true }
-      paragraphs: { type: "list<richtext>", required: true, help: "The overview body" }
+      heading:    { type: text,            required: true, blank: "Section heading" }
+      paragraphs: { type: "list<richtext>", required: true, min: 1, item_blank: "Write another paragraph here…", help: "The overview body" }
       tone:       { type: "enum[a,b,special]", default: b }
-      infobox:    { type: infobox, help: "Optional fact panel beside the prose" }
+      infobox:    { type: infobox, help: "Optional fact panel beside the prose",
+                    blank: { label: "Infobox", title: "Infobox title", rows: [["Label", "Value"], ["Label", "Value"]] } }
     subtypes:
       infobox:                       # mirrors the canonical bank _includes/overview/infobox.html
-        label:    { type: text, default: "Infobox", help: "header label (default 'Infobox')" }
-        title:    { type: text, required: true }
-        sublabel: { type: text, help: "optional 2nd header label line" }
-        rows:     { type: "list<pair>", help: "[key, value] fact rows" }
-        badge:    { type: text, help: "optional status chip at the foot of the panel" }
+        label:    { type: text, default: "Infobox", blank: "Infobox", help: "header label (default 'Infobox')" }
+        title:    { type: text, required: true, blank: "Infobox title" }
+        sublabel: { type: text, blank: "Sub-label", help: "optional 2nd header label line" }
+        rows:     { type: "list<pair>", item_blank: ["Label", "Value"], help: "[key, value] fact rows" }
+        badge:    { type: text, blank: "Status badge", help: "optional status chip at the foot of the panel" }
         # + skin/admin decoration passthroughs (NOT contributor-edited): class, style, art
       pair: { key: { type: text, required: true }, value: { type: richtext, required: true } }
     seed:
-      heading: "Overview"
-      paragraphs: ["Write the overview here."]
+      heading: "Section heading"
+      paragraphs: ["Write the overview here…"]
     min: "heading + one paragraph"
 
   # ---- SPEC — the Specifications Sheet card grid -----------------------

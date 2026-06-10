@@ -5,9 +5,8 @@
 // resize, background-luminance tagging), and the data mutations.
 // NO canonical markup lives here — see CLAUDE.md standing rule #5.
 import type { PageDoc } from './store';
-import { BLANK_CARD, BLANK_FEATURE } from './store';
 import type { WikiSkin } from './wiki';
-import { GRAMMAR } from './grammar';
+import { POLICY, rule, blankOf, itemBlankOf } from './grammar';
 import { SENT_PREFIX } from './render';
 
 // default skin = Taco Bell (keeps existing single-arg callers working)
@@ -114,7 +113,7 @@ export function buildCanvas(bodyHtml: string, skin: WikiSkin = TACO_BELL_SKIN): 
 ${skinLinks}
 <style>${AFFORDANCE}</style>
 <script>
-window.__PE_GRAMMAR=${JSON.stringify(GRAMMAR)};
+window.__PE_POLICY=${JSON.stringify(POLICY)};
 window.__PE_SENT=${JSON.stringify(SENT_PREFIX)};
 function P(p,el){try{window.parent.__peField(p,el.innerHTML)}catch(e){}}
 function A(a){try{window.parent.__peAction(a)}catch(e){}}
@@ -140,68 +139,78 @@ window.addEventListener('load',function(){if(window.__decorate)window.__decorate
 }
 
 // ── data sync (called from the React side) ──
-export function setIn(doc: PageDoc, path: string, value: string): void {
+function getAt(doc: any, path: string): any {
+  let o: any = doc;
+  for (const p of path.split('.')) o = o?.[p];
+  return o;
+}
+function setAt(doc: any, path: string, value: any): void {
   const parts = path.split('.');
   let o: any = doc;
   for (let i = 0; i < parts.length - 1; i++) o = o[parts[i]];
   o[parts[parts.length - 1]] = value;
 }
+export function setIn(doc: PageDoc, path: string, value: string): void {
+  setAt(doc, path, value);
+}
 
+/**
+ * Apply an editor action. GENERIC actions are derived from grammar policy:
+ *   add:<path>   → set the field to its grammar `blank`
+ *   rm:<path>    → null the field (splice for a list index; false for a bool),
+ *                  cascading to fields that `requires` it (grammar)
+ *   push:<path>  → append the list's grammar `item_blank`
+ * Plus a few editor-semantics specials (aside XOR + stash, tone).
+ */
 export function applyAction(doc: PageDoc, action: string): void {
-  const h = doc.hero, ov = doc.overview;
-  const s = h.spotlight, f = h.feature;
+  const h = doc.hero;
   const stash = (doc._stash = doc._stash || {});
-  const [name, arg] = action.split(':');
+  const ci = action.indexOf(':');
+  const name = ci < 0 ? action : action.slice(0, ci);
+  const arg = ci < 0 ? '' : action.slice(ci + 1);
   switch (name) {
-    case 'addEyebrow': h.eyebrow = 'Category label'; break;
-    case 'rmEyebrow': h.eyebrow = null; break;
-    case 'addSubtitle': h.subtitle = 'Subtitle'; break;
-    case 'rmSubtitle': h.subtitle = null; h.subtitle_meta = null; break;
-    case 'addMeta': h.subtitle_meta = 'Model number'; break;
-    case 'rmMeta': h.subtitle_meta = null; break;
-    case 'addDesc': h.desc = 'Write a short lead paragraph for this page.'; break;
-    case 'rmDesc': h.desc = null; break;
-    case 'addStats': h.stats = [{ num: 'Value', label: 'Stat label' }, { num: 'Value', label: 'Stat label' }, { num: 'Value', label: 'Stat label' }, { num: 'Value', label: 'Stat label' }]; break;
-    case 'rmStats': h.stats = null; break;
-    case 'addSearch': h.search = true; if (!h.search_placeholder) h.search_placeholder = 'Search this wiki…'; break;
-    case 'rmSearch': h.search = false; break;
-    // hero card (aside): spotlight XOR feature; the inactive variant is
-    // stashed so switching back keeps your edits
+    case 'add': {
+      // the search toggle seeds its placeholder alongside (home-variant canon)
+      if (arg === 'hero.search') { h.search = true; if (!h.search_placeholder) h.search_placeholder = blankOf('hero.search_placeholder'); break; }
+      setAt(doc, arg, blankOf(arg));
+      break;
+    }
+    case 'rm': {
+      const parts = arg.split('.');
+      const last = parts[parts.length - 1];
+      if (/^\d+$/.test(last)) { // list item → splice
+        const list = getAt(doc, parts.slice(0, -1).join('.'));
+        if (Array.isArray(list)) list.splice(Number(last), 1);
+        break;
+      }
+      if (rule(arg).kind === 'bool') { setAt(doc, arg, false); break; }
+      setAt(doc, arg, null);
+      // cascade: null sibling fields that `requires` the removed one (grammar)
+      const parent = parts.slice(0, -1).join('.');
+      for (const [p, r] of Object.entries(POLICY.fields) as [string, any][]) {
+        if (r.requires === last && p.startsWith(parent + '.') && !p.slice(parent.length + 1).includes('.')) setAt(doc, p, null);
+      }
+      break;
+    }
+    case 'push': {
+      const list = getAt(doc, arg);
+      if (Array.isArray(list)) list.push(itemBlankOf(arg));
+      break;
+    }
+    // hero card (aside): spotlight XOR feature (canon); the inactive variant
+    // is stashed so switching back keeps your edits. Blanks come from grammar.
     case 'addAside':
     case 'switchAside':
-      if (s) stash.spotlight = s;
-      if (f) stash.feature = f;
-      if (arg === 'feature') { h.feature = stash.feature || BLANK_FEATURE(); h.spotlight = null; }
-      else { h.spotlight = stash.spotlight || BLANK_CARD(); h.feature = null; }
+      if (h.spotlight) stash.spotlight = h.spotlight;
+      if (h.feature) stash.feature = h.feature;
+      if (arg === 'feature') { h.feature = stash.feature || blankOf('hero.feature'); h.spotlight = null; }
+      else { h.spotlight = stash.spotlight || blankOf('hero.spotlight'); h.feature = null; }
       break;
     case 'rmAside':
-      if (s) stash.spotlight = s;
-      if (f) stash.feature = f;
+      if (h.spotlight) stash.spotlight = h.spotlight;
+      if (h.feature) stash.feature = h.feature;
       h.spotlight = null; h.feature = null;
       break;
-    case 'spAddEyebrow': if (s) s.eyebrow = 'Spotlight'; break;
-    case 'spRmEyebrow': if (s) s.eyebrow = null; break;
-    case 'spAddDesc': if (s) s.desc = 'Write a short description.'; break;
-    case 'spRmDesc': if (s) s.desc = null; break;
-    case 'spAddTag': if (s) s.tags.push('Tag'); break;
-    case 'spRmTag': if (s) s.tags.splice(Number(arg), 1); break;
-    // CTA is REQUIRED on the Call-to-Action card (no add/remove — always present)
-    case 'ftAddHeadRight': if (f) f.head_right = 'Label'; break;
-    case 'ftRmHeadRight': if (f) f.head_right = null; break;
-    case 'ftAddDesc': if (f) f.desc = 'Write a short description.'; break;
-    case 'ftRmDesc': if (f) f.desc = null; break;
-    // Feature card chips are FIXED at the grammar count (no add/remove)
-    // overview
-    case 'setTone': ov.tone = arg; break;
-    case 'addPara': ov.paragraphs.push('Write another paragraph here…'); break;
-    case 'rmPara': ov.paragraphs.splice(Number(arg), 1); break;
-    case 'addInfobox': ov.infobox = { label: 'Infobox', title: 'Infobox title', sublabel: null, rows: [['Label', 'Value'], ['Label', 'Value']], badge: null }; break;
-    case 'rmInfobox': ov.infobox = null; break;
-    case 'addSublabel': if (ov.infobox) ov.infobox.sublabel = 'Sub-label'; break;
-    case 'rmSublabel': if (ov.infobox) ov.infobox.sublabel = null; break;
-    case 'addBadge': if (ov.infobox) ov.infobox.badge = 'Status badge'; break;
-    case 'rmBadge': if (ov.infobox) ov.infobox.badge = null; break;
-    case 'addRow': if (ov.infobox) ov.infobox.rows.push(['Label', 'Value']); break;
-    case 'rmRow': if (ov.infobox) ov.infobox.rows.splice(Number(arg), 1); break;
+    case 'setTone': doc.overview.tone = arg; break;
   }
 }

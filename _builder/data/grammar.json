@@ -95,27 +95,53 @@
         "title": {
           "type": "text",
           "required": true,
+          "blank": "Page title",
           "help": "Big H1 (the trailing period is automatic)"
         },
         "eyebrow": {
           "type": "text",
+          "blank": "Category label",
           "help": "Small category tag above the title"
         },
         "subtitle": {
           "type": "text",
+          "blank": "Subtitle",
           "help": "A line under the H1"
         },
         "subtitle_meta": {
           "type": "text",
+          "blank": "Model number",
+          "requires": "subtitle",
           "help": "Mono tag after a ' · ' (e.g. a model number)"
         },
         "desc": {
           "type": "richtext",
+          "blank": "Write a short lead paragraph for this page.",
           "help": "One-paragraph lead"
         },
         "stats": {
           "type": "list<stat>",
-          "help": "The 1×4 number grid"
+          "min": 4,
+          "max": 4,
+          "help": "The 1×4 number grid — always exactly 4 cells (canon)",
+          "blank": [
+            {
+              "num": "Value",
+              "label": "Stat label"
+            },
+            {
+              "num": "Value",
+              "label": "Stat label"
+            },
+            {
+              "num": "Value",
+              "label": "Stat label"
+            },
+            {
+              "num": "Value",
+              "label": "Stat label"
+            }
+          ]
         },
         "search": {
           "type": "bool",
@@ -124,15 +150,44 @@
         },
         "search_placeholder": {
           "type": "text",
+          "blank": "Search this wiki…",
           "help": "Search box placeholder — home only"
         },
         "spotlight": {
           "type": "spotlight",
-          "help": "Optional card aside (advanced — the spotlight bank)"
+          "help": "Optional card aside (advanced — the spotlight bank)",
+          "blank": {
+            "eyebrow": "Spotlight",
+            "title": "Spotlight title",
+            "desc": "Write a short description.",
+            "tags": [
+              "Tag"
+            ],
+            "cta": "Button label"
+          }
         },
         "feature": {
           "type": "feature",
-          "help": "Optional feature aside (advanced — the feature bank)"
+          "help": "Optional feature aside (advanced — the feature bank)",
+          "blank": {
+            "head_left": "Featured",
+            "title": "Feature title",
+            "desc": "Write a short description.",
+            "chips": [
+              {
+                "key": "Label",
+                "val": "Value"
+              },
+              {
+                "key": "Label",
+                "val": "Value"
+              },
+              {
+                "key": "Label",
+                "val": "Value"
+              }
+            ]
+          }
         }
       },
       "subtypes": {
@@ -148,21 +203,26 @@
         },
         "spotlight": {
           "eyebrow": {
-            "type": "text"
+            "type": "text",
+            "blank": "Spotlight"
           },
           "title": {
             "type": "text",
-            "required": true
+            "required": true,
+            "blank": "Spotlight title"
           },
           "desc": {
-            "type": "richtext"
+            "type": "richtext",
+            "blank": "Write a short description."
           },
           "tags": {
-            "type": "list<text>"
+            "type": "list<text>",
+            "item_blank": "Tag"
           },
           "cta": {
             "type": "text",
             "required": true,
+            "blank": "Button label",
             "help": "REQUIRED button label (the call to action); cta_href makes it a link"
           },
           "cta_href": {
@@ -171,17 +231,21 @@
         },
         "feature": {
           "head_left": {
-            "type": "text"
+            "type": "text",
+            "blank": "Featured"
           },
           "head_right": {
-            "type": "text"
+            "type": "text",
+            "blank": "Label"
           },
           "title": {
             "type": "text",
-            "required": true
+            "required": true,
+            "blank": "Feature title"
           },
           "desc": {
-            "type": "richtext"
+            "type": "richtext",
+            "blank": "Write a short description."
           },
           "chips": {
             "type": "list<chip>",
@@ -205,7 +269,7 @@
       "note": "Both asides are 'hero cards' (mutually exclusive — at most one): spotlight = the Call-to-Action card (CTA required), feature = the Feature card (exactly 3 fixed chips). search is HOME-only.",
       "seed": {
         "title": "New page title",
-        "eyebrow": "Category",
+        "eyebrow": "Category label",
         "desc": "A short lead sentence about this page."
       },
       "min": "title"
@@ -219,11 +283,14 @@
       "fields": {
         "heading": {
           "type": "text",
-          "required": true
+          "required": true,
+          "blank": "Section heading"
         },
         "paragraphs": {
           "type": "list<richtext>",
           "required": true,
+          "min": 1,
+          "item_blank": "Write another paragraph here…",
           "help": "The overview body"
         },
         "tone": {
@@ -232,7 +299,21 @@
         },
         "infobox": {
           "type": "infobox",
-          "help": "Optional fact panel beside the prose"
+          "help": "Optional fact panel beside the prose",
+          "blank": {
+            "label": "Infobox",
+            "title": "Infobox title",
+            "rows": [
+              [
+                "Label",
+                "Value"
+              ],
+              [
+                "Label",
+                "Value"
+              ]
+            ]
+          }
         }
       },
       "subtypes": {
@@ -240,22 +321,30 @@
           "label": {
             "type": "text",
             "default": "Infobox",
+            "blank": "Infobox",
             "help": "header label (default 'Infobox')"
           },
           "title": {
             "type": "text",
-            "required": true
+            "required": true,
+            "blank": "Infobox title"
           },
           "sublabel": {
             "type": "text",
+            "blank": "Sub-label",
             "help": "optional 2nd header label line"
           },
           "rows": {
             "type": "list<pair>",
+            "item_blank": [
+              "Label",
+              "Value"
+            ],
             "help": "[key, value] fact rows"
           },
           "badge": {
             "type": "text",
+            "blank": "Status badge",
             "help": "optional status chip at the foot of the panel"
           }
         },
@@ -271,9 +360,9 @@
         }
       },
       "seed": {
-        "heading": "Overview",
+        "heading": "Section heading",
         "paragraphs": [
-          "Write the overview here."
+          "Write the overview here…"
         ]
       },
       "min": "heading + one paragraph"
