@@ -9,8 +9,10 @@ import type { PageDoc, HeroDoc, OverviewDoc, InfoboxDoc } from './store';
 const AFFORDANCE = `
   /* editing field: a light-blue BOX appears around the element ONLY on click
      (focus) — "you're in edit mode here". No filled background, no hover state. */
-  .ce{ outline:none; cursor:text; border-radius:3px; display:inline-block; max-width:100%; }
-  .ce:focus{ outline:2px solid rgba(0,113,227,.4); outline-offset:2px; }
+  .ce{ cursor:text; border-radius:3px; display:inline-block; max-width:100%;
+       outline:2px solid transparent; outline-offset:2px; transition:outline-color .12s; }
+  .ce:hover{ outline-color:rgba(0,0,0,.18); }   /* grey box on hover = editable */
+  .ce:focus{ outline-color:rgba(0,113,227,.55); } /* blue box on click = editing */
 
   /* corner controls — hidden until you hover the element they belong to */
   .pe-removable,.pe-locked{ position:relative; }
