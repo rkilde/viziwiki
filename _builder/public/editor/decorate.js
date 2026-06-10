@@ -597,26 +597,35 @@
           var accent = getComputedStyle(card).getPropertyValue('--cat-color');
           wrapCE(qs('.cat-card-title', card), cpre + 'name');
 
-          // category note: editable inline in the derived count line (when present)
+          // category NOTE — a dashed chip after the count line (NOT a dock
+          // control): "+ note" to add · editable text + corner × when present.
+          // The canon renders the note inline in the count line ("· note"); in
+          // the editor we lift it OUT into the chip to avoid showing it twice.
           var cnt = qs('.cat-card-count', card);
-          if (cnt && cdata.note != null) {
-            var node = null;
-            for (var q = cnt.childNodes.length - 1; q >= 0; q--) { if (cnt.childNodes[q].nodeType === 3 && cnt.childNodes[q].nodeValue.indexOf('·') > -1) { node = cnt.childNodes[q]; break; } }
-            if (node) {
-              var noteText = node.splitText(node.nodeValue.lastIndexOf('·') + 1);
-              var ceN = document.createElement('span'); ceN.className = 'ce'; ceN.setAttribute('contenteditable', 'true');
-              cnt.insertBefore(ceN, noteText); ceN.appendChild(noteText);
+          if (cnt) {
+            var noteChip;
+            if (cdata.note != null) {
+              for (var q = cnt.childNodes.length - 1; q >= 0; q--) {
+                var nv = cnt.childNodes[q];
+                if (nv.nodeType === 3 && nv.nodeValue.indexOf('·') > -1) { nv.nodeValue = nv.nodeValue.slice(0, nv.nodeValue.lastIndexOf('·')); break; }
+              }
+              noteChip = document.createElement('span'); noteChip.className = 'pe-note-chip has';
+              var ceN = document.createElement('span'); ceN.className = 'ce'; ceN.setAttribute('contenteditable', 'true'); ceN.textContent = cdata.note;
               (function (p, el) { el.addEventListener('blur', function () { P(p, el); }); })(cpre + 'note', ceN);
-              makeRemovable(ceN, 'rm:' + cpre + 'note', true);
+              noteChip.appendChild(ceN);
+              makeRemovable(noteChip, 'rm:' + cpre + 'note');     // corner ×
+            } else {
+              noteChip = document.createElement('button'); noteChip.className = 'pe-note-chip'; noteChip.textContent = '+ note';
+              (function (p) { noteChip.onclick = function () { A('add:' + p); }; })(cpre + 'note');
             }
+            cnt.parentNode.insertBefore(noteChip, cnt.nextSibling);
           }
 
-          // the glass dock (bottom-right), with hover tooltips
+          // the glass dock (bottom-right): colour · ribbon · remove
           var dock = document.createElement('div'); dock.className = 'cc-dock';
           (function (cp, ac, cd) { dock.appendChild(dockBtn('<span class="cc-swatch"></span>', 'Change colour', '', function () { openColorPop(this, cp, ac, cd.color); })); })(cpre, accent, cdata);
           var sep = document.createElement('span'); sep.className = 'cc-sep'; dock.appendChild(sep);
           (function (cp, ac, cd, jj) { dock.appendChild(dockBtn(csvg(CICON.flag), cd.ribbon ? 'Edit ribbon' : 'Add a ribbon', cd.ribbon ? 'on' : '', function () { openRibbonPop(this, cp, ac, cd.ribbon == null ? null : cd.ribbon, card, jj); })); })(cpre, accent, cdata, j);
-          (function (cp, cd) { dock.appendChild(dockBtn(csvg(CICON.hash), 'Add a date or note', cd.note != null ? 'on' : '', function () { if (cd.note == null) A('add:' + cp + 'note'); else { var n = qs('.cat-card-count .ce', card); if (n) n.focus(); } })); })(cpre, cdata);
           (function (jj) { dock.appendChild(dockBtn(csvg(CICON.trash), 'Delete entire category', 'danger', function () { closePop(); A('rm:' + prefix + 'categories.' + jj); })); })(j);
           card.appendChild(dock);
 

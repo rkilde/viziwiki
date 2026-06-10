@@ -173,12 +173,25 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   // glass dock: colour / ribbon / note / remove
   const dock = cat.querySelector('.cat-card .cc-dock');
   ok(dock, 'glass dock present on the card');
-  ok(dock.querySelectorAll('.cc-btn').length === 4, 'dock has 4 controls (colour/ribbon/note/remove)');
+  ok(dock.querySelectorAll('.cc-btn').length === 3, 'dock has 3 controls (colour/ribbon/remove) — note is NOT a dock control');
   ok(dock.querySelector('.cc-btn .cc-swatch'), 'colour control shows the swatch');
   ok(dock.querySelector('.cc-btn.danger'), 'remove-category control (danger)');
+  ok(!dock.querySelector('.cc-btn[data-tip*="note"]'), 'no note button in the dock');
   ok([...dock.querySelectorAll('.cc-btn')].every((b) => b.getAttribute('data-tip')), 'every dock control has a hover tooltip');
-  ok(dock.querySelector('.cc-btn[data-tip="Delete entire category"]'), 'descriptive tooltip text');
   ok(typeof cat.querySelector('.cat-card').onmouseenter === 'function', 'card wires the dock-avoid (shift on hover)');
+  // note is a dashed chip: "+ note" when absent (seed has none)
+  const noteChip = cat.querySelector('.pe-note-chip');
+  ok(noteChip && noteChip.tagName === 'BUTTON' && noteChip.textContent === '+ note', 'absent note → dashed "+ note" chip on the card');
+  // present note → editable dashed chip + corner ×, lifted out of the count line
+  const dN = renderAndDecorate({
+    hero: { eyebrow: null, title: 'T', subtitle: null, subtitle_meta: null, desc: 'D', stats: null, search: false, search_placeholder: '', spotlight: null, feature: null },
+    overview: { tone: 'b', heading: 'H', paragraphs: ['P'], infobox: null },
+    sections: [{ type: 'catalog', data: { title: 'C', categories: [{ name: 'Cat', note: 'priced 99¢', items: [{ name: 'X', desc: 'd' }] }] } }],
+  }, false);
+  const pn = dN.querySelector('.pe-note-chip.has');
+  ok(pn && pn.querySelector('.ce').textContent === 'priced 99¢', 'present note → editable chip with the text');
+  ok(pn.querySelector('.pe-remove'), 'present note chip has a corner ×');
+  ok(!dN.querySelector('.cat-card-count').textContent.includes('priced'), 'note lifted out of the count line (shown once, in the chip)');
   ok(!cat.querySelector('.cat-card > .pe-remove'), 'no corner × on the card (moved into the dock)');
   // pills: clickable openers + the "+ item" add pill
   ok(cat.querySelectorAll('.cat-pill:not(.cat-add-pill)').length === 2, 'two item pills');

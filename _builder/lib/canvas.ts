@@ -127,6 +127,15 @@ const AFFORDANCE = `
   .cc-status.st-limited{ background:var(--st-limited-bg,#fef9c3); color:var(--st-limited-fg,#854d0e); }
   .cc-status.st-retired{ background:var(--st-retired-bg,#f3f4f6); color:var(--st-retired-fg,#4b5563); }
   .cat-add-pill{ border-style:dashed !important; color:rgba(0,0,0,.4) !important; background:transparent !important; }
+  /* category note: a dashed chip on the card (not a dock control) — "+ note" to
+     add, editable text + corner × when present */
+  .pe-note-chip{ display:inline-flex; align-items:center; margin-top:9px; padding:3px 9px; border-radius:4px;
+    border:1px dashed rgba(0,0,0,.28); background:transparent; color:rgba(0,0,0,.46); position:relative;
+    font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; }
+  button.pe-note-chip:hover{ border-color:rgba(0,0,0,.45); color:rgba(0,0,0,.62); }
+  .pe-note-chip.has{ cursor:default; }
+  .pe-note-chip .ce{ text-transform:none; letter-spacing:normal; }
+  .pe-note-chip > .pe-remove{ top:-7px; right:-7px; }
   .modal-scroll .pe-mini-add, .modal-scroll .pe-add{ opacity:.7; }
   .modal-scroll .pe-mini-add:hover, .modal-scroll .pe-add:hover{ opacity:1; }
   .modal-scroll .pe-chip{ display:inline-flex; align-items:center; gap:3px; margin-left:8px; border:1px solid rgba(120,120,140,.3); border-radius:999px;
