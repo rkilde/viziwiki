@@ -47,8 +47,6 @@ const AFFORDANCE = `
      not the full-width block — so it lands at the text's top-right, not the page edge */
   .pe-stats-wrap{ max-width:36rem; width:fit-content; }
   .wiki-hero-subtitle.pe-removable{ display:inline-flex; align-items:baseline; }
-  .wiki-hero-title.pe-locked, .wiki-section-title.pe-locked,
-  .wiki-infobox-title.pe-locked, .wiki-infobox-label.pe-locked,
   .wiki-infobox-label.pe-removable{ width:fit-content; max-width:100%; }
 
   .pe-toolbar{ font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:rgba(90,90,110,.7); margin-bottom:16px; display:inline-flex; align-items:center; gap:6px; }
@@ -73,7 +71,7 @@ function heroHTML(h: HeroDoc): string {
       ${h.eyebrow != null
         ? `<div class="wiki-hero-eyebrow pe-removable"><span class="wiki-hero-eyebrow-dot"></span> ${ce('hero.eyebrow', h.eyebrow)}${x('rmEyebrow')}</div>`
         : add('addEyebrow', '+ eyebrow')}
-      <h1 class="wiki-hero-title pe-locked">${ce('hero.title', h.title)}<span class="wiki-hero-title-accent">.</span>${lk('Required — every page has a title')}</h1>
+      <h1 class="wiki-hero-title">${ce('hero.title', h.title)}<span class="wiki-hero-title-accent">.</span></h1>
       ${h.subtitle != null
         ? `<div class="wiki-hero-subtitle pe-removable">${ce('hero.subtitle', h.subtitle)}${
             h.subtitle_meta != null
@@ -95,8 +93,8 @@ function heroHTML(h: HeroDoc): string {
 function infoboxHTML(ib: NonNullable<InfoboxDoc>): string {
   return `<aside class="wiki-infobox pe-removable">${x('rmInfobox')}
     <div class="wiki-infobox-header">
-      <div class="wiki-infobox-label pe-locked">${ce('overview.infobox.label', ib.label || 'Infobox')}${lk('Canon — the infobox label')}</div>
-      <div class="wiki-infobox-title pe-locked">${ce('overview.infobox.title', ib.title)}${lk('Required — the infobox needs a title')}</div>
+      <div class="wiki-infobox-label">${ce('overview.infobox.label', ib.label || 'Infobox')}</div>
+      <div class="wiki-infobox-title">${ce('overview.infobox.title', ib.title)}</div>
       ${ib.sublabel != null
         ? `<div class="wiki-infobox-label pe-removable" style="margin-top:4px">${ce('overview.infobox.sublabel', ib.sublabel)}${x('rmSublabel')}</div>`
         : `<div class="pe-addline" style="margin:6px 0 0"><button class="pe-add" onclick="A('addSublabel')">+ sublabel</button></div>`}
@@ -121,7 +119,7 @@ function ovHTML(ov: OverviewDoc): string {
       <div class="wiki-overview${ib ? ' has-infobox' : ' no-infobox'}">
         <div class="wiki-overview-prose">
           <div class="wiki-section-eyebrow pe-canon">${BOOK} Overview${lk('Locked — the canonical section label, can’t be edited or removed')}</div>
-          <h2 class="wiki-section-title pe-locked">${ce('overview.heading', ov.heading)}${lk('Required — every page has an overview heading')}</h2>
+          <h2 class="wiki-section-title">${ce('overview.heading', ov.heading)}</h2>
           <div class="wiki-section-prose">
             ${ov.paragraphs.map((p, i) => `<div class="pe-removable"><p>${ce(`overview.paragraphs.${i}`, p)}</p>${x(`rmPara:${i}`)}</div>`).join('')}
             ${add('addPara', '+ paragraph')}
