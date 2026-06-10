@@ -67,6 +67,9 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(d.querySelector('.pe-sec-tools'), 'tone toolbar present');
   ok(d.querySelectorAll('.pe-tonebtn').length === 3, 'tone buttons from grammar enum (a/b/special)');
   ok([...d.querySelectorAll('.pe-chip')].some((c) => c.textContent === 'Call to Action Card' && c.className.includes('active')), 'aside chip active = CTA card');
+  const ovSec = d.querySelector('section[data-section="overview"]');
+  ok(ovSec.nextElementSibling && ovSec.nextElementSibling.className === 'pe-add-section', 'add-section seam directly below the overview');
+  ok(d.querySelectorAll('.pe-add-section').length === 1, 'exactly one add-section seam (none above hero / between hero+overview)');
   ok(!d.body.textContent.includes(SENT_PREFIX), 'no sentinel text leaked');
 }
 

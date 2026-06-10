@@ -98,6 +98,21 @@ const AFFORDANCE = `
     font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:rgba(90,90,110,.75); }
   .pe-tonebtn{ font:inherit; cursor:pointer; border:1px solid rgba(120,120,140,.35); background:rgba(255,255,255,.72); border-radius:999px; padding:2px 8px; color:rgba(90,90,110,.85); text-transform:lowercase; }
   .pe-tonebtn.on{ background:#6366f1; border-color:#6366f1; color:#fff; }
+
+  /* add-section affordance (dotted circle + plus) — sits on the seam between
+     bands. Canon placement: only BELOW the overview (nothing can be added
+     above the hero or between hero and overview — both are locked-first). */
+  .pe-add-section{ display:flex; align-items:center; gap:14px; padding:8px 72px; cursor:pointer; background:#fff; }
+  .pe-add-line{ flex:1; height:1px; background:rgba(0,0,0,.07); transition:background .15s; }
+  .pe-add-section:hover .pe-add-line{ background:rgba(0,113,227,.35); }
+  .pe-add-dot{ width:30px; height:30px; border-radius:50%; flex:none; position:relative;
+    border:1.5px dashed rgba(0,0,0,.3); background:#fff; color:rgba(0,0,0,.42);
+    font-size:18px; line-height:1; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:.15s; }
+  .pe-add-section:hover .pe-add-dot{ border-color:#0071e3; border-style:solid; color:#0071e3; }
+  .pe-add-dot::after{ content:'Add section'; position:absolute; left:50%; top:-25px; transform:translateX(-50%) scale(.92);
+    background:#0a0a0a; color:#fff; font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.14em; text-transform:uppercase;
+    padding:3px 8px; border-radius:4px; white-space:nowrap; opacity:0; pointer-events:none; transition:.15s; }
+  .pe-add-section:hover .pe-add-dot::after{ opacity:1; transform:translateX(-50%) scale(1); }
 `;
 
 const FONTS = `<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">`;
