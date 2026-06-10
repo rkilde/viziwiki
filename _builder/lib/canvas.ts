@@ -64,6 +64,14 @@ const AFFORDANCE = `
     border:1px solid rgba(120,120,140,.3); border-radius:999px; padding:2px 8px;
     font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.08em; text-transform:uppercase; color:rgba(90,90,110,.8); }
   .modal-scroll .pe-chip .ce{ text-transform:none; letter-spacing:normal; min-width:18px; }
+  /* category colour swatches — SKIN-DERIVED (--cat-accent-N read at runtime);
+     a hover-reveal row at the foot of each card */
+  .pe-swatches{ display:flex; gap:4px; flex-wrap:wrap; margin-top:10px; opacity:0; transition:opacity .12s; }
+  .cat-card:hover .pe-swatches{ opacity:1; }
+  .pe-swatch{ width:14px; height:14px; border-radius:50%; border:1px solid rgba(0,0,0,.25); cursor:pointer; padding:0; flex:none; }
+  .pe-swatch.on{ outline:2px solid #0071e3; outline-offset:1px; }
+  .pe-swatch.auto{ background:#fff; font:600 8px/1 'JetBrains Mono',monospace; color:rgba(0,0,0,.55);
+    display:flex; align-items:center; justify-content:center; }
   .pe-remove,.pe-lock{ position:absolute; top:-9px; right:-9px; width:18px; height:18px; border-radius:50%;
     display:flex; align-items:center; justify-content:center; line-height:1; opacity:0; transition:opacity .12s; z-index:4; }
   .pe-remove{ border:1px solid rgba(0,0,0,.18); background:#fff; color:rgba(0,0,0,.45); font-size:12px; cursor:pointer; }
@@ -246,7 +254,8 @@ export function applyAction(doc: PageDoc, action: string): void {
       const ci2 = arg.lastIndexOf(':');
       if (ci2 > 0) {
         const raw = arg.slice(ci2 + 1);
-        setAt(doc, arg.slice(0, ci2), raw === 'true' ? true : raw === 'false' ? false : raw);
+        const v = raw === 'true' ? true : raw === 'false' ? false : /^\d+$/.test(raw) ? Number(raw) : raw;
+        setAt(doc, arg.slice(0, ci2), v);
       }
       break;
     }
@@ -275,6 +284,16 @@ export function applyAction(doc: PageDoc, action: string): void {
       break;
     }
     case 'secRm': doc.sections.splice(Number(arg), 1); break;
+    case 'secMove': { // secMove:<index>:<up|down> — body sections reorder freely (canon)
+      const [mi, dir] = arg.split(':');
+      const a2 = Number(mi), b2 = dir === 'up' ? a2 - 1 : a2 + 1;
+      if (doc.sections[a2] && doc.sections[b2]) {
+        const t2 = doc.sections[a2];
+        doc.sections[a2] = doc.sections[b2];
+        doc.sections[b2] = t2;
+      }
+      break;
+    }
     case 'secTone': {
       const [idx, t] = arg.split(':');
       if (doc.sections[Number(idx)]) doc.sections[Number(idx)].data.tone = t;

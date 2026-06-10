@@ -15,7 +15,7 @@ const grammar = JSON.parse(fs.readFileSync('data/grammar.json', 'utf8'));
 const registry = JSON.parse(fs.readFileSync('data/visuals.json', 'utf8'));
 const decorateSrc = fs.readFileSync('public/editor/decorate.js', 'utf8');
 
-function renderAndDecorate(doc, isHome, customGrammar) {
+function renderAndDecorate(doc, isHome, customGrammar, prep) {
   const g = customGrammar || grammar;
   const policy = buildPolicy(g);
   const renderer = createRenderer(includes, policy, registry);
@@ -27,6 +27,7 @@ function renderAndDecorate(doc, isHome, customGrammar) {
   w.__PE_SENT = SENT_PREFIX;
   w.__PE_DOC = doc;          // the decorator reads current values (toolbar editors)
   w.A = () => {}; w.P = () => {}; w.__retag = () => {};
+  if (prep) prep(w);          // e.g. seed skin tokens before decoration
   w.eval(decorateSrc);
   w.__decorate();
   return w.document;
@@ -232,6 +233,38 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(modal.querySelector('[data-modal-ribbon]').classList.contains('ribbon-gone'), 'modal ribbon mirrors the pill (gone tone)');
   modal.querySelector('[data-modal-close]').onclick();
   ok(!modal.classList.contains('open') && d.querySelector('.cat-details [id="d-0-0"]'), 'close returns the detail to its hidden home');
+}
+
+// ── case 7: section reorder + skin-derived colour swatches ──
+{
+  console.log('case 7: reorder arrows + skin-derived swatches');
+  const catData = () => JSON.parse(JSON.stringify(grammar.components.catalog.seed));
+  const doc = {
+    hero: { eyebrow: null, title: 'T', subtitle: null, subtitle_meta: null, desc: 'D', stats: null, search: false, search_placeholder: '', spotlight: null, feature: null },
+    overview: { tone: 'b', heading: 'H', paragraphs: ['P'], infobox: null },
+    sections: [{ type: 'catalog', data: catData() }, { type: 'catalog', data: { ...catData(), title: 'Second' } }],
+  };
+  doc.sections[0].data.categories[0].color = 2; // explicit swatch on the first
+  const d = renderAndDecorate(doc, false, null, (w) => {
+    // stand in for the skin: define a 3-swatch palette on the body
+    w.document.body.style.setProperty('--cat-accent-1', '#111111');
+    w.document.body.style.setProperty('--cat-accent-2', '#222222');
+    w.document.body.style.setProperty('--cat-accent-3', '#333333');
+  });
+  const secs = [...d.querySelectorAll('section.wiki-section.catalog')];
+  ok(secs.length === 2, 'two catalog sections render');
+  const chips0 = [...secs[0].querySelectorAll('.pe-sec-tools .pe-chip')].map((c) => c.textContent);
+  const chips1 = [...secs[1].querySelectorAll('.pe-sec-tools .pe-chip')].map((c) => c.textContent);
+  ok(!chips0.includes('↑') && chips0.includes('↓'), 'first section: ↓ only (nothing above it is movable)');
+  ok(chips1.includes('↑') && !chips1.includes('↓'), 'last section: ↑ only');
+  const row = secs[0].querySelector('.pe-swatches');
+  ok(row, 'swatch row present');
+  ok(row.querySelectorAll('.pe-swatch:not(.auto)').length === 3, 'swatches = exactly the tokens the skin defines');
+  ok(row.querySelectorAll('.pe-swatch')[1].className.includes('on'), 'current swatch (color: 2) ringed');
+  ok(row.querySelector('.pe-swatch.auto'), 'auto (cycle) option present');
+  // no skin tokens → no swatch row, no crash
+  const d2 = renderAndDecorate(doc, false);
+  ok(!d2.querySelector('.pe-swatches'), 'no swatch row when the skin defines no palette');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

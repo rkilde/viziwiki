@@ -398,11 +398,19 @@
           extras.push(addBtn('add:' + prefix + 'note', '+ note', true));
         }
       }
-      var rmChip = document.createElement('button');
-      rmChip.className = 'pe-chip';
-      rmChip.textContent = 'remove section';
-      rmChip.onclick = function () { A('secRm:' + i); };
-      extras.push(rmChip);
+      // reorder: body sections move freely among themselves (canon — only
+      // hero+overview are position-locked)
+      var mkChip = function (label, action, title) {
+        var c = document.createElement('button');
+        c.className = 'pe-chip';
+        c.textContent = label;
+        if (title) c.title = title;
+        c.onclick = function () { A(action); };
+        return c;
+      };
+      if (i > 0) extras.push(mkChip('↑', 'secMove:' + i + ':up', 'Move section up'));
+      if (i < bodySecs.length - 1) extras.push(mkChip('↓', 'secMove:' + i + ':down', 'Move section down'));
+      extras.push(mkChip('remove section', 'secRm:' + i));
       toneBar(secEl, type + '.tone', function (t) { return 'secTone:' + i + ':' + t; }, extras);
 
       // locked chrome, from the REGISTRY: the eyebrow label and the
@@ -539,6 +547,40 @@
             } else {
               cnt.appendChild(addBtn('add:' + cpre + 'note', '+ note', true));
             }
+          }
+
+          // colour: SKIN-DERIVED swatch row — the swatches are whatever
+          // --cat-accent-N tokens the loaded skin defines (recolour the skin →
+          // every catalog AND this picker update; the data stores the NUMBER)
+          var swatches = window.__peSwatches;
+          if (swatches === undefined) {
+            swatches = [];
+            var bodyCS = getComputedStyle(document.body);
+            for (var sn = 1; sn <= 24; sn++) {
+              var sv = (bodyCS.getPropertyValue('--cat-accent-' + sn) || '').trim()
+                || (document.body.style.getPropertyValue('--cat-accent-' + sn) || '').trim();
+              if (sv) swatches.push({ n: sn, v: sv });
+            }
+            window.__peSwatches = swatches;
+          }
+          if (swatches.length) {
+            var srow = document.createElement('div');
+            srow.className = 'pe-swatches';
+            swatches.forEach(function (sw) {
+              var sb2 = document.createElement('button');
+              sb2.className = 'pe-swatch' + (Number(cdata.color) === sw.n ? ' on' : '');
+              sb2.style.background = sw.v;
+              sb2.title = 'Swatch ' + sw.n;
+              (function (p, n2) { sb2.onclick = function () { A('set:' + p + ':' + n2); }; })(cpre + 'color', sw.n);
+              srow.appendChild(sb2);
+            });
+            var ab = document.createElement('button');
+            ab.className = 'pe-swatch auto' + (cdata.color == null ? ' on' : '');
+            ab.textContent = 'A';
+            ab.title = 'Auto — cycle the skin palette';
+            (function (p) { ab.onclick = function () { A('rm:' + p); }; })(cpre + 'color');
+            srow.appendChild(ab);
+            card.appendChild(srow);
           }
 
           // items: pill face editable, ✎ opens the detail card, per-item ×, + item

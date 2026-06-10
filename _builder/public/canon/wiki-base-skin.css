@@ -95,6 +95,18 @@ body.wiki-base {
   --prose-color:           rgba(0,0,0,.78);
   --prose-strong-color:    #18181b;
 
+  /* catalog category swatches — the mono ramp ("no skin = mono everything").
+     A real skin overrides these with its palette; the builder's swatch picker
+     reads whatever set the loaded skin defines. */
+  --cat-accent-1: #3f3f46;
+  --cat-accent-2: #71717a;
+  --cat-accent-3: #52525b;
+  --cat-accent-4: #a1a1aa;
+  --cat-accent-5: #27272a;
+  --cat-accent-6: #8a8a93;
+  --cat-accent-7: #5e5e66;
+  --cat-accent-8: #b8b8bf;
+
   /* §16 — overview infobox tokens (achromatic, hairline-bordered) */
   --infobox-bg:            #fafafa;
   --infobox-border:        rgba(0,0,0,.14);

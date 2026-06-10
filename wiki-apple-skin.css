@@ -411,6 +411,18 @@ body.wiki-apple {
   --prose-color:           rgba(0,0,0,.80);    /* body paragraphs             */
   --prose-strong-color:    #0a0a0a;            /* emphasized text — full black */
 
+  /* catalog category swatches — achromatic ramp (Apple house restraint;
+     greys only, like the rest of the skin). Recolour here to theme every
+     catalog + the builder's swatch picker at once. */
+  --cat-accent-1: #1d1d1f;
+  --cat-accent-2: #515154;
+  --cat-accent-3: #6e6e73;
+  --cat-accent-4: #86868b;
+  --cat-accent-5: #2c2c2e;
+  --cat-accent-6: #3a3a3c;
+  --cat-accent-7: #98989d;
+  --cat-accent-8: #48484a;
+
   /* §16 — overview infobox tokens (achromatic, hairline-bordered) */
   --infobox-bg:            #fafafa;
   --infobox-border:        rgba(0,0,0,.14);
