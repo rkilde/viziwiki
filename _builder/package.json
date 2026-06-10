@@ -6,7 +6,7 @@
   "scripts": {
     "gen": "node scripts/copy-canon.mjs && node scripts/extract-grammar.mjs && node scripts/extract-includes.mjs && node scripts/extract-visuals.mjs && node scripts/extract-taco-bell.mjs && node scripts/extract-apple.mjs",
     "dev": "next dev",
-    "test": "node scripts/test-derived-renderer.mjs",
+    "test": "node scripts/audit-grammar-includes.mjs && node scripts/test-derived-renderer.mjs",
     "prebuild": "npm run gen && npm test",
     "build": "next build",
     "start": "next start"

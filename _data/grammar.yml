@@ -80,7 +80,11 @@ components:
         tags:     { type: "list<text>", item_blank: "Tag" }
         cta:      { type: text, required: true, blank: "Button label", help: "REQUIRED button label (the call to action); cta_href makes it a link" }
         cta_href: { type: url }
+        class:    { type: text, locked: true, help: "Extra classes (skin flourish)" }
+        art:      { type: text, locked: true, help: "Raw decoration markup (admin)" }
+        art_inc:  { type: text, locked: true, help: "Decoration partial name under hero/ (admin)" }
       feature:                    # hero card — treatment 2 · FEATURE CARD (wiki-hero-feature)
+        bg:         { type: text, locked: true, help: "--hero-feature-bg gradient/colour (skin/admin)" }
         head_left:  { type: text, blank: "Featured" }
         head_right: { type: text, blank: "Label" }
         title:      { type: text, required: true, blank: "Feature title" }
@@ -102,6 +106,8 @@ components:
       heading:    { type: text,            required: true, blank: "Section heading" }
       paragraphs: { type: "list<richtext>", required: true, min: 1, item_blank: "Write another paragraph here…", help: "The overview body" }
       tone:       { type: "enum[a,b,special]", default: b }
+      id:         { type: text, locked: true, default: overview, help: "Section anchor (admin)" }
+      class:      { type: text, locked: true, help: "Extra classes for skin flourishes (admin)" }
       infobox:    { type: infobox, help: "Optional fact panel beside the prose",
                     blank: { label: "Infobox", title: "Infobox title", rows: [["Label", "Value"], ["Label", "Value"]] } }
     subtypes:
@@ -111,7 +117,10 @@ components:
         sublabel: { type: text, blank: "Sub-label", help: "optional 2nd header label line" }
         rows:     { type: "list<pair>", item_blank: ["Label", "Value"], help: "[key, value] fact rows" }
         badge:    { type: text, blank: "Status badge", help: "optional status chip at the foot of the panel" }
-        # + skin/admin decoration passthroughs (NOT contributor-edited): class, style, art
+        # skin/admin decoration passthroughs (locked — never contributor-edited)
+        class:    { type: text, locked: true, help: "Extra classes (e.g. a skin's sticky-note look)" }
+        style:    { type: text, locked: true, help: "Inline style passthrough (e.g. a header gradient)" }
+        art:      { type: text, locked: true, help: "Raw decoration at the top of the panel (e.g. tape)" }
       pair: { key: { type: text, required: true }, value: { type: richtext, required: true } }
     seed:
       heading: "Section heading"
@@ -125,6 +134,7 @@ components:
     fields:
       heading: { type: text, required: true }
       device:  { type: text, required: true, help: "Identifier line: name · model number" }
+      visual:  { type: text, locked: true, default: spec, help: "The slot's visual type — registry hosts constrain it (admin)" }
       tone:    { type: "enum[a,b,special]", default: special, help: "special = the dark signature band" }
       cards:   { type: "list<card>", required: true }
     subtypes:
@@ -147,6 +157,8 @@ components:
     fields:
       heading:       { type: text,     required: true }
       chart_title:   { type: text,     required: true }
+      tone:          { type: "enum[a,b,special]", default: a }
+      visual:  { type: text, locked: true, default: config, help: "The slot's visual type — registry hosts constrain it (admin)" }
       intro:         { type: richtext }
       footer:        { type: richtext }
       divider_label: { type: text, help: "Label on the revised-group divider" }
@@ -177,6 +189,7 @@ components:
     fields:
       heading:    { type: richtext,         required: true }
       title:      { type: text,             required: true, help: "The ribbon's left-hand title" }
+      visual:  { type: text, locked: true, default: lifecycle-lane, help: "The slot's visual type — registry hosts constrain it (admin)" }
       paragraphs: { type: "list<richtext>", help: "Lead prose above the ribbon" }
       tone:       { type: "enum[a,b,special]", default: a }
       weighted:   { type: bool, default: false, help: "On = tile width ∝ time between dates" }
@@ -216,8 +229,10 @@ components:
     locked: { eyebrow: "Changes & Improvements", icon: chart-column-stacked }
     fields:
       heading:  { type: text, required: true }
+      tone:     { type: "enum[a,b,special]", default: a }
       intro:    { type: richtext }
       footnote: { type: richtext }
+      visual:  { type: text, locked: true, default: delta, help: "The slot's visual type — registry hosts constrain it (admin)" }
       prev:     { type: axis, required: true, help: "The 'before' column header" }
       current:  { type: axis, required: true, help: "The 'after' column header" }
       hardware: { type: "list<delta_row>" }
@@ -245,6 +260,7 @@ components:
     fields:
       heading:   { type: text, help: "Optional H2 (omit for eyebrow-only)" }
       tone:      { type: "enum[a,b,special]", default: b }
+      visual:  { type: text, locked: true, default: timeline, help: "The slot's visual type — registry hosts constrain it (admin)" }
       card_type: { type: "enum[station]", default: station }
       events:    { type: "list<event>", required: true, min: 2 }
     subtypes:
@@ -269,6 +285,7 @@ components:
     fields:
       title:      { type: text, required: true, blank: "Everything", help: "The catalog heading" }
       tone:       { type: "enum[a,b,special]", default: b }
+      visual:  { type: text, locked: true, default: catalog, help: "The slot's visual type — registry hosts constrain it (admin)" }
       unit:       { type: text, default: "item", help: "The count noun (e.g. 'drink', 'sauce')" }
       note:       { type: text, help: "Short suffix appended to the auto summary line (top)" }
       footnote:   { type: richtext, help: "Optional footnote block under the catalog (bottom)" }

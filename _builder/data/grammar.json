@@ -227,9 +227,29 @@
           },
           "cta_href": {
             "type": "url"
+          },
+          "class": {
+            "type": "text",
+            "locked": true,
+            "help": "Extra classes (skin flourish)"
+          },
+          "art": {
+            "type": "text",
+            "locked": true,
+            "help": "Raw decoration markup (admin)"
+          },
+          "art_inc": {
+            "type": "text",
+            "locked": true,
+            "help": "Decoration partial name under hero/ (admin)"
           }
         },
         "feature": {
+          "bg": {
+            "type": "text",
+            "locked": true,
+            "help": "--hero-feature-bg gradient/colour (skin/admin)"
+          },
           "head_left": {
             "type": "text",
             "blank": "Featured"
@@ -297,6 +317,17 @@
           "type": "enum[a,b,special]",
           "default": "b"
         },
+        "id": {
+          "type": "text",
+          "locked": true,
+          "default": "overview",
+          "help": "Section anchor (admin)"
+        },
+        "class": {
+          "type": "text",
+          "locked": true,
+          "help": "Extra classes for skin flourishes (admin)"
+        },
         "infobox": {
           "type": "infobox",
           "help": "Optional fact panel beside the prose",
@@ -346,6 +377,21 @@
             "type": "text",
             "blank": "Status badge",
             "help": "optional status chip at the foot of the panel"
+          },
+          "class": {
+            "type": "text",
+            "locked": true,
+            "help": "Extra classes (e.g. a skin's sticky-note look)"
+          },
+          "style": {
+            "type": "text",
+            "locked": true,
+            "help": "Inline style passthrough (e.g. a header gradient)"
+          },
+          "art": {
+            "type": "text",
+            "locked": true,
+            "help": "Raw decoration at the top of the panel (e.g. tape)"
           }
         },
         "pair": {
@@ -382,6 +428,12 @@
           "type": "text",
           "required": true,
           "help": "Identifier line: name · model number"
+        },
+        "visual": {
+          "type": "text",
+          "locked": true,
+          "default": "spec",
+          "help": "The slot's visual type — registry hosts constrain it (admin)"
         },
         "tone": {
           "type": "enum[a,b,special]",
@@ -450,6 +502,16 @@
         "chart_title": {
           "type": "text",
           "required": true
+        },
+        "tone": {
+          "type": "enum[a,b,special]",
+          "default": "a"
+        },
+        "visual": {
+          "type": "text",
+          "locked": true,
+          "default": "config",
+          "help": "The slot's visual type — registry hosts constrain it (admin)"
         },
         "intro": {
           "type": "richtext"
@@ -547,6 +609,12 @@
           "type": "text",
           "required": true,
           "help": "The ribbon's left-hand title"
+        },
+        "visual": {
+          "type": "text",
+          "locked": true,
+          "default": "lifecycle-lane",
+          "help": "The slot's visual type — registry hosts constrain it (admin)"
         },
         "paragraphs": {
           "type": "list<richtext>",
@@ -657,11 +725,21 @@
           "type": "text",
           "required": true
         },
+        "tone": {
+          "type": "enum[a,b,special]",
+          "default": "a"
+        },
         "intro": {
           "type": "richtext"
         },
         "footnote": {
           "type": "richtext"
+        },
+        "visual": {
+          "type": "text",
+          "locked": true,
+          "default": "delta",
+          "help": "The slot's visual type — registry hosts constrain it (admin)"
         },
         "prev": {
           "type": "axis",
@@ -758,6 +836,12 @@
           "type": "enum[a,b,special]",
           "default": "b"
         },
+        "visual": {
+          "type": "text",
+          "locked": true,
+          "default": "timeline",
+          "help": "The slot's visual type — registry hosts constrain it (admin)"
+        },
         "card_type": {
           "type": "enum[station]",
           "default": "station"
@@ -834,6 +918,12 @@
         "tone": {
           "type": "enum[a,b,special]",
           "default": "b"
+        },
+        "visual": {
+          "type": "text",
+          "locked": true,
+          "default": "catalog",
+          "help": "The slot's visual type — registry hosts constrain it (admin)"
         },
         "unit": {
           "type": "text",
