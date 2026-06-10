@@ -29,8 +29,9 @@
       <div class="cat-card-count">{{ n }} item{% if n != 1 %}s{% endif %}{% if cat.note %} &middot; {{ cat.note }}{% endif %}</div>
       <div class="cat-card-divider"></div>
       <div class="cat-card-pills">
+        {%- assign ci = forloop.index0 -%}
         {%- for item in cat.items -%}
-          <button type="button" class="cat-pill" data-detail="d-{{ forloop.parentloop.index0 }}-{{ forloop.index0 }}" data-color="var(--cat-accent-{{ accent }})"{% if cat.ribbon %} data-ribbon="{{ rb_text | escape }}" data-ribbon-tone="{{ rb_tone }}"{% endif %}>{{ item.name }}</button>
+          <button type="button" class="cat-pill" data-detail="d-{{ ci }}-{{ forloop.index0 }}" data-color="var(--cat-accent-{{ accent }})"{% if cat.ribbon %} data-ribbon="{{ rb_text | escape }}" data-ribbon-tone="{{ rb_tone }}"{% endif %}>{{ item.name }}</button>
         {%- endfor -%}
       </div>
     </div>
@@ -40,8 +41,9 @@
 {%- comment -%} hidden per-item detail content, cloned into the modal on click {%- endcomment -%}
 <div class="cat-details">
   {%- for cat in data.categories -%}
+    {%- assign ci = forloop.index0 -%}
     {%- for item in cat.items -%}
-      <div id="d-{{ forloop.parentloop.index0 }}-{{ forloop.index0 }}">
+      <div id="d-{{ ci }}-{{ forloop.index0 }}">
         <div class="modal-headrow">
           <span class="modal-eyebrow">{{ cat.name }}</span>
           {%- if item.status -%}<span class="chip st-{{ item.status }}">{{ item.status | capitalize }}</span>{%- endif -%}

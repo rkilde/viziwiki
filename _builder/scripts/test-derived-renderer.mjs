@@ -174,7 +174,8 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(cat.querySelector('.cat-card-title .ce'), 'category name editable');
   ok(cat.querySelector('.cat-card.pe-removable > .pe-remove'), 'category removable (corner ×)');
   ok(cat.querySelectorAll('.cat-pill .ce').length === 2, 'both item pills editable');
-  ok(cat.querySelectorAll('.cat-pill .pe-tag-rm').length === 2, 'items removable');
+  ok(cat.querySelectorAll('.cat-pill .pe-tag-rm:not(.pe-expand)').length === 2, 'items removable');
+  ok(cat.querySelectorAll('.cat-pill .pe-expand').length === 2, 'each pill has the ✎ detail opener');
   ok([...cat.querySelectorAll('.pe-sec-tools .pe-chip')].some((c) => c.textContent.startsWith('unit:')), 'unit toolbar editor');
   // seams: after overview (insert 0) AND after the catalog (insert 1)
   const seams = d.querySelectorAll('.pe-add-section');
@@ -183,6 +184,54 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(ovSec.nextElementSibling.className === 'pe-add-section' && cat.nextElementSibling.className === 'pe-add-section', 'seams sit directly below each section');
   // overview heading binding still hits the OVERVIEW h2, not the catalog's
   ok(ovSec.querySelector('.wiki-section-title .ce'), 'overview heading still bound');
+}
+
+// ── case 6: catalog ITEM DETAIL editing (the canonical modal, editor-driven) ──
+{
+  console.log('case 6: catalog item detail (modal editing)');
+  const doc = {
+    hero: { eyebrow: null, title: 'T', subtitle: null, subtitle_meta: null, desc: 'D', stats: null, search: false, search_placeholder: '', spotlight: null, feature: null },
+    overview: { tone: 'b', heading: 'H', paragraphs: ['P'], infobox: null },
+    sections: [{
+      type: 'catalog',
+      data: {
+        title: 'C', categories: [{
+          name: 'Cat', ribbon: { text: 'R', tone: 'gone' }, items: [
+            { name: 'Rich', status: 'active', info: '95mg', desc: 'Desc.', groups: [{ label: 'G1', pills: ['plain', { text: 'obj', struck: true }] }], callout: { label: 'CL', text: 'CT' }, notes: 'N', cta: 'page.html' },
+            { name: 'Bare', desc: 'Min.' },
+          ],
+        }],
+      },
+    }],
+  };
+  const d = renderAndDecorate(doc, false);
+  const richDet = d.querySelector('[id="d-0-0"]');
+  const bareDet = d.querySelector('[id="d-0-1"]');
+  ok(richDet.querySelector('.modal-desc .ce'), 'desc editable');
+  const sel = richDet.querySelector('select.pe-select');
+  ok(sel && [...sel.options].map((o) => o.value).join(',') === 'active,discontinued,limited,retired', 'status DROPDOWN = grammar enum values');
+  ok(sel && sel.querySelector('option[value="active"]').selected, 'current status selected');
+  ok(richDet.querySelector('.chip.info .ce'), 'info chip editable');
+  ok(richDet.querySelector('.modal-group-label .ce'), 'group label editable');
+  ok(richDet.querySelectorAll('.gpill .ce').length === 2, 'string + object pills both editable');
+  ok([...richDet.querySelectorAll('.gpill .pe-tag-rm')].some((b) => b.textContent === 'S'), 'struck toggle on the object pill');
+  ok([...richDet.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === '+ pill'), '+ pill');
+  ok([...richDet.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === '+ group'), '+ group');
+  ok(richDet.querySelector('.modal-callout .ce') && richDet.querySelector('.modal-callout .pe-remove'), 'callout editable + removable');
+  ok(richDet.querySelector('.modal-note .ce'), 'notes editable');
+  ok(richDet.querySelector('.modal-cta.pe-canon .pe-lock'), 'CTA label locked (canon)');
+  ok([...richDet.querySelectorAll('.pe-chip')].some((c) => c.textContent.startsWith('link:')), 'cta link editor chip');
+  const bLabels = [...bareDet.querySelectorAll('.pe-mini-add')].map((b) => b.textContent);
+  ['+ status', '+ info', '+ group', '+ callout', '+ notes', '+ link'].forEach((l) => ok(bLabels.includes(l), `bare item offers ${l}`));
+  // open the modal via the pill's ✎ and confirm the canonical mechanics
+  const ex = d.querySelector('.cat-pill .pe-expand');
+  ex.onclick({ stopPropagation: () => {} });
+  const modal = d.querySelector('[data-catalog-modal]');
+  ok(modal.classList.contains('open'), '✎ opens the canonical modal (.open)');
+  ok(modal.querySelector('[data-modal-body] [id="d-0-0"]'), 'detail moved into the modal body');
+  ok(modal.querySelector('[data-modal-ribbon]').classList.contains('ribbon-gone'), 'modal ribbon mirrors the pill (gone tone)');
+  modal.querySelector('[data-modal-close]').onclick();
+  ok(!modal.classList.contains('open') && d.querySelector('.cat-details [id="d-0-0"]'), 'close returns the detail to its hidden home');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

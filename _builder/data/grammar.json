@@ -1004,36 +1004,56 @@
         "cat_item": {
           "name": {
             "type": "text",
-            "required": true
+            "required": true,
+            "blank": "New item"
           },
           "status": {
-            "type": "text"
+            "type": "enum[active,discontinued,limited,retired]",
+            "blank": "active",
+            "help": "Status chip — exactly the values the bank CSS styles (st-*)"
           },
           "info": {
-            "type": "text"
+            "type": "text",
+            "blank": "Info"
           },
           "desc": {
-            "type": "richtext"
+            "type": "richtext",
+            "blank": "What it is."
           },
           "groups": {
-            "type": "list<pill_group>"
+            "type": "list<pill_group>",
+            "item_blank": {
+              "label": "Group",
+              "pills": [
+                "Pill"
+              ]
+            }
           },
           "callout": {
-            "type": "callout"
+            "type": "callout",
+            "blank": {
+              "label": "Callout",
+              "text": "Write the callout…"
+            }
           },
           "notes": {
-            "type": "richtext"
+            "type": "richtext",
+            "blank": "Write a note…"
           },
           "cta": {
-            "type": "url"
+            "type": "url",
+            "blank": "#",
+            "help": "Link for 'See full entry' — inert until the item has a page"
           }
         },
         "pill_group": {
           "label": {
-            "type": "text"
+            "type": "text",
+            "blank": "Group"
           },
           "pills": {
-            "type": "list<pill>"
+            "type": "list<pill>",
+            "item_blank": "Pill"
           }
         },
         "pill": {

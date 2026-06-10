@@ -54,6 +54,16 @@ const AFFORDANCE = `
   .pe-sec-tools .pe-chip .ce{ text-transform:none; letter-spacing:normal; min-width:18px; display:inline-block; }
   .pe-sec-tools .pe-chip{ display:inline-flex; align-items:center; gap:3px; }
   .cat-ribbon .pe-tag-rm, .cat-ribbon .ce{ vertical-align:middle; }
+  /* the item-detail modal (editor-driven): enum dropdown + always-visible
+     affordances (no hover ancestor inside the modal flow) */
+  .pe-select{ font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.06em; text-transform:uppercase;
+    border:1px solid rgba(120,120,140,.4); border-radius:5px; background:#fff; color:rgba(60,60,75,.9); padding:2px 4px; margin-left:6px; cursor:pointer; }
+  .modal-scroll .pe-tag-rm, .modal-scroll .pe-mini-add{ opacity:.6; }
+  .modal-scroll .pe-tag-rm:hover, .modal-scroll .pe-mini-add:hover{ opacity:1; }
+  .modal-scroll .pe-chip{ display:inline-flex; align-items:center; gap:3px; margin-left:8px;
+    border:1px solid rgba(120,120,140,.3); border-radius:999px; padding:2px 8px;
+    font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.08em; text-transform:uppercase; color:rgba(90,90,110,.8); }
+  .modal-scroll .pe-chip .ce{ text-transform:none; letter-spacing:normal; min-width:18px; }
   .pe-remove,.pe-lock{ position:absolute; top:-9px; right:-9px; width:18px; height:18px; border-radius:50%;
     display:flex; align-items:center; justify-content:center; line-height:1; opacity:0; transition:opacity .12s; z-index:4; }
   .pe-remove{ border:1px solid rgba(0,0,0,.18); background:#fff; color:rgba(0,0,0,.45); font-size:12px; cursor:pointer; }
@@ -232,9 +242,12 @@ export function applyAction(doc: PageDoc, action: string): void {
       if (Array.isArray(list)) list.push(itemBlankOf(polKeyFor(doc, arg)));
       break;
     }
-    case 'set': { // set:<path>:<value> — e.g. cycling an enum (ribbon tone)
+    case 'set': { // set:<path>:<value> — enum cycling / dropdowns / bool toggles
       const ci2 = arg.lastIndexOf(':');
-      if (ci2 > 0) setAt(doc, arg.slice(0, ci2), arg.slice(ci2 + 1));
+      if (ci2 > 0) {
+        const raw = arg.slice(ci2 + 1);
+        setAt(doc, arg.slice(0, ci2), raw === 'true' ? true : raw === 'false' ? false : raw);
+      }
       break;
     }
     // hero card (aside): spotlight XOR feature (canon); the inactive variant

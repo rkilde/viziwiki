@@ -430,8 +430,46 @@
         }
       }
 
-      // ── catalog: the full flat-field editing surface ──
+      // ── catalog: the full editing surface ──
       if (type === 'catalog') {
+        // the CANONICAL modal, driven by the editor (the live site's script is
+        // stripped — this re-implements open/close as editing chrome; the
+        // CONTENT shown is the include's own hidden detail markup, moved in)
+        var detRoot = qs('.cat-details', secEl);
+        var modal = qs('[data-catalog-modal]', secEl);
+        var openItem = null, closeModal = null;
+        if (detRoot && modal) {
+          var modalBody = qs('[data-modal-body]', modal);
+          var modalCard = qs('.modal-card', modal);
+          var modalRb = qs('[data-modal-ribbon]', modal);
+          closeModal = function () {
+            var openDet = qs('[data-pe-detail-open]', modal);
+            if (openDet) { detRoot.appendChild(openDet); openDet.removeAttribute('data-pe-detail-open'); }
+            modal.classList.remove('open');
+            window.__peOpenItem = null;
+          };
+          openItem = function (j, k, pill) {
+            var det = qs('[id="d-' + j + '-' + k + '"]', secEl);
+            if (!det) return;
+            // mirror the live script's pill → modal chrome (colour + ribbon)
+            if (modalCard && pill) modalCard.style.setProperty('--cat-color', pill.getAttribute('data-color') || '');
+            if (modalRb) {
+              var rb = pill && pill.getAttribute('data-ribbon');
+              modalRb.textContent = rb || '';
+              modalRb.style.display = rb ? '' : 'none';
+              modalRb.classList.toggle('ribbon-gone', !!pill && pill.getAttribute('data-ribbon-tone') === 'gone');
+              if (modalCard) modalCard.classList.toggle('has-ribbon', !!rb);
+            }
+            det.setAttribute('data-pe-detail-open', '1');
+            modalBody.appendChild(det);
+            modal.classList.add('open');
+            window.__peOpenItem = { s: i, j: j, k: k };
+          };
+          var closeBtn = qs('[data-modal-close]', modal);
+          if (closeBtn) closeBtn.onclick = closeModal;
+          modal.addEventListener('mousedown', function (e) { if (e.target === modal) closeModal(); });
+        }
+
         wrapCE(qs('.wiki-section-title', secEl), prefix + 'title');
         var fn = qs('.cat-footnote', secEl);
         if (fn) { wrapCE(fn, prefix + 'footnote'); makeRemovable(fn, 'rm:' + prefix + 'footnote'); }
@@ -503,18 +541,160 @@
             }
           }
 
-          // items: pill face editable, per-item ×, + item
+          // items: pill face editable, ✎ opens the detail card, per-item ×, + item
           qsa('.cat-pill', card).forEach(function (pill, k) {
             wrapCE(pill, cpre + 'items.' + k + '.name');
+            if (openItem) {
+              var ex = document.createElement('button');
+              ex.className = 'pe-tag-rm pe-expand';
+              ex.textContent = '✎';
+              ex.title = 'Edit item details';
+              (function (jj, kk, pp) { ex.onclick = function (e) { e.stopPropagation(); openItem(jj, kk, pp); }; })(j, k, pill);
+              pill.classList.add('pe-removable');
+              pill.appendChild(ex);
+            }
             makeRemovable(pill, 'rm:' + cpre + 'items.' + k, true);
           });
           var pillsWrap = qs('.cat-card-pills', card);
           if (pillsWrap) pillsWrap.appendChild(addBtn('push:' + cpre + 'items', '+ item', true));
         });
 
+        // ── item DETAIL (the expandable card content) — canonical hidden divs ──
+        var stEnum = R('catalog.categories[].items[].status').enum || [];
+        qsa('.cat-details > div', secEl).forEach(function (det) {
+          var idm = /^d-(\d+)-(\d+)$/.exec(det.id || '');
+          if (!idm) return;
+          var dj = Number(idm[1]), dk = Number(idm[2]);
+          var ipre = prefix + 'categories.' + dj + '.items.' + dk + '.';
+          var idata = ((sdata.categories || [])[dj] || {}).items;
+          idata = (idata || [])[dk] || {};
+          var head = qs('.modal-headrow', det);
+          var insetDiv = qs('.modal-divider.is-inset', det);
+
+          wrapCE(qs('.modal-desc', det), ipre + 'desc');
+
+          // status: DROPDOWN of the grammar enum (the only styled values)
+          var stChip = qs('.chip[class*="st-"]', det);
+          if (stChip && head) {
+            var sel = document.createElement('select');
+            sel.className = 'pe-select';
+            stEnum.forEach(function (v) {
+              var o = document.createElement('option');
+              o.value = v; o.textContent = v;
+              if (idata.status === v) o.selected = true;
+              sel.appendChild(o);
+            });
+            (function (p) { sel.onchange = function () { A('set:' + p + ':' + sel.value); }; })(ipre + 'status');
+            head.insertBefore(sel, stChip.nextSibling);
+            makeRemovable(stChip, 'rm:' + ipre + 'status', true);
+          } else if (head) {
+            head.appendChild(addBtn('add:' + ipre + 'status', '+ status', true));
+          }
+          // info chip
+          var infoChip = qs('.chip.info', det);
+          if (infoChip) { wrapCE(infoChip, ipre + 'info'); makeRemovable(infoChip, 'rm:' + ipre + 'info', true); }
+          else if (head) { head.appendChild(addBtn('add:' + ipre + 'info', '+ info', true)); }
+
+          // pill groups: label, pills (string or {text, struck}), add/remove
+          var glabels = qsa('.modal-group-label', det);
+          glabels.forEach(function (gl, g) {
+            wrapCE(gl, ipre + 'groups.' + g + '.label');
+            var grm = document.createElement('button');
+            grm.className = 'pe-tag-rm';
+            grm.textContent = '×';
+            grm.title = 'Remove group';
+            (function (p) { grm.onclick = function () { A('rm:' + p); }; })(ipre + 'groups.' + g);
+            gl.classList.add('pe-removable');
+            gl.appendChild(grm);
+            var pillsDiv = gl.nextElementSibling;
+            if (pillsDiv) {
+              qsa('.gpill', pillsDiv).forEach(function (gp, pm) {
+                var pdata = (((idata.groups || [])[g] || {}).pills || [])[pm];
+                if (pdata && typeof pdata === 'object') {
+                  wrapCE(gp, ipre + 'groups.' + g + '.pills.' + pm + '.text');
+                  var sb = document.createElement('button');
+                  sb.className = 'pe-tag-rm';
+                  sb.textContent = 'S';
+                  sb.title = pdata.struck ? 'Un-strike' : 'Strike through';
+                  (function (p, cur) { sb.onclick = function () { A('set:' + p + ':' + (!cur)); }; })(ipre + 'groups.' + g + '.pills.' + pm + '.struck', !!pdata.struck);
+                  gp.classList.add('pe-removable');
+                  gp.appendChild(sb);
+                } else {
+                  wrapCE(gp, ipre + 'groups.' + g + '.pills.' + pm);
+                  gp.classList.add('pe-removable');
+                }
+                var prm = document.createElement('button');
+                prm.className = 'pe-tag-rm';
+                prm.textContent = '×';
+                prm.title = 'Remove pill';
+                (function (p) { prm.onclick = function () { A('rm:' + p); }; })(ipre + 'groups.' + g + '.pills.' + pm);
+                gp.appendChild(prm);
+              });
+              pillsDiv.appendChild(addBtn('push:' + ipre + 'groups.' + g + '.pills', '+ pill', true));
+            }
+          });
+          // + group — after the last group (or after the desc)
+          var gAnchor = glabels.length ? glabels[glabels.length - 1].nextElementSibling : qs('.modal-desc', det);
+          if (gAnchor) gAnchor.parentNode.insertBefore(addBtn('push:' + ipre + 'groups', '+ group', true), gAnchor.nextSibling);
+
+          // callout + notes
+          var co = qs('.modal-callout', det);
+          if (co) {
+            wrapCE(qs('.modal-callout-label', co), ipre + 'callout.label');
+            wrapCE(qs('.modal-callout-text', co), ipre + 'callout.text');
+            makeRemovable(co, 'rm:' + ipre + 'callout');
+          } else if (insetDiv) {
+            insetDiv.parentNode.insertBefore(addBtn('add:' + ipre + 'callout', '+ callout', true), insetDiv);
+          }
+          var noEl = qs('.modal-note', det);
+          if (noEl) { wrapCE(noEl, ipre + 'notes'); makeRemovable(noEl, 'rm:' + ipre + 'notes'); }
+          else if (insetDiv) { insetDiv.parentNode.insertBefore(addBtn('add:' + ipre + 'notes', '+ notes', true), insetDiv); }
+
+          // CTA: the label is locked canon; the LINK is the contributor field
+          var cta = qs('.modal-cta', det);
+          if (cta) {
+            cta.classList.add('pe-canon');
+            var clk = document.createElement('span');
+            clk.className = 'pe-lock';
+            clk.title = 'Locked canonical label — set the link instead';
+            clk.innerHTML = LOCK;
+            cta.appendChild(clk);
+            if (idata.cta != null) {
+              var lc = document.createElement('span');
+              lc.className = 'pe-chip';
+              lc.appendChild(document.createTextNode('link: '));
+              var lce = document.createElement('span');
+              lce.className = 'ce';
+              lce.setAttribute('contenteditable', 'true');
+              lce.textContent = idata.cta;
+              (function (p, el) { el.addEventListener('blur', function () { P(p, el); }); })(ipre + 'cta', lce);
+              lc.appendChild(lce);
+              var lrm = document.createElement('button');
+              lrm.className = 'pe-tag-rm';
+              lrm.style.opacity = '1';
+              lrm.textContent = '×';
+              lrm.title = 'Remove link';
+              (function (p) { lrm.onclick = function () { A('rm:' + p); }; })(ipre + 'cta');
+              lc.appendChild(lrm);
+              cta.parentNode.insertBefore(lc, cta.nextSibling);
+            } else {
+              cta.parentNode.insertBefore(addBtn('add:' + ipre + 'cta', '+ link', true), cta.nextSibling);
+            }
+          }
+        });
+
         // + category — after the masonry, where the new card lands
         var mas = qs('.cat-masonry', secEl);
         if (mas) mas.parentNode.insertBefore(addLine('push:' + prefix + 'categories', '+ category'), mas.nextSibling);
+
+        // a body re-render closes the modal — reopen the item being edited
+        var oi = window.__peOpenItem;
+        if (oi && oi.s === i && openItem) {
+          var rcard = qsa('.cat-masonry > .cat-card', secEl)[oi.j];
+          var rpill = rcard && qsa('.cat-pill', rcard)[oi.k];
+          if (rpill) openItem(oi.j, oi.k, rpill);
+          else window.__peOpenItem = null;
+        }
       }
     });
 
