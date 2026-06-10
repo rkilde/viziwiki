@@ -4,14 +4,16 @@
   "private": true,
   "description": "ViziWiki 1.0 builder — Phase 1 vertical slice (spec grid). Run with `npm run dev`.",
   "scripts": {
-    "gen": "node scripts/copy-canon.mjs && node scripts/extract-grammar.mjs && node scripts/extract-taco-bell.mjs && node scripts/extract-apple.mjs",
+    "gen": "node scripts/copy-canon.mjs && node scripts/extract-grammar.mjs && node scripts/extract-includes.mjs && node scripts/extract-taco-bell.mjs && node scripts/extract-apple.mjs",
     "dev": "next dev",
-    "prebuild": "npm run gen",
+    "test": "node scripts/test-derived-renderer.mjs",
+    "prebuild": "npm run gen && npm test",
     "build": "next build",
     "start": "next start"
   },
   "dependencies": {
     "js-yaml": "4.1.0",
+    "liquidjs": "^10.27.0",
     "next": "^14.2.35",
     "react": "18.3.1",
     "react-dom": "18.3.1"
@@ -21,6 +23,7 @@
     "@types/node": "22.7.5",
     "@types/react": "18.3.11",
     "@types/react-dom": "18.3.1",
+    "jsdom": "^29.1.1",
     "typescript": "5.6.3"
   }
 }

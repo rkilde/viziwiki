@@ -120,11 +120,15 @@ did, on the iPod charts — hence this rule). **Rule of thumb: document text →
    structure, a default, a lock — that's a restatement and it's wrong.
    The pipes: CSS → `copy-canon`; rules/constraints/seeds → `extract-grammar`
    (`lib/grammar.ts`); wiki content → `extract-*`; markup → the Liquid
-   includes themselves (LiquidJS in the builder — in progress; until it
-   lands, `canvas.ts` mirrors the includes BY HAND and the includes are the
-   master whenever they disagree). Builder-only editing chrome (`pe-*`
+   includes themselves, EXECUTED in the builder (LiquidJS, Jekyll mode:
+   `extract-includes` → `lib/render.ts`; absent optional fields render as
+   sentinels that the decorator `public/editor/decorate.js` swaps for "+"
+   slots in their canonical positions). Builder-only editing chrome (`pe-*`
    affordances) is allowed, but WHAT it attaches to and WHAT it permits must
-   be derived (grammar fields/locks + canon class-name conventions).
+   be derived (grammar fields/locks/enums + canon class-name conventions —
+   the decorator's tables only REFERENCE canon identifiers, never restate
+   structure). Guard: `npm test` (scripts/test-derived-renderer.mjs) runs on
+   every build and fails if the pipeline or decoration breaks.
 
 ## Workflow norms
 - Develop on branch `claude/quirky-carson-vKj8w`. Commit + push; owner previews

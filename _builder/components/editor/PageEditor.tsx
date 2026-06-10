@@ -2,16 +2,19 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import type { Page, WikiSkin } from '../../lib/wiki';
 import { loadPageDoc, savePageDoc, resetPageDoc, seedDoc, type PageDoc } from '../../lib/store';
-import { buildCanvas, buildBody, setIn, applyAction } from '../../lib/canvas';
+import { buildCanvas, setIn, applyAction } from '../../lib/canvas';
+import { renderBody } from '../../lib/render';
 
 const oneLine = (t: string) => t.replace(/<br\s*\/?>/gi, ' ');
 
 /**
  * The page editor. The page renders in an IFRAME that loads the canonical CSS
- * (copied from the repo) + the real wiki-* markup — so it looks exactly like the
- * live site and tracks the master format. The iframe document loads ONCE; every
- * edit just swaps the <body> in place (no reload → smooth, no flash). Field edits
- * sync via __peField; +add/×remove via __peAction; both update the live body.
+ * (copied from the repo) and a body produced by EXECUTING the repo's own
+ * Liquid includes (lib/render.ts) — the editor is DERIVED from the master
+ * format, not a restatement of it. The iframe document loads ONCE; every edit
+ * swaps the <body> in place (no reload → smooth, no flash) and re-runs the
+ * decorator (editing affordances). Field edits sync via __peField; +add /
+ * ×remove via __peAction; both update the live body.
  */
 export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin; onClose: () => void }) {
   const docRef = useRef<PageDoc>(loadPageDoc(page));
@@ -20,12 +23,14 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
   const isHome = !!page.home; // home pages get home-only canon (e.g. the search bar)
 
   // built once — never changes, so the iframe never reloads
-  const srcDoc = useMemo(() => buildCanvas(docRef.current, skin, isHome), []); // eslint-disable-line react-hooks/exhaustive-deps
+  const srcDoc = useMemo(() => buildCanvas(renderBody(docRef.current, isHome), skin), []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const swapBody = () => {
-      const idoc = iframeRef.current?.contentDocument;
-      if (idoc?.body) idoc.body.innerHTML = buildBody(docRef.current, isHome);
+      const ifr = iframeRef.current;
+      if (!ifr?.contentDocument?.body) return;
+      ifr.contentDocument.body.innerHTML = renderBody(docRef.current, isHome);
+      (ifr.contentWindow as any)?.__decorate?.();
     };
     (window as any).__peField = (path: string, html: string) => { setIn(docRef.current, path, html); setSaved(false); };
     (window as any).__peAction = (action: string) => { applyAction(docRef.current, action); setSaved(false); swapBody(); };
@@ -33,15 +38,18 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', onKey);
     return () => { delete (window as any).__peField; delete (window as any).__peAction; delete (window as any).__peResize; window.removeEventListener('keydown', onKey); };
-  }, [onClose]);
+  }, [onClose, isHome]);
 
   const save = () => { savePageDoc(page.id, docRef.current); setSaved(true); };
   const revert = () => {
     resetPageDoc(page.id);
     docRef.current = seedDoc(page);
     setSaved(false);
-    const idoc = iframeRef.current?.contentDocument;
-    if (idoc?.body) idoc.body.innerHTML = buildBody(docRef.current, isHome);
+    const ifr = iframeRef.current;
+    if (ifr?.contentDocument?.body) {
+      ifr.contentDocument.body.innerHTML = renderBody(docRef.current, isHome);
+      (ifr.contentWindow as any)?.__decorate?.();
+    }
   };
 
   return (
