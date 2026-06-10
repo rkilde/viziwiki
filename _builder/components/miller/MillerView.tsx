@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import type { Wiki, Page } from '../../lib/wiki';
 import { oneLine } from '../../lib/wiki';
+import { dotClass, addLabel, ROOT_COLUMN_HEAD } from '../../lib/hierarchy';
 import { PagePreview } from './PagePreview';
 
 const Chev = () => (
@@ -13,7 +14,9 @@ const Badge = ({ status }: { status: string }) => (
 );
 
 function Row({ page, level, selected, onClick }: { page: Page; level: number; selected: boolean; onClick: () => void }) {
-  const dot = `${level === 0 ? 'cat' : 'sub'}${page.status === 'live' ? '' : page.status === 'draft' ? ' draft' : ' stub'}`;
+  // role + colour come from the canonical hierarchy (gold main-cat / blue
+  // subcategory / neutral page), so every wiki reads the same rule.
+  const dot = dotClass(level, page.pages.length > 0, page.status);
   return (
     <div className={`mil-row ${level > 0 ? 'sub' : ''} ${selected ? 'sel' : ''}`} onClick={onClick}>
       <span className={`mil-dot ${dot}`} />
@@ -24,19 +27,20 @@ function Row({ page, level, selected, onClick }: { page: Page; level: number; se
   );
 }
 
-// Bottom-of-column add controls: "+ category" / "+ page" → inline title input.
-// Committing the title creates the node (it becomes that page's H1) and selects it.
-function ColFooter({ onAdd }: { onAdd: (kind: 'category' | 'page', title: string) => void }) {
-  const [kind, setKind] = useState<'category' | 'page' | null>(null);
+// Bottom-of-column add control: ONE button per the canon — "+ main category
+// page" in the first column, "+ page" in every deeper column. Committing the
+// title creates the node (it becomes that page's H1) and selects it.
+function ColFooter({ depth, onAdd }: { depth: number; onAdd: (title: string) => void }) {
+  const [adding, setAdding] = useState(false);
   const [title, setTitle] = useState('');
-  const commit = () => { const t = title.trim(); if (t && kind) onAdd(kind, t); setKind(null); setTitle(''); };
-  if (kind) {
+  const commit = () => { const t = title.trim(); if (t) onAdd(t); setAdding(false); setTitle(''); };
+  if (adding) {
     return (
       <div className="mil-add-input">
         <input
-          autoFocus value={title} placeholder={kind === 'category' ? 'New category…' : 'New page…'}
+          autoFocus value={title} placeholder={depth === 0 ? 'New main category page…' : 'New page…'}
           onChange={(e) => setTitle(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter') commit(); if (e.key === 'Escape') { setKind(null); setTitle(''); } }}
+          onKeyDown={(e) => { if (e.key === 'Enter') commit(); if (e.key === 'Escape') { setAdding(false); setTitle(''); } }}
           onBlur={commit}
         />
       </div>
@@ -44,8 +48,7 @@ function ColFooter({ onAdd }: { onAdd: (kind: 'category' | 'page', title: string
   }
   return (
     <div className="mil-add-row">
-      <button className="mil-add-btn" onClick={() => setKind('category')}>+ category</button>
-      <button className="mil-add-btn" onClick={() => setKind('page')}>+ page</button>
+      <button className="mil-add-btn" onClick={() => setAdding(true)}>{addLabel(depth)}</button>
     </div>
   );
 }
@@ -60,7 +63,7 @@ function Column({ head, footer, children }: { head: string; footer?: React.React
   );
 }
 
-export function MillerView({ wiki, onOpen, onAddNode }: { wiki: Wiki; onOpen?: (page: Page) => void; onAddNode?: (parentId: string, kind: 'category' | 'page', title: string) => Page }) {
+export function MillerView({ wiki, onOpen, onAddNode }: { wiki: Wiki; onOpen?: (page: Page) => void; onAddNode?: (parentId: string, title: string) => Page }) {
   const [path, setPath] = useState<string[]>([]);
 
   const sel0 = wiki.pages.find((p) => p.id === path[0]) || null;
@@ -69,17 +72,17 @@ export function MillerView({ wiki, onOpen, onAddNode }: { wiki: Wiki; onOpen?: (
   const selected = sel2 || sel1 || sel0; // deepest selected node
 
   // create a node under `parentId`, then select it in `prefix`'s next column
-  const add = (prefix: string[], parentId: string, kind: 'category' | 'page', title: string) => {
-    const node = onAddNode?.(parentId, kind, title);
+  const add = (prefix: string[], parentId: string, title: string) => {
+    const node = onAddNode?.(parentId, title);
     if (node) setPath([...prefix, node.id]);
   };
-  const footer = (prefix: string[], parentId: string) =>
-    onAddNode ? <ColFooter onAdd={(kind, title) => add(prefix, parentId, kind, title)} /> : undefined;
+  const footer = (depth: number, prefix: string[], parentId: string) =>
+    onAddNode ? <ColFooter depth={depth} onAdd={(title) => add(prefix, parentId, title)} /> : undefined;
 
   return (
     <div className="mil-cols">
-      {/* col 0 — the wiki's main category pages (from its browse/directory) */}
-      <Column head={wiki.name} footer={footer([], '')}>
+      {/* col 0 — the wiki's MAIN CATEGORY pages (the top of the canon) */}
+      <Column head={ROOT_COLUMN_HEAD} footer={footer(0, [], '')}>
         {wiki.pages.map((p) => (
           <Row key={p.id} page={p} level={0} selected={path[0] === p.id} onClick={() => setPath([p.id])} />
         ))}
@@ -87,7 +90,7 @@ export function MillerView({ wiki, onOpen, onAddNode }: { wiki: Wiki; onOpen?: (
 
       {/* col 1 — entries within the selected category (shown once a category is picked) */}
       {sel0 && (
-        <Column head={oneLine(sel0.title)} footer={footer([sel0.id], sel0.id)}>
+        <Column head={oneLine(sel0.title)} footer={footer(1, [sel0.id], sel0.id)}>
           {sel0.pages.map((p) => (
             <Row key={p.id} page={p} level={1} selected={path[1] === p.id} onClick={() => setPath([sel0.id, p.id])} />
           ))}
@@ -96,7 +99,7 @@ export function MillerView({ wiki, onOpen, onAddNode }: { wiki: Wiki; onOpen?: (
 
       {/* col 2 — entries within the selected folder/entry */}
       {sel1 && (
-        <Column head={oneLine(sel1.title)} footer={footer([sel0!.id, sel1.id], sel1.id)}>
+        <Column head={oneLine(sel1.title)} footer={footer(2, [sel0!.id, sel1.id], sel1.id)}>
           {sel1.pages.map((p) => (
             <Row key={p.id} page={p} level={2} selected={path[2] === p.id} onClick={() => setPath([sel0!.id, sel1.id, p.id])} />
           ))}

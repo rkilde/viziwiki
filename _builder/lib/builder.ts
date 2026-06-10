@@ -14,10 +14,12 @@ const uid = (p: string) => p + Date.now().toString(36) + '-' + Math.random().toS
 
 // A new node: a draft page seeded only with a title. hero + overview templates
 // are filled in by seedDoc when it's opened (both are locked on every page).
-export function blankPage(title: string, folder: boolean): Page {
+// Per the hierarchy canon there's no category/page distinction at creation — a
+// page becomes a subcategory automatically once child pages are added under it.
+export function blankPage(title: string): Page {
   return {
-    id: uid('n-'), title, permalink: null, status: 'draft', folder,
-    count: folder ? 0 : null, accent: null, sections: [], hero: { ...EMPTY_HERO }, overview: null, pages: [],
+    id: uid('n-'), title, permalink: null, status: 'draft', folder: false,
+    count: null, accent: null, sections: [], hero: { ...EMPTY_HERO }, overview: null, pages: [],
   };
 }
 export function blankWiki(name: string): Wiki {

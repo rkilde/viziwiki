@@ -35,8 +35,8 @@ export default function Page() {
     setEditing(null);
     setWikiId(w.id);
   };
-  const addNode = (parentId: string, kind: 'category' | 'page', title: string): Page => {
-    const node = blankPage(title, kind === 'category');
+  const addNode = (parentId: string, title: string): Page => {
+    const node = blankPage(title);
     setChildren((prev) => {
       const key = `${baseWiki.id}::${parentId}`;
       const next = { ...prev, [key]: [...(prev[key] || []), node] };
