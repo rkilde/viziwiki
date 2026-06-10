@@ -130,6 +130,13 @@ function ovHTML(ov: OverviewDoc): string {
 
 const FONTS = `<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">`;
 
+// Just the <body> inner HTML — swapped in place on every change (no reload).
+export function buildBody(doc: PageDoc): string {
+  return `${heroHTML(doc.hero)}${ovHTML(doc.overview)}`;
+}
+
+// The full document — built ONCE for the iframe's initial load. After that we only
+// swap buildBody() into the live body, so the CSS/fonts never reload (smooth).
 export function buildCanvas(doc: PageDoc): string {
   return `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>${FONTS}
@@ -145,10 +152,7 @@ function H(){try{window.parent.__peResize(document.documentElement.scrollHeight)
 window.addEventListener('load',function(){H();try{new ResizeObserver(H).observe(document.body)}catch(e){}});
 </script>
 </head>
-<body class="wiki-page wiki-taco-bell" style="overflow-x:hidden">
-${heroHTML(doc.hero)}
-${ovHTML(doc.overview)}
-</body></html>`;
+<body class="wiki-page wiki-taco-bell" style="overflow-x:hidden">${buildBody(doc)}</body></html>`;
 }
 
 // ── data sync (called from the React side) ──

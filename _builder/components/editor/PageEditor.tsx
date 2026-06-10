@@ -2,37 +2,46 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import type { Page } from '../../lib/wiki';
 import { loadPageDoc, savePageDoc, resetPageDoc, seedDoc, type PageDoc } from '../../lib/store';
-import { buildCanvas, setIn, applyAction } from '../../lib/canvas';
+import { buildCanvas, buildBody, setIn, applyAction } from '../../lib/canvas';
 
 const oneLine = (t: string) => t.replace(/<br\s*\/?>/gi, ' ');
 
 /**
- * The page editor. Renders the page in an IFRAME that loads the canonical CSS
- * (copied from the repo) and emits the real wiki-* markup — so hero/overview/
- * stat-grid look exactly like the live site and track the master format. Editable
- * text is contenteditable inside the iframe; it calls back via window.__peField /
- * __peAction. Field edits update the doc in place (no reload); +add/×remove bump a
- * revision to re-render the iframe.
+ * The page editor. The page renders in an IFRAME that loads the canonical CSS
+ * (copied from the repo) + the real wiki-* markup — so it looks exactly like the
+ * live site and tracks the master format. The iframe document loads ONCE; every
+ * edit just swaps the <body> in place (no reload → smooth, no flash). Field edits
+ * sync via __peField; +add/×remove via __peAction; both update the live body.
  */
 export function PageEditor({ page, onClose }: { page: Page; onClose: () => void }) {
   const docRef = useRef<PageDoc>(loadPageDoc(page));
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [rev, setRev] = useState(0);
   const [saved, setSaved] = useState(false);
 
+  // built once — never changes, so the iframe never reloads
+  const srcDoc = useMemo(() => buildCanvas(docRef.current), []);
+
   useEffect(() => {
+    const swapBody = () => {
+      const idoc = iframeRef.current?.contentDocument;
+      if (idoc?.body) idoc.body.innerHTML = buildBody(docRef.current);
+    };
     (window as any).__peField = (path: string, html: string) => { setIn(docRef.current, path, html); setSaved(false); };
-    (window as any).__peAction = (action: string) => { applyAction(docRef.current, action); setSaved(false); setRev((r) => r + 1); };
+    (window as any).__peAction = (action: string) => { applyAction(docRef.current, action); setSaved(false); swapBody(); };
     (window as any).__peResize = (h: number) => { if (iframeRef.current) iframeRef.current.style.height = Math.max(h, 480) + 'px'; };
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     window.addEventListener('keydown', onKey);
     return () => { delete (window as any).__peField; delete (window as any).__peAction; delete (window as any).__peResize; window.removeEventListener('keydown', onKey); };
   }, [onClose]);
 
-  const srcDoc = useMemo(() => buildCanvas(docRef.current), [rev]);
-
   const save = () => { savePageDoc(page.id, docRef.current); setSaved(true); };
-  const revert = () => { resetPageDoc(page.id); docRef.current = seedDoc(page); setSaved(false); setRev((r) => r + 1); };
+  const revert = () => {
+    resetPageDoc(page.id);
+    docRef.current = seedDoc(page);
+    setSaved(false);
+    const idoc = iframeRef.current?.contentDocument;
+    if (idoc?.body) idoc.body.innerHTML = buildBody(docRef.current);
+  };
 
   return (
     <div id="pe-overlay">
