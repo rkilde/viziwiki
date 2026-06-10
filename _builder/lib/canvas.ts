@@ -37,8 +37,13 @@ const AFFORDANCE = `
     margin-left:6px; vertical-align:middle; border:1px dashed rgba(120,120,140,.5); background:transparent; color:rgba(90,90,110,.7); }
   .pe-mini-add:hover{ color:#6366f1; border-color:#6366f1; }
   .pe-addline{ margin:12px 0; }
-  .pe-stats-wrap{ max-width:36rem; }
+  /* the corner × / padlock hugs the field's CONTENT box (like the eyebrow),
+     not the full-width block — so it lands at the text's top-right, not the page edge */
+  .pe-stats-wrap{ max-width:36rem; width:fit-content; }
   .wiki-hero-subtitle.pe-removable{ display:inline-flex; align-items:baseline; }
+  .wiki-hero-title.pe-locked, .wiki-section-title.pe-locked,
+  .wiki-infobox-title.pe-locked, .wiki-infobox-label.pe-locked,
+  .wiki-infobox-label.pe-removable{ width:fit-content; max-width:100%; }
 
   .pe-toolbar{ font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:rgba(90,90,110,.7); margin-bottom:16px; display:inline-flex; align-items:center; gap:6px; }
   .pe-tonebtn{ font:inherit; cursor:pointer; border:1px solid rgba(120,120,140,.35); background:#fff; border-radius:5px; padding:3px 9px; color:rgba(90,90,110,.85); text-transform:lowercase; }
@@ -71,7 +76,7 @@ function heroHTML(h: HeroDoc): string {
           }${x('rmSubtitle')}</div>`
         : add('addSubtitle', '+ subtitle')}
       ${h.desc != null
-        ? `<div class="pe-removable" style="max-width:36rem"><p class="wiki-hero-desc">${ce('hero.desc', h.desc)}</p>${x('rmDesc')}</div>`
+        ? `<div class="pe-removable" style="max-width:36rem;width:fit-content"><p class="wiki-hero-desc">${ce('hero.desc', h.desc)}</p>${x('rmDesc')}</div>`
         : add('addDesc', '+ description')}
       ${h.stats
         ? `<div class="pe-removable pe-stats-wrap"><div class="wiki-hero-stats">${h.stats.map((s, i) =>
