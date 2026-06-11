@@ -132,9 +132,11 @@ const AFFORDANCE = `
   .cc-enum-opt{ font-family:'JetBrains Mono',monospace; font-size:10px; padding:6px 4px; border-radius:7px; border:1px solid rgba(0,0,0,.14); background:rgba(255,255,255,.6); cursor:pointer; color:#574c40; }
   .cc-enum-opt:hover{ background:rgba(0,0,0,.06); }
   .cc-enum-opt.sel{ background:#241a10; color:#fff; border-color:transparent; }
-  /* the date field (whole "month day year" above the card) + its popover */
-  .pe-datefield{ cursor:pointer; border-radius:6px; transition:.12s; }
-  .pe-datefield:hover{ background:rgba(99,102,241,.08); outline:1px dashed rgba(99,102,241,.45); outline-offset:3px; }
+  /* the date field (whole "month day year" above the card) + its popover. Hug
+     the date text as a self-contained box (align-self so it doesn't stretch),
+     with a clear gap before the card — no outline-offset bleeding into it. */
+  .sc-float-date.pe-datefield{ align-self:flex-start; cursor:pointer; border-radius:7px; padding:3px 9px; margin:-3px 0 7px -9px; transition:background .12s, box-shadow .12s; }
+  .sc-float-date.pe-datefield:hover{ background:rgba(99,102,241,.08); box-shadow:0 0 0 1.5px rgba(99,102,241,.45); }
   .cc-pop.date-pop{ min-width:236px; }
   .cc-date-row{ display:flex; gap:10px; margin-top:11px; align-items:flex-end; }
   .cc-date-row label{ display:flex; flex-direction:column; gap:5px; font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.14em; text-transform:uppercase; color:#6f6356; }
