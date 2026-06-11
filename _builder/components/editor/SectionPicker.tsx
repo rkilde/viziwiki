@@ -58,7 +58,7 @@ const TILES = [
 // section (grammar seed + registry host). More types are ghosts until built.
 const TIMELINE_TYPES: TypeTile[] = [
   { id: 'timeline', name: 'Standard Horizontal Timeline',
-    icon: BLANK,
+    icon: '<line x1="1.5" y1="15" x2="22.5" y2="15"/><rect x="2.5" y="5.5" width="4" height="4" rx="0.9"/><line x1="4.5" y1="9.5" x2="4.5" y2="13.7"/><circle cx="4.5" cy="15" r="1.2"/><rect x="10" y="5.5" width="4" height="4" rx="0.9"/><line x1="12" y1="9.5" x2="12" y2="13.7"/><circle cx="12" cy="15" r="1.2"/><rect x="17.5" y="5.5" width="4" height="4" rx="0.9"/><line x1="19.5" y1="9.5" x2="19.5" y2="13.7"/><circle cx="19.5" cy="15" r="1.2"/>',
     bullets: ['standard timeline', 'horizontally scrollable'] },
 ];
 
