@@ -6,7 +6,7 @@
   "scripts": {
     "gen": "node scripts/copy-canon.mjs && node scripts/extract-grammar.mjs && node scripts/extract-includes.mjs && node scripts/extract-visuals.mjs && node scripts/extract-taco-bell.mjs && node scripts/extract-apple.mjs",
     "dev": "next dev",
-    "test": "node scripts/audit-grammar-includes.mjs && node scripts/test-derived-renderer.mjs && node scripts/test-golden-render.mjs",
+    "test": "node scripts/audit-grammar-includes.mjs && node scripts/audit-skin-contract.mjs && node scripts/test-derived-renderer.mjs && node scripts/test-golden-render.mjs",
     "golden": "node scripts/test-golden-render.mjs --update",
     "prebuild": "npm run gen && npm test",
     "build": "next build",
