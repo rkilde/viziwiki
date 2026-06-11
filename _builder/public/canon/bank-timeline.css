@@ -33,6 +33,7 @@
 .tl-outer::-webkit-scrollbar{display:none;}
 .track{position:relative;display:block;}
 .tl-band{position:absolute;top:0;bottom:0;background:var(--tl-band);pointer-events:none;}
+.tl-spine{position:absolute;left:0;right:0;top:339px;height:1px;background:var(--tl-line);z-index:1;pointer-events:none;}
 .tl-band-even{background:transparent;pointer-events:none;}
 .tl-ruler{position:absolute;bottom:4px;left:0;right:0;pointer-events:none;}
 .tl-yr{position:absolute;bottom:0;transform:translateX(-50%);}

@@ -1,19 +1,86 @@
 {%- comment -%}
-  TIMELINE visual (Level B: data in → HTML out) — the canon horizontal,
-  full-bleed, date-positioned timeline (one card type for now). Renders the
-  station track + each event's hidden modal body + the shared detail modal.
-  Self-contained IIFE engine (own #bktl* ids so it never collides with the
-  legacy iPod JS engine). The section frame lives in
-  _includes/sections/timeline-section.html.
-  Data shape: events[] — each: month (3-letter), day?, year, tag, title,
-  preview (card line), body (modal HTML).
+  TIMELINE visual (Level B: data in → HTML+CSS out). The horizontal, full-bleed,
+  date-positioned timeline. LAYOUT IS DERIVED IN LIQUID (the config-bank pattern):
+  the year groups, card x-offsets, empty-year spacers, the spine, the year
+  bands/ticks and the gap-duration chips are ALL computed here and emitted as
+  inline positions — there is NO runtime layout JS, so it renders identically on
+  the live site (Jekyll) and in the builder (LiquidJS, which strips scripts). The
+  only script is INTERACTION (open the detail modal + drag-scroll); the builder
+  re-derives the modal via the decorator, exactly like the catalog bank.
+
+  Layout constants (px) are the single source HERE; card chrome/colours are the
+  --tl-* tokens in bank-timeline.css. Events are authored in chronological order.
+  Data shape: events[] — month (3-letter), day?, year, tag, title, preview, body.
 {%- endcomment -%}
 {%- assign data = include.data -%}
-{%- comment -%} card_type selects the card template (face + modal); defaults to the one station card {%- endcomment -%}
 {%- assign ctype = data.card_type | default: 'station' -%}
+{%- assign CARD_W = 280 -%}{%- assign SLIM_W = 68 -%}{%- assign PAD = 24 -%}{%- assign TRACK_H = 368 -%}{%- assign CHIP_Y = 160 -%}
+{%- assign months = "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec" | split: "," -%}
+{%- assign ne = data.events | size -%}
+
+{%- comment -%} year range (events are chronological) {%- endcomment -%}
+{%- assign firstYr = 0 -%}{%- assign lastYr = 0 -%}
+{%- for e in data.events -%}{%- assign yi = e.year | plus: 0 -%}
+  {%- if forloop.first -%}{%- assign firstYr = yi -%}{%- assign lastYr = yi -%}{%- endif -%}
+  {%- if yi < firstYr -%}{%- assign firstYr = yi -%}{%- endif -%}
+  {%- if yi > lastYr -%}{%- assign lastYr = yi -%}{%- endif -%}
+{%- endfor -%}
+
+{%- comment -%} pass A — per-event left (chronological = input order) + total width.
+  `cur` walks year by year: a year with N events is N·CARD_W wide, an empty year a
+  SLIM_W spacer. posdata = "left:year:month;" per event, in order. {%- endcomment -%}
+{%- capture posdata -%}{%- assign cur = PAD -%}{%- for yr in (firstYr..lastYr) -%}
+{%- assign cnt = 0 -%}{%- for e in data.events -%}{%- assign yi = e.year | plus: 0 -%}{%- if yi == yr -%}{%- assign cnt = cnt | plus: 1 -%}{%- endif -%}{%- endfor -%}
+{%- if cnt > 0 -%}{%- assign xw = cur -%}{%- for e in data.events -%}{%- assign yi = e.year | plus: 0 -%}{%- if yi == yr -%}{%- assign mnum = 0 -%}{%- for mm in months -%}{%- if mm == e.month -%}{%- assign mnum = forloop.index -%}{%- endif -%}{%- endfor -%}{{ xw }}:{{ yi }}:{{ mnum }};{%- assign xw = xw | plus: CARD_W -%}{%- endif -%}{%- endfor -%}{%- assign add = cnt | times: CARD_W -%}{%- assign cur = cur | plus: add -%}{%- else -%}{%- assign cur = cur | plus: SLIM_W -%}{%- endif -%}
+{%- endfor -%}{%- endcapture -%}
+{%- assign totalW = cur | plus: PAD -%}
+{%- assign poslist = posdata | strip | split: ";" -%}
+
 <div class="tl-outer wiki-section-bleed" id="bktlOuter">
-  <div class="track" id="bktlTrack">
-    {%- for e in data.events -%}{% include visuals/timeline/card.html type=ctype mode="face" event=e index=forloop.index0 %}{%- endfor -%}
+  <div class="track" id="bktlTrack" style="width:{{ totalW }}px;height:{{ TRACK_H }}px;padding-bottom:34px;box-sizing:content-box;">
+    {%- comment -%} year bands (background) then spine — emitted before the stations so the cards paint over them {%- endcomment -%}
+    {%- assign cur = PAD -%}
+    {%- for yr in (firstYr..lastYr) -%}
+      {%- assign cnt = 0 -%}{%- for e in data.events -%}{%- assign yi = e.year | plus: 0 -%}{%- if yi == yr -%}{%- assign cnt = cnt | plus: 1 -%}{%- endif -%}{%- endfor -%}
+      {%- if cnt > 0 -%}{%- assign bw = cnt | times: CARD_W -%}{%- else -%}{%- assign bw = SLIM_W -%}{%- endif -%}
+      {%- assign even = yr | modulo: 2 -%}
+      <div class="tl-band{% if even == 0 %} tl-band-even{% endif %}" style="left:{{ cur }}px;width:{{ bw }}px;"></div>
+      {%- assign cur = cur | plus: bw -%}
+    {%- endfor -%}
+    <div class="tl-spine"></div>
+    {%- comment -%} stations (chronological = input order); left from poslist {%- endcomment -%}
+    {%- for e in data.events -%}
+      {%- assign rec = poslist[forloop.index0] | split: ":" -%}
+      {%- capture stStyle -%}position:absolute;top:0;left:{{ rec[0] }}px;width:{{ CARD_W }}px;{%- endcapture -%}
+      {% include visuals/timeline/card.html type=ctype mode="face" event=e index=forloop.index0 style=stStyle %}
+    {%- endfor -%}
+    {%- comment -%} year ruler ticks (every year in range; empty years faded) {%- endcomment -%}
+    <div class="tl-ruler">
+      {%- assign cur = PAD -%}
+      {%- for yr in (firstYr..lastYr) -%}
+        {%- assign cnt = 0 -%}{%- for e in data.events -%}{%- assign yi = e.year | plus: 0 -%}{%- if yi == yr -%}{%- assign cnt = cnt | plus: 1 -%}{%- endif -%}{%- endfor -%}
+        {%- if cnt > 0 -%}{%- assign bw = cnt | times: CARD_W -%}{%- else -%}{%- assign bw = SLIM_W -%}{%- endif -%}
+        <div class="tl-yr" style="left:{{ cur }}px;"><span{% if cnt == 0 %} style="opacity:.45;font-size:7px"{% endif %}>{{ yr }}</span></div>
+        {%- assign cur = cur | plus: bw -%}
+      {%- endfor -%}
+    </div>
+    {%- comment -%} gap-duration chips between consecutive events {%- endcomment -%}
+    {%- for i in (0..ne) -%}{%- assign j = i | plus: 1 -%}
+      {%- if j < ne -%}
+        {%- assign a = poslist[i] | split: ":" -%}{%- assign b = poslist[j] | split: ":" -%}
+        {%- assign ay = a[1] | plus: 0 -%}{%- assign am = a[2] | plus: 0 -%}
+        {%- assign by = b[1] | plus: 0 -%}{%- assign bm = b[2] | plus: 0 -%}
+        {%- assign gap = by | minus: ay | times: 12 | plus: bm | minus: am -%}
+        {%- if gap >= 1 -%}
+          {%- if gap == 1 -%}{%- assign lbl = "1 mo" -%}
+          {%- elsif gap < 12 -%}{%- assign lbl = gap | append: " mo" -%}
+          {%- else -%}{%- assign yrs = gap | divided_by: 12.0 | round -%}{%- assign lbl = yrs | append: " yr" -%}{%- endif -%}
+          {%- assign cx1 = a[0] | plus: CARD_W -%}{%- assign cx2 = b[0] | plus: 0 -%}
+          {%- assign mid = cx1 | plus: cx2 | divided_by: 2 -%}
+          <div class="tl-gap" style="left:{{ mid }}px;top:{{ CHIP_Y }}px;">{{ lbl }}</div>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
   </div>
 </div>
 
@@ -27,65 +94,29 @@
 <script>
 (function(){
   if(window.__timelineBank)return; window.__timelineBank=1;
-  var dragged=false;
-  function position(){
-    var CARD_W=280,SLIM_W=68,PAD=24,SPINE_Y=339,TRACK_H=368;
-    var MO={Jan:1,Feb:2,Mar:3,Apr:4,May:5,Jun:6,Jul:7,Aug:8,Sep:9,Oct:10,Nov:11,Dec:12};
-    function pd(s){s=(s||"").trim();var m=s.match(/^(\w{3})\s+(\d{4})$/);if(m)return{y:+m[2],m:MO[m[1]]||1};var m2=s.match(/(\d{4})/);return m2?{y:+m2[1],m:1}:null;}
-    function dm(a,b){return(b.y-a.y)*12+(b.m-a.m);}
-    function fmt(n){if(n<1)return null;if(n===1)return"1 mo";if(n<12)return n+" mo";var y=Math.round(n/12);return y+" yr";}
-    var track=document.getElementById("bktlTrack");if(!track)return;
-    var stations=[].slice.call(track.querySelectorAll(".itl-station"));
-    var items=stations.map(function(el){return{el:el,d:pd(el.getAttribute("data-date"))};}).filter(function(x){return x.d;});
-    if(items.length<2)return;
-    var byYear={};items.forEach(function(it){(byYear[it.d.y]||(byYear[it.d.y]=[])).push(it);});
-    Object.values(byYear).forEach(function(g){g.sort(function(a,b){return a.d.m-b.d.m;});});
-    var firstYr=Math.min.apply(null,Object.keys(byYear).map(Number));
-    var lastYr=Math.max.apply(null,Object.keys(byYear).map(Number));
-    var yearX={},cur=PAD;
-    for(var yr=firstYr;yr<=lastYr;yr++){yearX[yr]=cur;var nn=(byYear[yr]||[]).length;cur+=(nn>0?nn*CARD_W:SLIM_W);}
-    var totalW=cur+PAD;
-    track.style.cssText="display:block;position:relative;width:"+totalW+"px;height:"+TRACK_H+"px;padding-bottom:34px;min-width:unset;box-sizing:content-box;";
-    var spine=document.createElement("div");
-    spine.style.cssText="position:absolute;left:0;right:0;top:"+SPINE_Y+"px;height:1px;background:var(--tl-line);z-index:1;";
-    track.appendChild(spine);
-    var posX=new Map();
-    Object.keys(byYear).forEach(function(yr){var xw=yearX[+yr];byYear[+yr].forEach(function(it){it.el.style.position="absolute";it.el.style.top="0";it.el.style.left=xw+"px";it.el.style.width=CARD_W+"px";posX.set(it.el,xw);xw+=CARD_W;});});
-    var ruler=document.createElement("div");ruler.className="tl-ruler";
-    for(var y=firstYr;y<=lastYr;y++){var x=yearX[y];var nc=(byYear[y]||[]).length;var w=nc?nc*CARD_W:SLIM_W;var b=document.createElement("div");b.className="tl-band"+(y%2===0?" tl-band-even":"");b.style.cssText="left:"+x+"px;width:"+w+"px";track.appendChild(b);var tick=document.createElement("div");tick.className="tl-yr";tick.style.left=x+"px";tick.innerHTML="<span"+(nc===0?" style=\"opacity:.45;font-size:7px\"":"")+">"+y+"</span>";ruler.appendChild(tick);}
-    track.appendChild(ruler);
-    var chipY=160;
-    var sorted=items.slice().sort(function(a,b){return(a.d.y*12+a.d.m)-(b.d.y*12+b.d.m);});
-    for(var i=0;i<sorted.length-1;i++){var gap=dm(sorted[i].d,sorted[i+1].d);if(gap<1)continue;var label=fmt(gap);if(!label)continue;var cx1=(posX.get(sorted[i].el)||0)+CARD_W;var cx2=(posX.get(sorted[i+1].el)||0);var mid=(cx1+cx2)/2;var chip=document.createElement("div");chip.className="tl-gap";chip.style.cssText="left:"+mid+"px;top:"+chipY+"px";chip.textContent=label;track.appendChild(chip);}
-    stations.forEach(function(el){var card=el.querySelector(".itl-card");var sp=el.querySelector(".itl-spine");if(!card||!sp)return;var stRect=el.getBoundingClientRect();var cRect=card.getBoundingClientRect();var sRect=sp.getBoundingClientRect();var barTop=cRect.bottom-stRect.top;var barH=Math.max(0,(sRect.top+sRect.height/2)-cRect.bottom);if(barH<=0)return;var bar=document.createElement("div");bar.style.cssText="position:absolute;left:50%;transform:translateX(-50%);top:"+barTop+"px;width:1px;height:"+barH+"px;background:var(--tl-line);pointer-events:none;z-index:1;";el.appendChild(bar);});
-    var outer=document.getElementById("bktlOuter");var dn=false,sx,sl,mx;
+  // INTERACTION ONLY — layout is computed in Liquid (no positioning here).
+  var outer=document.getElementById("bktlOuter");var dragged=false;
+  if(outer){var dn=false,sx,sl,mx;
     outer.addEventListener("mousedown",function(e){dn=true;dragged=false;sx=e.pageX-outer.offsetLeft;sl=outer.scrollLeft;mx=e.pageX;});
     outer.addEventListener("mouseleave",function(){dn=false;});
     outer.addEventListener("mouseup",function(){dn=false;});
     outer.addEventListener("mousemove",function(e){if(!dn)return;var dx=e.pageX-mx;if(Math.abs(dx)>4){dragged=true;e.preventDefault();}outer.scrollLeft=sl-(e.pageX-outer.offsetLeft-sx)*1.2;});
   }
-  function schedule(left){if(left<=0)return;var t=document.getElementById("bktlTrack");if(!t){setTimeout(function(){schedule(left-1);},100);return;}var fc=t.querySelector(".itl-card");if(!fc||fc.getBoundingClientRect().height===0){setTimeout(function(){schedule(left-1);},100);return;}position();}
   var modal=document.getElementById("bktlModal");
   function total(){return document.querySelectorAll("#bktlTrack .itl-station").length;}
-  function openCard(st){
-    var d=document.getElementById(st.getAttribute("data-detail"));var t=total();
+  function openCard(st){var d=document.getElementById(st.getAttribute("data-detail"));var t=total();
     modal.querySelector("[data-tl-tag]").textContent=st.getAttribute("data-tag");
     modal.querySelector("[data-tl-title]").textContent=st.getAttribute("data-title");
     modal.querySelector("[data-tl-body]").innerHTML=d?d.innerHTML:"";
     modal.querySelector("[data-tl-body]").scrollTop=0;
     modal.querySelector("[data-tl-page]").textContent=st.getAttribute("data-num")+" / "+(t<10?"0"+t:t);
-    modal.classList.add("open");document.body.style.overflow="hidden";
-  }
+    modal.classList.add("open");document.body.style.overflow="hidden";}
   function close(){modal.classList.remove("open");document.body.style.overflow="";}
   document.addEventListener("click",function(e){
     var card=e.target.closest(".itl-card");var track=document.getElementById("bktlTrack");
     if(card&&track&&track.contains(card)){if(dragged){dragged=false;return;}var st=card.closest(".itl-station");if(st)openCard(st);return;}
     if(e.target.closest("[data-tl-close]")){close();return;}
-    if(e.target===modal){close();return;}
-  });
+    if(e.target===modal){close();return;}});
   document.addEventListener("keydown",function(e){if(e.key==="Escape"&&modal.classList.contains("open"))close();});
-  document.addEventListener("DOMContentLoaded",function(){schedule(20);});
-  window.addEventListener("load",function(){schedule(10);});
-  if(document.readyState!=="loading")schedule(20);
 })();
 </script>

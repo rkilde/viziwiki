@@ -366,5 +366,23 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   }
 }
 
+// ── case 10: builder bank contract — no layout JS ──
+// The builder renders canon HTML+CSS but STRIPS <script> (inert canvas; the
+// decorator owns interaction). So a bank's LAYOUT must be CSS/Liquid, never a
+// runtime script — scripts may carry only interaction the decorator re-derives
+// (the modal). This scans every builder-hosted visual include for scripts that
+// mutate geometry; it would have caught the timeline's old positioning engine
+// (el.style.left / track.style.cssText) BEFORE it shipped broken.
+{
+  console.log('case 10: builder-hosted visuals carry no layout JS (contract)');
+  const GEO = /\.style\.(left|top|right|bottom|width|height|cssText)\s*=/;
+  const visuals = Object.keys(includes.includes).filter((f) => f.startsWith('visuals/'));
+  ok(visuals.length >= 6, `scanning ${visuals.length} builder-hosted visual includes`);
+  for (const f of visuals) {
+    const scripts = (includes.includes[f].match(/<script[\s\S]*?<\/script>/gi) || []).join('\n');
+    ok(!GEO.test(scripts), `${f}: no layout-mutating script (layout must be CSS/Liquid, not runtime JS)`);
+  }
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
