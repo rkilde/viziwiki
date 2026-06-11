@@ -422,6 +422,8 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   const mBody = tlModal.querySelector('[data-tl-body] .ce');
   ok(mBody, 'expandable card body is editable in place');
   ok((mBody.textContent || '').trim().length > 0, 'empty body shows its placeholder text in the editor');
+  ok(tlModal.querySelector('[data-tl-title] .ce'), 'event title is editable in the expanded card');
+  ok(/2021/.test(tlModal.querySelector('[data-tl-tag]').textContent), 'date appears in the expanded card tag line (upper-left), not just the tag');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

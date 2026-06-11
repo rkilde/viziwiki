@@ -142,6 +142,10 @@ const AFFORDANCE = `
      off-screen. Pin the box and let centreModal place it at the visible-
      viewport centre in content coordinates (top set by JS + this translate). */
   .tl-modal-box{ position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); max-height:none; margin:0; }
+  /* the body edit box: as a block it fits the text (inline-block left a baseline
+     gap that made it look oversized); trim the last paragraph's margin */
+  .tl-modal-body .ce{ display:block; }
+  .tl-modal-body .ce > :last-child{ margin-bottom:0; }
 
   /* item editor: restyle the CANONICAL modal as a glass-chromed editor (content
      is the include's own .modal-* markup — edit = live). */

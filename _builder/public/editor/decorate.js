@@ -815,17 +815,24 @@
           if (tlModal) tlModal.classList.remove('open');
           window.__peTlOpen = null; closePop();
         };
+        var txt = function (el) { return el ? (el.textContent || '').trim() : ''; };
         var openEvent = function (k, st) {
           if (!tlModal || !tlBody) return;
           var det = qs('[id="bktld-' + k + '"]', secEl); if (!det) return;
           var tg = qs('[data-tl-tag]', tlModal), ti = qs('[data-tl-title]', tlModal), pg = qs('[data-tl-page]', tlModal);
-          var tagSrc = qs('.sc-tag', st), titSrc = qs('.sc-title', st);   // live card text (fresh after edits)
-          if (tg) tg.textContent = tagSrc ? tagSrc.textContent.trim() : '';
-          if (ti) ti.textContent = titSrc ? titSrc.textContent.trim() : '';
+          // date · tag (canon upper-left) — rebuilt from the live face fields to
+          // match the canon data-tag "{month}[ {day}], {year} · {tag}". Read-only
+          // here (the date is edited on the card face). The date had dropped out
+          // because this line was sourced from .sc-tag (the tag only).
+          var moEl = qs('.sc-float-month', st), dyEl = qs('.sc-float-day', st), yrEl = qs('.sc-float-year', st);
+          if (tg) tg.textContent = txt(moEl) + (dyEl ? ' ' + txt(dyEl) : '') + ', ' + txt(yrEl) + ' · ' + txt(qs('.sc-tag', st));
+          // title — editable in the expanded card (same field as the card face).
+          // reset textContent first so re-opening doesn't nest .ce wrappers.
+          if (ti) { ti.textContent = txt(qs('.sc-title', st)); wrapCE(ti, prefix + 'events.' + k + '.title'); }
           if (pg) pg.textContent = st.getAttribute('data-num') + ' / ' + (stations.length < 10 ? '0' + stations.length : stations.length);
           if (!det.textContent.trim()) det.innerHTML = '<p>' + bodyBlank + '</p>';   // empty body → show its placeholder
           det.setAttribute('data-pe-tl-open', '1'); tlBody.appendChild(det);
-          wrapCE(det, prefix + 'events.' + k + '.body');
+          if (!det.querySelector('.ce')) wrapCE(det, prefix + 'events.' + k + '.body');   // guard: don't re-wrap on manual re-open
           tlModal.classList.add('open'); if (tlBox) centreModal(tlBox);
           window.__peTlOpen = { s: i, k: k };
         };
