@@ -39,6 +39,15 @@ body.wiki-fallout {
   --crt-deep: #050805;                  /* deepest screen black         */
   --crt-glow: 0 0 10px rgba(62,230,61,.45), 0 0 28px rgba(62,230,61,.18);
 
+  /* ── skin contract: semantic meaning roles, mapped to Fallout's own CRT
+     palette so any bank's status/chips come out on-brand. --wiki-palette is
+     deferred to a dedicated pass — Fallout has only ~2 base hues. ── */
+  --wiki-positive: var(--phosphor);              /* green = go / active        */
+  --wiki-negative: #e8442e;                      /* CRT alert red (none in base palette) */
+  --wiki-warning:  var(--amber);                 /* amber = caution            */
+  --wiki-info:     var(--phos-dim);              /* dim phosphor               */
+  --wiki-neutral:  var(--wiki-text-muted-color);
+
   /* §12 section canon — alternating panel tones + divider */
   --section-tone-a:       #0b0f0a;               /* default Pip-Boy bg            */
   --section-tone-b:       #0e150d;               /* slightly tinted alt panel     */

@@ -40,6 +40,17 @@ body.wiki-smurfs-village{
   --ink:#283832;        --ink-soft:#566159;   --ink-faint:#8b948b;
   --page:#F1ECE0;
   --card:#FAF6EC;
+
+  /* ── skin contract: semantic roles + categorical palette, mapped to Smurfs'
+     own storybook hues so any bank comes out on-brand. ── */
+  --wiki-positive: var(--leaf);                  /* #6E9070 */
+  --wiki-negative: var(--cap);                   /* #B14A3C */
+  --wiki-warning:  var(--gold);                  /* #C19A52 */
+  --wiki-info:     var(--sky);                   /* #4E6E8F */
+  --wiki-neutral:  var(--wiki-text-muted-color);
+  --wiki-palette-1: var(--leaf);   --wiki-palette-2: var(--sky);   --wiki-palette-3: var(--berry);
+  --wiki-palette-4: var(--gold);   --wiki-palette-5: var(--plum);  --wiki-palette-6: var(--cap);
+  --wiki-palette-7: var(--wood);   --wiki-palette-8: var(--sky-deep);   /* 8th cycles to a deep blue */
   --hair:rgba(40,56,50,.13);
   --hair-strong:rgba(40,56,50,.24);
   --shadow-soft:0 1px 2px rgba(40,40,30,.05), 0 6px 18px rgba(40,50,40,.07);
