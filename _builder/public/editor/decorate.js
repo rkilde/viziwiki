@@ -800,20 +800,42 @@
         // grid + day/year inputs. month enum from grammar. Edits are live (PV,
         // no re-render); dismissing commits once (re-render repositions, since
         // the date drives the layout). Month + year required; day optional.
+        // days in a month, leap-aware (so e.g. Feb 30 / Apr 31 can't be entered)
+        var DIM = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        var daysInMonth = function (mName, yr) {
+          var mi = moEnum.indexOf(mName); if (mi < 0) return 31;
+          var y = parseInt(yr, 10);
+          if (mi === 1 && y && ((y % 4 === 0 && y % 100 !== 0) || y % 400 === 0)) return 29;
+          return DIM[mi];
+        };
         var openDatePop = function (anchor, k) {
           var epre = prefix + 'events.' + k + '.';
           var ev = (sdata.events && sdata.events[k]) || {};
           var html = '<div class="cc-pop-label">Date</div>'
             + '<div class="cc-enum cc-month-grid">' + moEnum.map(function (m) { return '<button class="cc-enum-opt' + (m === ev.month ? ' sel' : '') + '" data-m="' + m + '">' + m + '</button>'; }).join('') + '</div>'
-            + '<div class="cc-date-row"><label class="cc-date-day-col">Day<input type="text" class="cc-date-day" placeholder="—"></label>'
-            + '<label class="cc-date-year-col">Year<input type="text" class="cc-date-year"></label></div>'
+            + '<div class="cc-date-row"><label class="cc-date-day-col">Day<input type="text" inputmode="numeric" maxlength="2" class="cc-date-day" placeholder="—"></label>'
+            + '<label class="cc-date-year-col">Year<input type="text" inputmode="numeric" maxlength="4" class="cc-date-year"></label></div>'
             + '<div class="cc-date-note">Month &amp; year required · day optional</div>';
           var pop = openPop(anchor, '', html, { cls: 'date-pop', onClose: function () { var o = qs('.tl-outer', secEl); window.__peTlScrollTo = { s: i, k: k, from: o ? o.scrollLeft : 0 }; A('commit'); } });
           var dayIn = qs('.cc-date-day', pop), yrIn = qs('.cc-date-year', pop);
           dayIn.value = ev.day != null ? ev.day : ''; yrIn.value = ev.year != null ? ev.year : '';
-          qsa('.cc-enum-opt', pop).forEach(function (b) { b.onclick = function () { PV(epre + 'month', b.getAttribute('data-m')); qsa('.cc-enum-opt', pop).forEach(function (x) { x.classList.toggle('sel', x === b); }); }; });
-          dayIn.addEventListener('input', function () { PV(epre + 'day', dayIn.value); });
-          yrIn.addEventListener('input', function () { PV(epre + 'year', yrIn.value); });
+          var curMonth = ev.month || '';
+          // INVALID input is flagged (red) and NEVER applied — the doc keeps the
+          // last valid value, so a bad/incomplete date can't be committed.
+          var checkDay = function () {
+            var v = dayIn.value;
+            if (v === '') { dayIn.classList.remove('cc-invalid'); PV(epre + 'day', ''); return; }   // optional
+            var n = parseInt(v, 10);
+            if (!/^\d{1,2}$/.test(v) || n < 1 || n > daysInMonth(curMonth, yrIn.value)) { dayIn.classList.add('cc-invalid'); return; }
+            dayIn.classList.remove('cc-invalid'); PV(epre + 'day', v);
+          };
+          var checkYear = function () {
+            if (/^\d{4}$/.test(yrIn.value)) { yrIn.classList.remove('cc-invalid'); PV(epre + 'year', yrIn.value); checkDay(); }   // re-check day (leap)
+            else { yrIn.classList.add('cc-invalid'); }   // must be exactly 4 digits
+          };
+          dayIn.addEventListener('input', function () { dayIn.value = dayIn.value.replace(/\D/g, '').slice(0, 2); checkDay(); });
+          yrIn.addEventListener('input', function () { yrIn.value = yrIn.value.replace(/\D/g, '').slice(0, 4); checkYear(); });
+          qsa('.cc-enum-opt', pop).forEach(function (b) { b.onclick = function () { curMonth = b.getAttribute('data-m'); PV(epre + 'month', curMonth); qsa('.cc-enum-opt', pop).forEach(function (x) { x.classList.toggle('sel', x === b); }); checkDay(); }; });
         };
 
         // modal (scoped to THIS section) → body editing, decorator-driven (the
@@ -883,7 +905,7 @@
           addEv.className = 'pe-add pe-tl-addev';
           addEv.textContent = '+ new event';
           addEv.onclick = function () { var o = qs('.tl-outer', secEl); window.__peTlScrollTo = { s: i, k: qsa('.itl-station', secEl).length, from: o ? o.scrollLeft : 0 }; A('push:' + prefix + 'events'); };
-          secEl.appendChild(addEv);
+          var hdrEl = qs('.tl-hdr', secEl); (hdrEl || secEl).appendChild(addEv);   // header bottom = directly above the timeline panel
         }
 
         // reopen the modal after a re-render (commit / add / remove) — find the

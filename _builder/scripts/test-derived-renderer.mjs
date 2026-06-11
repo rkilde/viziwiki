@@ -26,7 +26,7 @@ function renderAndDecorate(doc, isHome, customGrammar, prep) {
   w.__PE_REGISTRY = registry;
   w.__PE_SENT = SENT_PREFIX;
   w.__PE_DOC = doc;          // the decorator reads current values (toolbar editors)
-  w.A = () => {}; w.P = () => {}; w.__retag = () => {};
+  w.A = () => {}; w.P = () => {}; w.PV = () => {}; w.__retag = () => {};
   if (prep) prep(w);          // e.g. seed skin tokens before decoration
   w.eval(decorateSrc);
   w.__decorate();
@@ -423,6 +423,16 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(dpop.querySelectorAll('.cc-enum-opt').length === 12, 'month grid (12, from the grammar enum)');
   ok(dpop.querySelector('.cc-date-day') && dpop.querySelector('.cc-date-year'), 'day + year inputs');
   ok(/optional/i.test(dpop.querySelector('.cc-date-note').textContent), 'note states day is optional');
+  // date validation: letters stripped, ranges enforced, invalid flagged + not applied
+  const fire = (el, v) => { el.value = v; el.dispatchEvent(new d.defaultView.Event('input')); };
+  const dayIn = dpop.querySelector('.cc-date-day'), yrIn = dpop.querySelector('.cc-date-year');
+  fire(dayIn, '4a5');
+  ok(dayIn.value === '45', 'day strips letters and caps at 2 digits');
+  ok(dayIn.classList.contains('cc-invalid'), 'day 45 flagged invalid (out of month range)');
+  fire(dayIn, '12'); ok(!dayIn.classList.contains('cc-invalid'), 'day 12 is valid');
+  fire(yrIn, '20x1'); ok(yrIn.value === '201', 'year strips letters and caps at 4 digits');
+  ok(yrIn.classList.contains('cc-invalid'), 'year needs exactly 4 digits (201 invalid)');
+  fire(yrIn, '2015'); ok(!yrIn.classList.contains('cc-invalid'), '4-digit year is valid');
   // placeholder select-all: seeded title text carries its grammar blank in data-ph
   ok(st0.querySelector('.sc-title .ce').getAttribute('data-ph') === 'Name this event', 'title field marked placeholder (data-ph = grammar blank)');
   // add/remove per grammar min (seed has 5 > min 2 → removable; max none → addable)
@@ -436,7 +446,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   // heading is REQUIRED → present + editable in place (no "+" slot), placeholder = blank
   const hCe = tl.querySelector('.wiki-section-title .ce');
   ok(hCe && hCe.getAttribute('data-ph') === 'Timeline Header', 'required heading present + editable with "Timeline Header" placeholder');
-  ok(!tl.querySelector('.tl-hdr .pe-add'), 'no "+ heading" slot (heading is required, always there)');
+  ok(![...tl.querySelectorAll('.tl-hdr .pe-add')].some((b) => b.textContent === '+ heading'), 'no "+ heading" slot (heading is required, always there)');
   // expandable card: the "Details ›" expand trigger opens the detail modal with an editable body
   (st0.querySelector('.sc-expand') || st0.querySelector('.sc-footer') || st0.querySelector('.itl-card')).click();
   const tlModal = tl.querySelector('.tl-modal');

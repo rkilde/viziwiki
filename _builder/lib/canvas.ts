@@ -143,10 +143,13 @@ const AFFORDANCE = `
   .cc-date-row input{ width:100%; box-sizing:border-box; font-family:'JetBrains Mono',monospace; font-size:12px; padding:7px 9px; border-radius:8px; border:1px solid rgba(0,0,0,.14); background:rgba(255,255,255,.66); outline:none; color:#2a1f15; }
   .cc-date-row .cc-date-day{ text-align:center; padding-left:5px; padding-right:5px; }
   .cc-date-row input:focus{ border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.18); }
+  .cc-date-row input.cc-invalid, .cc-date-row input.cc-invalid:focus{ border-color:#ef4444; box-shadow:0 0 0 3px rgba(239,68,68,.16); color:#c0392b; }
   .cc-date-note{ margin-top:11px; padding-top:9px; border-top:1px solid rgba(0,0,0,.08); font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.06em; text-transform:uppercase; color:#8a7d70; }
-  /* "+ new event" — upper-right of the timeline section, below the tone toolbar */
-  .pe-tl-addev{ position:absolute; top:50px; right:48px; z-index:5; }
-  @media(max-width:600px){ .pe-tl-addev{ right:16px; } }
+  /* "+ new event" — right side, directly above the timeline panel (the header's
+     bottom edge sits just above the scroller). ~2× the normal add-chip size. */
+  .tl-hdr{ position:relative; }
+  .pe-tl-addev{ position:absolute; right:48px; bottom:6px; z-index:5; font-size:14px; padding:8px 18px; border-radius:9px; }
+  @media(max-width:600px){ .tl-hdr .pe-tl-addev{ right:16px; } }
   .itl-card.pe-removable{ width:100%; }                                        /* don't shrink the card to fit-content */
   .itl-card.pe-removable > .pe-remove{ top:6px; right:6px; left:auto; }         /* × inside the card corner (card clips overflow) */
   .sc-expand.pe-expand{ cursor:pointer; padding:2px 6px; margin:-2px -6px; border-radius:5px; transition:.12s; }  /* the "Details ›" expand trigger */
