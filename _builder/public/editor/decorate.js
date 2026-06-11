@@ -261,7 +261,7 @@
 
   // floating glass popover (one at a time)
   var pePop = null;
-  function closePop() { if (pePop) { var p = pePop; pePop = null; p.classList.remove('in'); setTimeout(function () { if (p.parentNode) p.parentNode.removeChild(p); }, 180); } }
+  function closePop() { if (pePop) { var p = pePop; pePop = null; if (p.__onClose) { try { p.__onClose(); } catch (e) {} } p.classList.remove('in'); setTimeout(function () { if (p.parentNode) p.parentNode.removeChild(p); }, 180); } }
   function overlap(L, T, w, h, r) { var pad = 8; return !(L + w < r.left - pad || L > r.right + pad || T + h < r.top - pad || T > r.bottom + pad); }
   function placeFloat(el, btn, avoid) {
     var r = btn.getBoundingClientRect(); el.style.left = '0px'; el.style.top = '0px';
@@ -285,11 +285,12 @@
     var pop = document.createElement('div'); pop.className = 'cc-pop' + (opts.cls ? ' ' + opts.cls : '');
     if (accent) pop.style.setProperty('--cat-color', accent);
     pop.innerHTML = html; document.body.appendChild(pop);
+    pop.__onClose = opts.onClose;   // fired once when the popover is dismissed
     (opts.place === 'left' ? placeLeft : placeFloat)(pop, btn, opts.avoid);
     (window.requestAnimationFrame || function (f) { setTimeout(f, 0); })(function () { pop.classList.add("in"); });
     pePop = pop; return pop;
   }
-  document.addEventListener('mousedown', function (e) { if (pePop && !pePop.contains(e.target) && !(e.target.closest && e.target.closest('.cc-btn,.pe-st-chip,.im-info-chip,.gpill-menu'))) closePop(); });
+  document.addEventListener('mousedown', function (e) { if (pePop && !pePop.contains(e.target) && !(e.target.closest && e.target.closest('.cc-btn,.pe-st-chip,.im-info-chip,.gpill-menu,.pe-datefield'))) closePop(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePop(); });
 
   // PLACEHOLDER SELECT-ALL (general rule across the build kit): a field still
@@ -795,12 +796,24 @@
         var stations = qsa('.itl-station', secEl);
         var canRemoveEv = stations.length > evMin;
 
-        // generic enum picker (the month) — options derived from the grammar enum
-        var openEnumPop = function (btn, path, values, cur, label) {
-          var html = '<div class="cc-pop-label">' + (label || 'Choose') + '</div><div class="cc-enum">' +
-            values.map(function (v) { return '<button class="cc-enum-opt' + (v === cur ? ' sel' : '') + '" data-v="' + v + '">' + v + '</button>'; }).join('') + '</div>';
-          var pop = openPop(btn, '', html, { cls: 'enum-pop' });
-          qsa('.cc-enum-opt', pop).forEach(function (b) { b.onclick = function () { closePop(); A('set:' + path + ':' + b.getAttribute('data-v')); }; });
+        // the DATE field popover: one click on the whole date opens a month
+        // grid + day/year inputs. month enum from grammar. Edits are live (PV,
+        // no re-render); dismissing commits once (re-render repositions, since
+        // the date drives the layout). Month + year required; day optional.
+        var openDatePop = function (anchor, k) {
+          var epre = prefix + 'events.' + k + '.';
+          var ev = (sdata.events && sdata.events[k]) || {};
+          var html = '<div class="cc-pop-label">Date</div>'
+            + '<div class="cc-enum cc-month-grid">' + moEnum.map(function (m) { return '<button class="cc-enum-opt' + (m === ev.month ? ' sel' : '') + '" data-m="' + m + '">' + m + '</button>'; }).join('') + '</div>'
+            + '<div class="cc-date-row"><label>Day<input type="text" class="cc-date-day" placeholder="—"></label>'
+            + '<label>Year<input type="text" class="cc-date-year"></label></div>'
+            + '<div class="cc-date-note">Month &amp; year required · day optional</div>';
+          var pop = openPop(anchor, '', html, { cls: 'date-pop', onClose: function () { A('commit'); } });
+          var dayIn = qs('.cc-date-day', pop), yrIn = qs('.cc-date-year', pop);
+          dayIn.value = ev.day != null ? ev.day : ''; yrIn.value = ev.year != null ? ev.year : '';
+          qsa('.cc-enum-opt', pop).forEach(function (b) { b.onclick = function () { PV(epre + 'month', b.getAttribute('data-m')); qsa('.cc-enum-opt', pop).forEach(function (x) { x.classList.toggle('sel', x === b); }); }; });
+          dayIn.addEventListener('input', function () { PV(epre + 'day', dayIn.value); });
+          yrIn.addEventListener('input', function () { PV(epre + 'year', yrIn.value); });
         };
 
         // modal (scoped to THIS section) → body editing, decorator-driven (the
@@ -820,12 +833,12 @@
           if (!tlModal || !tlBody) return;
           var det = qs('[id="bktld-' + k + '"]', secEl); if (!det) return;
           var tg = qs('[data-tl-tag]', tlModal), ti = qs('[data-tl-title]', tlModal), pg = qs('[data-tl-page]', tlModal);
-          // date · tag (canon upper-left) — rebuilt from the live face fields to
-          // match the canon data-tag "{month}[ {day}], {year} · {tag}". Read-only
-          // here (the date is edited on the card face). The date had dropped out
-          // because this line was sourced from .sc-tag (the tag only).
-          var moEl = qs('.sc-float-month', st), dyEl = qs('.sc-float-day', st), yrEl = qs('.sc-float-year', st);
-          if (tg) tg.textContent = txt(moEl) + (dyEl ? ' ' + txt(dyEl) : '') + ', ' + txt(yrEl) + ' · ' + txt(qs('.sc-tag', st));
+          // date · tag (canon upper-left) — read the station's data-tag, the
+          // SINGLE SOURCE for this line (built in station.html as
+          // "{month}[ {day}], {year} · {tag}"). The live site's own script reads
+          // the same attribute, so the format is defined in exactly one place;
+          // the date drives a commit/re-render, so data-tag is fresh on open.
+          if (tg) tg.textContent = st.getAttribute('data-tag') || '';
           // title — editable in the expanded card (same field as the card face).
           // reset textContent first so re-opening doesn't nest .ce wrappers.
           if (ti) { ti.textContent = txt(qs('.sc-title', st)); wrapCE(ti, prefix + 'events.' + k + '.title'); }
@@ -840,13 +853,9 @@
 
         stations.forEach(function (st, k) {
           var epre = prefix + 'events.' + k + '.';
-          // month → enum picker (derived from the grammar enum, never free text)
-          var moEl = qs('.sc-float-month', st);
-          if (moEl) { moEl.classList.add('pe-st-chip'); (function (cur) { moEl.onclick = function (e) { e.stopPropagation(); openEnumPop(moEl, epre + 'month', moEnum, cur, 'Month'); }; })((moEl.textContent || '').trim()); }
-          // day (optional text) + year (text — drives the layout → commit on blur)
-          var dayEl = qs('.sc-float-day', st); if (dayEl) wrapCE(dayEl, epre + 'day');
-          var yrEl = qs('.sc-float-year', st);
-          if (yrEl) { wrapCE(yrEl, epre + 'year'); var yce = qs('.ce', yrEl); if (yce) yce.addEventListener('blur', function () { A('commit'); }); }
+          // the whole float-date above the card is ONE date field → month/day/year popover
+          var dateEl = qs('.sc-float-date', st);
+          if (dateEl) { dateEl.classList.add('pe-datefield'); (function (kk) { dateEl.onclick = function (e) { e.stopPropagation(); openDatePop(dateEl, kk); }; })(k); }
           // tag / title / preview (no layout impact → plain .ce, no re-render)
           wrapCE(qs('.sc-tag', st), epre + 'tag');
           wrapCE(qs('.sc-title', st), epre + 'title');

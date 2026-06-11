@@ -132,7 +132,16 @@ const AFFORDANCE = `
   .cc-enum-opt{ font-family:'JetBrains Mono',monospace; font-size:10px; padding:6px 4px; border-radius:7px; border:1px solid rgba(0,0,0,.14); background:rgba(255,255,255,.6); cursor:pointer; color:#574c40; }
   .cc-enum-opt:hover{ background:rgba(0,0,0,.06); }
   .cc-enum-opt.sel{ background:#241a10; color:#fff; border-color:transparent; }
-  .sc-float-month.pe-st-chip::after{ font-size:11px; vertical-align:middle; }  /* shrink the picker caret on the big serif month */
+  /* the date field (whole "month day year" above the card) + its popover */
+  .pe-datefield{ cursor:pointer; border-radius:6px; transition:.12s; }
+  .pe-datefield:hover{ background:rgba(99,102,241,.08); outline:1px dashed rgba(99,102,241,.45); outline-offset:3px; }
+  .cc-pop.date-pop{ min-width:236px; }
+  .cc-date-row{ display:flex; gap:10px; margin-top:11px; }
+  .cc-date-row label{ flex:1; display:flex; flex-direction:column; gap:5px; font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.14em; text-transform:uppercase; color:#6f6356; }
+  .cc-date-row .cc-date-day{ flex:0 0 64px; }
+  .cc-date-row input{ font-family:'JetBrains Mono',monospace; font-size:12px; padding:7px 9px; border-radius:8px; border:1px solid rgba(0,0,0,.14); background:rgba(255,255,255,.66); outline:none; color:#2a1f15; }
+  .cc-date-row input:focus{ border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.18); }
+  .cc-date-note{ margin-top:11px; padding-top:9px; border-top:1px solid rgba(0,0,0,.08); font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.06em; text-transform:uppercase; color:#8a7d70; }
   .itl-card.pe-removable{ width:100%; }                                        /* don't shrink the card to fit-content */
   .itl-card.pe-removable > .pe-remove{ top:6px; right:6px; left:auto; }         /* × inside the card corner (card clips overflow) */
   .sc-expand.pe-expand{ cursor:pointer; padding:2px 6px; margin:-2px -6px; border-radius:5px; transition:.12s; }  /* the "Details ›" expand trigger */

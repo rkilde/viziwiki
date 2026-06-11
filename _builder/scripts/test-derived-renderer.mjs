@@ -399,8 +399,14 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(st0.querySelector('.sc-title .ce'), 'event title is an editable box');
   ok(st0.querySelector('.sc-tag .ce'), 'event tag editable');
   ok(st0.querySelector('.sc-prose .ce'), 'event preview editable');
-  ok(st0.querySelector('.sc-float-year .ce'), 'event year editable');
-  ok(st0.querySelector('.sc-float-month.pe-st-chip'), 'month is an enum picker (not a free text box)');
+  // the date is ONE clickable field → a month/day/year popover
+  ok(st0.querySelector('.sc-float-date.pe-datefield'), 'the date is one clickable date field');
+  st0.querySelector('.sc-float-date').click();
+  const dpop = d.querySelector('.cc-pop.date-pop');
+  ok(dpop, 'clicking the date opens the date popover');
+  ok(dpop.querySelectorAll('.cc-enum-opt').length === 12, 'month grid (12, from the grammar enum)');
+  ok(dpop.querySelector('.cc-date-day') && dpop.querySelector('.cc-date-year'), 'day + year inputs');
+  ok(/optional/i.test(dpop.querySelector('.cc-date-note').textContent), 'note states day is optional');
   // placeholder select-all: seeded title text carries its grammar blank in data-ph
   ok(st0.querySelector('.sc-title .ce').getAttribute('data-ph') === 'Name this event', 'title field marked placeholder (data-ph = grammar blank)');
   // add/remove per grammar min (seed has 5 > min 2 → removable; max none → addable)
