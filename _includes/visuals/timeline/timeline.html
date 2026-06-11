@@ -38,7 +38,15 @@
 
 <div class="tl-outer wiki-section-bleed" id="bktlOuter">
   <div class="track" id="bktlTrack" style="width:{{ totalW }}px;height:{{ TRACK_H }}px;padding-bottom:34px;box-sizing:content-box;">
-    {%- comment -%} year bands (background) then spine — emitted before the stations so the cards paint over them {%- endcomment -%}
+    {%- comment -%} stations first (chronological = input order); left from poslist {%- endcomment -%}
+    {%- for e in data.events -%}
+      {%- assign rec = poslist[forloop.index0] | split: ":" -%}
+      {%- capture stStyle -%}position:absolute;top:0;left:{{ rec[0] }}px;width:{{ CARD_W }}px;{%- endcapture -%}
+      {% include visuals/timeline/card.html type=ctype mode="face" event=e index=forloop.index0 style=stStyle %}
+    {%- endfor -%}
+    <div class="tl-spine"></div>
+    {%- comment -%} year bands AFTER the stations — faithful to the engine's paint order:
+      the translucent band overlays its year's cards (odd years; even = transparent) {%- endcomment -%}
     {%- assign cur = PAD -%}
     {%- for yr in (firstYr..lastYr) -%}
       {%- assign cnt = 0 -%}{%- for e in data.events -%}{%- assign yi = e.year | plus: 0 -%}{%- if yi == yr -%}{%- assign cnt = cnt | plus: 1 -%}{%- endif -%}{%- endfor -%}
@@ -46,13 +54,6 @@
       {%- assign even = yr | modulo: 2 -%}
       <div class="tl-band{% if even == 0 %} tl-band-even{% endif %}" style="left:{{ cur }}px;width:{{ bw }}px;"></div>
       {%- assign cur = cur | plus: bw -%}
-    {%- endfor -%}
-    <div class="tl-spine"></div>
-    {%- comment -%} stations (chronological = input order); left from poslist {%- endcomment -%}
-    {%- for e in data.events -%}
-      {%- assign rec = poslist[forloop.index0] | split: ":" -%}
-      {%- capture stStyle -%}position:absolute;top:0;left:{{ rec[0] }}px;width:{{ CARD_W }}px;{%- endcapture -%}
-      {% include visuals/timeline/card.html type=ctype mode="face" event=e index=forloop.index0 style=stStyle %}
     {%- endfor -%}
     {%- comment -%} year ruler ticks (every year in range; empty years faded) {%- endcomment -%}
     <div class="tl-ruler">
