@@ -137,6 +137,11 @@ const AFFORDANCE = `
   .itl-card.pe-removable > .pe-remove{ top:6px; right:6px; left:auto; }         /* × inside the card corner (card clips overflow) */
   .sc-expand.pe-expand{ cursor:pointer; padding:2px 6px; margin:-2px -6px; border-radius:5px; transition:.12s; }  /* the "Details ›" expand trigger */
   .sc-expand.pe-expand:hover{ color:#6366f1; background:rgba(99,102,241,.08); }
+  /* the expandable card: the canvas iframe is full-height (the parent scrolls
+     it), so the canon modal's flex-centering lands in the CONTENT middle —
+     off-screen. Pin the box and let centreModal place it at the visible-
+     viewport centre in content coordinates (top set by JS + this translate). */
+  .tl-modal-box{ position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); max-height:none; margin:0; }
 
   /* item editor: restyle the CANONICAL modal as a glass-chromed editor (content
      is the include's own .modal-* markup — edit = live). */
