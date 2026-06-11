@@ -692,7 +692,13 @@
           var head = qs('.modal-headrow', det);
           var mAccent = modalCard ? getComputedStyle(modalCard).getPropertyValue('--cat-color') : '';
 
-          wrapCE(qs('.modal-title', det), ipre + 'name');   // title = item.name (one field)
+          // title = item.name — the SAME field is shown on the card pill, so a
+          // rename must re-render (P alone only updates the modal). Commit on
+          // blur; the open modal is re-opened by the __peOpenItem pass below.
+          var mTitleEl = qs('.modal-title', det);
+          wrapCE(mTitleEl, ipre + 'name');
+          var mTitleCe = mTitleEl && mTitleEl.querySelector('.ce');
+          if (mTitleCe) mTitleCe.addEventListener('blur', function () { A('commit'); });
           wrapCE(qs('.modal-desc', det), ipre + 'desc');
 
           // status chip → glass popover (the enum is the only styled set)

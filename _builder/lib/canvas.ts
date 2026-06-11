@@ -59,14 +59,20 @@ const AFFORDANCE = `
     --g-edge:1px solid rgba(255,255,255,.6); --g-shadow:0 18px 48px rgba(20,16,10,.26),0 3px 9px rgba(20,16,10,.14);
     --g-inset:inset 0 1px 0 rgba(255,255,255,.85); }
   /* dock floats ABOVE the card at the top-left (out of the chips' way). The
-     card is overflow:visible (editor only) so the dock isn't clipped. */
-  .cat-card{ overflow:visible !important; }
-  .cc-dock{ position:absolute; top:-38px; left:0; z-index:8; display:flex; align-items:center; gap:2px; padding:4px; border-radius:13px;
+     card is overflow:visible (editor only) so the dock isn't clipped, AND it
+     reserves a strip of clear space above itself (margin-top) — the masonry is
+     a CSS multi-column flow, so without reserved space a lower card's dock
+     would land on the card above it. The card is its own positioning context
+     (relative) so the dock anchors to ITS top edge, never a neighbour. */
+  .cat-card{ overflow:visible !important; position:relative !important; margin-top:46px !important; }
+  .cc-dock{ position:absolute; top:-40px; left:0; z-index:8; display:flex; align-items:center; gap:2px; padding:4px; border-radius:13px;
     background:var(--g-bg); border:var(--g-edge); box-shadow:var(--g-shadow),var(--g-inset);
-    backdrop-filter:var(--g-blur); -webkit-backdrop-filter:var(--g-blur);
     opacity:0; transform:translateY(-6px) scale(.96); transform-origin:top left; pointer-events:none;
     transition:opacity .18s ease, transform .2s cubic-bezier(.2,.7,.3,1); }
-  .cat-card:hover .cc-dock, .cc-dock.pinned{ opacity:1; transform:none; pointer-events:auto; }
+  /* blur is applied ONLY when the dock is visible — a hidden (opacity:0)
+     backdrop-filter still composites a faint band over the content beneath it. */
+  .cat-card:hover .cc-dock, .cc-dock.pinned{ opacity:1; transform:none; pointer-events:auto;
+    backdrop-filter:var(--g-blur); -webkit-backdrop-filter:var(--g-blur); }
   /* hover explainer tooltip — solid glass chip above each control */
   .cc-btn[data-tip]::after{ content:attr(data-tip); position:absolute; bottom:calc(100% + 9px); left:50%;
     transform:translateX(-50%) translateY(4px) scale(.96); white-space:nowrap; padding:5px 9px; border-radius:8px; pointer-events:none; z-index:60;
