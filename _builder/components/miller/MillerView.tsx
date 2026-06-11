@@ -45,38 +45,40 @@ function Row({ page, level, selected, onClick }: { page: Page; level: number; se
   );
 }
 
-// Bottom-of-column add control: ONE button per the canon — "+ main category
-// page" in the first column, "+ page" in every deeper column. Committing the
-// title creates the node (it becomes that page's H1) and selects it.
-function ColFooter({ depth, onAdd }: { depth: number; onAdd: (title: string) => void }) {
+// A Miller column. The add control: ONE button in the footer per the canon —
+// "+ main category page" in the first column, "+ page" deeper. Clicking it drops
+// an editable row IN THE LIST (where the new item lands), focused for typing;
+// Enter commits (creates the node, which becomes its H1, and selects it),
+// Escape/empty cancels.
+function Column({ head, depth, onAdd, children }: { head: string; depth?: number; onAdd?: (title: string) => void; children: React.ReactNode }) {
   const [adding, setAdding] = useState(false);
   const [title, setTitle] = useState('');
-  const commit = () => { const t = title.trim(); if (t) onAdd(t); setAdding(false); setTitle(''); };
-  if (adding) {
-    return (
-      <div className="mil-add-input">
-        <input
-          autoFocus value={title} placeholder={depth === 0 ? 'New main category page…' : 'New page…'}
-          onChange={(e) => setTitle(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter') commit(); if (e.key === 'Escape') { setAdding(false); setTitle(''); } }}
-          onBlur={commit}
-        />
-      </div>
-    );
-  }
-  return (
-    <div className="mil-add-row">
-      <button className="mil-add-btn" onClick={() => setAdding(true)}>{addLabel(depth)}</button>
-    </div>
-  );
-}
-
-function Column({ head, footer, children }: { head: string; footer?: React.ReactNode; children: React.ReactNode }) {
+  const commit = () => { const t = title.trim(); if (t && onAdd) onAdd(t); setAdding(false); setTitle(''); };
+  const cancel = () => { setAdding(false); setTitle(''); };
+  const d = depth || 0;
   return (
     <div className="mil-col">
       <div className="mil-col-head">{head}</div>
-      <div className="mil-col-body">{children}</div>
-      {footer && <div className="mil-col-foot">{footer}</div>}
+      <div className="mil-col-body">
+        {children}
+        {adding && (
+          <div className={`mil-row ${d > 0 ? 'sub' : ''} mil-add-live`}>
+            <span className={`mil-dot ${dotClass(d, false)}`} />
+            <input
+              className="mil-add-live-input" autoFocus value={title}
+              placeholder={d === 0 ? 'New main category page…' : 'New page…'}
+              onChange={(e) => setTitle(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') commit(); if (e.key === 'Escape') cancel(); }}
+              onBlur={commit}
+            />
+          </div>
+        )}
+      </div>
+      {onAdd && !adding && (
+        <div className="mil-col-foot">
+          <div className="mil-add-row"><button className="mil-add-btn" onClick={() => setAdding(true)}>{addLabel(d)}</button></div>
+        </div>
+      )}
     </div>
   );
 }
@@ -96,13 +98,13 @@ export function MillerView({ wiki, onOpen, onAddNode }: { wiki: Wiki; onOpen?: (
     const node = onAddNode?.(parentId, title);
     if (node) pick([...prefix, node.id]);
   };
-  const footer = (depth: number, prefix: string[], parentId: string) =>
-    onAddNode ? <ColFooter depth={depth} onAdd={(title) => add(prefix, parentId, title)} /> : undefined;
+  const adder = (depth: number, prefix: string[], parentId: string) =>
+    onAddNode ? (title: string) => add(prefix, parentId, title) : undefined;
 
   return (
     <div className="mil-cols">
       {/* col 0 — the wiki HOME (pinned) + the MAIN CATEGORY pages (top of canon) */}
-      <Column head={ROOT_COLUMN_HEAD} footer={footer(0, [], '')}>
+      <Column head={ROOT_COLUMN_HEAD} depth={0} onAdd={adder(0, [], '')}>
         <HomeRow home={wiki.home} selected={homeSel} onClick={() => { setHomeSel(true); setPath([]); }} />
         {wiki.pages.map((p) => (
           <Row key={p.id} page={p} level={0} selected={!homeSel && path[0] === p.id} onClick={() => pick([p.id])} />
@@ -111,7 +113,7 @@ export function MillerView({ wiki, onOpen, onAddNode }: { wiki: Wiki; onOpen?: (
 
       {/* col 1 — entries within the selected category (shown once a category is picked) */}
       {sel0 && (
-        <Column head={oneLine(sel0.title)} footer={footer(1, [sel0.id], sel0.id)}>
+        <Column head={oneLine(sel0.title)} depth={1} onAdd={adder(1, [sel0.id], sel0.id)}>
           {sel0.pages.map((p) => (
             <Row key={p.id} page={p} level={1} selected={path[1] === p.id} onClick={() => pick([sel0.id, p.id])} />
           ))}
@@ -120,7 +122,7 @@ export function MillerView({ wiki, onOpen, onAddNode }: { wiki: Wiki; onOpen?: (
 
       {/* col 2 — entries within the selected folder/entry */}
       {sel1 && (
-        <Column head={oneLine(sel1.title)} footer={footer(2, [sel0!.id, sel1.id], sel1.id)}>
+        <Column head={oneLine(sel1.title)} depth={2} onAdd={adder(2, [sel0!.id, sel1.id], sel1.id)}>
           {sel1.pages.map((p) => (
             <Row key={p.id} page={p} level={2} selected={path[2] === p.id} onClick={() => pick([sel0!.id, sel1.id, p.id])} />
           ))}

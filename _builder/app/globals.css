@@ -96,6 +96,11 @@ button{ font-family:inherit; }
 .mil-add-input input{ width:100%; font-family:'Fraunces',serif; font-size:13px; color:var(--text); background:var(--bg);
   border:1px solid var(--purple-bd); border-radius:5px; padding:7px 9px; outline:none; }
 .mil-add-input input::placeholder{ color:var(--dim); }
+/* live add-row: an editable row IN the list (where the new page lands) */
+.mil-row.mil-add-live{ cursor:text; background:var(--bg4); box-shadow:inset 0 0 0 1px var(--purple-bd); }
+.mil-add-live-input{ flex:1; min-width:0; border:none; outline:none; background:transparent;
+  font-family:'Spectral',serif; font-size:12.5px; color:var(--text); padding:0; }
+.mil-add-live-input::placeholder{ color:var(--dim); font-style:italic; }
 
 /* ── "+ New wiki" in the wiki dropdown ── */
 .wdrop-divider{ height:1px; background:var(--border2); margin:6px 4px; }
