@@ -53,6 +53,12 @@
 .sc-footer{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--tl-line);}
 .sc-expand{font-family:"JetBrains Mono",monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.14em;color:color-mix(in oklab,var(--tl-ink) 32%,transparent);display:flex;align-items:center;gap:4px;}
 .sc-num{font-family:"JetBrains Mono",monospace;font-size:7.5px;color:color-mix(in oklab,var(--tl-ink) 16%,transparent);}
+/* connector: a 1px line from the card's bottom down to the spine dot. flex:1
+   in the fixed-height .itl-event-top column makes it fill exactly the gap
+   beneath the (content-height) card — adapts per card, no JS (the old engine
+   measured + drew this at runtime). min-height:0 → no line when a card is tall
+   enough to reach the spine on its own. */
+.sc-connector{flex:1 1 auto;min-height:0;width:1px;align-self:center;background:var(--tl-line);pointer-events:none;}
 .itl-spine{position:absolute;left:50%;transform:translateX(-50%);top:335px;width:9px;height:9px;}
 .itl-dot{width:9px;height:9px;border-radius:50%;background:var(--tl-accent);position:relative;z-index:4;flex-shrink:0;}
 .tl-gap{position:absolute;transform:translate(-50%,-50%);background:var(--tl-chip);border:1px solid var(--tl-line);border-radius:3px;padding:3px 8px;font-family:"JetBrains Mono",monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.1em;color:color-mix(in oklab,var(--tl-ink) 45%,transparent);white-space:nowrap;z-index:3;pointer-events:none;}
