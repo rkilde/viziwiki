@@ -855,7 +855,14 @@
         "events": {
           "type": "list<event>",
           "required": true,
-          "min": 2
+          "min": 2,
+          "item_blank": {
+            "month": "Jan",
+            "year": "2026",
+            "tag": "Add a tag",
+            "title": "Name this event",
+            "preview": "add a short summary of what happened"
+          }
         }
       },
       "subtypes": {
@@ -886,7 +893,7 @@
           },
           "preview": {
             "type": "text",
-            "blank": "Add a one-line summary of what happened.",
+            "blank": "add a short summary of what happened",
             "help": "One-line summary on the card face"
           },
           "body": {
@@ -906,35 +913,35 @@
             "year": "2021",
             "tag": "Add a tag",
             "title": "Name this event",
-            "preview": "Add a one-line summary of what happened."
+            "preview": "add a short summary of what happened"
           },
           {
             "month": "Apr",
             "year": "2022",
             "tag": "Add a tag",
             "title": "Name this event",
-            "preview": "Add a one-line summary of what happened."
+            "preview": "add a short summary of what happened"
           },
           {
             "month": "Aug",
             "year": "2023",
             "tag": "Add a tag",
             "title": "Name this event",
-            "preview": "Add a one-line summary of what happened."
+            "preview": "add a short summary of what happened"
           },
           {
             "month": "Feb",
             "year": "2024",
             "tag": "Add a tag",
             "title": "Name this event",
-            "preview": "Add a one-line summary of what happened."
+            "preview": "add a short summary of what happened"
           },
           {
             "month": "Nov",
             "year": "2025",
             "tag": "Add a tag",
             "title": "Name this event",
-            "preview": "Add a one-line summary of what happened."
+            "preview": "add a short summary of what happened"
           }
         ]
       },

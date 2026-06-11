@@ -262,7 +262,8 @@ components:
       tone:      { type: "enum[a,b,special]", default: b }
       visual:  { type: text, locked: true, default: timeline, help: "The slot's visual type — registry hosts constrain it (admin)" }
       card_type: { type: "enum[station]", default: station }
-      events:    { type: "list<event>", required: true, min: 2 }
+      events:    { type: "list<event>", required: true, min: 2,
+                   item_blank: { month: Jan, year: "2026", tag: "Add a tag", title: "Name this event", preview: "add a short summary of what happened" } }
     subtypes:
       event:
         # month + year DRIVE the layout (date-positioned), so they default to real,
@@ -273,16 +274,16 @@ components:
         year:    { type: text, required: true, blank: "2025" }
         tag:     { type: text, blank: "Add a tag" }
         title:   { type: text, required: true, blank: "Name this event", help: "Card headline + modal title" }
-        preview: { type: text, blank: "Add a one-line summary of what happened.", help: "One-line summary on the card face" }
+        preview: { type: text, blank: "add a short summary of what happened", help: "One-line summary on the card face" }
         body:    { type: richtext, blank: "Write the full story for the expandable card…", help: "Full detail in the expandable card" }
     derived: ["scroll hint, year bands, positions, gap chips — all from the dates"]
     seed:
       events:
-        - { month: Jan, year: "2021", tag: "Add a tag", title: "Name this event", preview: "Add a one-line summary of what happened." }
-        - { month: Apr, year: "2022", tag: "Add a tag", title: "Name this event", preview: "Add a one-line summary of what happened." }
-        - { month: Aug, year: "2023", tag: "Add a tag", title: "Name this event", preview: "Add a one-line summary of what happened." }
-        - { month: Feb, year: "2024", tag: "Add a tag", title: "Name this event", preview: "Add a one-line summary of what happened." }
-        - { month: Nov, year: "2025", tag: "Add a tag", title: "Name this event", preview: "Add a one-line summary of what happened." }
+        - { month: Jan, year: "2021", tag: "Add a tag", title: "Name this event", preview: "add a short summary of what happened" }
+        - { month: Apr, year: "2022", tag: "Add a tag", title: "Name this event", preview: "add a short summary of what happened" }
+        - { month: Aug, year: "2023", tag: "Add a tag", title: "Name this event", preview: "add a short summary of what happened" }
+        - { month: Feb, year: "2024", tag: "Add a tag", title: "Name this event", preview: "add a short summary of what happened" }
+        - { month: Nov, year: "2025", tag: "Add a tag", title: "Name this event", preview: "add a short summary of what happened" }
     min: "≥2 events, each with month + year + title"
 
   # ---- CATALOG — the data-driven list + expandable cards ---------------

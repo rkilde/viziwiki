@@ -778,6 +778,91 @@
           if (rb2) rb2.click();
         }
       }
+
+      // ── timeline: editable card faces + modal body + add/remove events ──
+      if (type === 'timeline') {
+        // optional H2 — edit if present, else a "+ heading" affordance in the header
+        var tlTitle = qs('.wiki-section-title', secEl);
+        if (tlTitle) { wrapCE(tlTitle, prefix + 'heading'); }
+        else { var hdr = qs('.tl-hdr', secEl); if (hdr) { var hint0 = qs('.tl-scroll-hint', hdr); hdr.insertBefore(addBtn('add:' + prefix + 'heading', '+ heading', true), hint0 || null); } }
+
+        // the auto-derived scroll hint is canon — lock it (red box + padlock)
+        var hintEl = qs('.tl-scroll-hint', secEl);
+        if (hintEl) { hintEl.classList.add('pe-canon'); var hlk = document.createElement('span'); hlk.className = 'pe-lock'; hlk.title = 'Auto-derived from the event dates — never hand-typed'; hlk.innerHTML = LOCK; hintEl.appendChild(hlk); }
+
+        var moEnum = (R('timeline.events[].month').enum) || [];
+        var bodyBlank = (R('timeline.events[].body').blank) || '';
+        var evMin = (R('timeline.events').min != null) ? R('timeline.events').min : 0;
+        var evMax = R('timeline.events').max;
+        var stations = qsa('.itl-station', secEl);
+        var canRemoveEv = stations.length > evMin;
+
+        // generic enum picker (the month) — options derived from the grammar enum
+        var openEnumPop = function (btn, path, values, cur, label) {
+          var html = '<div class="cc-pop-label">' + (label || 'Choose') + '</div><div class="cc-enum">' +
+            values.map(function (v) { return '<button class="cc-enum-opt' + (v === cur ? ' sel' : '') + '" data-v="' + v + '">' + v + '</button>'; }).join('') + '</div>';
+          var pop = openPop(btn, '', html, { cls: 'enum-pop' });
+          qsa('.cc-enum-opt', pop).forEach(function (b) { b.onclick = function () { closePop(); A('set:' + path + ':' + b.getAttribute('data-v')); }; });
+        };
+
+        // modal (scoped to THIS section) → body editing, decorator-driven (the
+        // canon's own modal script is stripped in the builder, like the catalog)
+        var tlModal = qs('.tl-modal', secEl);
+        var tlBody = tlModal && qs('[data-tl-body]', tlModal);
+        var tlDetails = qs('.tl-details', secEl);
+        var tlBox = tlModal && qs('.tl-modal-box', tlModal);
+        var closeTl = function () {
+          var open = tlModal && qs('[data-pe-tl-open]', tlModal);
+          if (open && tlDetails) { tlDetails.appendChild(open); open.removeAttribute('data-pe-tl-open'); }
+          if (tlModal) tlModal.classList.remove('open');
+          window.__peTlOpen = null; closePop();
+        };
+        var openEvent = function (k, st) {
+          if (!tlModal || !tlBody) return;
+          var det = qs('[id="bktld-' + k + '"]', secEl); if (!det) return;
+          var tg = qs('[data-tl-tag]', tlModal), ti = qs('[data-tl-title]', tlModal), pg = qs('[data-tl-page]', tlModal);
+          var tagSrc = qs('.sc-tag', st), titSrc = qs('.sc-title', st);   // live card text (fresh after edits)
+          if (tg) tg.textContent = tagSrc ? tagSrc.textContent.trim() : '';
+          if (ti) ti.textContent = titSrc ? titSrc.textContent.trim() : '';
+          if (pg) pg.textContent = st.getAttribute('data-num') + ' / ' + (stations.length < 10 ? '0' + stations.length : stations.length);
+          if (!det.textContent.trim()) det.innerHTML = '<p>' + bodyBlank + '</p>';   // empty body → show its placeholder
+          det.setAttribute('data-pe-tl-open', '1'); tlBody.appendChild(det);
+          wrapCE(det, prefix + 'events.' + k + '.body');
+          tlModal.classList.add('open'); if (tlBox) centreModal(tlBox);
+          window.__peTlOpen = { s: i, k: k };
+        };
+        if (tlModal) { var tc = qs('[data-tl-close]', tlModal); if (tc) tc.onclick = closeTl; tlModal.onmousedown = function (e) { if (e.target === tlModal) closeTl(); }; }
+
+        stations.forEach(function (st, k) {
+          var epre = prefix + 'events.' + k + '.';
+          // month → enum picker (derived from the grammar enum, never free text)
+          var moEl = qs('.sc-float-month', st);
+          if (moEl) { moEl.classList.add('pe-st-chip'); (function (cur) { moEl.onclick = function (e) { e.stopPropagation(); openEnumPop(moEl, epre + 'month', moEnum, cur, 'Month'); }; })((moEl.textContent || '').trim()); }
+          // day (optional text) + year (text — drives the layout → commit on blur)
+          var dayEl = qs('.sc-float-day', st); if (dayEl) wrapCE(dayEl, epre + 'day');
+          var yrEl = qs('.sc-float-year', st);
+          if (yrEl) { wrapCE(yrEl, epre + 'year'); var yce = qs('.ce', yrEl); if (yce) yce.addEventListener('blur', function () { A('commit'); }); }
+          // tag / title / preview (no layout impact → plain .ce, no re-render)
+          wrapCE(qs('.sc-tag', st), epre + 'tag');
+          wrapCE(qs('.sc-title', st), epre + 'title');
+          wrapCE(qs('.sc-prose', st), epre + 'preview');
+          // remove event (× inside the card corner), only above the grammar min
+          var card = qs('.itl-card', st);
+          if (card && canRemoveEv) makeRemovable(card, 'rm:' + prefix + 'events.' + k);
+          // click the card (not a field/×) → open the modal to edit the body
+          if (card) { card.style.cursor = 'pointer'; (function (kk, ss) { card.addEventListener('click', function (e) { if (e.target.closest('.ce,.pe-remove,.cc-pop')) return; openEvent(kk, ss); }); })(k, st); }
+        });
+
+        // + event (append a grammar-seeded event), respecting the max
+        if (evMax == null || stations.length < evMax) {
+          var tlOuter = qs('.tl-outer', secEl);
+          if (tlOuter) tlOuter.parentNode.insertBefore(addLine('push:' + prefix + 'events', '+ event'), tlOuter.nextSibling);
+        }
+
+        // reopen the modal after a re-render (commit / add / remove)
+        var tlo = window.__peTlOpen;
+        if (tlo && tlo.s === i) { var rst = qsa('.itl-station', secEl)[tlo.k]; if (rst) openEvent(tlo.k, rst); else window.__peTlOpen = null; }
+      }
     });
 
     // add-section seams (dotted circle +): BELOW the overview (insert at 0)

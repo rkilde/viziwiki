@@ -127,6 +127,15 @@ const AFFORDANCE = `
   .cc-status.sel::after{ content:'✓'; position:absolute; right:9px; top:50%; transform:translateY(-50%); font-size:10px; }
   .cc-status.none{ background:transparent; border:1px dashed rgba(0,0,0,.22); color:#8a7d70; box-shadow:none; margin-top:8px; }
 
+  /* timeline editor: month enum picker (grid of options) + event removal */
+  .cc-enum{ display:grid; grid-template-columns:repeat(4,1fr); gap:6px; }
+  .cc-enum-opt{ font-family:'JetBrains Mono',monospace; font-size:10px; padding:6px 4px; border-radius:7px; border:1px solid rgba(0,0,0,.14); background:rgba(255,255,255,.6); cursor:pointer; color:#574c40; }
+  .cc-enum-opt:hover{ background:rgba(0,0,0,.06); }
+  .cc-enum-opt.sel{ background:#241a10; color:#fff; border-color:transparent; }
+  .sc-float-month.pe-st-chip::after{ font-size:11px; vertical-align:middle; }  /* shrink the picker caret on the big serif month */
+  .itl-card.pe-removable{ width:100%; }                                        /* don't shrink the card to fit-content */
+  .itl-card.pe-removable > .pe-remove{ top:6px; right:6px; left:auto; }         /* × inside the card corner (card clips overflow) */
+
   /* item editor: restyle the CANONICAL modal as a glass-chromed editor (content
      is the include's own .modal-* markup — edit = live). */
   .modal-ov.open{ display:block !important; }

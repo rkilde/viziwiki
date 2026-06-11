@@ -384,5 +384,34 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   }
 }
 
+// ── case 11: timeline in-place editor (the buildkit layer) ──
+{
+  console.log('case 11: timeline editor — fields editable, add/remove, modal');
+  const tlSeed = JSON.parse(JSON.stringify(grammar.components.timeline.seed));
+  const doc = {
+    hero: { eyebrow: null, title: 'T', subtitle: null, subtitle_meta: null, desc: 'D', stats: null, search: false, search_placeholder: '', spotlight: null, feature: null },
+    overview: { tone: 'b', heading: 'H', paragraphs: ['P'], infobox: null },
+    sections: [{ type: 'timeline', data: tlSeed }],
+  };
+  const d = renderAndDecorate(doc, false);
+  const tl = d.querySelector('section.wiki-section.timeline');
+  const st0 = tl.querySelectorAll('.itl-station')[0];
+  ok(st0.querySelector('.sc-title .ce'), 'event title is an editable box');
+  ok(st0.querySelector('.sc-tag .ce'), 'event tag editable');
+  ok(st0.querySelector('.sc-prose .ce'), 'event preview editable');
+  ok(st0.querySelector('.sc-float-year .ce'), 'event year editable');
+  ok(st0.querySelector('.sc-float-month.pe-st-chip'), 'month is an enum picker (not a free text box)');
+  // placeholder select-all: seeded title text carries its grammar blank in data-ph
+  ok(st0.querySelector('.sc-title .ce').getAttribute('data-ph') === 'Name this event', 'title field marked placeholder (data-ph = grammar blank)');
+  // add/remove per grammar min (seed has 5 > min 2 → removable; max none → addable)
+  ok(st0.querySelector('.itl-card.pe-removable .pe-remove'), 'event removable (× on the card) above the min');
+  ok([...tl.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ event'), '+ event affordance present');
+  // derived scroll hint is locked
+  ok(tl.querySelector('.tl-scroll-hint.pe-canon .pe-lock'), 'auto-derived scroll hint locked');
+  // at the grammar min, no × renders (can't drop below 2 events)
+  const dMin = renderAndDecorate({ ...doc, sections: [{ type: 'timeline', data: { events: tlSeed.events.slice(0, 2) } }] }, false);
+  ok(!dMin.querySelector('.itl-card.pe-removable .pe-remove'), 'at min events, no remove × (grammar min enforced)');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
