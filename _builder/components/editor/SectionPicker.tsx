@@ -10,6 +10,11 @@ const ic = (d: string, size = 18) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" dangerouslySetInnerHTML={{ __html: d }} />
 );
 
+// a typed sub-chooser tile (catalog types, timeline types …). desc is a
+// paragraph; bullets is the dashed-list form. A tile is `live` only when its
+// type actually seeds a derived section (grammar seed + registry host exist).
+type TypeTile = { id: string; name: string; live: boolean; icon: string; desc?: string; bullets?: string[] };
+
 // tiles from the mockup's SECTION_TEMPLATES (names pluralized per the owner)
 const TILES = [
   {
@@ -18,7 +23,7 @@ const TILES = [
     desc: 'Categorized, browsable lists — each item opens an expandable card. Pick a catalog type →',
   },
   {
-    id: 'timeline', name: 'Timelines', pill: 'Category' as const, opens: null,
+    id: 'timeline', name: 'Timelines', pill: 'Category' as const, opens: 'timeline' as const,
     icon: '<polyline points="18 8 22 12 18 16"/><polyline points="6 8 2 12 6 16"/><line x1="2" y1="12" x2="22" y2="12"/>',
     desc: 'Date-positioned event scrollers on a real time axis. Pick a timeline type →',
   },
@@ -34,9 +39,18 @@ const TILES = [
   },
 ];
 
+// timeline types — "Standard Horizontal Timeline" IS the canonical timeline
+// bank (the one real type today): clicking it seeds a derived `timeline`
+// section (grammar seed + registry host). More types are ghosts until built.
+const TIMELINE_TYPES: TypeTile[] = [
+  { id: 'timeline', name: 'Standard Horizontal Timeline', live: true,
+    icon: '<polyline points="18 8 22 12 18 16"/><polyline points="6 8 2 12 6 16"/><line x1="2" y1="12" x2="22" y2="12"/>',
+    bullets: ['standard timeline', 'horizontally scrollable'] },
+];
+
 // catalog types from the mockup's CATALOG_TYPES — Category Masonry IS the
 // canonical catalog bank (the one real type today); the rest are ghosts.
-const CATALOG_TYPES = [
+const CATALOG_TYPES: TypeTile[] = [
   { id: 'catalog', name: 'Category Masonry', live: true,
     icon: '<path d="M10 12h11"/><path d="M10 18h11"/><path d="M10 6h11"/><path d="M4 10h2"/><path d="M4 6h1v4"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/>',
     desc: 'A masonry of category cards; each item opens an expandable-card modal. The classic ViziWiki catalog.' },
@@ -58,8 +72,47 @@ const CATALOG_TYPES = [
 ];
 
 export function SectionPicker({ onClose, onPick }: { onClose: () => void; onPick: (type: string) => void }) {
-  const [screen, setScreen] = useState<'choices' | 'browse' | 'catalog'>('choices');
+  const [screen, setScreen] = useState<'choices' | 'browse' | 'catalog' | 'timeline'>('choices');
   const [q, setQ] = useState('');
+
+  // shared typed sub-chooser (catalog / timeline): a grid of TypeTiles, each
+  // live tile seeds its derived section via onPick(type). desc → paragraph;
+  // bullets → dashed list.
+  const typeScreen = (title: string, sub: string, types: TypeTile[]) => (
+    <>
+      <div className="sp-head">
+        <button className="sp-back" onClick={() => setScreen('browse')}>←</button>
+        <div>
+          <div className="sp-title">{title}</div>
+          <div className="sp-sub">{sub}</div>
+        </div>
+        <button className="sp-x" onClick={onClose}>×</button>
+      </div>
+      <div className="sp-body">
+        <div className="sp-grid">
+          {types.map((t) => (
+            <div
+              key={t.id}
+              className={`sp-card ${t.live ? 'available' : 'soon'}`}
+              title={t.live ? '' : 'Coming soon'}
+              onClick={t.live ? () => onPick(t.id) : undefined}
+            >
+              <span className={`sp-pill ${t.live ? 'ok' : 'soon'}`}>{t.live ? 'Available' : 'Soon'}</span>
+              <div className="sp-card-top">
+                <div className="sp-card-ic">{ic(t.icon, 16)}</div>
+                <div className="sp-card-name">{t.name}</div>
+              </div>
+              <div className="sp-card-desc">
+                {t.bullets
+                  ? <ul className="sp-card-bullets">{t.bullets.map((b, i) => <li key={i}>{b}</li>)}</ul>
+                  : t.desc}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
+  );
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') { e.stopPropagation(); onClose(); } };
@@ -130,37 +183,8 @@ export function SectionPicker({ onClose, onPick }: { onClose: () => void; onPick
             </div>
           </>
         )}
-        {screen === 'catalog' && (
-          <>
-            <div className="sp-head">
-              <button className="sp-back" onClick={() => setScreen('browse')}>←</button>
-              <div>
-                <div className="sp-title">Catalogs</div>
-                <div className="sp-sub">Pick a catalog type</div>
-              </div>
-              <button className="sp-x" onClick={onClose}>×</button>
-            </div>
-            <div className="sp-body">
-              <div className="sp-grid">
-                {CATALOG_TYPES.map((t) => (
-                  <div
-                    key={t.id}
-                    className={`sp-card ${t.live ? 'available' : 'soon'}`}
-                    title={t.live ? '' : 'Coming soon'}
-                    onClick={t.live ? () => onPick(t.id) : undefined}
-                  >
-                    <span className={`sp-pill ${t.live ? 'ok' : 'soon'}`}>{t.live ? 'Available' : 'Soon'}</span>
-                    <div className="sp-card-top">
-                      <div className="sp-card-ic">{ic(t.icon, 16)}</div>
-                      <div className="sp-card-name">{t.name}</div>
-                    </div>
-                    <div className="sp-card-desc">{t.desc}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </>
-        )}
+        {screen === 'catalog' && typeScreen('Catalogs', 'Pick a catalog type', CATALOG_TYPES)}
+        {screen === 'timeline' && typeScreen('Timelines', 'Pick a timeline type', TIMELINE_TYPES)}
       </div>
     </div>
   );
