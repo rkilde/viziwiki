@@ -411,11 +411,12 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   // at the grammar min, no × renders (can't drop below 2 events)
   const dMin = renderAndDecorate({ ...doc, sections: [{ type: 'timeline', data: { events: tlSeed.events.slice(0, 2) } }] }, false);
   ok(!dMin.querySelector('.itl-card.pe-removable .pe-remove'), 'at min events, no remove × (grammar min enforced)');
-  // heading absent (seed has none) → a dashed "+ heading" slot in the header
-  const hAdd = [...tl.querySelectorAll('.tl-hdr .pe-add')].find((b) => b.textContent === '+ heading');
-  ok(hAdd, 'absent heading → dashed "+ heading" slot (not a mini button)');
-  // expandable card: clicking a card opens the detail modal with an editable body
-  (st0.querySelector('.sc-footer') || st0.querySelector('.itl-card')).click();
+  // heading is REQUIRED → present + editable in place (no "+" slot), placeholder = blank
+  const hCe = tl.querySelector('.wiki-section-title .ce');
+  ok(hCe && hCe.getAttribute('data-ph') === 'Timeline Header', 'required heading present + editable with "Timeline Header" placeholder');
+  ok(!tl.querySelector('.tl-hdr .pe-add'), 'no "+ heading" slot (heading is required, always there)');
+  // expandable card: the "Details ›" expand trigger opens the detail modal with an editable body
+  (st0.querySelector('.sc-expand') || st0.querySelector('.sc-footer') || st0.querySelector('.itl-card')).click();
   const tlModal = tl.querySelector('.tl-modal');
   ok(tlModal.classList.contains('open'), 'clicking a card opens its expandable card (detail modal)');
   const mBody = tlModal.querySelector('[data-tl-body] .ce');

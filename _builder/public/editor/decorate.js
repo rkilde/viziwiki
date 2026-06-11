@@ -330,7 +330,7 @@
       var visTop = Math.max(0, -rect.top);
       var visH = Math.min(rect.bottom, ph) - Math.max(rect.top, 0); if (visH <= 0) visH = ph;
       card.style.top = (visTop + visH / 2) + 'px';
-      var sc = card.querySelector('.modal-scroll'); if (sc) sc.style.maxHeight = (visH - 44) + 'px';
+      var sc = card.querySelector('.modal-scroll, .tl-modal-body'); if (sc) sc.style.maxHeight = (visH - 44) + 'px';
     } catch (e) { card.style.top = '50%'; }
   }
   var getDoc = function () { try { return window.__PE_DOC || (window.parent.__peDoc && window.parent.__peDoc()); } catch (e) { return null; } };
@@ -781,10 +781,8 @@
 
       // ── timeline: editable card faces + modal body + add/remove events ──
       if (type === 'timeline') {
-        // optional H2 — edit if present, else a "+ heading" affordance in the header
-        var tlTitle = qs('.wiki-section-title', secEl);
-        if (tlTitle) { wrapCE(tlTitle, prefix + 'heading'); }
-        else { var hdr = qs('.tl-hdr', secEl); if (hdr) { var hint0 = qs('.tl-scroll-hint', hdr); hdr.insertBefore(addLine('add:' + prefix + 'heading', '+ heading'), hint0 || null); } }
+        // required H2 — always present, editable in place (no "+" slot, no ×)
+        wrapCE(qs('.wiki-section-title', secEl), prefix + 'heading');
 
         // the auto-derived scroll hint is canon — lock it (red box + padlock)
         var hintEl = qs('.tl-scroll-hint', secEl);
@@ -849,7 +847,11 @@
           // remove event (× inside the card corner), only above the grammar min
           var card = qs('.itl-card', st);
           if (card && canRemoveEv) makeRemovable(card, 'rm:' + prefix + 'events.' + k);
-          // click the card (not a field/×) → open the modal to edit the body
+          // open the expandable card: the "Details ›" footer is the explicit
+          // trigger (clear + never collides with field edits); clicking a
+          // non-field part of the card also opens it.
+          var expand = qs('.sc-expand', st);
+          if (expand) { expand.classList.add('pe-expand'); (function (kk, ss) { expand.onclick = function (e) { e.stopPropagation(); openEvent(kk, ss); }; })(k, st); }
           if (card) { card.style.cursor = 'pointer'; (function (kk, ss) { card.addEventListener('click', function (e) { if (e.target.closest('.ce,.pe-remove,.cc-pop')) return; openEvent(kk, ss); }); })(k, st); }
         });
 

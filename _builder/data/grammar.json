@@ -835,8 +835,9 @@
       "fields": {
         "heading": {
           "type": "text",
+          "required": true,
           "blank": "Timeline Header",
-          "help": "Optional H2 (omit for eyebrow-only)"
+          "help": "The timeline's H2 (required)"
         },
         "tone": {
           "type": "enum[a,b,special]",
@@ -907,6 +908,7 @@
         "scroll hint, year bands, positions, gap chips — all from the dates"
       ],
       "seed": {
+        "heading": "Timeline Header",
         "events": [
           {
             "month": "Jan",

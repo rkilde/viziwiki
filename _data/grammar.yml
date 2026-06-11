@@ -258,7 +258,7 @@ components:
     section: timeline-section
     locked: { eyebrow: "Timeline", icon: move-horizontal, full_bleed: true }
     fields:
-      heading:   { type: text, blank: "Timeline Header", help: "Optional H2 (omit for eyebrow-only)" }
+      heading:   { type: text, required: true, blank: "Timeline Header", help: "The timeline's H2 (required)" }
       tone:      { type: "enum[a,b,special]", default: b }
       visual:  { type: text, locked: true, default: timeline, help: "The slot's visual type — registry hosts constrain it (admin)" }
       card_type: { type: "enum[station]", default: station }
@@ -278,6 +278,7 @@ components:
         body:    { type: richtext, blank: "Write the full story for the expandable card…", help: "Full detail in the expandable card" }
     derived: ["scroll hint, year bands, positions, gap chips — all from the dates"]
     seed:
+      heading: "Timeline Header"
       events:
         - { month: Jan, year: "2021", tag: "Add a tag", title: "Name this event", preview: "add a short summary of what happened" }
         - { month: Apr, year: "2022", tag: "Add a tag", title: "Name this event", preview: "add a short summary of what happened" }

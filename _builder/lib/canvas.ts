@@ -135,6 +135,8 @@ const AFFORDANCE = `
   .sc-float-month.pe-st-chip::after{ font-size:11px; vertical-align:middle; }  /* shrink the picker caret on the big serif month */
   .itl-card.pe-removable{ width:100%; }                                        /* don't shrink the card to fit-content */
   .itl-card.pe-removable > .pe-remove{ top:6px; right:6px; left:auto; }         /* × inside the card corner (card clips overflow) */
+  .sc-expand.pe-expand{ cursor:pointer; padding:2px 6px; margin:-2px -6px; border-radius:5px; transition:.12s; }  /* the "Details ›" expand trigger */
+  .sc-expand.pe-expand:hover{ color:#6366f1; background:rgba(99,102,241,.08); }
 
   /* item editor: restyle the CANONICAL modal as a glass-chromed editor (content
      is the include's own .modal-* markup — edit = live). */
