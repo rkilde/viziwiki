@@ -33,7 +33,7 @@ type TypeTile = { id: string; name: string; icon: string; desc?: string; bullets
 const TILES = [
   {
     id: 'catalog', name: 'Catalogs', pill: 'Category' as const, opens: 'catalog' as const,
-    icon: BLANK,
+    icon: '<rect x="3.5" y="3.5" width="4" height="4" rx="1"/><line x1="9.5" y1="5.5" x2="20" y2="5.5"/><rect x="3.5" y="10" width="4" height="4" rx="1"/><line x1="9.5" y1="12" x2="20" y2="12"/><rect x="3.5" y="16.5" width="4" height="4" rx="1"/><line x1="9.5" y1="18.5" x2="20" y2="18.5"/>',
     desc: 'Categorized, browsable lists — each item opens an expandable card. Pick a catalog type →',
   },
   {
@@ -65,8 +65,8 @@ const TIMELINE_TYPES: TypeTile[] = [
 // catalog types from the mockup's CATALOG_TYPES — Category Masonry IS the
 // canonical catalog bank (the one real type today); the rest are ghosts.
 const CATALOG_TYPES: TypeTile[] = [
-  { id: 'catalog', name: 'Category Masonry',
-    icon: '<rect x="3.5" y="3.5" width="4" height="4" rx="1"/><line x1="9.5" y1="5.5" x2="20" y2="5.5"/><rect x="3.5" y="10" width="4" height="4" rx="1"/><line x1="9.5" y1="12" x2="20" y2="12"/><rect x="3.5" y="16.5" width="4" height="4" rx="1"/><line x1="9.5" y1="18.5" x2="20" y2="18.5"/>',
+  { id: 'catalog', name: 'Masonry Catalog',
+    icon: '<rect x="3.5" y="3.5" width="7" height="9.5" rx="1.4"/><rect x="3.5" y="15.5" width="7" height="5" rx="1.4"/><rect x="13.5" y="3.5" width="7" height="5" rx="1.4"/><rect x="13.5" y="11" width="7" height="9.5" rx="1.4"/>',
     desc: 'A masonry of category cards; each item opens an expandable-card modal. The classic ViziWiki catalog.' },
   { id: 'flat-table', name: 'Flat Table',
     icon: BLANK,
