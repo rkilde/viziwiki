@@ -66,7 +66,7 @@ const TIMELINE_TYPES: TypeTile[] = [
 // canonical catalog bank (the one real type today); the rest are ghosts.
 const CATALOG_TYPES: TypeTile[] = [
   { id: 'catalog', name: 'Category Masonry',
-    icon: '<rect x="3.5" y="3.5" width="7" height="9.5" rx="1.4"/><rect x="3.5" y="15.5" width="7" height="5" rx="1.4"/><rect x="13.5" y="3.5" width="7" height="5" rx="1.4"/><rect x="13.5" y="11" width="7" height="9.5" rx="1.4"/>',
+    icon: '<rect x="3.5" y="3.5" width="4" height="4" rx="1"/><line x1="9.5" y1="5.5" x2="20" y2="5.5"/><rect x="3.5" y="10" width="4" height="4" rx="1"/><line x1="9.5" y1="12" x2="20" y2="12"/><rect x="3.5" y="16.5" width="4" height="4" rx="1"/><line x1="9.5" y1="18.5" x2="20" y2="18.5"/>',
     desc: 'A masonry of category cards; each item opens an expandable-card modal. The classic ViziWiki catalog.' },
   { id: 'flat-table', name: 'Flat Table',
     icon: BLANK,
