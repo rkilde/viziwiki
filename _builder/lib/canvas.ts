@@ -58,20 +58,17 @@ const AFFORDANCE = `
   body{ --g-bg:rgba(250,250,253,.5); --g-panel:#ffffff; --g-blur:blur(28px) saturate(180%) brightness(1.05);
     --g-edge:1px solid rgba(255,255,255,.6); --g-shadow:0 18px 48px rgba(20,16,10,.26),0 3px 9px rgba(20,16,10,.14);
     --g-inset:inset 0 1px 0 rgba(255,255,255,.85); }
-  /* dock sits at the card's top-left, above the title. The card reserves a
-     strip for it via PADDING (not margin): the masonry is a CSS multi-column
-     flow, and a box's top MARGIN is truncated at a column break — which left
-     the first card of a later column with no reserved space and its dock
-     floating out of view. Padding is never truncated, so every card (first in
-     its column or not) keeps the strip and shows its dock. overflow:visible so
-     the hover tooltips (which sit above each button) aren't clipped. */
-  .cat-card{ overflow:visible !important; position:relative !important; padding-top:50px !important; }
-  .cc-dock{ position:absolute; top:11px; left:16px; z-index:8; display:flex; align-items:center; gap:2px; padding:4px; border-radius:13px;
+  /* dock FLOATS above the card's top-left — it must not change the card's
+     canon dimensions (no padding/margin added to the card). overflow:visible
+     (editor only) so the floating dock + its hover tooltips aren't clipped. */
+  .cat-card{ overflow:visible !important; }
+  .cc-dock{ position:absolute; top:-42px; left:0; z-index:8; display:flex; align-items:center; gap:2px; padding:4px; border-radius:13px;
     background:var(--g-bg); border:var(--g-edge); box-shadow:var(--g-shadow),var(--g-inset);
     opacity:0; transform:translateY(-6px) scale(.96); transform-origin:top left; pointer-events:none;
     transition:opacity .18s ease, transform .2s cubic-bezier(.2,.7,.3,1); }
   /* blur is applied ONLY when the dock is visible — a hidden (opacity:0)
-     backdrop-filter still composites a faint band over the content beneath it. */
+     backdrop-filter still composites a faint band over the content beneath it
+     (this, not geometry, was what hid a card's title). */
   .cat-card:hover .cc-dock, .cc-dock.pinned{ opacity:1; transform:none; pointer-events:auto;
     backdrop-filter:var(--g-blur); -webkit-backdrop-filter:var(--g-blur); }
   /* hover explainer tooltip — solid glass chip above each control */
