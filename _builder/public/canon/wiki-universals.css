@@ -41,8 +41,12 @@
    a neutral default as the safety floor. A wiki overrides any of these under
    body.wiki-{name} (e.g. the per-wiki harmonised meaning colours + palette).
    Nothing should hardcode a colour an asset needs; it reads a token here.
+   Declared on `body` (NOT :root) on purpose: skins define their legacy tokens
+   on `body.wiki-{name}`, and a var() in a custom property resolves at the
+   element it's DECLARED on — so the bridge must compute on `body` to see the
+   skin's values (on :root it would resolve the §1 floors and inherit those).
    ════════════════════════════════════════════════════════════════════ */
-:root {
+body {
   /* ── neutrals ── */
   --wiki-text-color:        var(--foreground, var(--ink, var(--wiki-fg, #18181b)));
   --wiki-text-muted-color:  var(--muted-foreground, var(--wiki-muted, var(--mut, rgba(24,24,27,.6))));
