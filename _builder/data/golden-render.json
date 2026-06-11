@@ -8,20 +8,20 @@
     "bytes": 24381
   },
   "fixture:feature-catalog-page": {
-    "hash": "6b5bd6a1fa6b90ab",
-    "bytes": 26339
+    "hash": "c9b4ff4b38399532",
+    "bytes": 26345
   },
   "taco-bell:taco-bell-home": {
     "hash": "78086ec734ca46f5",
     "bytes": 27026
   },
   "taco-bell:taco-bell-drinks": {
-    "hash": "771558f5e235ebe1",
-    "bytes": 50493
+    "hash": "18f39a2d310191ac",
+    "bytes": 50581
   },
   "taco-bell:taco-bell-discontinued-drinks": {
-    "hash": "722f3684b167e2dd",
-    "bytes": 92938
+    "hash": "9564021b5a25ce1e",
+    "bytes": 93070
   },
   "taco-bell:taco-bell-sangrita-blast": {
     "hash": "ce6508cb569e535a",
@@ -48,24 +48,24 @@
     "bytes": 26289
   },
   "taco-bell:taco-bell-menu-cantina-chicken": {
-    "hash": "d61d8101c04bf97d",
-    "bytes": 44524
+    "hash": "4b2d87a8ebf69687",
+    "bytes": 44566
   },
   "taco-bell:taco-bell-menu-2-dollar-deals": {
-    "hash": "5fa47993af86c675",
-    "bytes": 32467
+    "hash": "ef77a61afa5577c5",
+    "bytes": 32481
   },
   "taco-bell:taco-bell-menu-fresco": {
-    "hash": "706568ba0840333f",
-    "bytes": 40263
+    "hash": "9c9e9027a2a9aa61",
+    "bytes": 40287
   },
   "taco-bell:taco-bell-menu-big-bell-value": {
-    "hash": "c0b4525e7928004b",
-    "bytes": 40195
+    "hash": "1009244e4ed55194",
+    "bytes": 40223
   },
   "taco-bell:taco-bell-menu-luxe-value": {
-    "hash": "5fef2d1b16361c83",
-    "bytes": 39387
+    "hash": "400f59abffc3b3d3",
+    "bytes": 39413
   },
   "taco-bell:taco-bell-slogans": {
     "hash": "731000a71e21508e",

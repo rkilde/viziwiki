@@ -23,7 +23,7 @@
     {%- comment -%} ribbon can be a plain string (accent-colored) or {text, tone}. tone "gone" locks to the skin's grey "phased out" token. {%- endcomment -%}
     {%- assign rb_text = cat.ribbon.text | default: cat.ribbon -%}
     {%- assign rb_tone = cat.ribbon.tone | default: 'accent' -%}
-    <div class="cat-card{% if cat.ribbon %} has-ribbon{% endif %}" style="--cat-color:var(--cat-accent-{{ accent }})">
+    <div class="cat-card{% if cat.ribbon %} has-ribbon{% endif %}" style="--cat-color:var(--wiki-palette-{{ accent }})">
       {%- if cat.ribbon -%}<div class="cat-ribbon{% if rb_tone == 'gone' %} ribbon-gone{% endif %}"><span>{{ rb_text }}</span></div>{%- endif -%}
       <div class="cat-card-title">{{ cat.name }}</div>
       <div class="cat-card-count">{{ n }} item{% if n != 1 %}s{% endif %}{% if cat.note %} &middot; {{ cat.note }}{% endif %}</div>
@@ -31,7 +31,7 @@
       <div class="cat-card-pills">
         {%- assign ci = forloop.index0 -%}
         {%- for item in cat.items -%}
-          <button type="button" class="cat-pill" data-detail="d-{{ ci }}-{{ forloop.index0 }}" data-color="var(--cat-accent-{{ accent }})"{% if cat.ribbon %} data-ribbon="{{ rb_text | escape }}" data-ribbon-tone="{{ rb_tone }}"{% endif %}>{{ item.name }}</button>
+          <button type="button" class="cat-pill" data-detail="d-{{ ci }}-{{ forloop.index0 }}" data-color="var(--wiki-palette-{{ accent }})"{% if cat.ribbon %} data-ribbon="{{ rb_text | escape }}" data-ribbon-tone="{{ rb_tone }}"{% endif %}>{{ item.name }}</button>
         {%- endfor -%}
       </div>
     </div>
@@ -86,7 +86,7 @@
       var card=modal.querySelector('.modal-card');
       var d=document.getElementById(pill.getAttribute('data-detail'));
       if(!d)return;
-      card.style.setProperty('--cat-color', pill.getAttribute('data-color')||'var(--cat-accent-1)');
+      card.style.setProperty('--cat-color', pill.getAttribute('data-color')||'var(--wiki-palette-1)');
       var rb=pill.getAttribute('data-ribbon');
       var rbEl=modal.querySelector('[data-modal-ribbon]');
       rbEl.innerHTML = rb ? '<span>'+rb+'</span>' : '';

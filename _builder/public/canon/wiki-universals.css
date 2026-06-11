@@ -73,6 +73,15 @@
   --wiki-palette-6: var(--cat-accent-6, #d97706);
   --wiki-palette-7: var(--cat-accent-7, #4f46e5);
   --wiki-palette-8: var(--cat-accent-8, #be123c);
+  /* extras beyond the guaranteed 8 — a wiki may publish as many as it has (e.g.
+     Taco Bell's 21). No floor here, so an index a wiki doesn't define stays
+     unset (the swatch picker simply won't show it). */
+  --wiki-palette-9:  var(--cat-accent-9);  --wiki-palette-10: var(--cat-accent-10); --wiki-palette-11: var(--cat-accent-11);
+  --wiki-palette-12: var(--cat-accent-12); --wiki-palette-13: var(--cat-accent-13); --wiki-palette-14: var(--cat-accent-14);
+  --wiki-palette-15: var(--cat-accent-15); --wiki-palette-16: var(--cat-accent-16); --wiki-palette-17: var(--cat-accent-17);
+  --wiki-palette-18: var(--cat-accent-18); --wiki-palette-19: var(--cat-accent-19); --wiki-palette-20: var(--cat-accent-20);
+  --wiki-palette-21: var(--cat-accent-21); --wiki-palette-22: var(--cat-accent-22); --wiki-palette-23: var(--cat-accent-23);
+  --wiki-palette-24: var(--cat-accent-24);
 
   /* ── section system ── */
   --wiki-section-panel-tone-a:       var(--section-tone-a, transparent);

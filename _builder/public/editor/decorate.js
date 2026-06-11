@@ -588,7 +588,7 @@
         var swatches = window.__peSwatches;
         if (swatches === undefined) {
           swatches = []; var bcs = getComputedStyle(document.body);
-          for (var sn = 1; sn <= 24; sn++) { var sv = (bcs.getPropertyValue('--cat-accent-' + sn) || '').trim(); if (sv) swatches.push({ n: sn, v: sv }); }
+          for (var sn = 1; sn <= 24; sn++) { var sv = (bcs.getPropertyValue('--wiki-palette-' + sn) || '').trim(); if (sv) swatches.push({ n: sn, v: sv }); }
           window.__peSwatches = swatches;
         }
 

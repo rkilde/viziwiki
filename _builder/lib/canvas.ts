@@ -175,10 +175,11 @@ const AFFORDANCE = `
   .modal-ov.open{ display:block !important; }
   .modal-ov .modal-card{ position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); margin:0; }
   /* status options carry the canonical st-* token colours (fallbacks match) */
-  .cc-status.st-active{ background:var(--st-active-bg,#dcfce7); color:var(--st-active-fg,#166534); }
-  .cc-status.st-discontinued{ background:var(--st-discontinued-bg,#fee2e2); color:var(--st-discontinued-fg,#991b1b); }
-  .cc-status.st-limited{ background:var(--st-limited-bg,#fef9c3); color:var(--st-limited-fg,#854d0e); }
-  .cc-status.st-retired{ background:var(--st-retired-bg,#f3f4f6); color:var(--st-retired-fg,#4b5563); }
+  /* status picker swatches — same derivation as the canon chips (meaning colours) */
+  .cc-status.st-active{ background:color-mix(in oklab,var(--wiki-positive) 16%,var(--wiki-surface-bg,#fff)); color:color-mix(in oklab,var(--wiki-positive) 72%,var(--wiki-text-color,#000)); }
+  .cc-status.st-limited{ background:color-mix(in oklab,var(--wiki-warning) 16%,var(--wiki-surface-bg,#fff)); color:color-mix(in oklab,var(--wiki-warning) 72%,var(--wiki-text-color,#000)); }
+  .cc-status.st-discontinued{ background:color-mix(in oklab,var(--wiki-neutral) 16%,var(--wiki-surface-bg,#fff)); color:color-mix(in oklab,var(--wiki-neutral) 72%,var(--wiki-text-color,#000)); }
+  .cc-status.st-retired{ background:color-mix(in oklab,var(--wiki-neutral) 16%,var(--wiki-surface-bg,#fff)); color:color-mix(in oklab,var(--wiki-neutral) 72%,var(--wiki-text-color,#000)); }
   .cat-add-pill{ border-style:dashed !important; color:rgba(0,0,0,.4) !important; background:transparent !important; }
 
   /* ════ two-click delete confirm (mockup Direction 2) ════ The ✕ trigger fades

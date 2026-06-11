@@ -307,10 +307,10 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   };
   doc.sections[0].data.categories[0].color = 2; // explicit swatch on the first
   const d = renderAndDecorate(doc, false, null, (w) => {
-    // stand in for the skin: define a 3-swatch palette on the body
-    w.document.body.style.setProperty('--cat-accent-1', '#111111');
-    w.document.body.style.setProperty('--cat-accent-2', '#222222');
-    w.document.body.style.setProperty('--cat-accent-3', '#333333');
+    // stand in for the skin: define a 3-colour contract palette on the body
+    w.document.body.style.setProperty('--wiki-palette-1', '#111111');
+    w.document.body.style.setProperty('--wiki-palette-2', '#222222');
+    w.document.body.style.setProperty('--wiki-palette-3', '#333333');
   });
   const secs = [...d.querySelectorAll('section.wiki-section.catalog')];
   ok(secs.length === 2, 'two catalog sections render');
