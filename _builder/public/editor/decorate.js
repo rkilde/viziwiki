@@ -238,7 +238,7 @@
     b.className = mini ? 'pe-tag-rm' : 'pe-remove';
     b.title = 'Remove';
     b.textContent = '×';
-    b.onclick = function () { A(action); };
+    armDelete(b, function () { A(action); });
     if (sibling) { el.parentNode.insertBefore(b, el.nextSibling); }
     else { el.classList.add('pe-removable'); el.appendChild(b); }
   }
@@ -290,6 +290,38 @@
     (window.requestAnimationFrame || function (f) { setTimeout(f, 0); })(function () { pop.classList.add("in"); });
     pePop = pop; return pop;
   }
+  // ── two-click delete confirm (mockup Direction 2 — the ✕ trigger arms in
+  // place into a red "✓ Delete" + a grey undo; a 2nd click commits, undo /
+  // outside-click / Escape backs out). EVERY delete in the kit routes through
+  // armDelete(trigger, doDelete) so the behaviour is uniform. ──
+  var CHK_SVG = csvg('<polyline points="20 6 9 17 4 12"/>');
+  var UNDO_SVG = csvg('<path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/>');
+  var delConfirm = null;
+  function closeDelConfirm() {
+    if (!delConfirm) return;
+    var c = delConfirm; delConfirm = null;
+    if (c._trigger) c._trigger.classList.remove('pe-del-armed');
+    if (c.parentNode) c.parentNode.removeChild(c);
+  }
+  function openDelConfirm(trigger, doDelete) {
+    closeDelConfirm(); closePop();
+    var c = document.createElement('div'); c.className = 'pe-del-confirm';
+    c.innerHTML = '<button type="button" class="pe-del-yes">' + CHK_SVG + ' Delete</button><button type="button" class="pe-del-no" title="Keep">' + UNDO_SVG + '</button>';
+    c._trigger = trigger; document.body.appendChild(c);
+    trigger.classList.add('pe-del-armed');
+    var r = trigger.getBoundingClientRect(), w = c.offsetWidth, h = c.offsetHeight;
+    c.style.left = Math.max(8, Math.min(r.right - w, window.innerWidth - w - 8)) + 'px';
+    c.style.top = Math.max(8, Math.min(r.top + r.height / 2 - h / 2, window.innerHeight - h - 8)) + 'px';
+    qs('.pe-del-yes', c).onclick = function (e) { e.stopPropagation(); var dd = doDelete; closeDelConfirm(); dd(); };
+    qs('.pe-del-no', c).onclick = function (e) { e.stopPropagation(); closeDelConfirm(); };
+    delConfirm = c;
+  }
+  function armDelete(trigger, doDelete) {
+    trigger.onclick = function (e) { e.stopPropagation(); e.preventDefault(); openDelConfirm(trigger, doDelete); };
+  }
+  document.addEventListener('mousedown', function (e) { if (delConfirm && !delConfirm.contains(e.target) && !(delConfirm._trigger && delConfirm._trigger.contains(e.target))) closeDelConfirm(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeDelConfirm(); });
+
   document.addEventListener('mousedown', function (e) { if (pePop && !pePop.contains(e.target) && !(e.target.closest && e.target.closest('.cc-btn,.pe-st-chip,.im-info-chip,.gpill-menu,.pe-datefield'))) closePop(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePop(); });
 
@@ -356,7 +388,7 @@
       });
       var rm = document.createElement('button');
       rm.className = 'pe-chip'; rm.textContent = 'remove';
-      rm.onclick = function () { A('rmAside'); };
+      armDelete(rm, function () { A('rmAside'); });
       ctrls.appendChild(rm);
       aside.insertBefore(ctrls, aside.firstChild);
     }
@@ -501,7 +533,7 @@
           noteRm.style.opacity = '1';
           noteRm.textContent = '×';
           noteRm.title = 'Remove note';
-          (function (p) { noteRm.onclick = function () { A('rm:' + p); }; })(prefix + 'note');
+          (function (p) { armDelete(noteRm, function () { A('rm:' + p); }); })(prefix + 'note');
           noteChip.appendChild(noteRm);
           extras.push(noteChip);
         } else {
@@ -520,7 +552,9 @@
       };
       if (i > 0) extras.push(mkChip('↑', 'secMove:' + i + ':up', 'Move section up'));
       if (i < bodySecs.length - 1) extras.push(mkChip('↓', 'secMove:' + i + ':down', 'Move section down'));
-      extras.push(mkChip('remove section', 'secRm:' + i));
+      var rmSecChip = mkChip('remove section', 'secRm:' + i);
+      (function (ii) { armDelete(rmSecChip, function () { A('secRm:' + ii); }); })(i);
+      extras.push(rmSecChip);
       toneBar(secEl, type + '.tone', function (t) { return 'secTone:' + i + ':' + t; }, extras);
 
       // locked chrome, from the REGISTRY: the eyebrow label and the
@@ -672,7 +706,7 @@
           (function (cp, ac, cd) { dock.appendChild(dockBtn('<span class="cc-swatch"></span>', 'Change colour', '', function () { openColorPop(this, cp, ac, cd.color); })); })(cpre, accent, cdata);
           var sep = document.createElement('span'); sep.className = 'cc-sep'; dock.appendChild(sep);
           (function (cp, ac, cd, jj) { dock.appendChild(dockBtn(csvg(CICON.flag), cd.ribbon ? 'Edit ribbon' : 'Add a ribbon', cd.ribbon ? 'on' : '', function () { openRibbonPop(this, cp, ac, cd.ribbon == null ? null : cd.ribbon, card, jj); })); })(cpre, accent, cdata, j);
-          (function (jj) { dock.appendChild(dockBtn(csvg(CICON.trash), 'Delete entire category', 'danger', function () { closePop(); A('rm:' + prefix + 'categories.' + jj); })); })(j);
+          (function (jj) { var tb = dockBtn(csvg(CICON.trash), 'Delete entire category', 'danger', null); armDelete(tb, function () { closePop(); A('rm:' + prefix + 'categories.' + jj); }); dock.appendChild(tb); })(j);
           card.appendChild(dock);
 
           // pills → open the item editor; "+ item"
@@ -746,7 +780,7 @@
               var lc = document.createElement('span'); lc.className = 'pe-chip'; lc.appendChild(document.createTextNode('link: '));
               var lce = document.createElement('span'); lce.className = 'ce'; lce.setAttribute('contenteditable', 'true'); lce.textContent = idata.cta; lce.setAttribute('data-ph', (R('catalog.categories[].items[].cta').blank) || '#');
               (function (p, el) { el.addEventListener('blur', function () { P(p, el); }); })(ipre + 'cta', lce); lc.appendChild(lce);
-              (function (p) { var lrm = document.createElement('button'); lrm.className = 'pe-tag-rm'; lrm.style.opacity = '1'; lrm.textContent = '×'; lrm.title = 'Remove link'; lrm.onclick = function () { A('rm:' + p); }; lc.appendChild(lrm); })(ipre + 'cta');
+              (function (p) { var lrm = document.createElement('button'); lrm.className = 'pe-tag-rm'; lrm.style.opacity = '1'; lrm.textContent = '×'; lrm.title = 'Remove link'; armDelete(lrm, function () { A('rm:' + p); }); lc.appendChild(lrm); })(ipre + 'cta');
               cta.parentNode.insertBefore(lc, cta.nextSibling);
             } else { cta.parentNode.insertBefore(addBtn('add:' + ipre + 'cta', '+ link', true), cta.nextSibling); }
           }
@@ -756,7 +790,7 @@
           adds.appendChild(addBtn('push:' + ipre + 'groups', '+ group', true));
           if (!co) adds.appendChild(addBtn('add:' + ipre + 'callout', '+ callout', true));
           if (!noEl) adds.appendChild(addBtn('add:' + ipre + 'notes', '+ notes', true));
-          (function (dj2, dk2) { var ri = document.createElement('button'); ri.className = 'pe-removeitem'; ri.textContent = 'Remove item'; ri.onclick = function () { A('rm:' + prefix + 'categories.' + dj2 + '.items.' + dk2); }; adds.appendChild(ri); })(dj, dk);
+          (function (dj2, dk2) { var ri = document.createElement('button'); ri.className = 'pe-removeitem'; ri.textContent = 'Remove item'; armDelete(ri, function () { A('rm:' + prefix + 'categories.' + dj2 + '.items.' + dk2); }); adds.appendChild(ri); })(dj, dk);
           det.appendChild(adds);
         });
 

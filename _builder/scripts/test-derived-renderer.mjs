@@ -195,6 +195,15 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(/·\s*$/.test(cntTxt.trim() + ' ') || cntTxt.includes('·'), 'count keeps the canon "·" before the note chip');
   ok(dN.querySelector('.cat-card-count').textContent.replace(pn.textContent, '').indexOf('priced') === -1, 'note text appears once (only in the chip)');
   ok(!cat.querySelector('.cat-card > .pe-remove'), 'no corner × on the card (moved into the dock)');
+  // two-click delete: clicking a × does NOT delete — it arms an in-place confirm
+  const someRm = d.querySelector('.pe-remove, .pe-tag-rm, .pe-removeitem, .cc-btn.danger');
+  someRm.click();
+  const conf = d.querySelector('.pe-del-confirm');
+  ok(conf, 'first click on a delete ✕ arms a confirm (does not delete)');
+  ok(conf.querySelector('.pe-del-yes') && conf.querySelector('.pe-del-no'), 'confirm has "✓ Delete" + undo (split)');
+  ok(someRm.classList.contains('pe-del-armed'), 'the ✕ is hidden while armed');
+  conf.querySelector('.pe-del-no').click();
+  ok(!d.querySelector('.pe-del-confirm'), 'undo backs out (no delete)');
   // pills: clickable openers + the "+ item" add pill
   ok(cat.querySelectorAll('.cat-pill:not(.cat-add-pill)').length === 2, 'two item pills');
   ok(cat.querySelector('.cat-pill.cat-add-pill'), '"+ item" add pill in the pills row');

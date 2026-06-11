@@ -180,6 +180,22 @@ const AFFORDANCE = `
   .cc-status.st-limited{ background:var(--st-limited-bg,#fef9c3); color:var(--st-limited-fg,#854d0e); }
   .cc-status.st-retired{ background:var(--st-retired-bg,#f3f4f6); color:var(--st-retired-fg,#4b5563); }
   .cat-add-pill{ border-style:dashed !important; color:rgba(0,0,0,.4) !important; background:transparent !important; }
+
+  /* ════ two-click delete confirm (mockup Direction 2) ════ The ✕ trigger fades
+     out and a red "✓ Delete" + grey undo pop in over it; a 2nd click commits,
+     undo / outside-click / Escape backs out. Routed via armDelete for every
+     delete in the kit. */
+  .pe-del-armed{ opacity:0 !important; pointer-events:none; }
+  .pe-del-confirm{ position:fixed; z-index:1400; display:inline-flex; align-items:center; gap:3px; }
+  .pe-del-confirm button{ border:0; cursor:pointer; border-radius:7px; height:24px; padding:0 9px; font-family:'JetBrains Mono',monospace;
+    font-size:9px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; display:inline-flex; align-items:center; gap:5px;
+    animation:pe-del-pop .18s cubic-bezier(.2,1.3,.4,1) backwards; }
+  .pe-del-confirm svg{ width:12px; height:12px; }
+  .pe-del-yes{ background:#c0392b; color:#fff; box-shadow:0 3px 10px rgba(192,57,43,.32); }
+  .pe-del-yes:hover{ background:#a5281b; }
+  .pe-del-no{ background:rgba(20,18,14,.08); color:#8a8175; animation-delay:.04s; }
+  .pe-del-no:hover{ background:rgba(20,18,14,.14); color:#1c1a17; }
+  @keyframes pe-del-pop{ from{ opacity:0; transform:scale(.5); } to{ opacity:1; transform:none; } }
   /* category note: a dashed chip INLINE in the count line (canon position —
      "N items · note") — "+ note" to add, editable text + corner × when present */
   .pe-note-chip{ display:inline-flex; align-items:center; margin-left:6px; padding:1px 7px; border-radius:4px; vertical-align:middle;
