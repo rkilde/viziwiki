@@ -12,19 +12,19 @@
    ════════════════════════════════════════════════════════════════════ */
 
 .spec{
-  --spec-ink:     var(--foreground, #0a0a0a);                                          /* text */
-  --spec-surface: var(--card, #fff);                                                   /* card bg */
-  --spec-line:    color-mix(in oklab, var(--foreground, #0a0a0a) 12%, transparent);    /* borders */
-  --spec-divider: color-mix(in oklab, var(--foreground, #0a0a0a) 8%,  transparent);    /* the grid gaps */
+  --spec-ink:     var(--wiki-text-color, #0a0a0a);                                          /* text */
+  --spec-surface: var(--wiki-surface-bg, #fff);                                                   /* card bg */
+  --spec-line:    color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 12%, transparent);    /* borders */
+  --spec-divider: color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 8%,  transparent);    /* the grid gaps */
 }
 
 /* INVERTED look on the dark "special" band (the spec sheet's signature):
    flip the card tokens to dark cards + light text. One place → all pages. */
 .spec[data-tone="special"]{
-  --spec-ink:     var(--card, #fff);
-  --spec-surface: color-mix(in oklab, var(--foreground, #0a0a0a) 93%, var(--card, #fff));
-  --spec-line:    color-mix(in oklab, var(--card, #fff) 12%, transparent);
-  --spec-divider: color-mix(in oklab, var(--card, #fff) 10%, transparent);
+  --spec-ink:     var(--wiki-surface-bg, #fff);
+  --spec-surface: color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 93%, var(--wiki-surface-bg, #fff));
+  --spec-line:    color-mix(in oklab, var(--wiki-surface-bg, #fff) 12%, transparent);
+  --spec-divider: color-mix(in oklab, var(--wiki-surface-bg, #fff) 10%, transparent);
 }
 
 /* required device sub-line (name · model number) */

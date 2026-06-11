@@ -17,12 +17,12 @@
 
 /* ── skin-derived chrome tokens (defined once; a skin can override) ──── */
 .config{
-  --cfg-ink:     var(--foreground, #0a0a0a);                                                  /* primary text  */
-  --cfg-surface: var(--card, #fff);                                                           /* chart box bg  */
-  --cfg-track:   color-mix(in oklab, var(--foreground, #0a0a0a) 4%, var(--card, #fff));       /* empty track   */
-  --cfg-bar:     var(--wiki-accent, color-mix(in oklab, var(--foreground, #0a0a0a) 22%, var(--card, #fff))); /* the fill — emphasis */
+  --cfg-ink:     var(--wiki-text-color, #0a0a0a);                                                  /* primary text  */
+  --cfg-surface: var(--wiki-surface-bg, #fff);                                                           /* chart box bg  */
+  --cfg-track:   color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 4%, var(--wiki-surface-bg, #fff));       /* empty track   */
+  --cfg-bar:     var(--wiki-accent-on-light, color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 22%, var(--wiki-surface-bg, #fff))); /* the fill — emphasis */
   --cfg-bar-ink: color-mix(in oklab, var(--cfg-ink) 72%, transparent);                        /* text on the bar */
-  --cfg-line:    var(--divider, color-mix(in oklab, var(--foreground, #0a0a0a) 10%, transparent)); /* hairlines */
+  --cfg-line:    var(--wiki-divider-color, color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 10%, transparent)); /* hairlines */
 }
 
 /* ── intro prose ────────────────────────────────────────────────────── */

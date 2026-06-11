@@ -22,28 +22,28 @@
    ════════════════════════════════════════════════════════════════════ */
 
 .lane-wrap{
-  --lane-ink:       var(--foreground, #0a0a0a);
-  --lane-bg:        color-mix(in oklab, var(--foreground, #0a0a0a) 2%,  var(--card, #fff));
-  --lane-line:      color-mix(in oklab, var(--foreground, #0a0a0a) 12%, transparent);
-  --lane-line-soft: color-mix(in oklab, var(--foreground, #0a0a0a) 6%,  transparent);
+  --lane-ink:       var(--wiki-text-color, #0a0a0a);
+  --lane-bg:        color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 2%,  var(--wiki-surface-bg, #fff));
+  --lane-line:      color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 12%, transparent);
+  --lane-line-soft: color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 6%,  transparent);
   /* support palette — semantic defaults; a skin may pin any of them */
   --lane-full-bg:#d1fae5;    --lane-full-bd:#a7f3d0;    --lane-full-dot:#6ee7b7;
   --lane-partial-bg:#fef3c7; --lane-partial-bd:#fde68a; --lane-partial-dot:#fde68a;
-  --lane-dropped-bg: color-mix(in oklab, var(--foreground, #0a0a0a) 3.5%, var(--card, #fff));
-  --lane-dropped-bd: color-mix(in oklab, var(--foreground, #0a0a0a) 15%, transparent);
-  --lane-dropped-dot:color-mix(in oklab, var(--foreground, #0a0a0a) 12%, transparent);
+  --lane-dropped-bg: color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 3.5%, var(--wiki-surface-bg, #fff));
+  --lane-dropped-bd: color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 15%, transparent);
+  --lane-dropped-dot:color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 12%, transparent);
   --lane-limited-dot:#f59e0b; --lane-final-dot:#fbbf24;
   /* security patch — a post-EOL maintenance update, shown after the drop */
   --lane-security-bg:#dbeafe; --lane-security-bd:#bfdbfe; --lane-security-dot:#3b82f6;
   /* badges */
-  --lane-badge-ship-bg:    color-mix(in oklab, var(--foreground, #0a0a0a) 7%, transparent);
-  --lane-badge-ship-fg:    color-mix(in oklab, var(--foreground, #0a0a0a) 50%, transparent);
+  --lane-badge-ship-bg:    color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 7%, transparent);
+  --lane-badge-ship-fg:    color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 50%, transparent);
   --lane-badge-paid-bg:#fbbf24;    --lane-badge-paid-fg:#78350f;
   --lane-badge-limited-bg:#f59e0b; --lane-badge-limited-fg:#78350f;
-  --lane-badge-final-bg:   var(--foreground, #0a0a0a); --lane-badge-final-fg: var(--card, #fff);
+  --lane-badge-final-bg:   var(--wiki-text-color, #0a0a0a); --lane-badge-final-fg: var(--wiki-surface-bg, #fff);
   --lane-badge-dropped-bg: transparent;
-  --lane-badge-dropped-bd: color-mix(in oklab, var(--foreground, #0a0a0a) 12%, transparent);
-  --lane-badge-dropped-fg: color-mix(in oklab, var(--foreground, #0a0a0a) 30%, transparent);
+  --lane-badge-dropped-bd: color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 12%, transparent);
+  --lane-badge-dropped-fg: color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 30%, transparent);
   --lane-badge-security-bg:#3b82f6; --lane-badge-security-fg:#fff;
 }
 

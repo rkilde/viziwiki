@@ -17,14 +17,14 @@
 
 /* ── skin-derived chrome tokens (defined once; a skin can override) ──── */
 .timeline{
-  --tl-ink:     var(--foreground, #0a0a0a);                                                   /* text */
-  --tl-surface: var(--card, #fff);                                                            /* card + modal bg */
-  --tl-accent:  var(--wiki-accent, var(--foreground, #0a0a0a));                               /* left card edge, dot, modal bar — the wiki's brand accent */
-  --tl-line:    color-mix(in oklab, var(--foreground, #0a0a0a) 8%, transparent);              /* hairlines / borders / spine */
-  --tl-band:    color-mix(in oklab, var(--foreground, #0a0a0a) 2.5%, transparent);            /* alternating year panel */
-  --tl-chip:    color-mix(in oklab, var(--foreground, #0a0a0a) 9%, var(--card, #fff));        /* gap chip bg */
-  --tl-footer:  color-mix(in oklab, var(--foreground, #0a0a0a) 2%, var(--card, #fff));        /* modal footer bg */
-  --tl-dim:     color-mix(in oklab, var(--foreground, #0a0a0a) 45%, transparent);             /* modal overlay */
+  --tl-ink:     var(--wiki-text-color, #0a0a0a);                                                   /* text */
+  --tl-surface: var(--wiki-surface-bg, #fff);                                                            /* card + modal bg */
+  --tl-accent:  var(--wiki-accent-on-light, var(--wiki-text-color, #0a0a0a));                               /* left card edge, dot, modal bar — the wiki's brand accent */
+  --tl-line:    color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 8%, transparent);              /* hairlines / borders / spine */
+  --tl-band:    color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 2.5%, transparent);            /* alternating year panel */
+  --tl-chip:    color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 9%, var(--wiki-surface-bg, #fff));        /* gap chip bg */
+  --tl-footer:  color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 2%, var(--wiki-surface-bg, #fff));        /* modal footer bg */
+  --tl-dim:     color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 45%, transparent);             /* modal overlay */
 }
 
 .tl-hdr{max-width:1320px;margin:0 auto;padding:0 48px 32px;}

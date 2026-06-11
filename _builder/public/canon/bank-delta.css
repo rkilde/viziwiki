@@ -22,16 +22,16 @@
    ════════════════════════════════════════════════════════════════════ */
 
 .delta{
-  --gd-ink:        var(--foreground, #0a0a0a);
-  --gd-surface:    var(--card, #fff);
-  --gd-line:       color-mix(in oklab, var(--foreground, #0a0a0a) 10%, transparent);
-  --gd-line-soft:  color-mix(in oklab, var(--foreground, #0a0a0a) 7%, transparent);
-  --gd-current-bg: var(--foreground, #0a0a0a);                                   /* the dark CURRENT header */
-  --gd-current-ink:var(--card, #fff);
-  --gd-prev-bg:    color-mix(in oklab, var(--foreground, #0a0a0a) 4%,  var(--card, #fff));
-  --gd-label-bg:   color-mix(in oklab, var(--foreground, #0a0a0a) 9%,  var(--card, #fff));
-  --gd-sec-bg:     color-mix(in oklab, var(--foreground, #0a0a0a) 2%,  var(--card, #fff));
-  --gd-old-bg:     color-mix(in oklab, var(--foreground, #0a0a0a) 2.5%, transparent);
+  --gd-ink:        var(--wiki-text-color, #0a0a0a);
+  --gd-surface:    var(--wiki-surface-bg, #fff);
+  --gd-line:       color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 10%, transparent);
+  --gd-line-soft:  color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 7%, transparent);
+  --gd-current-bg: var(--wiki-text-color, #0a0a0a);                                   /* the dark CURRENT header */
+  --gd-current-ink:var(--wiki-surface-bg, #fff);
+  --gd-prev-bg:    color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 4%,  var(--wiki-surface-bg, #fff));
+  --gd-label-bg:   color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 9%,  var(--wiki-surface-bg, #fff));
+  --gd-sec-bg:     color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 2%,  var(--wiki-surface-bg, #fff));
+  --gd-old-bg:     color-mix(in oklab, var(--wiki-text-color, #0a0a0a) 2.5%, transparent);
   /* chips — semantic defaults; a skin may pin any of them */
   --gd-better-bg:#dcfce7;  --gd-better-bd:#bbf7d0;  --gd-better-fg:#15803d;
   --gd-feature-bg:#eff6ff; --gd-feature-bd:#bfdbfe; --gd-feature-fg:#1d4ed8;
