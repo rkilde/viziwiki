@@ -258,25 +258,31 @@ components:
     section: timeline-section
     locked: { eyebrow: "Timeline", icon: move-horizontal, full_bleed: true }
     fields:
-      heading:   { type: text, help: "Optional H2 (omit for eyebrow-only)" }
+      heading:   { type: text, blank: "Add a heading for this timeline", help: "Optional H2 (omit for eyebrow-only)" }
       tone:      { type: "enum[a,b,special]", default: b }
       visual:  { type: text, locked: true, default: timeline, help: "The slot's visual type — registry hosts constrain it (admin)" }
       card_type: { type: "enum[station]", default: station }
       events:    { type: "list<event>", required: true, min: 2 }
     subtypes:
       event:
-        month:   { type: "enum[Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec]", required: true }
-        day:     { type: text }
-        year:    { type: text, required: true }
-        tag:     { type: text }
-        title:   { type: text, required: true, help: "Card headline + modal title" }
-        preview: { type: text, help: "One-line summary on the card face" }
-        body:    { type: richtext, help: "Full detail in the expandable card" }
+        # month + year DRIVE the layout (date-positioned), so they default to real,
+        # spread-out values; the text fields (tag/title/preview/body) seed as
+        # placeholders the contributor types over.
+        month:   { type: "enum[Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec]", required: true, blank: "Jan" }
+        day:     { type: text, blank: "1" }
+        year:    { type: text, required: true, blank: "2025" }
+        tag:     { type: text, blank: "Add a tag" }
+        title:   { type: text, required: true, blank: "Name this event", help: "Card headline + modal title" }
+        preview: { type: text, blank: "Add a one-line summary of what happened.", help: "One-line summary on the card face" }
+        body:    { type: richtext, blank: "Write the full story for the expandable card…", help: "Full detail in the expandable card" }
     derived: ["scroll hint, year bands, positions, gap chips — all from the dates"]
     seed:
       events:
-        - { month: Jan, year: "2020", tag: "Launch", title: "First release.", preview: "It began here." }
-        - { month: Jan, year: "2023", tag: "Update", title: "Major update.",  preview: "Then this happened." }
+        - { month: Jan, year: "2021", tag: "Add a tag", title: "Name this event", preview: "Add a one-line summary of what happened." }
+        - { month: Apr, year: "2022", tag: "Add a tag", title: "Name this event", preview: "Add a one-line summary of what happened." }
+        - { month: Aug, year: "2023", tag: "Add a tag", title: "Name this event", preview: "Add a one-line summary of what happened." }
+        - { month: Feb, year: "2024", tag: "Add a tag", title: "Name this event", preview: "Add a one-line summary of what happened." }
+        - { month: Nov, year: "2025", tag: "Add a tag", title: "Name this event", preview: "Add a one-line summary of what happened." }
     min: "≥2 events, each with month + year + title"
 
   # ---- CATALOG — the data-driven list + expandable cards ---------------

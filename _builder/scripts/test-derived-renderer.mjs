@@ -336,7 +336,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   const tl = d.querySelector('section.wiki-section.timeline');
   ok(tl, 'timeline section rendered via its canonical include chain');
   ok(tl.querySelector('.tl-outer'), 'timeline visual rendered through the dispatcher');
-  ok(tl.querySelectorAll('.itl-station').length === 2, 'two station cards rendered from the seed events');
+  ok(tl.querySelectorAll('.itl-station').length === tlSeed.events.length, 'one station card per seed event');
   ok(tl.querySelector('.wiki-section-eyebrow.pe-canon .pe-lock'), 'timeline eyebrow locked (from the visuals registry)');
   ok([...tl.querySelectorAll('.pe-chip')].some((c) => c.textContent === 'remove section'), 'remove-section chip present');
   ok(tl.querySelectorAll('.pe-tonebtn').length === 3, 'timeline tone buttons from grammar enum');

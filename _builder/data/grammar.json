@@ -835,6 +835,7 @@
       "fields": {
         "heading": {
           "type": "text",
+          "blank": "Add a heading for this timeline",
           "help": "Optional H2 (omit for eyebrow-only)"
         },
         "tone": {
@@ -861,29 +862,36 @@
         "event": {
           "month": {
             "type": "enum[Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec]",
-            "required": true
+            "required": true,
+            "blank": "Jan"
           },
           "day": {
-            "type": "text"
+            "type": "text",
+            "blank": "1"
           },
           "year": {
             "type": "text",
-            "required": true
+            "required": true,
+            "blank": "2025"
           },
           "tag": {
-            "type": "text"
+            "type": "text",
+            "blank": "Add a tag"
           },
           "title": {
             "type": "text",
             "required": true,
+            "blank": "Name this event",
             "help": "Card headline + modal title"
           },
           "preview": {
             "type": "text",
+            "blank": "Add a one-line summary of what happened.",
             "help": "One-line summary on the card face"
           },
           "body": {
             "type": "richtext",
+            "blank": "Write the full story for the expandable card…",
             "help": "Full detail in the expandable card"
           }
         }
@@ -895,17 +903,38 @@
         "events": [
           {
             "month": "Jan",
-            "year": "2020",
-            "tag": "Launch",
-            "title": "First release.",
-            "preview": "It began here."
+            "year": "2021",
+            "tag": "Add a tag",
+            "title": "Name this event",
+            "preview": "Add a one-line summary of what happened."
           },
           {
-            "month": "Jan",
+            "month": "Apr",
+            "year": "2022",
+            "tag": "Add a tag",
+            "title": "Name this event",
+            "preview": "Add a one-line summary of what happened."
+          },
+          {
+            "month": "Aug",
             "year": "2023",
-            "tag": "Update",
-            "title": "Major update.",
-            "preview": "Then this happened."
+            "tag": "Add a tag",
+            "title": "Name this event",
+            "preview": "Add a one-line summary of what happened."
+          },
+          {
+            "month": "Feb",
+            "year": "2024",
+            "tag": "Add a tag",
+            "title": "Name this event",
+            "preview": "Add a one-line summary of what happened."
+          },
+          {
+            "month": "Nov",
+            "year": "2025",
+            "tag": "Add a tag",
+            "title": "Name this event",
+            "preview": "Add a one-line summary of what happened."
           }
         ]
       },

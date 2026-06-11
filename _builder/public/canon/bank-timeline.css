@@ -39,7 +39,7 @@
 .tl-yr{position:absolute;bottom:0;transform:translateX(-50%);}
 .tl-yr span{font-family:"JetBrains Mono",monospace;font-size:8px;text-transform:uppercase;letter-spacing:.14em;color:color-mix(in oklab,var(--tl-ink) 28%,transparent);}
 .itl-station{position:absolute;top:0;}
-.itl-event-top{width:210px;margin:0 auto;height:340px;display:flex;flex-direction:column;justify-content:flex-start;padding-top:20px;overflow:visible;position:relative;}
+.itl-event-top{width:210px;margin:0 auto;height:340px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-start;padding-top:20px;overflow:visible;position:relative;}
 .sc-float-date{padding:0 0 8px 0;display:flex;align-items:baseline;gap:6px;}
 .sc-float-month,.sc-float-day,.sc-float-year{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:22px;font-weight:600;letter-spacing:-0.02em;color:color-mix(in oklab,var(--tl-ink) 25%,transparent);line-height:1;}
 .sc-float-day{font-weight:700;}
