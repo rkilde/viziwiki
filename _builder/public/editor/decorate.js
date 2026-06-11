@@ -126,6 +126,8 @@
     var b = document.createElement('button');
     b.className = mini ? 'pe-mini-add' : 'pe-add';
     b.textContent = label;
+    // jump-addressable for list-count readiness items ("at least one …")
+    var pm = /^push:(.+)$/.exec(action); if (pm) b.setAttribute('data-pe-addpath', pm[1]);
     b.onclick = function () { A(action); };
     return b;
   }
@@ -203,6 +205,7 @@
       var span = document.createElement('span');
       span.className = root.className + ' ce';
       span.setAttribute('contenteditable', 'true');
+      span.setAttribute('data-pe-path', path);   // jump-addressable (readiness markers)
       span.textContent = root.getAttribute('placeholder') || '';
       if (ph != null) span.setAttribute('data-ph', ph);
       span.addEventListener('blur', function () { P(path, span); });
@@ -212,6 +215,7 @@
     var ce = document.createElement('span');
     ce.className = 'ce';
     ce.setAttribute('contenteditable', 'true');
+    ce.setAttribute('data-pe-path', path);   // jump-addressable (readiness markers)
     if (ph != null) ce.setAttribute('data-ph', ph);
     var moved = [];
     [].slice.call(root.childNodes).forEach(function (n) {
@@ -977,6 +981,186 @@
         }
       }
     });
+
+    // ════════════════════════════════════════════════════════════════════
+    // READINESS MARKERS — a left-margin "is this section shippable yet?"
+    // marker per section, DERIVED ENTIRELY FROM POLICY (the flattened
+    // grammar). There is NO per-section rule list here: every requirement is
+    // read from `required:` / list `min:` in grammar, and "done" = a required
+    // field's value differs from its grammar placeholder. Change a `required`
+    // in _data/grammar.yml — or add a whole new bank — and these markers
+    // follow with zero edits here (standing rule #5). Jumping + the red flash
+    // are canvas interaction, owned here (the layout contract).
+    // ════════════════════════════════════════════════════════════════════
+    (function readiness() {
+      var FIELDS = (window.__PE_POLICY || {}).fields || {};
+      var LOCKED = (window.__PE_POLICY || {}).locked || {};
+      var rdoc = getDoc(); if (!rdoc || !FIELDS) return;
+      var PRIM = { text: 1, richtext: 1, url: 1, number: 1, color: 1, bool: 1 };
+      var TRI = csvg('<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>');
+      var CHK = csvg('<polyline points="20 6 9 17 4 12"/>');
+      var ne = function (v) { return v != null && String(v).replace(/<[^>]*>/g, '').trim() !== ''; };
+      var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); };
+      var human = function (s) { s = String(s == null ? '' : s).replace(/_/g, ' '); return s.charAt(0).toUpperCase() + s.slice(1); };
+      var findEl = function (p) { return qs('[data-pe-path="' + p + '"]'); };
+      var strip = function (v) { return String(v).replace(/<[^>]*>/g, '').trim(); };
+
+      // listName(lastSeg) → element subtype `of` (derived) for instance labels
+      function ofMap(prefix) {
+        var m = {};
+        for (var k in FIELDS) { if (k.indexOf(prefix + '.') !== 0) continue; var r = FIELDS[k];
+          if (r.kind === 'list') m[k.split('.').pop().replace('[]', '')] = r.of; }
+        return m;
+      }
+      // expand a relative policy path (with [] list markers) against the live
+      // data → concrete leaf instances; prunes absent optional objects/lists so
+      // a requirement is raised only for content that actually exists.
+      function walk(tokens, node, concrete, out) {
+        if (!tokens.length) return;
+        var tok = tokens[0], rest = tokens.slice(1);
+        if (tok.slice(-2) === '[]') {
+          var nm = tok.slice(0, -2), arr = node && node[nm];
+          if (!Array.isArray(arr)) return;
+          arr.forEach(function (it, i) { walk(rest, it, concrete.concat([nm, i]), out); });
+          return;
+        }
+        if (node == null) return;
+        if (!rest.length) { out.push({ concrete: concrete.concat([tok]), node: node, leaf: tok }); return; }
+        if (node[tok] == null) return;
+        walk(rest, node[tok], concrete.concat([tok]), out);
+      }
+      // met for a scalar — prefer the LIVE canvas value (so typing updates the
+      // marker), else the doc; "met" = present AND ≠ its grammar placeholder.
+      function metScalar(docPath, val, blank) {
+        var el = findEl(docPath);
+        if (el) { var t = strip(el.textContent); var ph = (el.getAttribute('data-ph') || '').trim(); return t !== '' && t !== ph; }
+        return ne(val) && strip(val) !== String(blank == null ? '' : blank).trim();
+      }
+      function scalarLabel(concrete) {
+        var li = -1; concrete.forEach(function (s, ix) { if (typeof s === 'number') li = ix; });
+        return human(concrete.slice(li + 1).join(' '));
+      }
+      function listLabel(rel, r, need) {
+        var listName = rel.split('.').pop().replace('[]', '');
+        var real = r.of && !PRIM[r.of];
+        var sing = real ? r.of.replace(/_/g, ' ') : listName.replace(/s$/, '');
+        var plur = real ? sing + 's' : listName;
+        return need <= 1 ? 'At least one ' + sing : 'At least ' + need + ' ' + plur;
+      }
+      // an instance's identifying value = its first required text field (derived)
+      function identTitle(prefix, concretePrefix, instData) {
+        if (!instData) return '';
+        var rel = ''; concretePrefix.forEach(function (seg) { rel += (typeof seg === 'number') ? '[]' : ((rel ? '.' : '') + seg); });
+        var base = prefix + '.' + rel + '.', best = null;
+        Object.keys(FIELDS).forEach(function (k) {
+          if (best || k.indexOf(base) !== 0) return;
+          var tail = k.slice(base.length); if (tail.indexOf('.') >= 0 || tail.indexOf('[]') >= 0) return;
+          var r = FIELDS[k]; if (!r.required || (r.kind !== 'text' && r.kind !== 'richtext')) return;
+          var v = instData[tail]; if (ne(v) && strip(v) !== String(r.blank == null ? '' : r.blank).trim()) best = strip(v);
+        });
+        return best ? (best.length > 26 ? best.slice(0, 24) + '…' : best) : '';
+      }
+
+      function groupsFor(prefix, data, dataPrefix) {
+        var oMap = ofMap(prefix), groups = [], byKey = {};
+        var lock = LOCKED[prefix]; var secLabel = (lock && lock.eyebrow) ? lock.eyebrow : 'Section';
+        function group(key, label) { if (!byKey[key]) { byKey[key] = { key: key, label: label, items: [] }; groups.push(byKey[key]); } return byKey[key]; }
+        Object.keys(FIELDS).forEach(function (key) {
+          if (key.indexOf(prefix + '.') !== 0) return;
+          var r = FIELDS[key]; if (!r.required) return;
+          var rel = key.slice(prefix.length + 1), insts = [];
+          walk(rel.split('.'), data, [], insts);
+          insts.forEach(function (inst) {
+            var concrete = inst.concrete, val = inst.node[inst.leaf];
+            var docPath = dataPrefix + concrete.join('.');
+            var li = -1; concrete.forEach(function (s, ix) { if (typeof s === 'number') li = ix; });
+            var gkey = li < 0 ? '' : concrete.slice(0, li + 1).join('.'), glabel = secLabel;
+            if (li >= 0) {
+              var parts = [];
+              for (var p = 0; p <= li; p++) if (typeof concrete[p] === 'number') { var ln = concrete[p - 1]; parts.push(human(oMap[ln] || ln) + ' ' + (concrete[p] + 1)); }
+              glabel = parts.join(' › ');
+              var instData = concrete.slice(0, li + 1).reduce(function (o, seg) { return o == null ? o : o[seg]; }, data);
+              var t = identTitle(prefix, concrete.slice(0, li + 1), instData);
+              if (t) glabel += ' · “' + t + '”';
+            }
+            var g = group(gkey, glabel);
+            if (r.kind === 'list') {
+              var need = r.min != null ? r.min : 1, arr = Array.isArray(val) ? val : [];
+              g.items.push({ label: listLabel(rel, r, need), met: arr.length >= need, jump: docPath, addpath: docPath });
+            } else {
+              g.items.push({ label: scalarLabel(concrete), met: metScalar(docPath, val, r.blank), jump: docPath });
+            }
+          });
+        });
+        return groups;
+      }
+
+      function closeAllMk() { qsa('.mk.open').forEach(function (m) { m.classList.remove('open'); }); }
+      function flash(el) { el.classList.remove('field-flash'); void el.offsetWidth; el.classList.add('field-flash'); setTimeout(function () { el.classList.remove('field-flash'); }, 1600); }
+      function jumpTo(it) {
+        var el = findEl(it.jump);
+        if (!el && it.addpath) el = qs('[data-pe-addpath="' + it.addpath + '"]');
+        if (!el) { var base = it.jump.replace(/\.[^.]+$/, ''); el = qs('[data-pe-path^="' + base + '"]');
+          if (el) el = el.closest('.itl-station,.catcard,.cfg-row,.sc,.seg,.wiki-section,section') || el; }
+        if (!el) return;
+        try { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+        flash(el);
+        if (el.hasAttribute && el.hasAttribute('contenteditable')) setTimeout(function () { try { el.focus(); } catch (e) {} }, 300);
+      }
+      function recountPage() { var n = qsa('.mk.todo').length; try { if (window.parent.__peReadiness) window.parent.__peReadiness({ incomplete: n, ready: n === 0 }); } catch (e) {} }
+
+      function mountMarker(host) {
+        var groups = groupsFor(host.prefix, host.data, host.dataPrefix), flat = [];
+        groups.forEach(function (g) { g.items.forEach(function (i) { flat.push(i); }); });
+        var left = flat.filter(function (i) { return !i.met; }).length, done = left === 0;
+        var mk = document.createElement('div'); mk.className = 'mk ' + (done ? 'done' : 'todo');
+        var btn = '<button class="mk-btn" type="button" title="' + (done ? 'Section ready' : left + ' required left') + '"><span class="mk-tri">' + (done ? CHK : TRI) + '</span>' + (done ? '' : '<span class="mk-count">' + left + '</span>') + '</button>';
+        var head = '<div class="mk-panel-head"><span class="pi">' + (done ? CHK : TRI) + '</span><span class="pt">' + (done ? 'Section ready' : 'Needs attention') + '</span><span class="pn">' + (done ? 'complete' : left + ' required') + '</span></div>';
+        var body = done
+          ? '<div class="mk-allgood"><span class="pi">' + CHK + '</span> Everything required is in place.</div>'
+          : groups.map(function (g) {
+              if (g.items.every(function (i) { return i.met; })) return '';
+              return '<div class="mk-cat"><div class="mk-cat-label">' + esc(g.label) + '</div>' + g.items.map(function (it, ix) {
+                return '<button class="mk-item ' + (it.met ? 'met' : '') + '" type="button" data-gi="' + groups.indexOf(g) + '" data-ii="' + ix + '"><span class="box"></span><span class="tx">' + esc(it.label) + '</span></button>';
+              }).join('') + '</div>';
+            }).join('');
+        mk.innerHTML = btn + '<div class="mk-panel">' + head + body + '</div>';
+        mk.querySelector('.mk-btn').addEventListener('click', function (e) { e.stopPropagation(); var open = mk.classList.contains('open'); closeAllMk(); if (!open) mk.classList.add('open'); });
+        qsa('.mk-item', mk).forEach(function (b) {
+          var g = groups[+b.getAttribute('data-gi')], it = g.items[+b.getAttribute('data-ii')];
+          if (it.met) return;
+          b.addEventListener('click', function (e) { e.stopPropagation(); closeAllMk(); jumpTo(it); });
+        });
+        var inner = host.inner || host.el; inner.classList.add('pe-mkhost');
+        var prev = inner.querySelector(':scope > .mk'); if (prev) prev.remove();
+        inner.insertBefore(mk, inner.firstChild);
+        host._mk = mk;
+      }
+
+      // hosts: hero + overview + every body section, each with its policy
+      // prefix and the doc slice that holds its values
+      var hosts = [];
+      var heroEl = qs('section.wiki-hero');
+      if (heroEl && rdoc.hero) hosts.push({ el: heroEl, inner: qs('.wiki-hero-inner', heroEl), prefix: 'hero', data: rdoc.hero, dataPrefix: 'hero.' });
+      var ovEl = qs('section[data-section="overview"]');
+      if (ovEl && rdoc.overview) hosts.push({ el: ovEl, inner: qs('.wiki-section-inner', ovEl), prefix: 'overview', data: rdoc.overview, dataPrefix: 'overview.' });
+      (rdoc.sections || []).forEach(function (s, i) {
+        var el = bodySecs[i]; if (!el) return; var t = sectionTypeOf(el); if (!t) return;
+        hosts.push({ el: el, inner: qs('.wiki-section-inner', el), prefix: t, data: (s.data || {}), dataPrefix: 'sections.' + i + '.data.' });
+      });
+      hosts.forEach(function (host) {
+        mountMarker(host);
+        (host.inner || host.el).addEventListener('input', function (e) {
+          if (!e.target || !e.target.getAttribute || e.target.getAttribute('data-pe-path') == null) return;
+          var wasOpen = host._mk && host._mk.classList.contains('open');
+          mountMarker(host); if (wasOpen && host._mk) host._mk.classList.add('open');
+          recountPage();
+        });
+      });
+      document.addEventListener('mousedown', function (e) { if (!e.target.closest || !e.target.closest('.mk')) closeAllMk(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAllMk(); });
+      recountPage();
+    })();
 
     // add-section seams (dotted circle +): BELOW the overview (insert at 0)
     // and after every body section (insert at i+1). Never above the hero or

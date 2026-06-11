@@ -29,6 +29,7 @@ export function buildPolicy(grammar) {
       const path = prefix + name;
       fields[path] = {
         kind: t.kind,
+        of: t.of ?? null,          // list element subtype name (e.g. "category") — for derived labelling
         required: !!spec.required,
         locked: spec.locked === true,
         default: spec.default ?? null,

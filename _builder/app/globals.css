@@ -137,6 +137,12 @@ button{ font-family:inherit; }
 /* ── LIQUID GLASS floating chrome (top-right). This frosted-pill treatment is the
    standing UI design language for the builder going forward. ── */
 #pe-chrome{ position:fixed; top:16px; right:16px; z-index:1002; display:flex; gap:8px; align-items:center; }
+#pe-chrome .pe-pgstat{ display:flex; align-items:center; gap:7px; padding:8px 13px; border-radius:999px; cursor:default;
+  backdrop-filter:blur(14px) saturate(150%); -webkit-backdrop-filter:blur(14px) saturate(150%);
+  font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.12em; text-transform:uppercase; }
+#pe-chrome .pe-pgstat svg{ width:12px; height:12px; }
+#pe-chrome .pe-pgstat.todo{ color:#f3c98a; border:1px solid rgba(201,138,43,.5); background:rgba(201,138,43,.18); }
+#pe-chrome .pe-pgstat.done{ color:rgba(125,226,182,.95); border:1px solid rgba(94,206,160,.45); background:rgba(94,206,160,.16); }
 #pe-chrome button, #pe-chrome .pe-chip-status{
   display:flex; align-items:center; gap:7px; padding:8px 13px; border-radius:999px;
   background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);

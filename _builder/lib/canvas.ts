@@ -302,6 +302,60 @@ const AFFORDANCE = `
     background:#0a0a0a; color:#fff; font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.14em; text-transform:uppercase;
     padding:3px 8px; border-radius:4px; white-space:nowrap; opacity:0; pointer-events:none; transition:.15s; }
   .pe-add-section:hover .pe-add-dot::after{ opacity:1; transform:translateX(-50%) scale(1); }
+
+  /* ════════ READINESS MARKERS (per-section "shippable yet?" — left margin) ════════
+     The marker DOM + which items it lists are built by the decorator entirely
+     from POLICY; this is only its look. Amber triangle = required fields left,
+     green check = section ready. Lives in the section's left gutter. */
+  .pe-mkhost{ position:relative; }
+  .mk{ position:absolute; left:-50px; top:2px; width:36px; z-index:30; }
+  .wiki-hero-inner.pe-mkhost > .mk{ top:6px; }
+  .mk-btn{ position:relative; width:34px; height:34px; border:0; background:none; cursor:pointer; padding:0; }
+  .mk-tri{ width:34px; height:34px; border-radius:11px; display:flex; align-items:center; justify-content:center;
+    transition:transform .2s cubic-bezier(.2,.8,.2,1), background .2s, color .2s, border-color .2s; }
+  .mk.todo .mk-tri{ background:linear-gradient(180deg,#fdf0da,#f8e3c2); border:1px solid #f0cf9a; box-shadow:0 4px 12px rgba(201,138,43,.22), inset 0 1px 0 rgba(255,255,255,.9); color:#c98a2b; }
+  .mk.done .mk-tri{ background:linear-gradient(180deg,#ecf7ef,#dcefe3); border:1px solid #bfe2cc; box-shadow:0 4px 12px rgba(63,143,91,.18), inset 0 1px 0 rgba(255,255,255,.9); color:#3f8f5b; }
+  .mk-btn:hover .mk-tri{ transform:scale(1.08); } .mk-btn:active .mk-tri{ transform:scale(.9); }
+  .mk-tri svg{ width:18px; height:18px; }
+  .mk-count{ position:absolute; top:-5px; right:-5px; min-width:15px; height:15px; padding:0 3px; border-radius:8px; background:#c98a2b; color:#fff;
+    font-family:'JetBrains Mono',monospace; font-size:8px; font-weight:600; display:flex; align-items:center; justify-content:center; box-shadow:0 1px 3px rgba(0,0,0,.25); }
+  .mk.done .mk-count{ display:none; }
+  @keyframes mkpulse{ 0%,100%{ box-shadow:0 4px 12px rgba(201,138,43,.22), inset 0 1px 0 rgba(255,255,255,.9);} 50%{ box-shadow:0 4px 18px rgba(201,138,43,.42), 0 0 0 4px rgba(201,138,43,.10), inset 0 1px 0 rgba(255,255,255,.9);} }
+  .mk.todo:not(.open) .mk-tri{ animation:mkpulse 2.8s ease-in-out infinite; }
+  .mk.open.todo .mk-tri{ background:#c98a2b; color:#fff; border-color:#c98a2b; }
+  .mk.open.done .mk-tri{ background:#3f8f5b; color:#fff; border-color:#3f8f5b; }
+  @keyframes checkpop{ 0%{ transform:scale(0) rotate(-30deg); opacity:0;} 60%{ transform:scale(1.25) rotate(0);} 100%{ transform:scale(1); opacity:1;} }
+  .mk.done .mk-tri svg{ animation:checkpop .42s cubic-bezier(.2,1.4,.4,1); }
+  .mk-panel{ position:absolute; left:46px; top:-6px; width:288px; z-index:1300; border-radius:16px; padding:6px; transform-origin:left top; display:none;
+    background:#fff; border:1px solid rgba(255,255,255,.7); box-shadow:0 26px 64px rgba(28,20,10,.30), 0 4px 12px rgba(28,20,10,.14), inset 0 1px 0 rgba(255,255,255,.9); }
+  .mk-panel::before{ content:''; position:absolute; left:-7px; top:15px; width:13px; height:13px; background:#fff; border-left:1px solid rgba(255,255,255,.7); border-bottom:1px solid rgba(255,255,255,.7); transform:rotate(45deg); }
+  .mk.open .mk-panel{ display:block; animation:panelA .22s cubic-bezier(.2,.9,.25,1.1); }
+  @keyframes panelA{ from{ opacity:0; transform:scale(.86) translateX(-6px); } to{ opacity:1; transform:none; } }
+  .mk-panel-head{ display:flex; align-items:center; gap:9px; padding:10px 10px 9px; }
+  .mk-panel-head .pi{ width:24px; height:24px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex:none; } .mk-panel-head .pi svg{ width:14px; height:14px; }
+  .mk.todo .mk-panel-head .pi{ background:#fbe6cf; color:#c98a2b; } .mk.done .mk-panel-head .pi{ background:#e3f3e8; color:#3f8f5b; }
+  .mk-panel-head .pt{ font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:14px; color:#1c1a17; }
+  .mk-panel-head .pn{ margin-left:auto; font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.12em; text-transform:uppercase; color:#8a8175; }
+  .mk-cat{ margin:2px 4px 0; }
+  .mk-cat-label{ font-family:'JetBrains Mono',monospace; font-size:7.5px; letter-spacing:.16em; text-transform:uppercase; color:#8a8175; padding:9px 6px 5px; display:flex; align-items:center; gap:6px; }
+  .mk-cat-label::after{ content:''; flex:1; height:1px; background:rgba(20,18,14,.10); }
+  .mk-item{ display:flex; align-items:flex-start; gap:9px; width:100%; text-align:left; padding:8px; border:0; background:transparent; border-radius:9px; cursor:pointer; transition:.12s; }
+  .mk-item:hover{ background:rgba(37,99,235,.08); }
+  .mk-item .box{ width:15px; height:15px; border-radius:5px; flex:none; margin-top:1px; border:1.6px solid #f0cf9a; background:#fff; position:relative; }
+  .mk-item.met{ cursor:default; }
+  .mk-item.met .box{ border-color:#3f8f5b; background:#3f8f5b; }
+  .mk-item.met .box::after{ content:''; position:absolute; left:4px; top:1px; width:4px; height:8px; border:solid #fff; border-width:0 1.7px 1.7px 0; transform:rotate(45deg); }
+  .mk-item .tx{ font-size:12.5px; line-height:1.35; color:#1c1a17; }
+  .mk-item.met .tx{ color:#8a8175; text-decoration:line-through; text-decoration-color:rgba(0,0,0,.25); }
+  .mk-allgood{ display:flex; align-items:center; gap:9px; padding:13px 12px; color:#3f8f5b; font-size:13px; }
+  .mk-allgood .pi{ width:24px; height:24px; border-radius:8px; background:#e3f3e8; display:flex; align-items:center; justify-content:center; } .mk-allgood .pi svg{ width:14px; height:14px; }
+
+  /* the bold-red jump highlight: the marker click scrolls to the field and
+     flashes its box + text RED to pull the eye to what needs filling */
+  @keyframes flashRed{ 0%{ box-shadow:0 0 0 0 rgba(192,57,43,0);} 14%{ box-shadow:0 0 0 4px rgba(192,57,43,.32);} 100%{ box-shadow:0 0 0 0 rgba(192,57,43,0);} }
+  .field-flash{ animation:flashRed 1.5s ease-out; border-radius:5px; }
+  .field-flash, .field-flash *{ color:#c0392b !important; font-weight:700 !important; transition:color .15s; }
+  .field-flash::before{ color:#c0392b !important; }
 `;
 
 const FONTS = `<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">`;

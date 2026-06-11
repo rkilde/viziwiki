@@ -471,5 +471,48 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(/2021/.test(tlModal.querySelector('[data-tl-tag]').textContent), 'date appears in the expanded card tag line (upper-left), not just the tag');
 }
 
+// ── case 12: READINESS MARKERS — derived from grammar required/min ──
+{
+  console.log('case 12: readiness markers — derived from grammar required/min');
+  const ready = {
+    hero: { title: 'Title here', eyebrow: null, subtitle: null, subtitle_meta: null, desc: 'A real lead.', stats: null, search: false, search_placeholder: '', spotlight: null, feature: null },
+    overview: { tone: 'b', heading: 'Real heading', paragraphs: ['Real paragraph.'], infobox: null },
+  };
+  const d1 = renderAndDecorate(ready, false);
+  ok(d1.querySelector('section[data-section="overview"] .mk.done'), 'overview marker = done when required heading + paragraph are filled');
+  ok(d1.querySelector('section.wiki-hero .mk.done'), 'hero marker = done when required title is filled');
+
+  // leave the required heading at its placeholder (null → include backfills the
+  // grammar blank) → marker flips to todo and lists the unmet "Heading"
+  const todo = JSON.parse(JSON.stringify(ready)); todo.overview.heading = null;
+  const d2 = renderAndDecorate(todo, false);
+  const ovMk = d2.querySelector('section[data-section="overview"] .mk');
+  ok(ovMk.classList.contains('todo'), 'overview marker → todo when required heading is left at its placeholder');
+  ok([...ovMk.querySelectorAll('.mk-item')].some((b) => /Heading/i.test(b.textContent) && !b.classList.contains('met')), 'marker lists the unmet "Heading" requirement');
+  ok(d2.querySelector('section[data-section="overview"] .wiki-section-title .ce[data-pe-path="overview.heading"]'), 'the heading field is jump-addressable (data-pe-path bound)');
+  // the met paragraph requirement still shows, struck (met)
+  ok([...ovMk.querySelectorAll('.mk-item.met')].some((b) => /paragraph/i.test(b.textContent)), 'met requirement ("at least one paragraph") shown as done');
+
+  // DERIVATION: an OPTIONAL field made required in grammar appears as a new
+  // readiness requirement with ZERO widget edits (the whole point).
+  const heroDoc = JSON.parse(JSON.stringify(ready)); heroDoc.hero.eyebrow = null;
+  const before = renderAndDecorate(heroDoc, false);
+  ok(![...before.querySelectorAll('section.wiki-hero .mk-item')].some((b) => /Eyebrow/i.test(b.textContent)), 'baseline: optional eyebrow is NOT a readiness requirement');
+  const g2 = JSON.parse(JSON.stringify(grammar));
+  g2.components.hero.fields.eyebrow.required = true;
+  const after = renderAndDecorate(heroDoc, false, g2);
+  ok([...after.querySelectorAll('section.wiki-hero .mk-item')].some((b) => /Eyebrow/i.test(b.textContent) && !b.classList.contains('met')), 'grammar-required eyebrow APPEARS as a readiness requirement (derived from grammar, no widget edit)');
+
+  // list min is derived too: a catalog with an empty category surfaces its
+  // per-category required name + "at least one item"
+  const catSeed = JSON.parse(JSON.stringify(grammar.components.catalog.seed));
+  catSeed.categories.push({ name: null, items: [] });   // a blank, itemless category
+  const cdoc = { ...JSON.parse(JSON.stringify(ready)), sections: [{ type: 'catalog', data: catSeed }] };
+  const d3 = renderAndDecorate(cdoc, false);
+  const catMk = d3.querySelector('section.wiki-section.catalog .mk');
+  ok(catMk && catMk.classList.contains('todo'), 'catalog marker → todo (blank category present)');
+  ok([...catMk.querySelectorAll('.mk-item')].some((b) => /at least one (cat )?item/i.test(b.textContent)), 'derives the "at least one item" minimum for the empty category');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
