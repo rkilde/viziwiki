@@ -7,7 +7,7 @@
 
    Colours are SKIN-DERIVED. The chart reads a handful of --cfg-* tokens,
    each defaulting to a sensible mix of the wiki's base palette
-   (--foreground / --card / --accent). A wiki that never touches a chart
+   (--foreground / --card / --wiki-accent). A wiki that never touches a chart
    still gets a coherent one (light chrome, an emphasis-coloured bar). A
    skin can pin any token to lock an exact look — e.g. the Apple skin pins
    the originals (#fff / #f4f4f6 / #c7c7cc / #0a0a0a) so the iPod chart is
@@ -20,7 +20,7 @@
   --cfg-ink:     var(--foreground, #0a0a0a);                                                  /* primary text  */
   --cfg-surface: var(--card, #fff);                                                           /* chart box bg  */
   --cfg-track:   color-mix(in oklab, var(--foreground, #0a0a0a) 4%, var(--card, #fff));       /* empty track   */
-  --cfg-bar:     var(--accent, color-mix(in oklab, var(--foreground, #0a0a0a) 22%, var(--card, #fff))); /* the fill — emphasis */
+  --cfg-bar:     var(--wiki-accent, color-mix(in oklab, var(--foreground, #0a0a0a) 22%, var(--card, #fff))); /* the fill — emphasis */
   --cfg-bar-ink: color-mix(in oklab, var(--cfg-ink) 72%, transparent);                        /* text on the bar */
   --cfg-line:    var(--divider, color-mix(in oklab, var(--foreground, #0a0a0a) 10%, transparent)); /* hairlines */
 }

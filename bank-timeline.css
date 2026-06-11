@@ -8,7 +8,7 @@
 
    Colours are SKIN-DERIVED (same pattern as the config bank). The chart
    reads --tl-* tokens, each defaulting to a mix of the wiki's base palette
-   (--foreground / --card / --accent), so any wiki gets a coherent timeline
+   (--foreground / --card / --wiki-accent), so any wiki gets a coherent timeline
    (alternating year bands, an accent on each card's left edge, light
    chrome). A skin can pin a token to lock a look — the Apple skin pins the
    originals (#0a0a0a / #fff / …) via `body.wiki-apple .timeline { … }` so
@@ -19,7 +19,7 @@
 .timeline{
   --tl-ink:     var(--foreground, #0a0a0a);                                                   /* text */
   --tl-surface: var(--card, #fff);                                                            /* card + modal bg */
-  --tl-accent:  var(--accent, var(--foreground, #0a0a0a));                                    /* left card edge, dot, modal bar */
+  --tl-accent:  var(--wiki-accent, var(--foreground, #0a0a0a));                               /* left card edge, dot, modal bar — the wiki's brand accent */
   --tl-line:    color-mix(in oklab, var(--foreground, #0a0a0a) 8%, transparent);              /* hairlines / borders / spine */
   --tl-band:    color-mix(in oklab, var(--foreground, #0a0a0a) 2.5%, transparent);            /* alternating year panel */
   --tl-chip:    color-mix(in oklab, var(--foreground, #0a0a0a) 9%, var(--card, #fff));        /* gap chip bg */
