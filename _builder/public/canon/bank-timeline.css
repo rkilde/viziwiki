@@ -1,0 +1,74 @@
+/* ════════════════════════════════════════════════════════════════════
+   BANK · TIMELINE  (+ paired station card + detail modal)
+   --------------------------------------------------------------------
+   The horizontal, full-bleed, date-positioned timeline. Structure + type
+   live here (single source); the section frame lives in
+   _includes/sections/timeline-section.html. The scroller bleeds edge-to-
+   edge via the universal .wiki-section-bleed.
+
+   Colours are SKIN-DERIVED (same pattern as the config bank). The chart
+   reads --tl-* tokens, each defaulting to a mix of the wiki's base palette
+   (--foreground / --card / --accent), so any wiki gets a coherent timeline
+   (alternating year bands, an accent on each card's left edge, light
+   chrome). A skin can pin a token to lock a look — the Apple skin pins the
+   originals (#0a0a0a / #fff / …) via `body.wiki-apple .timeline { … }` so
+   the iPod timeline is unchanged.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── skin-derived chrome tokens (defined once; a skin can override) ──── */
+.timeline{
+  --tl-ink:     var(--foreground, #0a0a0a);                                                   /* text */
+  --tl-surface: var(--card, #fff);                                                            /* card + modal bg */
+  --tl-accent:  var(--accent, var(--foreground, #0a0a0a));                                    /* left card edge, dot, modal bar */
+  --tl-line:    color-mix(in oklab, var(--foreground, #0a0a0a) 8%, transparent);              /* hairlines / borders / spine */
+  --tl-band:    color-mix(in oklab, var(--foreground, #0a0a0a) 2.5%, transparent);            /* alternating year panel */
+  --tl-chip:    color-mix(in oklab, var(--foreground, #0a0a0a) 9%, var(--card, #fff));        /* gap chip bg */
+  --tl-footer:  color-mix(in oklab, var(--foreground, #0a0a0a) 2%, var(--card, #fff));        /* modal footer bg */
+  --tl-dim:     color-mix(in oklab, var(--foreground, #0a0a0a) 45%, transparent);             /* modal overlay */
+}
+
+.tl-hdr{max-width:1320px;margin:0 auto;padding:0 48px 32px;}
+.tl-scroll-hint{display:flex;align-items:center;gap:6px;font-family:"JetBrains Mono",monospace;font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:color-mix(in oklab,var(--tl-ink) 35%,transparent);margin-top:12px;}
+.tl-outer{overflow-x:auto;-webkit-overflow-scrolling:touch;cursor:grab;padding-bottom:36px;scrollbar-width:none;}
+.tl-outer::-webkit-scrollbar{display:none;}
+.track{position:relative;display:block;}
+.tl-band{position:absolute;top:0;bottom:0;background:var(--tl-band);pointer-events:none;}
+.tl-band-even{background:transparent;pointer-events:none;}
+.tl-ruler{position:absolute;bottom:4px;left:0;right:0;pointer-events:none;}
+.tl-yr{position:absolute;bottom:0;transform:translateX(-50%);}
+.tl-yr span{font-family:"JetBrains Mono",monospace;font-size:8px;text-transform:uppercase;letter-spacing:.14em;color:color-mix(in oklab,var(--tl-ink) 28%,transparent);}
+.itl-station{position:absolute;top:0;}
+.itl-event-top{width:210px;margin:0 auto;height:340px;display:flex;flex-direction:column;justify-content:flex-start;padding-top:20px;overflow:visible;position:relative;}
+.sc-float-date{padding:0 0 8px 0;display:flex;align-items:baseline;gap:6px;}
+.sc-float-month,.sc-float-day,.sc-float-year{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:22px;font-weight:600;letter-spacing:-0.02em;color:color-mix(in oklab,var(--tl-ink) 25%,transparent);line-height:1;}
+.sc-float-day{font-weight:700;}
+.itl-card{background:var(--tl-surface);border-radius:12px;border:1px solid var(--tl-line);box-shadow:0 1px 2px color-mix(in oklab,var(--tl-ink) 4%,transparent),0 4px 16px color-mix(in oklab,var(--tl-ink) 8%,transparent);overflow:hidden;position:relative;cursor:pointer;transition:transform .2s ease,box-shadow .2s ease;width:100%;}
+.itl-card:hover{transform:translateY(-3px);box-shadow:0 2px 4px color-mix(in oklab,var(--tl-ink) 5%,transparent),0 12px 32px color-mix(in oklab,var(--tl-ink) 13%,transparent);}
+.sc-bar{position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--tl-accent);}
+.sc-body{padding:15px 15px 13px 18px;}
+.sc-tag{font-family:"JetBrains Mono",monospace;font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:color-mix(in oklab,var(--tl-ink) 38%,transparent);margin-bottom:7px;}
+.sc-title{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:16px;font-weight:600;letter-spacing:-0.02em;line-height:1.2;color:var(--tl-ink);margin-bottom:7px;}
+.sc-prose{font-size:11.5px;color:color-mix(in oklab,var(--tl-ink) 52%,transparent);line-height:1.58;margin-bottom:12px;}
+.sc-footer{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--tl-line);}
+.sc-expand{font-family:"JetBrains Mono",monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.14em;color:color-mix(in oklab,var(--tl-ink) 32%,transparent);display:flex;align-items:center;gap:4px;}
+.sc-num{font-family:"JetBrains Mono",monospace;font-size:7.5px;color:color-mix(in oklab,var(--tl-ink) 16%,transparent);}
+.itl-spine{position:absolute;left:50%;transform:translateX(-50%);top:335px;width:9px;height:9px;}
+.itl-dot{width:9px;height:9px;border-radius:50%;background:var(--tl-accent);position:relative;z-index:4;flex-shrink:0;}
+.tl-gap{position:absolute;transform:translate(-50%,-50%);background:var(--tl-chip);border:1px solid var(--tl-line);border-radius:3px;padding:3px 8px;font-family:"JetBrains Mono",monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.1em;color:color-mix(in oklab,var(--tl-ink) 45%,transparent);white-space:nowrap;z-index:3;pointer-events:none;}
+.tl-details{display:none;}
+.tl-modal{display:none;position:fixed;inset:0;background:var(--tl-dim);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:9999;align-items:center;justify-content:center;padding:24px;}
+.tl-modal.open{display:flex;}
+.tl-modal-box{width:min(440px, calc(100vw - 48px));max-height:calc(100vh - 80px);background:var(--tl-surface);border-radius:12px;border:1px solid var(--tl-line);box-shadow:0 4px 8px color-mix(in oklab,var(--tl-ink) 6%,transparent),0 32px 80px color-mix(in oklab,var(--tl-ink) 22%,transparent);overflow:hidden;position:relative;display:flex;flex-direction:column;}
+.tl-modal-bar{position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--tl-accent);}
+.tl-modal-header{padding:20px 20px 18px 24px;border-bottom:1px solid var(--tl-line);flex-shrink:0;}
+.tl-modal-tag{font-family:"JetBrains Mono",monospace;font-size:8.5px;text-transform:uppercase;letter-spacing:.18em;color:color-mix(in oklab,var(--tl-ink) 38%,transparent);margin-bottom:10px;}
+.tl-modal-title{font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:22px;font-weight:600;letter-spacing:-0.025em;line-height:1.15;color:var(--tl-ink);}
+.tl-modal-body{padding:20px 20px 22px 24px;overflow-y:auto;flex:1;}
+.tl-modal-body p{font-family:"Spectral",Georgia,serif;font-size:13.5px;color:color-mix(in oklab,var(--tl-ink) 70%,transparent);line-height:1.75;margin-bottom:14px;}
+.tl-modal-body p:last-child{margin-bottom:0;}
+.tl-modal-body p strong{color:var(--tl-ink);font-weight:600;}
+.tl-modal-footer{padding:12px 20px 14px 24px;border-top:1px solid var(--tl-line);background:var(--tl-footer);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.tl-modal-close{font-family:"JetBrains Mono",monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.14em;color:color-mix(in oklab,var(--tl-ink) 35%,transparent);background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:5px;padding:0;transition:color .15s;}
+.tl-modal-close:hover{color:var(--tl-ink);}
+.tl-modal-page{font-family:"JetBrains Mono",monospace;font-size:8px;color:color-mix(in oklab,var(--tl-ink) 22%,transparent);}
+@media(max-width:600px){.tl-hdr{padding:0 16px 24px;}.tl-scroll-hint{font-size:8px;}.tl-modal-box{width:calc(100vw - 32px);}}

@@ -251,6 +251,7 @@ export function buildCanvas(bodyHtml: string, skin: WikiSkin = TACO_BELL_SKIN): 
 <link rel="stylesheet" href="/canon/wiki-typography.css">
 <link rel="stylesheet" href="/canon/wiki-universals.css">
 <link rel="stylesheet" href="/canon/bank-catalog.css">
+<link rel="stylesheet" href="/canon/bank-timeline.css">
 ${skinLinks}
 <style>${AFFORDANCE}</style>
 <script>

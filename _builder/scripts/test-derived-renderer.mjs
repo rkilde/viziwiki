@@ -320,5 +320,27 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(pop.querySelector('.cc-sw.auto'), 'auto (cycle) option present');
 }
 
+// ── case 8: timeline body section (addable from the picker) ──
+// guards the full include chain: section frame → dispatcher → visual → card →
+// station. A missing extract-includes entry would throw here (the bug that
+// made the picker tile appear un-selectable: secAdd fired but render ENOENT'd).
+{
+  console.log('case 8: timeline body section (grammar-seeded, registry-routed)');
+  const tlSeed = JSON.parse(JSON.stringify(grammar.components.timeline.seed));
+  const doc = {
+    hero: { eyebrow: null, title: 'T', subtitle: null, subtitle_meta: null, desc: 'D', stats: null, search: false, search_placeholder: '', spotlight: null, feature: null },
+    overview: { tone: 'b', heading: 'H', paragraphs: ['P'], infobox: null },
+    sections: [{ type: 'timeline', data: tlSeed }],
+  };
+  const d = renderAndDecorate(doc, false);
+  const tl = d.querySelector('section.wiki-section.timeline');
+  ok(tl, 'timeline section rendered via its canonical include chain');
+  ok(tl.querySelector('.tl-outer'), 'timeline visual rendered through the dispatcher');
+  ok(tl.querySelectorAll('.itl-station').length === 2, 'two station cards rendered from the seed events');
+  ok(tl.querySelector('.wiki-section-eyebrow.pe-canon .pe-lock'), 'timeline eyebrow locked (from the visuals registry)');
+  ok([...tl.querySelectorAll('.pe-chip')].some((c) => c.textContent === 'remove section'), 'remove-section chip present');
+  ok(tl.querySelectorAll('.pe-tonebtn').length === 3, 'timeline tone buttons from grammar enum');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

@@ -26,6 +26,11 @@ const FILES = [
   'sections/catalog-section.html',
   'visual.html',
   'visuals/catalog/catalog.html',
+  // timeline bank: section frame → dispatcher → visual → card → station
+  'sections/timeline-section.html',
+  'visuals/timeline/timeline.html',
+  'visuals/timeline/card.html',
+  'visuals/timeline/cards/station.html',
 ];
 
 const out = { includes: {}, sprite: '' };
