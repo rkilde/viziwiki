@@ -33,6 +33,118 @@
 
 
 /* ════════════════════════════════════════════════════════════════════
+   §0 — THE SKIN CONTRACT  (semantic token bridge)
+   The canonical --wiki-* tokens every visual asset reads (manifest:
+   _data/skin-contract.yml). Each RESOLVES through a wiki's existing
+   (legacy / differently-named) token via a var() fallback chain, so every
+   wiki's current value "flows up" to the contract with NO skin edits — then
+   a neutral default as the safety floor. A wiki overrides any of these under
+   body.wiki-{name} (e.g. the per-wiki harmonised meaning colours + palette).
+   Nothing should hardcode a colour an asset needs; it reads a token here.
+   ════════════════════════════════════════════════════════════════════ */
+:root {
+  /* ── neutrals ── */
+  --wiki-text-color:        var(--foreground, var(--ink, var(--wiki-fg, #18181b)));
+  --wiki-text-muted-color:  var(--muted-foreground, var(--wiki-muted, var(--mut, rgba(24,24,27,.6))));
+  --wiki-text-faint-color:  var(--wiki-faint, rgba(24,24,27,.4));
+  --wiki-surface-bg:        var(--card, #ffffff);
+  --wiki-page-bg:           var(--wiki-bg, var(--page, var(--paper, #ffffff)));
+  --wiki-divider-color:     var(--section-divider, var(--divider, rgba(0,0,0,.1)));
+
+  /* ── brand accent (background-aware) ── */
+  --wiki-accent-on-light:   var(--wiki-accent, var(--foreground, #18181b));
+  --wiki-accent-on-dark:    var(--hero-title-accent, #ffb000);
+
+  /* ── meaning colours — GENERIC FLOOR ONLY. Each wiki overrides these with
+     values harmonised to its palette in its per-wiki semantic block. ── */
+  --wiki-positive:  #16a34a;
+  --wiki-negative:  #dc2626;
+  --wiki-warning:   #d97706;
+  --wiki-info:      #2563eb;
+  --wiki-neutral:   var(--wiki-text-muted-color);
+
+  /* ── categorical palette — bridges each wiki's swatch ramp; generic ramp
+     underneath (overridden per wiki). ── */
+  --wiki-palette-1: var(--cat-accent-1, #3b6d11);
+  --wiki-palette-2: var(--cat-accent-2, #0284c7);
+  --wiki-palette-3: var(--cat-accent-3, #7c3aed);
+  --wiki-palette-4: var(--cat-accent-4, #db2777);
+  --wiki-palette-5: var(--cat-accent-5, #059669);
+  --wiki-palette-6: var(--cat-accent-6, #d97706);
+  --wiki-palette-7: var(--cat-accent-7, #4f46e5);
+  --wiki-palette-8: var(--cat-accent-8, #be123c);
+
+  /* ── section system ── */
+  --wiki-section-panel-tone-a:       var(--section-tone-a, transparent);
+  --wiki-section-panel-tone-b:       var(--section-tone-b, transparent);
+  --wiki-section-panel-tone-special: var(--section-tone-special, transparent);
+  --wiki-h2-color:           var(--section-title-color, currentColor);
+  --wiki-eyebrow-color:      var(--eyebrow-color, currentColor);
+  --wiki-prose-color:        var(--prose-color, currentColor);
+  --wiki-prose-strong-color: var(--prose-strong-color, currentColor);
+
+  /* ── shapes (radii) ── */
+  --wiki-card-radius: var(--card-shape, 14px);
+  --wiki-chip-radius: var(--chip-shape, 999px);
+
+  /* ── hero ── */
+  --wiki-hero-bg:            var(--hero-bg, transparent);
+  --wiki-hero-text-color:    var(--hero-text, currentColor);
+  --wiki-hero-divider-color: var(--hero-divider, rgba(0,0,0,.12));
+  --wiki-hero-title-color:   var(--hero-title-color, currentColor);
+  --wiki-hero-period-color:  var(--hero-title-accent, var(--wiki-accent-on-dark, #ffb000));
+  --wiki-hero-eyebrow-dot-color:    var(--hero-eyebrow-dot, #ffb000);
+  --wiki-hero-desc-color:           var(--hero-desc-color, currentColor);
+  --wiki-hero-eyebrow-bg:           var(--hero-eyebrow-bg, rgba(255,255,255,.06));
+  --wiki-hero-eyebrow-border-color: var(--hero-eyebrow-border, rgba(255,255,255,.18));
+  --wiki-hero-eyebrow-text-color:   var(--hero-eyebrow-text, currentColor);
+  --wiki-hero-search-bg:                var(--hero-search-bg, rgba(255,255,255,.1));
+  --wiki-hero-search-border-color:      var(--hero-search-border, rgba(255,255,255,.2));
+  --wiki-hero-search-icon-color:        var(--hero-search-icon, currentColor);
+  --wiki-hero-search-placeholder-color: var(--hero-search-placeholder, rgba(255,255,255,.5));
+  --wiki-hero-search-text-color:        var(--hero-search-text, currentColor);
+  --wiki-hero-spotlight-bg:             var(--hero-spotlight-bg, rgba(255,255,255,.05));
+  --wiki-hero-spotlight-border-color:   var(--hero-spotlight-border, rgba(255,255,255,.15));
+  --wiki-hero-spotlight-title-color:    var(--hero-spotlight-title, currentColor);
+  --wiki-hero-spotlight-eyebrow-color:  var(--hero-spotlight-eyebrow, currentColor);
+  --wiki-hero-spotlight-desc-color:     var(--hero-spotlight-desc, currentColor);
+  --wiki-hero-spotlight-cta-bg:         var(--hero-spotlight-cta-bg, #ffffff);
+  --wiki-hero-spotlight-cta-hover-bg:   var(--hero-spotlight-cta-hover-bg, #f0f0f0);
+  --wiki-hero-spotlight-cta-text-color: var(--hero-spotlight-cta-text, #111111);
+  --wiki-hero-spotlight-tag-bg:           var(--hero-spotlight-tag-bg, rgba(255,255,255,.1));
+  --wiki-hero-spotlight-tag-border-color: var(--hero-spotlight-tag-border, rgba(255,255,255,.2));
+  --wiki-hero-spotlight-tag-text-color:   var(--hero-spotlight-tag-text, currentColor);
+  --wiki-hero-stat-num-color:            var(--hero-stat-num, currentColor);
+  --wiki-hero-stat-label-color:          var(--hero-stat-label, rgba(255,255,255,.6));
+  --wiki-hero-stat-cell-bg:              var(--hero-stat-cell-bg, rgba(0,0,0,.25));
+  --wiki-hero-stat-wrapper-bg:           var(--hero-stat-wrapper-bg, rgba(255,255,255,.18));
+  --wiki-hero-stat-wrapper-border-color: var(--hero-stat-wrapper-border, rgba(255,255,255,.18));
+  --wiki-hero-feature-bg:                var(--hero-feature-bg, #1a1a1a);
+  --wiki-hero-feature-halftone-color:    var(--hero-feature-halftone, rgba(255,255,255,.1));
+  --wiki-hero-feature-border-color:      var(--hero-feature-border, rgba(255,255,255,.15));
+  --wiki-hero-feature-title-color:       var(--hero-feature-title, currentColor);
+  --wiki-hero-feature-desc-color:        var(--hero-feature-desc, currentColor);
+  --wiki-hero-feature-label-color:       var(--hero-feature-label, currentColor);
+  --wiki-hero-feature-chip-bg:           var(--hero-feature-chip-bg, rgba(255,255,255,.08));
+  --wiki-hero-feature-chip-border-color: var(--hero-feature-chip-border, rgba(255,255,255,.15));
+  --wiki-hero-feature-chip-key-color:    var(--hero-feature-chip-key, currentColor);
+  --wiki-hero-feature-chip-val-color:    var(--hero-feature-chip-val, currentColor);
+
+  /* ── infobox ── */
+  --wiki-infobox-bg:            var(--infobox-bg, #ffffff);
+  --wiki-infobox-header-bg:     var(--infobox-header-bg, #f4f4f5);
+  --wiki-infobox-border-color:  var(--infobox-border, rgba(0,0,0,.12));
+  --wiki-infobox-divider-color: var(--infobox-divider, rgba(0,0,0,.08));
+  --wiki-infobox-title-color:   var(--infobox-title-color, currentColor);
+  --wiki-infobox-label-color:   var(--infobox-label-color, rgba(0,0,0,.55));
+  --wiki-infobox-key-color:     var(--infobox-key-color, rgba(0,0,0,.55));
+  --wiki-infobox-value-color:   var(--infobox-value-color, currentColor);
+  --wiki-infobox-badge-color:        var(--infobox-badge-color, currentColor);
+  --wiki-infobox-badge-border-color: var(--infobox-badge-border, rgba(0,0,0,.2));
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
    §1 — UNIVERSAL CSS VARIABLE DEFAULTS
    Spacing/color tokens that every page may need. Skins override these
    under body.wiki-{name} in their own skin file.
