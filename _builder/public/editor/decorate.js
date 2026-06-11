@@ -430,7 +430,7 @@
     // section tone toolbar (glass pill) — tones from the field's grammar enum
     function toneBar(secEl, polPath, mkAction, extra) {
       var toneRule = ruleFor(polPath) || {};
-      var tones = toneRule.enum || ['a', 'b', 'special'];
+      var tones = toneRule.enum || [];   // derived from grammar — never restate the values
       var cur = secEl.getAttribute('data-tone');
       var bar = document.createElement('div');
       bar.className = 'pe-sec-tools';
@@ -608,7 +608,7 @@
         var openRibbonPop = function (btn, cpre, accent, rb, card, j) {
           if (rb == null) { window.__peReopen = { s: i, j: j, kind: 'ribbon' }; A('add:' + cpre + 'ribbon'); return; }
           var isObj = (typeof rb === 'object');
-          var tones = (R('catalog.categories[].ribbon.tone').enum) || ['accent', 'gone'];
+          var tones = (R('catalog.categories[].ribbon.tone').enum) || [];   // derived from grammar — never restate the values
           var tone = isObj ? (rb.tone || 'accent') : 'accent';
           var html = '<div class="cc-pop-label">Ribbon</div><div class="cc-ribbon-field"><input type="text" placeholder="Ribbon text">' +
             (isObj ? '<div class="cc-tone">' + tones.map(function (t) { return '<button data-t="' + t + '" class="' + (t === tone ? 'on' : '') + '">' + (t === 'gone' ? 'Grey' : t) + '</button>'; }).join('') + '</div>' : '') +
