@@ -9,6 +9,10 @@ import { seedSection } from './store';
 import type { WikiSkin } from './wiki';
 import { POLICY, rule, blankOf, itemBlankOf } from './grammar';
 import { SENT_PREFIX, REGISTRY } from './render';
+// bank stylesheets — DISCOVERED by copy-canon (every repo-root bank-*.css) and
+// written to this manifest, so the canvas loads each bank's single-source CSS
+// without a hardcoded <link> per bank (CLAUDE.md standing rule #5).
+import BANK_CSS from '../data/bank-css.json';
 
 // default skin = Taco Bell (keeps existing single-arg callers working)
 const TACO_BELL_SKIN: WikiSkin = { bodyClass: 'wiki-page wiki-taco-bell', css: ['wiki-taco-bell-skin.css', 'tb-editorial-base.css'] };
@@ -250,8 +254,7 @@ export function buildCanvas(bodyHtml: string, skin: WikiSkin = TACO_BELL_SKIN): 
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>${FONTS}
 <link rel="stylesheet" href="/canon/wiki-typography.css">
 <link rel="stylesheet" href="/canon/wiki-universals.css">
-<link rel="stylesheet" href="/canon/bank-catalog.css">
-<link rel="stylesheet" href="/canon/bank-timeline.css">
+${(BANK_CSS as string[]).map((f) => `<link rel="stylesheet" href="/canon/${f}">`).join('\n')}
 ${skinLinks}
 <style>${AFFORDANCE}</style>
 <script>

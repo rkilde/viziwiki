@@ -342,5 +342,29 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(tl.querySelectorAll('.pe-tonebtn').length === 3, 'timeline tone buttons from grammar enum');
 }
 
+// ── case 9: one-step bank onboarding guard ──
+// Every grammar component that has a seed AND a registry section is a bank the
+// picker can mark LIVE (SectionPicker.isLive). This renders each one end-to-end
+// to prove its include chain resolves — so a bank can't go live without its
+// render deps present. Generalizes the ENOENT case 8 caught to ALL banks, and
+// will fail the build if extract-includes (registry-derived crawl) ever misses
+// a chain.
+{
+  console.log('case 9: every seedable + registry-hosted bank renders end-to-end');
+  const banks = Object.entries(grammar.components).filter(([t, c]) => c.seed && c.section && t !== 'hero' && t !== 'overview');
+  ok(banks.length >= 6, `discovered ${banks.length} addable banks from canon`);
+  for (const [type, c] of banks) {
+    const doc = {
+      hero: { eyebrow: null, title: 'T', subtitle: null, subtitle_meta: null, desc: 'D', stats: null, search: false, search_placeholder: '', spotlight: null, feature: null },
+      overview: { tone: 'b', heading: 'H', paragraphs: ['P'], infobox: null },
+      sections: [{ type, data: JSON.parse(JSON.stringify(c.seed)) }],
+    };
+    let d, err = null;
+    try { d = renderAndDecorate(doc, false); } catch (e) { err = e; }
+    ok(!err, `${type}: renders without throwing (include chain resolves)${err ? ' — ' + err.message : ''}`);
+    if (d) ok(d.querySelectorAll('body > section.wiki-section').length >= 2, `${type}: its body section rendered`);
+  }
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

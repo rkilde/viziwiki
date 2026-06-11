@@ -1,0 +1,102 @@
+/* ════════════════════════════════════════════════════════════════════
+   BANK · DELTA  —  the "Changes & Improvements" comparison table
+   --------------------------------------------------------------------
+   A side-by-side comparison of two things (previous | current) across
+   Hardware + Software rows, each current value optionally carrying a
+   coloured CHIP that signals the DIRECTION of the change (the text says
+   the value). Structure + type live here (single source); the section
+   frame lives in _includes/sections/delta-section.html.
+
+   Colours are SKIN-DERIVED (same pattern as the timeline/config banks):
+   the table reads --gd-* tokens, each defaulting to a mix of the wiki's
+   base palette (--foreground / --card), so any wiki gets a coherent
+   table. A skin can pin a token to lock a look — the Apple skin pins the
+   originals so the iPod comparison is unchanged.
+
+   THE CHIP VOCABULARY (colour = the judgment; text = the value):
+     better  · green  — new, or quantifiably better   (256 GB, +33%, A10)
+     feature · blue   — a marquee feature highlighted  (Retina, AR, Metal)
+     changed · amber  — a lateral change, no +/-       (Lightning, 6 colors)
+     worse   · red    — regressed / removed            (Gone)
+     same    · grey   — no change                      (Same)
+   ════════════════════════════════════════════════════════════════════ */
+
+.delta{
+  --gd-ink:        var(--foreground, #0a0a0a);
+  --gd-surface:    var(--card, #fff);
+  --gd-line:       color-mix(in oklab, var(--foreground, #0a0a0a) 10%, transparent);
+  --gd-line-soft:  color-mix(in oklab, var(--foreground, #0a0a0a) 7%, transparent);
+  --gd-current-bg: var(--foreground, #0a0a0a);                                   /* the dark CURRENT header */
+  --gd-current-ink:var(--card, #fff);
+  --gd-prev-bg:    color-mix(in oklab, var(--foreground, #0a0a0a) 4%,  var(--card, #fff));
+  --gd-label-bg:   color-mix(in oklab, var(--foreground, #0a0a0a) 9%,  var(--card, #fff));
+  --gd-sec-bg:     color-mix(in oklab, var(--foreground, #0a0a0a) 2%,  var(--card, #fff));
+  --gd-old-bg:     color-mix(in oklab, var(--foreground, #0a0a0a) 2.5%, transparent);
+  /* chips — semantic defaults; a skin may pin any of them */
+  --gd-better-bg:#dcfce7;  --gd-better-bd:#bbf7d0;  --gd-better-fg:#15803d;
+  --gd-feature-bg:#eff6ff; --gd-feature-bd:#bfdbfe; --gd-feature-fg:#1d4ed8;
+  --gd-changed-bg:#fef9c3; --gd-changed-bd:#fef08a; --gd-changed-fg:#a16207;
+  --gd-worse-bg:#fee2e2;   --gd-worse-bd:#fecaca;   --gd-worse-fg:#b91c1c;
+  --gd-same-bg:#f3f4f6;    --gd-same-bd:#e5e7eb;    --gd-same-fg:#6b7280;
+}
+
+.delta-prose{max-width:65ch;margin-bottom:24px;}
+.delta-prose p{font-size:var(--wiki-prose-size,16px);line-height:var(--wiki-prose-leading,1.65);color:color-mix(in oklab,var(--gd-ink) 80%,transparent);}
+.delta-prose p strong{color:var(--gd-ink);font-weight:600;}
+
+/* Table — border-collapse keeps every column divider one continuous line */
+.gd-wrap{overflow-x:auto;}
+.gd{width:100%;border-collapse:collapse;table-layout:fixed;border:1px solid var(--gd-line);border-radius:12px;overflow:hidden;background:var(--gd-surface);}
+.gd col.gd-c1{width:200px;}
+.gd col.gd-c2,.gd col.gd-c3{width:auto;}
+.gd td{vertical-align:middle;border-right:1px solid var(--gd-line-soft);border-bottom:1px solid var(--gd-line-soft);}
+.gd td:last-child{border-right:none;}
+.gd tr:last-child td{border-bottom:none;}
+
+/* Gen header row */
+.gd-gen td{padding:16px 20px;border-bottom:1px solid var(--gd-line);}
+.gd-gen .gd-gen-label{background:var(--gd-label-bg);}
+.gd-gen .gd-gen-old{background:var(--gd-prev-bg);}
+.gd-gen .gd-gen-new{background:var(--gd-current-bg);border-right-color:color-mix(in oklab,var(--gd-current-ink) 10%,transparent);}
+.gd-tag{display:block;font-family:"JetBrains Mono",monospace;font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:color-mix(in oklab,var(--gd-ink) 40%,transparent);margin-bottom:4px;}
+.gd-gen-new .gd-tag{color:color-mix(in oklab,var(--gd-current-ink) 45%,transparent);}
+.gd-name{display:block;font-family:"Fraunces",Georgia,serif;font-variation-settings:"SOFT" 30,"WONK" 0;font-size:17px;font-weight:600;letter-spacing:-0.01em;color:var(--gd-ink);}
+.gd-gen-new .gd-name{color:var(--gd-current-ink);}
+.gd-year{display:block;font-family:"JetBrains Mono",monospace;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:color-mix(in oklab,var(--gd-ink) 35%,transparent);margin-top:3px;}
+.gd-gen-new .gd-year{color:color-mix(in oklab,var(--gd-current-ink) 30%,transparent);}
+
+/* Section label rows (HARDWARE / SOFTWARE) — .gd-sec-main is a table-cell so
+   it stretches to the row height (fixes the mobile crooked rows). */
+.gd-sec td{background:var(--gd-sec-bg);padding:10px 20px;border-top:1px solid var(--gd-line);border-bottom:1px solid var(--gd-line-soft);font-family:"JetBrains Mono",monospace;font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:var(--gd-ink);}
+.gd-sec-main{white-space:nowrap;}
+.gd-sec-main svg{vertical-align:-2px;margin-right:6px;}
+.gd-sec-col{letter-spacing:.14em;}
+
+/* Data rows */
+.gd-label{padding:14px 20px;}
+.gd-label-name{display:block;font-family:"JetBrains Mono",monospace;font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:var(--gd-ink);}
+.gd-old{padding:14px 20px;background:var(--gd-old-bg);}
+.gd-old-val{font-size:13px;color:color-mix(in oklab,var(--gd-ink) 72%,transparent);line-height:1.45;}
+.gd-old-val.missing{font-style:italic;color:color-mix(in oklab,var(--gd-ink) 55%,transparent);}
+.gd-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:color-mix(in oklab,var(--gd-ink) 12%,transparent);margin-right:8px;vertical-align:middle;}
+.gd-new{padding:14px 20px;}
+.gd-new-val{font-size:13px;color:var(--gd-ink);line-height:1.45;}
+.gd-new-val strong{font-weight:600;}
+
+/* CHIPS — the 5 canonical states */
+.gd-chip{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:6.5px;text-transform:uppercase;letter-spacing:.1em;padding:2px 5px;border-radius:3px;border:1px solid;white-space:nowrap;margin-top:6px;margin-left:7px;}
+.gd-chip-better {background:var(--gd-better-bg); border-color:var(--gd-better-bd); color:var(--gd-better-fg);}
+.gd-chip-feature{background:var(--gd-feature-bg);border-color:var(--gd-feature-bd);color:var(--gd-feature-fg);}
+.gd-chip-changed{background:var(--gd-changed-bg);border-color:var(--gd-changed-bd);color:var(--gd-changed-fg);}
+.gd-chip-worse  {background:var(--gd-worse-bg);  border-color:var(--gd-worse-bd);  color:var(--gd-worse-fg);}
+.gd-chip-same   {background:var(--gd-same-bg);   border-color:var(--gd-same-bd);   color:var(--gd-same-fg);}
+
+/* Footnote */
+.gd-foot{margin-top:16px;font-family:"JetBrains Mono",monospace;font-size:7.5px;text-transform:uppercase;letter-spacing:.12em;color:color-mix(in oklab,var(--gd-ink) 35%,transparent);line-height:1.7;}
+
+@media(max-width:700px){
+  .gd col.gd-c1{width:96px;}
+  .gd td{padding:10px 10px !important;}
+  .gd-name{font-size:14px;}
+  .gd-old-val,.gd-new-val{font-size:12px;}
+}

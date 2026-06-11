@@ -1,19 +1,26 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import grammar from '../../data/grammar.json';
 
 // The add-section picker — ported from the owner's mockup. Screen 1: choose
 // how to start. Screen 2: the template bank (four bank tiles). Screen 3
-// (catalog): the catalog-type chooser — "Category Masonry" is LIVE (it adds
-// the canonical catalog bank, grammar-seeded, at the seam's position); the
-// other types are ghosts until their banks exist.
+// (catalog/timeline): the type chooser. A tile is LIVE (clickable → adds the
+// section) ONLY when it's DERIVED to be: its type has a grammar seed AND a
+// registry section that hosts it. Ghost types (no canon component) can't be
+// clicked. So a tile can't claim to be addable without its render deps —
+// liveness is computed from canon, never a hand-set boolean (rule #5).
+const isLive = (id: string): boolean => {
+  const c = (grammar as any).components?.[id];
+  return !!(c && c.seed && c.section);
+};
 const ic = (d: string, size = 18) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" dangerouslySetInnerHTML={{ __html: d }} />
 );
 
 // a typed sub-chooser tile (catalog types, timeline types …). desc is a
-// paragraph; bullets is the dashed-list form. A tile is `live` only when its
-// type actually seeds a derived section (grammar seed + registry host exist).
-type TypeTile = { id: string; name: string; live: boolean; icon: string; desc?: string; bullets?: string[] };
+// paragraph; bullets is the dashed-list form. Liveness is NOT stored here — it
+// is derived from `id` via isLive() so the picker and the canon can't disagree.
+type TypeTile = { id: string; name: string; icon: string; desc?: string; bullets?: string[] };
 
 // tiles from the mockup's SECTION_TEMPLATES (names pluralized per the owner)
 const TILES = [
@@ -43,7 +50,7 @@ const TILES = [
 // bank (the one real type today): clicking it seeds a derived `timeline`
 // section (grammar seed + registry host). More types are ghosts until built.
 const TIMELINE_TYPES: TypeTile[] = [
-  { id: 'timeline', name: 'Standard Horizontal Timeline', live: true,
+  { id: 'timeline', name: 'Standard Horizontal Timeline',
     icon: '<polyline points="18 8 22 12 18 16"/><polyline points="6 8 2 12 6 16"/><line x1="2" y1="12" x2="22" y2="12"/>',
     bullets: ['standard timeline', 'horizontally scrollable'] },
 ];
@@ -51,22 +58,22 @@ const TIMELINE_TYPES: TypeTile[] = [
 // catalog types from the mockup's CATALOG_TYPES — Category Masonry IS the
 // canonical catalog bank (the one real type today); the rest are ghosts.
 const CATALOG_TYPES: TypeTile[] = [
-  { id: 'catalog', name: 'Category Masonry', live: true,
+  { id: 'catalog', name: 'Category Masonry',
     icon: '<path d="M10 12h11"/><path d="M10 18h11"/><path d="M10 6h11"/><path d="M4 10h2"/><path d="M4 6h1v4"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/>',
     desc: 'A masonry of category cards; each item opens an expandable-card modal. The classic ViziWiki catalog.' },
-  { id: 'flat-table', name: 'Flat Table', live: false,
+  { id: 'flat-table', name: 'Flat Table',
     icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" x2="21" y1="9" y2="9"/><line x1="3" x2="21" y1="15" y2="15"/><line x1="12" x2="12" y1="3" y2="21"/>',
     desc: 'Every item in one sortable, filterable table.' },
-  { id: 'tier-list', name: 'Tier List', live: false,
+  { id: 'tier-list', name: 'Tier List',
     icon: '<line x1="3" x2="21" y1="6" y2="6"/><line x1="3" x2="21" y1="12" y2="12"/><line x1="3" x2="21" y1="18" y2="18"/><rect x="3" y="3" width="4" height="18" rx="1"/>',
     desc: 'Items ranked into labelled tiers (S / A / B …).' },
-  { id: 'gallery-catalog', name: 'Gallery Catalog', live: false,
+  { id: 'gallery-catalog', name: 'Gallery Catalog',
     icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/>',
     desc: 'Image-led cards with an expandable detail view.' },
-  { id: 'compact-list', name: 'Compact List', live: false,
+  { id: 'compact-list', name: 'Compact List',
     icon: '<line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/>',
     desc: 'A dense single-column list, no cards.' },
-  { id: 'timeline-catalog', name: 'Timeline Catalog', live: false,
+  { id: 'timeline-catalog', name: 'Timeline Catalog',
     icon: '<line x1="12" y1="2" x2="12" y2="22"/><circle cx="12" cy="6" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="18" r="2"/>',
     desc: 'Items laid out chronologically along a spine.' },
 ];
@@ -90,14 +97,16 @@ export function SectionPicker({ onClose, onPick }: { onClose: () => void; onPick
       </div>
       <div className="sp-body">
         <div className="sp-grid">
-          {types.map((t) => (
+          {types.map((t) => {
+            const live = isLive(t.id);   // derived from canon, not stored on the tile
+            return (
             <div
               key={t.id}
-              className={`sp-card ${t.live ? 'available' : 'soon'}`}
-              title={t.live ? '' : 'Coming soon'}
-              onClick={t.live ? () => onPick(t.id) : undefined}
+              className={`sp-card ${live ? 'available' : 'soon'}`}
+              title={live ? '' : 'Coming soon'}
+              onClick={live ? () => onPick(t.id) : undefined}
             >
-              <span className={`sp-pill ${t.live ? 'ok' : 'soon'}`}>{t.live ? 'Available' : 'Soon'}</span>
+              <span className={`sp-pill ${live ? 'ok' : 'soon'}`}>{live ? 'Available' : 'Soon'}</span>
               <div className="sp-card-top">
                 <div className="sp-card-ic">{ic(t.icon, 16)}</div>
                 <div className="sp-card-name">{t.name}</div>
@@ -108,7 +117,8 @@ export function SectionPicker({ onClose, onPick }: { onClose: () => void; onPick
                   : t.desc}
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </>

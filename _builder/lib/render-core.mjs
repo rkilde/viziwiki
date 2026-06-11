@@ -20,9 +20,16 @@ export const SENT_PREFIX = '__PE_ADD__';
 export function createRenderer(includesData, policy, registry) {
   const INCLUDES = includesData.includes;
   const SPRITE = includesData.sprite;
-  // section type → canonical partial, from the visuals registry
-  // (_data/visuals.yml): the canon's own map, never restated here
-  const sectionPartial = (type) => ((registry || {}).sections || {})[type + '-section']?.partial || null;
+  // visual/component type → its section partial, DERIVED from the registry's
+  // own `hosts:` map (each section frame lists the visuals it hosts). The map
+  // is the canon — never a `<type>-section` naming guess, which breaks for
+  // banks whose frame is named differently (e.g. lifecycle-lane → os-section).
+  const SECTION_BY_HOST = {};
+  for (const [, s] of Object.entries((registry || {}).sections || {})) {
+    for (const h of (s.hosts || [])) if (s.partial) SECTION_BY_HOST[h] = s.partial;
+  }
+  const sectionPartial = (type) =>
+    SECTION_BY_HOST[type] || ((registry || {}).sections || {})[type + '-section']?.partial || null;
 
   const engine = new Liquid({
     jekyllInclude: true,
