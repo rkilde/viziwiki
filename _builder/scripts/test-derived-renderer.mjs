@@ -340,6 +340,22 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(tl.querySelector('.wiki-section-eyebrow.pe-canon .pe-lock'), 'timeline eyebrow locked (from the visuals registry)');
   ok([...tl.querySelectorAll('.pe-chip')].some((c) => c.textContent === 'remove section'), 'remove-section chip present');
   ok(tl.querySelectorAll('.pe-tonebtn').length === 3, 'timeline tone buttons from grammar enum');
+  // ordering: any input order positions by DATE (editing a middle card's year
+  // out of sequence must not break the layout — stations are year-grouped and
+  // bound by their original index, not DOM order)
+  const dOoo = renderAndDecorate({
+    hero: { eyebrow: null, title: 'T', subtitle: null, subtitle_meta: null, desc: 'D', stats: null, search: false, search_placeholder: '', spotlight: null, feature: null },
+    overview: { tone: 'b', heading: 'H', paragraphs: ['P'], infobox: null },
+    sections: [{ type: 'timeline', data: { heading: 'H', events: [
+      { month: 'Jan', year: '2018', tag: 'A', title: 'E0', preview: 'p' },
+      { month: 'Jan', year: '2012', tag: 'C', title: 'E2', preview: 'p' },
+    ] } }],
+  }, false);
+  const lefts = {}; dOoo.querySelectorAll('.itl-station').forEach((s) => { lefts[s.getAttribute('data-detail')] = parseInt(s.style.left, 10); });
+  ok(lefts['bktld-1'] < lefts['bktld-0'], 'a later-array event with an earlier year sits left (positions by date, any input order)');
+  // and the date-format (single source in station.html data-tag): no day → no comma
+  const tags = [...dOoo.querySelectorAll('.itl-station')].map((s) => s.getAttribute('data-tag'));
+  ok(tags.some((t) => t.indexOf('Jan 2012 ·') === 0), 'no-day date drops the comma ("Jan 2012")');
 }
 
 // ── case 9: one-step bank onboarding guard ──

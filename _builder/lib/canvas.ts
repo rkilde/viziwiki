@@ -136,10 +136,12 @@ const AFFORDANCE = `
   .pe-datefield{ cursor:pointer; border-radius:6px; transition:.12s; }
   .pe-datefield:hover{ background:rgba(99,102,241,.08); outline:1px dashed rgba(99,102,241,.45); outline-offset:3px; }
   .cc-pop.date-pop{ min-width:236px; }
-  .cc-date-row{ display:flex; gap:10px; margin-top:11px; }
-  .cc-date-row label{ flex:1; display:flex; flex-direction:column; gap:5px; font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.14em; text-transform:uppercase; color:#6f6356; }
-  .cc-date-row .cc-date-day{ flex:0 0 64px; }
-  .cc-date-row input{ font-family:'JetBrains Mono',monospace; font-size:12px; padding:7px 9px; border-radius:8px; border:1px solid rgba(0,0,0,.14); background:rgba(255,255,255,.66); outline:none; color:#2a1f15; }
+  .cc-date-row{ display:flex; gap:10px; margin-top:11px; align-items:flex-end; }
+  .cc-date-row label{ display:flex; flex-direction:column; gap:5px; font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.14em; text-transform:uppercase; color:#6f6356; }
+  .cc-date-row .cc-date-day-col{ flex:0 0 46px; }      /* day is short — keep it narrow */
+  .cc-date-row .cc-date-year-col{ flex:1; }            /* year takes the rest */
+  .cc-date-row input{ width:100%; box-sizing:border-box; font-family:'JetBrains Mono',monospace; font-size:12px; padding:7px 9px; border-radius:8px; border:1px solid rgba(0,0,0,.14); background:rgba(255,255,255,.66); outline:none; color:#2a1f15; }
+  .cc-date-row .cc-date-day{ text-align:center; padding-left:5px; padding-right:5px; }
   .cc-date-row input:focus{ border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.18); }
   .cc-date-note{ margin-top:11px; padding-top:9px; border-top:1px solid rgba(0,0,0,.08); font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.06em; text-transform:uppercase; color:#8a7d70; }
   .itl-card.pe-removable{ width:100%; }                                        /* don't shrink the card to fit-content */

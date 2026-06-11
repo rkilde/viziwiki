@@ -25,7 +25,7 @@
 {%- else -%}
 {%- assign e = include.event -%}
 {%- assign n = include.index | plus: 1 -%}
-<div class="itl-station"{% if include.style %} style="{{ include.style }}"{% endif %} data-date="{{ e.month }} {{ e.year }}" data-tag="{{ e.month }}{% if e.day %} {{ e.day }}{% endif %}, {{ e.year }} · {{ e.tag | escape }}" data-title="{{ e.title | escape }}" data-detail="bktld-{{ include.index }}" data-num="{% if n < 10 %}0{% endif %}{{ n }}">
+<div class="itl-station"{% if include.style %} style="{{ include.style }}"{% endif %} data-date="{{ e.month }} {{ e.year }}" data-tag="{{ e.month }}{% if e.day %} {{ e.day }},{% endif %} {{ e.year }} · {{ e.tag | escape }}" data-title="{{ e.title | escape }}" data-detail="bktld-{{ include.index }}" data-num="{% if n < 10 %}0{% endif %}{{ n }}">
   <div class="itl-event-top">
     <div class="sc-float-date"><span class="sc-float-month fr">{{ e.month }}</span> {% if e.day %}<span class="sc-float-day fr">{{ e.day }}</span> {% endif %}<span class="sc-float-year fr">{{ e.year }}</span></div>
     <div class="itl-card">

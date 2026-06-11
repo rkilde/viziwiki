@@ -805,8 +805,8 @@
           var ev = (sdata.events && sdata.events[k]) || {};
           var html = '<div class="cc-pop-label">Date</div>'
             + '<div class="cc-enum cc-month-grid">' + moEnum.map(function (m) { return '<button class="cc-enum-opt' + (m === ev.month ? ' sel' : '') + '" data-m="' + m + '">' + m + '</button>'; }).join('') + '</div>'
-            + '<div class="cc-date-row"><label>Day<input type="text" class="cc-date-day" placeholder="—"></label>'
-            + '<label>Year<input type="text" class="cc-date-year"></label></div>'
+            + '<div class="cc-date-row"><label class="cc-date-day-col">Day<input type="text" class="cc-date-day" placeholder="—"></label>'
+            + '<label class="cc-date-year-col">Year<input type="text" class="cc-date-year"></label></div>'
             + '<div class="cc-date-note">Month &amp; year required · day optional</div>';
           var pop = openPop(anchor, '', html, { cls: 'date-pop', onClose: function () { A('commit'); } });
           var dayIn = qs('.cc-date-day', pop), yrIn = qs('.cc-date-year', pop);
@@ -851,7 +851,12 @@
         };
         if (tlModal) { var tc = qs('[data-tl-close]', tlModal); if (tc) tc.onclick = closeTl; tlModal.onmousedown = function (e) { if (e.target === tlModal) closeTl(); }; }
 
-        stations.forEach(function (st, k) {
+        stations.forEach(function (st) {
+          // bind by the ORIGINAL event index (from the body link bktld-N), NOT
+          // the DOM order — stations are emitted year-grouped, so DOM order ≠
+          // the events[] array order once dates are edited out of sequence.
+          var k = parseInt((st.getAttribute('data-detail') || '').replace('bktld-', ''), 10);
+          if (isNaN(k)) return;
           var epre = prefix + 'events.' + k + '.';
           // the whole float-date above the card is ONE date field → month/day/year popover
           var dateEl = qs('.sc-float-date', st);
@@ -877,9 +882,13 @@
           if (tlOuter) tlOuter.parentNode.insertBefore(addLine('push:' + prefix + 'events', '+ event'), tlOuter.nextSibling);
         }
 
-        // reopen the modal after a re-render (commit / add / remove)
+        // reopen the modal after a re-render (commit / add / remove) — find the
+        // station by its original index (data-detail), not DOM order
         var tlo = window.__peTlOpen;
-        if (tlo && tlo.s === i) { var rst = qsa('.itl-station', secEl)[tlo.k]; if (rst) openEvent(tlo.k, rst); else window.__peTlOpen = null; }
+        if (tlo && tlo.s === i) {
+          var rst = null; qsa('.itl-station', secEl).forEach(function (s) { if (s.getAttribute('data-detail') === 'bktld-' + tlo.k) rst = s; });
+          if (rst) openEvent(tlo.k, rst); else window.__peTlOpen = null;
+        }
       }
     });
 

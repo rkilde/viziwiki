@@ -38,11 +38,23 @@
 
 <div class="tl-outer wiki-section-bleed" id="bktlOuter">
   <div class="track" id="bktlTrack" style="width:{{ totalW }}px;height:{{ TRACK_H }}px;padding-bottom:34px;box-sizing:content-box;">
-    {%- comment -%} stations first (chronological = input order); left from poslist {%- endcomment -%}
-    {%- for e in data.events -%}
-      {%- assign rec = poslist[forloop.index0] | split: ":" -%}
-      {%- capture stStyle -%}position:absolute;top:0;left:{{ rec[0] }}px;width:{{ CARD_W }}px;{%- endcapture -%}
-      {% include visuals/timeline/card.html type=ctype mode="face" event=e index=forloop.index0 style=stStyle %}
+    {%- comment -%} stations — emitted in the SAME year-grouped walk that computes
+      the positions (so ANY input order positions correctly by date, e.g. editing
+      a middle card's year). Each carries its ORIGINAL input index so its body
+      link (bktld-N) and the decorator's data binding stay correct regardless of
+      DOM order. {%- endcomment -%}
+    {%- assign cur = PAD -%}
+    {%- for yr in (firstYr..lastYr) -%}
+      {%- assign cnt = 0 -%}{%- for e in data.events -%}{%- assign yi = e.year | plus: 0 -%}{%- if yi == yr -%}{%- assign cnt = cnt | plus: 1 -%}{%- endif -%}{%- endfor -%}
+      {%- if cnt > 0 -%}
+        {%- assign xw = cur -%}
+        {%- for e in data.events -%}{%- assign yi = e.year | plus: 0 -%}{%- if yi == yr -%}
+          {%- capture stStyle -%}position:absolute;top:0;left:{{ xw }}px;width:{{ CARD_W }}px;{%- endcapture -%}
+          {% include visuals/timeline/card.html type=ctype mode="face" event=e index=forloop.index0 style=stStyle %}
+          {%- assign xw = xw | plus: CARD_W -%}
+        {%- endif -%}{%- endfor -%}
+        {%- assign add = cnt | times: CARD_W -%}{%- assign cur = cur | plus: add -%}
+      {%- else -%}{%- assign cur = cur | plus: SLIM_W -%}{%- endif -%}
     {%- endfor -%}
     <div class="tl-spine"></div>
     {%- comment -%} year bands AFTER the stations — faithful to the engine's paint order:
