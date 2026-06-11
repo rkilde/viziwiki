@@ -17,6 +17,13 @@ const ic = (d: string, size = 18) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" dangerouslySetInnerHTML={{ __html: d }} />
 );
 
+// Placeholder glyph — a blank white square. Used for every asset-tile icon
+// EXCEPT the masonry catalog (which has its real icon). The owner will design
+// per-asset icons later; until then every tile reads from this one constant so
+// the swap is a single edit. White fill + faint border so it reads as an empty
+// slot on the tile's light icon chip.
+const BLANK = '<rect x="2.5" y="2.5" width="19" height="19" rx="3" fill="#fff" stroke="rgba(0,0,0,.18)" stroke-width="1"/>';
+
 // a typed sub-chooser tile (catalog types, timeline types …). desc is a
 // paragraph; bullets is the dashed-list form. Liveness is NOT stored here — it
 // is derived from `id` via isLive() so the picker and the canon can't disagree.
@@ -26,22 +33,22 @@ type TypeTile = { id: string; name: string; icon: string; desc?: string; bullets
 const TILES = [
   {
     id: 'catalog', name: 'Catalogs', pill: 'Category' as const, opens: 'catalog' as const,
-    icon: '<path d="M10 12h11"/><path d="M10 18h11"/><path d="M10 6h11"/><path d="M4 10h2"/><path d="M4 6h1v4"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/>',
+    icon: BLANK,
     desc: 'Categorized, browsable lists — each item opens an expandable card. Pick a catalog type →',
   },
   {
     id: 'timeline', name: 'Timelines', pill: 'Category' as const, opens: 'timeline' as const,
-    icon: '<polyline points="18 8 22 12 18 16"/><polyline points="6 8 2 12 6 16"/><line x1="2" y1="12" x2="22" y2="12"/>',
+    icon: BLANK,
     desc: 'Date-positioned event scrollers on a real time axis. Pick a timeline type →',
   },
   {
     id: 'delta', name: 'Side by Side Comparisons', pill: 'Available' as const, opens: null,
-    icon: '<path d="M12 3v18"/><rect x="3" y="8" width="6" height="8" rx="1"/><rect x="15" y="8" width="6" height="8" rx="1"/>',
+    icon: BLANK,
     desc: 'A previous-vs-current table grouped into Hardware & Software, with colour-coded change chips (better, feature, changed, worse, same).',
   },
   {
     id: 'config', name: 'Hardware & Software Tech Visuals', pill: 'Category' as const, opens: null,
-    icon: '<line x1="22" x2="2" y1="12" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" x2="6.01" y1="16" y2="16"/><line x1="10" x2="10.01" y1="16" y2="16"/>',
+    icon: BLANK,
     desc: 'Storage/spec tiers with proportional fill bars derived from capacity, plus price, dates & device-colour dots. Pick a chart type →',
   },
 ];
@@ -51,7 +58,7 @@ const TILES = [
 // section (grammar seed + registry host). More types are ghosts until built.
 const TIMELINE_TYPES: TypeTile[] = [
   { id: 'timeline', name: 'Standard Horizontal Timeline',
-    icon: '<polyline points="18 8 22 12 18 16"/><polyline points="6 8 2 12 6 16"/><line x1="2" y1="12" x2="22" y2="12"/>',
+    icon: BLANK,
     bullets: ['standard timeline', 'horizontally scrollable'] },
 ];
 
@@ -59,22 +66,22 @@ const TIMELINE_TYPES: TypeTile[] = [
 // canonical catalog bank (the one real type today); the rest are ghosts.
 const CATALOG_TYPES: TypeTile[] = [
   { id: 'catalog', name: 'Category Masonry',
-    icon: '<path d="M10 12h11"/><path d="M10 18h11"/><path d="M10 6h11"/><path d="M4 10h2"/><path d="M4 6h1v4"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/>',
+    icon: '<rect x="3.5" y="3.5" width="7" height="9.5" rx="1.4"/><rect x="3.5" y="15.5" width="7" height="5" rx="1.4"/><rect x="13.5" y="3.5" width="7" height="5" rx="1.4"/><rect x="13.5" y="11" width="7" height="9.5" rx="1.4"/>',
     desc: 'A masonry of category cards; each item opens an expandable-card modal. The classic ViziWiki catalog.' },
   { id: 'flat-table', name: 'Flat Table',
-    icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" x2="21" y1="9" y2="9"/><line x1="3" x2="21" y1="15" y2="15"/><line x1="12" x2="12" y1="3" y2="21"/>',
+    icon: BLANK,
     desc: 'Every item in one sortable, filterable table.' },
   { id: 'tier-list', name: 'Tier List',
-    icon: '<line x1="3" x2="21" y1="6" y2="6"/><line x1="3" x2="21" y1="12" y2="12"/><line x1="3" x2="21" y1="18" y2="18"/><rect x="3" y="3" width="4" height="18" rx="1"/>',
+    icon: BLANK,
     desc: 'Items ranked into labelled tiers (S / A / B …).' },
   { id: 'gallery-catalog', name: 'Gallery Catalog',
-    icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/>',
+    icon: BLANK,
     desc: 'Image-led cards with an expandable detail view.' },
   { id: 'compact-list', name: 'Compact List',
-    icon: '<line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/>',
+    icon: BLANK,
     desc: 'A dense single-column list, no cards.' },
   { id: 'timeline-catalog', name: 'Timeline Catalog',
-    icon: '<line x1="12" y1="2" x2="12" y2="22"/><circle cx="12" cy="6" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="18" r="2"/>',
+    icon: BLANK,
     desc: 'Items laid out chronologically along a spine.' },
 ];
 
