@@ -178,7 +178,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(dock.querySelector('.cc-btn.danger'), 'remove-category control (danger)');
   ok(!dock.querySelector('.cc-btn[data-tip*="note"]'), 'no note button in the dock');
   ok([...dock.querySelectorAll('.cc-btn')].every((b) => b.getAttribute('data-tip')), 'every dock control has a hover tooltip');
-  ok(typeof cat.querySelector('.cat-card').onmouseenter === 'function', 'card wires the dock-avoid (shift on hover)');
+  ok(cat.querySelector('.cat-card .cc-dock'), 'dock is a child of the card (positioned above it via CSS)');
   // note is a dashed chip: "+ note" when absent (seed has none)
   const noteChip = cat.querySelector('.pe-note-chip');
   ok(noteChip && noteChip.tagName === 'BUTTON' && noteChip.textContent === '+ note', 'absent note → dashed "+ note" chip on the card');

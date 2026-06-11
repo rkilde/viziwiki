@@ -58,13 +58,15 @@ const AFFORDANCE = `
   body{ --g-bg:rgba(250,250,253,.5); --g-panel:#ffffff; --g-blur:blur(28px) saturate(180%) brightness(1.05);
     --g-edge:1px solid rgba(255,255,255,.6); --g-shadow:0 18px 48px rgba(20,16,10,.26),0 3px 9px rgba(20,16,10,.14);
     --g-inset:inset 0 1px 0 rgba(255,255,255,.85); }
-  .cc-dock{ position:absolute; bottom:10px; right:10px; z-index:6; display:flex; align-items:center; gap:2px; padding:4px; border-radius:13px;
+  /* dock floats ABOVE the card at the top-left (out of the chips' way). The
+     card is overflow:visible (editor only) so the dock isn't clipped. */
+  .cat-card{ overflow:visible !important; }
+  .cc-dock{ position:absolute; top:-38px; left:0; z-index:8; display:flex; align-items:center; gap:2px; padding:4px; border-radius:13px;
     background:var(--g-bg); border:var(--g-edge); box-shadow:var(--g-shadow),var(--g-inset);
     backdrop-filter:var(--g-blur); -webkit-backdrop-filter:var(--g-blur);
-    opacity:0; transform:translateY(6px) scale(.96); transform-origin:bottom right; pointer-events:none;
+    opacity:0; transform:translateY(-6px) scale(.96); transform-origin:top left; pointer-events:none;
     transition:opacity .18s ease, transform .2s cubic-bezier(.2,.7,.3,1); }
-  /* dock auto-shifts (--cc-shift, set by JS) to clear the "+ item" pill */
-  .cat-card:hover .cc-dock, .cc-dock.pinned{ opacity:1; transform:var(--cc-shift,none); pointer-events:auto; }
+  .cat-card:hover .cc-dock, .cc-dock.pinned{ opacity:1; transform:none; pointer-events:auto; }
   /* hover explainer tooltip — solid glass chip above each control */
   .cc-btn[data-tip]::after{ content:attr(data-tip); position:absolute; bottom:calc(100% + 9px); left:50%;
     transform:translateX(-50%) translateY(4px) scale(.96); white-space:nowrap; padding:5px 9px; border-radius:8px; pointer-events:none; z-index:60;

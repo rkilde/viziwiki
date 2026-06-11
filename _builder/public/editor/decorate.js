@@ -680,25 +680,7 @@
             (function (jj, kk, pp) { pp.addEventListener('click', function () { openItem(jj, kk, pp); }); })(j, k, pill);
           });
           var pillsWrap = qs('.cat-card-pills', card);
-          var addP = null;
-          if (pillsWrap) { addP = addBtn('push:' + cpre + 'items', '+ item', true); addP.className = 'cat-pill cat-add-pill'; pillsWrap.appendChild(addP); }
-
-          // dock is overlay chrome — on hover, shift it (via --cc-shift) just
-          // enough to clear the card's own "+ item" pill, without altering the
-          // card's published layout (mockup behaviour)
-          if (addP) (function (dk, ad) {
-            card.onmouseenter = function () {
-              dk.style.setProperty('--cc-shift', 'none');
-              (window.requestAnimationFrame || function (f) { setTimeout(f, 0); })(function () {
-                var dr = dk.getBoundingClientRect(), ar = ad.getBoundingClientRect();
-                if (dr.right < ar.left - 6 || dr.left > ar.right + 6 || dr.bottom < ar.top - 6 || dr.top > ar.bottom + 6) return;
-                var dx = (ar.left - 8) - dr.right;
-                if (dr.left + dx > card.getBoundingClientRect().left + 8) dk.style.setProperty('--cc-shift', 'translateX(' + dx + 'px)');
-                else dk.style.setProperty('--cc-shift', 'translateY(' + ((ar.top - 8) - dr.bottom) + 'px)');
-              });
-            };
-            card.onmouseleave = function () { dk.style.setProperty('--cc-shift', 'none'); };
-          })(dock, addP);
+          if (pillsWrap) { var addP = addBtn('push:' + cpre + 'items', '+ item', true); addP.className = 'cat-pill cat-add-pill'; pillsWrap.appendChild(addP); }
         });
 
         // ── item detail content (canonical hidden divs) ──
