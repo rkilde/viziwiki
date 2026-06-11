@@ -784,7 +784,7 @@
         // optional H2 — edit if present, else a "+ heading" affordance in the header
         var tlTitle = qs('.wiki-section-title', secEl);
         if (tlTitle) { wrapCE(tlTitle, prefix + 'heading'); }
-        else { var hdr = qs('.tl-hdr', secEl); if (hdr) { var hint0 = qs('.tl-scroll-hint', hdr); hdr.insertBefore(addBtn('add:' + prefix + 'heading', '+ heading', true), hint0 || null); } }
+        else { var hdr = qs('.tl-hdr', secEl); if (hdr) { var hint0 = qs('.tl-scroll-hint', hdr); hdr.insertBefore(addLine('add:' + prefix + 'heading', '+ heading'), hint0 || null); } }
 
         // the auto-derived scroll hint is canon — lock it (red box + padlock)
         var hintEl = qs('.tl-scroll-hint', secEl);

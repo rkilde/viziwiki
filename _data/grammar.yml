@@ -258,7 +258,7 @@ components:
     section: timeline-section
     locked: { eyebrow: "Timeline", icon: move-horizontal, full_bleed: true }
     fields:
-      heading:   { type: text, blank: "Add a heading for this timeline", help: "Optional H2 (omit for eyebrow-only)" }
+      heading:   { type: text, blank: "Timeline Header", help: "Optional H2 (omit for eyebrow-only)" }
       tone:      { type: "enum[a,b,special]", default: b }
       visual:  { type: text, locked: true, default: timeline, help: "The slot's visual type — registry hosts constrain it (admin)" }
       card_type: { type: "enum[station]", default: station }

@@ -835,7 +835,7 @@
       "fields": {
         "heading": {
           "type": "text",
-          "blank": "Add a heading for this timeline",
+          "blank": "Timeline Header",
           "help": "Optional H2 (omit for eyebrow-only)"
         },
         "tone": {
