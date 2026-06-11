@@ -206,6 +206,8 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(ovSec.nextElementSibling.className === 'pe-add-section' && cat.nextElementSibling.className === 'pe-add-section', 'seams sit directly below each section');
   // overview heading binding still hits the OVERVIEW h2, not the catalog's
   ok(ovSec.querySelector('.wiki-section-title .ce'), 'overview heading still bound');
+  // placeholder select-all marker: fields carry their grammar blank in data-ph
+  ok(cat.querySelector('.cat-card-title .ce').getAttribute('data-ph') === 'New category', 'catalog field .ce carries data-ph (its grammar blank)');
 }
 
 // ── case 6: catalog ITEM DETAIL editing (the canonical modal, editor-driven) ──
@@ -277,8 +279,10 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(modal.classList.contains('open'), 'clicking a pill opens the canonical modal (.open)');
   ok(modal.querySelector('[data-modal-body] [id="d-0-0"]'), 'detail moved into the modal body');
   const mrb = modal.querySelector('[data-modal-ribbon]');
-  ok(mrb.classList.contains('ribbon-gone'), 'modal ribbon mirrors the pill (gone tone)');
-  ok(mrb.querySelector('span') && mrb.querySelector('span').textContent === 'R', 'modal ribbon uses the canonical inner <span> (rotated banner)');
+  ok(mrb.classList.contains('ribbon-gone'), 'modal ribbon mirrors the gone tone (read from the doc)');
+  ok(mrb.querySelector('span') && mrb.querySelector('span').textContent === 'R', 'modal ribbon: canonical inner <span> with the doc ribbon text (not the stale pill attr)');
+  // placeholder marker also on hero/overview fields
+  ok(d.querySelector('.wiki-section-title .ce').hasAttribute('data-ph'), 'overview heading .ce carries data-ph');
   modal.querySelector('[data-modal-close]').onclick();
   ok(!modal.classList.contains('open') && d.querySelector('.cat-details [id="d-0-0"]'), 'close returns the detail to its hidden home');
 }

@@ -185,13 +185,26 @@
   }
 
   // ── 2) editable text → wrap content in a .ce contenteditable span ──────────
+  // the placeholder text for a data path = its grammar blank (or item_blank for
+  // list items) — used to mark fields for placeholder select-all. Body-section
+  // paths (sections.N.data.X) resolve through the section's component type.
+  function phFor(path) {
+    var key = path;
+    var m = /^sections\.(\d+)\.data\.(.+)$/.exec(path);
+    if (m) { var doc = getDoc(); var t = doc && doc.sections && doc.sections[+m[1]] && doc.sections[+m[1]].type; if (t) key = t + '.' + m[2]; }
+    var r = ruleFor(key) || {};   // ruleFor maps numeric list indexes → []
+    var ph = r.blank != null ? r.blank : r.item_blank;
+    return (ph != null && typeof ph === 'string') ? ph : null;
+  }
   function wrapCE(root, path, excl) {
     if (!root) return;
+    var ph = phFor(path);
     if (root.matches && root.matches('input')) { // input placeholder → editable span
       var span = document.createElement('span');
       span.className = root.className + ' ce';
       span.setAttribute('contenteditable', 'true');
       span.textContent = root.getAttribute('placeholder') || '';
+      if (ph != null) span.setAttribute('data-ph', ph);
       span.addEventListener('blur', function () { P(path, span); });
       root.parentNode.replaceChild(span, root);
       return;
@@ -199,6 +212,7 @@
     var ce = document.createElement('span');
     ce.className = 'ce';
     ce.setAttribute('contenteditable', 'true');
+    if (ph != null) ce.setAttribute('data-ph', ph);
     var moved = [];
     [].slice.call(root.childNodes).forEach(function (n) {
       if (n.nodeType === 1) {
@@ -277,6 +291,25 @@
   }
   document.addEventListener('mousedown', function (e) { if (pePop && !pePop.contains(e.target) && !(e.target.closest && e.target.closest('.cc-btn,.pe-st-chip,.im-info-chip,.gpill-menu'))) closePop(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePop(); });
+
+  // PLACEHOLDER SELECT-ALL (general rule across the build kit): a field still
+  // holds its placeholder when its text === its grammar blank. First click into
+  // such a field selects all so you just type to replace it; once filled (text
+  // ≠ blank) it clicks normally. Fields carry their blank in data-ph.
+  function selectAllCE(el) {
+    try {
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') { el.select(); return; }
+      var r = document.createRange(); r.selectNodeContents(el);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+    } catch (e) {}
+  }
+  document.addEventListener('focusin', function (e) {
+    var el = e.target; if (!el || !el.getAttribute) return;
+    var ph = el.getAttribute('data-ph'); if (ph == null) return;
+    var val = (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') ? el.value : el.textContent;
+    if ((val || '').trim() !== ph.trim()) return;   // already filled → normal
+    setTimeout(function () { selectAllCE(el); }, 0); // defer past the click's caret placement
+  });
 
   // group-pill action menu (mockup style): a small glass popover with
   // Strike (object pills only) + Remove
@@ -446,6 +479,7 @@
         unitCe.className = 'ce';
         unitCe.setAttribute('contenteditable', 'true');
         unitCe.textContent = sdata.unit != null ? sdata.unit : (R('catalog.unit').blank || '');
+        unitCe.setAttribute('data-ph', R('catalog.unit').blank || 'item');
         // unit feeds the derived summary line — commit + re-render so it refreshes
         (function (p, el) { el.addEventListener('blur', function () { P(p, el); A('commit'); }); })(prefix + 'unit', unitCe);
         unitChip.appendChild(unitCe);
@@ -458,6 +492,7 @@
           noteCe.className = 'ce';
           noteCe.setAttribute('contenteditable', 'true');
           noteCe.textContent = sdata.note;
+          noteCe.setAttribute('data-ph', R('catalog.note').blank || 'Note');
           (function (p, el) { el.addEventListener('blur', function () { P(p, el); A('commit'); }); })(prefix + 'note', noteCe);
           noteChip.appendChild(noteCe);
           var noteRm = document.createElement('button');
@@ -540,12 +575,17 @@
           var det = qs('[id="d-' + j + '-' + k + '"]', secEl); if (!det) return;
           if (modalCard && pill) modalCard.style.setProperty('--cat-color', pill.getAttribute('data-color') || '');
           if (modalRb) {
-            var rb = pill && pill.getAttribute('data-ribbon');
+            // read the ribbon from the CURRENT doc — the pill's data-ribbon
+            // attr goes stale after a live (PV) ribbon text/tone edit
+            var dd = getDoc(); var rib = (((((dd || {}).sections || [])[i] || {}).data || {}).categories || [])[j];
+            rib = rib && rib.ribbon;
+            var rbText = rib ? (typeof rib === 'object' ? rib.text : rib) : null;
+            var rbGone = !!(rib && typeof rib === 'object' && rib.tone === 'gone');
             // canon: the rotated banner needs an inner <span> (catalog.html L92)
             modalRb.innerHTML = '';
-            if (rb) { var rsp = document.createElement('span'); rsp.textContent = rb; modalRb.appendChild(rsp); }
-            modalRb.classList.toggle('ribbon-gone', !!pill && pill.getAttribute('data-ribbon-tone') === 'gone');
-            if (modalCard) modalCard.classList.toggle('has-ribbon', !!rb);
+            if (rbText) { var rsp = document.createElement('span'); rsp.textContent = rbText; modalRb.appendChild(rsp); }
+            modalRb.classList.toggle('ribbon-gone', rbGone);
+            if (modalCard) modalCard.classList.toggle('has-ribbon', !!rbText);
           }
           det.setAttribute('data-pe-detail-open', '1'); modalBody.appendChild(det);
           modal.classList.add('open'); if (modalCard) centreModal(modalCard);
@@ -575,6 +615,7 @@
             '<button class="cc-rm">Remove ribbon</button></div>';
           var pop = openPop(btn, accent, html, { avoid: qs('.cat-ribbon', card) });
           var input = qs('input', pop); input.value = isObj ? (rb.text || '') : rb;
+          input.setAttribute('data-ph', ((R('catalog.categories[].ribbon').blank) || {}).text || 'Ribbon');
           input.addEventListener('input', function () { PV(cpre + (isObj ? 'ribbon.text' : 'ribbon'), input.value); var sp = qs('.cat-ribbon span', card); if (sp) sp.textContent = input.value; });
           qsa('.cc-tone [data-t]', pop).forEach(function (b) { b.onclick = function () { var t = b.getAttribute('data-t'); PV(cpre + 'ribbon.tone', t); var rib = qs('.cat-ribbon', card); if (rib) rib.classList.toggle('ribbon-gone', t === 'gone'); qsa('.cc-tone [data-t]', pop).forEach(function (x) { x.classList.toggle('on', x === b); }); }; });
           qs('.cc-rm', pop).onclick = function () { closePop(); A('rm:' + cpre + 'ribbon'); };
@@ -614,7 +655,7 @@
                 if (nv.nodeType === 3 && nv.nodeValue.indexOf('·') > -1) { nv.nodeValue = nv.nodeValue.slice(0, nv.nodeValue.lastIndexOf('·') + 1); break; }
               }
               noteChip = document.createElement('span'); noteChip.className = 'pe-note-chip has';
-              var ceN = document.createElement('span'); ceN.className = 'ce'; ceN.setAttribute('contenteditable', 'true'); ceN.textContent = cdata.note;
+              var ceN = document.createElement('span'); ceN.className = 'ce'; ceN.setAttribute('contenteditable', 'true'); ceN.textContent = cdata.note; ceN.setAttribute('data-ph', (R('catalog.categories[].note').blank) || 'Note');
               (function (p, el) { el.addEventListener('blur', function () { P(p, el); }); })(cpre + 'note', ceN);
               noteChip.appendChild(ceN);
               makeRemovable(noteChip, 'rm:' + cpre + 'note');     // corner ×
@@ -714,7 +755,7 @@
             var clk = document.createElement('span'); clk.className = 'pe-lock'; clk.title = 'Locked canonical label — set the link instead'; clk.innerHTML = LOCK; cta.appendChild(clk);
             if (idata.cta != null) {
               var lc = document.createElement('span'); lc.className = 'pe-chip'; lc.appendChild(document.createTextNode('link: '));
-              var lce = document.createElement('span'); lce.className = 'ce'; lce.setAttribute('contenteditable', 'true'); lce.textContent = idata.cta;
+              var lce = document.createElement('span'); lce.className = 'ce'; lce.setAttribute('contenteditable', 'true'); lce.textContent = idata.cta; lce.setAttribute('data-ph', (R('catalog.categories[].items[].cta').blank) || '#');
               (function (p, el) { el.addEventListener('blur', function () { P(p, el); }); })(ipre + 'cta', lce); lc.appendChild(lce);
               (function (p) { var lrm = document.createElement('button'); lrm.className = 'pe-tag-rm'; lrm.style.opacity = '1'; lrm.textContent = '×'; lrm.title = 'Remove link'; lrm.onclick = function () { A('rm:' + p); }; lc.appendChild(lrm); })(ipre + 'cta');
               cta.parentNode.insertBefore(lc, cta.nextSibling);
