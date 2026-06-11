@@ -808,7 +808,7 @@
             + '<div class="cc-date-row"><label class="cc-date-day-col">Day<input type="text" class="cc-date-day" placeholder="—"></label>'
             + '<label class="cc-date-year-col">Year<input type="text" class="cc-date-year"></label></div>'
             + '<div class="cc-date-note">Month &amp; year required · day optional</div>';
-          var pop = openPop(anchor, '', html, { cls: 'date-pop', onClose: function () { A('commit'); } });
+          var pop = openPop(anchor, '', html, { cls: 'date-pop', onClose: function () { var o = qs('.tl-outer', secEl); window.__peTlScrollTo = { s: i, k: k, from: o ? o.scrollLeft : 0 }; A('commit'); } });
           var dayIn = qs('.cc-date-day', pop), yrIn = qs('.cc-date-year', pop);
           dayIn.value = ev.day != null ? ev.day : ''; yrIn.value = ev.year != null ? ev.year : '';
           qsa('.cc-enum-opt', pop).forEach(function (b) { b.onclick = function () { PV(epre + 'month', b.getAttribute('data-m')); qsa('.cc-enum-opt', pop).forEach(function (x) { x.classList.toggle('sel', x === b); }); }; });
@@ -876,10 +876,14 @@
           if (card) { card.style.cursor = 'pointer'; (function (kk, ss) { card.addEventListener('click', function (e) { if (e.target.closest('.ce,.pe-remove,.cc-pop')) return; openEvent(kk, ss); }); })(k, st); }
         });
 
-        // + event (append a grammar-seeded event), respecting the max
+        // "+ new event" — upper-right, above the timeline. Appending lands the
+        // new card on the right (its seed year); flag it so we scroll there.
         if (evMax == null || stations.length < evMax) {
-          var tlOuter = qs('.tl-outer', secEl);
-          if (tlOuter) tlOuter.parentNode.insertBefore(addLine('push:' + prefix + 'events', '+ event'), tlOuter.nextSibling);
+          var addEv = document.createElement('button');
+          addEv.className = 'pe-add pe-tl-addev';
+          addEv.textContent = '+ new event';
+          addEv.onclick = function () { var o = qs('.tl-outer', secEl); window.__peTlScrollTo = { s: i, k: qsa('.itl-station', secEl).length, from: o ? o.scrollLeft : 0 }; A('push:' + prefix + 'events'); };
+          secEl.appendChild(addEv);
         }
 
         // reopen the modal after a re-render (commit / add / remove) — find the
@@ -888,6 +892,25 @@
         if (tlo && tlo.s === i) {
           var rst = null; qsa('.itl-station', secEl).forEach(function (s) { if (s.getAttribute('data-detail') === 'bktld-' + tlo.k) rst = s; });
           if (rst) openEvent(tlo.k, rst); else window.__peTlOpen = null;
+        }
+
+        // ── smooth-scroll to the just-added / just-moved card after a re-render.
+        // Restore the prior scroll first so the motion continues from where you
+        // were (rather than snapping to 0), then animate to the target card. ──
+        var ts = window.__peTlScrollTo;
+        if (ts && ts.s === i) {
+          window.__peTlScrollTo = null;
+          var outer = qs('.tl-outer', secEl);
+          if (outer) {
+            if (ts.from != null) outer.scrollLeft = ts.from;
+            (function (k) { (window.requestAnimationFrame || function (f) { setTimeout(f, 30); })(function () {
+              var stn = null; qsa('.itl-station', secEl).forEach(function (s) { if (s.getAttribute('data-detail') === 'bktld-' + k) stn = s; });
+              if (!stn) return;
+              var target = stn.offsetLeft + stn.offsetWidth / 2 - outer.clientWidth / 2;
+              target = Math.max(0, Math.min(target, outer.scrollWidth - outer.clientWidth));
+              try { outer.scrollTo({ left: target, behavior: 'smooth' }); } catch (e) { outer.scrollLeft = target; }
+            }); })(ts.k);
+          }
         }
       }
     });

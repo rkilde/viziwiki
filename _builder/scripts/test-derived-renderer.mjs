@@ -427,7 +427,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(st0.querySelector('.sc-title .ce').getAttribute('data-ph') === 'Name this event', 'title field marked placeholder (data-ph = grammar blank)');
   // add/remove per grammar min (seed has 5 > min 2 → removable; max none → addable)
   ok(st0.querySelector('.itl-card.pe-removable .pe-remove'), 'event removable (× on the card) above the min');
-  ok([...tl.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ event'), '+ event affordance present');
+  ok([...tl.querySelectorAll('.pe-tl-addev')].some((b) => b.textContent === '+ new event'), '"+ new event" button present (upper-right, above the timeline)');
   // derived scroll hint is locked
   ok(tl.querySelector('.tl-scroll-hint.pe-canon .pe-lock'), 'auto-derived scroll hint locked');
   // at the grammar min, no × renders (can't drop below 2 events)

@@ -144,6 +144,9 @@ const AFFORDANCE = `
   .cc-date-row .cc-date-day{ text-align:center; padding-left:5px; padding-right:5px; }
   .cc-date-row input:focus{ border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.18); }
   .cc-date-note{ margin-top:11px; padding-top:9px; border-top:1px solid rgba(0,0,0,.08); font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.06em; text-transform:uppercase; color:#8a7d70; }
+  /* "+ new event" — upper-right of the timeline section, below the tone toolbar */
+  .pe-tl-addev{ position:absolute; top:50px; right:48px; z-index:5; }
+  @media(max-width:600px){ .pe-tl-addev{ right:16px; } }
   .itl-card.pe-removable{ width:100%; }                                        /* don't shrink the card to fit-content */
   .itl-card.pe-removable > .pe-remove{ top:6px; right:6px; left:auto; }         /* × inside the card corner (card clips overflow) */
   .sc-expand.pe-expand{ cursor:pointer; padding:2px 6px; margin:-2px -6px; border-radius:5px; transition:.12s; }  /* the "Details ›" expand trigger */
