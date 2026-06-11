@@ -145,6 +145,10 @@ const AFFORDANCE = `
   .cc-date-row input:focus{ border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.18); }
   .cc-date-row input.cc-invalid, .cc-date-row input.cc-invalid:focus{ border-color:#ef4444; box-shadow:0 0 0 3px rgba(239,68,68,.16); color:#c0392b; }
   .cc-date-note{ margin-top:11px; padding-top:9px; border-top:1px solid rgba(0,0,0,.08); font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.06em; text-transform:uppercase; color:#8a7d70; }
+  .cc-apply{ display:block; width:100%; margin-top:11px; padding:9px; border:none; border-radius:9px; cursor:pointer;
+    font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; background:#241a10; color:#fff; transition:.12s; }
+  .cc-apply:hover{ background:#3a2a18; }
+  .cc-apply:disabled{ background:rgba(0,0,0,.1); color:rgba(0,0,0,.38); cursor:not-allowed; }
   /* "+ new event" — right side, directly above the timeline panel (the header's
      bottom edge sits just above the scroller). ~2× the normal add-chip size. */
   .tl-hdr{ position:relative; }

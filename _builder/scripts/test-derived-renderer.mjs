@@ -433,6 +433,10 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   fire(yrIn, '20x1'); ok(yrIn.value === '201', 'year strips letters and caps at 4 digits');
   ok(yrIn.classList.contains('cc-invalid'), 'year needs exactly 4 digits (201 invalid)');
   fire(yrIn, '2015'); ok(!yrIn.classList.contains('cc-invalid'), '4-digit year is valid');
+  const applyBtn = dpop.querySelector('.cc-apply');
+  ok(applyBtn && /apply/i.test(applyBtn.textContent), 'date picker has an Apply button');
+  ok(!applyBtn.disabled, 'Apply enabled when the date is valid');
+  fire(dayIn, '99'); ok(applyBtn.disabled, 'Apply disabled while a field is invalid (can\'t commit a bad date)');
   // placeholder select-all: seeded title text carries its grammar blank in data-ph
   ok(st0.querySelector('.sc-title .ce').getAttribute('data-ph') === 'Name this event', 'title field marked placeholder (data-ph = grammar blank)');
   // add/remove per grammar min (seed has 5 > min 2 → removable; max none → addable)

@@ -815,27 +815,34 @@
             + '<div class="cc-enum cc-month-grid">' + moEnum.map(function (m) { return '<button class="cc-enum-opt' + (m === ev.month ? ' sel' : '') + '" data-m="' + m + '">' + m + '</button>'; }).join('') + '</div>'
             + '<div class="cc-date-row"><label class="cc-date-day-col">Day<input type="text" inputmode="numeric" maxlength="2" class="cc-date-day" placeholder="—"></label>'
             + '<label class="cc-date-year-col">Year<input type="text" inputmode="numeric" maxlength="4" class="cc-date-year"></label></div>'
-            + '<div class="cc-date-note">Month &amp; year required · day optional</div>';
+            + '<div class="cc-date-note">Month &amp; year required · day optional</div>'
+            + '<button type="button" class="cc-apply">Apply date</button>';
           var pop = openPop(anchor, '', html, { cls: 'date-pop', onClose: function () { var o = qs('.tl-outer', secEl); window.__peTlScrollTo = { s: i, k: k, from: o ? o.scrollLeft : 0 }; A('commit'); } });
-          var dayIn = qs('.cc-date-day', pop), yrIn = qs('.cc-date-year', pop);
+          var dayIn = qs('.cc-date-day', pop), yrIn = qs('.cc-date-year', pop), applyBtn = qs('.cc-apply', pop);
           dayIn.value = ev.day != null ? ev.day : ''; yrIn.value = ev.year != null ? ev.year : '';
           var curMonth = ev.month || '';
+          // Apply is disabled while anything is invalid, so a bad date can't be
+          // committed (clicking Apply dismisses → onClose commits + scrolls).
+          var updateApply = function () { applyBtn.disabled = dayIn.classList.contains('cc-invalid') || yrIn.classList.contains('cc-invalid'); };
+          applyBtn.onclick = function () { closePop(); };
           // INVALID input is flagged (red) and NEVER applied — the doc keeps the
           // last valid value, so a bad/incomplete date can't be committed.
           var checkDay = function () {
             var v = dayIn.value;
-            if (v === '') { dayIn.classList.remove('cc-invalid'); PV(epre + 'day', ''); return; }   // optional
+            if (v === '') { dayIn.classList.remove('cc-invalid'); PV(epre + 'day', ''); updateApply(); return; }   // optional
             var n = parseInt(v, 10);
-            if (!/^\d{1,2}$/.test(v) || n < 1 || n > daysInMonth(curMonth, yrIn.value)) { dayIn.classList.add('cc-invalid'); return; }
-            dayIn.classList.remove('cc-invalid'); PV(epre + 'day', v);
+            if (!/^\d{1,2}$/.test(v) || n < 1 || n > daysInMonth(curMonth, yrIn.value)) { dayIn.classList.add('cc-invalid'); updateApply(); return; }
+            dayIn.classList.remove('cc-invalid'); PV(epre + 'day', v); updateApply();
           };
           var checkYear = function () {
             if (/^\d{4}$/.test(yrIn.value)) { yrIn.classList.remove('cc-invalid'); PV(epre + 'year', yrIn.value); checkDay(); }   // re-check day (leap)
             else { yrIn.classList.add('cc-invalid'); }   // must be exactly 4 digits
+            updateApply();
           };
           dayIn.addEventListener('input', function () { dayIn.value = dayIn.value.replace(/\D/g, '').slice(0, 2); checkDay(); });
           yrIn.addEventListener('input', function () { yrIn.value = yrIn.value.replace(/\D/g, '').slice(0, 4); checkYear(); });
           qsa('.cc-enum-opt', pop).forEach(function (b) { b.onclick = function () { curMonth = b.getAttribute('data-m'); PV(epre + 'month', curMonth); qsa('.cc-enum-opt', pop).forEach(function (x) { x.classList.toggle('sel', x === b); }); checkDay(); }; });
+          updateApply();
         };
 
         // modal (scoped to THIS section) → body editing, decorator-driven (the
