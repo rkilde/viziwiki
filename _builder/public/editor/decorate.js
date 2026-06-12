@@ -1261,8 +1261,8 @@
         // toolbar below the chart — "+ configuration" (intro lives below the H2)
         var cfgChart = qs('.cfg-chart', secEl);
         if (cfgChart) {
-          var tb = document.createElement('div'); tb.className = 'cfg-toolbar';
-          var mk = function (label, action) { var b = document.createElement('button'); b.className = 'ov-mini'; b.textContent = label; var pm = /^push:(.+)$/.exec(action); if (pm) b.setAttribute('data-pe-addpath', pm[1]); b.onclick = function () { A(action); }; return b; };
+          var tb = document.createElement('div'); tb.className = 'pe-cfg-toolbar';
+          var mk = function (label, action) { var b = document.createElement('button'); b.className = 'pe-cfg-add'; b.textContent = label; var pm = /^push:(.+)$/.exec(action); if (pm) b.setAttribute('data-pe-addpath', pm[1]); b.onclick = function () { A(action); }; return b; };
           tb.appendChild(mk('+ configuration', 'push:' + prefix + 'items'));
           cfgChart.appendChild(tb);
         }

@@ -317,9 +317,7 @@ const AFFORDANCE = `
      drawer for the full form. The bars stay CANON-sorted low→high (config.html);
      an inline/drawer capacity, unit or revised change re-runs that sort and the
      decorator FLIPs each row + bar into place (inline transitions). ════ */
-  .cfg-row{ position:relative; }
-  .cfg-cap .pe-cfg-unit{ cursor:pointer; border-radius:4px; padding:0 2px; transition:background .12s, color .12s; }
-  .cfg-cap .pe-cfg-unit:hover{ background:rgba(99,102,241,.12); color:#6366f1; }
+  .cfg-row{ position:relative; }   /* editor-only anchor for the row chevron (does NOT restate the canon grid) */
   /* per-row edit button (chevron), just right of the row */
   .row-edit-btn{ position:absolute; top:4px; right:-38px; width:26px; height:26px; border-radius:7px; border:1px solid rgba(0,0,0,.16);
     background:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; opacity:0; transition:opacity .14s;
@@ -381,10 +379,10 @@ const AFFORDANCE = `
   .dr-btn.danger{ border-color:#fecaca; color:#ef4444; }
   .dr-btn.danger:hover{ background:#fef2f2; }
   /* toolbar below the chart */
-  .cfg-toolbar{ display:flex; flex-wrap:wrap; gap:6px; margin-top:16px; padding-top:14px; border-top:1px dashed rgba(0,0,0,.14); }
-  .ov-mini{ font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.08em; text-transform:uppercase; padding:6px 10px; border-radius:6px;
+  .pe-cfg-toolbar{ display:flex; flex-wrap:wrap; gap:6px; margin-top:16px; padding-top:14px; border-top:1px dashed rgba(0,0,0,.14); }
+  .pe-cfg-add{ font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.08em; text-transform:uppercase; padding:6px 10px; border-radius:6px;
     border:1px solid rgba(0,0,0,.14); background:#fff; cursor:pointer; color:rgba(0,0,0,.5); }
-  .ov-mini:hover{ border-color:rgba(0,0,0,.3); color:#0a0a0a; }
+  .pe-cfg-add:hover{ border-color:rgba(0,0,0,.3); color:#0a0a0a; }
 `;
 
 const FONTS = `<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">`;
