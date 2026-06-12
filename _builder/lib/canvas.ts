@@ -388,13 +388,14 @@ const AFFORDANCE = `
      device line, card titles + key/value rows; a card-icon picker sourced from
      the canon sprite. Keep cards/rows full-width so the corner × sits right. */
   .spec-card{ position:relative; }                                  /* editor anchor for the × + drag handle */
-  .spec-card.pe-removable{ width:auto; overflow:visible; }
-  .spec-card:hover{ z-index:6; }                                    /* lift the hovered card so its × / handle aren't covered by neighbours */
-  .spec-card.pe-removable > .pe-remove{ z-index:14; }               /* the card × sits above adjacent cards (was getting covered) */
+  .spec-card.pe-removable{ width:auto; }
   .spec-row.pe-removable{ width:auto; }
   .spec-card-head .pe-mini-add{ margin-left:0; margin-right:6px; }
-  /* drag-to-reorder: a grab handle top-right, just below the × (hover-revealed) */
-  .spec-drag{ position:absolute; top:14px; right:-9px; width:18px; height:18px; z-index:13; display:flex; align-items:center; justify-content:center;
+  /* the grid clips to its rounded border (overflow:hidden), so the × + drag
+     handle are INSET into the card's top-right corner — outside-the-card
+     positions get clipped on edge cards (top row / side columns). */
+  .spec-card.pe-removable > .pe-remove{ top:6px; right:6px; left:auto; z-index:14; }
+  .spec-drag{ position:absolute; top:30px; right:6px; width:18px; height:18px; z-index:13; display:flex; align-items:center; justify-content:center;
     border:1px solid rgba(0,0,0,.16); border-radius:50%; background:#fff; color:rgba(0,0,0,.4); cursor:grab; padding:0;
     opacity:0; transition:opacity .12s, color .12s, border-color .12s; }
   .spec-card:hover .spec-drag{ opacity:1; }
@@ -402,8 +403,9 @@ const AFFORDANCE = `
   .spec-drag:active{ cursor:grabbing; }
   .spec-drag svg{ width:11px; height:11px; }
   .spec-card.pe-dragging{ opacity:.4; }
-  .spec-card.pe-drop-before{ box-shadow:-3px 0 0 0 #6366f1; }       /* drop-insertion edge cue */
-  .spec-card.pe-drop-after{ box-shadow:3px 0 0 0 #6366f1; }
+  /* drop-insertion cue — INSET edge (an outside edge would be clipped by the grid) */
+  .spec-card.pe-drop-before{ box-shadow:inset 3px 0 0 0 #6366f1; }
+  .spec-card.pe-drop-after{ box-shadow:inset -3px 0 0 0 #6366f1; }
   /* icon picker popover — a scrollable grid of the sprite's glyphs */
   .cc-pop.icon-pop{ min-width:266px; }
   .cc-icons{ display:grid; grid-template-columns:repeat(6,1fr); gap:5px; max-height:244px; overflow-y:auto; margin-bottom:4px; padding:1px; }
