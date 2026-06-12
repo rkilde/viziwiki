@@ -1004,8 +1004,8 @@
         var rs = document.createElement('style'); rs.id = 'pe-readiness-css';
         rs.textContent = [
           '.pe-mkhost{position:relative}',
-          '.mk{position:absolute;left:-50px;top:2px;width:36px;z-index:30}',
-          '.wiki-hero-inner.pe-mkhost>.mk{top:6px}',
+          '.mk{position:absolute;left:14px;top:24px;width:36px;z-index:30}',
+          'section.wiki-hero.pe-mkhost>.mk{top:32px}',
           '.mk-btn{position:relative;width:34px;height:34px;border:0;background:none;cursor:pointer;padding:0}',
           '.mk-tri{width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;transition:transform .2s cubic-bezier(.2,.8,.2,1),background .2s,color .2s,border-color .2s}',
           '.mk.todo .mk-tri{background:linear-gradient(180deg,#fdf0da,#f8e3c2);border:1px solid #f0cf9a;box-shadow:0 4px 12px rgba(201,138,43,.22),inset 0 1px 0 rgba(255,255,255,.9);color:#c98a2b}',
@@ -1185,9 +1185,13 @@
           if (it.met) return;
           b.addEventListener('click', function (e) { e.stopPropagation(); closeAllMk(); jumpTo(it); });
         });
-        var inner = host.inner || host.el; inner.classList.add('pe-mkhost');
-        var prev = inner.querySelector(':scope > .mk'); if (prev) prev.remove();
-        inner.insertBefore(mk, inner.firstChild);
+        // anchor to the SECTION element with a positive inset so the marker
+        // sits in the section's own top-left gutter and is never clipped by the
+        // canvas overflow (a negative left-margin offset gets cut off on narrow
+        // canvases).
+        var hostEl = host.el; hostEl.classList.add('pe-mkhost');
+        var prev = hostEl.querySelector(':scope > .mk'); if (prev) prev.remove();
+        hostEl.insertBefore(mk, hostEl.firstChild);
         host._mk = mk;
       }
 
