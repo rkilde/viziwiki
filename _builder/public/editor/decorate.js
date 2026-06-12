@@ -1176,7 +1176,7 @@
             + '</div>'
             + '</div>'
             + '<div class="dr-row c2">'
-            + '<div><div class="dr-label">Model / part number</div><input class="dr-input dr-model" value="' + ea(idata.model || '') + '"></div>'
+            + '<div><div class="dr-label">Model / model number</div><input class="dr-input dr-model" value="' + ea(idata.model || '') + '"></div>'
             + '<div><div class="dr-label">Dates available</div><input class="dr-input dr-dates" value="' + ea(idata.dates || '') + '"></div>'
             + '</div>'
             + '<div><div class="dr-label" style="margin-bottom:8px">Options</div><div class="tog-row">'
