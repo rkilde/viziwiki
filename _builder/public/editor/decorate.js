@@ -1060,6 +1060,15 @@
       // item. There is no manual reorder — the order is DERIVED from capacity. ──
       if (type === 'config') {
         var ea = function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); };
+        // number/price field behaviours, mirroring the timeline date fields:
+        //  · numCE/numInput — typing a letter is gracefully filtered out (the
+        //    field only keeps digits + a decimal point); you can't break it.
+        //  · enterBlur — pressing Enter LOCKS the value in (commits on blur) and
+        //    never inserts a newline / can't be pushed past.
+        var caretEnd = function (el) { try { var r = document.createRange(); r.selectNodeContents(el); r.collapse(false); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); } catch (e) {} };
+        var numCE = function (el) { el.addEventListener('input', function () { var c = (el.textContent || '').replace(/[^\d.]/g, ''); if (c !== el.textContent) { el.textContent = c; caretEnd(el); } }); };
+        var numInput = function (el) { el.addEventListener('input', function () { var c = el.value.replace(/[^\d.]/g, ''); if (c !== el.value) el.value = c; }); };
+        var enterBlur = function (el) { if (el) el.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); el.blur(); } }); };
         wrapCE(qs('.wiki-section-title', secEl), prefix + 'heading');     // required H2
         wrapCE(qs('.cfg-chart-title', secEl), prefix + 'chart_title');    // required chart title
 
@@ -1113,6 +1122,7 @@
             capCe.setAttribute('data-pe-path', ipre + 'capacity');
             [].slice.call(capBox.childNodes).forEach(function (n) { if (n.nodeType === 3) capCe.appendChild(n); });
             capBox.insertBefore(capCe, capBox.firstChild);
+            numCE(capCe); enterBlur(capCe);
             (function (cd) { capCe.addEventListener('blur', function () {
               var raw = (capCe.textContent || '').replace(/[^\d.]/g, '');
               if (raw === '' || !(Number(raw) > 0)) { capCe.textContent = String(cd.capacity != null ? cd.capacity : ''); return; }
@@ -1138,7 +1148,7 @@
             if (pLine) {
               wrapCE(pLine, ipre + 'price');
               var pce = pLine.querySelector('.ce');
-              if (pce) (function (cd) { pce.addEventListener('blur', function () { var t = (pce.textContent || ''); if (t === String(cd.price)) return; PV(ipre + 'price', t); A('commit'); }); })(idata);
+              if (pce) { enterBlur(pce); (function (cd) { pce.addEventListener('blur', function () { var t = (pce.textContent || ''); if (t === String(cd.price)) return; PV(ipre + 'price', t); A('commit'); }); })(idata); }
             }
           }
           // dates — inline when present
@@ -1192,6 +1202,7 @@
 
           // capacity (drawer) — commit on change → re-sort + re-fill
           var capIn = qd('.dr-cap');
+          numInput(capIn); enterBlur(capIn);
           (function (cd) {
             var commitCap = function () {
               var raw = (capIn.value || '').replace(/[^\d.]/g, '');
@@ -1200,15 +1211,14 @@
               cfgSnap(); PV(ipre + 'capacity', Number(raw)); A('commit');
             };
             capIn.addEventListener('change', commitCap);
-            capIn.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); capIn.blur(); } });
           })(idata);
           // unit (drawer)
           qd('.dr-unit').addEventListener('change', function () { cfgSnap(); A('set:' + ipre + 'unit:' + this.value); });
           // price + price2 + price-drop toggle → the single canon price string
           var priceIn = qd('.dr-price'), price2In = qd('.dr-price2'), dropBtn = qd('.dr-drop');
           var pushPrice = function () { PV(ipre + 'price', combinePrice(priceIn.value, price2In ? price2In.value : '', dropBtn.classList.contains('on'))); A('commit'); };
-          priceIn.addEventListener('change', pushPrice);
-          if (price2In) price2In.addEventListener('change', pushPrice);
+          enterBlur(priceIn); priceIn.addEventListener('change', pushPrice);
+          if (price2In) { enterBlur(price2In); price2In.addEventListener('change', pushPrice); }
           dropBtn.onclick = function () {
             var on = !dropBtn.classList.contains('on'); dropBtn.classList.toggle('on', on);
             var nv = (price2In ? price2In.value : '') || (R('config.items[].price').blank || '$0');
