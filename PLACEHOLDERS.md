@@ -156,7 +156,7 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 | `events[].year` | • | text | `Year` |
 | `events[].tag` |  | text | `Add a tag` |
 | `events[].title` | • | text | `Name this event` |
-| `events[].preview` |  | text | `Add a short summary of what happened` |
+| `events[].preview` | • | text | `Add a short summary of what happened` |
 | `events[].body` |  | richtext | `Write the full story for the expandable card…` |
 
 ## catalog

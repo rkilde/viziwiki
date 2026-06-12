@@ -280,7 +280,7 @@ components:
         year:    { type: text, required: true, blank: "Year", help: "Set via the date picker; an unset year reads as 'Year' and isn't date-positioned until real" }
         tag:     { type: text, blank: "Add a tag" }
         title:   { type: text, required: true, blank: "Name this event", help: "Card headline + modal title" }
-        preview: { type: text, blank: "Add a short summary of what happened", help: "One-line summary on the card face" }
+        preview: { type: text, required: true, blank: "Add a short summary of what happened", help: "One-line summary on the collapsed card face" }
         body:    { type: richtext, blank: "Write the full story for the expandable card…", help: "Full detail in the expandable card" }
     derived: ["scroll hint, year bands, positions, gap chips — all from the dates"]
     seed:

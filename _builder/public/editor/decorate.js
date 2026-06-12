@@ -274,6 +274,7 @@
   function armDockHover(card, dock) {
     var GRACE = 56;   // px around the card/dock before it hides
     var place = function () { var r = card.getBoundingClientRect(); dock.style.left = r.left + 'px'; dock.style.top = (r.top - dock.offsetHeight - 6) + 'px'; };
+    dock._pin = function () { dock.classList.add('pinned'); place(); };   // for programmatic open (e.g. ribbon reopen)
     var inBox = function (e, r) { return e.clientX >= r.left - GRACE && e.clientX <= r.right + GRACE && e.clientY >= r.top - GRACE && e.clientY <= r.bottom + GRACE; };
     var moveH = null;
     var unpin = function () { dock.classList.remove('pinned'); if (moveH) document.removeEventListener('mousemove', moveH); moveH = null; };
@@ -845,8 +846,12 @@
         if (ro && ro.s === i && ro.kind === 'ribbon') {
           window.__peReopen = null;
           var rc = qsa('.cat-masonry > .cat-card', secEl)[ro.j];
-          var rb2 = rc && qs('.cc-dock .cc-btn[title="Ribbon"]', rc);
-          if (rb2) rb2.click();
+          var dk = rc && qs('.cc-dock', rc);
+          var rb2 = dk && qs('.cc-btn[data-tip="Edit ribbon"]', dk);
+          // pin + position the (freshly re-rendered) dock so the ribbon popover
+          // lands at the right place, then open it — so adding a ribbon shows the
+          // editor immediately (no second click).
+          if (dk && rb2) { dk._pin && dk._pin(); rb2.click(); }
         }
       }
 

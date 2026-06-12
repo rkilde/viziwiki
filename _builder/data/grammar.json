@@ -954,8 +954,9 @@
           },
           "preview": {
             "type": "text",
+            "required": true,
             "blank": "Add a short summary of what happened",
-            "help": "One-line summary on the card face"
+            "help": "One-line summary on the collapsed card face"
           },
           "body": {
             "type": "richtext",
