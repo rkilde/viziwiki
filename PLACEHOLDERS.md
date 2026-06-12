@@ -153,7 +153,7 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 | `events` | • | list<event> | _(template — see sub-fields)_ |
 | `events[].month` | • | enum | `Jan`  _(choice: Jan · Feb · Mar · Apr · May · Jun · Jul · Aug · Sep · Oct · Nov · Dec)_ |
 | `events[].day` |  | text | `##` |
-| `events[].year` | • | text | `####` |
+| `events[].year` | • | text | `Year` |
 | `events[].tag` |  | text | `Add a tag` |
 | `events[].title` | • | text | `Name this event` |
 | `events[].preview` |  | text | `Add a short summary of what happened` |

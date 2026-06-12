@@ -474,7 +474,9 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(mBody, 'expandable card body is editable in place');
   ok((mBody.textContent || '').trim().length > 0, 'empty body shows its placeholder text in the editor');
   ok(tlModal.querySelector('[data-tl-title] .ce'), 'event title is editable in the expanded card');
-  ok(/####/.test(tlModal.querySelector('[data-tl-tag]').textContent), 'date appears in the expanded card tag line (upper-left), not just the tag');
+  ok(/\bYear\b/.test(tlModal.querySelector('[data-tl-tag]').textContent), 'date appears in the expanded card tag line (upper-left), not just the tag');
+  // no-day date drops the comma: "Month Year", never "Month, Year" (one canon fix, both surfaces)
+  ok(!/,\s*Year/.test(tlModal.querySelector('[data-tl-tag]').textContent), 'no-day date has no comma before the year');
 }
 
 // ── case 12: READINESS MARKERS — derived from grammar required/min ──

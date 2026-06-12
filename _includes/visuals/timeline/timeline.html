@@ -82,7 +82,7 @@
       {%- for yr in (firstYr..lastYr) -%}
         {%- assign cnt = 0 -%}{%- for e in data.events -%}{%- assign yi = e.year | plus: 0 -%}{%- if yi < 1000 -%}{%- assign yi = baseYr -%}{%- endif -%}{%- if yi == yr -%}{%- assign cnt = cnt | plus: 1 -%}{%- endif -%}{%- endfor -%}
         {%- if cnt > 0 -%}{%- assign bw = cnt | times: CARD_W -%}{%- else -%}{%- assign bw = SLIM_W -%}{%- endif -%}
-        <div class="tl-yr" style="left:{{ cur }}px;"><span{% if cnt == 0 %} style="opacity:.45;font-size:7px"{% endif %}>{% if yr < 1000 %}####{% else %}{{ yr }}{% endif %}</span></div>
+        <div class="tl-yr" style="left:{{ cur }}px;"><span{% if cnt == 0 %} style="opacity:.45;font-size:7px"{% endif %}>{% if yr < 1000 %}Year{% else %}{{ yr }}{% endif %}</span></div>
         {%- assign cur = cur | plus: bw -%}
       {%- endfor -%}
     </div>

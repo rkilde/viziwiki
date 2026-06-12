@@ -263,7 +263,7 @@ components:
       visual:  { type: text, locked: true, default: timeline, help: "The slot's visual type — registry hosts constrain it (admin)" }
       card_type: { type: "enum[station]", default: station }
       events:    { type: "list<event>", required: true, min: 2,
-                   item_blank: { month: "Month", year: "####", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened" } }
+                   item_blank: { month: "Month", year: "Year", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened" } }
     subtypes:
       event:
         # month + year DRIVE the layout (date-positioned), so they default to real,
@@ -271,7 +271,7 @@ components:
         # placeholders the contributor types over.
         month:   { type: "enum[Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec]", required: true, blank: "Month", help: "Set via the date picker; an unset month reads as the 'Month' placeholder" }
         day:     { type: text, blank: "##" }
-        year:    { type: text, required: true, blank: "####", help: "Set via the date picker; an unset year reads as '####' and isn't date-positioned until real" }
+        year:    { type: text, required: true, blank: "Year", help: "Set via the date picker; an unset year reads as 'Year' and isn't date-positioned until real" }
         tag:     { type: text, blank: "Add a tag" }
         title:   { type: text, required: true, blank: "Name this event", help: "Card headline + modal title" }
         preview: { type: text, blank: "Add a short summary of what happened", help: "One-line summary on the card face" }
@@ -280,9 +280,9 @@ components:
     seed:
       heading: "Timeline heading"
       events:
-        - { month: "Month", year: "####", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened" }
-        - { month: "Month", year: "####", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened" }
-        - { month: "Month", year: "####", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened" }
+        - { month: "Month", year: "Year", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened" }
+        - { month: "Month", year: "Year", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened" }
+        - { month: "Month", year: "Year", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened" }
     min: "≥2 events, each with month + year + title"
 
   # ---- CATALOG — the data-driven list + expandable cards ---------------

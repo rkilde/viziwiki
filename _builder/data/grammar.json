@@ -896,7 +896,7 @@
           "min": 2,
           "item_blank": {
             "month": "Month",
-            "year": "####",
+            "year": "Year",
             "tag": "Add a tag",
             "title": "Name this event",
             "preview": "Add a short summary of what happened"
@@ -918,8 +918,8 @@
           "year": {
             "type": "text",
             "required": true,
-            "blank": "####",
-            "help": "Set via the date picker; an unset year reads as '####' and isn't date-positioned until real"
+            "blank": "Year",
+            "help": "Set via the date picker; an unset year reads as 'Year' and isn't date-positioned until real"
           },
           "tag": {
             "type": "text",
@@ -951,21 +951,21 @@
         "events": [
           {
             "month": "Month",
-            "year": "####",
+            "year": "Year",
             "tag": "Add a tag",
             "title": "Name this event",
             "preview": "Add a short summary of what happened"
           },
           {
             "month": "Month",
-            "year": "####",
+            "year": "Year",
             "tag": "Add a tag",
             "title": "Name this event",
             "preview": "Add a short summary of what happened"
           },
           {
             "month": "Month",
-            "year": "####",
+            "year": "Year",
             "tag": "Add a tag",
             "title": "Name this event",
             "preview": "Add a short summary of what happened"
