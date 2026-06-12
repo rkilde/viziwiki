@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import type { Wiki } from '../../lib/wiki';
+import { BrandLockup } from './BrandLockup';
 
 // Wiki swatch — a small coloured tile. (Real per-wiki icons come later.)
 const Swatch = ({ color, label }: { color: string; label: string }) => (
@@ -23,6 +24,9 @@ export function Topbar({ wikis, current, onSwitch, onNewWiki, level, onLevel }: 
 
   return (
     <div id="topbar">
+      {/* brand lockup (ViziWiki + Build Kit), then a separator, then the existing chrome */}
+      <BrandLockup />
+      <span className="brand-sep" />
       <div id="wiki-switcher">
         <button id="wiki-btn" className={open ? 'open' : ''} onClick={() => setOpen((o) => !o)}>
           <Swatch color={color} label={current.name[0]} />
