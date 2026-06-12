@@ -24,6 +24,10 @@ const ic = (d: string, size = 18) => (
 // slot on the tile's light icon chip.
 const BLANK = '<rect x="2.5" y="2.5" width="19" height="19" rx="3" fill="#fff" stroke="rgba(0,0,0,.18)" stroke-width="1"/>';
 
+// the spec-sheet glyph — reused EVERYWHERE spec appears (its standalone tile AND
+// its entry under the Tech Visuals category), so the icon is identical in both.
+const SHEET = '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/>';
+
 // a typed sub-chooser tile (catalog types, timeline types …). desc is a
 // paragraph; bullets is the dashed-list form. Liveness is NOT stored here — it
 // is derived from `id` via isLive() so the picker and the canon can't disagree.
@@ -48,7 +52,7 @@ const TILES = [
   },
   {
     id: 'spec', name: 'Specifications Sheet', pill: 'Category' as const, opens: 'spec' as const,
-    icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/>',
+    icon: SHEET,
     desc: 'A grid of spec cards — each an icon + title + key/value rows (the dark "Specifications Sheet" band). Pick a sheet type →',
   },
   {
@@ -75,6 +79,9 @@ const CONFIG_TYPES: TypeTile[] = [
   { id: 'config', name: 'Storage / Configuration Chart',
     icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><text x="12" y="11" text-anchor="middle" dominant-baseline="middle" font-size="7" font-family="monospace" font-weight="bold" fill="currentColor" stroke="none">64</text><text x="12" y="17.5" text-anchor="middle" dominant-baseline="middle" font-size="4.2" font-family="monospace" fill="currentColor" stroke="none">GB</text>',
     desc: 'Capacity tiers as proportional fill bars (lowest → highest), with price, dates & device-color dots. Revised configs drop below a divider.' },
+  { id: 'spec', name: 'Specifications Sheet',
+    icon: SHEET,
+    desc: 'A grid of spec cards — each an icon + title + key/value rows. The dark signature spec band.' },
 ];
 
 // spec (Specifications Sheet) types — the card-grid sheet IS the canonical spec
@@ -82,7 +89,7 @@ const CONFIG_TYPES: TypeTile[] = [
 // (grammar seed + registry host). More sheet layouts are ghosts until built.
 const SPEC_TYPES: TypeTile[] = [
   { id: 'spec', name: 'Specifications Sheet',
-    icon: '<rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/><line x1="4.6" y1="6" x2="9.4" y2="6"/><line x1="4.6" y1="8.2" x2="9.4" y2="8.2"/>',
+    icon: SHEET,
     desc: 'A grid of cards, each an icon + title + key/value rows. The dark signature spec band.' },
 ];
 
