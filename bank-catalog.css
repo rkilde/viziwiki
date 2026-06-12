@@ -17,20 +17,20 @@
 .catalog .cat-masonry{columns:2;column-gap:16px}
 
 .cat-card{position:relative;overflow:hidden;break-inside:avoid;margin-bottom:16px;
-  background:var(--wiki-surface-bg,#fff);border:1px solid var(--wiki-divider-color,rgba(0,0,0,.1));border-left:4px solid var(--cat-color);
+  background:var(--wiki-surface-bg,#fff);border:1px solid var(--wiki-cat-divider-color,rgba(0,0,0,.1));border-left:4px solid var(--cat-color);
   border-radius:var(--wiki-card-radius,14px);padding:20px}
 .cat-card-title{font-family:'Fraunces',Georgia,serif;font-size:17px;font-weight:600;letter-spacing:-.01em;color:var(--cat-color)}
 .cat-card-count{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:8px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--wiki-text-muted-color,#777);margin-top:4px}
 /* reserve corner room when a ribbon is present so title/count wrap before it */
 .cat-card.has-ribbon .cat-card-title,.cat-card.has-ribbon .cat-card-count{padding-right:84px}
-.cat-card-divider{height:1px;background:var(--wiki-divider-color,rgba(0,0,0,.1));margin:12px 0}
+.cat-card-divider{height:1px;background:var(--wiki-cat-divider-color,rgba(0,0,0,.1));margin:12px 0}
 .cat-card-pills{display:flex;flex-wrap:wrap}
 /* --cat-pill-fg: THE single tweak point for every item-pill's resting text
    color, site-wide. Foreground blended 85% onto the card (sRGB) — the exact
    equivalent of the original rgba(foreground, .85) over a white card, the
    "slightly dropped" look. (Mixing with transparent in oklab darkened it.)
    Each skin's --foreground + --card flow through. Hover swaps to --cat-color. */
-.cat-pill{display:inline-block;margin:0 6px 6px 0;padding:5px 12px;border:1px solid var(--wiki-divider-color,rgba(0,0,0,.1));border-radius:4px;
+.cat-pill{display:inline-block;margin:0 6px 6px 0;padding:5px 12px;border:1px solid var(--wiki-cat-divider-color,rgba(0,0,0,.1));border-radius:4px;
   background:var(--wiki-surface-bg,#fff);color:var(--cat-pill-fg,color-mix(in srgb,var(--wiki-text-color,#2a1f15) 85%,var(--wiki-surface-bg,#fff)));font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;cursor:pointer;transition:background .15s,border-color .15s,color .15s}
 .cat-pill:hover{background:color-mix(in oklab,var(--cat-color) 9%,var(--wiki-surface-bg,#fff));border-color:color-mix(in oklab,var(--cat-color) 45%,transparent);color:var(--cat-color)}
 
@@ -43,7 +43,7 @@
 .cat-ribbon.ribbon-gone span{background:color-mix(in oklab,var(--wiki-neutral) 72%,var(--wiki-text-color,#000) 28%);color:#fff}
 
 /* ADD-ON: footer note (mono box, max 1) */
-.cat-footnote{margin-top:8px;padding:14px 18px;border:1px solid var(--wiki-divider-color,rgba(0,0,0,.1));border-radius:6px;background:var(--wiki-surface-bg,#fff);
+.cat-footnote{margin-top:8px;padding:14px 18px;border:1px solid var(--wiki-cat-divider-color,rgba(0,0,0,.1));border-radius:6px;background:var(--wiki-surface-bg,#fff);
   font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;line-height:1.7;letter-spacing:.03em;color:var(--wiki-text-muted-color,#777)}
 .cat-footnote b{color:var(--wiki-text-color,#222);font-weight:600}
 
@@ -60,7 +60,7 @@
 .modal-ov.open{display:flex}
 .modal-card{position:relative;width:100%;max-width:460px;background:var(--wiki-surface-bg,#fff);border-radius:var(--wiki-card-radius,14px);border-left:5px solid var(--cat-color);box-shadow:0 24px 64px rgba(0,0,0,.28);overflow:clip}
 .modal-scroll{max-height:85vh;overflow-y:auto;padding:24px 24px 22px}
-.modal-close{position:absolute;top:14px;right:14px;width:26px;height:26px;border:0;border-radius:50%;cursor:pointer;background:var(--wiki-surface-bg,#fff);box-shadow:0 0 0 1px var(--wiki-divider-color,rgba(0,0,0,.1));color:var(--wiki-text-muted-color,#777);font-size:15px;line-height:1;z-index:5}
+.modal-close{position:absolute;top:14px;right:14px;width:26px;height:26px;border:0;border-radius:50%;cursor:pointer;background:var(--wiki-surface-bg,#fff);box-shadow:0 0 0 1px var(--wiki-cat-divider-color,rgba(0,0,0,.1));color:var(--wiki-text-muted-color,#777);font-size:15px;line-height:1;z-index:5}
 .modal-card .cat-ribbon{z-index:2;width:120px;height:120px}
 .modal-card .cat-ribbon span{top:36px;right:-46px;width:206px;font-size:7.5px}
 .modal-headrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-right:44px}
@@ -81,18 +81,18 @@
    (breaks out of the .modal-scroll 24px padding); the inset variant is the
    content-width rule that sets off the "See full entry" footer. One edit
    here propagates to every catalog card sitewide. */
-.modal-divider{height:1px;background:var(--wiki-divider-color,rgba(0,0,0,.1));margin:16px -24px 0}
+.modal-divider{height:1px;background:var(--wiki-cat-divider-color,rgba(0,0,0,.1));margin:16px -24px 0}
 .modal-divider.is-inset{margin:20px 0 0}
 .modal-desc{font-family:'Spectral',Georgia,serif;font-size:14px;line-height:1.55;color:color-mix(in oklab,var(--wiki-text-color,#222) 85%,transparent);margin-top:10px}
 .modal-group-label{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:8px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--wiki-text-muted-color,#777);margin:18px 0 8px}
 .gpill{display:inline-block;margin:0 5px 5px 0;padding:3px 9px;border-radius:3px;border:1px solid color-mix(in oklab,var(--cat-color) 25%,transparent);
   background:color-mix(in oklab,var(--cat-color) 7%,var(--wiki-surface-bg,#fff));color:var(--cat-color);
   font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}
-.gpill.struck{text-decoration:line-through;border-color:var(--wiki-divider-color,rgba(0,0,0,.1));background:color-mix(in oklab,var(--wiki-text-color,#222) 4%,transparent);color:var(--wiki-text-muted-color,#777);filter:grayscale(1)}
+.gpill.struck{text-decoration:line-through;border-color:var(--wiki-cat-divider-color,rgba(0,0,0,.1));background:color-mix(in oklab,var(--wiki-text-color,#222) 4%,transparent);color:var(--wiki-text-muted-color,#777);filter:grayscale(1)}
 .modal-callout{margin-top:18px;padding:12px 14px;border-radius:6px;border-left:3px solid var(--cat-color);background:color-mix(in oklab,var(--cat-color) 6%,var(--wiki-surface-bg,#fff))}
 .modal-callout-label{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--cat-color);margin-bottom:5px}
 .modal-callout-text{font-family:'Spectral',Georgia,serif;font-size:14px;line-height:1.5;color:var(--wiki-text-color,#222)}
-.modal-note{margin-top:16px;padding-top:12px;border-top:1px solid var(--wiki-divider-color,rgba(0,0,0,.1));font-family:'Spectral',Georgia,serif;font-size:12.5px;font-style:italic;line-height:1.55;color:var(--wiki-text-muted-color,#777)}
+.modal-note{margin-top:16px;padding-top:12px;border-top:1px solid var(--wiki-cat-divider-color,rgba(0,0,0,.1));font-family:'Spectral',Georgia,serif;font-size:12.5px;font-style:italic;line-height:1.55;color:var(--wiki-text-muted-color,#777)}
 .modal-cta{display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding-bottom:2px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cat-color);text-decoration:none;border-bottom:1px solid color-mix(in oklab,var(--cat-color) 32%,transparent)}
 
 /* ── Mobile — single column + tighter spacing + smaller ribbons ─────── */

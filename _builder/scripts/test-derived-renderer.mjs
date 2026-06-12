@@ -61,7 +61,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(d.querySelectorAll('.wiki-hero-spotlight-tag .pe-tag-rm').length === 2, 'tags removable');
   ok([...d.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === '+ tag'), '+ tag add button');
   ok(d.querySelectorAll('.wiki-section-prose > p.pe-removable').length === 2, 'paragraphs removable (above grammar min)');
-  ok([...d.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ paragraph'), '+ paragraph button');
+  ok(![...d.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ paragraph'), 'no + paragraph button (overview prose is one box)');
   ok(d.querySelector('.wiki-infobox.pe-removable'), 'infobox removable');
   ok(d.querySelector('.wiki-infobox-data > dt .ce') && d.querySelector('.wiki-infobox-data > dd .ce'), 'infobox row editable');
   // +row / +badge live in an add-bar attached to the infobox, positioned

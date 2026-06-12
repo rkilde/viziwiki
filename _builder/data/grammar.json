@@ -971,7 +971,8 @@
             "year": "Year",
             "tag": "Add a tag",
             "title": "Name this event",
-            "preview": "Add a short summary of what happened"
+            "preview": "Add a short summary of what happened",
+            "body": "Write the full story for the expandable card…"
           }
         }
       },
@@ -1011,8 +1012,9 @@
           },
           "body": {
             "type": "richtext",
+            "required": true,
             "blank": "Write the full story for the expandable card…",
-            "help": "Full detail in the expandable card"
+            "help": "Full detail in the expandable card (required)"
           }
         }
       },
@@ -1027,21 +1029,24 @@
             "year": "Year",
             "tag": "Add a tag",
             "title": "Name this event",
-            "preview": "Add a short summary of what happened"
+            "preview": "Add a short summary of what happened",
+            "body": "Write the full story for the expandable card…"
           },
           {
             "month": "Month",
             "year": "Year",
             "tag": "Add a tag",
             "title": "Name this event",
-            "preview": "Add a short summary of what happened"
+            "preview": "Add a short summary of what happened",
+            "body": "Write the full story for the expandable card…"
           },
           {
             "month": "Month",
             "year": "Year",
             "tag": "Add a tag",
             "title": "Name this event",
-            "preview": "Add a short summary of what happened"
+            "preview": "Add a short summary of what happened",
+            "body": "Write the full story for the expandable card…"
           }
         ]
       },

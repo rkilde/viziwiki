@@ -129,7 +129,10 @@
     { path: 'hero.stats',            item: '.wiki-hero-stat', parts: { num: '.wiki-hero-stat-num', label: '.wiki-hero-stat-label' } },
     { path: 'hero.spotlight.tags',   container: '.wiki-hero-spotlight-tags', item: '.wiki-hero-spotlight-tag', whole: true, addLabel: '+ tag', mini: true },
     { path: 'hero.feature.chips',    item: '.wiki-hero-feature-chip', parts: { key: '.wiki-hero-feature-chip-key', val: '.wiki-hero-feature-chip-val' } },
-    { path: 'overview.paragraphs',   container: '.wiki-section-prose', item: '.wiki-section-prose > p', whole: true, addLabel: '+ paragraph' },
+    // overview prose: ONE editable box — the contributor types as many/few
+    // paragraphs as they like inside it (Enter → new paragraph). No "+ paragraph"
+    // (no addLabel) — the single first box is the whole writing surface.
+    { path: 'overview.paragraphs',   container: '.wiki-section-prose', item: '.wiki-section-prose > p', whole: true },
   ];
 
   var qs = function (s, r) { return (r || document).querySelector(s); };
@@ -664,6 +667,10 @@
         var openItem = function (j, k, pill) {
           if (!modal || !modalBody) return;
           var det = qs('[id="d-' + j + '-' + k + '"]', secEl); if (!det) return;
+          // move any ALREADY-open detail back first, so opening a different item
+          // doesn't stack two details in the modal (the "dual load" glitch).
+          var prevDet = qs('[data-pe-detail-open]', modal);
+          if (prevDet && prevDet !== det && detRoot) { detRoot.appendChild(prevDet); prevDet.removeAttribute('data-pe-detail-open'); }
           if (modalCard && pill) modalCard.style.setProperty('--cat-color', pill.getAttribute('data-color') || '');
           if (modalRb) {
             // read the ribbon from the CURRENT doc — the pill's data-ribbon
@@ -1766,6 +1773,12 @@
         if (!el && it.addpath) el = qs('[data-pe-addpath="' + it.addpath + '"]');
         if (!el) { var base = it.jump.replace(/\.[^.]+$/, ''); el = qs('[data-pe-path^="' + base + '"]'); if (el && hidden(el)) el = null; }
         if (!el) return;
+        // if a modal / expanded card is open and the target lives OUTSIDE it
+        // (e.g. a category NAME on the collapsed card, or another card's field),
+        // close it first — so the field is reachable, and so opening a different
+        // item replaces rather than stacks onto the current one.
+        var openMod = qs('[data-catalog-modal].open, .tl-modal.open');
+        if (openMod && !openMod.contains(el)) { var xb = qs('[data-modal-close], [data-tl-close]', openMod); if (xb) try { xb.click(); } catch (e) {} }
         try { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
         flash(el);
         if (el.hasAttribute && el.hasAttribute('contenteditable')) { setTimeout(function () { try { el.focus(); } catch (e) {} }, 300); return; }

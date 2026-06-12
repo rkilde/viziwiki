@@ -148,6 +148,10 @@ body {
   --wiki-infobox-header-bg:     var(--infobox-header-bg, #f4f4f5);
   --wiki-infobox-border-color:  var(--infobox-border, rgba(0,0,0,.12));
   --wiki-infobox-divider-color: var(--infobox-divider, rgba(0,0,0,.08));
+  /* catalog card/modal hairlines — a COMPONENT line (own token, visible by
+     default), NOT the section divider (which is transparent — tone separates
+     sections). Skins can recolor via --cat-divider. */
+  --wiki-cat-divider-color:     var(--cat-divider, rgba(0,0,0,.1));
   --wiki-infobox-title-color:   var(--infobox-title-color, currentColor);
   --wiki-infobox-label-color:   var(--infobox-label-color, rgba(0,0,0,.55));
   --wiki-infobox-key-color:     var(--infobox-key-color, rgba(0,0,0,.55));
