@@ -17,7 +17,7 @@ const Chk = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 const Chev = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>);
 const plural = (k: string) => (/y$/.test(k) ? k.slice(0, -1) + 'ies' : k + 's');
 
-export function ReadinessPanel({ marker, onJump }: { marker: Marker; onJump: (l: Leaf) => void }) {
+export function ReadinessPanel({ marker, onJump, onClose }: { marker: Marker; onJump: (l: Leaf) => void; onClose: () => void }) {
   const [open, setOpen] = useState<Set<string>>(new Set());
   const [doneOpen, setDoneOpen] = useState<Set<string>>(new Set());
   const [readyOpen, setReadyOpen] = useState(false);
@@ -81,6 +81,9 @@ export function ReadinessPanel({ marker, onJump }: { marker: Marker; onJump: (l:
         <span className="pi">{m.done ? <Chk /> : <Tri />}</span>
         <span className="pt">{m.done ? 'Section ready' : 'Needs attention'}</span>
         <span className="pn">{m.done ? 'complete' : m.left + ' required'}</span>
+        <button className="pe-mk-close" onClick={onClose} title="Close" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+        </button>
       </div>
       <div className={`pe-mk-summary ${m.done ? 'alldone' : ''}`}>
         <span className="stxt">{m.done ? 'All set' : m.left + ' required fields left'}</span>

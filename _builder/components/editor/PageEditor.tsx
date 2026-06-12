@@ -102,7 +102,7 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
             </button>
             {openMk === i && (
               <div className="pe-mk-panel" style={{ top: mkBox.top + m.top, left: Math.max(6, left() - 354) }} onMouseDown={(e) => e.stopPropagation()}>
-                <ReadinessPanel marker={m} onJump={jump} />
+                <ReadinessPanel marker={m} onJump={jump} onClose={() => setOpenMk(null)} />
               </div>
             )}
           </React.Fragment>
