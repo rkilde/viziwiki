@@ -470,7 +470,7 @@
           "type": "list<card>",
           "required": true,
           "item_blank": {
-            "title": "Card title",
+            "title": "Spec title",
             "rows": [
               [
                 "Label",
@@ -485,7 +485,7 @@
           "title": {
             "type": "text",
             "required": true,
-            "blank": "Card title"
+            "blank": "Spec title"
           },
           "icon": {
             "type": "icon",
@@ -519,7 +519,7 @@
         "device": "Device · MODEL",
         "cards": [
           {
-            "title": "Card title",
+            "title": "Spec title",
             "rows": [
               [
                 "Label",
