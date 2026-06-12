@@ -458,7 +458,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(!dMin.querySelector('.itl-card.pe-removable .pe-remove'), 'at min events, no remove × (grammar min enforced)');
   // heading is REQUIRED → present + editable in place (no "+" slot), placeholder = blank
   const hCe = tl.querySelector('.wiki-section-title .ce');
-  ok(hCe && hCe.getAttribute('data-ph') === 'Timeline Header', 'required heading present + editable with "Timeline Header" placeholder');
+  ok(hCe && hCe.getAttribute('data-ph') === 'Timeline heading', 'required heading present + editable with "Timeline heading" placeholder');
   ok(![...tl.querySelectorAll('.tl-hdr .pe-add')].some((b) => b.textContent === '+ heading'), 'no "+ heading" slot (heading is required, always there)');
   // expandable card: the "Details ›" expand trigger opens the detail modal with an editable body
   (st0.querySelector('.sc-expand') || st0.querySelector('.sc-footer') || st0.querySelector('.itl-card')).click();

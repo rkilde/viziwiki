@@ -61,7 +61,7 @@ components:
       title:         { type: text,     required: true, blank: "Page title", help: "Big H1 (the trailing period is automatic)" }
       eyebrow:       { type: text,     blank: "Category label", help: "Small category tag above the title" }
       subtitle:      { type: text,     blank: "Subtitle", help: "A line under the H1" }
-      subtitle_meta: { type: text,     blank: "Model number", requires: subtitle, help: "Mono tag after a ' · ' (e.g. a model number)" }
+      subtitle_meta: { type: text,     blank: "Meta tag", requires: subtitle, help: "Mono tag after a ' · ' (e.g. a model number)" }
       desc:          { type: richtext, blank: "Write a short lead paragraph for this page.", help: "One-paragraph lead" }
       stats:         { type: "list<stat>", min: 4, max: 4, help: "The 1×4 number grid — always exactly 4 cells (canon)",
                        blank: [{ num: "Value", label: "Stat label" }, { num: "Value", label: "Stat label" }, { num: "Value", label: "Stat label" }, { num: "Value", label: "Stat label" }] }
@@ -72,7 +72,7 @@ components:
       feature:       { type: feature,   help: "Optional feature aside (advanced — the feature bank)",
                        blank: { head_left: "Featured", title: "Feature title", desc: "Write a short description.", chips: [{ key: "Label", val: "Value" }, { key: "Label", val: "Value" }, { key: "Label", val: "Value" }] } }
     subtypes:
-      stat: { num: { type: text, required: true }, label: { type: text, required: true }, color: { type: color, help: "Optional per-stat number colour (content hex or skin swatch)" } }
+      stat: { num: { type: text, required: true, blank: "Value" }, label: { type: text, required: true, blank: "Stat label" }, color: { type: color, help: "Optional per-stat number colour (content hex or skin swatch)" } }
       spotlight:                  # hero card — treatment 1 · CALL-TO-ACTION CARD (wiki-hero-spotlight)
         eyebrow:  { type: text, blank: "Spotlight" }
         title:    { type: text, required: true, blank: "Spotlight title" }
@@ -90,7 +90,7 @@ components:
         title:      { type: text, required: true, blank: "Feature title" }
         desc:       { type: richtext, blank: "Write a short description." }
         chips:      { type: "list<chip>", required: true, min: 3, max: 3, help: "EXACTLY 3 stat chips (key/value) — fixed, not addable/removable" }
-      chip: { key: { type: text, required: true }, val: { type: text, required: true } }
+      chip: { key: { type: text, required: true, blank: "Label" }, val: { type: text, required: true, blank: "Value" } }
     note: "Both asides are 'hero cards' (mutually exclusive — at most one): spotlight = the Call-to-Action card (CTA required), feature = the Feature card (exactly 3 fixed chips). search is HOME-only."
     seed:
       title: "Page title"
@@ -104,7 +104,7 @@ components:
     locked: { eyebrow: "Overview", icon: book-open }
     fields:
       heading:    { type: text,            required: true, blank: "Section heading" }
-      paragraphs: { type: "list<richtext>", required: true, min: 1, min_words: 100, item_blank: "Write another paragraph here…", help: "The overview body (≥100 words of real prose — placeholder text doesn't count)" }
+      paragraphs: { type: "list<richtext>", required: true, min: 1, min_words: 100, item_blank: "Write the overview here (at least 100 words)…", help: "The overview body (≥100 words of real prose — placeholder text doesn't count)" }
       tone:       { type: "enum[a,b,special]", default: b }
       id:         { type: text, locked: true, default: overview, help: "Section anchor (admin)" }
       class:      { type: text, locked: true, help: "Extra classes for skin flourishes (admin)" }
@@ -121,10 +121,10 @@ components:
         class:    { type: text, locked: true, help: "Extra classes (e.g. a skin's sticky-note look)" }
         style:    { type: text, locked: true, help: "Inline style passthrough (e.g. a header gradient)" }
         art:      { type: text, locked: true, help: "Raw decoration at the top of the panel (e.g. tape)" }
-      pair: { key: { type: text, required: true }, value: { type: richtext, required: true } }
+      pair: { key: { type: text, required: true, blank: "Label" }, value: { type: richtext, required: true, blank: "Value" } }
     seed:
       heading: "Section heading"
-      paragraphs: ["Write the overview here…"]
+      paragraphs: ["Write the overview here (at least 100 words)…"]
     min: "heading + one paragraph"
 
   # ---- SPEC — the Specifications Sheet card grid -----------------------
@@ -165,7 +165,7 @@ components:
       items:         { type: "list<config_item>", required: true }
     subtypes:
       config_item:
-        capacity: { type: number, required: true }
+        capacity: { type: number, required: true, seed_real: true, help: "Drives the bar width (a real capacity, not a placeholder)" }
         unit:     { type: "enum[GB,TB]", default: GB }
         model:    { type: text }
         price:    { type: text, help: "Supports an 'old → new' drop" }
@@ -196,7 +196,7 @@ components:
       end:        { type: date, help: "Weighted mode only — right edge for the last tile" }
       range_note: { type: text, help: "Optional suffix on the counter" }
       segments:   { type: "list<segment>", required: true, min: 2 }
-      notes:      { type: "list<note>" }
+      notes:      { type: "list<note>", item_blank: { status: full, label: "Note label", text: "Note body" } }
     subtypes:
       segment:
         ver:        { type: text, required: true, blank: "Version" }
@@ -207,8 +207,8 @@ components:
         badge_type: { type: "enum[ship,paid,limited,final,dropped,security]", default: ship }
       note:
         status: { type: "enum[full,partial,limited,final,dropped,security]", required: true }
-        label:  { type: text, required: true }
-        text:   { type: richtext, required: true }
+        label:  { type: text, required: true, blank: "Note label" }
+        text:   { type: richtext, required: true, blank: "Note body" }
     derived:
       - "counter: launch → drop · duration · N major versions"
       - "legend: from the tile types present"
@@ -235,8 +235,8 @@ components:
       visual:  { type: text, locked: true, default: delta, help: "The slot's visual type — registry hosts constrain it (admin)" }
       prev:     { type: axis, required: true, help: "The 'before' column header" }
       current:  { type: axis, required: true, help: "The 'after' column header" }
-      hardware: { type: "list<delta_row>" }
-      software: { type: "list<delta_row>" }
+      hardware: { type: "list<delta_row>", item_blank: { label: "Spec label" } }
+      software: { type: "list<delta_row>", item_blank: { label: "Spec label" } }
     subtypes:
       axis: { tag: { type: text }, name: { type: text, required: true, blank: "Model name" }, year: { type: text } }
       delta_row:
@@ -258,12 +258,12 @@ components:
     section: timeline-section
     locked: { eyebrow: "Timeline", icon: move-horizontal, full_bleed: true }
     fields:
-      heading:   { type: text, required: true, blank: "Timeline Header", help: "The timeline's H2 (required)" }
+      heading:   { type: text, required: true, blank: "Timeline heading", help: "The timeline's H2 (required)" }
       tone:      { type: "enum[a,b,special]", default: b }
       visual:  { type: text, locked: true, default: timeline, help: "The slot's visual type — registry hosts constrain it (admin)" }
       card_type: { type: "enum[station]", default: station }
       events:    { type: "list<event>", required: true, min: 2,
-                   item_blank: { month: Jan, year: "2026", tag: "Add a tag", title: "Name this event", preview: "add a short summary of what happened" } }
+                   item_blank: { month: Jan, year: "2026", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened" } }
     subtypes:
       event:
         # month + year DRIVE the layout (date-positioned), so they default to real,
@@ -274,24 +274,24 @@ components:
         year:    { type: text, required: true, blank: "2025", seed_real: true }
         tag:     { type: text, blank: "Add a tag" }
         title:   { type: text, required: true, blank: "Name this event", help: "Card headline + modal title" }
-        preview: { type: text, blank: "add a short summary of what happened", help: "One-line summary on the card face" }
+        preview: { type: text, blank: "Add a short summary of what happened", help: "One-line summary on the card face" }
         body:    { type: richtext, blank: "Write the full story for the expandable card…", help: "Full detail in the expandable card" }
     derived: ["scroll hint, year bands, positions, gap chips — all from the dates"]
     seed:
-      heading: "Timeline Header"
+      heading: "Timeline heading"
       events:
-        - { month: Jan, year: "2021", tag: "Add a tag", title: "Name this event", preview: "add a short summary of what happened" }
-        - { month: Apr, year: "2022", tag: "Add a tag", title: "Name this event", preview: "add a short summary of what happened" }
-        - { month: Aug, year: "2023", tag: "Add a tag", title: "Name this event", preview: "add a short summary of what happened" }
-        - { month: Feb, year: "2024", tag: "Add a tag", title: "Name this event", preview: "add a short summary of what happened" }
-        - { month: Nov, year: "2025", tag: "Add a tag", title: "Name this event", preview: "add a short summary of what happened" }
+        - { month: Jan, year: "2021", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened" }
+        - { month: Apr, year: "2022", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened" }
+        - { month: Aug, year: "2023", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened" }
+        - { month: Feb, year: "2024", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened" }
+        - { month: Nov, year: "2025", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened" }
     min: "≥2 events, each with month + year + title"
 
   # ---- CATALOG — the data-driven list + expandable cards ---------------
   catalog:
     section: catalog-section
     fields:
-      title:      { type: text, required: true, blank: "Everything", help: "The catalog heading" }
+      title:      { type: text, required: true, blank: "Catalog title", help: "The catalog heading" }
       tone:       { type: "enum[a,b,special]", default: b }
       visual:  { type: text, locked: true, default: catalog, help: "The slot's visual type — registry hosts constrain it (admin)" }
       unit:       { type: text, default: "item", help: "The count noun (e.g. 'drink', 'sauce')" }
@@ -307,7 +307,7 @@ components:
         note:   { type: text, blank: "Note" }
         items:  { type: "list<cat_item>", required: true,
                   item_blank: { name: "New item", desc: "What it is." } }
-      ribbon: { text: { type: text, required: true }, tone: { type: "enum[accent,gone]", default: accent } }
+      ribbon: { text: { type: text, required: true, blank: "Ribbon" }, tone: { type: "enum[accent,gone]", default: accent } }
       cat_item:
         name:    { type: text, required: true, blank: "New item" }
         status:  { type: "enum[active,discontinued,limited,retired]", blank: active,
@@ -319,11 +319,11 @@ components:
         notes:   { type: richtext, blank: "Write a note…" }
         cta:     { type: url, blank: "#", help: "Link for 'See full entry' — inert until the item has a page" }
       pill_group: { label: { type: text, blank: "Group" }, pills: { type: "list<pill>", item_blank: "Pill" } }
-      pill:    { text: { type: text, required: true }, struck: { type: bool, default: false } }
+      pill:    { text: { type: text, required: true, blank: "Pill" }, struck: { type: bool, default: false } }
       callout: { label: { type: text }, text: { type: richtext } }
     derived: ["per-category item count + the auto summary"]
     seed:
-      title: "Everything"
+      title: "Catalog title"
       categories:
         - name: "New category"
           items:

@@ -4,7 +4,7 @@
   "private": true,
   "description": "ViziWiki 1.0 builder — Phase 1 vertical slice (spec grid). Run with `npm run dev`.",
   "scripts": {
-    "gen": "node scripts/copy-canon.mjs && node scripts/extract-grammar.mjs && node scripts/extract-includes.mjs && node scripts/extract-visuals.mjs && node scripts/extract-taco-bell.mjs && node scripts/extract-apple.mjs",
+    "gen": "node scripts/copy-canon.mjs && node scripts/extract-grammar.mjs && node scripts/extract-includes.mjs && node scripts/extract-visuals.mjs && node scripts/extract-taco-bell.mjs && node scripts/extract-apple.mjs && node scripts/gen-placeholders.mjs",
     "dev": "next dev",
     "test": "node scripts/audit-grammar-includes.mjs && node scripts/audit-skin-contract.mjs && node scripts/audit-seeds.mjs && node scripts/test-derived-renderer.mjs && node scripts/test-golden-render.mjs",
     "golden": "node scripts/test-golden-render.mjs --update",

@@ -59,10 +59,30 @@ function walk(fields, subtypes, seed, where) {
   });
 }
 
+// every `blank:`/`item_blank:` that is a structured template (an optional
+// infobox / spotlight / ribbon / chip / note, or one new list item) is ALSO a
+// mini-seed: when a contributor adds that thing, those values are what they
+// see. Walk each one against its subtype so its placeholders are held to the
+// same rule as the top-level seed (catches e.g. infobox rows key/value).
+function templates(fields, subs, where) {
+  for (const [name, spec] of Object.entries(fields || {})) {
+    if (!spec || typeof spec !== 'object' || spec.locked) continue;
+    const t = parseType(spec.type);
+    const elemSub = t.kind === 'list' ? subs[t.of] : subs[t.kind];
+    if (elemSub && typeof elemSub === 'object') {
+      if (t.kind === 'list' && Array.isArray(spec.blank)) spec.blank.forEach((it, i) => walk(elemSub, subs, it, `${where}.${name}.blank[${i}]`));
+      if (t.kind === 'list' && spec.item_blank && typeof spec.item_blank === 'object') walk(elemSub, subs, spec.item_blank, `${where}.${name}.item_blank`);
+      if (t.kind !== 'list' && spec.blank && typeof spec.blank === 'object') walk(elemSub, subs, spec.blank, `${where}.${name}.blank`);
+      templates(elemSub, subs, where + '.' + name);   // nested templates (e.g. infobox → rows)
+    }
+  }
+}
+
 console.log('seed ↔ placeholder guard — every component seed reads as "untouched"');
 for (const [comp, def] of Object.entries(grammar.components || {})) {
-  if (!def || !def.fields || !def.seed) continue;
-  walk(def.fields, def.subtypes || {}, def.seed, comp);
+  if (!def || !def.fields) continue;
+  if (def.seed) walk(def.fields, def.subtypes || {}, def.seed, comp);
+  templates(def.fields, def.subtypes || {}, comp);
 }
 
 if (violations.length) {

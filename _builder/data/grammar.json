@@ -110,7 +110,7 @@
         },
         "subtitle_meta": {
           "type": "text",
-          "blank": "Model number",
+          "blank": "Meta tag",
           "requires": "subtitle",
           "help": "Mono tag after a ' · ' (e.g. a model number)"
         },
@@ -194,11 +194,13 @@
         "stat": {
           "num": {
             "type": "text",
-            "required": true
+            "required": true,
+            "blank": "Value"
           },
           "label": {
             "type": "text",
-            "required": true
+            "required": true,
+            "blank": "Stat label"
           },
           "color": {
             "type": "color",
@@ -282,11 +284,13 @@
         "chip": {
           "key": {
             "type": "text",
-            "required": true
+            "required": true,
+            "blank": "Label"
           },
           "val": {
             "type": "text",
-            "required": true
+            "required": true,
+            "blank": "Value"
           }
         }
       },
@@ -315,7 +319,7 @@
           "required": true,
           "min": 1,
           "min_words": 100,
-          "item_blank": "Write another paragraph here…",
+          "item_blank": "Write the overview here (at least 100 words)…",
           "help": "The overview body (≥100 words of real prose — placeholder text doesn't count)"
         },
         "tone": {
@@ -402,18 +406,20 @@
         "pair": {
           "key": {
             "type": "text",
-            "required": true
+            "required": true,
+            "blank": "Label"
           },
           "value": {
             "type": "richtext",
-            "required": true
+            "required": true,
+            "blank": "Value"
           }
         }
       },
       "seed": {
         "heading": "Section heading",
         "paragraphs": [
-          "Write the overview here…"
+          "Write the overview here (at least 100 words)…"
         ]
       },
       "min": "heading + one paragraph"
@@ -545,7 +551,9 @@
         "config_item": {
           "capacity": {
             "type": "number",
-            "required": true
+            "required": true,
+            "seed_real": true,
+            "help": "Drives the bar width (a real capacity, not a placeholder)"
           },
           "unit": {
             "type": "enum[GB,TB]",
@@ -658,7 +666,12 @@
           "min": 2
         },
         "notes": {
-          "type": "list<note>"
+          "type": "list<note>",
+          "item_blank": {
+            "status": "full",
+            "label": "Note label",
+            "text": "Note body"
+          }
         }
       },
       "subtypes": {
@@ -694,11 +707,13 @@
           },
           "label": {
             "type": "text",
-            "required": true
+            "required": true,
+            "blank": "Note label"
           },
           "text": {
             "type": "richtext",
-            "required": true
+            "required": true,
+            "blank": "Note body"
           }
         }
       },
@@ -771,10 +786,16 @@
           "help": "The 'after' column header"
         },
         "hardware": {
-          "type": "list<delta_row>"
+          "type": "list<delta_row>",
+          "item_blank": {
+            "label": "Spec label"
+          }
         },
         "software": {
-          "type": "list<delta_row>"
+          "type": "list<delta_row>",
+          "item_blank": {
+            "label": "Spec label"
+          }
         }
       },
       "subtypes": {
@@ -852,7 +873,7 @@
         "heading": {
           "type": "text",
           "required": true,
-          "blank": "Timeline Header",
+          "blank": "Timeline heading",
           "help": "The timeline's H2 (required)"
         },
         "tone": {
@@ -878,7 +899,7 @@
             "year": "2026",
             "tag": "Add a tag",
             "title": "Name this event",
-            "preview": "add a short summary of what happened"
+            "preview": "Add a short summary of what happened"
           }
         }
       },
@@ -914,7 +935,7 @@
           },
           "preview": {
             "type": "text",
-            "blank": "add a short summary of what happened",
+            "blank": "Add a short summary of what happened",
             "help": "One-line summary on the card face"
           },
           "body": {
@@ -928,42 +949,42 @@
         "scroll hint, year bands, positions, gap chips — all from the dates"
       ],
       "seed": {
-        "heading": "Timeline Header",
+        "heading": "Timeline heading",
         "events": [
           {
             "month": "Jan",
             "year": "2021",
             "tag": "Add a tag",
             "title": "Name this event",
-            "preview": "add a short summary of what happened"
+            "preview": "Add a short summary of what happened"
           },
           {
             "month": "Apr",
             "year": "2022",
             "tag": "Add a tag",
             "title": "Name this event",
-            "preview": "add a short summary of what happened"
+            "preview": "Add a short summary of what happened"
           },
           {
             "month": "Aug",
             "year": "2023",
             "tag": "Add a tag",
             "title": "Name this event",
-            "preview": "add a short summary of what happened"
+            "preview": "Add a short summary of what happened"
           },
           {
             "month": "Feb",
             "year": "2024",
             "tag": "Add a tag",
             "title": "Name this event",
-            "preview": "add a short summary of what happened"
+            "preview": "Add a short summary of what happened"
           },
           {
             "month": "Nov",
             "year": "2025",
             "tag": "Add a tag",
             "title": "Name this event",
-            "preview": "add a short summary of what happened"
+            "preview": "Add a short summary of what happened"
           }
         ]
       },
@@ -975,7 +996,7 @@
         "title": {
           "type": "text",
           "required": true,
-          "blank": "Everything",
+          "blank": "Catalog title",
           "help": "The catalog heading"
         },
         "tone": {
@@ -1053,7 +1074,8 @@
         "ribbon": {
           "text": {
             "type": "text",
-            "required": true
+            "required": true,
+            "blank": "Ribbon"
           },
           "tone": {
             "type": "enum[accent,gone]",
@@ -1118,7 +1140,8 @@
         "pill": {
           "text": {
             "type": "text",
-            "required": true
+            "required": true,
+            "blank": "Pill"
           },
           "struck": {
             "type": "bool",
@@ -1138,7 +1161,7 @@
         "per-category item count + the auto summary"
       ],
       "seed": {
-        "title": "Everything",
+        "title": "Catalog title",
         "categories": [
           {
             "name": "New category",
