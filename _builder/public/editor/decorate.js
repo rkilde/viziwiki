@@ -1063,9 +1063,17 @@
         wrapCE(qs('.wiki-section-title', secEl), prefix + 'heading');     // required H2
         wrapCE(qs('.cfg-chart-title', secEl), prefix + 'chart_title');    // required chart title
 
-        // intro paragraphs (optional list) — inline-editable + removable
+        // intro paragraphs (optional list) — inline-editable + removable, with a
+        // "+ intro text" affordance right where intro renders (below the H2)
         var cfgIntro = qs('.cfg-prose', secEl);
-        if (cfgIntro) qsa('p', cfgIntro).forEach(function (p, ix) { wrapCE(p, prefix + 'intro.' + ix); makeRemovable(p, 'rm:' + prefix + 'intro.' + ix); });
+        var introAdd = addLine('push:' + prefix + 'intro', '+ intro text');
+        if (cfgIntro) {
+          qsa('p', cfgIntro).forEach(function (p, ix) { wrapCE(p, prefix + 'intro.' + ix); makeRemovable(p, 'rm:' + prefix + 'intro.' + ix); });
+          cfgIntro.parentNode.insertBefore(introAdd, cfgIntro.nextSibling);
+        } else {
+          var cfgH2 = qs('.wiki-section-title', secEl);
+          if (cfgH2 && cfgH2.parentNode) cfgH2.parentNode.insertBefore(introAdd, cfgH2.nextSibling);
+        }
 
         // footer (optional richtext) — inline. (Absent → the sentinel pass
         // already swapped it for a "+ footer" slot via SECTION_SLOTS.)
@@ -1111,12 +1119,8 @@
               if (String(Number(raw)) === String(cd.capacity)) return;     // unchanged → no re-render
               cfgSnap(); PV(ipre + 'capacity', Number(raw)); A('commit');
             }); })(idata);
-            // unit toggle (GB ↔ TB) — re-normalizes → re-sort + re-fill
-            var unitSpan = qs('span', capBox);
-            if (unitSpan) {
-              unitSpan.classList.add('pe-cfg-unit'); unitSpan.title = 'Toggle GB / TB';
-              (function (cd) { unitSpan.onclick = function (e) { e.stopPropagation(); cfgSnap(); A('set:' + ipre + 'unit:' + (cd.unit === 'TB' ? 'GB' : 'TB')); }; })(idata);
-            }
+            // the unit (GB/TB) is display-only on the chart — it changes ONLY via
+            // the drawer's Unit dropdown (no inline click-toggle).
           }
           // model (inside the bar) — inline when present
           var fill = qs('.cfg-fill', row);
@@ -1147,21 +1151,23 @@
           var newP = hasArrow ? idata.price.split('→')[1].trim() : '';
           var drawer = document.createElement('div'); drawer.className = 'row-drawer';
           drawer.innerHTML =
-            '<div class="dr-row c3">'
+            '<div class="dr-row c3" style="align-items:flex-start">'
             + '<div><div class="dr-label">Capacity</div><input class="dr-input dr-cap" inputmode="numeric" value="' + ea(idata.capacity != null ? idata.capacity : '') + '"></div>'
             + '<div><div class="dr-label">Unit</div><select class="dr-input dr-select dr-unit"><option' + (idata.unit !== 'TB' ? ' selected' : '') + '>GB</option><option' + (idata.unit === 'TB' ? ' selected' : '') + '>TB</option></select></div>'
-            + '<div><div class="dr-label">Price</div><input class="dr-input dr-price" value="' + ea(oldP) + '"></div>'
+            // price + its price-drop toggle + the revised price are GROUPED here
+            + '<div><div class="dr-label">Price</div><input class="dr-input dr-price" value="' + ea(oldP) + '">'
+            +   '<div class="tog-row" style="margin-top:8px"><button class="tog dr-drop' + (hasArrow ? ' on' : '') + '"><span class="tog-pip"></span>Price drop (→)</button></div>'
+            +   (hasArrow ? '<div style="margin-top:8px"><div class="dr-label">Revised price</div><input class="dr-input dr-price2" value="' + ea(newP) + '"></div>' : '')
+            + '</div>'
             + '</div>'
             + '<div class="dr-row c2">'
             + '<div><div class="dr-label">Model / part number</div><input class="dr-input dr-model" value="' + ea(idata.model || '') + '"></div>'
             + '<div><div class="dr-label">Dates available</div><input class="dr-input dr-dates" value="' + ea(idata.dates || '') + '"></div>'
             + '</div>'
             + '<div><div class="dr-label" style="margin-bottom:8px">Options</div><div class="tog-row">'
-            + '<button class="tog dr-revised' + (idata.revised ? ' on' : '') + '"><span class="tog-pip"></span>Revised / striped</button>'
-            + '<button class="tog dr-drop' + (hasArrow ? ' on' : '') + '"><span class="tog-pip"></span>Price drop (→)</button>'
+            + '<button class="tog dr-revised' + (idata.revised ? ' on' : '') + '"><span class="tog-pip"></span>Mark as special configuration</button>'
             + '</div>'
-            + (hasArrow ? '<div style="margin-top:8px"><div class="dr-label">Revised price</div><input class="dr-input dr-price2" value="' + ea(newP) + '" style="max-width:140px"></div>' : '')
-            + (idata.revised ? '<div style="margin-top:8px"><div class="dr-label">Revision divider label</div><input class="dr-input dr-divlabel" value="' + ea(sdata.divider_label || '') + '" placeholder="e.g. 2019 revision"></div>' : '')
+            + (idata.revised ? '<div style="margin-top:8px"><div class="dr-label">Special configuration label</div><input class="dr-input dr-divlabel" value="' + ea(sdata.divider_label || '') + '" placeholder="e.g. special edition"></div>' : '')
             + '</div>'
             + '<div><div class="dr-label" style="margin-bottom:8px">Device colours</div><div class="dots-editor"></div></div>'
             + '<div class="dr-actions"><button class="dr-btn danger dr-remove">Remove</button></div>';
@@ -1236,13 +1242,12 @@
           if (window.__peCfgDrawer && window.__peCfgDrawer.s === i && window.__peCfgDrawer.idx === di) { drawer.classList.add('open'); chev.classList.add('open'); }
         });
 
-        // toolbar below the chart — "+ configuration" · "+ intro line"
+        // toolbar below the chart — "+ configuration" (intro lives below the H2)
         var cfgChart = qs('.cfg-chart', secEl);
         if (cfgChart) {
           var tb = document.createElement('div'); tb.className = 'cfg-toolbar';
           var mk = function (label, action) { var b = document.createElement('button'); b.className = 'ov-mini'; b.textContent = label; var pm = /^push:(.+)$/.exec(action); if (pm) b.setAttribute('data-pe-addpath', pm[1]); b.onclick = function () { A(action); }; return b; };
           tb.appendChild(mk('+ configuration', 'push:' + prefix + 'items'));
-          tb.appendChild(mk('+ intro line', 'push:' + prefix + 'intro'));
           cfgChart.appendChild(tb);
         }
 
