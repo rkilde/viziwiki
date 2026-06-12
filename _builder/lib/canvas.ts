@@ -182,8 +182,8 @@ const AFFORDANCE = `
      is the include's own .modal-* markup — edit = live). */
   .modal-ov.open{ display:block !important; }
   .modal-ov .modal-card{ position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); margin:0; }
-  /* status options carry the canonical st-* token colours (fallbacks match) */
-  /* status picker swatches — same derivation as the canon chips (meaning colours) */
+  /* status options carry the canonical st-* token colors (fallbacks match) */
+  /* status picker swatches — same derivation as the canon chips (meaning colors) */
   .cc-status.st-active{ background:color-mix(in oklab,var(--wiki-positive) 16%,var(--wiki-surface-bg,#fff)); color:color-mix(in oklab,var(--wiki-positive) 72%,var(--wiki-text-color,#000)); }
   .cc-status.st-limited{ background:color-mix(in oklab,var(--wiki-warning) 16%,var(--wiki-surface-bg,#fff)); color:color-mix(in oklab,var(--wiki-warning) 72%,var(--wiki-text-color,#000)); }
   .cc-status.st-discontinued{ background:color-mix(in oklab,var(--wiki-neutral) 16%,var(--wiki-surface-bg,#fff)); color:color-mix(in oklab,var(--wiki-neutral) 72%,var(--wiki-text-color,#000)); }

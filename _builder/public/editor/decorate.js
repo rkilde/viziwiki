@@ -672,7 +672,7 @@
 
         // ── popovers (defined before use) ──
         var openColorPop = function (btn, cpre, accent, curColor) {
-          var html = '<div class="cc-pop-label">Category colour</div><div class="cc-swatches">' +
+          var html = '<div class="cc-pop-label">Category color</div><div class="cc-swatches">' +
             swatches.map(function (sw) { return '<button class="cc-sw' + (Number(curColor) === sw.n ? ' sel' : '') + '" style="background:' + sw.v + '" data-i="' + sw.n + '"></button>'; }).join('') +
             '<button class="cc-sw auto' + (curColor == null ? ' sel' : '') + '" data-auto title="Auto-cycle the palette">A</button></div>';
           var pop = openPop(btn, accent, html);
@@ -740,9 +740,9 @@
             cnt.appendChild(noteChip);   // INLINE in the count line (canon position)
           }
 
-          // the glass dock (bottom-right): colour · ribbon · remove
+          // the glass dock (bottom-right): color · ribbon · remove
           var dock = document.createElement('div'); dock.className = 'cc-dock';
-          (function (cp, ac, cd) { dock.appendChild(dockBtn('<span class="cc-swatch"></span>', 'Change colour', '', function () { openColorPop(this, cp, ac, cd.color); })); })(cpre, accent, cdata);
+          (function (cp, ac, cd) { dock.appendChild(dockBtn('<span class="cc-swatch"></span>', 'Change color', '', function () { openColorPop(this, cp, ac, cd.color); })); })(cpre, accent, cdata);
           var sep = document.createElement('span'); sep.className = 'cc-sep'; dock.appendChild(sep);
           (function (cp, ac, cd, jj) { dock.appendChild(dockBtn(csvg(CICON.flag), cd.ribbon ? 'Edit ribbon' : 'Add a ribbon', cd.ribbon ? 'on' : '', function () { openRibbonPop(this, cp, ac, cd.ribbon == null ? null : cd.ribbon, card, jj); })); })(cpre, accent, cdata, j);
           (function (jj) { var tb = dockBtn(csvg(CICON.trash), 'Delete entire category', 'danger', null); armDelete(tb, function () { closePop(); A('rm:' + prefix + 'categories.' + jj); }); dock.appendChild(tb); })(j);
@@ -1051,7 +1051,7 @@
       // flow (configeditorui.html). Inline grey/blue .ce boxes edit the chart
       // directly (and feed the readiness widget); a per-row chevron opens a
       // structured drawer for the full form (capacity/unit/price/model/dates,
-      // revised + price-drop toggles, divider label, device colours, remove).
+      // revised + price-drop toggles, divider label, device colors, remove).
       // Bars stay CANON-sorted (config.html) — an inline/drawer capacity, unit
       // or revised change re-runs that sort and we FLIP each row to its new slot
       // + grow/shrink the bar from where it was (decorator interaction; the
@@ -1063,16 +1063,15 @@
         wrapCE(qs('.wiki-section-title', secEl), prefix + 'heading');     // required H2
         wrapCE(qs('.cfg-chart-title', secEl), prefix + 'chart_title');    // required chart title
 
-        // intro paragraphs (optional list) — inline-editable + removable, with a
-        // "+ intro text" affordance right where intro renders (below the H2)
+        // intro (optional) — inline-editable + removable. Just ONE "+ intro text"
+        // affordance, shown only while there's no intro yet (it renders right
+        // below the H2); once an intro line exists, no second "+" appears.
         var cfgIntro = qs('.cfg-prose', secEl);
-        var introAdd = addLine('push:' + prefix + 'intro', '+ intro text');
-        if (cfgIntro) {
-          qsa('p', cfgIntro).forEach(function (p, ix) { wrapCE(p, prefix + 'intro.' + ix); makeRemovable(p, 'rm:' + prefix + 'intro.' + ix); });
-          cfgIntro.parentNode.insertBefore(introAdd, cfgIntro.nextSibling);
-        } else {
-          var cfgH2 = qs('.wiki-section-title', secEl);
-          if (cfgH2 && cfgH2.parentNode) cfgH2.parentNode.insertBefore(introAdd, cfgH2.nextSibling);
+        var introPs = cfgIntro ? qsa('p', cfgIntro) : [];
+        introPs.forEach(function (p, ix) { wrapCE(p, prefix + 'intro.' + ix); makeRemovable(p, 'rm:' + prefix + 'intro.' + ix); });
+        if (!introPs.length) {
+          var introAnchor = cfgIntro || qs('.wiki-section-title', secEl);
+          if (introAnchor && introAnchor.parentNode) introAnchor.parentNode.insertBefore(addLine('push:' + prefix + 'intro', '+ intro text'), introAnchor.nextSibling);
         }
 
         // footer (optional richtext) — inline. (Absent → the sentinel pass
@@ -1126,15 +1125,19 @@
           var fill = qs('.cfg-fill', row);
           var modelEl = fill && qs('.cfg-model', fill);
           if (modelEl) wrapCE(modelEl, ipre + 'model');
-          // price — inline (raw "old → new") when present
+          // price — keep the CANON rendering exactly: a single line, OR the
+          // stacked "old → new" drop (canon splits on '→' into two .cfg-price-
+          // line rows). Inline-edit the SINGLE-price case in place; the drop is
+          // edited via the drawer's old/new fields so we never flatten the
+          // canon's stacked layout (that flattening was the drift).
           var priceEl = qs('.cfg-price', row);
-          if (priceEl && idata.price != null) {
-            priceEl.innerHTML = '';
-            var pl = document.createElement('div'); pl.className = 'cfg-price-line'; priceEl.appendChild(pl);
-            var pce = document.createElement('span'); pce.className = 'ce'; pce.setAttribute('contenteditable', 'true');
-            pce.setAttribute('data-pe-path', ipre + 'price'); pce.setAttribute('data-ph', (R('config.items[].price').blank) || '$0');
-            pce.textContent = idata.price; pl.appendChild(pce);
-            (function (cd) { pce.addEventListener('blur', function () { if ((pce.textContent || '') === String(cd.price)) return; PV(ipre + 'price', pce.textContent); A('commit'); }); })(idata);
+          if (priceEl && idata.price != null && String(idata.price).indexOf('→') < 0) {
+            var pLine = qs('.cfg-price-line', priceEl);
+            if (pLine) {
+              wrapCE(pLine, ipre + 'price');
+              var pce = pLine.querySelector('.ce');
+              if (pce) (function (cd) { pce.addEventListener('blur', function () { var t = (pce.textContent || ''); if (t === String(cd.price)) return; PV(ipre + 'price', t); A('commit'); }); })(idata);
+            }
           }
           // dates — inline when present
           var datesEl = qs('.cfg-dates', row);
@@ -1169,7 +1172,7 @@
             + '</div>'
             + (idata.revised ? '<div style="margin-top:8px"><div class="dr-label">Special configuration label</div><input class="dr-input dr-divlabel" value="' + ea(sdata.divider_label || '') + '" placeholder="e.g. special edition"></div>' : '')
             + '</div>'
-            + '<div><div class="dr-label" style="margin-bottom:8px">Device colours</div><div class="dots-editor"></div></div>'
+            + '<div><div class="dr-label" style="margin-bottom:8px">Device colors</div><div class="dots-editor"></div></div>'
             + '<div class="dr-actions"><button class="dr-btn danger dr-remove">Remove</button></div>';
           row.parentNode.insertBefore(drawer, row.nextSibling);
 
@@ -1215,14 +1218,14 @@
           (function (cd) { qd('.dr-revised').onclick = function () { cfgSnap(); A('set:' + ipre + 'revised:' + (cd.revised ? 'false' : 'true')); }; })(idata);
           // divider label (section-level)
           var divIn = qd('.dr-divlabel'); if (divIn) divIn.addEventListener('change', function () { PV(prefix + 'divider_label', this.value); A('commit'); });
-          // device colours editor — swatch (native colour input, click = ring),
+          // device colors editor — swatch (native color input, click = ring),
           // name, remove × · "+" to add. hex/name patch live; ring/add/remove commit.
           var dotsEd = qd('.dots-editor');
           (idata.colors || []).forEach(function (c, ci) {
             var dpre = ipre + 'colors.' + ci + '.';
             var chip = document.createElement('div'); chip.className = 'dot-chip';
             chip.innerHTML = '<div class="dot-swatch' + (c.ring ? ' ring' : '') + '" style="background:' + (c.hex || '#888') + '" title="Click to toggle ring"><input type="color" value="' + (c.hex || '#888888') + '"></div>'
-              + '<input class="dot-name-inp" value="' + ea(c.name || '') + '"><button class="dot-rm" title="Remove colour">×</button>';
+              + '<input class="dot-name-inp" value="' + ea(c.name || '') + '"><button class="dot-rm" title="Remove color">×</button>';
             var sw = qs('.dot-swatch', chip), hexIn = qs('input[type=color]', chip), nmIn = qs('.dot-name-inp', chip), rmB = qs('.dot-rm', chip);
             hexIn.onclick = function (e) { e.stopPropagation(); };
             hexIn.addEventListener('input', function () { PV(dpre + 'hex', hexIn.value); sw.style.background = hexIn.value; var liveDot = qsa('.cfg-color .cfg-dot', row)[ci]; if (liveDot) liveDot.style.background = hexIn.value; });
@@ -1231,7 +1234,7 @@
             (function (cci) { rmB.onclick = function () { A('rm:' + ipre + 'colors.' + cci); }; })(ci);
             dotsEd.appendChild(chip);
           });
-          var dotAdd = document.createElement('button'); dotAdd.className = 'dot-add'; dotAdd.title = 'Add colour'; dotAdd.textContent = '+';
+          var dotAdd = document.createElement('button'); dotAdd.className = 'dot-add'; dotAdd.title = 'Add color'; dotAdd.textContent = '+';
           dotAdd.onclick = function () { A('push:' + ipre + 'colors'); };
           dotsEd.appendChild(dotAdd);
           // remove configuration (two-click confirm) — clear the drawer flag so a

@@ -86,7 +86,7 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 | `items[].dates` |  | text | `Dates` |
 | `items[].revised` |  | bool | `false`  _(default)_ |
 | `items[].colors` |  | list<dot> | _(template — see sub-fields)_ |
-| `items[].colors[].name` |  | text | `Colour` |
+| `items[].colors[].name` |  | text | `Color` |
 | `items[].colors[].hex` |  | color | `#9aa0a6` |
 | `items[].colors[].ring` |  | bool | `false`  _(default)_ |
 

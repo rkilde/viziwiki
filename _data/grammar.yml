@@ -72,7 +72,7 @@ components:
       feature:       { type: feature,   help: "Optional feature aside (advanced — the feature bank)",
                        blank: { head_left: "Featured", title: "Feature title", desc: "Write a short description.", chips: [{ key: "Label", val: "Value" }, { key: "Label", val: "Value" }, { key: "Label", val: "Value" }] } }
     subtypes:
-      stat: { num: { type: text, required: true, blank: "Value" }, label: { type: text, required: true, blank: "Stat label" }, color: { type: color, help: "Optional per-stat number colour (content hex or skin swatch)" } }
+      stat: { num: { type: text, required: true, blank: "Value" }, label: { type: text, required: true, blank: "Stat label" }, color: { type: color, help: "Optional per-stat number color (content hex or skin swatch)" } }
       spotlight:                  # hero card — treatment 1 · CALL-TO-ACTION CARD (wiki-hero-spotlight)
         eyebrow:  { type: text, blank: "Spotlight" }
         title:    { type: text, required: true, blank: "Spotlight title" }
@@ -84,7 +84,7 @@ components:
         art:      { type: text, locked: true, help: "Raw decoration markup (admin)" }
         art_inc:  { type: text, locked: true, help: "Decoration partial name under hero/ (admin)" }
       feature:                    # hero card — treatment 2 · FEATURE CARD (wiki-hero-feature)
-        bg:         { type: text, locked: true, help: "--hero-feature-bg gradient/colour (skin/admin)" }
+        bg:         { type: text, locked: true, help: "--hero-feature-bg gradient/color (skin/admin)" }
         head_left:  { type: text, blank: "Featured" }
         head_right: { type: text, blank: "Label" }
         title:      { type: text, required: true, blank: "Feature title" }
@@ -170,7 +170,7 @@ components:
       items:         { type: "list<config_item>", required: true, item_blank: { capacity: 64, unit: GB } }
     display:
       items:  { kind: "Configuration" }
-      colors: { kind: "Colour" }
+      colors: { kind: "Color" }
     subtypes:
       config_item:
         capacity: { type: number, required: true, seed_real: true, help: "Drives the bar width (a real capacity, not a placeholder)" }
@@ -179,8 +179,8 @@ components:
         price:    { type: text, blank: "$0", help: "Supports an 'old → new' drop" }
         dates:    { type: text, blank: "Dates" }
         revised:  { type: bool, default: false, help: "Stripes the bar + drops a divider" }
-        colors:   { type: "list<dot>", item_blank: { name: "Colour", hex: "#9aa0a6" }, help: "Device-colour dots" }
-      dot: { name: { type: text, blank: "Colour" }, hex: { type: color, blank: "#9aa0a6" }, ring: { type: bool, default: false } }
+        colors:   { type: "list<dot>", item_blank: { name: "Color", hex: "#9aa0a6" }, help: "Device-color dots" }
+      dot: { name: { type: text, blank: "Color" }, hex: { type: color, blank: "#9aa0a6" }, ring: { type: bool, default: false } }
     derived: ["bar width = exact proportion of the largest capacity"]
     seed:
       heading: "Configurations heading"
@@ -253,7 +253,7 @@ components:
         old:       { type: text }
         new:       { type: text }
         no_old:    { type: bool, default: false, help: "Hide the 'before' cell" }
-        chip:      { type: "enum[better,feature,changed,worse,same]", help: "Colour = the direction of change" }
+        chip:      { type: "enum[better,feature,changed,worse,same]", help: "Color = the direction of change" }
         chip_text: { type: text, help: "The short value shown in the chip" }
     seed:
       heading: "Changes heading"

@@ -204,7 +204,7 @@
           },
           "color": {
             "type": "color",
-            "help": "Optional per-stat number colour (content hex or skin swatch)"
+            "help": "Optional per-stat number color (content hex or skin swatch)"
           }
         },
         "spotlight": {
@@ -254,7 +254,7 @@
           "bg": {
             "type": "text",
             "locked": true,
-            "help": "--hero-feature-bg gradient/colour (skin/admin)"
+            "help": "--hero-feature-bg gradient/color (skin/admin)"
           },
           "head_left": {
             "type": "text",
@@ -572,7 +572,7 @@
           "kind": "Configuration"
         },
         "colors": {
-          "kind": "Colour"
+          "kind": "Color"
         }
       },
       "subtypes": {
@@ -608,16 +608,16 @@
           "colors": {
             "type": "list<dot>",
             "item_blank": {
-              "name": "Colour",
+              "name": "Color",
               "hex": "#9aa0a6"
             },
-            "help": "Device-colour dots"
+            "help": "Device-color dots"
           }
         },
         "dot": {
           "name": {
             "type": "text",
-            "blank": "Colour"
+            "blank": "Color"
           },
           "hex": {
             "type": "color",
@@ -876,7 +876,7 @@
           },
           "chip": {
             "type": "enum[better,feature,changed,worse,same]",
-            "help": "Colour = the direction of change"
+            "help": "Color = the direction of change"
           },
           "chip_text": {
             "type": "text",
