@@ -41,6 +41,8 @@ export function buildPolicy(grammar) {
         requires: spec.requires ?? null,
         enum: t.values ?? null,
         modes: spec.modes ?? null,           // {Label: enumValue} → a labeled toggle (e.g. Light/Dark) instead of raw enum chips
+        label: spec.label ?? null,           // readiness-widget label override (else the humanized field name)
+        identity: spec.identity === true,    // this field names its instance (the card label in the widget)
       };
       // recurse into component-typed fields (spotlight/feature/infobox…) and
       // list item subtypes (stat/chip/pair…) — paths use `[]` for list items

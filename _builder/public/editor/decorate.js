@@ -1030,7 +1030,13 @@
           // non-field part of the card also opens it.
           var expand = qs('.sc-expand', st);
           if (expand) { expand.classList.add('pe-expand'); (function (kk, ss) { expand.onclick = function (e) { e.stopPropagation(); openEvent(kk, ss); }; })(k, st); }
-          if (card) { card.style.cursor = 'pointer'; (function (kk, ss) { card.addEventListener('click', function (e) { if (e.target.closest('.ce,.pe-remove,.cc-pop')) return; openEvent(kk, ss); }); })(k, st); }
+          if (card) {
+            // the card is the jump SCOPE for the modal-only body field — a
+            // readiness jump to events.K.body opens the expandable card (the body
+            // lives in the modal, not on the face) and then flashes the body.
+            card.setAttribute('data-pe-scope', prefix + 'events.' + k); card.setAttribute('data-pe-opens', '1');
+            card.style.cursor = 'pointer'; (function (kk, ss) { card.addEventListener('click', function (e) { if (e.target.closest('.ce,.pe-remove,.cc-pop')) return; openEvent(kk, ss); }); })(k, st);
+          }
         });
 
         // "+ new event" — upper-right, above the timeline. Appending lands the
@@ -1629,7 +1635,12 @@
         if (el) { var t = strip(el.textContent); var ph = el.getAttribute('data-ph'); var phv = (ph != null ? ph : b).trim(); return t !== '' && t !== phv; }
         return ne(val) && strip(val) !== b;
       }
-      function scalarLabel(concrete) {
+      // the readiness label for a scalar leaf — the field's grammar `label`
+      // override when set (e.g. preview → "Summary line"), else the humanized
+      // field name. `key` is the policy path (so we can read its rule).
+      function scalarLabel(concrete, key) {
+        var r = key && FIELDS[key];
+        if (r && r.label) return r.label;
         var li = -1; concrete.forEach(function (s, ix) { if (typeof s === 'number') li = ix; });
         return human(concrete.slice(li + 1).join(' '));
       }
@@ -1640,22 +1651,34 @@
         var plur = real ? sing + 's' : listName;
         return need <= 1 ? 'At least one ' + sing : 'At least ' + need + ' ' + plur;
       }
-      // an instance's identifying value = its first required text field (derived).
-      // Tuple (array) instances are read POSITIONALLY by the field's declaration
-      // index (a pair row is ["Label","Value"] → label is index 0).
-      function identTitle(prefix, concretePrefix, instData) {
+      // an instance's identifying value names its card in the widget. The field
+      // is DERIVED: a grammar `identity: true` field if declared (e.g. the
+      // timeline event's title, which isn't its first required text — year is),
+      // else the first required text/richtext field. The value is read LIVE from
+      // the bound .ce (so the card name updates in REAL TIME as you type), else
+      // the doc. Tuple (array) instances index positionally.
+      function identTitle(prefix, concretePrefix, instData, dataPrefix) {
         if (!instData) return '';
         var rel = ''; concretePrefix.forEach(function (seg) { rel += (typeof seg === 'number') ? '[]' : ((rel ? '.' : '') + seg); });
-        var base = prefix + '.' + rel + '.', best = null, isArr = Array.isArray(instData), fi = -1;
+        var base = prefix + '.' + rel + '.', isArr = Array.isArray(instData);
+        // collect this instance's own (depth-0) fields in declaration order
+        var fields = [];
         Object.keys(FIELDS).forEach(function (k) {
           if (k.indexOf(base) !== 0) return;
           var tail = k.slice(base.length); if (tail.indexOf('.') >= 0 || tail.indexOf('[]') >= 0) return;
-          fi++; if (best != null) return;
-          var r = FIELDS[k]; if (!r.required || (r.kind !== 'text' && r.kind !== 'richtext')) return;
-          var v = isArr ? instData[fi] : instData[tail];
-          if (ne(v) && strip(v) !== String(r.blank == null ? '' : r.blank).trim()) best = strip(v);
+          fields.push({ key: k, tail: tail, r: FIELDS[k], fi: fields.length });
         });
-        return best ? (best.length > 26 ? best.slice(0, 24) + '…' : best) : '';
+        var idField = null, firstText = null;
+        fields.forEach(function (f) {
+          if (f.r.identity) idField = idField || f;
+          if (!firstText && f.r.required && (f.r.kind === 'text' || f.r.kind === 'richtext')) firstText = f;
+        });
+        var pick = idField || firstText; if (!pick) return '';
+        var docPath = (dataPrefix || '') + concretePrefix.join('.') + '.' + (isArr ? pick.fi : pick.tail);
+        var el = dataPrefix ? findEl(docPath) : null;
+        var v = el ? strip(el.textContent) : (isArr ? instData[pick.fi] : instData[pick.tail]);
+        if (!ne(v) || strip(v) === String(pick.r.blank == null ? '' : pick.r.blank).trim()) return '';
+        v = strip(v); return v.length > 26 ? v.slice(0, 24) + '…' : v;
       }
       // a `pair`-style subtype is stored POSITIONALLY (the doc + the binding use
       // rows.0.0 / rows.0.1, while grammar names the fields key/value). When the
@@ -1703,7 +1726,7 @@
           var ck = concrete.slice(0, idxPos + 1).join('.');
           if (!cardMap[ck]) {
             cardMap[ck] = { key: dataPrefix + ck, kind: kindOf(prefix, concrete[idxPos - 1]),
-              name: identTitle(prefix, concrete.slice(0, idxPos + 1), nav(concrete.slice(0, idxPos + 1))),
+              name: identTitle(prefix, concrete.slice(0, idxPos + 1), nav(concrete.slice(0, idxPos + 1)), dataPrefix),
               reqs: [], itemMap: {}, itemOrder: [] };
             cardOrder.push(ck);
           }
@@ -1712,7 +1735,7 @@
         function getItem(card, idxPos, concrete) {
           var ik = concrete.slice(0, idxPos + 1).join('.');
           if (!card.itemMap[ik]) {
-            card.itemMap[ik] = { key: dataPrefix + ik, name: identTitle(prefix, concrete.slice(0, idxPos + 1), nav(concrete.slice(0, idxPos + 1))), reqs: [] };
+            card.itemMap[ik] = { key: dataPrefix + ik, name: identTitle(prefix, concrete.slice(0, idxPos + 1), nav(concrete.slice(0, idxPos + 1)), dataPrefix), reqs: [] };
             card.itemOrder.push(ik);
           }
           return card.itemMap[ik];
@@ -1740,14 +1763,14 @@
               var need = r.min != null ? r.min : 1, arr = Array.isArray(val) ? val : [];
               leaf = { label: listLabel(rel, r, need), sub: arr.length + ' / ' + need, met: arr.length >= need, jump: docPath, addpath: docPath, struct: true };
             } else {
-              leaf = { label: scalarLabel(concrete), met: metScalar(docPath, val, r.blank), jump: docPath };
+              leaf = { label: scalarLabel(concrete, key), met: metScalar(docPath, val, r.blank), jump: docPath };
             }
             if (idxs.length === 0) { section.push(leaf); return; }
             var card = getCard(idxs[0], concrete);
             if (idxs.length === 1) { card.reqs.push(leaf); return; }
             // deeper than the item (e.g. a pill inside a group) → tag with the
             // intermediate instance's name as a sub-label
-            if (idxs.length >= 3) { var s3 = identTitle(prefix, concrete.slice(0, idxs[idxs.length - 1] + 1), nav(concrete.slice(0, idxs[idxs.length - 1] + 1))); if (s3) leaf.sub = s3; }
+            if (idxs.length >= 3) { var s3 = identTitle(prefix, concrete.slice(0, idxs[idxs.length - 1] + 1), nav(concrete.slice(0, idxs[idxs.length - 1] + 1)), dataPrefix); if (s3) leaf.sub = s3; }
             getItem(card, idxs[1], concrete).reqs.push(leaf);
           });
         });

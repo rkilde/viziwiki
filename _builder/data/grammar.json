@@ -1001,18 +1001,21 @@
           "title": {
             "type": "text",
             "required": true,
+            "identity": true,
             "blank": "Name this event",
-            "help": "Card headline + modal title"
+            "help": "Card headline + modal title (names the event card in the widget)"
           },
           "preview": {
             "type": "text",
             "required": true,
+            "label": "Summary line",
             "blank": "Add a short summary of what happened",
             "help": "One-line summary on the collapsed card face"
           },
           "body": {
             "type": "richtext",
             "required": true,
+            "label": "Full text",
             "blank": "Write the full story for the expandable card…",
             "help": "Full detail in the expandable card (required)"
           }
