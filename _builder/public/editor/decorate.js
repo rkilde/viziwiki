@@ -271,19 +271,24 @@
   // leaves the card and hides it. Fix both: position the dock with JS as
   // position:fixed at the card's rect (multicol-proof), and keep it pinned
   // until the mouse leaves a PROXIMITY zone around the card + the dock.
-  function armDockHover(card, dock) {
+  function armDockHover(card, dock, id) {
     var GRACE = 56;   // px around the card/dock before it hides
+    var raf = window.requestAnimationFrame || function (f) { return setTimeout(f, 16); };
     var place = function () { var r = card.getBoundingClientRect(); dock.style.left = r.left + 'px'; dock.style.top = (r.top - dock.offsetHeight - 6) + 'px'; };
-    dock._pin = function () { dock.classList.add('pinned'); place(); };   // for programmatic open (e.g. ribbon reopen)
     var inBox = function (e, r) { return e.clientX >= r.left - GRACE && e.clientX <= r.right + GRACE && e.clientY >= r.top - GRACE && e.clientY <= r.bottom + GRACE; };
     var moveH = null;
-    var unpin = function () { dock.classList.remove('pinned'); if (moveH) document.removeEventListener('mousemove', moveH); moveH = null; };
-    card.addEventListener('mouseenter', function () {
-      if (dock.classList.contains('pinned')) return;
-      dock.classList.add('pinned'); place();
-      moveH = function (e) { if (!inBox(e, card.getBoundingClientRect()) && !inBox(e, dock.getBoundingClientRect())) unpin(); };
-      document.addEventListener('mousemove', moveH);
-    });
+    var unpin = function () { dock.classList.remove('pinned'); if (window.__peDockOpen === id) window.__peDockOpen = null; if (moveH) { document.removeEventListener('mousemove', moveH); moveH = null; } };
+    var watch = function () { if (moveH) return; moveH = function (e) { if (!inBox(e, card.getBoundingClientRect()) && !inBox(e, dock.getBoundingClientRect())) unpin(); }; document.addEventListener('mousemove', moveH); };
+    dock._pin = function () { if (!dock.classList.contains('pinned')) { dock.classList.add('pinned'); if (id != null) window.__peDockOpen = id; watch(); } place(); };
+    card.addEventListener('mouseenter', dock._pin);
+    // RE-RENDER RESTORE: an action (+ item, + ribbon, …) destroys this dock and
+    // builds a fresh one. If this card's dock was pinned, bring it straight back
+    // with NO fade and NO position jump — pin instantly (held hidden) and place
+    // it once the iframe has re-laid-out — so the dock doesn't flash.
+    if (id != null && window.__peDockOpen === id) {
+      dock.style.transition = 'none'; dock.style.opacity = '0'; dock.classList.add('pinned'); watch();
+      setTimeout(function () { place(); dock.style.opacity = ''; raf(function () { dock.style.transition = ''; }); }, 50);
+    }
   }
 
   // floating glass popover (one at a time)
@@ -740,7 +745,7 @@
           var sep = document.createElement('span'); sep.className = 'cc-sep'; dock.appendChild(sep);
           (function (cp, ac, cd, jj) { dock.appendChild(dockBtn(csvg(CICON.flag), cd.ribbon ? 'Edit ribbon' : 'Add a ribbon', cd.ribbon ? 'on' : '', function () { openRibbonPop(this, cp, ac, cd.ribbon == null ? null : cd.ribbon, card, jj); })); })(cpre, accent, cdata, j);
           (function (jj) { var tb = dockBtn(csvg(CICON.trash), 'Delete entire category', 'danger', null); armDelete(tb, function () { closePop(); A('rm:' + prefix + 'categories.' + jj); }); dock.appendChild(tb); })(j);
-          card.appendChild(dock); armDockHover(card, dock);
+          card.appendChild(dock); armDockHover(card, dock, cpre);
 
           // pills → open the item editor; "+ item". The pill is also the
           // readiness JUMP SCOPE for everything under this item (its name + the
