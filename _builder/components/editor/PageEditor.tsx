@@ -5,6 +5,7 @@ import { loadPageDoc, savePageDoc, resetPageDoc, seedDoc, type PageDoc } from '.
 import { buildCanvas, setIn, applyAction } from '../../lib/canvas';
 import { renderBody } from '../../lib/render';
 import { SectionPicker } from './SectionPicker';
+import { BugReporter } from './BugReporter';
 
 const oneLine = (t: string) => t.replace(/<br\s*\/?>/gi, ' ');
 
@@ -127,6 +128,8 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
           </React.Fragment>
         ))}
       </div>
+      {/* report-a-bug (top-left) — UI only for now */}
+      <BugReporter />
       <div id="pe-chrome">
         {markers.length > 0 && (
           <span className={`pe-pgstat ${todoCount === 0 ? 'done' : 'todo'}`} title="Derived from the grammar's required fields">
