@@ -179,7 +179,7 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 | `categories[].items[].name` | • | text | `New item` |
 | `categories[].items[].status` |  | enum | `active`  _(choice: active · discontinued · limited · retired)_ |
 | `categories[].items[].info` |  | text | `Info` |
-| `categories[].items[].desc` |  | richtext | `What it is.` |
+| `categories[].items[].desc` | • | richtext | `What it is.` |
 | `categories[].items[].groups` |  | list<pill_group> | _(template — see sub-fields)_ |
 | `categories[].items[].groups[].label` |  | text | `Group` |
 | `categories[].items[].groups[].pills` |  | list<pill> | `Pill`  _(per new item)_ |

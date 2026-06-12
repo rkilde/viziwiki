@@ -1104,7 +1104,9 @@
           },
           "desc": {
             "type": "richtext",
-            "blank": "What it is."
+            "required": true,
+            "blank": "What it is.",
+            "help": "The expandable card's description"
           },
           "groups": {
             "type": "list<pill_group>",

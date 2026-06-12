@@ -317,7 +317,7 @@ components:
         status:  { type: "enum[active,discontinued,limited,retired]", blank: active,
                    help: "Status chip — exactly the values the bank CSS styles (st-*)" }
         info:    { type: text, blank: "Info" }
-        desc:    { type: richtext, blank: "What it is." }
+        desc:    { type: richtext, required: true, blank: "What it is.", help: "The expandable card's description" }
         groups:  { type: "list<pill_group>", item_blank: { label: "Group", pills: ["Pill"] } }
         callout: { type: callout, blank: { label: "Callout", text: "A short highlighted callout." } }
         notes:   { type: richtext, blank: "Write a note…" }

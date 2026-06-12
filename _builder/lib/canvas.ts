@@ -51,9 +51,9 @@ const AFFORDANCE = `
   /* infobox ONLY: the row × is right-aligned + vertically centred on its row,
      not the upper-right corner — the corner rule still governs everything else */
   .wiki-infobox-data > dd.pe-removable > .pe-remove{ top:50%; right:-9px; left:auto; transform:translateY(-50%); }
-  /* +row / +badge sit just BELOW the infobox so the panel itself renders exactly
-     like the live site (no editing chrome inside its bounds) */
-  .pe-infobox-adds{ display:flex; gap:8px; margin-top:8px; padding-left:2px; }
+  /* +row / +badge sit just BELOW the infobox (absolute, so the panel itself
+     renders exactly like the live site — no editing chrome inside its bounds) */
+  .pe-infobox-adds{ position:absolute; top:calc(100% + 8px); left:0; display:flex; gap:8px; }
   .wiki-hero-search.pe-removable{ width:auto; }
   .wiki-hero-stats.pe-removable{ width:auto; }
   .cat-card.pe-removable{ width:auto; }
@@ -72,14 +72,16 @@ const AFFORDANCE = `
      canon dimensions (no padding/margin added to the card). overflow:visible
      (editor only) so the floating dock + its hover tooltips aren't clipped. */
   .cat-card{ overflow:visible !important; }
-  .cc-dock{ position:absolute; top:-42px; left:0; z-index:8; display:flex; align-items:center; gap:2px; padding:4px; border-radius:13px;
+  /* position:fixed + JS placement (see armDockHover) — multicol-proof, and it
+     stays pinned within a proximity zone so it's easy to reach. */
+  .cc-dock{ position:fixed; z-index:1200; display:flex; align-items:center; gap:2px; padding:4px; border-radius:13px;
     background:var(--g-bg); border:var(--g-edge); box-shadow:var(--g-shadow),var(--g-inset);
     opacity:0; transform:translateY(-6px) scale(.96); transform-origin:top left; pointer-events:none;
     transition:opacity .18s ease, transform .2s cubic-bezier(.2,.7,.3,1); }
   /* blur is applied ONLY when the dock is visible — a hidden (opacity:0)
      backdrop-filter still composites a faint band over the content beneath it
      (this, not geometry, was what hid a card's title). */
-  .cat-card:hover .cc-dock, .cc-dock.pinned{ opacity:1; transform:none; pointer-events:auto;
+  .cc-dock.pinned{ opacity:1; transform:none; pointer-events:auto;
     backdrop-filter:var(--g-blur); -webkit-backdrop-filter:var(--g-blur); }
   /* hover explainer tooltip — solid glass chip above each control */
   .cc-btn[data-tip]::after{ content:attr(data-tip); position:absolute; bottom:calc(100% + 9px); left:50%;

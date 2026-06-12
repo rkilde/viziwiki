@@ -64,13 +64,12 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok([...d.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ paragraph'), '+ paragraph button');
   ok(d.querySelector('.wiki-infobox.pe-removable'), 'infobox removable');
   ok(d.querySelector('.wiki-infobox-data > dt .ce') && d.querySelector('.wiki-infobox-data > dd .ce'), 'infobox row editable');
-  // +row / +badge live in an add-bar BELOW the infobox (so the panel renders
-  // exactly like the live site), not inside it
-  const ibAdds = d.querySelector('.wiki-infobox + .pe-infobox-adds');
+  // +row / +badge live in an add-bar attached to the infobox, positioned
+  // directly BELOW it via CSS (so the panel itself renders like the live site)
+  const ibAdds = d.querySelector('.wiki-infobox > .pe-infobox-adds');
   ok(ibAdds && [...ibAdds.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === '+ row'), '+ row button (in the add-bar below the infobox)');
   ok([...d.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === '+ sublabel'), '+ sublabel slot (sentinel)');
   ok(ibAdds && [...ibAdds.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === '+ badge'), '+ badge button (in the add-bar below the infobox)');
-  ok(!d.querySelector('.wiki-infobox .pe-infobox-adds'), 'no editing add-chrome inside the infobox bounds');
   ok(d.querySelector('.wiki-section-eyebrow.pe-canon .pe-lock'), 'overview eyebrow locked (from grammar locked block)');
   ok(d.querySelector('.pe-sec-tools'), 'tone toolbar present');
   ok(d.querySelectorAll('.pe-tonebtn').length === 3, 'tone buttons from grammar enum (a/b/special)');

@@ -264,6 +264,26 @@
     b.innerHTML = icon; b.onclick = onclick;
     return b;
   }
+  // The card dock floats ABOVE its card. Two problems with plain CSS :hover +
+  // absolute positioning: (a) inside the masonry's CSS multi-columns, absolute
+  // children mis-resolve their containing block (the dock jumps to another
+  // card); (b) the dock sits outside the card, so moving the mouse up to USE it
+  // leaves the card and hides it. Fix both: position the dock with JS as
+  // position:fixed at the card's rect (multicol-proof), and keep it pinned
+  // until the mouse leaves a PROXIMITY zone around the card + the dock.
+  function armDockHover(card, dock) {
+    var GRACE = 56;   // px around the card/dock before it hides
+    var place = function () { var r = card.getBoundingClientRect(); dock.style.left = r.left + 'px'; dock.style.top = (r.top - dock.offsetHeight - 6) + 'px'; };
+    var inBox = function (e, r) { return e.clientX >= r.left - GRACE && e.clientX <= r.right + GRACE && e.clientY >= r.top - GRACE && e.clientY <= r.bottom + GRACE; };
+    var moveH = null;
+    var unpin = function () { dock.classList.remove('pinned'); if (moveH) document.removeEventListener('mousemove', moveH); moveH = null; };
+    card.addEventListener('mouseenter', function () {
+      if (dock.classList.contains('pinned')) return;
+      dock.classList.add('pinned'); place();
+      moveH = function (e) { if (!inBox(e, card.getBoundingClientRect()) && !inBox(e, dock.getBoundingClientRect())) unpin(); };
+      document.addEventListener('mousemove', moveH);
+    });
+  }
 
   // floating glass popover (one at a time)
   var pePop = null;
@@ -445,7 +465,7 @@
       // the badge is absent) — relocate it into the add bar below.
       var badgeSlot = qs('.pe-add-badge', ibox);
       if (badgeSlot) { badgeSlot.remove(); ibAdds.appendChild(addBtn('add:overview.infobox.badge', '+ badge', true)); }
-      if (ibAdds.children.length) ibox.parentNode.insertBefore(ibAdds, ibox.nextSibling);
+      if (ibAdds.children.length) ibox.appendChild(ibAdds);   // absolute-positioned directly below the infobox (CSS)
     }
 
     // removables — × attaches only where grammar says optional
@@ -719,7 +739,7 @@
           var sep = document.createElement('span'); sep.className = 'cc-sep'; dock.appendChild(sep);
           (function (cp, ac, cd, jj) { dock.appendChild(dockBtn(csvg(CICON.flag), cd.ribbon ? 'Edit ribbon' : 'Add a ribbon', cd.ribbon ? 'on' : '', function () { openRibbonPop(this, cp, ac, cd.ribbon == null ? null : cd.ribbon, card, jj); })); })(cpre, accent, cdata, j);
           (function (jj) { var tb = dockBtn(csvg(CICON.trash), 'Delete entire category', 'danger', null); armDelete(tb, function () { closePop(); A('rm:' + prefix + 'categories.' + jj); }); dock.appendChild(tb); })(j);
-          card.appendChild(dock);
+          card.appendChild(dock); armDockHover(card, dock);
 
           // pills → open the item editor; "+ item". The pill is also the
           // readiness JUMP SCOPE for everything under this item (its name + the
