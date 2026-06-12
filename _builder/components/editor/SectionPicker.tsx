@@ -33,32 +33,44 @@ const SHEET = '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V
 // is derived from `id` via isLive() so the picker and the canon can't disagree.
 type TypeTile = { id: string; name: string; icon: string; desc?: string; bullets?: string[] };
 
-// tiles from the mockup's SECTION_TEMPLATES (names pluralized per the owner)
-const TILES = [
+// tiles from the mockup's SECTION_TEMPLATES (names pluralized per the owner).
+// Two kinds, and the grid shows CATEGORY tiles first then STANDALONE tiles:
+//  · category (pill 'Category', `opens`) → opens a type chooser
+//  · standalone (pill 'Available', `add`) → clicking adds that section directly
+type BrowseTile = {
+  id: string; name: string;
+  pill: 'Category' | 'Available';
+  opens?: 'catalog' | 'timeline' | 'config' | null;   // category → sub-chooser
+  add?: string;                                        // standalone → seed directly
+  icon: string; desc: string;
+};
+const TILES: BrowseTile[] = [
+  // ── category tiles (open a type chooser) ──
   {
-    id: 'catalog', name: 'Catalogs', pill: 'Category' as const, opens: 'catalog' as const,
+    id: 'catalog', name: 'Catalogs', pill: 'Category', opens: 'catalog',
     icon: '<rect x="3.5" y="3.5" width="4" height="4" rx="1"/><line x1="9.5" y1="5.5" x2="20" y2="5.5"/><rect x="3.5" y="10" width="4" height="4" rx="1"/><line x1="9.5" y1="12" x2="20" y2="12"/><rect x="3.5" y="16.5" width="4" height="4" rx="1"/><line x1="9.5" y1="18.5" x2="20" y2="18.5"/>',
     desc: 'Categorized, browsable lists — each item opens an expandable card. Pick a catalog type →',
   },
   {
-    id: 'timeline', name: 'Timelines', pill: 'Category' as const, opens: 'timeline' as const,
+    id: 'timeline', name: 'Timelines', pill: 'Category', opens: 'timeline',
     icon: '<polyline points="18 8 22 12 18 16"/><polyline points="6 8 2 12 6 16"/><line x1="2" y1="12" x2="22" y2="12"/>',
     desc: 'Date-positioned event scrollers on a real time axis. Pick a timeline type →',
   },
   {
-    id: 'delta', name: 'Side by Side Comparisons', pill: 'Available' as const, opens: null,
-    icon: BLANK,
-    desc: 'A previous-vs-current table grouped into Hardware & Software, with color-coded change chips (better, feature, changed, worse, same).',
-  },
-  {
-    id: 'spec', name: 'Specifications Sheet', pill: 'Category' as const, opens: 'spec' as const,
-    icon: SHEET,
-    desc: 'A grid of spec cards — each an icon + title + key/value rows (the dark "Specifications Sheet" band). Pick a sheet type →',
-  },
-  {
-    id: 'config', name: 'Hardware & Software Tech Visuals', pill: 'Category' as const, opens: 'config' as const,
+    id: 'config', name: 'Hardware & Software Tech Visuals', pill: 'Category', opens: 'config',
     icon: '<rect x="7" y="2" width="10" height="20" rx="3"/><line x1="12" y1="17" x2="12" y2="18" stroke-width="2.5"/><line x1="10" y1="4.5" x2="14" y2="4.5"/>',
     desc: 'Storage/spec tiers with proportional fill bars derived from capacity, plus price, dates & device-color dots. Pick a chart type →',
+  },
+  // ── standalone tiles (click → add directly) ──
+  {
+    id: 'spec', name: 'Specifications Sheet', pill: 'Available', add: 'spec',
+    icon: SHEET,
+    desc: 'A grid of spec cards — each an icon + title + label/value rows (the dark signature band). Click to add it.',
+  },
+  {
+    id: 'delta', name: 'Side by Side Comparisons', pill: 'Available', opens: null,
+    icon: BLANK,
+    desc: 'A previous-vs-current table grouped into Hardware & Software, with color-coded change chips (better, feature, changed, worse, same).',
   },
 ];
 
@@ -82,15 +94,6 @@ const CONFIG_TYPES: TypeTile[] = [
   { id: 'spec', name: 'Specifications Sheet',
     icon: SHEET,
     desc: 'A grid of spec cards — each an icon + title + key/value rows. The dark signature spec band.' },
-];
-
-// spec (Specifications Sheet) types — the card-grid sheet IS the canonical spec
-// bank (the one real type today): clicking it seeds a derived `spec` section
-// (grammar seed + registry host). More sheet layouts are ghosts until built.
-const SPEC_TYPES: TypeTile[] = [
-  { id: 'spec', name: 'Specifications Sheet',
-    icon: SHEET,
-    desc: 'A grid of cards, each an icon + title + key/value rows. The dark signature spec band.' },
 ];
 
 // catalog types from the mockup's CATALOG_TYPES — Category Masonry IS the
@@ -117,7 +120,7 @@ const CATALOG_TYPES: TypeTile[] = [
 ];
 
 export function SectionPicker({ onClose, onPick }: { onClose: () => void; onPick: (type: string) => void }) {
-  const [screen, setScreen] = useState<'choices' | 'browse' | 'catalog' | 'timeline' | 'config' | 'spec'>('choices');
+  const [screen, setScreen] = useState<'choices' | 'browse' | 'catalog' | 'timeline' | 'config'>('choices');
   const [q, setQ] = useState('');
 
   // shared typed sub-chooser (catalog / timeline): a grid of TypeTiles, each
@@ -217,7 +220,7 @@ export function SectionPicker({ onClose, onPick }: { onClose: () => void; onPick
               </div>
               <div className="sp-grid">
                 {shown.map((t) => (
-                  <div key={t.id} className="sp-card available" onClick={t.opens ? () => setScreen(t.opens!) : undefined}>
+                  <div key={t.id} className="sp-card available" onClick={t.opens ? () => setScreen(t.opens!) : t.add && isLive(t.add) ? () => onPick(t.add!) : undefined}>
                     <span className={`sp-pill ${t.pill === 'Category' ? 'cat' : 'ok'}`}>{t.pill}</span>
                     <div className="sp-card-top">
                       <div className="sp-card-ic">{ic(t.icon, 16)}</div>
@@ -234,7 +237,6 @@ export function SectionPicker({ onClose, onPick }: { onClose: () => void; onPick
         {screen === 'catalog' && typeScreen('Catalogs', 'Pick a catalog type', CATALOG_TYPES)}
         {screen === 'timeline' && typeScreen('Timelines', 'Pick a timeline type', TIMELINE_TYPES)}
         {screen === 'config' && typeScreen('Hardware & Software Tech Visuals', 'Pick a chart type', CONFIG_TYPES)}
-        {screen === 'spec' && typeScreen('Specifications Sheet', 'Pick a sheet type', SPEC_TYPES)}
       </div>
     </div>
   );
