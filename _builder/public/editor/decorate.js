@@ -1047,36 +1047,37 @@
         }
       }
 
-      // ── config: the storage/configuration chart — full editor. Bars are
-      // sorted low→high by the CANON (config.html); revised "specials" drop
-      // below the divider. So an inline capacity/unit/revised edit re-runs the
-      // canon sort, and we FLIP each row to its new slot + grow/shrink the bar
-      // from where it was (pure decorator interaction — the layout itself is
-      // derived in Liquid). Rows bind by their ORIGINAL data index (data-idx,
-      // emitted by the canon) so the sorted DOM still addresses the right item. ──
+      // ── config: the storage/configuration chart — the owner's DRAWER editing
+      // flow (configeditorui.html). Inline grey/blue .ce boxes edit the chart
+      // directly (and feed the readiness widget); a per-row chevron opens a
+      // structured drawer for the full form (capacity/unit/price/model/dates,
+      // revised + price-drop toggles, divider label, device colours, remove).
+      // Bars stay CANON-sorted (config.html) — an inline/drawer capacity, unit
+      // or revised change re-runs that sort and we FLIP each row to its new slot
+      // + grow/shrink the bar from where it was (decorator interaction; the
+      // layout itself is derived in Liquid). Rows bind by their ORIGINAL data
+      // index (data-idx, from the canon) so the sorted DOM addresses the right
+      // item. There is no manual reorder — the order is DERIVED from capacity. ──
       if (type === 'config') {
+        var ea = function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); };
         wrapCE(qs('.wiki-section-title', secEl), prefix + 'heading');     // required H2
         wrapCE(qs('.cfg-chart-title', secEl), prefix + 'chart_title');    // required chart title
 
-        // intro paragraphs (optional list): present → edit + × + "+ paragraph";
-        // absent → a "+ intro" affordance after the heading.
+        // intro paragraphs (optional list) — inline-editable + removable
         var cfgIntro = qs('.cfg-prose', secEl);
-        if (cfgIntro) {
-          qsa('p', cfgIntro).forEach(function (p, ix) { wrapCE(p, prefix + 'intro.' + ix); makeRemovable(p, 'rm:' + prefix + 'intro.' + ix); });
-          cfgIntro.appendChild(addBtn('push:' + prefix + 'intro', '+ paragraph', true));
-        } else {
-          var cfgH2 = qs('.wiki-section-title', secEl);
-          if (cfgH2 && cfgH2.parentNode) cfgH2.parentNode.insertBefore(addLine('push:' + prefix + 'intro', '+ intro'), cfgH2.nextSibling);
-        }
+        if (cfgIntro) qsa('p', cfgIntro).forEach(function (p, ix) { wrapCE(p, prefix + 'intro.' + ix); makeRemovable(p, 'rm:' + prefix + 'intro.' + ix); });
 
-        // footer (optional richtext): present → edit + ×. (Absent → the sentinel
-        // pass already swapped it for a "+ footer" slot via SECTION_SLOTS.)
+        // footer (optional richtext) — inline. (Absent → the sentinel pass
+        // already swapped it for a "+ footer" slot via SECTION_SLOTS.)
         var cfgFtr = qs('.cfg-footer', secEl);
         if (cfgFtr) { wrapCE(cfgFtr, prefix + 'footer'); makeRemovable(cfgFtr, 'rm:' + prefix + 'footer'); }
 
+        // divider label (section-level) — inline-editable when the divider shows
+        var dlEl = qs('.cfg-divider-label', secEl);
+        if (dlEl) wrapCE(dlEl, prefix + 'divider_label');
+
         // FLIP snapshot — capture each row's rect + its fill width BEFORE a
-        // reorder-causing commit (capacity / unit / revised). Removal + add
-        // shift the indices, so they DON'T snapshot (no stable key to match).
+        // reorder-causing commit (capacity / unit / revised).
         var cfgSnap = function () {
           var snap = {};
           qsa('.cfg-row', secEl).forEach(function (row) {
@@ -1085,28 +1086,16 @@
           });
           window.__peCfgFlip = { s: i, snap: snap };
         };
-
-        // device-colour dot popover — a CONTENT colour (not a skin token), so a
-        // native colour input + a ring toggle + remove. hex/ring edit live (no
-        // re-render needed — they don't change layout).
-        var openDotPop = function (btn, dpre, dot) {
-          var html = '<div class="cc-pop-label">Colour</div>'
-            + '<div class="cc-dotpop"><input type="color" class="cc-hex" value="' + (dot.hex || '#9aa0a6') + '">'
-            + '<button class="cc-ringtog' + (dot.ring ? ' on' : '') + '">Ring</button></div>'
-            + '<button class="cc-rm">Remove colour</button>';
-          var pop = openPop(btn, '', html, { cls: 'dot-pop' });
-          var hx = qs('.cc-hex', pop);
-          hx.addEventListener('input', function () { PV(dpre + 'hex', hx.value); btn.style.background = hx.value; });
-          var rg = qs('.cc-ringtog', pop);
-          rg.onclick = function () { var nv = !rg.classList.contains('on'); rg.classList.toggle('on', nv); btn.classList.toggle('ring', nv); PV(dpre + 'ring', nv ? 'true' : ''); };
-          qs('.cc-rm', pop).onclick = function () { closePop(); A('rm:' + dpre.slice(0, -1)); };
-        };
+        // combine the drawer's old/new price inputs into the single canon
+        // `price` string ("old → new" when a price-drop is on)
+        var combinePrice = function (oldv, newv, drop) { oldv = String(oldv || '').trim(); newv = String(newv || '').trim(); return (drop && newv) ? (oldv + ' → ' + newv) : oldv; };
 
         qsa('.cfg-row', secEl).forEach(function (row) {
           var di = parseInt(row.getAttribute('data-idx'), 10); if (isNaN(di)) return;
           var ipre = prefix + 'items.' + di + '.';
           var idata = (sdata.items && sdata.items[di]) || {};
 
+          // ── inline chart fields (direct manipulation) ──
           // capacity (REQUIRED) — inline number edit; commits → re-sort + re-fill
           var capBox = qs('.cfg-cap', row);
           if (capBox) {
@@ -1129,69 +1118,133 @@
               (function (cd) { unitSpan.onclick = function (e) { e.stopPropagation(); cfgSnap(); A('set:' + ipre + 'unit:' + (cd.unit === 'TB' ? 'GB' : 'TB')); }; })(idata);
             }
           }
-
-          // model (inside the bar) — present → edit + ×; absent → "+ model"
+          // model (inside the bar) — inline when present
           var fill = qs('.cfg-fill', row);
           var modelEl = fill && qs('.cfg-model', fill);
-          if (modelEl) { wrapCE(modelEl, ipre + 'model'); makeRemovable(modelEl, 'rm:' + ipre + 'model'); }
-          else if (fill) fill.appendChild(addBtn('add:' + ipre + 'model', '+ model', true));
-
-          // price ("old → new" supported) — edit the raw string; commit re-splits
+          if (modelEl) wrapCE(modelEl, ipre + 'model');
+          // price — inline (raw "old → new") when present
           var priceEl = qs('.cfg-price', row);
-          if (priceEl) {
-            if (idata.price != null) {
-              priceEl.innerHTML = '';
-              var pl = document.createElement('div'); pl.className = 'cfg-price-line'; priceEl.appendChild(pl);
-              var pce = document.createElement('span'); pce.className = 'ce'; pce.setAttribute('contenteditable', 'true');
-              pce.setAttribute('data-pe-path', ipre + 'price'); pce.setAttribute('data-ph', (R('config.items[].price').blank) || '$0');
-              pce.textContent = idata.price; pl.appendChild(pce);
-              (function (cd) { pce.addEventListener('blur', function () { if ((pce.textContent || '') === String(cd.price)) return; PV(ipre + 'price', pce.textContent); A('commit'); }); })(idata);
-              makeRemovable(pl, 'rm:' + ipre + 'price');
-            } else { priceEl.innerHTML = ''; priceEl.appendChild(addBtn('add:' + ipre + 'price', '+ price', true)); }
+          if (priceEl && idata.price != null) {
+            priceEl.innerHTML = '';
+            var pl = document.createElement('div'); pl.className = 'cfg-price-line'; priceEl.appendChild(pl);
+            var pce = document.createElement('span'); pce.className = 'ce'; pce.setAttribute('contenteditable', 'true');
+            pce.setAttribute('data-pe-path', ipre + 'price'); pce.setAttribute('data-ph', (R('config.items[].price').blank) || '$0');
+            pce.textContent = idata.price; pl.appendChild(pce);
+            (function (cd) { pce.addEventListener('blur', function () { if ((pce.textContent || '') === String(cd.price)) return; PV(ipre + 'price', pce.textContent); A('commit'); }); })(idata);
           }
-
-          // dates (optional) — present → edit + ×; absent → "+ dates"
+          // dates — inline when present
           var datesEl = qs('.cfg-dates', row);
-          if (datesEl) { wrapCE(datesEl, ipre + 'dates'); makeRemovable(datesEl, 'rm:' + ipre + 'dates'); }
-          else row.appendChild(addBtn('add:' + ipre + 'dates', '+ dates', true));
+          if (datesEl) wrapCE(datesEl, ipre + 'dates');
 
-          // device-colour dots (optional list) — swatch popover + name; "+ colour"
-          var colorsWrap = qs('.cfg-colors', row);
-          if (!colorsWrap) { colorsWrap = document.createElement('div'); colorsWrap.className = 'cfg-colors'; row.appendChild(colorsWrap); }
-          else {
-            qsa('.cfg-color', colorsWrap).forEach(function (cel, ci) {
-              var dpre = ipre + 'colors.' + ci + '.'; var ddata = (idata.colors && idata.colors[ci]) || {};
-              var dot = qs('.cfg-dot', cel);
-              if (dot) { dot.style.cursor = 'pointer'; dot.title = 'Colour'; (function (b, dp, dd) { b.onclick = function (e) { e.stopPropagation(); openDotPop(b, dp, dd); }; })(dot, dpre, ddata); }
-              wrapCE(qs('.cfg-dot-name', cel), dpre + 'name');
-              makeRemovable(cel, 'rm:' + ipre + 'colors.' + ci);
-            });
-          }
-          colorsWrap.appendChild(addBtn('push:' + ipre + 'colors', '+ colour', true));
+          // ── the per-row EDIT DRAWER (the owner's design) ──
+          var chev = document.createElement('button');
+          chev.className = 'row-edit-btn'; chev.title = 'Edit configuration';
+          chev.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+          row.appendChild(chev);
 
-          // revised toggle + remove row — a glass pill in the row's corner
-          var rdock = document.createElement('div'); rdock.className = 'cfg-row-tools';
-          var revBtn = document.createElement('button');
-          revBtn.className = 'pe-tonebtn' + (idata.revised ? ' on' : '');
-          revBtn.textContent = idata.revised ? 'revised' : 'mark revised';
-          revBtn.title = 'Revised configs drop below the divider';
-          (function (cd) { revBtn.onclick = function () { cfgSnap(); A('set:' + ipre + 'revised:' + (cd.revised ? 'false' : 'true')); }; })(idata);
-          rdock.appendChild(revBtn);
-          var rmRow = document.createElement('button'); rmRow.className = 'pe-tag-rm'; rmRow.style.opacity = '1'; rmRow.textContent = '×'; rmRow.title = 'Remove configuration';
-          (function (d) { armDelete(rmRow, function () { A('rm:' + prefix + 'items.' + d); }); })(di);
-          rdock.appendChild(rmRow);
-          row.appendChild(rdock);
+          var hasArrow = String(idata.price || '').indexOf('→') >= 0;
+          var oldP = hasArrow ? idata.price.split('→')[0].trim() : (idata.price || '');
+          var newP = hasArrow ? idata.price.split('→')[1].trim() : '';
+          var drawer = document.createElement('div'); drawer.className = 'row-drawer';
+          drawer.innerHTML =
+            '<div class="dr-row c3">'
+            + '<div><div class="dr-label">Capacity</div><input class="dr-input dr-cap" inputmode="numeric" value="' + ea(idata.capacity != null ? idata.capacity : '') + '"></div>'
+            + '<div><div class="dr-label">Unit</div><select class="dr-input dr-select dr-unit"><option' + (idata.unit !== 'TB' ? ' selected' : '') + '>GB</option><option' + (idata.unit === 'TB' ? ' selected' : '') + '>TB</option></select></div>'
+            + '<div><div class="dr-label">Price</div><input class="dr-input dr-price" value="' + ea(oldP) + '"></div>'
+            + '</div>'
+            + '<div class="dr-row c2">'
+            + '<div><div class="dr-label">Model / part number</div><input class="dr-input dr-model" value="' + ea(idata.model || '') + '"></div>'
+            + '<div><div class="dr-label">Dates available</div><input class="dr-input dr-dates" value="' + ea(idata.dates || '') + '"></div>'
+            + '</div>'
+            + '<div><div class="dr-label" style="margin-bottom:8px">Options</div><div class="tog-row">'
+            + '<button class="tog dr-revised' + (idata.revised ? ' on' : '') + '"><span class="tog-pip"></span>Revised / striped</button>'
+            + '<button class="tog dr-drop' + (hasArrow ? ' on' : '') + '"><span class="tog-pip"></span>Price drop (→)</button>'
+            + '</div>'
+            + (hasArrow ? '<div style="margin-top:8px"><div class="dr-label">Revised price</div><input class="dr-input dr-price2" value="' + ea(newP) + '" style="max-width:140px"></div>' : '')
+            + (idata.revised ? '<div style="margin-top:8px"><div class="dr-label">Revision divider label</div><input class="dr-input dr-divlabel" value="' + ea(sdata.divider_label || '') + '" placeholder="e.g. 2019 revision"></div>' : '')
+            + '</div>'
+            + '<div><div class="dr-label" style="margin-bottom:8px">Device colours</div><div class="dots-editor"></div></div>'
+            + '<div class="dr-actions"><button class="dr-btn danger dr-remove">Remove</button></div>';
+          row.parentNode.insertBefore(drawer, row.nextSibling);
+
+          var qd = function (s) { return qs(s, drawer); };
+          // chevron toggles the drawer (one open at a time); the open id is held
+          // so the drawer survives a commit/re-render (reopened below)
+          chev.onclick = function () {
+            var wasOpen = drawer.classList.contains('open');
+            qsa('.row-drawer.open', secEl).forEach(function (d) { d.classList.remove('open'); });
+            qsa('.row-edit-btn.open', secEl).forEach(function (b) { b.classList.remove('open'); });
+            if (!wasOpen) { drawer.classList.add('open'); chev.classList.add('open'); window.__peCfgDrawer = { s: i, idx: di }; }
+            else window.__peCfgDrawer = null;
+          };
+
+          // capacity (drawer) — commit on change → re-sort + re-fill
+          var capIn = qd('.dr-cap');
+          (function (cd) {
+            var commitCap = function () {
+              var raw = (capIn.value || '').replace(/[^\d.]/g, '');
+              if (raw === '' || !(Number(raw) > 0)) { capIn.value = String(cd.capacity != null ? cd.capacity : ''); return; }
+              capIn.value = raw; if (String(Number(raw)) === String(cd.capacity)) return;
+              cfgSnap(); PV(ipre + 'capacity', Number(raw)); A('commit');
+            };
+            capIn.addEventListener('change', commitCap);
+            capIn.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); capIn.blur(); } });
+          })(idata);
+          // unit (drawer)
+          qd('.dr-unit').addEventListener('change', function () { cfgSnap(); A('set:' + ipre + 'unit:' + this.value); });
+          // price + price2 + price-drop toggle → the single canon price string
+          var priceIn = qd('.dr-price'), price2In = qd('.dr-price2'), dropBtn = qd('.dr-drop');
+          var pushPrice = function () { PV(ipre + 'price', combinePrice(priceIn.value, price2In ? price2In.value : '', dropBtn.classList.contains('on'))); A('commit'); };
+          priceIn.addEventListener('change', pushPrice);
+          if (price2In) price2In.addEventListener('change', pushPrice);
+          dropBtn.onclick = function () {
+            var on = !dropBtn.classList.contains('on'); dropBtn.classList.toggle('on', on);
+            var nv = (price2In ? price2In.value : '') || (R('config.items[].price').blank || '$0');
+            PV(ipre + 'price', combinePrice(priceIn.value, nv, on)); A('commit');
+          };
+          // model / dates (drawer) — commit on change (canon decides structure)
+          qd('.dr-model').addEventListener('change', function () { PV(ipre + 'model', this.value); A('commit'); });
+          qd('.dr-dates').addEventListener('change', function () { PV(ipre + 'dates', this.value); A('commit'); });
+          // revised toggle — re-sort across the divider
+          (function (cd) { qd('.dr-revised').onclick = function () { cfgSnap(); A('set:' + ipre + 'revised:' + (cd.revised ? 'false' : 'true')); }; })(idata);
+          // divider label (section-level)
+          var divIn = qd('.dr-divlabel'); if (divIn) divIn.addEventListener('change', function () { PV(prefix + 'divider_label', this.value); A('commit'); });
+          // device colours editor — swatch (native colour input, click = ring),
+          // name, remove × · "+" to add. hex/name patch live; ring/add/remove commit.
+          var dotsEd = qd('.dots-editor');
+          (idata.colors || []).forEach(function (c, ci) {
+            var dpre = ipre + 'colors.' + ci + '.';
+            var chip = document.createElement('div'); chip.className = 'dot-chip';
+            chip.innerHTML = '<div class="dot-swatch' + (c.ring ? ' ring' : '') + '" style="background:' + (c.hex || '#888') + '" title="Click to toggle ring"><input type="color" value="' + (c.hex || '#888888') + '"></div>'
+              + '<input class="dot-name-inp" value="' + ea(c.name || '') + '"><button class="dot-rm" title="Remove colour">×</button>';
+            var sw = qs('.dot-swatch', chip), hexIn = qs('input[type=color]', chip), nmIn = qs('.dot-name-inp', chip), rmB = qs('.dot-rm', chip);
+            hexIn.onclick = function (e) { e.stopPropagation(); };
+            hexIn.addEventListener('input', function () { PV(dpre + 'hex', hexIn.value); sw.style.background = hexIn.value; var liveDot = qsa('.cfg-color .cfg-dot', row)[ci]; if (liveDot) liveDot.style.background = hexIn.value; });
+            (function (cc) { sw.onclick = function () { A('set:' + dpre + 'ring:' + (cc.ring ? 'false' : 'true')); }; })(c);
+            nmIn.addEventListener('change', function () { PV(dpre + 'name', nmIn.value); A('commit'); });
+            (function (cci) { rmB.onclick = function () { A('rm:' + ipre + 'colors.' + cci); }; })(ci);
+            dotsEd.appendChild(chip);
+          });
+          var dotAdd = document.createElement('button'); dotAdd.className = 'dot-add'; dotAdd.title = 'Add colour'; dotAdd.textContent = '+';
+          dotAdd.onclick = function () { A('push:' + ipre + 'colors'); };
+          dotsEd.appendChild(dotAdd);
+          // remove configuration (two-click confirm) — clear the drawer flag so a
+          // shifted index doesn't reopen a different row's drawer
+          (function (d) { armDelete(qd('.dr-remove'), function () { window.__peCfgDrawer = null; A('rm:' + prefix + 'items.' + d); }); })(di);
+
+          // reopen this drawer if it was the open one before a re-render
+          if (window.__peCfgDrawer && window.__peCfgDrawer.s === i && window.__peCfgDrawer.idx === di) { drawer.classList.add('open'); chev.classList.add('open'); }
         });
 
-        // + configuration (append a row)
-        var cfgBars = qs('.cfg-bars', secEl);
-        if (cfgBars) cfgBars.appendChild(addLine('push:' + prefix + 'items', '+ configuration'));
-
-        // divider label (optional) — present → edit + ×; absent but a revised
-        // group exists → "+ divider label" beside the divider
-        var dlEl = qs('.cfg-divider-label', secEl);
-        if (dlEl) { wrapCE(dlEl, prefix + 'divider_label'); makeRemovable(dlEl, 'rm:' + prefix + 'divider_label'); }
-        else { var dvEl = qs('.cfg-divider', secEl); if (dvEl && dvEl.parentNode) dvEl.parentNode.insertBefore(addBtn('add:' + prefix + 'divider_label', '+ divider label', true), dvEl.nextSibling); }
+        // toolbar below the chart — "+ configuration" · "+ intro line"
+        var cfgChart = qs('.cfg-chart', secEl);
+        if (cfgChart) {
+          var tb = document.createElement('div'); tb.className = 'cfg-toolbar';
+          var mk = function (label, action) { var b = document.createElement('button'); b.className = 'ov-mini'; b.textContent = label; var pm = /^push:(.+)$/.exec(action); if (pm) b.setAttribute('data-pe-addpath', pm[1]); b.onclick = function () { A(action); }; return b; };
+          tb.appendChild(mk('+ configuration', 'push:' + prefix + 'items'));
+          tb.appendChild(mk('+ intro line', 'push:' + prefix + 'intro'));
+          cfgChart.appendChild(tb);
+        }
 
         // ── FLIP: after a reorder-causing commit, slide each row to its new slot
         // and grow/shrink its bar from the old width. All inline → no live-CSS

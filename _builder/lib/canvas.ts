@@ -311,32 +311,65 @@ const AFFORDANCE = `
     padding:3px 8px; border-radius:4px; white-space:nowrap; opacity:0; pointer-events:none; transition:.15s; }
   .pe-add-section:hover .pe-add-dot::after{ opacity:1; transform:translateX(-50%) scale(1); }
 
-  /* ════ config (storage / configuration chart) editor chrome ════
-     The bars are CANON-sorted low→high (config.html); an inline capacity / unit
-     / revised edit re-runs that sort and the decorator FLIPs each row to its new
-     slot + grows/shrinks its bar (inline transitions). These styles are the
-     hover affordances around that. */
+  /* ════ config (storage / configuration chart) editor — the owner's DRAWER
+     flow (configeditorui.html). Inline grey/blue .ce boxes edit the chart
+     directly (+ feed the readiness widget); a per-row chevron opens a structured
+     drawer for the full form. The bars stay CANON-sorted low→high (config.html);
+     an inline/drawer capacity, unit or revised change re-runs that sort and the
+     decorator FLIPs each row + bar into place (inline transitions). ════ */
   .cfg-row{ position:relative; }
   .cfg-cap .pe-cfg-unit{ cursor:pointer; border-radius:4px; padding:0 2px; transition:background .12s, color .12s; }
   .cfg-cap .pe-cfg-unit:hover{ background:rgba(99,102,241,.12); color:#6366f1; }
-  /* the revised toggle + remove pill floats just above each row, on hover */
-  .cfg-row-tools{ position:absolute; top:-13px; right:0; z-index:6; display:inline-flex; align-items:center; gap:6px;
-    padding:3px 8px; border-radius:999px; background:rgba(130,130,145,.16); border:1px solid rgba(130,130,145,.24);
-    backdrop-filter:blur(8px) saturate(140%); -webkit-backdrop-filter:blur(8px) saturate(140%);
-    opacity:0; transition:opacity .12s; }
-  .cfg-row:hover .cfg-row-tools{ opacity:1; }
-  .cfg-row-tools .pe-tag-rm{ margin-left:0; }
-  /* the colour dots: each is removable (corner ×) + a "+ colour" adder */
-  .cfg-colors .cfg-color.pe-removable{ width:auto; }
-  .cfg-model.pe-removable{ width:fit-content; }
-  /* the device-colour popover: a native colour input + a ring toggle */
-  .cc-pop.dot-pop{ min-width:178px; }
-  .cc-dotpop{ display:flex; gap:10px; align-items:center; }
-  .cc-hex{ width:46px; height:32px; border:1px solid rgba(0,0,0,.14); border-radius:8px; background:none; cursor:pointer; padding:2px; }
-  .cc-ringtog{ flex:1; font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.1em; text-transform:uppercase; padding:8px;
-    border-radius:8px; border:1px solid rgba(0,0,0,.14); background:rgba(255,255,255,.5); cursor:pointer; color:#574c40; }
-  .cc-ringtog.on{ background:#241a10; color:#fff; border-color:transparent; }
-  .cc-pop.dot-pop .cc-rm{ margin-top:10px; width:100%; }
+  /* per-row edit button (chevron), just right of the row */
+  .row-edit-btn{ position:absolute; top:4px; right:-38px; width:26px; height:26px; border-radius:7px; border:1px solid rgba(0,0,0,.16);
+    background:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; opacity:0; transition:opacity .14s;
+    color:rgba(0,0,0,.45); z-index:10; box-shadow:0 2px 6px rgba(0,0,0,.08); }
+  .cfg-row:hover .row-edit-btn, .row-edit-btn.open{ opacity:1; }
+  .row-edit-btn:hover{ border-color:rgba(0,0,0,.3); color:#0a0a0a; }
+  .row-edit-btn svg{ transition:transform .18s; }
+  .row-edit-btn.open svg{ transform:rotate(180deg); }
+  /* the dropdown drawer (sibling after the row) */
+  .row-drawer{ display:none; margin:8px 0 2px; background:#f8f7f5; border:1px solid rgba(0,0,0,.10);
+    border-radius:10px; padding:16px; gap:12px; flex-direction:column; }
+  .row-drawer.open{ display:flex; }
+  .dr-row{ display:grid; gap:10px; }
+  .dr-row.c2{ grid-template-columns:1fr 1fr; }
+  .dr-row.c3{ grid-template-columns:1fr 1fr 1fr; }
+  .dr-label{ font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.18em; text-transform:uppercase; color:rgba(0,0,0,.4); margin-bottom:4px; }
+  .dr-input{ width:100%; padding:8px 10px; border:1px solid rgba(0,0,0,.14); border-radius:7px; font-family:'Spectral',Georgia,serif; font-size:13.5px; color:#0a0a0a; background:#fff; outline:none; transition:.12s; }
+  .dr-input:focus{ border-color:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,.14); }
+  .dr-select{ appearance:none; cursor:pointer; padding-right:28px; background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E") no-repeat right 10px center; }
+  .tog-row{ display:flex; gap:7px; flex-wrap:wrap; }
+  .tog{ display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:6px; border:1px solid rgba(0,0,0,.16); background:#fff;
+    font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.08em; text-transform:uppercase; color:rgba(0,0,0,.5); cursor:pointer; transition:.12s; }
+  .tog:hover{ border-color:rgba(0,0,0,.3); }
+  .tog.on{ background:#eff6ff; border-color:#93c5fd; color:#1d4ed8; }
+  .tog-pip{ width:7px; height:7px; border-radius:50%; background:currentColor; opacity:.4; }
+  .tog.on .tog-pip{ opacity:1; }
+  .dots-editor{ display:flex; gap:8px; flex-wrap:wrap; align-items:flex-end; }
+  .dot-chip{ display:flex; flex-direction:column; align-items:center; gap:4px; position:relative; }
+  .dot-swatch{ width:26px; height:26px; border-radius:50%; cursor:pointer; position:relative; box-shadow:0 1px 3px rgba(0,0,0,.18); border:2px solid transparent; transition:.12s; }
+  .dot-swatch.ring{ border-color:rgba(0,0,0,.4); }
+  .dot-swatch input[type=color]{ position:absolute; inset:0; opacity:0; cursor:pointer; border-radius:50%; width:100%; height:100%; border:none; padding:0; }
+  .dot-name-inp{ width:44px; font-family:'JetBrains Mono',monospace; font-size:7px; letter-spacing:.06em; text-transform:uppercase; text-align:center;
+    border:none; border-bottom:1px solid rgba(0,0,0,.16); background:transparent; outline:none; color:rgba(0,0,0,.5); }
+  .dot-rm{ position:absolute; top:-4px; right:-4px; width:14px; height:14px; border-radius:50%; border:none; background:#fecaca; color:#dc2626;
+    font-size:9px; cursor:pointer; display:none; align-items:center; justify-content:center; line-height:1; }
+  .dot-chip:hover .dot-rm{ display:flex; }
+  .dot-add{ width:26px; height:26px; border-radius:50%; border:1.5px dashed rgba(0,0,0,.22); background:transparent; font-size:14px; color:rgba(0,0,0,.3);
+    cursor:pointer; display:flex; align-items:center; justify-content:center; }
+  .dot-add:hover{ border-color:rgba(0,0,0,.4); color:rgba(0,0,0,.5); }
+  .dr-actions{ display:flex; justify-content:flex-end; align-items:center; padding-top:10px; border-top:1px solid rgba(0,0,0,.08); margin-top:2px; }
+  .dr-btn{ font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.08em; text-transform:uppercase; padding:6px 10px; border-radius:6px;
+    border:1px solid rgba(0,0,0,.14); background:#fff; cursor:pointer; color:rgba(0,0,0,.5); }
+  .dr-btn:hover{ border-color:rgba(0,0,0,.3); color:#0a0a0a; }
+  .dr-btn.danger{ border-color:#fecaca; color:#ef4444; }
+  .dr-btn.danger:hover{ background:#fef2f2; }
+  /* toolbar below the chart */
+  .cfg-toolbar{ display:flex; flex-wrap:wrap; gap:6px; margin-top:16px; padding-top:14px; border-top:1px dashed rgba(0,0,0,.14); }
+  .ov-mini{ font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.08em; text-transform:uppercase; padding:6px 10px; border-radius:6px;
+    border:1px solid rgba(0,0,0,.14); background:#fff; cursor:pointer; color:rgba(0,0,0,.5); }
+  .ov-mini:hover{ border-color:rgba(0,0,0,.3); color:#0a0a0a; }
 `;
 
 const FONTS = `<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">`;
