@@ -474,13 +474,24 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
 // ── case 12: READINESS MARKERS — derived from grammar required/min ──
 {
   console.log('case 12: readiness markers — derived from grammar required/min');
+  const prose100 = Array(110).fill('word').join(' ');   // 110 real words (over the grammar floor)
   const ready = {
     hero: { title: 'Title here', eyebrow: null, subtitle: null, subtitle_meta: null, desc: 'A real lead.', stats: null, search: false, search_placeholder: '', spotlight: null, feature: null },
-    overview: { tone: 'b', heading: 'Real heading', paragraphs: ['Real paragraph.'], infobox: null },
+    overview: { tone: 'b', heading: 'Real heading', paragraphs: [prose100], infobox: null },
   };
   const d1 = renderAndDecorate(ready, false);
-  ok(d1.querySelector('section[data-section="overview"] .mk.done'), 'overview marker = done when required heading + paragraph are filled');
+  ok(d1.querySelector('section[data-section="overview"] .mk.done'), 'overview marker = done when heading + ≥100-word prose are filled');
   ok(d1.querySelector('section.wiki-hero .mk.done'), 'hero marker = done when required title is filled');
+
+  // DERIVED word floor: short prose (under the grammar min_words) is NOT met,
+  // and placeholder prose doesn't count at all (the bug where a fresh overview
+  // showed its paragraph pre-checked)
+  const shortDoc = JSON.parse(JSON.stringify(ready)); shortDoc.overview.paragraphs = ['Only three words.'];
+  const dShort = renderAndDecorate(shortDoc, false);
+  ok([...dShort.querySelectorAll('section[data-section="overview"] .mk-item')].some((b) => /\bwords\b/i.test(b.textContent) && !b.classList.contains('met')), 'prose under the word floor is unmet (derived from grammar min_words)');
+  const phDoc = JSON.parse(JSON.stringify(ready)); phDoc.overview.paragraphs = [grammar.components.overview.fields.paragraphs.item_blank];
+  const dPh = renderAndDecorate(phDoc, false);
+  ok([...dPh.querySelectorAll('section[data-section="overview"] .mk-item')].some((b) => /\bwords\b/i.test(b.textContent) && !b.classList.contains('met')), 'placeholder prose does NOT count toward the word floor');
 
   // leave the required heading at its placeholder (null → include backfills the
   // grammar blank) → marker flips to todo and lists the unmet "Heading"
@@ -490,8 +501,17 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(ovMk.classList.contains('todo'), 'overview marker → todo when required heading is left at its placeholder');
   ok([...ovMk.querySelectorAll('.mk-item')].some((b) => /Heading/i.test(b.textContent) && !b.classList.contains('met')), 'marker lists the unmet "Heading" requirement');
   ok(d2.querySelector('section[data-section="overview"] .wiki-section-title .ce[data-pe-path="overview.heading"]'), 'the heading field is jump-addressable (data-pe-path bound)');
-  // the met paragraph requirement still shows, struck (met)
-  ok([...ovMk.querySelectorAll('.mk-item.met')].some((b) => /paragraph/i.test(b.textContent)), 'met requirement ("at least one paragraph") shown as done');
+  // the met word-floor requirement still shows, struck (met)
+  ok([...ovMk.querySelectorAll('.mk-item.met')].some((b) => /\bwords\b/i.test(b.textContent)), 'met requirement ("≥100 words") shown as done');
+
+  // POSITIONAL (tuple) subtype: a filled infobox row's key/value read correctly
+  // (the bug where filled rows showed unmet because data is rows.N.0/.1 while
+  // grammar names them key/value)
+  const ib = { tone: 'b', heading: 'H', paragraphs: [prose100], infobox: { label: 'Infobox', title: 'Panel', rows: [['Launched', '2003'], ['Status', 'Live']] } };
+  const dIb = renderAndDecorate({ ...JSON.parse(JSON.stringify(ready)), overview: ib }, false);
+  ok(!([...dIb.querySelectorAll('section[data-section="overview"] .mk-item')].some((b) => /value|key/i.test(b.textContent) && !b.classList.contains('met'))), 'filled infobox row key/value read as met (positional tuple resolved)');
+  // and jump addresses the actual bound cell (rows.0.1), not a whole-section selector
+  ok(dIb.querySelector('[data-pe-path="overview.infobox.rows.0.1"]'), 'infobox value cell is jump-addressable at its positional path');
 
   // DERIVATION: an OPTIONAL field made required in grammar appears as a new
   // readiness requirement with ZERO widget edits (the whole point).

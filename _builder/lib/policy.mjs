@@ -36,6 +36,7 @@ export function buildPolicy(grammar) {
         blank: spec.blank ?? spec.default ?? null,
         item_blank: spec.item_blank ?? null,
         min: spec.min ?? null,
+        min_words: spec.min_words ?? null,   // content-depth floor (e.g. prose ≥ N words)
         max: spec.max ?? null,
         requires: spec.requires ?? null,
         enum: t.values ?? null,

@@ -1003,8 +1003,12 @@
       if (!document.getElementById('pe-readiness-css')) {
         var rs = document.createElement('style'); rs.id = 'pe-readiness-css';
         rs.textContent = [
+          // reserve a left rail on the canvas so the marker floats in the
+          // page's left margin (the content shifts right uniformly; full-bleed
+          // scrollers stay centred). Positive x ⇒ never clipped by overflow.
+          'body{padding-left:56px}',
           '.pe-mkhost{position:relative}',
-          '.mk{position:absolute;left:14px;top:24px;width:36px;z-index:30}',
+          '.mk{position:absolute;left:-44px;top:24px;width:36px;z-index:30}',
           'section.wiki-hero.pe-mkhost>.mk{top:32px}',
           '.mk-btn{position:relative;width:34px;height:34px;border:0;background:none;cursor:pointer;padding:0}',
           '.mk-tri{width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;transition:transform .2s cubic-bezier(.2,.8,.2,1),background .2s,color .2s,border-color .2s}',
@@ -1114,6 +1118,31 @@
         });
         return best ? (best.length > 26 ? best.slice(0, 24) + '…' : best) : '';
       }
+      // a `pair`-style subtype is stored POSITIONALLY (the doc + the binding use
+      // rows.0.0 / rows.0.1, while grammar names the fields key/value). When the
+      // instance node is an Array, resolve a named subfield to its declaration
+      // index so the readiness check + jump address the REAL bound element.
+      function tupleIndex(key) {
+        var parent = key.replace(/\.[^.]+$/, '');   // drop the leaf → the list-element path
+        var sibs = Object.keys(FIELDS).filter(function (k) {
+          if (k.indexOf(parent + '.') !== 0) return false;
+          var tail = k.slice(parent.length + 1); return tail.indexOf('.') < 0 && tail.indexOf('[]') < 0;
+        });
+        return sibs.indexOf(key);
+      }
+      var wordCount = function (t) { t = String(t == null ? '' : t).replace(/<[^>]*>/g, ' ').replace(/&[a-z#0-9]+;/gi, ' ').trim(); return t ? t.split(/\s+/).length : 0; };
+      // total words across a list's items, EXCLUDING any item still holding its
+      // placeholder (so seeded prose doesn't count). Live DOM first, else doc.
+      function listWords(listDocPath, arr, rule) {
+        var els = qsa('[data-pe-path^="' + listDocPath + '."]'), total = 0;
+        if (els.length) {
+          els.forEach(function (el) { var t = strip(el.textContent), ph = (el.getAttribute('data-ph') || '').trim(); if (t && t !== ph) total += wordCount(t); });
+          return total;
+        }
+        var ib = String(rule.item_blank == null ? '' : rule.item_blank).trim();
+        (Array.isArray(arr) ? arr : []).forEach(function (v) { if (ne(v) && strip(v) !== ib) total += wordCount(v); });
+        return total;
+      }
 
       function groupsFor(prefix, data, dataPrefix) {
         var oMap = ofMap(prefix), groups = [], byKey = {};
@@ -1125,7 +1154,13 @@
           var rel = key.slice(prefix.length + 1), insts = [];
           walk(rel.split('.'), data, [], insts);
           insts.forEach(function (inst) {
-            var concrete = inst.concrete, val = inst.node[inst.leaf];
+            var concrete = inst.concrete.slice(), val;
+            // positional (tuple) subtype: the instance is an Array → address the
+            // leaf by its declaration index, matching the doc + the bound element
+            if (Array.isArray(inst.node) && r.kind !== 'list') {
+              var ti = tupleIndex(key);
+              if (ti >= 0) { concrete[concrete.length - 1] = ti; val = inst.node[ti]; } else { val = inst.node[inst.leaf]; }
+            } else { val = inst.node[inst.leaf]; }
             var docPath = dataPrefix + concrete.join('.');
             var li = -1; concrete.forEach(function (s, ix) { if (typeof s === 'number') li = ix; });
             var gkey = li < 0 ? '' : concrete.slice(0, li + 1).join('.'), glabel = secLabel;
@@ -1138,7 +1173,12 @@
               if (t) glabel += ' · “' + t + '”';
             }
             var g = group(gkey, glabel);
-            if (r.kind === 'list') {
+            if (r.kind === 'list' && r.min_words != null) {
+              // content-depth floor: prose must total ≥ N real words (placeholder
+              // text excluded), not just "≥1 item present"
+              var w = listWords(docPath, val, r);
+              g.items.push({ label: 'At least ' + r.min_words + ' words' + (w ? ' (' + w + ' so far)' : ''), met: w >= r.min_words, jump: docPath + '.0', addpath: docPath });
+            } else if (r.kind === 'list') {
               var need = r.min != null ? r.min : 1, arr = Array.isArray(val) ? val : [];
               g.items.push({ label: listLabel(rel, r, need), met: arr.length >= need, jump: docPath, addpath: docPath });
             } else {
@@ -1152,10 +1192,12 @@
       function closeAllMk() { qsa('.mk.open').forEach(function (m) { m.classList.remove('open'); }); }
       function flash(el) { el.classList.remove('field-flash'); void el.offsetWidth; el.classList.add('field-flash'); setTimeout(function () { el.classList.remove('field-flash'); }, 1600); }
       function jumpTo(it) {
+        // address the bound field directly; for a count/word item, its add
+        // button or first item. NEVER fall back to a whole section (that flashed
+        // the entire page red) — only ever a single field-sized element.
         var el = findEl(it.jump);
         if (!el && it.addpath) el = qs('[data-pe-addpath="' + it.addpath + '"]');
-        if (!el) { var base = it.jump.replace(/\.[^.]+$/, ''); el = qs('[data-pe-path^="' + base + '"]');
-          if (el) el = el.closest('.itl-station,.catcard,.cfg-row,.sc,.seg,.wiki-section,section') || el; }
+        if (!el) { var base = it.jump.replace(/\.[^.]+$/, ''); el = qs('[data-pe-path^="' + base + '"]'); }
         if (!el) return;
         try { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
         flash(el);

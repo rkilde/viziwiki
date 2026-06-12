@@ -314,8 +314,9 @@
           "type": "list<richtext>",
           "required": true,
           "min": 1,
+          "min_words": 100,
           "item_blank": "Write another paragraph here…",
-          "help": "The overview body"
+          "help": "The overview body (≥100 words of real prose — placeholder text doesn't count)"
         },
         "tone": {
           "type": "enum[a,b,special]",

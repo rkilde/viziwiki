@@ -104,7 +104,7 @@ components:
     locked: { eyebrow: "Overview", icon: book-open }
     fields:
       heading:    { type: text,            required: true, blank: "Section heading" }
-      paragraphs: { type: "list<richtext>", required: true, min: 1, item_blank: "Write another paragraph here…", help: "The overview body" }
+      paragraphs: { type: "list<richtext>", required: true, min: 1, min_words: 100, item_blank: "Write another paragraph here…", help: "The overview body (≥100 words of real prose — placeholder text doesn't count)" }
       tone:       { type: "enum[a,b,special]", default: b }
       id:         { type: text, locked: true, default: overview, help: "Section anchor (admin)" }
       class:      { type: text, locked: true, help: "Extra classes for skin flourishes (admin)" }
