@@ -6,15 +6,13 @@ import { buildCanvas, setIn, applyAction } from '../../lib/canvas';
 import { renderBody } from '../../lib/render';
 import { SectionPicker } from './SectionPicker';
 import { BugReporter } from './BugReporter';
+import { ReadinessPanel, type Marker, type Leaf } from './ReadinessPanel';
 
 const oneLine = (t: string) => t.replace(/<br\s*\/?>/gi, ' ');
 
-// readiness payload from the decorator (computed in-canvas, DERIVED from
-// grammar). The markers themselves render out here in the editor chrome — an
-// iframe can't paint into the backdrop beside it.
-type MkItem = { label: string; met: boolean; jump: string; addpath?: string };
-type MkGroup = { label: string; items: MkItem[] };
-type Marker = { top: number; prefix: string; done: boolean; count: number; groups: MkGroup[] };
+// The marker payload (per section) is built + posted by the decorator, DERIVED
+// from grammar; the markers render out here in the editor chrome — an iframe
+// can't paint into the backdrop beside it. Shape lives in ReadinessPanel.
 
 /**
  * The page editor. The page renders in an IFRAME that loads the canonical CSS
@@ -82,9 +80,9 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
     }
   };
 
-  const jump = (it: MkItem) => { (iframeRef.current?.contentWindow as any)?.__peJump?.(it.jump, it.addpath); setOpenMk(null); };
+  const jump = (it: Leaf) => { (iframeRef.current?.contentWindow as any)?.__peJump?.(it.jump, it.addpath); };
   const todoCount = markers.filter((m) => !m.done).length;
-  const left = (m: Marker) => Math.max(6, mkBox.left - 50); // 50px into the backdrop, left of the canvas
+  const left = () => Math.max(6, mkBox.left - 50); // 50px into the backdrop, left of the canvas
 
   return (
     <div id="pe-overlay">
@@ -95,34 +93,16 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
           <React.Fragment key={i}>
             <button
               className={`pe-mk ${m.done ? 'done' : 'todo'} ${openMk === i ? 'open' : ''}`}
-              style={{ top: mkBox.top + m.top + 6, left: left(m) }}
-              title={m.done ? 'Section ready' : `${m.count} required left`}
+              style={{ top: mkBox.top + m.top + 6, left: left() }}
+              title={m.done ? 'Section ready' : `${m.left} required left`}
               onClick={(e) => { e.stopPropagation(); setOpenMk(openMk === i ? null : i); }}
             >
               <span className="pe-mk-tri">{m.done ? <IcCheck /> : <IcTri />}</span>
-              {!m.done && <span className="pe-mk-count">{m.count}</span>}
+              {!m.done && <span className="pe-mk-count">{m.left}</span>}
             </button>
             {openMk === i && (
-              <div className="pe-mk-panel" style={{ top: mkBox.top + m.top, left: Math.max(6, left(m) - 302) }} onMouseDown={(e) => e.stopPropagation()}>
-                <div className="pe-mk-head">
-                  <span className="pi">{m.done ? <IcCheck /> : <IcTri />}</span>
-                  <span className="pt">{m.done ? 'Section ready' : 'Needs attention'}</span>
-                  <span className="pn">{m.done ? 'complete' : `${m.count} required`}</span>
-                </div>
-                {m.done ? (
-                  <div className="pe-mk-allgood"><span className="pi"><IcCheck /></span> Everything required is in place.</div>
-                ) : (
-                  m.groups.filter((g) => g.items.some((it) => !it.met)).map((g, gi) => (
-                    <div className="pe-mk-cat" key={gi}>
-                      <div className="pe-mk-cat-label">{g.label}</div>
-                      {g.items.map((it, ii) => (
-                        <button key={ii} className={`pe-mk-item ${it.met ? 'met' : ''}`} disabled={it.met} onClick={() => !it.met && jump(it)}>
-                          <span className="box" /><span className="tx">{it.label}</span>
-                        </button>
-                      ))}
-                    </div>
-                  ))
-                )}
+              <div className="pe-mk-panel" style={{ top: mkBox.top + m.top, left: Math.max(6, left() - 354) }} onMouseDown={(e) => e.stopPropagation()}>
+                <ReadinessPanel marker={m} onJump={jump} />
               </div>
             )}
           </React.Fragment>

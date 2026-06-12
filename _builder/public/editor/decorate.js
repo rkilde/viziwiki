@@ -1110,10 +1110,40 @@
         return total;
       }
 
-      function groupsFor(prefix, data, dataPrefix) {
-        var oMap = ofMap(prefix), groups = [], byKey = {};
-        var lock = LOCKED[prefix]; var secLabel = (lock && lock.eyebrow) ? lock.eyebrow : 'Section';
-        function group(key, label) { if (!byKey[key]) { byKey[key] = { key: key, label: label, items: [] }; groups.push(byKey[key]); } return byKey[key]; }
+      // the readiness LABEL for one list level (its "cards") — canon-owned via
+      // the component's grammar `display` block, else derived from the subtype
+      // name (strip a subtype prefix: cat_item → Item).
+      function kindOf(prefix, listName) {
+        var disp = ((window.__PE_POLICY || {}).display || {})[prefix] || {};
+        if (disp[listName] && disp[listName].kind) return disp[listName].kind;
+        var of = ofMap(prefix)[listName] || listName;
+        return human(of.replace(/^[a-z]+_/, ''));
+      }
+      // build the readiness TREE for one host: section-level fields, then one
+      // "card" per first-level list instance, with deeper instances nested as
+      // items. Fully derived from POLICY (required + min + min_words) + the data
+      // — placement is purely by how many list indices a requirement's path has.
+      function buildTree(prefix, data, dataPrefix) {
+        var section = [], cardMap = {}, cardOrder = [];
+        var nav = function (segs) { return segs.reduce(function (o, s) { return o == null ? o : o[s]; }, data); };
+        function getCard(idxPos, concrete) {
+          var ck = concrete.slice(0, idxPos + 1).join('.');
+          if (!cardMap[ck]) {
+            cardMap[ck] = { key: dataPrefix + ck, kind: kindOf(prefix, concrete[idxPos - 1]),
+              name: identTitle(prefix, concrete.slice(0, idxPos + 1), nav(concrete.slice(0, idxPos + 1))),
+              reqs: [], itemMap: {}, itemOrder: [] };
+            cardOrder.push(ck);
+          }
+          return cardMap[ck];
+        }
+        function getItem(card, idxPos, concrete) {
+          var ik = concrete.slice(0, idxPos + 1).join('.');
+          if (!card.itemMap[ik]) {
+            card.itemMap[ik] = { key: dataPrefix + ik, name: identTitle(prefix, concrete.slice(0, idxPos + 1), nav(concrete.slice(0, idxPos + 1))), reqs: [] };
+            card.itemOrder.push(ik);
+          }
+          return card.itemMap[ik];
+        }
         Object.keys(FIELDS).forEach(function (key) {
           if (key.indexOf(prefix + '.') !== 0) return;
           var r = FIELDS[key]; if (!r.required) return;
@@ -1121,38 +1151,36 @@
           walk(rel.split('.'), data, [], insts);
           insts.forEach(function (inst) {
             var concrete = inst.concrete.slice(), val;
-            // positional (tuple) subtype: the instance is an Array → address the
-            // leaf by its declaration index, matching the doc + the bound element
-            if (Array.isArray(inst.node) && r.kind !== 'list') {
-              var ti = tupleIndex(key);
-              if (ti >= 0) { concrete[concrete.length - 1] = ti; val = inst.node[ti]; } else { val = inst.node[inst.leaf]; }
-            } else { val = inst.node[inst.leaf]; }
+            if (Array.isArray(inst.node) && r.kind !== 'list') { var ti = tupleIndex(key); if (ti >= 0) { concrete[concrete.length - 1] = ti; val = inst.node[ti]; } else val = inst.node[inst.leaf]; }
+            else val = inst.node[inst.leaf];
             var docPath = dataPrefix + concrete.join('.');
-            var li = -1; concrete.forEach(function (s, ix) { if (typeof s === 'number') li = ix; });
-            var gkey = li < 0 ? '' : concrete.slice(0, li + 1).join('.'), glabel = secLabel;
-            if (li >= 0) {
-              var parts = [];
-              for (var p = 0; p <= li; p++) if (typeof concrete[p] === 'number') { var ln = concrete[p - 1]; parts.push(human(oMap[ln] || ln) + ' ' + (concrete[p] + 1)); }
-              glabel = parts.join(' › ');
-              var instData = concrete.slice(0, li + 1).reduce(function (o, seg) { return o == null ? o : o[seg]; }, data);
-              var t = identTitle(prefix, concrete.slice(0, li + 1), instData);
-              if (t) glabel += ' · “' + t + '”';
-            }
-            var g = group(gkey, glabel);
+            var idxs = []; concrete.forEach(function (s, ix) { if (typeof s === 'number') idxs.push(ix); });
+            var leaf;
             if (r.kind === 'list' && r.min_words != null) {
-              // content-depth floor: prose must total ≥ N real words (placeholder
-              // text excluded), not just "≥1 item present"
               var w = listWords(docPath, val, r);
-              g.items.push({ label: 'At least ' + r.min_words + ' words' + (w ? ' (' + w + ' so far)' : ''), met: w >= r.min_words, jump: docPath + '.0', addpath: docPath });
+              leaf = { label: 'At least ' + r.min_words + ' words', sub: (w || 0) + ' / ' + r.min_words, met: w >= r.min_words, jump: docPath + '.0', addpath: docPath, struct: true };
             } else if (r.kind === 'list') {
               var need = r.min != null ? r.min : 1, arr = Array.isArray(val) ? val : [];
-              g.items.push({ label: listLabel(rel, r, need), met: arr.length >= need, jump: docPath, addpath: docPath });
+              leaf = { label: listLabel(rel, r, need), sub: arr.length + ' / ' + need, met: arr.length >= need, jump: docPath, addpath: docPath, struct: true };
             } else {
-              g.items.push({ label: scalarLabel(concrete), met: metScalar(docPath, val, r.blank), jump: docPath });
+              leaf = { label: scalarLabel(concrete), met: metScalar(docPath, val, r.blank), jump: docPath };
             }
+            if (idxs.length === 0) { section.push(leaf); return; }
+            var card = getCard(idxs[0], concrete);
+            if (idxs.length === 1) { card.reqs.push(leaf); return; }
+            // deeper than the item (e.g. a pill inside a group) → tag with the
+            // intermediate instance's name as a sub-label
+            if (idxs.length >= 3) { var s3 = identTitle(prefix, concrete.slice(0, idxs[idxs.length - 1] + 1), nav(concrete.slice(0, idxs[idxs.length - 1] + 1))); if (s3) leaf.sub = s3; }
+            getItem(card, idxs[1], concrete).reqs.push(leaf);
           });
         });
-        return groups;
+        var cards = cardOrder.map(function (ck) {
+          var c = cardMap[ck];
+          var items = c.itemOrder.map(function (ik) { var it = c.itemMap[ik]; return { key: it.key, name: it.name, reqs: it.reqs, unmet: it.reqs.filter(function (x) { return !x.met; }).length }; });
+          var leaves = c.reqs.concat(items.reduce(function (a, it) { return a.concat(it.reqs); }, []));
+          return { key: c.key, kind: c.kind, name: c.name, reqs: c.reqs, items: items, unmet: leaves.filter(function (x) { return !x.met; }).length, total: leaves.length };
+        });
+        return { section: section, cards: cards };
       }
 
       function flash(el) { el.classList.remove('field-flash'); void el.offsetWidth; el.classList.add('field-flash'); setTimeout(function () { el.classList.remove('field-flash'); }, 1600); }
@@ -1192,10 +1220,11 @@
       // marker (in the backdrop) to the section as the canvas scrolls.
       function buildPayload() {
         return hosts.map(function (host) {
-          var groups = groupsFor(host.prefix, host.data, host.dataPrefix), flat = [];
-          groups.forEach(function (g) { g.items.forEach(function (i) { flat.push(i); }); });
-          var left = flat.filter(function (i) { return !i.met; }).length;
-          return { top: host.el.offsetTop, prefix: host.prefix, done: left === 0, count: left, groups: groups };
+          var tree = buildTree(host.prefix, host.data, host.dataPrefix);
+          var leaves = tree.section.concat(tree.cards.reduce(function (a, c) { return a.concat(c.reqs, c.items.reduce(function (b, it) { return b.concat(it.reqs); }, [])); }, []));
+          var left = leaves.filter(function (x) { return !x.met; }).length, met = leaves.length - left;
+          return { top: host.el.offsetTop, prefix: host.prefix, done: left === 0, left: left,
+            pct: leaves.length ? Math.round(met / leaves.length * 100) : 100, section: tree.section, cards: tree.cards };
         });
       }
       function postMarkers() { try { if (window.parent.__peMarkers) window.parent.__peMarkers(buildPayload()); } catch (e) {} }

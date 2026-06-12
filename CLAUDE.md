@@ -145,6 +145,19 @@ follows:
   hand-set flag.
 - **Section→partial** is derived from the registry's `hosts:` map (NOT a
   `<type>-section` name guess — that broke lifecycle-lane/os-section).
+- **Readiness widget is derived, but LABELS are an onboarding step.** The
+  per-section "what's left to fill" tracker builds itself from grammar — every
+  `required:` field + list `min:` + `min_words:` becomes a checklist line, and
+  the panel auto-nests it (section-level fields → the **Section** region; each
+  first-level list instance → a collapsible **card**; deeper instances → items
+  under it). New banks get this for free. The ONE thing to set per bank is the
+  display **kind label** for each list level (what a "card"/"item" is called) —
+  a `display: { <listName>: { kind: "…" } }` block on the component in
+  `grammar.yml` (defaults to a name derived from the subtype). Guards: the seed
+  guard (`audit-seeds`) makes a fresh section read as "untouched"; `gen-
+  placeholders` regenerates `PLACEHOLDERS.md`. So onboarding a bank's readiness
+  = declare `required`/`min`/`blank` (you already do) + optionally a `display`
+  block for nice card labels.
 - **THE LAYOUT CONTRACT (hard rule):** the builder renders canon HTML+CSS but
   **strips `<script>`** (inert canvas; the decorator owns interaction). So a
   bank's **layout must be CSS/Liquid** — derive positions in Liquid and emit

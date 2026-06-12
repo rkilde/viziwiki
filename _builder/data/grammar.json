@@ -430,6 +430,14 @@
         "eyebrow": "Specifications Sheet",
         "icon": "file-text"
       },
+      "display": {
+        "cards": {
+          "kind": "Card"
+        },
+        "rows": {
+          "kind": "Row"
+        }
+      },
       "fields": {
         "heading": {
           "type": "text",
@@ -752,6 +760,14 @@
       "locked": {
         "eyebrow": "Changes & Improvements",
         "icon": "chart-column-stacked"
+      },
+      "display": {
+        "hardware": {
+          "kind": "Hardware change"
+        },
+        "software": {
+          "kind": "Software change"
+        }
       },
       "fields": {
         "heading": {

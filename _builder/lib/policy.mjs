@@ -52,10 +52,12 @@ export function buildPolicy(grammar) {
   }
 
   const locked = {};
+  const display = {};   // per-component readiness labels (component → { listName: { kind } })
   for (const [comp, def] of Object.entries(components)) {
     if (!def || typeof def !== 'object' || !def.fields) continue;
     walkFields(comp, comp + '.', def.fields, def.subtypes || {});
     if (def.locked) locked[comp] = def.locked;
+    if (def.display) display[comp] = def.display;
   }
 
   // which hero variant each page type gets (e.g. home → search)
@@ -64,7 +66,7 @@ export function buildPolicy(grammar) {
     variants[pt] = (def && def.hero_variant) || 'standard';
   }
 
-  return { fields, locked, variants };
+  return { fields, locked, variants, display };
 }
 
 // normalize a concrete data path to its policy path: numeric segments → []

@@ -493,12 +493,18 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   // render + decorate, capturing the posted readiness payload
   const cap = (doc, g) => { let m = []; const d = renderAndDecorate(doc, false, g, (w) => { w.__peMarkers = (list) => { m = list; }; }); return { d, m }; };
   const mk = (m, prefix) => m.find((x) => x.prefix === prefix);
-  const items = (marker) => marker.groups.flatMap((g) => g.items);
+  // flatten the nested tree (section + every card's reqs + every item's reqs)
+  const items = (marker) => [...marker.section, ...marker.cards.flatMap((c) => [...c.reqs, ...c.items.flatMap((it) => it.reqs)])];
   const hit = (marker, re, met) => items(marker).some((it) => re.test(it.label) && it.met === met);
 
   const r0 = cap(ready);
   ok(mk(r0.m, 'overview').done, 'overview marker = done when heading + ≥100-word prose are filled');
   ok(mk(r0.m, 'hero').done, 'hero marker = done when required title is filled');
+  // structure: catalog groups each card with its items nested
+  const catTree = mk(cap({ ...JSON.parse(JSON.stringify(ready)), sections: [{ type: 'catalog', data: JSON.parse(JSON.stringify(grammar.components.catalog.seed)) }] }).m, 'catalog');
+  ok(catTree.cards.length === 2 && catTree.cards[0].kind === 'Category', 'catalog → one card per category, kind from grammar display');
+  ok(catTree.cards[0].items.length >= 1 && /name/i.test(catTree.cards[0].items[0].reqs[0].label), 'each card nests its items, each carrying its required name');
+  ok(catTree.section.some((l) => l.struct && /categor/i.test(l.label)), 'the ≥2-categories count rule lives at the section level (struct)');
 
   // DERIVED word floor: short prose (under the grammar min_words) is NOT met,
   // and placeholder prose doesn't count at all (the bug where a fresh overview
