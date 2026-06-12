@@ -464,7 +464,11 @@
         "tone": {
           "type": "enum[a,b,special]",
           "default": "special",
-          "help": "special = the dark signature band"
+          "modes": {
+            "Light": "a",
+            "Dark": "special"
+          },
+          "help": "Light/Dark color mode: Dark = the signature inverted band (special), Light = a normal light surface (a)"
         },
         "cards": {
           "type": "list<card>",

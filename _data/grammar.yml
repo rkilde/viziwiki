@@ -140,7 +140,7 @@ components:
       heading: { type: text, required: true, blank: "Specifications heading" }
       device:  { type: text, required: true, blank: "Device · MODEL", help: "Identifier line: name · model number" }
       visual:  { type: text, locked: true, default: spec, help: "The slot's visual type — registry hosts constrain it (admin)" }
-      tone:    { type: "enum[a,b,special]", default: special, help: "special = the dark signature band" }
+      tone:    { type: "enum[a,b,special]", default: special, modes: { Light: a, Dark: special }, help: "Light/Dark color mode: Dark = the signature inverted band (special), Light = a normal light surface (a)" }
       cards:   { type: "list<card>", required: true, item_blank: { title: "Spec title", rows: [["Label", "Value"]] } }
     subtypes:
       card:

@@ -499,19 +499,24 @@
       }
     }
 
-    // section tone toolbar (glass pill) — tones from the field's grammar enum
+    // section tone toolbar (glass pill) — tones from the field's grammar enum.
+    // If the field declares `modes` ({Label: enumValue}, e.g. the spec sheet's
+    // {Light: a, Dark: special}), render a LABELED toggle instead of raw enum
+    // chips — both the labels and the value mapping are DERIVED from grammar.
     function toneBar(secEl, polPath, mkAction, extra) {
       var toneRule = ruleFor(polPath) || {};
+      var modes = toneRule.modes;                       // {Label: enumValue} | null
       var tones = toneRule.enum || [];   // derived from grammar — never restate the values
       var cur = secEl.getAttribute('data-tone');
       var bar = document.createElement('div');
       bar.className = 'pe-sec-tools';
-      bar.appendChild(document.createTextNode('tone '));
-      tones.forEach(function (t) {
+      bar.appendChild(document.createTextNode(modes ? 'mode ' : 'tone '));
+      var pairs = modes ? Object.keys(modes).map(function (k) { return [k, modes[k]]; }) : tones.map(function (t) { return [t, t]; });
+      pairs.forEach(function (p) {
         var b = document.createElement('button');
-        b.className = 'pe-tonebtn' + (cur === t ? ' on' : '');
-        b.textContent = t;
-        b.onclick = function () { A(mkAction(t)); };
+        b.className = 'pe-tonebtn' + (cur === p[1] ? ' on' : '');
+        b.textContent = p[0];
+        b.onclick = function () { A(mkAction(p[1])); };
         bar.appendChild(b);
       });
       (extra || []).forEach(function (el) { bar.appendChild(el); });

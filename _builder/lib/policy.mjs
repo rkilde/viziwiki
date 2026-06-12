@@ -40,6 +40,7 @@ export function buildPolicy(grammar) {
         max: spec.max ?? null,
         requires: spec.requires ?? null,
         enum: t.values ?? null,
+        modes: spec.modes ?? null,           // {Label: enumValue} → a labeled toggle (e.g. Light/Dark) instead of raw enum chips
       };
       // recurse into component-typed fields (spotlight/feature/infobox…) and
       // list item subtypes (stat/chip/pair…) — paths use `[]` for list items
