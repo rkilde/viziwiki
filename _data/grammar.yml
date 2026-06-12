@@ -195,10 +195,10 @@ components:
     section: os-section
     locked: { eyebrow: "Operating system support", icon: layers }
     fields:
-      heading:    { type: richtext,         required: true, blank: "Software-support heading" }
+      heading:    { type: richtext,         required: true, blank: "Heading" }
       title:      { type: text,             required: true, blank: "Lifecycle title", help: "The ribbon's left-hand title" }
       visual:  { type: text, locked: true, default: lifecycle-lane, help: "The slot's visual type — registry hosts constrain it (admin)" }
-      paragraphs: { type: "list<richtext>", item_blank: "Lead paragraph", help: "Lead prose above the ribbon" }
+      paragraphs: { type: "list<richtext>", item_blank: "intro text describing the software lifecycle of the device", help: "Intro text above the ribbon (one box)" }
       tone:       { type: "enum[a,b,special]", default: a }
       weighted:   { type: bool, default: false, help: "On = tile width ∝ time between dates" }
       end:        { type: date, blank: "Jan 2024", help: "Weighted mode only — right edge for the last tile" }
@@ -224,7 +224,7 @@ components:
       - "exactly one segment SHOULD be type:dropped (the cliff)"
       - "a security tile must be listed AFTER the dropped tile (latest date last)"
     seed:
-      heading: "Software-support heading"
+      heading: "Heading"
       title: "Lifecycle title"
       segments:
         - { ver: "Version", date: "Jan 2020", type: full,    badge: "Launch",  badge_type: ship }

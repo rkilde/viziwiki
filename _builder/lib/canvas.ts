@@ -423,13 +423,25 @@ const AFFORDANCE = `
   .lane-seg{ position:relative; }
   .lane-seg.pe-removable{ width:auto; }
   .lane-seg.pe-removable > .pe-remove{ top:4px; right:4px; left:auto; z-index:14; }   /* inset: the scroller clips outside-the-tile */
-  .cc-pop.lane-pop{ min-width:212px; }
+  .pe-lane-foot{ display:flex; justify-content:flex-end; align-items:center; gap:8px; margin-top:12px; }
+  .cc-pop.lane-pop{ min-width:230px; }
   .cc-pop.lane-pop .cc-enum{ grid-template-columns:repeat(2,1fr); }
-  .cc-pop.lane-pop .cc-enum-opt{ display:flex; align-items:center; gap:6px; justify-content:flex-start; text-transform:capitalize; }
-  .cc-pop.lane-pop .cc-enum-opt .lane-leg-sw, .cc-pop.lane-pop .cc-enum-opt .lane-note-dot{ flex:none; }
-  .cc-lane-badge{ width:100%; box-sizing:border-box; margin-top:2px; font-family:'JetBrains Mono',monospace; font-size:11px; padding:7px 9px;
+  .cc-pop.lane-pop .cc-enum-opt{ display:flex; align-items:center; gap:6px; justify-content:center; text-transform:capitalize; }
+  .cc-pop.lane-pop .cc-enum-opt .lane-note-dot{ flex:none; }
+  /* color-coded support-type options (the semantic palette — matches the tiles) */
+  .cc-pop.lane-pop .cc-type-full{ background:#d1fae5; border-color:#a7f3d0; color:#065f46; }
+  .cc-pop.lane-pop .cc-type-partial{ background:#fef3c7; border-color:#fde68a; color:#92400e; }
+  .cc-pop.lane-pop .cc-type-dropped{ background:#f3f4f6; border-color:#e5e7eb; border-style:dashed; color:#6b7280; }
+  .cc-pop.lane-pop .cc-type-security{ background:#dbeafe; border-color:#bfdbfe; color:#1e40af; }
+  .cc-pop.lane-pop .cc-enum-opt.sel{ box-shadow:0 0 0 2px #241a10; }
+  /* version + date, side by side, in the segment popover */
+  .cc-pop-row2{ display:flex; gap:8px; }
+  .cc-pop-fld{ display:flex; flex-direction:column; gap:4px; flex:1; min-width:0; }
+  .cc-pop-fld .cc-pop-label{ margin-bottom:0; }
+  .cc-lane-ver, .cc-lane-date, .cc-lane-badge{ width:100%; box-sizing:border-box; font-family:'JetBrains Mono',monospace; font-size:11px; padding:7px 9px;
     border-radius:8px; border:1px solid rgba(0,0,0,.14); background:rgba(255,255,255,.66); outline:none; color:#2a1f15; }
-  .cc-lane-badge:focus{ border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.16); }
+  .cc-lane-badge{ margin-top:2px; }
+  .cc-lane-ver:focus, .cc-lane-date:focus, .cc-lane-badge:focus{ border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.16); }
   .cc-pop.lane-pop .cc-rm{ margin-top:10px; width:100%; }
 `;
 

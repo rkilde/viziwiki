@@ -680,7 +680,7 @@
         "heading": {
           "type": "richtext",
           "required": true,
-          "blank": "Software-support heading"
+          "blank": "Heading"
         },
         "title": {
           "type": "text",
@@ -696,8 +696,8 @@
         },
         "paragraphs": {
           "type": "list<richtext>",
-          "item_blank": "Lead paragraph",
-          "help": "Lead prose above the ribbon"
+          "item_blank": "intro text describing the software lifecycle of the device",
+          "help": "Intro text above the ribbon (one box)"
         },
         "tone": {
           "type": "enum[a,b,special]",
@@ -790,7 +790,7 @@
         "a security tile must be listed AFTER the dropped tile (latest date last)"
       ],
       "seed": {
-        "heading": "Software-support heading",
+        "heading": "Heading",
         "title": "Lifecycle title",
         "segments": [
           {

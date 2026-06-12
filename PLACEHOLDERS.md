@@ -94,9 +94,9 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 
 | Field | Req | Type | Placeholder |
 |---|---|---|---|
-| `heading` | • | richtext | `Software-support heading` |
+| `heading` | • | richtext | `Heading` |
 | `title` | • | text | `Lifecycle title` |
-| `paragraphs` |  | list<richtext> | `Lead paragraph`  _(per new item)_ |
+| `paragraphs` |  | list<richtext> | `intro text describing the software lifecycle of the device`  _(per new item)_ |
 | `tone` |  | enum | `a`  _(choice: a · b · special)_ |
 | `weighted` |  | bool | `false`  _(default)_ |
 | `end` |  | date | `Jan 2024` |

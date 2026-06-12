@@ -1451,19 +1451,17 @@
         wrapCE(qs('.wiki-section-title', secEl), prefix + 'heading');   // required H2
         wrapCE(qs('.lane-title', secEl), prefix + 'title');            // required lane title
 
-        // lead paragraphs (optional list) — inline edit + remove + "+ lead text"
+        // lead/intro: ONE box (no "+ lead text"). Present → edit it (removable);
+        // absent → a single "+ intro text" that creates the one box.
         var lprose = qs('.lane-prose', secEl);
-        if (lprose) {
-          qsa('p', lprose).forEach(function (p, ix) { wrapCE(p, prefix + 'paragraphs.' + ix); makeRemovable(p, 'rm:' + prefix + 'paragraphs.' + ix); });
-          lprose.appendChild(addBtn('push:' + prefix + 'paragraphs', '+ lead text', true));
-        } else { var lh2 = qs('.wiki-section-title', secEl); if (lh2 && lh2.parentNode) lh2.parentNode.insertBefore(addLine('push:' + prefix + 'paragraphs', '+ lead text'), lh2.nextSibling); }
+        if (lprose) qsa('p', lprose).forEach(function (p, ix) { wrapCE(p, prefix + 'paragraphs.' + ix); makeRemovable(p, 'rm:' + prefix + 'paragraphs.' + ix); });
+        else { var lh2 = qs('.wiki-section-title', secEl); if (lh2 && lh2.parentNode) lh2.parentNode.insertBefore(addLine('push:' + prefix + 'paragraphs', '+ intro text'), lh2.nextSibling); }
 
-        // auto range + legend are derived → locked
-        lockCanon(qs('.lane-range', secEl), 'Auto-derived from the segment dates — never hand-typed');
+        // the upper-right range + the legend are DERIVED from the segments → locked
+        lockCanon(qs('.lane-range', secEl), 'Auto-derived from the segment dates & versions — never hand-typed');
         lockCanon(qs('.lane-legend', secEl), 'Auto-derived from the support tiers present');
 
-        // editor options bar (after lane-head): weighted toggle · range note ·
-        // end date (weighted only). All commit so the derived range/widths refresh.
+        // small chip editor (the weighted-mode end-date control below the chart)
         var laneChip = function (label, path, val, blank, removable) {
           var chip = document.createElement('span'); chip.className = 'pe-chip'; chip.appendChild(document.createTextNode(label + ' '));
           var ce = document.createElement('span'); ce.className = 'ce'; ce.setAttribute('contenteditable', 'true'); ce.setAttribute('data-pe-path', path);
@@ -1472,19 +1470,6 @@
           if (removable) { var rm = document.createElement('button'); rm.className = 'pe-tag-rm'; rm.style.opacity = '1'; rm.textContent = '×'; rm.title = 'Remove'; armDelete(rm, function () { A('rm:' + path); }); chip.appendChild(rm); }
           return chip;
         };
-        var head = qs('.lane-head', secEl);
-        if (head) {
-          var opts = document.createElement('div'); opts.className = 'pe-lane-opts';
-          var wBtn = document.createElement('button'); wBtn.className = 'pe-tonebtn' + (sdata.weighted ? ' on' : ''); wBtn.textContent = 'weighted widths'; wBtn.title = 'On = tile width ∝ time between dates';
-          wBtn.onclick = function () { A('set:' + prefix + 'weighted:' + (sdata.weighted ? 'false' : 'true')); }; opts.appendChild(wBtn);
-          if (sdata.range_note != null) opts.appendChild(laneChip('note', prefix + 'range_note', sdata.range_note, R('lifecycle-lane.range_note').blank, true));
-          else { var addRn = addBtn('add:' + prefix + 'range_note', '+ range note', true); opts.appendChild(addRn); }
-          if (sdata.weighted) {
-            if (sdata.end != null) opts.appendChild(laneChip('end', prefix + 'end', sdata.end, R('lifecycle-lane.end').blank, true));
-            else opts.appendChild(addBtn('add:' + prefix + 'end', '+ end date', true));
-          }
-          head.appendChild(opts);
-        }
 
         // segments
         var segTypes = (R('lifecycle-lane.segments[].type').enum) || [];
@@ -1492,9 +1477,13 @@
         var segMin = (R('lifecycle-lane.segments').min != null) ? R('lifecycle-lane.segments').min : 2;
         var badgeBlank = (R('lifecycle-lane.segments[].badge').blank) || 'Badge';
         var segEls = qsa('.lane-seg', secEl);
+        var verBlank = (R('lifecycle-lane.segments[].ver').blank) || 'Version';
         var openSegPop = function (anchor, spre, sd) {
-          var html = '<div class="cc-pop-label">Support type</div><div class="cc-enum cc-lane-types">'
-            + segTypes.map(function (t) { return '<button class="cc-enum-opt' + (sd.type === t ? ' sel' : '') + '" data-t="' + t + '"><span class="lane-leg-sw lane-sw-' + t + '"></span>' + t + '</button>'; }).join('') + '</div>'
+          // version + date are ALSO editable here (kept inline on the tile too)
+          var html = '<div class="cc-pop-row2"><label class="cc-pop-fld"><span class="cc-pop-label">Software version</span><input type="text" class="cc-lane-ver" placeholder="' + ea2(verBlank) + '" value="' + ea2(sd.ver) + '"></label>'
+            + '<label class="cc-pop-fld"><span class="cc-pop-label">Date</span><input type="text" class="cc-lane-date" placeholder="Mon YYYY" value="' + ea2(sd.date) + '"></label></div>'
+            + '<div class="cc-pop-label" style="margin-top:13px">Support type</div><div class="cc-enum cc-lane-types">'
+            + segTypes.map(function (t) { return '<button class="cc-enum-opt cc-type-' + t + (sd.type === t ? ' sel' : '') + '" data-t="' + t + '">' + t + '</button>'; }).join('') + '</div>'
             + '<div class="cc-pop-label" style="margin-top:13px">Badge</div>';
           if (sd.badge != null) {
             html += '<input type="text" class="cc-lane-badge" placeholder="' + ea2(badgeBlank) + '" value="' + ea2(sd.badge) + '">'
@@ -1502,6 +1491,8 @@
               + '<button class="cc-rm">Remove badge</button>';
           } else { html += '<button class="cc-rm cc-add" style="border-style:dashed">+ badge</button>'; }
           var pop = openPop(anchor, '', html, { cls: 'lane-pop' });
+          var vi = qs('.cc-lane-ver', pop); if (vi) { enterBlurI(vi); vi.addEventListener('change', function () { PV(spre + 'ver', vi.value); A('commit'); }); }
+          var di = qs('.cc-lane-date', pop); if (di) { enterBlurI(di); di.addEventListener('change', function () { PV(spre + 'date', di.value); A('commit'); }); }
           qsa('[data-t]', pop).forEach(function (b) { b.onclick = function () { closePop(); A('set:' + spre + 'type:' + b.getAttribute('data-t')); }; });
           qsa('[data-b]', pop).forEach(function (b) { b.onclick = function () { closePop(); A('set:' + spre + 'badge_type:' + b.getAttribute('data-b')); }; });
           var bi = qs('.cc-lane-badge', pop); if (bi) bi.addEventListener('change', function () { PV(spre + 'badge', bi.value); A('commit'); });
@@ -1509,6 +1500,7 @@
           if (rm && sd.badge != null) rm.onclick = function () { closePop(); A('rm:' + spre + 'badge'); };
           else if (rm) rm.onclick = function () { closePop(); A('add:' + spre + 'badge'); };
         };
+        var enterBlurI = function (el) { el.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); el.blur(); } }); };
         segEls.forEach(function (seg, k) {
           var spre = prefix + 'segments.' + k + '.';
           var sd = (sdata.segments && sdata.segments[k]) || {};
@@ -1546,6 +1538,21 @@
           });
           notesWrap.appendChild(addBtn('push:' + prefix + 'notes', '+ note', true));
         } else { var ls = qs('.lane-scroll', secEl); if (ls) ls.parentNode.insertBefore(addLine('push:' + prefix + 'notes', '+ note'), ls.nextSibling); }
+
+        // weighted-widths toggle — BELOW the chart, lower-right. "weighted by
+        // time" → tile widths ∝ the gap between dates. When on, an end-date chip
+        // sets the right edge for the last tile.
+        var laneWrap = qs('.lane-wrap', secEl);
+        if (laneWrap) {
+          var foot = document.createElement('div'); foot.className = 'pe-lane-foot';
+          var wBtn = document.createElement('button'); wBtn.className = 'pe-tonebtn' + (sdata.weighted ? ' on' : ''); wBtn.textContent = 'weighted by time'; wBtn.title = 'On = each tile’s width ∝ the time until the next version';
+          wBtn.onclick = function () { A('set:' + prefix + 'weighted:' + (sdata.weighted ? 'false' : 'true')); }; foot.appendChild(wBtn);
+          if (sdata.weighted) {
+            if (sdata.end != null) foot.appendChild(laneChip('end', prefix + 'end', sdata.end, R('lifecycle-lane.end').blank, true));
+            else foot.appendChild(addBtn('add:' + prefix + 'end', '+ end date', true));
+          }
+          laneWrap.appendChild(foot);
+        }
       }
     });
 
