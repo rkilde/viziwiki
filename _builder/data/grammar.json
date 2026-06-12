@@ -761,7 +761,16 @@
           },
           "badge_type": {
             "type": "enum[ship,paid,limited,final,dropped,security]",
-            "default": "ship"
+            "default": "ship",
+            "presets": {
+              "ship": "Launch",
+              "paid": "Paid",
+              "limited": "Limited",
+              "final": "Final",
+              "dropped": "Dropped",
+              "security": "Security"
+            },
+            "help": "Preset text+color combos: pick one to set the badge"
           }
         },
         "note": {

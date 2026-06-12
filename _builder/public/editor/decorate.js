@@ -1457,11 +1457,13 @@
         wrapCE(qs('.wiki-section-title', secEl), prefix + 'heading');   // required H2
         wrapCE(qs('.lane-title', secEl), prefix + 'title');            // required lane title
 
-        // lead/intro: ONE box (no "+ lead text"). Present → edit it (removable);
-        // absent → a single "+ intro text" that creates the one box.
+        // lead/intro: ONE box (no "+ lead text"). When there's no intro box (none
+        // added, OR removed → empty .lane-prose), show a single "+ intro text" to
+        // (re)create it; present → edit it (removable).
         var lprose = qs('.lane-prose', secEl);
-        if (lprose) qsa('p', lprose).forEach(function (p, ix) { wrapCE(p, prefix + 'paragraphs.' + ix); makeRemovable(p, 'rm:' + prefix + 'paragraphs.' + ix); });
-        else { var lh2 = qs('.wiki-section-title', secEl); if (lh2 && lh2.parentNode) lh2.parentNode.insertBefore(addLine('push:' + prefix + 'paragraphs', '+ intro text'), lh2.nextSibling); }
+        var lps = lprose ? qsa('p', lprose) : [];
+        lps.forEach(function (p, ix) { wrapCE(p, prefix + 'paragraphs.' + ix); makeRemovable(p, 'rm:' + prefix + 'paragraphs.' + ix); });
+        if (!lps.length) { var lAnchor = lprose || qs('.wiki-section-title', secEl); if (lAnchor && lAnchor.parentNode) lAnchor.parentNode.insertBefore(addLine('push:' + prefix + 'paragraphs', '+ intro text'), lAnchor.nextSibling); }
 
         // the upper-right range + the legend are DERIVED from the segments → locked
         lockCanon(qs('.lane-range', secEl), 'Auto-derived from the segment dates & versions — never hand-typed');
@@ -1481,7 +1483,7 @@
         var segTypes = (R('lifecycle-lane.segments[].type').enum) || [];
         var badgeTypes = (R('lifecycle-lane.segments[].badge_type').enum) || [];
         var segMin = (R('lifecycle-lane.segments').min != null) ? R('lifecycle-lane.segments').min : 2;
-        var badgeBlank = (R('lifecycle-lane.segments[].badge').blank) || 'Badge';
+        var badgePresets = (R('lifecycle-lane.segments[].badge_type').presets) || {};   // {type: text} combos (derived)
         var segEls = qsa('.lane-seg', secEl);
         var verBlank = (R('lifecycle-lane.segments[].ver').blank) || 'Version';
         var openSegPop = function (anchor, spre, sd) {
@@ -1490,29 +1492,33 @@
             + '<label class="cc-pop-fld"><span class="cc-pop-label">Date</span><input type="text" class="cc-lane-date" placeholder="Mon YYYY" value="' + ea2(sd.date) + '"></label></div>'
             + '<div class="cc-pop-label" style="margin-top:13px">Support type</div><div class="cc-enum cc-lane-types">'
             + segTypes.map(function (t) { return '<button class="cc-enum-opt cc-type-' + t + (sd.type === t ? ' sel' : '') + '" data-t="' + t + '">' + t + '</button>'; }).join('') + '</div>'
-            + '<div class="cc-pop-label" style="margin-top:13px">Badge</div>';
-          if (sd.badge != null) {
-            html += '<input type="text" class="cc-lane-badge" placeholder="' + ea2(badgeBlank) + '" value="' + ea2(sd.badge) + '">'
-              + '<div class="cc-enum" style="margin-top:8px">' + badgeTypes.map(function (b) { return '<button class="cc-enum-opt' + ((sd.badge_type || 'ship') === b ? ' sel' : '') + '" data-b="' + b + '">' + b + '</button>'; }).join('') + '</div>'
-              + '<button class="cc-rm">Remove badge</button>';
-          } else { html += '<button class="cc-rm cc-add" style="border-style:dashed">+ badge</button>'; }
+            // BADGE = a bank of preset text+color combos (derived from the
+            // badge_type enum + its grammar `presets` map). Pick one → sets the
+            // text AND the colour together; no freeform typing.
+            + '<div class="cc-pop-label" style="margin-top:13px">Badge' + (sd.badge != null ? '' : ' (optional)') + '</div><div class="cc-enum cc-badge-bank">'
+            + badgeTypes.map(function (b) { var tx = (badgePresets[b] || b); var on = (sd.badge != null && (sd.badge_type || 'ship') === b) ? ' sel' : ''; return '<button class="cc-enum-opt cc-badge-' + b + on + '" data-bt="' + b + '" data-btx="' + ea2(tx) + '">' + tx + '</button>'; }).join('') + '</div>'
+            + (sd.badge != null ? '<button class="cc-rm">Remove badge</button>' : '');
           var pop = openPop(anchor, '', html, { cls: 'lane-pop' });
           var vi = qs('.cc-lane-ver', pop); if (vi) { enterBlurI(vi); vi.addEventListener('change', function () { PV(spre + 'ver', vi.value); A('commit'); }); }
           var di = qs('.cc-lane-date', pop); if (di) { enterBlurI(di); di.addEventListener('change', function () { PV(spre + 'date', di.value); A('commit'); }); }
           qsa('[data-t]', pop).forEach(function (b) { b.onclick = function () { closePop(); A('set:' + spre + 'type:' + b.getAttribute('data-t')); }; });
-          qsa('[data-b]', pop).forEach(function (b) { b.onclick = function () { closePop(); A('set:' + spre + 'badge_type:' + b.getAttribute('data-b')); }; });
-          var bi = qs('.cc-lane-badge', pop); if (bi) bi.addEventListener('change', function () { PV(spre + 'badge', bi.value); A('commit'); });
-          var rm = qs('.cc-rm', pop);
-          if (rm && sd.badge != null) rm.onclick = function () { closePop(); A('rm:' + spre + 'badge'); };
-          else if (rm) rm.onclick = function () { closePop(); A('add:' + spre + 'badge'); };
+          // a preset sets BOTH badge text + badge_type in one commit
+          qsa('[data-bt]', pop).forEach(function (b) { b.onclick = function () { closePop(); PV(spre + 'badge', b.getAttribute('data-btx')); PV(spre + 'badge_type', b.getAttribute('data-bt')); A('commit'); }; });
+          var rm = qs('.cc-rm', pop); if (rm) rm.onclick = function () { closePop(); A('rm:' + spre + 'badge'); };
         };
         var enterBlurI = function (el) { el.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); el.blur(); } }); };
+        // inline ver/date: commit on blur ONLY when changed (so the derived range
+        // + tile positions refresh, without re-rendering on a no-op focus)
+        var dce0 = function (ce, orig) { ce.addEventListener('blur', function () { if ((ce.textContent || '').trim() !== String(orig == null ? '' : orig).trim()) A('commit'); }); };
         segEls.forEach(function (seg, k) {
           var spre = prefix + 'segments.' + k + '.';
           var sd = (sdata.segments && sdata.segments[k]) || {};
-          wrapCE(qs('.lane-ver', seg), spre + 'ver');                          // version (required)
-          var dEl = qs('.lane-date', seg);                                     // date (required) — commit → reposition
-          if (dEl) { wrapCE(dEl, spre + 'date'); var dce = dEl.querySelector('.ce'); if (dce) dce.addEventListener('blur', function () { A('commit'); }); }
+          // version + date BOTH feed the derived range (date → edges, ver → the
+          // version count), so an inline edit to either must commit/re-render.
+          var vEl = qs('.lane-ver', seg);
+          if (vEl) { wrapCE(vEl, spre + 'ver'); var vce = vEl.querySelector('.ce'); if (vce) dce0(vce, sd.ver); }
+          var dEl = qs('.lane-date', seg);
+          if (dEl) { wrapCE(dEl, spre + 'date'); var dce = dEl.querySelector('.ce'); if (dce) dce0(dce, sd.date); }
           if (segEls.length > segMin) makeRemovable(seg, 'rm:' + prefix + 'segments.' + k);
           // click the tile (not a field/×) → the type + badge popover
           seg.style.cursor = 'pointer';
@@ -1545,11 +1551,11 @@
           notesWrap.appendChild(addBtn('push:' + prefix + 'notes', '+ note', true));
         } else { var ls = qs('.lane-scroll', secEl); if (ls) ls.parentNode.insertBefore(addLine('push:' + prefix + 'notes', '+ note'), ls.nextSibling); }
 
-        // weighted-widths toggle — BELOW the chart, lower-right. "weighted by
-        // time" → tile widths ∝ the gap between dates. When on, an end-date chip
-        // sets the right edge for the last tile.
+        // weighted-widths toggle — OUTSIDE the visual's bounds, just below it,
+        // lower-right. "weighted by time" → tile widths ∝ the gap between dates.
+        // When on, an end-date chip sets the right edge for the last tile.
         var laneWrap = qs('.lane-wrap', secEl);
-        if (laneWrap) {
+        if (laneWrap && laneWrap.parentNode) {
           var foot = document.createElement('div'); foot.className = 'pe-lane-foot';
           var wBtn = document.createElement('button'); wBtn.className = 'pe-tonebtn' + (sdata.weighted ? ' on' : ''); wBtn.textContent = 'weighted by time'; wBtn.title = 'On = each tile’s width ∝ the time until the next version';
           wBtn.onclick = function () { A('set:' + prefix + 'weighted:' + (sdata.weighted ? 'false' : 'true')); }; foot.appendChild(wBtn);
@@ -1557,7 +1563,7 @@
             if (sdata.end != null) foot.appendChild(laneChip('end', prefix + 'end', sdata.end, R('lifecycle-lane.end').blank, true));
             else foot.appendChild(addBtn('add:' + prefix + 'end', '+ end date', true));
           }
-          laneWrap.appendChild(foot);
+          laneWrap.parentNode.insertBefore(foot, laneWrap.nextSibling);   // sibling AFTER the visual, not inside it
         }
       }
     });

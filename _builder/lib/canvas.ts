@@ -434,6 +434,13 @@ const AFFORDANCE = `
   .cc-pop.lane-pop .cc-type-dropped{ background:#f3f4f6; border-color:#e5e7eb; border-style:dashed; color:#6b7280; }
   .cc-pop.lane-pop .cc-type-security{ background:#dbeafe; border-color:#bfdbfe; color:#1e40af; }
   .cc-pop.lane-pop .cc-enum-opt.sel{ box-shadow:0 0 0 2px #241a10; }
+  /* badge preset bank — text+color combos (each chip in its badge colour) */
+  .cc-pop.lane-pop .cc-badge-ship{ background:rgba(0,0,0,.06); border-color:rgba(0,0,0,.12); color:#6b6b6b; }
+  .cc-pop.lane-pop .cc-badge-paid{ background:#fbbf24; border-color:#f59e0b; color:#78350f; }
+  .cc-pop.lane-pop .cc-badge-limited{ background:#f59e0b; border-color:#d97706; color:#78350f; }
+  .cc-pop.lane-pop .cc-badge-final{ background:#0a0a0a; border-color:#0a0a0a; color:#fff; }
+  .cc-pop.lane-pop .cc-badge-dropped{ background:transparent; border:1px dashed rgba(0,0,0,.24); color:#8a8a8a; }
+  .cc-pop.lane-pop .cc-badge-security{ background:#3b82f6; border-color:#2563eb; color:#fff; }
   /* version + date, side by side, in the segment popover */
   .cc-pop-row2{ display:flex; gap:8px; }
   .cc-pop-fld{ display:flex; flex-direction:column; gap:4px; flex:1; min-width:0; }
