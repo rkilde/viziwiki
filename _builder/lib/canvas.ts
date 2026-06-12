@@ -48,6 +48,11 @@ const AFFORDANCE = `
      the infobox value cells (grid-sized), the search bar, the stat grid */
   .wiki-infobox.pe-removable{ width:auto; overflow:visible; }
   .wiki-infobox-data > dd.pe-removable{ width:auto; }
+  /* infobox ONLY: the row × sits centred on the row (at the key/value seam),
+     not the upper-right corner — the corner rule still governs everything else */
+  .wiki-infobox-data > dd.pe-removable > .pe-remove{ top:50%; right:auto; left:0; transform:translate(-50%,-50%); }
+  /* the "+ badge" add lands at the foot-right, where the badge chip renders */
+  .pe-addline.pe-add-badge{ text-align:right; padding:10px 16px 14px; }
   .wiki-hero-search.pe-removable{ width:auto; }
   .wiki-hero-stats.pe-removable{ width:auto; }
   .cat-card.pe-removable{ width:auto; }

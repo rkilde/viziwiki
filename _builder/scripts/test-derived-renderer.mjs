@@ -547,9 +547,15 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   // per-category required name + "at least one item"
   const catSeed = JSON.parse(JSON.stringify(grammar.components.catalog.seed));
   catSeed.categories.push({ name: null, items: [] });   // a blank, itemless category
-  const catMk = mk(cap({ ...JSON.parse(JSON.stringify(ready)), sections: [{ type: 'catalog', data: catSeed }] }).m, 'catalog');
+  const catCap = cap({ ...JSON.parse(JSON.stringify(ready)), sections: [{ type: 'catalog', data: catSeed }] });
+  const catMk = mk(catCap.m, 'catalog');
   ok(catMk && !catMk.done, 'catalog marker → todo (blank category present)');
   ok(items(catMk).some((it) => /at least one (cat )?item/i.test(it.label) && !it.met), 'derives the "at least one item" minimum for the empty category');
+  // item fields live in the modal, not the card face → the jump resolves to the
+  // item's pill (data-pe-scope), which opens the modal (data-pe-opens)
+  const itemLeaf = catMk.cards[0].items[0].reqs.find((r) => /name/i.test(r.label));
+  const scope = itemLeaf.jump.replace(/\.name$/, '');
+  ok(catCap.d.querySelector(`[data-pe-scope="${scope}"][data-pe-opens]`), 'catalog item field resolves to its pill scope (which opens the item modal on jump)');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

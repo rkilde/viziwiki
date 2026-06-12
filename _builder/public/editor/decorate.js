@@ -45,7 +45,7 @@
     'add:hero.feature.desc':      { root: '.wiki-hero-feature-desc',      label: '+ description' },
     'add:overview.infobox':       { root: '.wiki-infobox',                kind: 'infobox' },
     'add:overview.infobox.sublabel': { label: '+ sublabel', mini: true },
-    'add:overview.infobox.badge':    { root: '.wiki-infobox-badge', label: '+ badge', pad: '0 16px 14px' },
+    'add:overview.infobox.badge':    { root: '.wiki-infobox-badge', label: '+ badge', cls: 'pe-add-badge' },
   };
 
   // editable text bindings: data path ↔ canonical element (class-name contract)
@@ -181,7 +181,9 @@
         if (spec.alsoPrev && target.previousElementSibling && target.previousElementSibling.matches(spec.alsoPrev)) {
           target.previousElementSibling.remove();
         }
-        target.parentNode.replaceChild(spec.mini ? addBtn(action, spec.label, true) : addLine(action, spec.label), target);
+        var rep = spec.mini ? addBtn(action, spec.label, true) : addLine(action, spec.label, spec.pad);
+        if (spec.cls) rep.classList.add(spec.cls);
+        target.parentNode.replaceChild(rep, target);
       }
     });
   }
@@ -1058,11 +1060,15 @@
         walk(rest, node[tok], concrete.concat([tok]), out);
       }
       // met for a scalar — prefer the LIVE canvas value (so typing updates the
-      // marker), else the doc; "met" = present AND ≠ its grammar placeholder.
+      // marker), else the doc; "met" = present AND ≠ its placeholder. The
+      // placeholder is the element's data-ph when it has one, else the grammar
+      // `blank` (tuple cells like infobox rows.0/.1 carry no data-ph because the
+      // positional path doesn't map to the named key/value field).
       function metScalar(docPath, val, blank) {
+        var b = String(blank == null ? '' : blank).trim();
         var el = findEl(docPath);
-        if (el) { var t = strip(el.textContent); var ph = (el.getAttribute('data-ph') || '').trim(); return t !== '' && t !== ph; }
-        return ne(val) && strip(val) !== String(blank == null ? '' : blank).trim();
+        if (el) { var t = strip(el.textContent); var ph = el.getAttribute('data-ph'); var phv = (ph != null ? ph : b).trim(); return t !== '' && t !== phv; }
+        return ne(val) && strip(val) !== b;
       }
       function scalarLabel(concrete) {
         var li = -1; concrete.forEach(function (s, ix) { if (typeof s === 'number') li = ix; });
@@ -1193,7 +1199,10 @@
         // timeline date, which edits month/day/year via one popover and lists
         // them in data-pe-jump); then a count/word item's add button. NEVER a
         // whole section — only ever a single field-sized element.
-        var el = findEl(it.jump);
+        // a match inside a CLOSED modal is no use — prefer the scope opener that
+        // re-opens that modal (the catalog item editor lives in [data-catalog-modal])
+        var hidden = function (e) { return !!(e && e.closest && e.closest('[data-catalog-modal]:not(.open), .tl-modal:not(.open)')); };
+        var el = findEl(it.jump); if (el && hidden(el)) el = null;
         if (!el) el = qs('[data-pe-jump~="' + it.jump + '"]');
         // composite EDITOR whose scope covers this path (e.g. a catalog item
         // pill — its name/pills are edited in a modal, not on the face): find
@@ -1201,7 +1210,7 @@
         // open it (data-pe-opens) so the contributor lands in that editor.
         if (!el) { var scs = qsa('[data-pe-scope]'); for (var z = 0; z < scs.length; z++) { var sc = scs[z].getAttribute('data-pe-scope'); if (sc && (it.jump === sc || it.jump.indexOf(sc + '.') === 0)) { el = scs[z]; break; } } }
         if (!el && it.addpath) el = qs('[data-pe-addpath="' + it.addpath + '"]');
-        if (!el) { var base = it.jump.replace(/\.[^.]+$/, ''); el = qs('[data-pe-path^="' + base + '"]'); }
+        if (!el) { var base = it.jump.replace(/\.[^.]+$/, ''); el = qs('[data-pe-path^="' + base + '"]'); if (el && hidden(el)) el = null; }
         if (!el) return;
         try { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
         flash(el);
