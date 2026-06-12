@@ -93,9 +93,9 @@ components:
       chip: { key: { type: text, required: true }, val: { type: text, required: true } }
     note: "Both asides are 'hero cards' (mutually exclusive — at most one): spotlight = the Call-to-Action card (CTA required), feature = the Feature card (exactly 3 fixed chips). search is HOME-only."
     seed:
-      title: "New page title"
+      title: "Page title"
       eyebrow: "Category label"
-      desc: "A short lead sentence about this page."
+      desc: "Write a short lead paragraph for this page."
     min: "title"
 
   # ---- OVERVIEW --------------------------------------------------------
@@ -132,22 +132,22 @@ components:
     section: spec-section
     locked: { eyebrow: "Specifications Sheet", icon: file-text }
     fields:
-      heading: { type: text, required: true }
-      device:  { type: text, required: true, help: "Identifier line: name · model number" }
+      heading: { type: text, required: true, blank: "Specifications heading" }
+      device:  { type: text, required: true, blank: "Device · MODEL", help: "Identifier line: name · model number" }
       visual:  { type: text, locked: true, default: spec, help: "The slot's visual type — registry hosts constrain it (admin)" }
       tone:    { type: "enum[a,b,special]", default: special, help: "special = the dark signature band" }
       cards:   { type: "list<card>", required: true }
     subtypes:
       card:
-        title: { type: text, required: true }
+        title: { type: text, required: true, blank: "Card title" }
         icon:  { type: icon }
         rows:  { type: "list<pair>", required: true }
-      pair: { key: { type: text, required: true }, value: { type: text, required: true } }
+      pair: { key: { type: text, required: true, blank: "Label" }, value: { type: text, required: true, blank: "Value" } }
     seed:
-      heading: "The complete sheet."
-      device: "New device · MODEL"
+      heading: "Specifications heading"
+      device: "Device · MODEL"
       cards:
-        - { title: "Display", icon: monitor, rows: [ { key: "Size", value: "4-inch" } ] }
+        - { title: "Card title", icon: monitor, rows: [ { key: "Label", value: "Value" } ] }
     min: "heading + device + one card with one row"
 
   # ---- CONFIG — the storage/configuration chart ------------------------
@@ -155,8 +155,8 @@ components:
     section: config-section
     locked: { eyebrow: "Configurations", icon: hard-drive }
     fields:
-      heading:       { type: text,     required: true }
-      chart_title:   { type: text,     required: true }
+      heading:       { type: text,     required: true, blank: "Configurations heading" }
+      chart_title:   { type: text,     required: true, blank: "Chart title" }
       tone:          { type: "enum[a,b,special]", default: a }
       visual:  { type: text, locked: true, default: config, help: "The slot's visual type — registry hosts constrain it (admin)" }
       intro:         { type: "list<richtext>", help: "Optional intro paragraphs above the chart" }
@@ -175,8 +175,8 @@ components:
       dot: { name: { type: text }, hex: { type: color }, ring: { type: bool, default: false } }
     derived: ["bar width = exact proportion of the largest capacity"]
     seed:
-      heading: "Configurations"
-      chart_title: "Capacities at launch"
+      heading: "Configurations heading"
+      chart_title: "Chart title"
       items:
         - { capacity: 32,  unit: GB, model: "Base", price: "$199" }
         - { capacity: 256, unit: GB, model: "Top",  price: "$399" }
@@ -187,8 +187,8 @@ components:
     section: os-section
     locked: { eyebrow: "Operating system support", icon: layers }
     fields:
-      heading:    { type: richtext,         required: true }
-      title:      { type: text,             required: true, help: "The ribbon's left-hand title" }
+      heading:    { type: richtext,         required: true, blank: "Software-support heading" }
+      title:      { type: text,             required: true, blank: "Lifecycle title", help: "The ribbon's left-hand title" }
       visual:  { type: text, locked: true, default: lifecycle-lane, help: "The slot's visual type — registry hosts constrain it (admin)" }
       paragraphs: { type: "list<richtext>", help: "Lead prose above the ribbon" }
       tone:       { type: "enum[a,b,special]", default: a }
@@ -199,8 +199,8 @@ components:
       notes:      { type: "list<note>" }
     subtypes:
       segment:
-        ver:        { type: text, required: true }
-        date:       { type: date, required: true }
+        ver:        { type: text, required: true, blank: "Version" }
+        date:       { type: date, required: true, seed_real: true, help: "Drives tile position (a real spread date, not a placeholder)" }
         type:       { type: "enum[full,partial,dropped,security]", required: true,
                       help: "full=green · partial=amber · dropped=grey cliff · security=blue post-EOL" }
         badge:      { type: text }
@@ -216,11 +216,11 @@ components:
       - "exactly one segment SHOULD be type:dropped (the cliff)"
       - "a security tile must be listed AFTER the dropped tile (latest date last)"
     seed:
-      heading: "New software-support timeline"
-      title: "Software lifecycle"
+      heading: "Software-support heading"
+      title: "Lifecycle title"
       segments:
-        - { ver: "1.0", date: "Jan 2020", type: full,    badge: "Launch",  badge_type: ship }
-        - { ver: "2.0", date: "Jan 2023", type: dropped, badge: "Dropped", badge_type: dropped }
+        - { ver: "Version", date: "Jan 2020", type: full,    badge: "Launch",  badge_type: ship }
+        - { ver: "Version", date: "Jan 2023", type: dropped, badge: "Dropped", badge_type: dropped }
     min: "heading + title + 2 segments"
 
   # ---- DELTA — the Changes & Improvements comparison table -------------
@@ -228,7 +228,7 @@ components:
     section: delta-section
     locked: { eyebrow: "Changes & Improvements", icon: chart-column-stacked }
     fields:
-      heading:  { type: text, required: true }
+      heading:  { type: text, required: true, blank: "Changes heading" }
       tone:     { type: "enum[a,b,special]", default: a }
       intro:    { type: richtext }
       footnote: { type: richtext }
@@ -238,19 +238,19 @@ components:
       hardware: { type: "list<delta_row>" }
       software: { type: "list<delta_row>" }
     subtypes:
-      axis: { tag: { type: text }, name: { type: text, required: true }, year: { type: text } }
+      axis: { tag: { type: text }, name: { type: text, required: true, blank: "Model name" }, year: { type: text } }
       delta_row:
-        label:     { type: text, required: true }
+        label:     { type: text, required: true, blank: "Spec label" }
         old:       { type: text }
         new:       { type: text }
         no_old:    { type: bool, default: false, help: "Hide the 'before' cell" }
         chip:      { type: "enum[better,feature,changed,worse,same]", help: "Colour = the direction of change" }
         chip_text: { type: text, help: "The short value shown in the chip" }
     seed:
-      heading: "What changed."
-      prev:    { tag: "Previous", name: "Old model", year: "2020" }
-      current: { tag: "Current",  name: "New model", year: "2023" }
-      hardware: [ { label: "Chip", new: "Faster SoC", chip: better, chip_text: "2×" } ]
+      heading: "Changes heading"
+      prev:    { tag: "Previous", name: "Model name", year: "2020" }
+      current: { tag: "Current",  name: "Model name", year: "2023" }
+      hardware: [ { label: "Spec label", new: "Faster SoC", chip: better, chip_text: "2×" } ]
     min: "heading + prev + current + one row"
 
   # ---- TIMELINE — the full-bleed date-positioned scroller --------------
@@ -269,9 +269,9 @@ components:
         # month + year DRIVE the layout (date-positioned), so they default to real,
         # spread-out values; the text fields (tag/title/preview/body) seed as
         # placeholders the contributor types over.
-        month:   { type: "enum[Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec]", required: true, blank: "Jan" }
-        day:     { type: text, blank: "1" }
-        year:    { type: text, required: true, blank: "2025" }
+        month:   { type: "enum[Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec]", required: true, blank: "Jan", seed_real: true, help: "Drives the event's position on the axis (a real spread date, not a placeholder)" }
+        day:     { type: text, blank: "1", seed_real: true }
+        year:    { type: text, required: true, blank: "2025", seed_real: true }
         tag:     { type: text, blank: "Add a tag" }
         title:   { type: text, required: true, blank: "Name this event", help: "Card headline + modal title" }
         preview: { type: text, blank: "add a short summary of what happened", help: "One-line summary on the card face" }
@@ -297,7 +297,7 @@ components:
       unit:       { type: text, default: "item", help: "The count noun (e.g. 'drink', 'sauce')" }
       note:       { type: text, blank: "Note", help: "Short suffix appended to the auto summary line (top)" }
       footnote:   { type: richtext, blank: "Write a footnote here…", help: "Optional footnote block under the catalog (bottom)" }
-      categories: { type: "list<category>", required: true,
+      categories: { type: "list<category>", required: true, min: 2,
                     item_blank: { name: "New category", items: [{ name: "New item", desc: "What it is." }] } }
     subtypes:
       category:
@@ -325,8 +325,12 @@ components:
     seed:
       title: "Everything"
       categories:
-        - name: "Category one"
+        - name: "New category"
           items:
-            - { name: "First item",  desc: "What it is." }
-            - { name: "Second item", desc: "What it is." }
-    min: "title + one category with one item"
+            - { name: "New item", desc: "What it is." }
+            - { name: "New item", desc: "What it is." }
+        - name: "New category"
+          items:
+            - { name: "New item", desc: "What it is." }
+            - { name: "New item", desc: "What it is." }
+    min: "title + two categories, each with one item"

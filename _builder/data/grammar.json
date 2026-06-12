@@ -292,9 +292,9 @@
       },
       "note": "Both asides are 'hero cards' (mutually exclusive — at most one): spotlight = the Call-to-Action card (CTA required), feature = the Feature card (exactly 3 fixed chips). search is HOME-only.",
       "seed": {
-        "title": "New page title",
+        "title": "Page title",
         "eyebrow": "Category label",
-        "desc": "A short lead sentence about this page."
+        "desc": "Write a short lead paragraph for this page."
       },
       "min": "title"
     },
@@ -427,11 +427,13 @@
       "fields": {
         "heading": {
           "type": "text",
-          "required": true
+          "required": true,
+          "blank": "Specifications heading"
         },
         "device": {
           "type": "text",
           "required": true,
+          "blank": "Device · MODEL",
           "help": "Identifier line: name · model number"
         },
         "visual": {
@@ -454,7 +456,8 @@
         "card": {
           "title": {
             "type": "text",
-            "required": true
+            "required": true,
+            "blank": "Card title"
           },
           "icon": {
             "type": "icon"
@@ -467,25 +470,27 @@
         "pair": {
           "key": {
             "type": "text",
-            "required": true
+            "required": true,
+            "blank": "Label"
           },
           "value": {
             "type": "text",
-            "required": true
+            "required": true,
+            "blank": "Value"
           }
         }
       },
       "seed": {
-        "heading": "The complete sheet.",
-        "device": "New device · MODEL",
+        "heading": "Specifications heading",
+        "device": "Device · MODEL",
         "cards": [
           {
-            "title": "Display",
+            "title": "Card title",
             "icon": "monitor",
             "rows": [
               {
-                "key": "Size",
-                "value": "4-inch"
+                "key": "Label",
+                "value": "Value"
               }
             ]
           }
@@ -502,11 +507,13 @@
       "fields": {
         "heading": {
           "type": "text",
-          "required": true
+          "required": true,
+          "blank": "Configurations heading"
         },
         "chart_title": {
           "type": "text",
-          "required": true
+          "required": true,
+          "blank": "Chart title"
         },
         "tone": {
           "type": "enum[a,b,special]",
@@ -581,8 +588,8 @@
         "bar width = exact proportion of the largest capacity"
       ],
       "seed": {
-        "heading": "Configurations",
-        "chart_title": "Capacities at launch",
+        "heading": "Configurations heading",
+        "chart_title": "Chart title",
         "items": [
           {
             "capacity": 32,
@@ -609,11 +616,13 @@
       "fields": {
         "heading": {
           "type": "richtext",
-          "required": true
+          "required": true,
+          "blank": "Software-support heading"
         },
         "title": {
           "type": "text",
           "required": true,
+          "blank": "Lifecycle title",
           "help": "The ribbon's left-hand title"
         },
         "visual": {
@@ -656,11 +665,14 @@
         "segment": {
           "ver": {
             "type": "text",
-            "required": true
+            "required": true,
+            "blank": "Version"
           },
           "date": {
             "type": "date",
-            "required": true
+            "required": true,
+            "seed_real": true,
+            "help": "Drives tile position (a real spread date, not a placeholder)"
           },
           "type": {
             "type": "enum[full,partial,dropped,security]",
@@ -699,18 +711,18 @@
         "a security tile must be listed AFTER the dropped tile (latest date last)"
       ],
       "seed": {
-        "heading": "New software-support timeline",
-        "title": "Software lifecycle",
+        "heading": "Software-support heading",
+        "title": "Lifecycle title",
         "segments": [
           {
-            "ver": "1.0",
+            "ver": "Version",
             "date": "Jan 2020",
             "type": "full",
             "badge": "Launch",
             "badge_type": "ship"
           },
           {
-            "ver": "2.0",
+            "ver": "Version",
             "date": "Jan 2023",
             "type": "dropped",
             "badge": "Dropped",
@@ -729,7 +741,8 @@
       "fields": {
         "heading": {
           "type": "text",
-          "required": true
+          "required": true,
+          "blank": "Changes heading"
         },
         "tone": {
           "type": "enum[a,b,special]",
@@ -771,7 +784,8 @@
           },
           "name": {
             "type": "text",
-            "required": true
+            "required": true,
+            "blank": "Model name"
           },
           "year": {
             "type": "text"
@@ -780,7 +794,8 @@
         "delta_row": {
           "label": {
             "type": "text",
-            "required": true
+            "required": true,
+            "blank": "Spec label"
           },
           "old": {
             "type": "text"
@@ -804,20 +819,20 @@
         }
       },
       "seed": {
-        "heading": "What changed.",
+        "heading": "Changes heading",
         "prev": {
           "tag": "Previous",
-          "name": "Old model",
+          "name": "Model name",
           "year": "2020"
         },
         "current": {
           "tag": "Current",
-          "name": "New model",
+          "name": "Model name",
           "year": "2023"
         },
         "hardware": [
           {
-            "label": "Chip",
+            "label": "Spec label",
             "new": "Faster SoC",
             "chip": "better",
             "chip_text": "2×"
@@ -872,16 +887,20 @@
           "month": {
             "type": "enum[Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec]",
             "required": true,
-            "blank": "Jan"
+            "blank": "Jan",
+            "seed_real": true,
+            "help": "Drives the event's position on the axis (a real spread date, not a placeholder)"
           },
           "day": {
             "type": "text",
-            "blank": "1"
+            "blank": "1",
+            "seed_real": true
           },
           "year": {
             "type": "text",
             "required": true,
-            "blank": "2025"
+            "blank": "2025",
+            "seed_real": true
           },
           "tag": {
             "type": "text",
@@ -987,6 +1006,7 @@
         "categories": {
           "type": "list<category>",
           "required": true,
+          "min": 2,
           "item_blank": {
             "name": "New category",
             "items": [
@@ -1121,21 +1141,34 @@
         "title": "Everything",
         "categories": [
           {
-            "name": "Category one",
+            "name": "New category",
             "items": [
               {
-                "name": "First item",
+                "name": "New item",
                 "desc": "What it is."
               },
               {
-                "name": "Second item",
+                "name": "New item",
+                "desc": "What it is."
+              }
+            ]
+          },
+          {
+            "name": "New category",
+            "items": [
+              {
+                "name": "New item",
+                "desc": "What it is."
+              },
+              {
+                "name": "New item",
                 "desc": "What it is."
               }
             ]
           }
         ]
       },
-      "min": "title + one category with one item"
+      "min": "title + two categories, each with one item"
     }
   }
 }

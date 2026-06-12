@@ -158,7 +158,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   const cat = d.querySelector('section.wiki-section.catalog');
   ok(cat, 'catalog section rendered via its canonical include');
   ok(d.querySelector('.cat-masonry') && d.querySelector('.cat-card'), 'catalog visual rendered through the dispatcher');
-  ok((cat.querySelector('.cat-summary') || {}).textContent.includes('2 items'), 'summary auto-derived from data (2 items)');
+  ok((cat.querySelector('.cat-summary') || {}).textContent.includes('4 items') && cat.querySelector('.cat-summary').textContent.includes('2 categories'), 'summary auto-derived from data (4 items · 2 categories)');
   ok(cat.querySelector('.wiki-section-eyebrow.pe-canon .pe-lock'), 'catalog eyebrow locked (from the visuals registry)');
   ok(cat.querySelector('.cat-summary.pe-canon .pe-lock'), 'derived summary locked (registry: derived)');
   ok(cat.querySelector('.wiki-section-title .ce'), 'catalog title editable (bound to sections.0.data.title)');
@@ -205,7 +205,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   conf.querySelector('.pe-del-no').click();
   ok(!d.querySelector('.pe-del-confirm'), 'undo backs out (no delete)');
   // pills: clickable openers + the "+ item" add pill
-  ok(cat.querySelectorAll('.cat-pill:not(.cat-add-pill)').length === 2, 'two item pills');
+  ok(cat.querySelector('.cat-card').querySelectorAll('.cat-pill:not(.cat-add-pill)').length === 2, 'two item pills (first category)');
   ok(cat.querySelector('.cat-pill.cat-add-pill'), '"+ item" add pill in the pills row');
   ok([...cat.querySelectorAll('.pe-sec-tools .pe-chip')].some((c) => c.textContent.startsWith('unit:')), 'unit toolbar editor');
   // seams: after overview (insert 0) AND after the catalog (insert 1)
