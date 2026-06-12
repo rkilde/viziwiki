@@ -63,9 +63,9 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 | `tone` |  | enum | `special`  _(choice: a · b · special)_ |
 | `cards` | • | list<card> | _(template — see sub-fields)_ |
 | `cards[].title` | • | text | `Card title` |
-| `cards[].icon` |  | icon | — |
+| `cards[].icon` | • | icon | — |
 | `cards[].rows` | • | list<pair> | _(template — see sub-fields)_ |
-| `cards[].rows[].key` | • | text | `Label` |
+| `cards[].rows[].label` | • | text | `Label` |
 | `cards[].rows[].value` | • | text | `Value` |
 
 ## config

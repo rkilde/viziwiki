@@ -387,9 +387,23 @@ const AFFORDANCE = `
   /* ════ spec (Specifications Sheet) editor ════ Inline .ce on the heading,
      device line, card titles + key/value rows; a card-icon picker sourced from
      the canon sprite. Keep cards/rows full-width so the corner × sits right. */
+  .spec-card{ position:relative; }                                  /* editor anchor for the × + drag handle */
   .spec-card.pe-removable{ width:auto; overflow:visible; }
+  .spec-card:hover{ z-index:6; }                                    /* lift the hovered card so its × / handle aren't covered by neighbours */
+  .spec-card.pe-removable > .pe-remove{ z-index:14; }               /* the card × sits above adjacent cards (was getting covered) */
   .spec-row.pe-removable{ width:auto; }
   .spec-card-head .pe-mini-add{ margin-left:0; margin-right:6px; }
+  /* drag-to-reorder: a grab handle top-right, just below the × (hover-revealed) */
+  .spec-drag{ position:absolute; top:14px; right:-9px; width:18px; height:18px; z-index:13; display:flex; align-items:center; justify-content:center;
+    border:1px solid rgba(0,0,0,.16); border-radius:50%; background:#fff; color:rgba(0,0,0,.4); cursor:grab; padding:0;
+    opacity:0; transition:opacity .12s, color .12s, border-color .12s; }
+  .spec-card:hover .spec-drag{ opacity:1; }
+  .spec-drag:hover{ color:#6366f1; border-color:#6366f1; }
+  .spec-drag:active{ cursor:grabbing; }
+  .spec-drag svg{ width:11px; height:11px; }
+  .spec-card.pe-dragging{ opacity:.4; }
+  .spec-card.pe-drop-before{ box-shadow:-3px 0 0 0 #6366f1; }       /* drop-insertion edge cue */
+  .spec-card.pe-drop-after{ box-shadow:3px 0 0 0 #6366f1; }
   /* icon picker popover — a scrollable grid of the sprite's glyphs */
   .cc-pop.icon-pop{ min-width:266px; }
   .cc-icons{ display:grid; grid-template-columns:repeat(6,1fr); gap:5px; max-height:244px; overflow-y:auto; margin-bottom:4px; padding:1px; }
@@ -533,6 +547,16 @@ export function applyAction(doc: PageDoc, action: string): void {
       if (h.feature) stash.feature = h.feature;
       h.spotlight = null; h.feature = null;
       break;
+    case 'lmove': { // lmove:<listpath>:<from>:<to> — reorder a list item (drag-to-reorder)
+      const li = arg.lastIndexOf(':'), lj = arg.lastIndexOf(':', li - 1);
+      const path = arg.slice(0, lj), from = Number(arg.slice(lj + 1, li)), to = Number(arg.slice(li + 1));
+      const list = getAt(doc, path);
+      if (Array.isArray(list) && from >= 0 && from < list.length && to >= 0 && to < list.length && from !== to) {
+        const [el] = list.splice(from, 1);
+        list.splice(to, 0, el);
+      }
+      break;
+    }
     case 'commit': break; // no-op: forces a re-render so derived displays refresh
     case 'setTone': doc.overview.tone = arg; break;
     // body sections (the ordered list after the locked hero+overview):

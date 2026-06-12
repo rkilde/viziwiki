@@ -1297,11 +1297,12 @@
         wrapCE(qs('.wiki-section-title', secEl), prefix + 'heading');     // required H2
         wrapCE(qs('.spec-sub', secEl), prefix + 'device');                // required device line
 
-        var kBlank = (R('spec.cards[].rows[].key').blank) || 'Label';
+        var labBlank = (R('spec.cards[].rows[].label').blank) || 'Label';
         var vBlank = (R('spec.cards[].rows[].value').blank) || 'Value';
         var rowsRule = R('spec.cards[].rows'), cardsRule = R('spec.cards');
         var rowsMin = rowsRule.min != null ? rowsRule.min : 1;
         var cardsMin = cardsRule.min != null ? cardsRule.min : 1;
+        var grid = qs('.spec-grid', secEl);
 
         // icon names are DERIVED from the canon sprite injected into the canvas
         // (each <symbol id="ic-NAME">) — never a hand-kept list.
@@ -1320,33 +1321,97 @@
           var rm = qs('.cc-rm', pop); if (rm) rm.onclick = function () { closePop(); A('rm:' + cpre + 'icon'); };
         };
 
+        // FLIP for drag-to-reorder: snapshot card rects by their TITLE (a stable
+        // identity across the reorder re-render), then slide each to its new slot.
+        var specSnap = function () {
+          var snap = {};
+          qsa('.spec-card', secEl).forEach(function (c) { var t = qs('.spec-card-head span', c); snap[(t ? t.textContent : '') || Math.random()] = c.getBoundingClientRect(); });
+          window.__peSpecFlip = { s: i, snap: snap };
+        };
+
         qsa('.spec-card', secEl).forEach(function (card, j) {
           var cpre = prefix + 'cards.' + j + '.';
           var cdata = (sdata.cards && sdata.cards[j]) || {};
           var head = qs('.spec-card-head', card);
           // title (required)
           wrapCE(qs('span', head), cpre + 'title');
-          // icon — click the glyph to change; "+ icon" when absent
+          // icon (REQUIRED) — click the glyph to change; "+ icon" when absent.
+          // The icon isn't a text field, so it carries a jump SCOPE (not a path):
+          // a readiness jump to a missing icon opens the picker.
           var iconEl = head && qs('.wiki-icon', head);
-          if (iconEl) { iconEl.style.cursor = 'pointer'; iconEl.setAttribute('title', 'Change icon'); (function (cd) { iconEl.onclick = function (e) { e.stopPropagation(); openIconPop(iconEl, cpre, cd.icon); }; })(cdata); }
-          else if (head) { var addIc = addBtn('', '+ icon', true); addIc.onclick = function () { openIconPop(addIc, cpre, null); }; head.insertBefore(addIc, head.firstChild); }
-          // key/value rows (positional [0]/[1], required)
+          if (iconEl) {
+            iconEl.style.cursor = 'pointer'; iconEl.setAttribute('title', 'Change icon');
+            iconEl.setAttribute('data-pe-scope', cpre + 'icon'); iconEl.setAttribute('data-pe-opens', '1');
+            (function (cd) { iconEl.onclick = function (e) { e.stopPropagation(); openIconPop(iconEl, cpre, cd.icon); }; })(cdata);
+          } else if (head) {
+            var addIc = addBtn('', '+ icon', true);
+            addIc.setAttribute('data-pe-scope', cpre + 'icon'); addIc.setAttribute('data-pe-opens', '1');
+            addIc.onclick = function () { openIconPop(addIc, cpre, null); };
+            head.insertBefore(addIc, head.firstChild);
+          }
+          // label/value rows (positional [0]/[1], required)
           var rows = qsa('.spec-row', card);
           rows.forEach(function (r, k) {
             var dt = qs('.spec-k', r), dd = qs('.spec-v', r);
-            wrapCE(dt, cpre + 'rows.' + k + '.0'); var dtce = dt && dt.querySelector('.ce'); if (dtce) dtce.setAttribute('data-ph', kBlank);
+            wrapCE(dt, cpre + 'rows.' + k + '.0'); var dtce = dt && dt.querySelector('.ce'); if (dtce) dtce.setAttribute('data-ph', labBlank);
             wrapCE(dd, cpre + 'rows.' + k + '.1'); var ddce = dd && dd.querySelector('.ce'); if (ddce) ddce.setAttribute('data-ph', vBlank);
             if (rows.length > rowsMin) makeRemovable(r, 'rm:' + cpre + 'rows.' + k);
           });
           var list = qs('.spec-list', card);
-          if (list) list.appendChild(addBtn('push:' + cpre + 'rows', '+ row', true));
+          if (list) list.appendChild(addBtn('push:' + cpre + 'rows', '+ spec', true));
           // remove the whole card (above the min)
           if (qsa('.spec-card', secEl).length > cardsMin) makeRemovable(card, 'rm:' + prefix + 'cards.' + j);
+
+          // drag handle (top-right, below the ×) → reorder cards. Only the handle
+          // initiates the drag (so editing text inside the card is unaffected);
+          // the card is the drag image. On drop, move the data + FLIP-animate.
+          var grab = document.createElement('button');
+          grab.className = 'spec-drag'; grab.title = 'Drag to reorder'; grab.setAttribute('draggable', 'true');
+          grab.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>';
+          (function (jj) {
+            grab.addEventListener('dragstart', function (e) {
+              window.__peSpecDrag = jj; card.classList.add('pe-dragging');
+              try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(jj)); e.dataTransfer.setDragImage(card, 20, 20); } catch (x) {}
+            });
+            grab.addEventListener('dragend', function () { card.classList.remove('pe-dragging'); qsa('.spec-card', secEl).forEach(function (c) { c.classList.remove('pe-drop-before', 'pe-drop-after'); }); window.__peSpecDrag = null; });
+          })(j);
+          card.appendChild(grab);
+
+          // drop target feedback + commit
+          (function (jj) {
+            card.addEventListener('dragover', function (e) {
+              if (window.__peSpecDrag == null || window.__peSpecDrag === jj) return;
+              e.preventDefault(); try { e.dataTransfer.dropEffect = 'move'; } catch (x) {}
+              var rc = card.getBoundingClientRect(); var after = (e.clientX - rc.left) > rc.width / 2;
+              card.classList.toggle('pe-drop-after', after); card.classList.toggle('pe-drop-before', !after);
+            });
+            card.addEventListener('dragleave', function () { card.classList.remove('pe-drop-before', 'pe-drop-after'); });
+            card.addEventListener('drop', function (e) {
+              e.preventDefault(); var from = window.__peSpecDrag; if (from == null || from === jj) return;
+              var rc = card.getBoundingClientRect(); var after = (e.clientX - rc.left) > rc.width / 2;
+              var to = jj; if (after && from > jj) to = jj + 1; else if (!after && from < jj) to = jj - 1;
+              if (to === from) return;
+              specSnap(); A('lmove:' + prefix + 'cards:' + from + ':' + to);
+            });
+          })(j);
         });
 
         // + card — after the grid
-        var grid = qs('.spec-grid', secEl);
         if (grid) grid.parentNode.insertBefore(addLine('push:' + prefix + 'cards', '+ card'), grid.nextSibling);
+
+        // FLIP play — after a reorder re-render, slide each card from its old slot
+        var sf = window.__peSpecFlip;
+        if (sf && sf.s === i) {
+          window.__peSpecFlip = null;
+          var sraf = window.requestAnimationFrame || function (f) { return setTimeout(f, 16); };
+          qsa('.spec-card', secEl).forEach(function (c) {
+            var t = qs('.spec-card-head span', c); var key = t ? t.textContent : ''; var old = sf.snap[key]; if (!old) return;
+            var nr = c.getBoundingClientRect(); var dx = old.left - nr.left, dy = old.top - nr.top;
+            if (!dx && !dy) return;
+            c.style.transition = 'none'; c.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+            sraf(function () { sraf(function () { c.style.transition = 'transform .42s cubic-bezier(.4,0,.2,1)'; c.style.transform = ''; }); });
+          });
+        }
       }
     });
 

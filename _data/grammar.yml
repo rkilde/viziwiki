@@ -145,15 +145,15 @@ components:
     subtypes:
       card:
         title: { type: text, required: true, blank: "Card title" }
-        icon:  { type: icon }
+        icon:  { type: icon, required: true, help: "Every card needs a sprite icon" }
         rows:  { type: "list<pair>", required: true, item_blank: ["Label", "Value"] }
-      pair: { key: { type: text, required: true, blank: "Label" }, value: { type: text, required: true, blank: "Value" } }
+      pair: { label: { type: text, required: true, blank: "Label" }, value: { type: text, required: true, blank: "Value" } }
     seed:
       heading: "Specifications heading"
       device: "Device · MODEL"
       cards:
-        - { title: "Card title", icon: monitor, rows: [ ["Label", "Value"] ] }
-    min: "heading + device + one card with one row"
+        - { title: "Card title", rows: [ ["Label", "Value"] ] }
+    min: "heading + device + one card (icon + title + one row)"
 
   # ---- CONFIG — the storage/configuration chart ------------------------
   config:

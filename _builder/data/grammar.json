@@ -488,7 +488,9 @@
             "blank": "Card title"
           },
           "icon": {
-            "type": "icon"
+            "type": "icon",
+            "required": true,
+            "help": "Every card needs a sprite icon"
           },
           "rows": {
             "type": "list<pair>",
@@ -500,7 +502,7 @@
           }
         },
         "pair": {
-          "key": {
+          "label": {
             "type": "text",
             "required": true,
             "blank": "Label"
@@ -518,7 +520,6 @@
         "cards": [
           {
             "title": "Card title",
-            "icon": "monitor",
             "rows": [
               [
                 "Label",
@@ -528,7 +529,7 @@
           }
         ]
       },
-      "min": "heading + device + one card with one row"
+      "min": "heading + device + one card (icon + title + one row)"
     },
     "config": {
       "section": "config-section",
