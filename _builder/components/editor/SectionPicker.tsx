@@ -44,12 +44,12 @@ const TILES = [
   {
     id: 'delta', name: 'Side by Side Comparisons', pill: 'Available' as const, opens: null,
     icon: BLANK,
-    desc: 'A previous-vs-current table grouped into Hardware & Software, with colour-coded change chips (better, feature, changed, worse, same).',
+    desc: 'A previous-vs-current table grouped into Hardware & Software, with color-coded change chips (better, feature, changed, worse, same).',
   },
   {
     id: 'config', name: 'Hardware & Software Tech Visuals', pill: 'Category' as const, opens: 'config' as const,
-    icon: BLANK,
-    desc: 'Storage/spec tiers with proportional fill bars derived from capacity, plus price, dates & device-colour dots. Pick a chart type →',
+    icon: '<rect x="7" y="2" width="10" height="20" rx="3"/><line x1="12" y1="17" x2="12" y2="18" stroke-width="2.5"/><line x1="10" y1="4.5" x2="14" y2="4.5"/>',
+    desc: 'Storage/spec tiers with proportional fill bars derived from capacity, plus price, dates & device-color dots. Pick a chart type →',
   },
 ];
 
@@ -68,8 +68,8 @@ const TIMELINE_TYPES: TypeTile[] = [
 // types are ghosts until built.
 const CONFIG_TYPES: TypeTile[] = [
   { id: 'config', name: 'Storage / Configuration Chart',
-    icon: '<line x1="3" y1="6" x2="13" y2="6"/><line x1="3" y1="12" x2="17" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/><rect x="2" y="4.5" width="3" height="3" rx="0.6"/><rect x="2" y="10.5" width="3" height="3" rx="0.6"/><rect x="2" y="16.5" width="3" height="3" rx="0.6"/>',
-    desc: 'Capacity tiers as proportional fill bars (lowest → highest), with price, dates & device-colour dots. Revised configs drop below a divider.' },
+    icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><text x="12" y="11" text-anchor="middle" dominant-baseline="middle" font-size="7" font-family="monospace" font-weight="bold" fill="currentColor" stroke="none">64</text><text x="12" y="17.5" text-anchor="middle" dominant-baseline="middle" font-size="4.2" font-family="monospace" fill="currentColor" stroke="none">GB</text>',
+    desc: 'Capacity tiers as proportional fill bars (lowest → highest), with price, dates & device-color dots. Revised configs drop below a divider.' },
 ];
 
 // catalog types from the mockup's CATALOG_TYPES — Category Masonry IS the
