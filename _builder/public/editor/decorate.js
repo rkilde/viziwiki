@@ -850,8 +850,10 @@
           var rb2 = dk && qs('.cc-btn[data-tip="Edit ribbon"]', dk);
           // pin + position the (freshly re-rendered) dock so the ribbon popover
           // lands at the right place, then open it — so adding a ribbon shows the
-          // editor immediately (no second click).
-          if (dk && rb2) { dk._pin && dk._pin(); rb2.click(); }
+          // editor immediately (no second click). DEFER until the iframe has
+          // resized + laid out, else the card's measured position is wrong and
+          // the popover jumps to the top.
+          if (dk && rb2) setTimeout(function () { if (dk._pin) dk._pin(); rb2.click(); }, 60);
         }
       }
 
