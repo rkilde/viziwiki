@@ -1199,9 +1199,10 @@
         // timeline date, which edits month/day/year via one popover and lists
         // them in data-pe-jump); then a count/word item's add button. NEVER a
         // whole section — only ever a single field-sized element.
-        // a match inside a CLOSED modal is no use — prefer the scope opener that
-        // re-opens that modal (the catalog item editor lives in [data-catalog-modal])
-        var hidden = function (e) { return !!(e && e.closest && e.closest('[data-catalog-modal]:not(.open), .tl-modal:not(.open)')); };
+        // a match inside a CLOSED editor is no use — prefer the scope opener
+        // that opens it. The catalog item fields live in the hidden .cat-details
+        // store until openItem moves the detail into [data-catalog-modal].open.
+        var hidden = function (e) { return !!(e && e.closest && e.closest('[data-catalog-modal]:not(.open), .tl-modal:not(.open), .cat-details')); };
         var el = findEl(it.jump); if (el && hidden(el)) el = null;
         if (!el) el = qs('[data-pe-jump~="' + it.jump + '"]');
         // composite EDITOR whose scope covers this path (e.g. a catalog item
@@ -1214,8 +1215,18 @@
         if (!el) return;
         try { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
         flash(el);
-        if (el.hasAttribute && el.hasAttribute('contenteditable')) setTimeout(function () { try { el.focus(); } catch (e) {} }, 300);
-        else if (el.getAttribute && el.getAttribute('data-pe-opens')) setTimeout(function () { try { el.click(); } catch (e) {} }, 340);   // open its editor (the date picker)
+        if (el.hasAttribute && el.hasAttribute('contenteditable')) { setTimeout(function () { try { el.focus(); } catch (e) {} }, 300); return; }
+        // composite opener (catalog item pill → its expandable card; timeline
+        // date → its picker): OPEN it, then flash the ACTUAL field inside the
+        // now-open editor when this jump targets a specific field (e.g. the item
+        // name in the expanded card gets the red flash, not just the pill).
+        if (el.getAttribute && el.getAttribute('data-pe-opens')) setTimeout(function () {
+          try { el.click(); } catch (e) {}
+          setTimeout(function () {
+            var inner = findEl(it.jump);
+            if (inner && inner !== el && !hidden(inner)) { try { inner.scrollIntoView({ block: 'center' }); } catch (e) {} flash(inner); if (inner.hasAttribute && inner.hasAttribute('contenteditable')) try { inner.focus(); } catch (e) {} }
+          }, 130);
+        }, 340);
       }
       // the parent (React chrome) renders the markers out in the black backdrop
       // and calls back here to run the in-canvas scroll+flash for an item.
