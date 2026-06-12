@@ -1287,6 +1287,67 @@
           });
         }
       }
+
+      // ── spec: the "Specifications Sheet" card grid. Inline .ce on the heading,
+      // device line, each card title, and every key/value row; an icon picker on
+      // each card head (icons DERIVED from the canon sprite in the iframe); add/
+      // remove rows + cards. Positional [key,value] rows bind .0/.1 like the
+      // overview infobox. No layout JS (the grid is pure CSS). ──
+      if (type === 'spec') {
+        wrapCE(qs('.wiki-section-title', secEl), prefix + 'heading');     // required H2
+        wrapCE(qs('.spec-sub', secEl), prefix + 'device');                // required device line
+
+        var kBlank = (R('spec.cards[].rows[].key').blank) || 'Label';
+        var vBlank = (R('spec.cards[].rows[].value').blank) || 'Value';
+        var rowsRule = R('spec.cards[].rows'), cardsRule = R('spec.cards');
+        var rowsMin = rowsRule.min != null ? rowsRule.min : 1;
+        var cardsMin = cardsRule.min != null ? cardsRule.min : 1;
+
+        // icon names are DERIVED from the canon sprite injected into the canvas
+        // (each <symbol id="ic-NAME">) — never a hand-kept list.
+        var iconNames = function () {
+          if (window.__peIcons) return window.__peIcons;
+          window.__peIcons = qsa('svg symbol[id^="ic-"]').map(function (s) { return s.id.replace(/^ic-/, ''); }).sort();
+          return window.__peIcons;
+        };
+        var openIconPop = function (btn, cpre, cur) {
+          var names = iconNames();
+          var html = '<div class="cc-pop-label">Card icon</div><div class="cc-icons">'
+            + names.map(function (n) { return '<button class="cc-icon' + (n === cur ? ' sel' : '') + '" data-n="' + n + '" title="' + n + '"><svg class="wiki-icon" viewBox="0 0 24 24"><use href="#ic-' + n + '"></use></svg></button>'; }).join('')
+            + '</div>' + (cur ? '<button class="cc-rm">Remove icon</button>' : '');
+          var pop = openPop(btn, '', html, { cls: 'icon-pop' });
+          qsa('.cc-icon', pop).forEach(function (b) { b.onclick = function () { closePop(); A('set:' + cpre + 'icon:' + b.getAttribute('data-n')); }; });
+          var rm = qs('.cc-rm', pop); if (rm) rm.onclick = function () { closePop(); A('rm:' + cpre + 'icon'); };
+        };
+
+        qsa('.spec-card', secEl).forEach(function (card, j) {
+          var cpre = prefix + 'cards.' + j + '.';
+          var cdata = (sdata.cards && sdata.cards[j]) || {};
+          var head = qs('.spec-card-head', card);
+          // title (required)
+          wrapCE(qs('span', head), cpre + 'title');
+          // icon — click the glyph to change; "+ icon" when absent
+          var iconEl = head && qs('.wiki-icon', head);
+          if (iconEl) { iconEl.style.cursor = 'pointer'; iconEl.setAttribute('title', 'Change icon'); (function (cd) { iconEl.onclick = function (e) { e.stopPropagation(); openIconPop(iconEl, cpre, cd.icon); }; })(cdata); }
+          else if (head) { var addIc = addBtn('', '+ icon', true); addIc.onclick = function () { openIconPop(addIc, cpre, null); }; head.insertBefore(addIc, head.firstChild); }
+          // key/value rows (positional [0]/[1], required)
+          var rows = qsa('.spec-row', card);
+          rows.forEach(function (r, k) {
+            var dt = qs('.spec-k', r), dd = qs('.spec-v', r);
+            wrapCE(dt, cpre + 'rows.' + k + '.0'); var dtce = dt && dt.querySelector('.ce'); if (dtce) dtce.setAttribute('data-ph', kBlank);
+            wrapCE(dd, cpre + 'rows.' + k + '.1'); var ddce = dd && dd.querySelector('.ce'); if (ddce) ddce.setAttribute('data-ph', vBlank);
+            if (rows.length > rowsMin) makeRemovable(r, 'rm:' + cpre + 'rows.' + k);
+          });
+          var list = qs('.spec-list', card);
+          if (list) list.appendChild(addBtn('push:' + cpre + 'rows', '+ row', true));
+          // remove the whole card (above the min)
+          if (qsa('.spec-card', secEl).length > cardsMin) makeRemovable(card, 'rm:' + prefix + 'cards.' + j);
+        });
+
+        // + card — after the grid
+        var grid = qs('.spec-grid', secEl);
+        if (grid) grid.parentNode.insertBefore(addLine('push:' + prefix + 'cards', '+ card'), grid.nextSibling);
+      }
     });
 
     // ════════════════════════════════════════════════════════════════════

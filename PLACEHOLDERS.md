@@ -61,10 +61,10 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 | `heading` | • | text | `Specifications heading` |
 | `device` | • | text | `Device · MODEL` |
 | `tone` |  | enum | `special`  _(choice: a · b · special)_ |
-| `cards` | • | list<card> | — |
+| `cards` | • | list<card> | _(template — see sub-fields)_ |
 | `cards[].title` | • | text | `Card title` |
 | `cards[].icon` |  | icon | — |
-| `cards[].rows` | • | list<pair> | — |
+| `cards[].rows` | • | list<pair> | _(template — see sub-fields)_ |
 | `cards[].rows[].key` | • | text | `Label` |
 | `cards[].rows[].value` | • | text | `Value` |
 

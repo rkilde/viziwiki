@@ -468,7 +468,16 @@
         },
         "cards": {
           "type": "list<card>",
-          "required": true
+          "required": true,
+          "item_blank": {
+            "title": "Card title",
+            "rows": [
+              [
+                "Label",
+                "Value"
+              ]
+            ]
+          }
         }
       },
       "subtypes": {
@@ -483,7 +492,11 @@
           },
           "rows": {
             "type": "list<pair>",
-            "required": true
+            "required": true,
+            "item_blank": [
+              "Label",
+              "Value"
+            ]
           }
         },
         "pair": {
@@ -507,10 +520,10 @@
             "title": "Card title",
             "icon": "monitor",
             "rows": [
-              {
-                "key": "Label",
-                "value": "Value"
-              }
+              [
+                "Label",
+                "Value"
+              ]
             ]
           }
         ]

@@ -383,6 +383,21 @@ const AFFORDANCE = `
   .pe-cfg-add{ font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.08em; text-transform:uppercase; padding:6px 10px; border-radius:6px;
     border:1px solid rgba(0,0,0,.14); background:#fff; cursor:pointer; color:rgba(0,0,0,.5); }
   .pe-cfg-add:hover{ border-color:rgba(0,0,0,.3); color:#0a0a0a; }
+
+  /* ════ spec (Specifications Sheet) editor ════ Inline .ce on the heading,
+     device line, card titles + key/value rows; a card-icon picker sourced from
+     the canon sprite. Keep cards/rows full-width so the corner × sits right. */
+  .spec-card.pe-removable{ width:auto; overflow:visible; }
+  .spec-row.pe-removable{ width:auto; }
+  .spec-card-head .pe-mini-add{ margin-left:0; margin-right:6px; }
+  /* icon picker popover — a scrollable grid of the sprite's glyphs */
+  .cc-pop.icon-pop{ min-width:266px; }
+  .cc-icons{ display:grid; grid-template-columns:repeat(6,1fr); gap:5px; max-height:244px; overflow-y:auto; margin-bottom:4px; padding:1px; }
+  .cc-icon{ width:100%; aspect-ratio:1; display:flex; align-items:center; justify-content:center; border:1px solid rgba(0,0,0,.1);
+    border-radius:8px; background:#fff; cursor:pointer; color:#333; transition:.12s; padding:0; }
+  .cc-icon:hover{ border-color:#6366f1; color:#6366f1; background:rgba(99,102,241,.06); }
+  .cc-icon.sel{ border-color:#6366f1; background:#6366f1; color:#fff; }
+  .cc-icon svg{ width:17px; height:17px; }
 `;
 
 const FONTS = `<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">`;

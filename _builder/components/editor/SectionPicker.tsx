@@ -47,6 +47,11 @@ const TILES = [
     desc: 'A previous-vs-current table grouped into Hardware & Software, with color-coded change chips (better, feature, changed, worse, same).',
   },
   {
+    id: 'spec', name: 'Specifications Sheet', pill: 'Category' as const, opens: 'spec' as const,
+    icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/>',
+    desc: 'A grid of spec cards — each an icon + title + key/value rows (the dark "Specifications Sheet" band). Pick a sheet type →',
+  },
+  {
     id: 'config', name: 'Hardware & Software Tech Visuals', pill: 'Category' as const, opens: 'config' as const,
     icon: '<rect x="7" y="2" width="10" height="20" rx="3"/><line x1="12" y1="17" x2="12" y2="18" stroke-width="2.5"/><line x1="10" y1="4.5" x2="14" y2="4.5"/>',
     desc: 'Storage/spec tiers with proportional fill bars derived from capacity, plus price, dates & device-color dots. Pick a chart type →',
@@ -70,6 +75,15 @@ const CONFIG_TYPES: TypeTile[] = [
   { id: 'config', name: 'Storage / Configuration Chart',
     icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><text x="12" y="11" text-anchor="middle" dominant-baseline="middle" font-size="7" font-family="monospace" font-weight="bold" fill="currentColor" stroke="none">64</text><text x="12" y="17.5" text-anchor="middle" dominant-baseline="middle" font-size="4.2" font-family="monospace" fill="currentColor" stroke="none">GB</text>',
     desc: 'Capacity tiers as proportional fill bars (lowest → highest), with price, dates & device-color dots. Revised configs drop below a divider.' },
+];
+
+// spec (Specifications Sheet) types — the card-grid sheet IS the canonical spec
+// bank (the one real type today): clicking it seeds a derived `spec` section
+// (grammar seed + registry host). More sheet layouts are ghosts until built.
+const SPEC_TYPES: TypeTile[] = [
+  { id: 'spec', name: 'Specifications Sheet',
+    icon: '<rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/><line x1="4.6" y1="6" x2="9.4" y2="6"/><line x1="4.6" y1="8.2" x2="9.4" y2="8.2"/>',
+    desc: 'A grid of cards, each an icon + title + key/value rows. The dark signature spec band.' },
 ];
 
 // catalog types from the mockup's CATALOG_TYPES — Category Masonry IS the
@@ -96,7 +110,7 @@ const CATALOG_TYPES: TypeTile[] = [
 ];
 
 export function SectionPicker({ onClose, onPick }: { onClose: () => void; onPick: (type: string) => void }) {
-  const [screen, setScreen] = useState<'choices' | 'browse' | 'catalog' | 'timeline' | 'config'>('choices');
+  const [screen, setScreen] = useState<'choices' | 'browse' | 'catalog' | 'timeline' | 'config' | 'spec'>('choices');
   const [q, setQ] = useState('');
 
   // shared typed sub-chooser (catalog / timeline): a grid of TypeTiles, each
@@ -213,6 +227,7 @@ export function SectionPicker({ onClose, onPick }: { onClose: () => void; onPick
         {screen === 'catalog' && typeScreen('Catalogs', 'Pick a catalog type', CATALOG_TYPES)}
         {screen === 'timeline' && typeScreen('Timelines', 'Pick a timeline type', TIMELINE_TYPES)}
         {screen === 'config' && typeScreen('Hardware & Software Tech Visuals', 'Pick a chart type', CONFIG_TYPES)}
+        {screen === 'spec' && typeScreen('Specifications Sheet', 'Pick a sheet type', SPEC_TYPES)}
       </div>
     </div>
   );
