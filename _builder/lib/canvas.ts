@@ -202,8 +202,10 @@ const AFFORDANCE = `
   .pe-del-confirm svg{ width:12px; height:12px; }
   .pe-del-yes{ background:#c0392b; color:#fff; box-shadow:0 3px 10px rgba(192,57,43,.32); }
   .pe-del-yes:hover{ background:#a5281b; }
-  .pe-del-no{ background:rgba(20,18,14,.08); color:#8a8175; animation-delay:.04s; }
-  .pe-del-no:hover{ background:rgba(20,18,14,.14); color:#1c1a17; }
+  /* solid + bordered so "keep" stays visible on ANY background (a faint fill
+     vanished on dark bands like the spec sheet's signature band) */
+  .pe-del-confirm .pe-del-no{ background:#fff; box-sizing:border-box; border:1px solid rgba(0,0,0,.18); color:#5a5a5a; box-shadow:0 3px 10px rgba(0,0,0,.22); animation-delay:.04s; }
+  .pe-del-confirm .pe-del-no:hover{ background:#f1f1f1; color:#1c1a17; border-color:rgba(0,0,0,.34); }
   @keyframes pe-del-pop{ from{ opacity:0; transform:scale(.5); } to{ opacity:1; transform:none; } }
   /* category note: a dashed chip INLINE in the count line (canon position —
      "N items · note") — "+ note" to add, editable text + corner × when present */
