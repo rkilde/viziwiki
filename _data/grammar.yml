@@ -102,6 +102,7 @@ components:
   overview:
     section: overview-section
     locked: { eyebrow: "Overview", icon: book-open }
+    display: { rows: { kind: "Infobox pair" } }
     fields:
       heading:    { type: text,            required: true, blank: "Section heading" }
       paragraphs: { type: "list<richtext>", required: true, min: 1, min_words: 100, item_blank: "Write the overview here (at least 100 words)…", help: "The overview body (≥100 words of real prose — placeholder text doesn't count)" }
@@ -121,7 +122,7 @@ components:
         class:    { type: text, locked: true, help: "Extra classes (e.g. a skin's sticky-note look)" }
         style:    { type: text, locked: true, help: "Inline style passthrough (e.g. a header gradient)" }
         art:      { type: text, locked: true, help: "Raw decoration at the top of the panel (e.g. tape)" }
-      pair: { key: { type: text, required: true, blank: "Label" }, value: { type: richtext, required: true, blank: "Value" } }
+      pair: { label: { type: text, required: true, blank: "Label" }, value: { type: richtext, required: true, blank: "Value" } }
     seed:
       heading: "Section heading"
       paragraphs: ["Write the overview here (at least 100 words)…"]

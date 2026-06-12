@@ -51,8 +51,9 @@ const AFFORDANCE = `
   /* infobox ONLY: the row × is right-aligned + vertically centred on its row,
      not the upper-right corner — the corner rule still governs everything else */
   .wiki-infobox-data > dd.pe-removable > .pe-remove{ top:50%; right:-9px; left:auto; transform:translateY(-50%); }
-  /* the "+ badge" add sits exactly where the badge chip renders (foot-left) */
-  .pe-addline.pe-add-badge{ text-align:left; padding:14px 16px 16px; }
+  /* +row / +badge sit just BELOW the infobox so the panel itself renders exactly
+     like the live site (no editing chrome inside its bounds) */
+  .pe-infobox-adds{ display:flex; gap:8px; margin-top:8px; padding-left:2px; }
   .wiki-hero-search.pe-removable{ width:auto; }
   .wiki-hero-stats.pe-removable{ width:auto; }
   .cat-card.pe-removable{ width:auto; }

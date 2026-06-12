@@ -308,6 +308,11 @@
         "eyebrow": "Overview",
         "icon": "book-open"
       },
+      "display": {
+        "rows": {
+          "kind": "Infobox pair"
+        }
+      },
       "fields": {
         "heading": {
           "type": "text",
@@ -404,7 +409,7 @@
           }
         },
         "pair": {
-          "key": {
+          "label": {
             "type": "text",
             "required": true,
             "blank": "Label"

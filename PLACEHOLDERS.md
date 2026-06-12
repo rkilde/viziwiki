@@ -50,7 +50,7 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 | `infobox.title` | • | text | `Infobox title` |
 | `infobox.sublabel` |  | text | `Sub-label` |
 | `infobox.rows` |  | list<pair> | _(template — see sub-fields)_ |
-| `infobox.rows[].key` | • | text | `Label` |
+| `infobox.rows[].label` | • | text | `Label` |
 | `infobox.rows[].value` | • | richtext | `Value` |
 | `infobox.badge` |  | text | `Status badge` |
 

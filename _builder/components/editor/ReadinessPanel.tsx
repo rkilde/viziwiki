@@ -50,7 +50,7 @@ export function ReadinessPanel({ marker, onJump }: { marker: Marker; onJump: (l:
         <button className="pe-mk-cg-head" onClick={() => toggle(open, c.key, setOpen)}>
           <span className="cg-chev"><Chev /></span>
           <span className="cg-kind">{c.kind}</span>
-          <span className="cg-name">{c.name || <span className="un">Unnamed {c.kind.toLowerCase()}</span>}</span>
+          <span className="cg-name">{c.name || <span className="un">{c.kind}</span>}</span>
           {ready ? <span className="cg-stat done"><Chk /> Ready</span> : <span className="cg-stat todo"><Tri /> {c.unmet} left</span>}
         </button>
         <div className="pe-mk-cg-body">

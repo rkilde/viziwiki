@@ -436,10 +436,16 @@
           if (rowsRule.min == null || dts.length > rowsRule.min) makeRemovable(dd, 'rm:overview.infobox.rows.' + i);
         }
       });
-      if (rowsRule.max == null || dts.length < rowsRule.max) {
-        var dl = qs('.wiki-infobox-data', ibox);
-        if (dl) dl.parentNode.insertBefore(addLine('push:overview.infobox.rows', '+ row', '8px 16px'), dl.nextSibling);
-      }
+      // add-controls (+ row, + badge) go directly BELOW the infobox bounds, so
+      // the infobox itself renders exactly as it will on the live site (no
+      // editing chrome inside it).
+      var ibAdds = document.createElement('div'); ibAdds.className = 'pe-infobox-adds';
+      if (rowsRule.max == null || dts.length < rowsRule.max) ibAdds.appendChild(addBtn('push:overview.infobox.rows', '+ row', true));
+      // the "+ badge" slot was placed INSIDE the infobox by sentinelPass (when
+      // the badge is absent) — relocate it into the add bar below.
+      var badgeSlot = qs('.pe-add-badge', ibox);
+      if (badgeSlot) { badgeSlot.remove(); ibAdds.appendChild(addBtn('add:overview.infobox.badge', '+ badge', true)); }
+      if (ibAdds.children.length) ibox.parentNode.insertBefore(ibAdds, ibox.nextSibling);
     }
 
     // removables — × attaches only where grammar says optional
@@ -1081,16 +1087,20 @@
         var plur = real ? sing + 's' : listName;
         return need <= 1 ? 'At least one ' + sing : 'At least ' + need + ' ' + plur;
       }
-      // an instance's identifying value = its first required text field (derived)
+      // an instance's identifying value = its first required text field (derived).
+      // Tuple (array) instances are read POSITIONALLY by the field's declaration
+      // index (a pair row is ["Label","Value"] → label is index 0).
       function identTitle(prefix, concretePrefix, instData) {
         if (!instData) return '';
         var rel = ''; concretePrefix.forEach(function (seg) { rel += (typeof seg === 'number') ? '[]' : ((rel ? '.' : '') + seg); });
-        var base = prefix + '.' + rel + '.', best = null;
+        var base = prefix + '.' + rel + '.', best = null, isArr = Array.isArray(instData), fi = -1;
         Object.keys(FIELDS).forEach(function (k) {
-          if (best || k.indexOf(base) !== 0) return;
+          if (k.indexOf(base) !== 0) return;
           var tail = k.slice(base.length); if (tail.indexOf('.') >= 0 || tail.indexOf('[]') >= 0) return;
+          fi++; if (best != null) return;
           var r = FIELDS[k]; if (!r.required || (r.kind !== 'text' && r.kind !== 'richtext')) return;
-          var v = instData[tail]; if (ne(v) && strip(v) !== String(r.blank == null ? '' : r.blank).trim()) best = strip(v);
+          var v = isArr ? instData[fi] : instData[tail];
+          if (ne(v) && strip(v) !== String(r.blank == null ? '' : r.blank).trim()) best = strip(v);
         });
         return best ? (best.length > 26 ? best.slice(0, 24) + '…' : best) : '';
       }
@@ -1160,10 +1170,14 @@
           var rel = key.slice(prefix.length + 1), insts = [];
           walk(rel.split('.'), data, [], insts);
           insts.forEach(function (inst) {
-            var concrete = inst.concrete.slice(), val;
-            if (Array.isArray(inst.node) && r.kind !== 'list') { var ti = tupleIndex(key); if (ti >= 0) { concrete[concrete.length - 1] = ti; val = inst.node[ti]; } else val = inst.node[inst.leaf]; }
+            // positional (tuple) subtype: the doc/path use an index (rows.0.0),
+            // but for the TREE the cell is a FIELD of its row — keep the field
+            // NAME in `concrete` (placement + label) and put the index only in
+            // the doc path, so a pair's cells are leaves of its row, not items.
+            var concrete = inst.concrete.slice(), docConcrete = inst.concrete.slice(), val;
+            if (Array.isArray(inst.node) && r.kind !== 'list') { var ti = tupleIndex(key); if (ti >= 0) { docConcrete[docConcrete.length - 1] = ti; val = inst.node[ti]; } else val = inst.node[inst.leaf]; }
             else val = inst.node[inst.leaf];
-            var docPath = dataPrefix + concrete.join('.');
+            var docPath = dataPrefix + docConcrete.join('.');
             var idxs = []; concrete.forEach(function (s, ix) { if (typeof s === 'number') idxs.push(ix); });
             var leaf;
             if (r.kind === 'list' && r.min_words != null) {
