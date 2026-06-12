@@ -18,14 +18,14 @@
 {%- assign months = "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec" | split: "," -%}
 {%- assign ne = data.events | size -%}
 
-{%- comment -%} UNSET dates: a year < 1000 (the "####" placeholder parses to 0)
+{%- comment -%} UNSET dates: a year < 1000 (the "Year" placeholder parses to 0)
   isn't real yet, so it must NOT widen the axis (otherwise one real year + an
-  unset year would render thousands of empty-year spacers). baseYr = the
-  earliest REAL year (or 0 if none); every unset event is positioned AS baseYr
-  (clustered with the first real date, or all at 0 when nothing is dated yet),
-  while its card still DISPLAYS "Month ####". {%- endcomment -%}
+  unset year would render thousands of empty-year spacers). baseYr = the LATEST
+  real year (or 0 if none); every unset event is positioned AS baseYr so a new
+  "+ event" lands at the END of the timeline (not in the middle), or all at 0
+  when nothing is dated yet — while its card still DISPLAYS "Month Year". {%- endcomment -%}
 {%- assign baseYr = 0 -%}
-{%- for e in data.events -%}{%- assign yraw = e.year | plus: 0 -%}{%- if yraw >= 1000 -%}{%- if baseYr == 0 or yraw < baseYr -%}{%- assign baseYr = yraw -%}{%- endif -%}{%- endif -%}{%- endfor -%}
+{%- for e in data.events -%}{%- assign yraw = e.year | plus: 0 -%}{%- if yraw >= 1000 -%}{%- if yraw > baseYr -%}{%- assign baseYr = yraw -%}{%- endif -%}{%- endif -%}{%- endfor -%}
 
 {%- comment -%} year range (events are chronological) {%- endcomment -%}
 {%- assign firstYr = 0 -%}{%- assign lastYr = 0 -%}
