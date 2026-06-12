@@ -83,7 +83,7 @@ export function ReadinessPanel({ marker, onJump }: { marker: Marker; onJump: (l:
         <span className="pn">{m.done ? 'complete' : m.left + ' required'}</span>
       </div>
       <div className={`pe-mk-summary ${m.done ? 'alldone' : ''}`}>
-        <span className="stxt">{m.done ? 'All set' : m.left + ' required left'}</span>
+        <span className="stxt">{m.done ? 'All set' : m.left + ' required fields left'}</span>
         <span className="bar"><i style={{ width: m.pct + '%' }} /></span>
       </div>
 

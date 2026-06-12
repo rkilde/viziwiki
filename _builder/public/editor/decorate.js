@@ -713,9 +713,13 @@
           (function (jj) { var tb = dockBtn(csvg(CICON.trash), 'Delete entire category', 'danger', null); armDelete(tb, function () { closePop(); A('rm:' + prefix + 'categories.' + jj); }); dock.appendChild(tb); })(j);
           card.appendChild(dock);
 
-          // pills → open the item editor; "+ item"
+          // pills → open the item editor; "+ item". The pill is also the
+          // readiness JUMP SCOPE for everything under this item (its name + the
+          // pills it owns), so jumping to a modal-only field opens the modal.
           qsa('.cat-pill', card).forEach(function (pill, k) {
             pill.style.cursor = 'pointer';
+            pill.setAttribute('data-pe-opens', '1');
+            pill.setAttribute('data-pe-scope', cpre + 'items.' + k);
             (function (jj, kk, pp) { pp.addEventListener('click', function () { openItem(jj, kk, pp); }); })(j, k, pill);
           });
           var pillsWrap = qs('.cat-card-pills', card);
@@ -1191,6 +1195,11 @@
         // whole section — only ever a single field-sized element.
         var el = findEl(it.jump);
         if (!el) el = qs('[data-pe-jump~="' + it.jump + '"]');
+        // composite EDITOR whose scope covers this path (e.g. a catalog item
+        // pill — its name/pills are edited in a modal, not on the face): find
+        // the face element whose data-pe-scope is a prefix of the jump, and
+        // open it (data-pe-opens) so the contributor lands in that editor.
+        if (!el) { var scs = qsa('[data-pe-scope]'); for (var z = 0; z < scs.length; z++) { var sc = scs[z].getAttribute('data-pe-scope'); if (sc && (it.jump === sc || it.jump.indexOf(sc + '.') === 0)) { el = scs[z]; break; } } }
         if (!el && it.addpath) el = qs('[data-pe-addpath="' + it.addpath + '"]');
         if (!el) { var base = it.jump.replace(/\.[^.]+$/, ''); el = qs('[data-pe-path^="' + base + '"]'); }
         if (!el) return;
