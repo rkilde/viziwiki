@@ -102,7 +102,7 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
               {!m.done && <span className="pe-mk-count">{m.count}</span>}
             </button>
             {openMk === i && (
-              <div className="pe-mk-panel" style={{ top: mkBox.top + m.top, left: left(m) + 46 }} onMouseDown={(e) => e.stopPropagation()}>
+              <div className="pe-mk-panel" style={{ top: mkBox.top + m.top, left: Math.max(6, left(m) - 302) }} onMouseDown={(e) => e.stopPropagation()}>
                 <div className="pe-mk-head">
                   <span className="pi">{m.done ? <IcCheck /> : <IcTri />}</span>
                   <span className="pt">{m.done ? 'Section ready' : 'Needs attention'}</span>
