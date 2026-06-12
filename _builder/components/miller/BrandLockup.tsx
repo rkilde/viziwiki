@@ -5,11 +5,12 @@ import React from 'react';
 // app-icon, the ViziWiki wordmark, a divider, the Build Kit wordmark, and the
 // open-kit squircle mark. Sits on the LEFT of the column-view Topbar, followed
 // by a separator and the existing chrome (wiki switcher, …).
-const ViziLayers = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
-    <polygon points="12 2 2 7 12 12 22 7 12 2" />
-    <polyline points="2 17 12 22 22 17" />
-    <polyline points="2 12 12 17 22 12" />
+// the real ViziWiki mark from the live site chrome (.main-brand .diamond):
+// a diamond bisected by a horizontal line.
+const ViziDiamond = () => (
+  <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinejoin="round">
+    <polygon points="7,1.5 12.5,7 7,12.5 1.5,7" />
+    <line x1="1.5" y1="7" x2="12.5" y2="7" />
   </svg>
 );
 
@@ -38,7 +39,7 @@ const OpenKit = () => (
 export function BrandLockup() {
   return (
     <div className="brand-lockup">
-      <span className="brand-mark"><ViziLayers /></span>
+      <span className="brand-mark"><ViziDiamond /></span>
       <span className="brand-word"><span className="bw-a">Vizi</span><span className="bw-b">Wiki</span></span>
       <span className="brand-thin" />
       <span className="brand-kit">Build&nbsp;Kit</span>
