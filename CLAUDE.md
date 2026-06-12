@@ -110,6 +110,63 @@ did, on the iPod charts — hence this rule). **Rule of thumb: document text →
 4. Distinguish: (a) bespoke reimplementations of universal concepts → MUST
    conform; (b) genuinely-unique visuals → become bank components (deferred);
    (c) additive decorative flourishes (hero overlays, eyebrow dots) → allowed.
+5. **The builder must be DERIVED, never restated (baseline rule for ALL
+   builder work).** Every builder behavior must trace to the canonical source
+   in the repo through a pipeline, not a copy typed into builder code. The
+   test: *could you change the behavior by editing only the canonical repo
+   file (universals/skin CSS, a Liquid include, `grammar.yml`), with zero
+   builder-code edits?* If implementing a builder feature requires writing
+   down a fact that already exists in the canon — a color, a count, a
+   structure, a default, a lock — that's a restatement and it's wrong.
+   The pipes: CSS → `copy-canon`; rules/constraints/seeds → `extract-grammar`
+   (`lib/grammar.ts`); wiki content → `extract-*`; markup → the Liquid
+   includes themselves, EXECUTED in the builder (LiquidJS, Jekyll mode:
+   `extract-includes` → `lib/render.ts`; absent optional fields render as
+   sentinels that the decorator `public/editor/decorate.js` swaps for "+"
+   slots in their canonical positions). Builder-only editing chrome (`pe-*`
+   affordances) is allowed, but WHAT it attaches to and WHAT it permits must
+   be derived (grammar fields/locks/enums + canon class-name conventions —
+   the decorator's tables only REFERENCE canon identifiers, never restate
+   structure). Guard: `npm test` (scripts/test-derived-renderer.mjs) runs on
+   every build and fails if the pipeline or decoration breaks.
+
+### Bank → builder onboarding (one derived step + the layout contract)
+Adding a bank to the builder is **not** a list to edit in N places — every pipe
+is derived from the canon, so you add the bank to the canon and the builder
+follows:
+- **Includes** auto-extract: `extract-includes` seeds roots from the registry's
+  declared `partial:`s and **crawls the `{% include %}` graph** — write the
+  include files + the registry entry, the whole chain is pulled (build fails if
+  a declared partial is missing).
+- **CSS** auto-loads: drop a `bank-<name>.css` at the repo root; `copy-canon`
+  discovers it → `data/bank-css.json` → the canvas links it. No per-bank wiring.
+- **Picker liveness** is derived: a tile is addable only when its type has a
+  grammar `seed` + a registry `section` (`SectionPicker.isLive`) — never a
+  hand-set flag.
+- **Section→partial** is derived from the registry's `hosts:` map (NOT a
+  `<type>-section` name guess — that broke lifecycle-lane/os-section).
+- **Readiness widget is derived, but LABELS are an onboarding step.** The
+  per-section "what's left to fill" tracker builds itself from grammar — every
+  `required:` field + list `min:` + `min_words:` becomes a checklist line, and
+  the panel auto-nests it (section-level fields → the **Section** region; each
+  first-level list instance → a collapsible **card**; deeper instances → items
+  under it). New banks get this for free. The ONE thing to set per bank is the
+  display **kind label** for each list level (what a "card"/"item" is called) —
+  a `display: { <listName>: { kind: "…" } }` block on the component in
+  `grammar.yml` (defaults to a name derived from the subtype). Guards: the seed
+  guard (`audit-seeds`) makes a fresh section read as "untouched"; `gen-
+  placeholders` regenerates `PLACEHOLDERS.md`. So onboarding a bank's readiness
+  = declare `required`/`min`/`blank` (you already do) + optionally a `display`
+  block for nice card labels.
+- **THE LAYOUT CONTRACT (hard rule):** the builder renders canon HTML+CSS but
+  **strips `<script>`** (inert canvas; the decorator owns interaction). So a
+  bank's **layout must be CSS/Liquid** — derive positions in Liquid and emit
+  them (the config + timeline pattern), never compute layout in a runtime
+  script. A `<script>` may carry **only interaction** the decorator re-derives
+  (the modal). A bank that lays out in JS renders fine on the live site but
+  collapses in the builder. Guards: case 9 renders every seedable+hosted bank;
+  case 10 fails the build if any builder-hosted visual ships a geometry-mutating
+  script (`.style.left/top/width/height/cssText =`).
 
 ## Workflow norms
 - Develop on branch `claude/quirky-carson-vKj8w`. Commit + push; owner previews

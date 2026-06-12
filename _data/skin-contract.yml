@@ -1,0 +1,134 @@
+# ════════════════════════════════════════════════════════════════════
+# THE WIKI SKIN CONTRACT  (the single source of truth for skin↔asset colour)
+# --------------------------------------------------------------------
+# The canonical, SEMANTIC tokens every wiki skin publishes and every visual
+# asset (universal component or bank) reads. Three-tier model:
+#
+#   tier 1  PRIMITIVES   a skin's private palette (--phosphor, --berry …)   — skin-owned, NOT here
+#   tier 2  CONTRACT     these tokens — the stable, shared interface         — THIS FILE
+#   tier 3  COMPONENT    a bank's internal tokens (--tl-accent, --st-* …)    — bank-owned, derived from tier 2
+#
+# Naming canon (locked):
+#   · every contract token is namespaced  --wiki-*
+#   · backgrounds end -bg ; text/foreground colours end -color ; radii end -radius
+#   · the -bg / -color / -radius suffix is always LAST
+#   · background-aware colours split  -on-light / -on-dark
+#   · text emphasis family: -color, -muted-color, -faint-color
+#
+# THE SCALING RULE: adding a new bank must require ZERO new contract tokens.
+# A bank composes its look from { neutrals + accent + meanings + palette +
+# section + shapes }. If it can't, a role is added here DELIBERATELY — never an
+# asset-specific token bolted onto five skins.
+#
+# `replaces:` lists the legacy names this token unifies (the migration map).
+# The guard (scripts/audit-skin-contract.mjs) checks: every var(--wiki-*) a bank
+# reads is in this contract, and every contract token has a universal default.
+# ════════════════════════════════════════════════════════════════════
+
+neutrals:
+  - { token: --wiki-text-color,        replaces: [--foreground, --ink, --wiki-fg],          role: "primary text (headings, strong body)" }
+  - { token: --wiki-text-muted-color,  replaces: [--muted-foreground, --wiki-muted, --mut], role: "secondary / muted text" }
+  - { token: --wiki-text-faint-color,  replaces: [--wiki-faint],                            role: "lowest-emphasis text" }
+  - { token: --wiki-surface-bg,        replaces: [--card],                                  role: "card / panel / modal background" }
+  - { token: --wiki-page-bg,           replaces: [--wiki-bg, --page, --paper],              role: "overall page / canvas background" }
+  - { token: --wiki-divider-color,     replaces: [--section-divider, --divider],            role: "hairline / divider line" }
+
+accent:
+  - { token: --wiki-accent-on-light,   replaces: [--wiki-accent], role: "brand accent on a LIGHT surface" }
+  - { token: --wiki-accent-on-dark,    replaces: [],              role: "brand accent on a DARK surface (was the hero period yellow)" }
+
+# Semantic meaning colours — a FIXED set. Every status/sentiment across every
+# asset derives from these (catalog status, delta chips, lifecycle tiers, …).
+meanings:
+  - { token: --wiki-positive, replaces: [--st-active-bg, --st-active-fg],             role: "success / available / 'better'" }
+  - { token: --wiki-negative, replaces: [--st-discontinued-bg, --st-discontinued-fg], role: "danger / gone / 'worse'" }
+  - { token: --wiki-warning,  replaces: [--st-limited-bg, --st-limited-fg],           role: "caution / limited" }
+  - { token: --wiki-info,     replaces: [],                                           role: "info / note / 'feature'" }
+  - { token: --wiki-neutral,  replaces: [--st-retired-bg, --st-retired-fg],           role: "inactive / retired / 'same'" }
+
+# Categorical palette — one ordered ramp of DISTINGUISHABLE hues. Any asset that
+# needs N distinct colours (catalog categories, chart series, tiers) pulls from
+# THIS, never its own swatch set. `count` = how many the contract guarantees.
+palette:
+  - { token: --wiki-palette, count: 8, replaces: [--cat-accent], role: "category / series colours 1..N" }
+
+section:
+  - { token: --wiki-section-panel-tone-a,       replaces: [--section-tone-a],       role: "default section panel bg" }
+  - { token: --wiki-section-panel-tone-b,       replaces: [--section-tone-b],       role: "alternating section panel bg" }
+  - { token: --wiki-section-panel-tone-special, replaces: [--section-tone-special], role: "inverted / dark band bg" }
+  - { token: --wiki-h2-color,            replaces: [--section-title-color], role: "section H2 heading colour" }
+  - { token: --wiki-eyebrow-color,       replaces: [--eyebrow-color],       role: "section eyebrow / kicker" }
+  - { token: --wiki-prose-color,         replaces: [--prose-color],         role: "body prose colour" }
+  - { token: --wiki-prose-strong-color,  replaces: [--prose-strong-color],  role: "prose emphasis colour" }
+
+shapes:
+  - { token: --wiki-card-radius, replaces: [--card-shape], role: "card corner radius" }
+  - { token: --wiki-chip-radius, replaces: [--chip-shape], role: "chip / pill corner radius" }
+
+hero:
+  - { token: --wiki-hero-bg,            replaces: [--hero-bg] }
+  - { token: --wiki-hero-text-color,    replaces: [--hero-text] }
+  - { token: --wiki-hero-divider-color, replaces: [--hero-divider] }
+  - { token: --wiki-hero-title-color,   replaces: [--hero-title-color] }
+  - { token: --wiki-hero-period-color,  replaces: [--hero-title-accent], role: "the H1 period '.', defaults to --wiki-accent-on-dark" }
+  - { token: --wiki-hero-eyebrow-dot-color, replaces: [--hero-eyebrow-dot] }
+  - { token: --wiki-hero-desc-color,        replaces: [--hero-desc-color] }
+  - { token: --wiki-hero-eyebrow-bg,           replaces: [--hero-eyebrow-bg] }
+  - { token: --wiki-hero-eyebrow-border-color, replaces: [--hero-eyebrow-border] }
+  - { token: --wiki-hero-eyebrow-text-color,   replaces: [--hero-eyebrow-text] }
+  - { token: --wiki-hero-search-bg,              replaces: [--hero-search-bg] }
+  - { token: --wiki-hero-search-border-color,    replaces: [--hero-search-border] }
+  - { token: --wiki-hero-search-icon-color,      replaces: [--hero-search-icon] }
+  - { token: --wiki-hero-search-placeholder-color, replaces: [--hero-search-placeholder] }
+  - { token: --wiki-hero-search-text-color,      replaces: [--hero-search-text] }
+  - { token: --wiki-hero-spotlight-bg,            replaces: [--hero-spotlight-bg] }
+  - { token: --wiki-hero-spotlight-border-color,  replaces: [--hero-spotlight-border] }
+  - { token: --wiki-hero-spotlight-title-color,   replaces: [--hero-spotlight-title] }
+  - { token: --wiki-hero-spotlight-eyebrow-color, replaces: [--hero-spotlight-eyebrow] }
+  - { token: --wiki-hero-spotlight-desc-color,    replaces: [--hero-spotlight-desc] }
+  - { token: --wiki-hero-spotlight-cta-bg,        replaces: [--hero-spotlight-cta-bg] }
+  - { token: --wiki-hero-spotlight-cta-hover-bg,  replaces: [--hero-spotlight-cta-hover-bg] }
+  - { token: --wiki-hero-spotlight-cta-text-color, replaces: [--hero-spotlight-cta-text] }
+  - { token: --wiki-hero-spotlight-tag-bg,         replaces: [--hero-spotlight-tag-bg] }
+  - { token: --wiki-hero-spotlight-tag-border-color, replaces: [--hero-spotlight-tag-border] }
+  - { token: --wiki-hero-spotlight-tag-text-color, replaces: [--hero-spotlight-tag-text] }
+  - { token: --wiki-hero-stat-num-color,          replaces: [--hero-stat-num] }
+  - { token: --wiki-hero-stat-label-color,        replaces: [--hero-stat-label] }
+  - { token: --wiki-hero-stat-cell-bg,            replaces: [--hero-stat-cell-bg] }
+  - { token: --wiki-hero-stat-wrapper-bg,         replaces: [--hero-stat-wrapper-bg] }
+  - { token: --wiki-hero-stat-wrapper-border-color, replaces: [--hero-stat-wrapper-border] }
+  - { token: --wiki-hero-feature-bg,              replaces: [--hero-feature-bg] }
+  - { token: --wiki-hero-feature-halftone-color,  replaces: [--hero-feature-halftone] }
+  - { token: --wiki-hero-feature-border-color,    replaces: [--hero-feature-border] }
+  - { token: --wiki-hero-feature-title-color,     replaces: [--hero-feature-title] }
+  - { token: --wiki-hero-feature-desc-color,      replaces: [--hero-feature-desc] }
+  - { token: --wiki-hero-feature-label-color,     replaces: [--hero-feature-label] }
+  - { token: --wiki-hero-feature-chip-bg,         replaces: [--hero-feature-chip-bg] }
+  - { token: --wiki-hero-feature-chip-border-color, replaces: [--hero-feature-chip-border] }
+  - { token: --wiki-hero-feature-chip-key-color,  replaces: [--hero-feature-chip-key] }
+  - { token: --wiki-hero-feature-chip-val-color,  replaces: [--hero-feature-chip-val] }
+
+infobox:
+  - { token: --wiki-infobox-bg,             replaces: [--infobox-bg] }
+  - { token: --wiki-infobox-header-bg,      replaces: [--infobox-header-bg] }
+  - { token: --wiki-infobox-border-color,   replaces: [--infobox-border] }
+  - { token: --wiki-infobox-divider-color,  replaces: [--infobox-divider] }
+  - { token: --wiki-infobox-title-color,    replaces: [--infobox-title-color] }
+  - { token: --wiki-infobox-label-color,    replaces: [--infobox-label-color] }
+  - { token: --wiki-infobox-key-color,      replaces: [--infobox-key-color] }
+  - { token: --wiki-infobox-value-color,    replaces: [--infobox-value-color] }
+  - { token: --wiki-infobox-badge-color,        replaces: [--infobox-badge-color] }
+  - { token: --wiki-infobox-badge-border-color, replaces: [--infobox-badge-border] }
+
+# typography lives in wiki-typography.css and is already conformant — listed so
+# the guard accepts banks reading them.
+typography:
+  - { token: --wiki-prose-size,    replaces: [], role: "body prose font-size (typography layer)" }
+  - { token: --wiki-prose-leading, replaces: [], role: "body prose line-height (typography layer)" }
+
+# Component colours that LEFT the skin contract — now derived inside the bank
+# from the tokens above, so skins never define them:
+#   catalog --st-*        ← meanings (active→positive, discontinued→negative, limited→warning, retired→neutral)
+#   catalog --cat-accent-* ← --wiki-palette-*
+#   catalog --ribbon-*    ← --wiki-accent-on-light + --wiki-neutral
+#   delta chips / lifecycle tiers / future charts ← meanings + --wiki-palette-*

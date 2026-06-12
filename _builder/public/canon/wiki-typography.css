@@ -1,0 +1,146 @@
+/* ════════════════════════════════════════════════════════════════════
+   WIKI TYPOGRAPHY CANON
+   ════════════════════════════════════════════════════════════════════
+   Wiki-website-wide canon. Applies to every page on the ViziWiki
+   product — wiki home pages AND detail pages alike. Loaded by adding
+   this stylesheet to every page's <head>:
+
+     <link rel="stylesheet" href="/wiki-typography.css">
+
+   Defines the three-font stack used across the entire product:
+
+     1. Fraunces       — display serif for titles, headlines
+     2. Spectral       — reading serif for body prose, paragraphs
+     3. JetBrains Mono — monospace for eyebrows, labels, UI accents
+
+   Font CHOICE is universal (these three, everywhere across the wiki
+   product). What each wiki's skin customizes is COLOR, decorative
+   effects (glow, gradients, animation), and weight/size adjustments
+   if it deviates from the base typography rules.
+
+   To change a font across the entire product, edit this file.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* Load the three font families from Google Fonts ------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&family=Spectral:wght@400;500;600&display=swap');
+
+/* Body default — every page starts with Spectral as the reading font */
+body {
+  font-family: 'Spectral', Georgia, serif;
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Display font — for titles, headlines, infobox titles ------------- */
+/* Fraunces is a variable serif; SOFT and WONK are axis settings.    */
+.font-display {
+  font-family: 'Fraunces', 'Spectral', Georgia, serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+  letter-spacing: -0.02em;
+}
+
+/* Monospace accent — for eyebrows, labels, key-names, UI accents --- */
+.font-mono-acc {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  letter-spacing: 0.05em;
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   TYPE ROLE SYSTEM — the locked, universal typographic scale
+   ════════════════════════════════════════════════════════════════════
+   This scale governs ONLY non-visual DOCUMENT text — prose, body copy,
+   eyebrows, and headings (the editorial reading layer). Visual components
+   (charts, timelines, stat tiles, spotlight/infobox panels, catalogues,
+   data-viz of any kind) do NOT use this scale: their type is tuned to the
+   component and controlled centrally IN THE BANK (Phase 4). Forcing the
+   universal scale onto dense widgets breaks their layouts — so the rule is
+   simple: DOCUMENT text here, WIDGET text in its bank.
+
+   Sizes are UNIVERSAL and FIXED: a wiki/skin sets COLOR + decoration, never
+   size. Body sizes are constant across viewport; only the heading roles
+   scale down on mobile. One source of truth (the tokens), two deliveries:
+     • tokens  --t-<role>-size / -leading / -tracking   (components read these)
+     • class   .t-<role>                                 (markup / builder emit)
+
+   The 8 DOCUMENT roles, largest → smallest:
+     display · title · subtitle · lead · body · body-sm · caption · label
+   ════════════════════════════════════════════════════════════════════ */
+:root {
+  /* Each role = size · leading · tracking · weight — all centrally tunable.
+     (font-family + case are role identity; they live on the classes below.)
+     Values are grounded in the canonical components they govern. */
+
+  /* ── Headings (Fraunces) ── */
+  --t-display-size:      clamp(48px, 8vw, 96px);
+  --t-display-leading:   0.95;
+  --t-display-tracking:  -0.02em;
+  --t-display-weight:    700;
+
+  --t-title-size:        30px;          /* → 36px ≥768 (media block below) */
+  --t-title-leading:     1.15;
+  --t-title-tracking:    -0.02em;
+  --t-title-weight:      600;
+
+  --t-subtitle-size:     17px;          /* → 19px ≥768 (media block below) */
+  --t-subtitle-leading:  1.2;
+  --t-subtitle-tracking: -0.01em;
+  --t-subtitle-weight:   600;
+
+  /* ── Reading text (Spectral · constant across viewport · weight 400) ──
+     Body + Body-sm keep their established --wiki-prose-* names (already
+     referenced sitewide) — they ARE the body roles. */
+  --t-lead-size:         18px;          /* hero / section intro */
+  --t-lead-leading:      1.6;
+  --wiki-prose-size:     16px;          /* = body */
+  --wiki-prose-sm-size:  14px;          /* = body-sm */
+  --wiki-prose-leading:  1.65;          /* shared reading leading */
+  --t-caption-size:      13px;
+  --t-caption-leading:   1.5;
+
+  /* ── Label (JetBrains Mono · uppercase · tracked) — the eyebrow / overline.
+     The one mono DOCUMENT role: section + hero eyebrows. Dense in-component
+     mono labels (tags, keys, chips, axis ticks, badges) are NOT here — they
+     live in their bank component. */
+  --t-label-size:        10px;
+  --t-label-tracking:    0.3em;
+  --t-label-weight:      400;
+}
+@media (min-width: 768px) {
+  :root {
+    --t-title-size:      36px;
+    --t-subtitle-size:   19px;
+  }
+}
+
+/* Role classes — one bundle each; size / leading / tracking / weight all
+   read from the tokens above (font-family + case are role identity). */
+.t-display, .t-title, .t-subtitle {
+  font-family: 'Fraunces', 'Spectral', Georgia, serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+}
+.t-display  { font-size: var(--t-display-size);  line-height: var(--t-display-leading);  letter-spacing: var(--t-display-tracking);  font-weight: var(--t-display-weight); }
+.t-title    { font-size: var(--t-title-size);    line-height: var(--t-title-leading);    letter-spacing: var(--t-title-tracking);    font-weight: var(--t-title-weight); }
+.t-subtitle { font-size: var(--t-subtitle-size); line-height: var(--t-subtitle-leading); letter-spacing: var(--t-subtitle-tracking); font-weight: var(--t-subtitle-weight); }
+
+.t-lead, .t-body, .t-body-sm, .t-caption {
+  font-family: 'Spectral', Georgia, serif;
+  font-weight: 400;
+}
+.t-lead     { font-size: var(--t-lead-size);        line-height: var(--t-lead-leading); }
+.t-body     { font-size: var(--wiki-prose-size);    line-height: var(--wiki-prose-leading); }
+.t-body-sm  { font-size: var(--wiki-prose-sm-size); line-height: var(--wiki-prose-leading); }
+.t-caption  { font-size: var(--t-caption-size);     line-height: var(--t-caption-leading); }
+
+.t-label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  line-height: 1.2;
+  text-transform: uppercase;
+  font-size: var(--t-label-size);
+  letter-spacing: var(--t-label-tracking);
+  font-weight: var(--t-label-weight);
+}

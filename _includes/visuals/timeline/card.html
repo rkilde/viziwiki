@@ -5,6 +5,6 @@
   under cards/. Registry of card_types lives in _data/visuals.yml.
 {%- endcomment -%}
 {%- case include.type -%}
-  {%- when 'station' -%}{%- include visuals/timeline/cards/station.html mode=include.mode event=include.event index=include.index -%}
+  {%- when 'station' -%}{%- include visuals/timeline/cards/station.html mode=include.mode event=include.event index=include.index style=include.style -%}
   {%- else -%}<!-- timeline card type: unknown "{{ include.type }}" (not in _data/visuals.yml) -->
 {%- endcase -%}

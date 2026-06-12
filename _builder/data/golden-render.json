@@ -1,0 +1,102 @@
+{
+  "fixture:blank-home": {
+    "hash": "306586c96ce85b29",
+    "bytes": 24056
+  },
+  "fixture:spotlight-page": {
+    "hash": "561881e5f36f2bf1",
+    "bytes": 24381
+  },
+  "fixture:feature-catalog-page": {
+    "hash": "0c715676aa243c66",
+    "bytes": 27535
+  },
+  "taco-bell:taco-bell-home": {
+    "hash": "78086ec734ca46f5",
+    "bytes": 27026
+  },
+  "taco-bell:taco-bell-drinks": {
+    "hash": "18f39a2d310191ac",
+    "bytes": 50581
+  },
+  "taco-bell:taco-bell-discontinued-drinks": {
+    "hash": "9564021b5a25ce1e",
+    "bytes": 93070
+  },
+  "taco-bell:taco-bell-sangrita-blast": {
+    "hash": "ce6508cb569e535a",
+    "bytes": 24859
+  },
+  "taco-bell:taco-bell-brisk-raspberry": {
+    "hash": "cfb40459f0da9cf6",
+    "bytes": 24858
+  },
+  "taco-bell:taco-bell-pina-colada-frutista": {
+    "hash": "e9c0781f6a48c3ba",
+    "bytes": 24770
+  },
+  "taco-bell:taco-bell-spiked-lemonade": {
+    "hash": "61c668762b01facb",
+    "bytes": 24733
+  },
+  "taco-bell:taco-bell-sauces": {
+    "hash": "821d76cf7fb65c36",
+    "bytes": 24972
+  },
+  "taco-bell:taco-bell-menus": {
+    "hash": "7ab10d5234d042b1",
+    "bytes": 26289
+  },
+  "taco-bell:taco-bell-menu-cantina-chicken": {
+    "hash": "4b2d87a8ebf69687",
+    "bytes": 44566
+  },
+  "taco-bell:taco-bell-menu-2-dollar-deals": {
+    "hash": "ef77a61afa5577c5",
+    "bytes": 32481
+  },
+  "taco-bell:taco-bell-menu-fresco": {
+    "hash": "9c9e9027a2a9aa61",
+    "bytes": 40287
+  },
+  "taco-bell:taco-bell-menu-big-bell-value": {
+    "hash": "1009244e4ed55194",
+    "bytes": 40223
+  },
+  "taco-bell:taco-bell-menu-luxe-value": {
+    "hash": "400f59abffc3b3d3",
+    "bytes": 39413
+  },
+  "taco-bell:taco-bell-slogans": {
+    "hash": "731000a71e21508e",
+    "bytes": 25965
+  },
+  "apple:apple-home": {
+    "hash": "66f43936beac379d",
+    "bytes": 26681
+  },
+  "apple:apple-ipod-touch-2g": {
+    "hash": "4c61c62226d5852f",
+    "bytes": 28172
+  },
+  "apple:apple-ipod-touch-3g": {
+    "hash": "f0b3228de4debe96",
+    "bytes": 27438
+  },
+  "apple:apple-ipod-touch-4g": {
+    "hash": "f6a9159b9e0668e9",
+    "bytes": 27671
+  },
+  "apple:apple-ipod-touch-5g": {
+    "hash": "1e222799c8d8b432",
+    "bytes": 28060
+  },
+  "apple:apple-ipod-touch-6g": {
+    "hash": "42d02efcddab837b",
+    "bytes": 28496
+  },
+  "apple:apple-ipod-touch-7g": {
+    "hash": "af4d4dbe68bfacaa",
+    "bytes": 28277
+  }
+}

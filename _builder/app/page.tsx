@@ -1,72 +1,58 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { Spec, SpecData } from '../components/Spec';
+import { useEffect, useMemo, useState } from 'react';
+import { WIKIS } from '../lib/wiki';
+import type { Page, Wiki } from '../lib/wiki';
+import { Topbar } from '../components/miller/Topbar';
+import { MillerView } from '../components/miller/MillerView';
+import { PageEditor } from '../components/editor/PageEditor';
+import { blankWiki, blankPage, loadUserWikis, saveUserWikis, loadChildren, saveChildren, mergeWiki, type ChildOverlay } from '../lib/builder';
 
-// The grammar-`seed` for spec (what a fresh insert starts as), fleshed out a bit
-// so the slice looks real. Later this comes from grammar.yml via the "+" slot.
-const SEED: SpecData = {
-  heading: 'The complete sheet.',
-  device: 'iPod touch (7th generation) · A2178',
-  tone: 'special',
-  cards: [
-    { title: 'Display', rows: [
-      { key: 'Size', value: '4-inch Retina' },
-      { key: 'Resolution', value: '1136×640 · 326 ppi' },
-    ] },
-    { title: 'Chip', rows: [
-      { key: 'SoC', value: 'Apple A10 Fusion' },
-      { key: 'RAM', value: '2 GB LPDDR4' },
-    ] },
-    { title: 'Storage', rows: [
-      { key: 'Tiers', value: '32 · 128 · 256 GB' },
-    ] },
-  ],
-};
-
-// Stand-in for ContentStore: localStorage now, Supabase later (same idea —
-// save persists, reload restores). The builder code won't change when we swap it.
-const KEY = 'viziwiki:spec-slice';
-
+// The builder home: wiki switcher + Miller column view (real wikis from git +
+// user-created blank wikis). "+ New wiki" makes a blank (mono base-skin) wiki;
+// "+ category / + page" at the bottom of each column adds a node you title in
+// place — that title becomes the H1. "Open & edit" opens the hero + overview
+// editor (both locked on every page). Saved to localStorage now, Supabase later.
 export default function Page() {
-  const [spec, setSpec] = useState<SpecData>(SEED);
-  const [loaded, setLoaded] = useState(false);
-  const [savedAt, setSavedAt] = useState<string | null>(null);
+  const [userWikis, setUserWikis] = useState<Wiki[]>([]);
+  const [children, setChildren] = useState<ChildOverlay>({});
+  const [wikiId, setWikiId] = useState(WIKIS[0].id);
+  const [editing, setEditing] = useState<Page | null>(null);
+  // admin-only: which contributor access level the builder is previewed as.
+  // All three behave identically for now — the seam for level-gated features.
+  const [level, setLevel] = useState(1);
 
-  useEffect(() => {
-    try {
-      const s = localStorage.getItem(KEY);
-      if (s) setSpec(JSON.parse(s));
-    } catch { /* ignore */ }
-    setLoaded(true);
-  }, []);
+  // hydrate user-created content from localStorage (client only)
+  useEffect(() => { setUserWikis(loadUserWikis()); setChildren(loadChildren()); }, []);
 
-  function save() {
-    localStorage.setItem(KEY, JSON.stringify(spec));
-    setSavedAt(new Date().toLocaleTimeString());
-  }
-  function reset() {
-    localStorage.removeItem(KEY);
-    setSpec(SEED);
-    setSavedAt(null);
-  }
+  const allWikis = useMemo(() => [...WIKIS, ...userWikis], [userWikis]);
+  const baseWiki = allWikis.find((w) => w.id === wikiId) || WIKIS[0];
+  // splice user-added nodes into the tree at render time
+  const wiki = useMemo(() => mergeWiki(baseWiki, children), [baseWiki, children]);
 
-  if (!loaded) return null; // avoid hydration flash before localStorage read
+  const addWiki = (name: string) => {
+    const w = blankWiki(name);
+    setUserWikis((prev) => { const next = [...prev, w]; saveUserWikis(next); return next; });
+    setEditing(null);
+    setWikiId(w.id);
+  };
+  const addNode = (parentId: string, title: string): Page => {
+    const node = blankPage(title);
+    setChildren((prev) => {
+      const key = `${baseWiki.id}::${parentId}`;
+      const next = { ...prev, [key]: [...(prev[key] || []), node] };
+      saveChildren(next);
+      return next;
+    });
+    return node;
+  };
 
   return (
     <>
-      <div className="builder-bar">
-        <h1>ViziWiki Builder</h1>
-        <span className="tag">Phase 1 · spec slice</span>
-        <span className="spacer" />
-        {savedAt && <span className="tag">saved {savedAt}</span>}
-        <button onClick={reset}>Reset</button>
-        <button onClick={save}>Save</button>
+      <Topbar wikis={allWikis} current={wiki} onSwitch={(w) => { setEditing(null); setWikiId(w.id); }} onNewWiki={addWiki} level={level} onLevel={setLevel} />
+      <div id="miller">
+        <MillerView key={wiki.id} wiki={wiki} onOpen={setEditing} onAddNode={addNode} />
       </div>
-      <div className="canvas">
-        <div className="section-host">
-          <Spec data={spec} onChange={setSpec} />
-        </div>
-      </div>
+      {editing && <PageEditor page={editing} skin={baseWiki.skin} onClose={() => setEditing(null)} />}
     </>
   );
 }

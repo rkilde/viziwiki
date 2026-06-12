@@ -46,6 +46,17 @@
   --marker-green-dark:#4a8c30;
   --spring:#e6453a;
   --highlight:#fff37a;          /* highlighter yellow */
+
+  /* ── skin contract: semantic roles + categorical palette, mapped to Doodle's
+     own notebook/marker hues so any bank comes out on-brand. ── */
+  --wiki-positive: var(--marker-green);          /* #6bb84a */
+  --wiki-negative: var(--margin-red);            /* #e34a3c */
+  --wiki-warning:  #e0a32e;                      /* darker amber (highlight #fff37a too pale) */
+  --wiki-info:     var(--rule);                  /* #9bc3e0 ruled-line blue */
+  --wiki-neutral:  var(--graphite-soft);         /* #6a6a6a */
+  --wiki-palette-1: var(--marker-green);  --wiki-palette-2: var(--rule);    --wiki-palette-3: var(--margin-red);
+  --wiki-palette-4: #e0a32e;              --wiki-palette-5: var(--spring);  --wiki-palette-6: var(--graphite);
+  --wiki-palette-7: var(--marker-green-dark);  --wiki-palette-8: var(--ink-soft);
   --radius:3px;
   color:var(--ink);
   font-family:'Spectral',Georgia,serif;

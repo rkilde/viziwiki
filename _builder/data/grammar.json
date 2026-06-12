@@ -1,0 +1,1229 @@
+{
+  "field_types": {
+    "text": "single-line input",
+    "richtext": "small rich editor — inline HTML / bold / links",
+    "number": "number input",
+    "date": "month/date picker (stored as a display string e.g. 'May 2019')",
+    "bool": "toggle",
+    "enum": "fixed choice → dropdown, written enum[a,b,c]",
+    "list": "repeatable group (add/remove rows), written list<subtype>",
+    "media": "image/file upload → Supabase Storage",
+    "icon": "picker from the universal icon sprite",
+    "color": "swatch — a skin-token reference or a content hex",
+    "url": "validated link"
+  },
+  "canon": [
+    "hero",
+    "overview",
+    "spec",
+    "config",
+    "lifecycle-lane",
+    "timeline",
+    "delta",
+    "catalog"
+  ],
+  "page_types": {
+    "standard": {
+      "hero_variant": "standard",
+      "sections": [
+        "hero",
+        "overview",
+        "spec",
+        "config",
+        "lifecycle-lane",
+        "timeline",
+        "delta",
+        "catalog"
+      ],
+      "section_rules": {
+        "hero": {
+          "min": 1,
+          "max": 1,
+          "locked_first": true,
+          "variant": "standard"
+        },
+        "*": {
+          "min": 0,
+          "max": "unbounded"
+        }
+      }
+    },
+    "home": {
+      "hero_variant": "search",
+      "sections": [
+        "hero",
+        "overview",
+        "spec",
+        "config",
+        "lifecycle-lane",
+        "timeline",
+        "delta",
+        "catalog"
+      ],
+      "section_rules": {
+        "hero": {
+          "min": 1,
+          "max": 1,
+          "locked_first": true,
+          "variant": "search"
+        },
+        "*": {
+          "min": 0,
+          "max": "unbounded"
+        }
+      }
+    }
+  },
+  "components": {
+    "hero": {
+      "is_section": true,
+      "locked": [
+        "bg",
+        "accent",
+        "dot",
+        "chrome",
+        "icon",
+        "overlays",
+        "watermark",
+        "class",
+        "id",
+        "extra",
+        "search_icon",
+        "search_icon_inc"
+      ],
+      "fields": {
+        "title": {
+          "type": "text",
+          "required": true,
+          "blank": "Page title",
+          "help": "Big H1 (the trailing period is automatic)"
+        },
+        "eyebrow": {
+          "type": "text",
+          "blank": "Category label",
+          "help": "Small category tag above the title"
+        },
+        "subtitle": {
+          "type": "text",
+          "blank": "Subtitle",
+          "help": "A line under the H1"
+        },
+        "subtitle_meta": {
+          "type": "text",
+          "blank": "Meta tag",
+          "requires": "subtitle",
+          "help": "Mono tag after a ' · ' (e.g. a model number)"
+        },
+        "desc": {
+          "type": "richtext",
+          "blank": "Write a short lead paragraph for this page.",
+          "help": "One-paragraph lead"
+        },
+        "stats": {
+          "type": "list<stat>",
+          "min": 4,
+          "max": 4,
+          "help": "The 1×4 number grid — always exactly 4 cells (canon)",
+          "blank": [
+            {
+              "num": "Value",
+              "label": "Stat label"
+            },
+            {
+              "num": "Value",
+              "label": "Stat label"
+            },
+            {
+              "num": "Value",
+              "label": "Stat label"
+            },
+            {
+              "num": "Value",
+              "label": "Stat label"
+            }
+          ]
+        },
+        "search": {
+          "type": "bool",
+          "default": false,
+          "help": "Show the search bar — HOME pages only (page type sets this)"
+        },
+        "search_placeholder": {
+          "type": "text",
+          "blank": "Search this wiki…",
+          "help": "Search box placeholder — home only"
+        },
+        "spotlight": {
+          "type": "spotlight",
+          "help": "Optional card aside (advanced — the spotlight bank)",
+          "blank": {
+            "eyebrow": "Spotlight",
+            "title": "Spotlight title",
+            "desc": "Write a short description.",
+            "tags": [
+              "Tag"
+            ],
+            "cta": "Button label"
+          }
+        },
+        "feature": {
+          "type": "feature",
+          "help": "Optional feature aside (advanced — the feature bank)",
+          "blank": {
+            "head_left": "Featured",
+            "title": "Feature title",
+            "desc": "Write a short description.",
+            "chips": [
+              {
+                "key": "Label",
+                "val": "Value"
+              },
+              {
+                "key": "Label",
+                "val": "Value"
+              },
+              {
+                "key": "Label",
+                "val": "Value"
+              }
+            ]
+          }
+        }
+      },
+      "subtypes": {
+        "stat": {
+          "num": {
+            "type": "text",
+            "required": true,
+            "blank": "Value"
+          },
+          "label": {
+            "type": "text",
+            "required": true,
+            "blank": "Stat label"
+          },
+          "color": {
+            "type": "color",
+            "help": "Optional per-stat number color (content hex or skin swatch)"
+          }
+        },
+        "spotlight": {
+          "eyebrow": {
+            "type": "text",
+            "blank": "Spotlight"
+          },
+          "title": {
+            "type": "text",
+            "required": true,
+            "blank": "Spotlight title"
+          },
+          "desc": {
+            "type": "richtext",
+            "blank": "Write a short description."
+          },
+          "tags": {
+            "type": "list<text>",
+            "item_blank": "Tag"
+          },
+          "cta": {
+            "type": "text",
+            "required": true,
+            "blank": "Button label",
+            "help": "REQUIRED button label (the call to action); cta_href makes it a link"
+          },
+          "cta_href": {
+            "type": "url"
+          },
+          "class": {
+            "type": "text",
+            "locked": true,
+            "help": "Extra classes (skin flourish)"
+          },
+          "art": {
+            "type": "text",
+            "locked": true,
+            "help": "Raw decoration markup (admin)"
+          },
+          "art_inc": {
+            "type": "text",
+            "locked": true,
+            "help": "Decoration partial name under hero/ (admin)"
+          }
+        },
+        "feature": {
+          "bg": {
+            "type": "text",
+            "locked": true,
+            "help": "--hero-feature-bg gradient/color (skin/admin)"
+          },
+          "head_left": {
+            "type": "text",
+            "blank": "Featured"
+          },
+          "head_right": {
+            "type": "text",
+            "blank": "Label"
+          },
+          "title": {
+            "type": "text",
+            "required": true,
+            "blank": "Feature title"
+          },
+          "desc": {
+            "type": "richtext",
+            "blank": "Write a short description."
+          },
+          "chips": {
+            "type": "list<chip>",
+            "required": true,
+            "min": 3,
+            "max": 3,
+            "help": "EXACTLY 3 stat chips (key/value) — fixed, not addable/removable"
+          }
+        },
+        "chip": {
+          "key": {
+            "type": "text",
+            "required": true,
+            "blank": "Label"
+          },
+          "val": {
+            "type": "text",
+            "required": true,
+            "blank": "Value"
+          }
+        }
+      },
+      "note": "Both asides are 'hero cards' (mutually exclusive — at most one): spotlight = the Call-to-Action card (CTA required), feature = the Feature card (exactly 3 fixed chips). search is HOME-only.",
+      "seed": {
+        "title": "Page title",
+        "eyebrow": "Category label",
+        "desc": "Write a short lead paragraph for this page."
+      },
+      "min": "title"
+    },
+    "overview": {
+      "section": "overview-section",
+      "locked": {
+        "eyebrow": "Overview",
+        "icon": "book-open"
+      },
+      "display": {
+        "rows": {
+          "kind": "Infobox pair"
+        }
+      },
+      "fields": {
+        "heading": {
+          "type": "text",
+          "required": true,
+          "blank": "Section heading"
+        },
+        "paragraphs": {
+          "type": "list<richtext>",
+          "required": true,
+          "min": 1,
+          "min_words": 100,
+          "item_blank": "Write the overview here (at least 100 words)…",
+          "help": "The overview body (≥100 words of real prose — placeholder text doesn't count)"
+        },
+        "tone": {
+          "type": "enum[a,b,special]",
+          "default": "b"
+        },
+        "id": {
+          "type": "text",
+          "locked": true,
+          "default": "overview",
+          "help": "Section anchor (admin)"
+        },
+        "class": {
+          "type": "text",
+          "locked": true,
+          "help": "Extra classes for skin flourishes (admin)"
+        },
+        "infobox": {
+          "type": "infobox",
+          "help": "Optional fact panel beside the prose",
+          "blank": {
+            "label": "Infobox",
+            "title": "Infobox title",
+            "rows": [
+              [
+                "Label",
+                "Value"
+              ],
+              [
+                "Label",
+                "Value"
+              ]
+            ]
+          }
+        }
+      },
+      "subtypes": {
+        "infobox": {
+          "label": {
+            "type": "text",
+            "default": "Infobox",
+            "blank": "Infobox",
+            "help": "header label (default 'Infobox')"
+          },
+          "title": {
+            "type": "text",
+            "required": true,
+            "blank": "Infobox title"
+          },
+          "sublabel": {
+            "type": "text",
+            "blank": "Sub-label",
+            "help": "optional 2nd header label line"
+          },
+          "rows": {
+            "type": "list<pair>",
+            "item_blank": [
+              "Label",
+              "Value"
+            ],
+            "help": "[key, value] fact rows"
+          },
+          "badge": {
+            "type": "text",
+            "blank": "Status badge",
+            "help": "optional status chip at the foot of the panel"
+          },
+          "class": {
+            "type": "text",
+            "locked": true,
+            "help": "Extra classes (e.g. a skin's sticky-note look)"
+          },
+          "style": {
+            "type": "text",
+            "locked": true,
+            "help": "Inline style passthrough (e.g. a header gradient)"
+          },
+          "art": {
+            "type": "text",
+            "locked": true,
+            "help": "Raw decoration at the top of the panel (e.g. tape)"
+          }
+        },
+        "pair": {
+          "label": {
+            "type": "text",
+            "required": true,
+            "blank": "Label"
+          },
+          "value": {
+            "type": "richtext",
+            "required": true,
+            "blank": "Value"
+          }
+        }
+      },
+      "seed": {
+        "heading": "Section heading",
+        "paragraphs": [
+          "Write the overview here (at least 100 words)…"
+        ]
+      },
+      "min": "heading + one paragraph"
+    },
+    "spec": {
+      "section": "spec-section",
+      "locked": {
+        "eyebrow": "Specifications Sheet",
+        "icon": "file-text"
+      },
+      "display": {
+        "cards": {
+          "kind": "Card"
+        },
+        "rows": {
+          "kind": "Row"
+        }
+      },
+      "fields": {
+        "heading": {
+          "type": "text",
+          "required": true,
+          "blank": "Specifications heading"
+        },
+        "device": {
+          "type": "text",
+          "required": true,
+          "blank": "Device · MODEL",
+          "help": "Identifier line: name · model number"
+        },
+        "visual": {
+          "type": "text",
+          "locked": true,
+          "default": "spec",
+          "help": "The slot's visual type — registry hosts constrain it (admin)"
+        },
+        "tone": {
+          "type": "enum[a,b,special]",
+          "default": "special",
+          "help": "special = the dark signature band"
+        },
+        "cards": {
+          "type": "list<card>",
+          "required": true
+        }
+      },
+      "subtypes": {
+        "card": {
+          "title": {
+            "type": "text",
+            "required": true,
+            "blank": "Card title"
+          },
+          "icon": {
+            "type": "icon"
+          },
+          "rows": {
+            "type": "list<pair>",
+            "required": true
+          }
+        },
+        "pair": {
+          "key": {
+            "type": "text",
+            "required": true,
+            "blank": "Label"
+          },
+          "value": {
+            "type": "text",
+            "required": true,
+            "blank": "Value"
+          }
+        }
+      },
+      "seed": {
+        "heading": "Specifications heading",
+        "device": "Device · MODEL",
+        "cards": [
+          {
+            "title": "Card title",
+            "icon": "monitor",
+            "rows": [
+              {
+                "key": "Label",
+                "value": "Value"
+              }
+            ]
+          }
+        ]
+      },
+      "min": "heading + device + one card with one row"
+    },
+    "config": {
+      "section": "config-section",
+      "locked": {
+        "eyebrow": "Configurations",
+        "icon": "hard-drive"
+      },
+      "fields": {
+        "heading": {
+          "type": "text",
+          "required": true,
+          "blank": "Configurations heading"
+        },
+        "chart_title": {
+          "type": "text",
+          "required": true,
+          "blank": "Chart title"
+        },
+        "tone": {
+          "type": "enum[a,b,special]",
+          "default": "a"
+        },
+        "visual": {
+          "type": "text",
+          "locked": true,
+          "default": "config",
+          "help": "The slot's visual type — registry hosts constrain it (admin)"
+        },
+        "intro": {
+          "type": "list<richtext>",
+          "item_blank": "Intro paragraph",
+          "help": "Optional intro paragraphs above the chart"
+        },
+        "footer": {
+          "type": "richtext",
+          "blank": "Footer spec line"
+        },
+        "divider_label": {
+          "type": "text",
+          "blank": "Revised",
+          "help": "Label on the revised-group divider"
+        },
+        "items": {
+          "type": "list<config_item>",
+          "required": true,
+          "item_blank": {
+            "capacity": 64,
+            "unit": "GB"
+          }
+        }
+      },
+      "display": {
+        "items": {
+          "kind": "Configuration"
+        },
+        "colors": {
+          "kind": "Color"
+        }
+      },
+      "subtypes": {
+        "config_item": {
+          "capacity": {
+            "type": "number",
+            "required": true,
+            "seed_real": true,
+            "help": "Drives the bar width (a real capacity, not a placeholder)"
+          },
+          "unit": {
+            "type": "enum[GB,TB]",
+            "default": "GB"
+          },
+          "model": {
+            "type": "text",
+            "blank": "Model"
+          },
+          "price": {
+            "type": "text",
+            "blank": "$0",
+            "help": "Supports an 'old → new' drop"
+          },
+          "dates": {
+            "type": "text",
+            "blank": "Dates"
+          },
+          "revised": {
+            "type": "bool",
+            "default": false,
+            "help": "Stripes the bar + drops a divider"
+          },
+          "colors": {
+            "type": "list<dot>",
+            "item_blank": {
+              "name": "Color",
+              "hex": "#9aa0a6"
+            },
+            "help": "Device-color dots"
+          }
+        },
+        "dot": {
+          "name": {
+            "type": "text",
+            "blank": "Color"
+          },
+          "hex": {
+            "type": "color",
+            "blank": "#9aa0a6"
+          },
+          "ring": {
+            "type": "bool",
+            "default": false
+          }
+        }
+      },
+      "derived": [
+        "bar width = exact proportion of the largest capacity"
+      ],
+      "seed": {
+        "heading": "Configurations heading",
+        "chart_title": "Chart title",
+        "items": [
+          {
+            "capacity": 32,
+            "unit": "GB",
+            "model": "Base",
+            "price": "$199"
+          },
+          {
+            "capacity": 256,
+            "unit": "GB",
+            "model": "Top",
+            "price": "$399"
+          }
+        ]
+      },
+      "min": "heading + chart_title + one item with a capacity"
+    },
+    "lifecycle-lane": {
+      "section": "os-section",
+      "locked": {
+        "eyebrow": "Operating system support",
+        "icon": "layers"
+      },
+      "fields": {
+        "heading": {
+          "type": "richtext",
+          "required": true,
+          "blank": "Software-support heading"
+        },
+        "title": {
+          "type": "text",
+          "required": true,
+          "blank": "Lifecycle title",
+          "help": "The ribbon's left-hand title"
+        },
+        "visual": {
+          "type": "text",
+          "locked": true,
+          "default": "lifecycle-lane",
+          "help": "The slot's visual type — registry hosts constrain it (admin)"
+        },
+        "paragraphs": {
+          "type": "list<richtext>",
+          "help": "Lead prose above the ribbon"
+        },
+        "tone": {
+          "type": "enum[a,b,special]",
+          "default": "a"
+        },
+        "weighted": {
+          "type": "bool",
+          "default": false,
+          "help": "On = tile width ∝ time between dates"
+        },
+        "end": {
+          "type": "date",
+          "help": "Weighted mode only — right edge for the last tile"
+        },
+        "range_note": {
+          "type": "text",
+          "help": "Optional suffix on the counter"
+        },
+        "segments": {
+          "type": "list<segment>",
+          "required": true,
+          "min": 2
+        },
+        "notes": {
+          "type": "list<note>",
+          "item_blank": {
+            "status": "full",
+            "label": "Note label",
+            "text": "Note body"
+          }
+        }
+      },
+      "subtypes": {
+        "segment": {
+          "ver": {
+            "type": "text",
+            "required": true,
+            "blank": "Version"
+          },
+          "date": {
+            "type": "date",
+            "required": true,
+            "seed_real": true,
+            "help": "Drives tile position (a real spread date, not a placeholder)"
+          },
+          "type": {
+            "type": "enum[full,partial,dropped,security]",
+            "required": true,
+            "help": "full=green · partial=amber · dropped=grey cliff · security=blue post-EOL"
+          },
+          "badge": {
+            "type": "text"
+          },
+          "badge_type": {
+            "type": "enum[ship,paid,limited,final,dropped,security]",
+            "default": "ship"
+          }
+        },
+        "note": {
+          "status": {
+            "type": "enum[full,partial,limited,final,dropped,security]",
+            "required": true
+          },
+          "label": {
+            "type": "text",
+            "required": true,
+            "blank": "Note label"
+          },
+          "text": {
+            "type": "richtext",
+            "required": true,
+            "blank": "Note body"
+          }
+        }
+      },
+      "derived": [
+        "counter: launch → drop · duration · N major versions",
+        "legend: from the tile types present"
+      ],
+      "rules": [
+        "exactly one segment SHOULD be type:dropped (the cliff)",
+        "a security tile must be listed AFTER the dropped tile (latest date last)"
+      ],
+      "seed": {
+        "heading": "Software-support heading",
+        "title": "Lifecycle title",
+        "segments": [
+          {
+            "ver": "Version",
+            "date": "Jan 2020",
+            "type": "full",
+            "badge": "Launch",
+            "badge_type": "ship"
+          },
+          {
+            "ver": "Version",
+            "date": "Jan 2023",
+            "type": "dropped",
+            "badge": "Dropped",
+            "badge_type": "dropped"
+          }
+        ]
+      },
+      "min": "heading + title + 2 segments"
+    },
+    "delta": {
+      "section": "delta-section",
+      "locked": {
+        "eyebrow": "Changes & Improvements",
+        "icon": "chart-column-stacked"
+      },
+      "display": {
+        "hardware": {
+          "kind": "Hardware change"
+        },
+        "software": {
+          "kind": "Software change"
+        }
+      },
+      "fields": {
+        "heading": {
+          "type": "text",
+          "required": true,
+          "blank": "Changes heading"
+        },
+        "tone": {
+          "type": "enum[a,b,special]",
+          "default": "a"
+        },
+        "intro": {
+          "type": "richtext"
+        },
+        "footnote": {
+          "type": "richtext"
+        },
+        "visual": {
+          "type": "text",
+          "locked": true,
+          "default": "delta",
+          "help": "The slot's visual type — registry hosts constrain it (admin)"
+        },
+        "prev": {
+          "type": "axis",
+          "required": true,
+          "help": "The 'before' column header"
+        },
+        "current": {
+          "type": "axis",
+          "required": true,
+          "help": "The 'after' column header"
+        },
+        "hardware": {
+          "type": "list<delta_row>",
+          "item_blank": {
+            "label": "Spec label"
+          }
+        },
+        "software": {
+          "type": "list<delta_row>",
+          "item_blank": {
+            "label": "Spec label"
+          }
+        }
+      },
+      "subtypes": {
+        "axis": {
+          "tag": {
+            "type": "text"
+          },
+          "name": {
+            "type": "text",
+            "required": true,
+            "blank": "Model name"
+          },
+          "year": {
+            "type": "text"
+          }
+        },
+        "delta_row": {
+          "label": {
+            "type": "text",
+            "required": true,
+            "blank": "Spec label"
+          },
+          "old": {
+            "type": "text"
+          },
+          "new": {
+            "type": "text"
+          },
+          "no_old": {
+            "type": "bool",
+            "default": false,
+            "help": "Hide the 'before' cell"
+          },
+          "chip": {
+            "type": "enum[better,feature,changed,worse,same]",
+            "help": "Color = the direction of change"
+          },
+          "chip_text": {
+            "type": "text",
+            "help": "The short value shown in the chip"
+          }
+        }
+      },
+      "seed": {
+        "heading": "Changes heading",
+        "prev": {
+          "tag": "Previous",
+          "name": "Model name",
+          "year": "2020"
+        },
+        "current": {
+          "tag": "Current",
+          "name": "Model name",
+          "year": "2023"
+        },
+        "hardware": [
+          {
+            "label": "Spec label",
+            "new": "Faster SoC",
+            "chip": "better",
+            "chip_text": "2×"
+          }
+        ]
+      },
+      "min": "heading + prev + current + one row"
+    },
+    "timeline": {
+      "section": "timeline-section",
+      "locked": {
+        "eyebrow": "Timeline",
+        "icon": "move-horizontal",
+        "full_bleed": true
+      },
+      "fields": {
+        "heading": {
+          "type": "text",
+          "required": true,
+          "blank": "Timeline heading",
+          "help": "The timeline's H2 (required)"
+        },
+        "tone": {
+          "type": "enum[a,b,special]",
+          "default": "b"
+        },
+        "visual": {
+          "type": "text",
+          "locked": true,
+          "default": "timeline",
+          "help": "The slot's visual type — registry hosts constrain it (admin)"
+        },
+        "card_type": {
+          "type": "enum[station]",
+          "default": "station"
+        },
+        "events": {
+          "type": "list<event>",
+          "required": true,
+          "min": 2,
+          "item_blank": {
+            "month": "Month",
+            "year": "Year",
+            "tag": "Add a tag",
+            "title": "Name this event",
+            "preview": "Add a short summary of what happened"
+          }
+        }
+      },
+      "subtypes": {
+        "event": {
+          "month": {
+            "type": "enum[Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec]",
+            "required": true,
+            "blank": "Month",
+            "help": "Set via the date picker; an unset month reads as the 'Month' placeholder"
+          },
+          "day": {
+            "type": "text",
+            "blank": "##"
+          },
+          "year": {
+            "type": "text",
+            "required": true,
+            "blank": "Year",
+            "help": "Set via the date picker; an unset year reads as 'Year' and isn't date-positioned until real"
+          },
+          "tag": {
+            "type": "text",
+            "blank": "Add a tag"
+          },
+          "title": {
+            "type": "text",
+            "required": true,
+            "blank": "Name this event",
+            "help": "Card headline + modal title"
+          },
+          "preview": {
+            "type": "text",
+            "required": true,
+            "blank": "Add a short summary of what happened",
+            "help": "One-line summary on the collapsed card face"
+          },
+          "body": {
+            "type": "richtext",
+            "blank": "Write the full story for the expandable card…",
+            "help": "Full detail in the expandable card"
+          }
+        }
+      },
+      "derived": [
+        "scroll hint, year bands, positions, gap chips — all from the dates"
+      ],
+      "seed": {
+        "heading": "Timeline heading",
+        "events": [
+          {
+            "month": "Month",
+            "year": "Year",
+            "tag": "Add a tag",
+            "title": "Name this event",
+            "preview": "Add a short summary of what happened"
+          },
+          {
+            "month": "Month",
+            "year": "Year",
+            "tag": "Add a tag",
+            "title": "Name this event",
+            "preview": "Add a short summary of what happened"
+          },
+          {
+            "month": "Month",
+            "year": "Year",
+            "tag": "Add a tag",
+            "title": "Name this event",
+            "preview": "Add a short summary of what happened"
+          }
+        ]
+      },
+      "min": "≥2 events, each with month + year + title"
+    },
+    "catalog": {
+      "section": "catalog-section",
+      "fields": {
+        "title": {
+          "type": "text",
+          "required": true,
+          "blank": "Catalog title",
+          "help": "The catalog heading"
+        },
+        "tone": {
+          "type": "enum[a,b,special]",
+          "default": "b"
+        },
+        "visual": {
+          "type": "text",
+          "locked": true,
+          "default": "catalog",
+          "help": "The slot's visual type — registry hosts constrain it (admin)"
+        },
+        "unit": {
+          "type": "text",
+          "default": "item",
+          "help": "The count noun (e.g. 'drink', 'sauce')"
+        },
+        "note": {
+          "type": "text",
+          "blank": "Note",
+          "help": "Short suffix appended to the auto summary line (top)"
+        },
+        "footnote": {
+          "type": "richtext",
+          "blank": "Write a footnote here…",
+          "help": "Optional footnote block under the catalog (bottom)"
+        },
+        "categories": {
+          "type": "list<category>",
+          "required": true,
+          "min": 2,
+          "item_blank": {
+            "name": "New category",
+            "items": [
+              {
+                "name": "New item",
+                "desc": "What it is."
+              }
+            ]
+          }
+        }
+      },
+      "subtypes": {
+        "category": {
+          "name": {
+            "type": "text",
+            "required": true,
+            "blank": "New category"
+          },
+          "color": {
+            "type": "color",
+            "help": "Skin swatch number, or omit to auto-cycle the palette"
+          },
+          "ribbon": {
+            "type": "ribbon",
+            "blank": {
+              "text": "Ribbon",
+              "tone": "accent"
+            },
+            "help": "Optional corner ribbon"
+          },
+          "note": {
+            "type": "text",
+            "blank": "Note"
+          },
+          "items": {
+            "type": "list<cat_item>",
+            "required": true,
+            "item_blank": {
+              "name": "New item",
+              "desc": "What it is."
+            }
+          }
+        },
+        "ribbon": {
+          "text": {
+            "type": "text",
+            "required": true,
+            "blank": "Ribbon"
+          },
+          "tone": {
+            "type": "enum[accent,gone]",
+            "default": "accent"
+          }
+        },
+        "cat_item": {
+          "name": {
+            "type": "text",
+            "required": true,
+            "blank": "New item"
+          },
+          "status": {
+            "type": "enum[active,discontinued,limited,retired]",
+            "blank": "active",
+            "help": "Status chip — exactly the values the bank CSS styles (st-*)"
+          },
+          "info": {
+            "type": "text",
+            "blank": "Info"
+          },
+          "desc": {
+            "type": "richtext",
+            "required": true,
+            "blank": "What it is.",
+            "help": "The expandable card's description"
+          },
+          "groups": {
+            "type": "list<pill_group>",
+            "item_blank": {
+              "label": "Group",
+              "pills": [
+                "Pill"
+              ]
+            }
+          },
+          "callout": {
+            "type": "callout",
+            "blank": {
+              "label": "Callout",
+              "text": "A short highlighted callout."
+            }
+          },
+          "notes": {
+            "type": "richtext",
+            "blank": "Write a note…"
+          },
+          "cta": {
+            "type": "url",
+            "blank": "#",
+            "help": "Link for 'See full entry' — inert until the item has a page"
+          }
+        },
+        "pill_group": {
+          "label": {
+            "type": "text",
+            "blank": "Group"
+          },
+          "pills": {
+            "type": "list<pill>",
+            "item_blank": "Pill"
+          }
+        },
+        "pill": {
+          "text": {
+            "type": "text",
+            "required": true,
+            "blank": "Pill"
+          },
+          "struck": {
+            "type": "bool",
+            "default": false
+          }
+        },
+        "callout": {
+          "label": {
+            "type": "text"
+          },
+          "text": {
+            "type": "richtext"
+          }
+        }
+      },
+      "derived": [
+        "per-category item count + the auto summary"
+      ],
+      "seed": {
+        "title": "Catalog title",
+        "categories": [
+          {
+            "name": "New category",
+            "items": [
+              {
+                "name": "New item",
+                "desc": "What it is."
+              },
+              {
+                "name": "New item",
+                "desc": "What it is."
+              }
+            ]
+          },
+          {
+            "name": "New category",
+            "items": [
+              {
+                "name": "New item",
+                "desc": "What it is."
+              },
+              {
+                "name": "New item",
+                "desc": "What it is."
+              }
+            ]
+          }
+        ]
+      },
+      "min": "title + two categories, each with one item"
+    }
+  }
+}

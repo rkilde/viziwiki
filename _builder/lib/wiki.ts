@@ -1,0 +1,50 @@
+// Wiki data types + the loaded wikis. Today this imports the git-extracted
+// per-wiki JSON; later the same shapes come from ContentStore (Supabase).
+import tacoBell from '../data/taco-bell.json';
+import apple from '../data/apple.json';
+
+export type Stat = { num: string; label: string };
+export type Hero = {
+  eyebrow: string | null;
+  title: string | null;
+  subtitle: string | null;
+  subtitle_meta: string | null;
+  desc: string | null;
+  stats: Stat[];
+  search?: boolean;
+  search_placeholder?: string | null;
+  spotlight?: any | null;
+  feature?: any | null;
+};
+export type SectionRef = { type: string; label: string };
+export type InfoboxRow = [string, string];
+export type Infobox = { label: string | null; title: string; sublabel: string | null; rows: InfoboxRow[]; badge: string | null };
+export type Overview = { tone: string; heading: string; paragraphs: string[]; infobox: Infobox | null };
+export type Page = {
+  id: string;
+  title: string;
+  permalink: string | null;
+  status: string;          // 'live' (built page) | 'stub' (directory entry, not built) | 'draft'
+  home?: boolean;          // the wiki's single home page
+  folder?: boolean;
+  count?: number | null;
+  accent?: string | null;
+  sections: SectionRef[];
+  hero: Hero;
+  overview?: Overview | null;
+  pages: Page[];
+};
+// how the editor canvas should skin this wiki: the <body> class + the skin
+// stylesheets to load (on top of the universal layer), matching the live site.
+export type WikiSkin = { bodyClass: string; css: string[] };
+// every wiki has exactly one HOME page (hero + browse + overview canon) —
+// pinned, singular, always present.
+export type Wiki = { id: string; name: string; home: Page; pages: Page[]; skin: WikiSkin };
+
+export const WIKIS: Wiki[] = [
+  { ...(tacoBell as unknown as Wiki), skin: { bodyClass: 'wiki-page wiki-taco-bell', css: ['wiki-taco-bell-skin.css', 'tb-editorial-base.css'] } },
+  { ...(apple as unknown as Wiki), skin: { bodyClass: 'wiki-page wiki-apple', css: ['wiki-apple-skin.css'] } },
+];
+
+// strip inline <br> for single-line row titles
+export const oneLine = (t: string) => t.replace(/<br\s*\/?>/gi, ' ');
