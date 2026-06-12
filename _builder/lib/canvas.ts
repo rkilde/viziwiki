@@ -416,6 +416,21 @@ const AFFORDANCE = `
   .cc-icon:hover{ border-color:#6366f1; color:#6366f1; background:rgba(99,102,241,.06); }
   .cc-icon.sel{ border-color:#6366f1; background:#6366f1; color:#fff; }
   .cc-icon svg{ width:17px; height:17px; }
+
+  /* ════ lifecycle-lane (OS-support ribbon) editor ════ inline fields on the
+     tiles; locked auto range/legend; type + badge picked in a popover. */
+  .pe-lane-opts{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-top:10px; }
+  .lane-seg{ position:relative; }
+  .lane-seg.pe-removable{ width:auto; }
+  .lane-seg.pe-removable > .pe-remove{ top:4px; right:4px; left:auto; z-index:14; }   /* inset: the scroller clips outside-the-tile */
+  .cc-pop.lane-pop{ min-width:212px; }
+  .cc-pop.lane-pop .cc-enum{ grid-template-columns:repeat(2,1fr); }
+  .cc-pop.lane-pop .cc-enum-opt{ display:flex; align-items:center; gap:6px; justify-content:flex-start; text-transform:capitalize; }
+  .cc-pop.lane-pop .cc-enum-opt .lane-leg-sw, .cc-pop.lane-pop .cc-enum-opt .lane-note-dot{ flex:none; }
+  .cc-lane-badge{ width:100%; box-sizing:border-box; margin-top:2px; font-family:'JetBrains Mono',monospace; font-size:11px; padding:7px 9px;
+    border-radius:8px; border:1px solid rgba(0,0,0,.14); background:rgba(255,255,255,.66); outline:none; color:#2a1f15; }
+  .cc-lane-badge:focus{ border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.16); }
+  .cc-pop.lane-pop .cc-rm{ margin-top:10px; width:100%; }
 `;
 
 const FONTS = `<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">`;

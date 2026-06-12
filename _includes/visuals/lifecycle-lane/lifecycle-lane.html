@@ -32,8 +32,11 @@
 {%- endif -%}
 {%- assign e1 = segs.first.date | date: '%s' | plus: 0 -%}
 {%- assign e2 = enddate | date: '%s' | plus: 0 -%}
-{%- assign durmo = e2 | minus: e1 | plus: 1314873 | divided_by: 2629746 -%}
-{%- assign dyr = durmo | divided_by: 12 -%}
+{%- comment -%} | floor so BOTH engines agree: Jekyll integer-divides (floors),
+   LiquidJS float-divides — without floor the builder shows e.g. "3.04 yr". The
+   live (Jekyll) output is unchanged (already integer). {%- endcomment -%}
+{%- assign durmo = e2 | minus: e1 | plus: 1314873 | divided_by: 2629746 | floor -%}
+{%- assign dyr = durmo | divided_by: 12 | floor -%}
 {%- assign dmo = durmo | modulo: 12 -%}
 {%- capture dur -%}{% if dyr > 0 %}{{ dyr }} yr {% endif %}{% if dmo > 0 %}{{ dmo }} mo{% endif %}{% if dyr == 0 and dmo == 0 %}&lt;1 mo{% endif %}{%- endcapture -%}
 {%- assign dur = dur | strip -%}

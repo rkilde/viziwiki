@@ -78,8 +78,13 @@
     'config.footer':    { root: '.cfg-footer',   label: '+ footer' },
   };
 
-  // a section element's component type, derived from the registry's section
-  // keys (the canon class contract: <type>-section frames carry class <type>)
+  // a body section's component type. The RELIABLE source is the DOC — body
+  // sections map 1:1 to doc.sections in order — so callers with the index use
+  // docTypeAt(i). sectionTypeOf is a DOM-only fallback (class == type) that
+  // works for banks whose section class equals the type, but NOT for ones where
+  // they differ (os-section/class lane-section hosts lifecycle-lane) — hence the
+  // doc-index path. (CLAUDE.md: section→type is derived, not a name guess.)
+  function docTypeAt(i) { try { var d = getDoc(); return (d && d.sections && d.sections[i] && d.sections[i].type) || null; } catch (e) { return null; } }
   function sectionTypeOf(secEl) {
     var regs = (window.__PE_REGISTRY || {}).sections || {};
     for (var key in regs) {
@@ -87,6 +92,13 @@
       if (secEl.classList.contains(t)) return t;
     }
     return null;
+  }
+  // the registry section (eyebrow/icon/hosts…) for a component type, via the
+  // `hosts` map (derived) — handles type ≠ section name (lifecycle-lane↔os-section)
+  function regForType(type) {
+    var regs = (window.__PE_REGISTRY || {}).sections || {};
+    for (var key in regs) { if ((regs[key].hosts || []).indexOf(type) >= 0) return regs[key]; }
+    return regs[type + '-section'] || {};
   }
 
   // grammar rule lookup by policy key (e.g. 'catalog.categories[].ribbon.tone')
@@ -537,11 +549,11 @@
     var DOC = null;
     try { DOC = window.__PE_DOC || (window.parent.__peDoc && window.parent.__peDoc()); } catch (e) {}
     bodySecs.forEach(function (secEl, i) {
-      // identify the section's grammar type from its canonical class
-      var type = sectionTypeOf(secEl);
+      // the component type from the DOC (reliable 1:1 order), DOM class fallback
+      var type = docTypeAt(i) || sectionTypeOf(secEl);
       if (!type) return;
       var prefix = 'sections.' + i + '.data.';
-      var reg = REG_SECTIONS[type + '-section'] || {};
+      var reg = regForType(type);   // registry section via the hosts map (handles type ≠ section name)
       var sdata = (DOC && DOC.sections && DOC.sections[i] && DOC.sections[i].data) || {};
 
       // tone + remove (sections are min:0 per page_types → always removable)
@@ -1418,6 +1430,116 @@
           });
         }
       }
+
+      // ── lifecycle-lane: the OS-support ribbon. Inline .ce on the heading,
+      // lane title, lead prose, each segment's version + date, and the notes.
+      // The auto range + legend are LOCKED (derived). Enum choices — support
+      // TYPE and BADGE type — are picked in a per-segment popover; the note
+      // STATUS in a dot popover. Dates are inline text ("Mon YYYY"); editing one
+      // commits → the canon repositions the tiles + recomputes the range. No
+      // layout JS in the canon (widths are Liquid flex). ──
+      if (type === 'lifecycle-lane') {
+        var ea2 = function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); };
+        var lockCanon = function (el, tip) { if (!el) return; el.classList.add('pe-canon'); var lk = document.createElement('span'); lk.className = 'pe-lock'; lk.title = tip; lk.innerHTML = LOCK; el.appendChild(lk); };
+        wrapCE(qs('.wiki-section-title', secEl), prefix + 'heading');   // required H2
+        wrapCE(qs('.lane-title', secEl), prefix + 'title');            // required lane title
+
+        // lead paragraphs (optional list) — inline edit + remove + "+ lead text"
+        var lprose = qs('.lane-prose', secEl);
+        if (lprose) {
+          qsa('p', lprose).forEach(function (p, ix) { wrapCE(p, prefix + 'paragraphs.' + ix); makeRemovable(p, 'rm:' + prefix + 'paragraphs.' + ix); });
+          lprose.appendChild(addBtn('push:' + prefix + 'paragraphs', '+ lead text', true));
+        } else { var lh2 = qs('.wiki-section-title', secEl); if (lh2 && lh2.parentNode) lh2.parentNode.insertBefore(addLine('push:' + prefix + 'paragraphs', '+ lead text'), lh2.nextSibling); }
+
+        // auto range + legend are derived → locked
+        lockCanon(qs('.lane-range', secEl), 'Auto-derived from the segment dates — never hand-typed');
+        lockCanon(qs('.lane-legend', secEl), 'Auto-derived from the support tiers present');
+
+        // editor options bar (after lane-head): weighted toggle · range note ·
+        // end date (weighted only). All commit so the derived range/widths refresh.
+        var laneChip = function (label, path, val, blank, removable) {
+          var chip = document.createElement('span'); chip.className = 'pe-chip'; chip.appendChild(document.createTextNode(label + ' '));
+          var ce = document.createElement('span'); ce.className = 'ce'; ce.setAttribute('contenteditable', 'true'); ce.setAttribute('data-pe-path', path);
+          if (blank != null) ce.setAttribute('data-ph', blank); ce.textContent = (val != null ? val : (blank || ''));
+          ce.addEventListener('blur', function () { if ((ce.textContent || '') === String(val == null ? '' : val)) return; P(path, ce); A('commit'); }); chip.appendChild(ce);
+          if (removable) { var rm = document.createElement('button'); rm.className = 'pe-tag-rm'; rm.style.opacity = '1'; rm.textContent = '×'; rm.title = 'Remove'; armDelete(rm, function () { A('rm:' + path); }); chip.appendChild(rm); }
+          return chip;
+        };
+        var head = qs('.lane-head', secEl);
+        if (head) {
+          var opts = document.createElement('div'); opts.className = 'pe-lane-opts';
+          var wBtn = document.createElement('button'); wBtn.className = 'pe-tonebtn' + (sdata.weighted ? ' on' : ''); wBtn.textContent = 'weighted widths'; wBtn.title = 'On = tile width ∝ time between dates';
+          wBtn.onclick = function () { A('set:' + prefix + 'weighted:' + (sdata.weighted ? 'false' : 'true')); }; opts.appendChild(wBtn);
+          if (sdata.range_note != null) opts.appendChild(laneChip('note', prefix + 'range_note', sdata.range_note, R('lifecycle-lane.range_note').blank, true));
+          else { var addRn = addBtn('add:' + prefix + 'range_note', '+ range note', true); opts.appendChild(addRn); }
+          if (sdata.weighted) {
+            if (sdata.end != null) opts.appendChild(laneChip('end', prefix + 'end', sdata.end, R('lifecycle-lane.end').blank, true));
+            else opts.appendChild(addBtn('add:' + prefix + 'end', '+ end date', true));
+          }
+          head.appendChild(opts);
+        }
+
+        // segments
+        var segTypes = (R('lifecycle-lane.segments[].type').enum) || [];
+        var badgeTypes = (R('lifecycle-lane.segments[].badge_type').enum) || [];
+        var segMin = (R('lifecycle-lane.segments').min != null) ? R('lifecycle-lane.segments').min : 2;
+        var badgeBlank = (R('lifecycle-lane.segments[].badge').blank) || 'Badge';
+        var segEls = qsa('.lane-seg', secEl);
+        var openSegPop = function (anchor, spre, sd) {
+          var html = '<div class="cc-pop-label">Support type</div><div class="cc-enum cc-lane-types">'
+            + segTypes.map(function (t) { return '<button class="cc-enum-opt' + (sd.type === t ? ' sel' : '') + '" data-t="' + t + '"><span class="lane-leg-sw lane-sw-' + t + '"></span>' + t + '</button>'; }).join('') + '</div>'
+            + '<div class="cc-pop-label" style="margin-top:13px">Badge</div>';
+          if (sd.badge != null) {
+            html += '<input type="text" class="cc-lane-badge" placeholder="' + ea2(badgeBlank) + '" value="' + ea2(sd.badge) + '">'
+              + '<div class="cc-enum" style="margin-top:8px">' + badgeTypes.map(function (b) { return '<button class="cc-enum-opt' + ((sd.badge_type || 'ship') === b ? ' sel' : '') + '" data-b="' + b + '">' + b + '</button>'; }).join('') + '</div>'
+              + '<button class="cc-rm">Remove badge</button>';
+          } else { html += '<button class="cc-rm cc-add" style="border-style:dashed">+ badge</button>'; }
+          var pop = openPop(anchor, '', html, { cls: 'lane-pop' });
+          qsa('[data-t]', pop).forEach(function (b) { b.onclick = function () { closePop(); A('set:' + spre + 'type:' + b.getAttribute('data-t')); }; });
+          qsa('[data-b]', pop).forEach(function (b) { b.onclick = function () { closePop(); A('set:' + spre + 'badge_type:' + b.getAttribute('data-b')); }; });
+          var bi = qs('.cc-lane-badge', pop); if (bi) bi.addEventListener('change', function () { PV(spre + 'badge', bi.value); A('commit'); });
+          var rm = qs('.cc-rm', pop);
+          if (rm && sd.badge != null) rm.onclick = function () { closePop(); A('rm:' + spre + 'badge'); };
+          else if (rm) rm.onclick = function () { closePop(); A('add:' + spre + 'badge'); };
+        };
+        segEls.forEach(function (seg, k) {
+          var spre = prefix + 'segments.' + k + '.';
+          var sd = (sdata.segments && sdata.segments[k]) || {};
+          wrapCE(qs('.lane-ver', seg), spre + 'ver');                          // version (required)
+          var dEl = qs('.lane-date', seg);                                     // date (required) — commit → reposition
+          if (dEl) { wrapCE(dEl, spre + 'date'); var dce = dEl.querySelector('.ce'); if (dce) dce.addEventListener('blur', function () { A('commit'); }); }
+          if (segEls.length > segMin) makeRemovable(seg, 'rm:' + prefix + 'segments.' + k);
+          // click the tile (not a field/×) → the type + badge popover
+          seg.style.cursor = 'pointer';
+          (function (sp, d) { seg.addEventListener('click', function (e) { if (e.target.closest('.ce,.pe-remove,.cc-pop,.lane-badge')) return; openSegPop(seg, sp, d); }); })(spre, sd);
+        });
+        var lane = qs('.lane', secEl);
+        if (lane) lane.parentNode.insertBefore(addBtn('push:' + prefix + 'segments', '+ segment', true), lane.nextSibling);
+
+        // notes (optional) — status dot popover · inline label + text · add/remove
+        var noteStatuses = (R('lifecycle-lane.notes[].status').enum) || [];
+        var notesWrap = qs('.lane-notes', secEl);
+        var openNoteStatusPop = function (anchor, npre, cur) {
+          var html = '<div class="cc-pop-label">Status</div><div class="cc-enum">'
+            + noteStatuses.map(function (s) { return '<button class="cc-enum-opt' + (cur === s ? ' sel' : '') + '" data-s="' + s + '"><span class="lane-note-dot lane-dot-' + s + '"></span>' + s + '</button>'; }).join('') + '</div>';
+          var pop = openPop(anchor, '', html, { cls: 'lane-pop' });
+          qsa('[data-s]', pop).forEach(function (b) { b.onclick = function () { closePop(); A('set:' + npre + 'status:' + b.getAttribute('data-s')); }; });
+        };
+        if (notesWrap) {
+          qsa('.lane-note', notesWrap).forEach(function (note, k) {
+            var npre = prefix + 'notes.' + k + '.';
+            var nd = (sdata.notes && sdata.notes[k]) || {};
+            var dot = qs('.lane-note-dot', note);
+            if (dot) { dot.style.cursor = 'pointer'; dot.title = 'Status'; (function (nn, dd) { dot.onclick = function (e) { e.stopPropagation(); openNoteStatusPop(dot, nn, dd.status); }; })(npre, nd); }
+            var strong = qs('strong', note);
+            if (strong) wrapCE(strong, npre + 'label');
+            // the trailing "— text" node: keep the "— " static, edit just the text
+            if (strong) { var tnode = strong.nextSibling; if (tnode && tnode.nodeType === 3) { var m = tnode.nodeValue.match(/^(\s*[—-]\s*)([\s\S]*)$/); if (m) { tnode.nodeValue = m[1]; var tce = document.createElement('span'); tce.className = 'ce'; tce.setAttribute('contenteditable', 'true'); tce.setAttribute('data-pe-path', npre + 'text'); tce.setAttribute('data-ph', (R('lifecycle-lane.notes[].text').blank) || 'Note body'); tce.textContent = m[2]; (function (p, el) { el.addEventListener('blur', function () { P(p, el); }); })(npre + 'text', tce); tnode.parentNode.insertBefore(tce, tnode.nextSibling); } } }
+            makeRemovable(note, 'rm:' + prefix + 'notes.' + k, true);
+          });
+          notesWrap.appendChild(addBtn('push:' + prefix + 'notes', '+ note', true));
+        } else { var ls = qs('.lane-scroll', secEl); if (ls) ls.parentNode.insertBefore(addLine('push:' + prefix + 'notes', '+ note'), ls.nextSibling); }
+      }
     });
 
     // ════════════════════════════════════════════════════════════════════
@@ -1671,7 +1793,7 @@
       var ovEl = qs('section[data-section="overview"]');
       if (ovEl && rdoc.overview) hosts.push({ el: ovEl, prefix: 'overview', data: rdoc.overview, dataPrefix: 'overview.' });
       (rdoc.sections || []).forEach(function (s, i) {
-        var el = bodySecs[i]; if (!el) return; var t = sectionTypeOf(el); if (!t) return;
+        var el = bodySecs[i]; if (!el) return; var t = s.type || sectionTypeOf(el); if (!t) return;
         hosts.push({ el: el, prefix: t, data: (s.data || {}), dataPrefix: 'sections.' + i + '.data.' });
       });
 

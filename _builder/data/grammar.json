@@ -696,6 +696,7 @@
         },
         "paragraphs": {
           "type": "list<richtext>",
+          "item_blank": "Lead paragraph",
           "help": "Lead prose above the ribbon"
         },
         "tone": {
@@ -709,16 +710,23 @@
         },
         "end": {
           "type": "date",
+          "blank": "Jan 2024",
           "help": "Weighted mode only — right edge for the last tile"
         },
         "range_note": {
           "type": "text",
+          "blank": "note",
           "help": "Optional suffix on the counter"
         },
         "segments": {
           "type": "list<segment>",
           "required": true,
-          "min": 2
+          "min": 2,
+          "item_blank": {
+            "ver": "Version",
+            "date": "Jan 2024",
+            "type": "full"
+          }
         },
         "notes": {
           "type": "list<note>",
@@ -748,7 +756,8 @@
             "help": "full=green · partial=amber · dropped=grey cliff · security=blue post-EOL"
           },
           "badge": {
-            "type": "text"
+            "type": "text",
+            "blank": "Badge"
           },
           "badge_type": {
             "type": "enum[ship,paid,limited,final,dropped,security]",

@@ -96,16 +96,16 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 |---|---|---|---|
 | `heading` | • | richtext | `Software-support heading` |
 | `title` | • | text | `Lifecycle title` |
-| `paragraphs` |  | list<richtext> | — |
+| `paragraphs` |  | list<richtext> | `Lead paragraph`  _(per new item)_ |
 | `tone` |  | enum | `a`  _(choice: a · b · special)_ |
 | `weighted` |  | bool | `false`  _(default)_ |
-| `end` |  | date | — |
-| `range_note` |  | text | — |
-| `segments` | • | list<segment> | — |
+| `end` |  | date | `Jan 2024` |
+| `range_note` |  | text | `note` |
+| `segments` | • | list<segment> | _(template — see sub-fields)_ |
 | `segments[].ver` | • | text | `Version` |
 | `segments[].date` | • | date | _(driver — real value, no placeholder)_ |
 | `segments[].type` | • | enum | `full`  _(choice: full · partial · dropped · security)_ |
-| `segments[].badge` |  | text | — |
+| `segments[].badge` |  | text | `Badge` |
 | `segments[].badge_type` |  | enum | `ship`  _(choice: ship · paid · limited · final · dropped · security)_ |
 | `notes` |  | list<note> | _(template — see sub-fields)_ |
 | `notes[].status` | • | enum | `full`  _(choice: full · partial · limited · final · dropped · security)_ |
