@@ -348,7 +348,7 @@ const AFFORDANCE = `
   .dr-info{ position:relative; display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; color:rgba(0,0,0,.4); cursor:help; outline:none; }
   .dr-info svg{ width:15px; height:15px; }
   .dr-info:hover, .dr-info:focus{ color:#2563eb; }
-  .dr-info::after{ content:attr(data-tip); position:absolute; left:0; bottom:calc(100% + 9px); transform:translateY(5px); width:248px; max-width:248px;
+  .dr-info::after{ content:attr(data-tip); position:absolute; left:0; bottom:calc(100% + 9px); transform:translateY(5px); width:300px; max-width:300px;
     white-space:normal; text-align:left; background:#0a0a0a; color:#fff; font-family:'Spectral',Georgia,serif; font-size:12px; font-weight:400; line-height:1.5;
     letter-spacing:0; text-transform:none; padding:10px 12px; border-radius:9px; box-shadow:0 10px 28px rgba(0,0,0,.24); opacity:0; pointer-events:none;
     transition:opacity .14s ease, transform .14s ease; z-index:40; }
