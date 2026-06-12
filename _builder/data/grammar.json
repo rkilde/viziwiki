@@ -895,8 +895,8 @@
           "required": true,
           "min": 2,
           "item_blank": {
-            "month": "Jan",
-            "year": "2026",
+            "month": "Month",
+            "year": "####",
             "tag": "Add a tag",
             "title": "Name this event",
             "preview": "Add a short summary of what happened"
@@ -908,20 +908,18 @@
           "month": {
             "type": "enum[Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec]",
             "required": true,
-            "blank": "Jan",
-            "seed_real": true,
-            "help": "Drives the event's position on the axis (a real spread date, not a placeholder)"
+            "blank": "Month",
+            "help": "Set via the date picker; an unset month reads as the 'Month' placeholder"
           },
           "day": {
             "type": "text",
-            "blank": "1",
-            "seed_real": true
+            "blank": "##"
           },
           "year": {
             "type": "text",
             "required": true,
-            "blank": "2025",
-            "seed_real": true
+            "blank": "####",
+            "help": "Set via the date picker; an unset year reads as '####' and isn't date-positioned until real"
           },
           "tag": {
             "type": "text",
@@ -952,36 +950,22 @@
         "heading": "Timeline heading",
         "events": [
           {
-            "month": "Jan",
-            "year": "2021",
+            "month": "Month",
+            "year": "####",
             "tag": "Add a tag",
             "title": "Name this event",
             "preview": "Add a short summary of what happened"
           },
           {
-            "month": "Apr",
-            "year": "2022",
+            "month": "Month",
+            "year": "####",
             "tag": "Add a tag",
             "title": "Name this event",
             "preview": "Add a short summary of what happened"
           },
           {
-            "month": "Aug",
-            "year": "2023",
-            "tag": "Add a tag",
-            "title": "Name this event",
-            "preview": "Add a short summary of what happened"
-          },
-          {
-            "month": "Feb",
-            "year": "2024",
-            "tag": "Add a tag",
-            "title": "Name this event",
-            "preview": "Add a short summary of what happened"
-          },
-          {
-            "month": "Nov",
-            "year": "2025",
+            "month": "Month",
+            "year": "####",
             "tag": "Add a tag",
             "title": "Name this event",
             "preview": "Add a short summary of what happened"

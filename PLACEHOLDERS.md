@@ -151,9 +151,9 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 | `tone` |  | enum | `b`  _(choice: a · b · special)_ |
 | `card_type` |  | enum | `station`  _(choice: station)_ |
 | `events` | • | list<event> | _(template — see sub-fields)_ |
-| `events[].month` | • | enum | _(driver — real value, no placeholder)_ |
-| `events[].day` |  | text | _(driver — real value, no placeholder)_ |
-| `events[].year` | • | text | _(driver — real value, no placeholder)_ |
+| `events[].month` | • | enum | `Jan`  _(choice: Jan · Feb · Mar · Apr · May · Jun · Jul · Aug · Sep · Oct · Nov · Dec)_ |
+| `events[].day` |  | text | `##` |
+| `events[].year` | • | text | `####` |
 | `events[].tag` |  | text | `Add a tag` |
 | `events[].title` | • | text | `Name this event` |
 | `events[].preview` |  | text | `Add a short summary of what happened` |

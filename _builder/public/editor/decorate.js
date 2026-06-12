@@ -925,9 +925,17 @@
           var k = parseInt((st.getAttribute('data-detail') || '').replace('bktld-', ''), 10);
           if (isNaN(k)) return;
           var epre = prefix + 'events.' + k + '.';
-          // the whole float-date above the card is ONE date field → month/day/year popover
+          // the whole float-date above the card is ONE date field → month/day/year
+          // popover. It's the jump target for the month/day/year requirements
+          // (data-pe-jump lists all three), and data-pe-opens makes a readiness
+          // jump OPEN the picker (not just scroll to it).
           var dateEl = qs('.sc-float-date', st);
-          if (dateEl) { dateEl.classList.add('pe-datefield'); (function (kk) { dateEl.onclick = function (e) { e.stopPropagation(); openDatePop(dateEl, kk); }; })(k); }
+          if (dateEl) {
+            dateEl.classList.add('pe-datefield');
+            dateEl.setAttribute('data-pe-opens', '1');
+            dateEl.setAttribute('data-pe-jump', epre + 'month ' + epre + 'year ' + epre + 'day');
+            (function (kk) { dateEl.onclick = function (e) { e.stopPropagation(); openDatePop(dateEl, kk); }; })(k);
+          }
           // tag / title / preview (no layout impact → plain .ce, no re-render)
           wrapCE(qs('.sc-tag', st), epre + 'tag');
           wrapCE(qs('.sc-title', st), epre + 'title');
@@ -1148,16 +1156,19 @@
 
       function flash(el) { el.classList.remove('field-flash'); void el.offsetWidth; el.classList.add('field-flash'); setTimeout(function () { el.classList.remove('field-flash'); }, 1600); }
       function jumpTo(it) {
-        // address the bound field directly; for a count/word item, its add
-        // button or first item. NEVER a whole section (that flashed the entire
-        // page red) — only ever a single field-sized element.
+        // address the bound field directly; then composite controls (e.g. the
+        // timeline date, which edits month/day/year via one popover and lists
+        // them in data-pe-jump); then a count/word item's add button. NEVER a
+        // whole section — only ever a single field-sized element.
         var el = findEl(it.jump);
+        if (!el) el = qs('[data-pe-jump~="' + it.jump + '"]');
         if (!el && it.addpath) el = qs('[data-pe-addpath="' + it.addpath + '"]');
         if (!el) { var base = it.jump.replace(/\.[^.]+$/, ''); el = qs('[data-pe-path^="' + base + '"]'); }
         if (!el) return;
         try { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
         flash(el);
         if (el.hasAttribute && el.hasAttribute('contenteditable')) setTimeout(function () { try { el.focus(); } catch (e) {} }, 300);
+        else if (el.getAttribute && el.getAttribute('data-pe-opens')) setTimeout(function () { try { el.click(); } catch (e) {} }, 340);   // open its editor (the date picker)
       }
       // the parent (React chrome) renders the markers out in the black backdrop
       // and calls back here to run the in-canvas scroll+flash for an item.

@@ -18,9 +18,18 @@
 {%- assign months = "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec" | split: "," -%}
 {%- assign ne = data.events | size -%}
 
+{%- comment -%} UNSET dates: a year < 1000 (the "####" placeholder parses to 0)
+  isn't real yet, so it must NOT widen the axis (otherwise one real year + an
+  unset year would render thousands of empty-year spacers). baseYr = the
+  earliest REAL year (or 0 if none); every unset event is positioned AS baseYr
+  (clustered with the first real date, or all at 0 when nothing is dated yet),
+  while its card still DISPLAYS "Month ####". {%- endcomment -%}
+{%- assign baseYr = 0 -%}
+{%- for e in data.events -%}{%- assign yraw = e.year | plus: 0 -%}{%- if yraw >= 1000 -%}{%- if baseYr == 0 or yraw < baseYr -%}{%- assign baseYr = yraw -%}{%- endif -%}{%- endif -%}{%- endfor -%}
+
 {%- comment -%} year range (events are chronological) {%- endcomment -%}
 {%- assign firstYr = 0 -%}{%- assign lastYr = 0 -%}
-{%- for e in data.events -%}{%- assign yi = e.year | plus: 0 -%}
+{%- for e in data.events -%}{%- assign yi = e.year | plus: 0 -%}{%- if yi < 1000 -%}{%- assign yi = baseYr -%}{%- endif -%}
   {%- if forloop.first -%}{%- assign firstYr = yi -%}{%- assign lastYr = yi -%}{%- endif -%}
   {%- if yi < firstYr -%}{%- assign firstYr = yi -%}{%- endif -%}
   {%- if yi > lastYr -%}{%- assign lastYr = yi -%}{%- endif -%}
@@ -30,8 +39,8 @@
   `cur` walks year by year: a year with N events is N·CARD_W wide, an empty year a
   SLIM_W spacer. posdata = "left:year:month;" per event, in order. {%- endcomment -%}
 {%- capture posdata -%}{%- assign cur = PAD -%}{%- for yr in (firstYr..lastYr) -%}
-{%- assign cnt = 0 -%}{%- for e in data.events -%}{%- assign yi = e.year | plus: 0 -%}{%- if yi == yr -%}{%- assign cnt = cnt | plus: 1 -%}{%- endif -%}{%- endfor -%}
-{%- if cnt > 0 -%}{%- assign xw = cur -%}{%- for e in data.events -%}{%- assign yi = e.year | plus: 0 -%}{%- if yi == yr -%}{%- assign mnum = 0 -%}{%- for mm in months -%}{%- if mm == e.month -%}{%- assign mnum = forloop.index -%}{%- endif -%}{%- endfor -%}{{ xw }}:{{ yi }}:{{ mnum }};{%- assign xw = xw | plus: CARD_W -%}{%- endif -%}{%- endfor -%}{%- assign add = cnt | times: CARD_W -%}{%- assign cur = cur | plus: add -%}{%- else -%}{%- assign cur = cur | plus: SLIM_W -%}{%- endif -%}
+{%- assign cnt = 0 -%}{%- for e in data.events -%}{%- assign yi = e.year | plus: 0 -%}{%- if yi < 1000 -%}{%- assign yi = baseYr -%}{%- endif -%}{%- if yi == yr -%}{%- assign cnt = cnt | plus: 1 -%}{%- endif -%}{%- endfor -%}
+{%- if cnt > 0 -%}{%- assign xw = cur -%}{%- for e in data.events -%}{%- assign yi = e.year | plus: 0 -%}{%- if yi < 1000 -%}{%- assign yi = baseYr -%}{%- endif -%}{%- if yi == yr -%}{%- assign mnum = 0 -%}{%- for mm in months -%}{%- if mm == e.month -%}{%- assign mnum = forloop.index -%}{%- endif -%}{%- endfor -%}{{ xw }}:{{ yi }}:{{ mnum }};{%- assign xw = xw | plus: CARD_W -%}{%- endif -%}{%- endfor -%}{%- assign add = cnt | times: CARD_W -%}{%- assign cur = cur | plus: add -%}{%- else -%}{%- assign cur = cur | plus: SLIM_W -%}{%- endif -%}
 {%- endfor -%}{%- endcapture -%}
 {%- assign totalW = cur | plus: PAD -%}
 {%- assign poslist = posdata | strip | split: ";" -%}
@@ -45,10 +54,10 @@
       DOM order. {%- endcomment -%}
     {%- assign cur = PAD -%}
     {%- for yr in (firstYr..lastYr) -%}
-      {%- assign cnt = 0 -%}{%- for e in data.events -%}{%- assign yi = e.year | plus: 0 -%}{%- if yi == yr -%}{%- assign cnt = cnt | plus: 1 -%}{%- endif -%}{%- endfor -%}
+      {%- assign cnt = 0 -%}{%- for e in data.events -%}{%- assign yi = e.year | plus: 0 -%}{%- if yi < 1000 -%}{%- assign yi = baseYr -%}{%- endif -%}{%- if yi == yr -%}{%- assign cnt = cnt | plus: 1 -%}{%- endif -%}{%- endfor -%}
       {%- if cnt > 0 -%}
         {%- assign xw = cur -%}
-        {%- for e in data.events -%}{%- assign yi = e.year | plus: 0 -%}{%- if yi == yr -%}
+        {%- for e in data.events -%}{%- assign yi = e.year | plus: 0 -%}{%- if yi < 1000 -%}{%- assign yi = baseYr -%}{%- endif -%}{%- if yi == yr -%}
           {%- capture stStyle -%}position:absolute;top:0;left:{{ xw }}px;width:{{ CARD_W }}px;{%- endcapture -%}
           {% include visuals/timeline/card.html type=ctype mode="face" event=e index=forloop.index0 style=stStyle %}
           {%- assign xw = xw | plus: CARD_W -%}
@@ -61,7 +70,7 @@
       the translucent band overlays its year's cards (odd years; even = transparent) {%- endcomment -%}
     {%- assign cur = PAD -%}
     {%- for yr in (firstYr..lastYr) -%}
-      {%- assign cnt = 0 -%}{%- for e in data.events -%}{%- assign yi = e.year | plus: 0 -%}{%- if yi == yr -%}{%- assign cnt = cnt | plus: 1 -%}{%- endif -%}{%- endfor -%}
+      {%- assign cnt = 0 -%}{%- for e in data.events -%}{%- assign yi = e.year | plus: 0 -%}{%- if yi < 1000 -%}{%- assign yi = baseYr -%}{%- endif -%}{%- if yi == yr -%}{%- assign cnt = cnt | plus: 1 -%}{%- endif -%}{%- endfor -%}
       {%- if cnt > 0 -%}{%- assign bw = cnt | times: CARD_W -%}{%- else -%}{%- assign bw = SLIM_W -%}{%- endif -%}
       {%- assign even = yr | modulo: 2 -%}
       <div class="tl-band{% if even == 0 %} tl-band-even{% endif %}" style="left:{{ cur }}px;width:{{ bw }}px;"></div>
@@ -71,9 +80,9 @@
     <div class="tl-ruler">
       {%- assign cur = PAD -%}
       {%- for yr in (firstYr..lastYr) -%}
-        {%- assign cnt = 0 -%}{%- for e in data.events -%}{%- assign yi = e.year | plus: 0 -%}{%- if yi == yr -%}{%- assign cnt = cnt | plus: 1 -%}{%- endif -%}{%- endfor -%}
+        {%- assign cnt = 0 -%}{%- for e in data.events -%}{%- assign yi = e.year | plus: 0 -%}{%- if yi < 1000 -%}{%- assign yi = baseYr -%}{%- endif -%}{%- if yi == yr -%}{%- assign cnt = cnt | plus: 1 -%}{%- endif -%}{%- endfor -%}
         {%- if cnt > 0 -%}{%- assign bw = cnt | times: CARD_W -%}{%- else -%}{%- assign bw = SLIM_W -%}{%- endif -%}
-        <div class="tl-yr" style="left:{{ cur }}px;"><span{% if cnt == 0 %} style="opacity:.45;font-size:7px"{% endif %}>{{ yr }}</span></div>
+        <div class="tl-yr" style="left:{{ cur }}px;"><span{% if cnt == 0 %} style="opacity:.45;font-size:7px"{% endif %}>{% if yr < 1000 %}####{% else %}{{ yr }}{% endif %}</span></div>
         {%- assign cur = cur | plus: bw -%}
       {%- endfor -%}
     </div>

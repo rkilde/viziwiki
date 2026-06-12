@@ -424,8 +424,14 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(st0.querySelector('.sc-title .ce'), 'event title is an editable box');
   ok(st0.querySelector('.sc-tag .ce'), 'event tag editable');
   ok(st0.querySelector('.sc-prose .ce'), 'event preview editable');
-  // the date is ONE clickable field → a month/day/year popover
+  // the date is ONE clickable field → a month/day/year popover. It's also the
+  // readiness JUMP target for month/day/year (data-pe-jump) and opens on jump
+  // (data-pe-opens) — so the widget's "Month" item lands on the date control +
+  // opens the picker, instead of falling through to the tag field.
   ok(st0.querySelector('.sc-float-date.pe-datefield'), 'the date is one clickable date field');
+  const dfEl = st0.querySelector('.sc-float-date');
+  ok(dfEl.hasAttribute('data-pe-opens'), 'date control opens its editor on a readiness jump');
+  ok(/events\.0\.month\b/.test(dfEl.getAttribute('data-pe-jump') || '') && /events\.0\.year\b/.test(dfEl.getAttribute('data-pe-jump') || ''), 'date control is the jump target for month + year (not the tag)');
   st0.querySelector('.sc-float-date').click();
   const dpop = d.querySelector('.cc-pop.date-pop');
   ok(dpop, 'clicking the date opens the date popover');
@@ -468,7 +474,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(mBody, 'expandable card body is editable in place');
   ok((mBody.textContent || '').trim().length > 0, 'empty body shows its placeholder text in the editor');
   ok(tlModal.querySelector('[data-tl-title] .ce'), 'event title is editable in the expanded card');
-  ok(/2021/.test(tlModal.querySelector('[data-tl-tag]').textContent), 'date appears in the expanded card tag line (upper-left), not just the tag');
+  ok(/####/.test(tlModal.querySelector('[data-tl-tag]').textContent), 'date appears in the expanded card tag line (upper-left), not just the tag');
 }
 
 // ── case 12: READINESS MARKERS — derived from grammar required/min ──
