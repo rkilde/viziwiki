@@ -1,12 +1,21 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 
-// The brand lockup ported from the build-kit mark mockup: the ViziWiki layers
-// app-icon, the ViziWiki wordmark, a divider, the Build Kit wordmark, and the
-// open-kit squircle mark. Sits on the LEFT of the column-view Topbar, followed
-// by a separator and the existing chrome (wiki switcher, …).
-// the real ViziWiki mark from the live site chrome (.main-brand .diamond):
-// a diamond bisected by a horizontal line.
+// The brand lockup on the left of the column-view Topbar:
+//   [layers menu icon → drawer] · ◆ ViziWiki · | · Build Kit · open-kit mark
+// The layers icon is a menu button (opens an empty drawer for now). The ◆ is the
+// REAL ViziWiki mark from the live site chrome (true purple, no tile), inline
+// just left of the wordmark.
+const ViziLayers = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
+    <polygon points="12 2 2 7 12 12 22 7 12 2" />
+    <polyline points="2 17 12 22 22 17" />
+    <polyline points="2 12 12 17 22 12" />
+  </svg>
+);
+
+// the real ViziWiki mark (.main-brand .diamond on the live site) — a diamond
+// bisected by a horizontal line, in its true brand purple.
 const ViziDiamond = () => (
   <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinejoin="round">
     <polygon points="7,1.5 12.5,7 7,12.5 1.5,7" />
@@ -14,7 +23,6 @@ const ViziDiamond = () => (
   </svg>
 );
 
-// the "winner" open-kit squircle mark (identical artwork to the mockup card)
 const OpenKit = () => (
   <svg viewBox="0 0 96 96" style={{ overflow: 'visible' }}>
     <defs>
@@ -37,13 +45,22 @@ const OpenKit = () => (
 );
 
 export function BrandLockup() {
+  const [drawer, setDrawer] = useState(false);
   return (
-    <div className="brand-lockup">
-      <span className="brand-mark"><ViziDiamond /></span>
-      <span className="brand-word"><span className="bw-a">Vizi</span><span className="bw-b">Wiki</span></span>
-      <span className="brand-thin" />
-      <span className="brand-kit">Build&nbsp;Kit</span>
-      <span className="brand-kit-icon"><OpenKit /></span>
-    </div>
+    <>
+      <div className="brand-lockup">
+        <button className={`brand-menu ${drawer ? 'open' : ''}`} onClick={() => setDrawer((o) => !o)} title="Menu" aria-label="Menu"><ViziLayers /></button>
+        <span className="brand-word"><span className="vizi-diamond"><ViziDiamond /></span><span className="bw-a">Vizi</span><span className="bw-b">Wiki</span></span>
+        <span className="brand-thin" />
+        <span className="brand-kit">Build&nbsp;Kit</span>
+        <span className="brand-kit-icon"><OpenKit /></span>
+      </div>
+      {drawer && (
+        <>
+          <div className="brand-drawer-scrim" onClick={() => setDrawer(false)} />
+          <aside className="brand-drawer" />
+        </>
+      )}
+    </>
   );
 }
