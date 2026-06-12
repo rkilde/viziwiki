@@ -52,7 +52,7 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
       (ifr.contentWindow as any)?.__decorate?.();
     };
     (window as any).__peField = (path: string, html: string) => { setIn(docRef.current, path, html); setSaved(false); };
-    (window as any).__peAction = (action: string) => { applyAction(docRef.current, action); setSaved(false); setOpenMk(null); swapBody(); };
+    (window as any).__peAction = (action: string) => { applyAction(docRef.current, action); setSaved(false); if (/^(secAdd|secRm|secMove):/.test(action)) setOpenMk(null); swapBody(); };
     (window as any).__peResize = (h: number) => { if (iframeRef.current) iframeRef.current.style.height = Math.max(h, 480) + 'px'; };
     (window as any).__peOpenPicker = (index: number) => setPickerAt(typeof index === 'number' ? index : 0); // seam → picker (carries insert position)
     (window as any).__peDoc = () => docRef.current; // decorator reads current values (e.g. toolbar editors)

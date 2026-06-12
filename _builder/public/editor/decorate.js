@@ -747,6 +747,18 @@
           (function (jj) { var tb = dockBtn(csvg(CICON.trash), 'Delete entire category', 'danger', null); armDelete(tb, function () { closePop(); A('rm:' + prefix + 'categories.' + jj); }); dock.appendChild(tb); })(j);
           card.appendChild(dock); armDockHover(card, dock, cpre);
 
+          // the ribbon banner on the card is the jump SCOPE for the ribbon text
+          // (it's edited via the dock popover, not a bound field) — clicking it
+          // (or jumping to it) opens the ribbon editor: pin the dock, open its
+          // ribbon popover.
+          var rbBanner = qs('.cat-ribbon', card);
+          if (rbBanner && cdata.ribbon != null) {
+            rbBanner.setAttribute('data-pe-opens', '1');
+            rbBanner.setAttribute('data-pe-scope', cpre + 'ribbon');
+            rbBanner.style.cursor = 'pointer';
+            (function (dk) { rbBanner.addEventListener('click', function () { if (dk._pin) dk._pin(); var rb = qs('.cc-btn[data-tip="Edit ribbon"]', dk); if (rb) rb.click(); }); })(dock);
+          }
+
           // pills → open the item editor; "+ item". The pill is also the
           // readiness JUMP SCOPE for everything under this item (its name + the
           // pills it owns), so jumping to a modal-only field opens the modal.
@@ -1290,15 +1302,18 @@
         hosts.push({ el: el, prefix: t, data: (s.data || {}), dataPrefix: 'sections.' + i + '.data.' });
       });
 
+      // y of an element within the canvas document (sum offsetTop up the chain)
+      function docTop(el) { var t = 0; while (el) { t += el.offsetTop || 0; el = el.offsetParent; } return t; }
       // serialize each host's readiness → a payload the parent renders. `top` is
-      // the section's offset in the canvas document, so the parent can align the
-      // marker (in the backdrop) to the section as the canvas scrolls.
+      // the y of the section's EYEBROW/heading (not the section's top edge / seam)
+      // so the marker lines up with the visible header, not the gap above it.
       function buildPayload() {
         return hosts.map(function (host) {
           var tree = buildTree(host.prefix, host.data, host.dataPrefix);
           var leaves = tree.section.concat(tree.cards.reduce(function (a, c) { return a.concat(c.reqs, c.items.reduce(function (b, it) { return b.concat(it.reqs); }, [])); }, []));
           var left = leaves.filter(function (x) { return !x.met; }).length, met = leaves.length - left;
-          return { top: host.el.offsetTop, prefix: host.prefix, done: left === 0, left: left,
+          var anchor = qs('.wiki-section-eyebrow, .wiki-hero-eyebrow', host.el) || qs('.wiki-section-title, .wiki-hero-title', host.el) || host.el;
+          return { top: docTop(anchor), prefix: host.prefix, done: left === 0, left: left,
             pct: leaves.length ? Math.round(met / leaves.length * 100) : 100, section: tree.section, cards: tree.cards };
         });
       }
