@@ -74,7 +74,7 @@ const AFFORDANCE = `
   .cat-card{ overflow:visible !important; }
   /* position:fixed + JS placement (see armDockHover) — multicol-proof, and it
      stays pinned within a proximity zone so it's easy to reach. */
-  .cc-dock{ position:fixed; z-index:1200; display:flex; align-items:center; gap:2px; padding:4px; border-radius:13px;
+  .cc-dock{ position:fixed; z-index:50; display:flex; align-items:center; gap:2px; padding:4px; border-radius:13px;
     background:var(--g-bg); border:var(--g-edge); box-shadow:var(--g-shadow),var(--g-inset);
     opacity:0; transform:translateY(-6px) scale(.96); transform-origin:top left; pointer-events:none;
     transition:opacity .18s ease, transform .2s cubic-bezier(.2,.7,.3,1); }
