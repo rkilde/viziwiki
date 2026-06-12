@@ -343,7 +343,18 @@ const AFFORDANCE = `
   .dr-input{ width:100%; box-sizing:border-box; padding:8px 10px; border:1px solid rgba(0,0,0,.14); border-radius:7px; font-family:'Spectral',Georgia,serif; font-size:13.5px; color:#0a0a0a; background:#fff; outline:none; transition:.12s; }
   .dr-input:focus{ border-color:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,.14); }
   .dr-select{ appearance:none; cursor:pointer; padding-right:28px; background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E") no-repeat right 10px center; }
-  .tog-row{ display:flex; gap:7px; flex-wrap:wrap; }
+  .tog-row{ display:flex; gap:7px; flex-wrap:wrap; align-items:center; }
+  /* info "i" beside a toggle — a hover/focus tooltip explaining the option */
+  .dr-info{ position:relative; display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; color:rgba(0,0,0,.4); cursor:help; outline:none; }
+  .dr-info svg{ width:15px; height:15px; }
+  .dr-info:hover, .dr-info:focus{ color:#2563eb; }
+  .dr-info::after{ content:attr(data-tip); position:absolute; left:0; bottom:calc(100% + 9px); transform:translateY(5px); width:248px; max-width:248px;
+    white-space:normal; text-align:left; background:#0a0a0a; color:#fff; font-family:'Spectral',Georgia,serif; font-size:12px; font-weight:400; line-height:1.5;
+    letter-spacing:0; text-transform:none; padding:10px 12px; border-radius:9px; box-shadow:0 10px 28px rgba(0,0,0,.24); opacity:0; pointer-events:none;
+    transition:opacity .14s ease, transform .14s ease; z-index:40; }
+  .dr-info::before{ content:''; position:absolute; left:6px; bottom:calc(100% + 3px); transform:translateY(5px) rotate(45deg); width:9px; height:9px; background:#0a0a0a; opacity:0; transition:opacity .14s ease, transform .14s ease; z-index:40; }
+  .dr-info:hover::after, .dr-info:focus::after, .dr-info:hover::before, .dr-info:focus::before{ opacity:1; transform:translateY(0); }
+  .dr-info:hover::before, .dr-info:focus::before{ transform:rotate(45deg); }
   .tog{ display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:6px; border:1px solid rgba(0,0,0,.16); background:#fff;
     font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.08em; text-transform:uppercase; color:rgba(0,0,0,.5); cursor:pointer; transition:.12s; }
   .tog:hover{ border-color:rgba(0,0,0,.3); }

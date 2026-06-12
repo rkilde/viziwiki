@@ -1074,10 +1074,12 @@
           if (introAnchor && introAnchor.parentNode) introAnchor.parentNode.insertBefore(addLine('push:' + prefix + 'intro', '+ intro text'), introAnchor.nextSibling);
         }
 
-        // footer (optional richtext) — inline. (Absent → the sentinel pass
-        // already swapped it for a "+ footer" slot via SECTION_SLOTS.)
+        // footer (optional richtext) — inline. Keep .cfg-footer FULL WIDTH so its
+        // hairline divider spans across; the editable text box + its × hug the
+        // text (attach the removable to the inner .ce, not the footer, so the
+        // footer isn't shrunk to fit-content — which was clipping the hairline).
         var cfgFtr = qs('.cfg-footer', secEl);
-        if (cfgFtr) { wrapCE(cfgFtr, prefix + 'footer'); makeRemovable(cfgFtr, 'rm:' + prefix + 'footer'); }
+        if (cfgFtr) { wrapCE(cfgFtr, prefix + 'footer'); makeRemovable(qs('.ce', cfgFtr) || cfgFtr, 'rm:' + prefix + 'footer'); }
 
         // divider label (section-level) — inline-editable when the divider shows
         var dlEl = qs('.cfg-divider-label', secEl);
@@ -1169,6 +1171,7 @@
             + '</div>'
             + '<div><div class="dr-label" style="margin-bottom:8px">Options</div><div class="tog-row">'
             + '<button class="tog dr-revised' + (idata.revised ? ' on' : '') + '"><span class="tog-pip"></span>Mark as special configuration</button>'
+            + '<span class="dr-info" tabindex="0" data-tip="' + ea('A special configuration is set apart from the standard tiers: it drops below a hairline divider and its bar is striped. Use it for a later hardware revision, a region-specific model, or a limited edition — e.g. the 2019 revised 32 GB.') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>'
             + '</div>'
             + (idata.revised ? '<div style="margin-top:8px"><div class="dr-label">Special configuration label</div><input class="dr-input dr-divlabel" value="' + ea(sdata.divider_label || '') + '" placeholder="e.g. special edition"></div>' : '')
             + '</div>'
