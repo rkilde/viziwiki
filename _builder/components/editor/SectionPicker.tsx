@@ -47,7 +47,7 @@ const TILES = [
     desc: 'A previous-vs-current table grouped into Hardware & Software, with colour-coded change chips (better, feature, changed, worse, same).',
   },
   {
-    id: 'config', name: 'Hardware & Software Tech Visuals', pill: 'Category' as const, opens: null,
+    id: 'config', name: 'Hardware & Software Tech Visuals', pill: 'Category' as const, opens: 'config' as const,
     icon: BLANK,
     desc: 'Storage/spec tiers with proportional fill bars derived from capacity, plus price, dates & device-colour dots. Pick a chart type →',
   },
@@ -60,6 +60,16 @@ const TIMELINE_TYPES: TypeTile[] = [
   { id: 'timeline', name: 'Standard Horizontal Timeline',
     icon: '<line x1="1.5" y1="15" x2="22.5" y2="15"/><rect x="2.5" y="5.5" width="4" height="4" rx="0.9"/><line x1="4.5" y1="9.5" x2="4.5" y2="13.7"/><circle cx="4.5" cy="15" r="1.2"/><rect x="10" y="5.5" width="4" height="4" rx="0.9"/><line x1="12" y1="9.5" x2="12" y2="13.7"/><circle cx="12" cy="15" r="1.2"/><rect x="17.5" y="5.5" width="4" height="4" rx="0.9"/><line x1="19.5" y1="9.5" x2="19.5" y2="13.7"/><circle cx="19.5" cy="15" r="1.2"/>',
     bullets: ['standard timeline', 'horizontally scrollable'] },
+];
+
+// config (Hardware & Software Tech Visuals) types — the Storage / Configuration
+// Chart IS the canonical config bank (the one real type today): clicking it
+// seeds a derived `config` section (grammar seed + registry host). More chart
+// types are ghosts until built.
+const CONFIG_TYPES: TypeTile[] = [
+  { id: 'config', name: 'Storage / Configuration Chart',
+    icon: '<line x1="3" y1="6" x2="13" y2="6"/><line x1="3" y1="12" x2="17" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/><rect x="2" y="4.5" width="3" height="3" rx="0.6"/><rect x="2" y="10.5" width="3" height="3" rx="0.6"/><rect x="2" y="16.5" width="3" height="3" rx="0.6"/>',
+    desc: 'Capacity tiers as proportional fill bars (lowest → highest), with price, dates & device-colour dots. Revised configs drop below a divider.' },
 ];
 
 // catalog types from the mockup's CATALOG_TYPES — Category Masonry IS the
@@ -86,7 +96,7 @@ const CATALOG_TYPES: TypeTile[] = [
 ];
 
 export function SectionPicker({ onClose, onPick }: { onClose: () => void; onPick: (type: string) => void }) {
-  const [screen, setScreen] = useState<'choices' | 'browse' | 'catalog' | 'timeline'>('choices');
+  const [screen, setScreen] = useState<'choices' | 'browse' | 'catalog' | 'timeline' | 'config'>('choices');
   const [q, setQ] = useState('');
 
   // shared typed sub-chooser (catalog / timeline): a grid of TypeTiles, each
@@ -202,6 +212,7 @@ export function SectionPicker({ onClose, onPick }: { onClose: () => void; onPick
         )}
         {screen === 'catalog' && typeScreen('Catalogs', 'Pick a catalog type', CATALOG_TYPES)}
         {screen === 'timeline' && typeScreen('Timelines', 'Pick a timeline type', TIMELINE_TYPES)}
+        {screen === 'config' && typeScreen('Hardware & Software Tech Visuals', 'Pick a chart type', CONFIG_TYPES)}
       </div>
     </div>
   );

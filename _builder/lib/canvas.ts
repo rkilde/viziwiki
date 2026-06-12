@@ -310,6 +310,33 @@ const AFFORDANCE = `
     background:#0a0a0a; color:#fff; font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.14em; text-transform:uppercase;
     padding:3px 8px; border-radius:4px; white-space:nowrap; opacity:0; pointer-events:none; transition:.15s; }
   .pe-add-section:hover .pe-add-dot::after{ opacity:1; transform:translateX(-50%) scale(1); }
+
+  /* ════ config (storage / configuration chart) editor chrome ════
+     The bars are CANON-sorted low→high (config.html); an inline capacity / unit
+     / revised edit re-runs that sort and the decorator FLIPs each row to its new
+     slot + grows/shrinks its bar (inline transitions). These styles are the
+     hover affordances around that. */
+  .cfg-row{ position:relative; }
+  .cfg-cap .pe-cfg-unit{ cursor:pointer; border-radius:4px; padding:0 2px; transition:background .12s, color .12s; }
+  .cfg-cap .pe-cfg-unit:hover{ background:rgba(99,102,241,.12); color:#6366f1; }
+  /* the revised toggle + remove pill floats just above each row, on hover */
+  .cfg-row-tools{ position:absolute; top:-13px; right:0; z-index:6; display:inline-flex; align-items:center; gap:6px;
+    padding:3px 8px; border-radius:999px; background:rgba(130,130,145,.16); border:1px solid rgba(130,130,145,.24);
+    backdrop-filter:blur(8px) saturate(140%); -webkit-backdrop-filter:blur(8px) saturate(140%);
+    opacity:0; transition:opacity .12s; }
+  .cfg-row:hover .cfg-row-tools{ opacity:1; }
+  .cfg-row-tools .pe-tag-rm{ margin-left:0; }
+  /* the colour dots: each is removable (corner ×) + a "+ colour" adder */
+  .cfg-colors .cfg-color.pe-removable{ width:auto; }
+  .cfg-model.pe-removable{ width:fit-content; }
+  /* the device-colour popover: a native colour input + a ring toggle */
+  .cc-pop.dot-pop{ min-width:178px; }
+  .cc-dotpop{ display:flex; gap:10px; align-items:center; }
+  .cc-hex{ width:46px; height:32px; border:1px solid rgba(0,0,0,.14); border-radius:8px; background:none; cursor:pointer; padding:2px; }
+  .cc-ringtog{ flex:1; font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.1em; text-transform:uppercase; padding:8px;
+    border-radius:8px; border:1px solid rgba(0,0,0,.14); background:rgba(255,255,255,.5); cursor:pointer; color:#574c40; }
+  .cc-ringtog.on{ background:#241a10; color:#fff; border-color:transparent; }
+  .cc-pop.dot-pop .cc-rm{ margin-top:10px; width:100%; }
 `;
 
 const FONTS = `<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">`;

@@ -164,20 +164,23 @@ components:
       chart_title:   { type: text,     required: true, blank: "Chart title" }
       tone:          { type: "enum[a,b,special]", default: a }
       visual:  { type: text, locked: true, default: config, help: "The slot's visual type — registry hosts constrain it (admin)" }
-      intro:         { type: "list<richtext>", help: "Optional intro paragraphs above the chart" }
-      footer:        { type: richtext }
-      divider_label: { type: text, help: "Label on the revised-group divider" }
-      items:         { type: "list<config_item>", required: true }
+      intro:         { type: "list<richtext>", item_blank: "Intro paragraph", help: "Optional intro paragraphs above the chart" }
+      footer:        { type: richtext, blank: "Footer spec line" }
+      divider_label: { type: text, blank: "Revised", help: "Label on the revised-group divider" }
+      items:         { type: "list<config_item>", required: true, item_blank: { capacity: 64, unit: GB } }
+    display:
+      items:  { kind: "Configuration" }
+      colors: { kind: "Colour" }
     subtypes:
       config_item:
         capacity: { type: number, required: true, seed_real: true, help: "Drives the bar width (a real capacity, not a placeholder)" }
         unit:     { type: "enum[GB,TB]", default: GB }
-        model:    { type: text }
-        price:    { type: text, help: "Supports an 'old → new' drop" }
-        dates:    { type: text }
+        model:    { type: text, blank: "Model" }
+        price:    { type: text, blank: "$0", help: "Supports an 'old → new' drop" }
+        dates:    { type: text, blank: "Dates" }
         revised:  { type: bool, default: false, help: "Stripes the bar + drops a divider" }
-        colors:   { type: "list<dot>", help: "Device-colour dots" }
-      dot: { name: { type: text }, hex: { type: color }, ring: { type: bool, default: false } }
+        colors:   { type: "list<dot>", item_blank: { name: "Colour", hex: "#9aa0a6" }, help: "Device-colour dots" }
+      dot: { name: { type: text, blank: "Colour" }, hex: { type: color, blank: "#9aa0a6" }, ring: { type: bool, default: false } }
     derived: ["bar width = exact proportion of the largest capacity"]
     seed:
       heading: "Configurations heading"

@@ -211,10 +211,16 @@ function analyze(comp, file, ctx, subtypes) {
         validateExpr(am[2]);
         const rhs = am[2].trim();
         // a bare path keeps its type+spec; `path | default: …` keeps the
-        // FIELD's identity too (so enum vars stay checkable); else scalar
+        // FIELD's identity too (so enum vars stay checkable); a dynamic index
+        // into a typed list (`list[expr]`) yields the list's ELEMENT type (so a
+        // sorted-by-index loop body still types its item's fields); else scalar
         const bare = /^[a-zA-Z_][\w.]*$/.test(rhs) ? rhs
           : (/^([a-zA-Z_][\w.]*)\s*\|\s*default:/.exec(rhs) || [])[1] || null;
-        const r = bare ? resolve(bare) : { type: SCALAR, spec: null };
+        const idxm = !bare ? /^([a-zA-Z_][\w.]*)\[[^\]]+\]$/.exec(rhs) : null;
+        let r;
+        if (bare) r = resolve(bare);
+        else if (idxm) { const lr = resolve(idxm[1]); r = { type: lr.type && lr.type.kind === 'list' ? lr.type.el : SCALAR, spec: null }; }
+        else r = { type: SCALAR, spec: null };
         stack[0].set(am[1], { t: r.type || SCALAR, spec: r.spec || null });
       }
     } else if (kw === 'capture') {

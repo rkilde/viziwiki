@@ -75,6 +75,7 @@
   // resolved dynamically from the sentinel's containing section
   var SECTION_SLOTS = {
     'catalog.footnote': { root: '.cat-footnote', label: '+ footnote' },
+    'config.footer':    { root: '.cfg-footer',   label: '+ footer' },
   };
 
   // a section element's component type, derived from the registry's section
@@ -1043,6 +1044,173 @@
               try { outer.scrollTo({ left: target, behavior: 'smooth' }); } catch (e) { outer.scrollLeft = target; }
             }); })(ts.k);
           }
+        }
+      }
+
+      // ── config: the storage/configuration chart — full editor. Bars are
+      // sorted low→high by the CANON (config.html); revised "specials" drop
+      // below the divider. So an inline capacity/unit/revised edit re-runs the
+      // canon sort, and we FLIP each row to its new slot + grow/shrink the bar
+      // from where it was (pure decorator interaction — the layout itself is
+      // derived in Liquid). Rows bind by their ORIGINAL data index (data-idx,
+      // emitted by the canon) so the sorted DOM still addresses the right item. ──
+      if (type === 'config') {
+        wrapCE(qs('.wiki-section-title', secEl), prefix + 'heading');     // required H2
+        wrapCE(qs('.cfg-chart-title', secEl), prefix + 'chart_title');    // required chart title
+
+        // intro paragraphs (optional list): present → edit + × + "+ paragraph";
+        // absent → a "+ intro" affordance after the heading.
+        var cfgIntro = qs('.cfg-prose', secEl);
+        if (cfgIntro) {
+          qsa('p', cfgIntro).forEach(function (p, ix) { wrapCE(p, prefix + 'intro.' + ix); makeRemovable(p, 'rm:' + prefix + 'intro.' + ix); });
+          cfgIntro.appendChild(addBtn('push:' + prefix + 'intro', '+ paragraph', true));
+        } else {
+          var cfgH2 = qs('.wiki-section-title', secEl);
+          if (cfgH2 && cfgH2.parentNode) cfgH2.parentNode.insertBefore(addLine('push:' + prefix + 'intro', '+ intro'), cfgH2.nextSibling);
+        }
+
+        // footer (optional richtext): present → edit + ×. (Absent → the sentinel
+        // pass already swapped it for a "+ footer" slot via SECTION_SLOTS.)
+        var cfgFtr = qs('.cfg-footer', secEl);
+        if (cfgFtr) { wrapCE(cfgFtr, prefix + 'footer'); makeRemovable(cfgFtr, 'rm:' + prefix + 'footer'); }
+
+        // FLIP snapshot — capture each row's rect + its fill width BEFORE a
+        // reorder-causing commit (capacity / unit / revised). Removal + add
+        // shift the indices, so they DON'T snapshot (no stable key to match).
+        var cfgSnap = function () {
+          var snap = {};
+          qsa('.cfg-row', secEl).forEach(function (row) {
+            var di = row.getAttribute('data-idx'); var fl = qs('.cfg-fill', row);
+            snap[di] = { r: row.getBoundingClientRect(), w: fl ? fl.getBoundingClientRect().width : 0 };
+          });
+          window.__peCfgFlip = { s: i, snap: snap };
+        };
+
+        // device-colour dot popover — a CONTENT colour (not a skin token), so a
+        // native colour input + a ring toggle + remove. hex/ring edit live (no
+        // re-render needed — they don't change layout).
+        var openDotPop = function (btn, dpre, dot) {
+          var html = '<div class="cc-pop-label">Colour</div>'
+            + '<div class="cc-dotpop"><input type="color" class="cc-hex" value="' + (dot.hex || '#9aa0a6') + '">'
+            + '<button class="cc-ringtog' + (dot.ring ? ' on' : '') + '">Ring</button></div>'
+            + '<button class="cc-rm">Remove colour</button>';
+          var pop = openPop(btn, '', html, { cls: 'dot-pop' });
+          var hx = qs('.cc-hex', pop);
+          hx.addEventListener('input', function () { PV(dpre + 'hex', hx.value); btn.style.background = hx.value; });
+          var rg = qs('.cc-ringtog', pop);
+          rg.onclick = function () { var nv = !rg.classList.contains('on'); rg.classList.toggle('on', nv); btn.classList.toggle('ring', nv); PV(dpre + 'ring', nv ? 'true' : ''); };
+          qs('.cc-rm', pop).onclick = function () { closePop(); A('rm:' + dpre.slice(0, -1)); };
+        };
+
+        qsa('.cfg-row', secEl).forEach(function (row) {
+          var di = parseInt(row.getAttribute('data-idx'), 10); if (isNaN(di)) return;
+          var ipre = prefix + 'items.' + di + '.';
+          var idata = (sdata.items && sdata.items[di]) || {};
+
+          // capacity (REQUIRED) — inline number edit; commits → re-sort + re-fill
+          var capBox = qs('.cfg-cap', row);
+          if (capBox) {
+            var capCe = document.createElement('span');
+            capCe.className = 'ce'; capCe.setAttribute('contenteditable', 'true');
+            capCe.setAttribute('data-pe-path', ipre + 'capacity');
+            [].slice.call(capBox.childNodes).forEach(function (n) { if (n.nodeType === 3) capCe.appendChild(n); });
+            capBox.insertBefore(capCe, capBox.firstChild);
+            (function (cd) { capCe.addEventListener('blur', function () {
+              var raw = (capCe.textContent || '').replace(/[^\d.]/g, '');
+              if (raw === '' || !(Number(raw) > 0)) { capCe.textContent = String(cd.capacity != null ? cd.capacity : ''); return; }
+              capCe.textContent = raw;
+              if (String(Number(raw)) === String(cd.capacity)) return;     // unchanged → no re-render
+              cfgSnap(); PV(ipre + 'capacity', Number(raw)); A('commit');
+            }); })(idata);
+            // unit toggle (GB ↔ TB) — re-normalizes → re-sort + re-fill
+            var unitSpan = qs('span', capBox);
+            if (unitSpan) {
+              unitSpan.classList.add('pe-cfg-unit'); unitSpan.title = 'Toggle GB / TB';
+              (function (cd) { unitSpan.onclick = function (e) { e.stopPropagation(); cfgSnap(); A('set:' + ipre + 'unit:' + (cd.unit === 'TB' ? 'GB' : 'TB')); }; })(idata);
+            }
+          }
+
+          // model (inside the bar) — present → edit + ×; absent → "+ model"
+          var fill = qs('.cfg-fill', row);
+          var modelEl = fill && qs('.cfg-model', fill);
+          if (modelEl) { wrapCE(modelEl, ipre + 'model'); makeRemovable(modelEl, 'rm:' + ipre + 'model'); }
+          else if (fill) fill.appendChild(addBtn('add:' + ipre + 'model', '+ model', true));
+
+          // price ("old → new" supported) — edit the raw string; commit re-splits
+          var priceEl = qs('.cfg-price', row);
+          if (priceEl) {
+            if (idata.price != null) {
+              priceEl.innerHTML = '';
+              var pl = document.createElement('div'); pl.className = 'cfg-price-line'; priceEl.appendChild(pl);
+              var pce = document.createElement('span'); pce.className = 'ce'; pce.setAttribute('contenteditable', 'true');
+              pce.setAttribute('data-pe-path', ipre + 'price'); pce.setAttribute('data-ph', (R('config.items[].price').blank) || '$0');
+              pce.textContent = idata.price; pl.appendChild(pce);
+              (function (cd) { pce.addEventListener('blur', function () { if ((pce.textContent || '') === String(cd.price)) return; PV(ipre + 'price', pce.textContent); A('commit'); }); })(idata);
+              makeRemovable(pl, 'rm:' + ipre + 'price');
+            } else { priceEl.innerHTML = ''; priceEl.appendChild(addBtn('add:' + ipre + 'price', '+ price', true)); }
+          }
+
+          // dates (optional) — present → edit + ×; absent → "+ dates"
+          var datesEl = qs('.cfg-dates', row);
+          if (datesEl) { wrapCE(datesEl, ipre + 'dates'); makeRemovable(datesEl, 'rm:' + ipre + 'dates'); }
+          else row.appendChild(addBtn('add:' + ipre + 'dates', '+ dates', true));
+
+          // device-colour dots (optional list) — swatch popover + name; "+ colour"
+          var colorsWrap = qs('.cfg-colors', row);
+          if (!colorsWrap) { colorsWrap = document.createElement('div'); colorsWrap.className = 'cfg-colors'; row.appendChild(colorsWrap); }
+          else {
+            qsa('.cfg-color', colorsWrap).forEach(function (cel, ci) {
+              var dpre = ipre + 'colors.' + ci + '.'; var ddata = (idata.colors && idata.colors[ci]) || {};
+              var dot = qs('.cfg-dot', cel);
+              if (dot) { dot.style.cursor = 'pointer'; dot.title = 'Colour'; (function (b, dp, dd) { b.onclick = function (e) { e.stopPropagation(); openDotPop(b, dp, dd); }; })(dot, dpre, ddata); }
+              wrapCE(qs('.cfg-dot-name', cel), dpre + 'name');
+              makeRemovable(cel, 'rm:' + ipre + 'colors.' + ci);
+            });
+          }
+          colorsWrap.appendChild(addBtn('push:' + ipre + 'colors', '+ colour', true));
+
+          // revised toggle + remove row — a glass pill in the row's corner
+          var rdock = document.createElement('div'); rdock.className = 'cfg-row-tools';
+          var revBtn = document.createElement('button');
+          revBtn.className = 'pe-tonebtn' + (idata.revised ? ' on' : '');
+          revBtn.textContent = idata.revised ? 'revised' : 'mark revised';
+          revBtn.title = 'Revised configs drop below the divider';
+          (function (cd) { revBtn.onclick = function () { cfgSnap(); A('set:' + ipre + 'revised:' + (cd.revised ? 'false' : 'true')); }; })(idata);
+          rdock.appendChild(revBtn);
+          var rmRow = document.createElement('button'); rmRow.className = 'pe-tag-rm'; rmRow.style.opacity = '1'; rmRow.textContent = '×'; rmRow.title = 'Remove configuration';
+          (function (d) { armDelete(rmRow, function () { A('rm:' + prefix + 'items.' + d); }); })(di);
+          rdock.appendChild(rmRow);
+          row.appendChild(rdock);
+        });
+
+        // + configuration (append a row)
+        var cfgBars = qs('.cfg-bars', secEl);
+        if (cfgBars) cfgBars.appendChild(addLine('push:' + prefix + 'items', '+ configuration'));
+
+        // divider label (optional) — present → edit + ×; absent but a revised
+        // group exists → "+ divider label" beside the divider
+        var dlEl = qs('.cfg-divider-label', secEl);
+        if (dlEl) { wrapCE(dlEl, prefix + 'divider_label'); makeRemovable(dlEl, 'rm:' + prefix + 'divider_label'); }
+        else { var dvEl = qs('.cfg-divider', secEl); if (dvEl && dvEl.parentNode) dvEl.parentNode.insertBefore(addBtn('add:' + prefix + 'divider_label', '+ divider label', true), dvEl.nextSibling); }
+
+        // ── FLIP: after a reorder-causing commit, slide each row to its new slot
+        // and grow/shrink its bar from the old width. All inline → no live-CSS
+        // change (the live site, being static, never animates). ──
+        var cfgFlip = window.__peCfgFlip;
+        if (cfgFlip && cfgFlip.s === i) {
+          window.__peCfgFlip = null;
+          var craf = window.requestAnimationFrame || function (f) { return setTimeout(f, 16); };
+          qsa('.cfg-row', secEl).forEach(function (row) {
+            var di = row.getAttribute('data-idx'); var old = cfgFlip.snap[di]; if (!old) return;
+            var nr = row.getBoundingClientRect(); var dx = old.r.left - nr.left, dy = old.r.top - nr.top;
+            var fl = qs('.cfg-fill', row); var targetW = fl ? fl.style.width : null;
+            if (dx || dy) { row.style.transition = 'none'; row.style.transform = 'translate(' + dx + 'px,' + dy + 'px)'; }
+            if (fl && targetW) { fl.style.transition = 'none'; fl.style.width = old.w + 'px'; }
+            craf(function () { craf(function () {
+              if (dx || dy) { row.style.transition = 'transform .5s cubic-bezier(.4,0,.2,1)'; row.style.transform = ''; }
+              if (fl && targetW) { fl.style.transition = 'width .5s cubic-bezier(.4,0,.2,1)'; fl.style.width = targetW; }
+            }); });
+          });
         }
       }
     });

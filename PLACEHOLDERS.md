@@ -75,19 +75,19 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 | `heading` | • | text | `Configurations heading` |
 | `chart_title` | • | text | `Chart title` |
 | `tone` |  | enum | `a`  _(choice: a · b · special)_ |
-| `intro` |  | list<richtext> | — |
-| `footer` |  | richtext | — |
-| `divider_label` |  | text | — |
-| `items` | • | list<config_item> | — |
+| `intro` |  | list<richtext> | `Intro paragraph`  _(per new item)_ |
+| `footer` |  | richtext | `Footer spec line` |
+| `divider_label` |  | text | `Revised` |
+| `items` | • | list<config_item> | _(template — see sub-fields)_ |
 | `items[].capacity` | • | number | _(driver — real value, no placeholder)_ |
 | `items[].unit` |  | enum | `GB`  _(choice: GB · TB)_ |
-| `items[].model` |  | text | — |
-| `items[].price` |  | text | — |
-| `items[].dates` |  | text | — |
+| `items[].model` |  | text | `Model` |
+| `items[].price` |  | text | `$0` |
+| `items[].dates` |  | text | `Dates` |
 | `items[].revised` |  | bool | `false`  _(default)_ |
-| `items[].colors` |  | list<dot> | — |
-| `items[].colors[].name` |  | text | — |
-| `items[].colors[].hex` |  | color | — |
+| `items[].colors` |  | list<dot> | _(template — see sub-fields)_ |
+| `items[].colors[].name` |  | text | `Colour` |
+| `items[].colors[].hex` |  | color | `#9aa0a6` |
 | `items[].colors[].ring` |  | bool | `false`  _(default)_ |
 
 ## lifecycle-lane

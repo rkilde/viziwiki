@@ -546,18 +546,33 @@
         },
         "intro": {
           "type": "list<richtext>",
+          "item_blank": "Intro paragraph",
           "help": "Optional intro paragraphs above the chart"
         },
         "footer": {
-          "type": "richtext"
+          "type": "richtext",
+          "blank": "Footer spec line"
         },
         "divider_label": {
           "type": "text",
+          "blank": "Revised",
           "help": "Label on the revised-group divider"
         },
         "items": {
           "type": "list<config_item>",
-          "required": true
+          "required": true,
+          "item_blank": {
+            "capacity": 64,
+            "unit": "GB"
+          }
+        }
+      },
+      "display": {
+        "items": {
+          "kind": "Configuration"
+        },
+        "colors": {
+          "kind": "Colour"
         }
       },
       "subtypes": {
@@ -573,14 +588,17 @@
             "default": "GB"
           },
           "model": {
-            "type": "text"
+            "type": "text",
+            "blank": "Model"
           },
           "price": {
             "type": "text",
+            "blank": "$0",
             "help": "Supports an 'old → new' drop"
           },
           "dates": {
-            "type": "text"
+            "type": "text",
+            "blank": "Dates"
           },
           "revised": {
             "type": "bool",
@@ -589,15 +607,21 @@
           },
           "colors": {
             "type": "list<dot>",
+            "item_blank": {
+              "name": "Colour",
+              "hex": "#9aa0a6"
+            },
             "help": "Device-colour dots"
           }
         },
         "dot": {
           "name": {
-            "type": "text"
+            "type": "text",
+            "blank": "Colour"
           },
           "hex": {
-            "type": "color"
+            "type": "color",
+            "blank": "#9aa0a6"
           },
           "ring": {
             "type": "bool",
