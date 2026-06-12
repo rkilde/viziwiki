@@ -997,55 +997,12 @@
       var LOCKED = (window.__PE_POLICY || {}).locked || {};
       var rdoc = getDoc(); if (!rdoc || !FIELDS) return;
 
-      // the markers' own stylesheet — injected by the decorator (which builds
-      // the markers) so the look ALWAYS ships with the logic (one static file),
-      // never out of sync with a separately-bundled stylesheet. Injected once.
+      // the markers themselves render in the PARENT editor chrome (out in the
+      // black backdrop beside the canvas — an iframe can't paint outside its own
+      // box). The decorator only needs the in-canvas flash that the jump fires.
       if (!document.getElementById('pe-readiness-css')) {
         var rs = document.createElement('style'); rs.id = 'pe-readiness-css';
         rs.textContent = [
-          // reserve a left rail on the canvas so the marker floats in the
-          // page's left margin (the content shifts right uniformly; full-bleed
-          // scrollers stay centred). Positive x ⇒ never clipped by overflow.
-          'body{padding-left:56px}',
-          '.pe-mkhost{position:relative}',
-          '.mk{position:absolute;left:-44px;top:24px;width:36px;z-index:30}',
-          'section.wiki-hero.pe-mkhost>.mk{top:32px}',
-          '.mk-btn{position:relative;width:34px;height:34px;border:0;background:none;cursor:pointer;padding:0}',
-          '.mk-tri{width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;transition:transform .2s cubic-bezier(.2,.8,.2,1),background .2s,color .2s,border-color .2s}',
-          '.mk.todo .mk-tri{background:linear-gradient(180deg,#fdf0da,#f8e3c2);border:1px solid #f0cf9a;box-shadow:0 4px 12px rgba(201,138,43,.22),inset 0 1px 0 rgba(255,255,255,.9);color:#c98a2b}',
-          '.mk.done .mk-tri{background:linear-gradient(180deg,#ecf7ef,#dcefe3);border:1px solid #bfe2cc;box-shadow:0 4px 12px rgba(63,143,91,.18),inset 0 1px 0 rgba(255,255,255,.9);color:#3f8f5b}',
-          '.mk-btn:hover .mk-tri{transform:scale(1.08)}.mk-btn:active .mk-tri{transform:scale(.9)}',
-          '.mk-tri svg{width:18px;height:18px}',
-          '.mk-count{position:absolute;top:-5px;right:-5px;min-width:15px;height:15px;padding:0 3px;border-radius:8px;background:#c98a2b;color:#fff;font-family:"JetBrains Mono",monospace;font-size:8px;font-weight:600;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.25)}',
-          '.mk.done .mk-count{display:none}',
-          '@keyframes mkpulse{0%,100%{box-shadow:0 4px 12px rgba(201,138,43,.22),inset 0 1px 0 rgba(255,255,255,.9)}50%{box-shadow:0 4px 18px rgba(201,138,43,.42),0 0 0 4px rgba(201,138,43,.10),inset 0 1px 0 rgba(255,255,255,.9)}}',
-          '.mk.todo:not(.open) .mk-tri{animation:mkpulse 2.8s ease-in-out infinite}',
-          '.mk.open.todo .mk-tri{background:#c98a2b;color:#fff;border-color:#c98a2b}',
-          '.mk.open.done .mk-tri{background:#3f8f5b;color:#fff;border-color:#3f8f5b}',
-          '@keyframes checkpop{0%{transform:scale(0) rotate(-30deg);opacity:0}60%{transform:scale(1.25) rotate(0)}100%{transform:scale(1);opacity:1}}',
-          '.mk.done .mk-tri svg{animation:checkpop .42s cubic-bezier(.2,1.4,.4,1)}',
-          '.mk-panel{position:absolute;left:46px;top:-6px;width:288px;z-index:1300;border-radius:16px;padding:6px;transform-origin:left top;display:none;background:#fff;border:1px solid rgba(255,255,255,.7);box-shadow:0 26px 64px rgba(28,20,10,.30),0 4px 12px rgba(28,20,10,.14),inset 0 1px 0 rgba(255,255,255,.9)}',
-          '.mk-panel::before{content:"";position:absolute;left:-7px;top:15px;width:13px;height:13px;background:#fff;border-left:1px solid rgba(255,255,255,.7);border-bottom:1px solid rgba(255,255,255,.7);transform:rotate(45deg)}',
-          '.mk.open .mk-panel{display:block;animation:panelA .22s cubic-bezier(.2,.9,.25,1.1)}',
-          '@keyframes panelA{from{opacity:0;transform:scale(.86) translateX(-6px)}to{opacity:1;transform:none}}',
-          '.mk-panel-head{display:flex;align-items:center;gap:9px;padding:10px 10px 9px}',
-          '.mk-panel-head .pi{width:24px;height:24px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex:none}.mk-panel-head .pi svg{width:14px;height:14px}',
-          '.mk.todo .mk-panel-head .pi{background:#fbe6cf;color:#c98a2b}.mk.done .mk-panel-head .pi{background:#e3f3e8;color:#3f8f5b}',
-          '.mk-panel-head .pt{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:14px;color:#1c1a17}',
-          '.mk-panel-head .pn{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:#8a8175}',
-          '.mk-cat{margin:2px 4px 0}',
-          '.mk-cat-label{font-family:"JetBrains Mono",monospace;font-size:7.5px;letter-spacing:.16em;text-transform:uppercase;color:#8a8175;padding:9px 6px 5px;display:flex;align-items:center;gap:6px}',
-          '.mk-cat-label::after{content:"";flex:1;height:1px;background:rgba(20,18,14,.10)}',
-          '.mk-item{display:flex;align-items:flex-start;gap:9px;width:100%;text-align:left;padding:8px;border:0;background:transparent;border-radius:9px;cursor:pointer;transition:.12s}',
-          '.mk-item:hover{background:rgba(37,99,235,.08)}',
-          '.mk-item .box{width:15px;height:15px;border-radius:5px;flex:none;margin-top:1px;border:1.6px solid #f0cf9a;background:#fff;position:relative}',
-          '.mk-item.met{cursor:default}',
-          '.mk-item.met .box{border-color:#3f8f5b;background:#3f8f5b}',
-          '.mk-item.met .box::after{content:"";position:absolute;left:4px;top:1px;width:4px;height:8px;border:solid #fff;border-width:0 1.7px 1.7px 0;transform:rotate(45deg)}',
-          '.mk-item .tx{font-size:12.5px;line-height:1.35;color:#1c1a17}',
-          '.mk-item.met .tx{color:#8a8175;text-decoration:line-through;text-decoration-color:rgba(0,0,0,.25)}',
-          '.mk-allgood{display:flex;align-items:center;gap:9px;padding:13px 12px;color:#3f8f5b;font-size:13px}',
-          '.mk-allgood .pi{width:24px;height:24px;border-radius:8px;background:#e3f3e8;display:flex;align-items:center;justify-content:center}.mk-allgood .pi svg{width:14px;height:14px}',
           '@keyframes flashRed{0%{box-shadow:0 0 0 0 rgba(192,57,43,0)}14%{box-shadow:0 0 0 4px rgba(192,57,43,.32)}100%{box-shadow:0 0 0 0 rgba(192,57,43,0)}}',
           '.field-flash{animation:flashRed 1.5s ease-out;border-radius:5px}',
           '.field-flash,.field-flash *{color:#c0392b !important;font-weight:700 !important;transition:color .15s}',
@@ -1189,12 +1146,11 @@
         return groups;
       }
 
-      function closeAllMk() { qsa('.mk.open').forEach(function (m) { m.classList.remove('open'); }); }
       function flash(el) { el.classList.remove('field-flash'); void el.offsetWidth; el.classList.add('field-flash'); setTimeout(function () { el.classList.remove('field-flash'); }, 1600); }
       function jumpTo(it) {
         // address the bound field directly; for a count/word item, its add
-        // button or first item. NEVER fall back to a whole section (that flashed
-        // the entire page red) — only ever a single field-sized element.
+        // button or first item. NEVER a whole section (that flashed the entire
+        // page red) — only ever a single field-sized element.
         var el = findEl(it.jump);
         if (!el && it.addpath) el = qs('[data-pe-addpath="' + it.addpath + '"]');
         if (!el) { var base = it.jump.replace(/\.[^.]+$/, ''); el = qs('[data-pe-path^="' + base + '"]'); }
@@ -1203,63 +1159,41 @@
         flash(el);
         if (el.hasAttribute && el.hasAttribute('contenteditable')) setTimeout(function () { try { el.focus(); } catch (e) {} }, 300);
       }
-      function recountPage() { var n = qsa('.mk.todo').length; try { if (window.parent.__peReadiness) window.parent.__peReadiness({ incomplete: n, ready: n === 0 }); } catch (e) {} }
-
-      function mountMarker(host) {
-        var groups = groupsFor(host.prefix, host.data, host.dataPrefix), flat = [];
-        groups.forEach(function (g) { g.items.forEach(function (i) { flat.push(i); }); });
-        var left = flat.filter(function (i) { return !i.met; }).length, done = left === 0;
-        var mk = document.createElement('div'); mk.className = 'mk ' + (done ? 'done' : 'todo');
-        var btn = '<button class="mk-btn" type="button" title="' + (done ? 'Section ready' : left + ' required left') + '"><span class="mk-tri">' + (done ? CHK : TRI) + '</span>' + (done ? '' : '<span class="mk-count">' + left + '</span>') + '</button>';
-        var head = '<div class="mk-panel-head"><span class="pi">' + (done ? CHK : TRI) + '</span><span class="pt">' + (done ? 'Section ready' : 'Needs attention') + '</span><span class="pn">' + (done ? 'complete' : left + ' required') + '</span></div>';
-        var body = done
-          ? '<div class="mk-allgood"><span class="pi">' + CHK + '</span> Everything required is in place.</div>'
-          : groups.map(function (g) {
-              if (g.items.every(function (i) { return i.met; })) return '';
-              return '<div class="mk-cat"><div class="mk-cat-label">' + esc(g.label) + '</div>' + g.items.map(function (it, ix) {
-                return '<button class="mk-item ' + (it.met ? 'met' : '') + '" type="button" data-gi="' + groups.indexOf(g) + '" data-ii="' + ix + '"><span class="box"></span><span class="tx">' + esc(it.label) + '</span></button>';
-              }).join('') + '</div>';
-            }).join('');
-        mk.innerHTML = btn + '<div class="mk-panel">' + head + body + '</div>';
-        mk.querySelector('.mk-btn').addEventListener('click', function (e) { e.stopPropagation(); var open = mk.classList.contains('open'); closeAllMk(); if (!open) mk.classList.add('open'); });
-        qsa('.mk-item', mk).forEach(function (b) {
-          var g = groups[+b.getAttribute('data-gi')], it = g.items[+b.getAttribute('data-ii')];
-          if (it.met) return;
-          b.addEventListener('click', function (e) { e.stopPropagation(); closeAllMk(); jumpTo(it); });
-        });
-        // anchor to the SECTION element with a positive inset so the marker
-        // sits in the section's own top-left gutter and is never clipped by the
-        // canvas overflow (a negative left-margin offset gets cut off on narrow
-        // canvases).
-        var hostEl = host.el; hostEl.classList.add('pe-mkhost');
-        var prev = hostEl.querySelector(':scope > .mk'); if (prev) prev.remove();
-        hostEl.insertBefore(mk, hostEl.firstChild);
-        host._mk = mk;
-      }
+      // the parent (React chrome) renders the markers out in the black backdrop
+      // and calls back here to run the in-canvas scroll+flash for an item.
+      window.__peJump = function (jump, addpath) { jumpTo({ jump: jump, addpath: addpath }); };
 
       // hosts: hero + overview + every body section, each with its policy
       // prefix and the doc slice that holds its values
       var hosts = [];
       var heroEl = qs('section.wiki-hero');
-      if (heroEl && rdoc.hero) hosts.push({ el: heroEl, inner: qs('.wiki-hero-inner', heroEl), prefix: 'hero', data: rdoc.hero, dataPrefix: 'hero.' });
+      if (heroEl && rdoc.hero) hosts.push({ el: heroEl, prefix: 'hero', data: rdoc.hero, dataPrefix: 'hero.' });
       var ovEl = qs('section[data-section="overview"]');
-      if (ovEl && rdoc.overview) hosts.push({ el: ovEl, inner: qs('.wiki-section-inner', ovEl), prefix: 'overview', data: rdoc.overview, dataPrefix: 'overview.' });
+      if (ovEl && rdoc.overview) hosts.push({ el: ovEl, prefix: 'overview', data: rdoc.overview, dataPrefix: 'overview.' });
       (rdoc.sections || []).forEach(function (s, i) {
         var el = bodySecs[i]; if (!el) return; var t = sectionTypeOf(el); if (!t) return;
-        hosts.push({ el: el, inner: qs('.wiki-section-inner', el), prefix: t, data: (s.data || {}), dataPrefix: 'sections.' + i + '.data.' });
+        hosts.push({ el: el, prefix: t, data: (s.data || {}), dataPrefix: 'sections.' + i + '.data.' });
       });
+
+      // serialize each host's readiness → a payload the parent renders. `top` is
+      // the section's offset in the canvas document, so the parent can align the
+      // marker (in the backdrop) to the section as the canvas scrolls.
+      function buildPayload() {
+        return hosts.map(function (host) {
+          var groups = groupsFor(host.prefix, host.data, host.dataPrefix), flat = [];
+          groups.forEach(function (g) { g.items.forEach(function (i) { flat.push(i); }); });
+          var left = flat.filter(function (i) { return !i.met; }).length;
+          return { top: host.el.offsetTop, prefix: host.prefix, done: left === 0, count: left, groups: groups };
+        });
+      }
+      function postMarkers() { try { if (window.parent.__peMarkers) window.parent.__peMarkers(buildPayload()); } catch (e) {} }
       hosts.forEach(function (host) {
-        mountMarker(host);
-        (host.inner || host.el).addEventListener('input', function (e) {
+        host.el.addEventListener('input', function (e) {
           if (!e.target || !e.target.getAttribute || e.target.getAttribute('data-pe-path') == null) return;
-          var wasOpen = host._mk && host._mk.classList.contains('open');
-          mountMarker(host); if (wasOpen && host._mk) host._mk.classList.add('open');
-          recountPage();
+          postMarkers();
         });
       });
-      document.addEventListener('mousedown', function (e) { if (!e.target.closest || !e.target.closest('.mk')) closeAllMk(); });
-      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAllMk(); });
-      recountPage();
+      postMarkers();
     })();
 
     // add-section seams (dotted circle +): BELOW the overview (insert at 0)

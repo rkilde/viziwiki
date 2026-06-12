@@ -8,6 +8,13 @@ import { SectionPicker } from './SectionPicker';
 
 const oneLine = (t: string) => t.replace(/<br\s*\/?>/gi, ' ');
 
+// readiness payload from the decorator (computed in-canvas, DERIVED from
+// grammar). The markers themselves render out here in the editor chrome — an
+// iframe can't paint into the backdrop beside it.
+type MkItem = { label: string; met: boolean; jump: string; addpath?: string };
+type MkGroup = { label: string; items: MkItem[] };
+type Marker = { top: number; prefix: string; done: boolean; count: number; groups: MkGroup[] };
+
 /**
  * The page editor. The page renders in an IFRAME that loads the canonical CSS
  * (copied from the repo) and a body produced by EXECUTING the repo's own
@@ -21,15 +28,22 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
   const docRef = useRef<PageDoc>(loadPageDoc(page));
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [saved, setSaved] = useState(false);
-  // page readiness — DERIVED in the canvas (decorator reads grammar `required`),
-  // reported up here for the page-level pill. { incomplete, ready }
-  const [ready, setReady] = useState<{ incomplete: number; ready: boolean } | null>(null);
+  // per-section readiness markers (DERIVED in-canvas, rendered in the backdrop)
+  const [markers, setMarkers] = useState<Marker[]>([]);
+  // the iframe's offset within the scroll area, so markers align to the canvas
+  const [mkBox, setMkBox] = useState<{ left: number; top: number }>({ left: 0, top: 0 });
+  const [openMk, setOpenMk] = useState<number | null>(null);
   // add-section picker: null = closed, number = the insert index the seam carries
   const [pickerAt, setPickerAt] = useState<number | null>(null);
   const isHome = !!page.home; // home pages get home-only canon (e.g. the search bar)
 
   // built once — never changes, so the iframe never reloads
   const srcDoc = useMemo(() => buildCanvas(renderBody(docRef.current, isHome), skin), []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const measure = () => {
+    const ifr = iframeRef.current;
+    if (ifr) setMkBox({ left: ifr.offsetLeft, top: ifr.offsetTop });
+  };
 
   useEffect(() => {
     const swapBody = () => {
@@ -39,21 +53,27 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
       (ifr.contentWindow as any)?.__decorate?.();
     };
     (window as any).__peField = (path: string, html: string) => { setIn(docRef.current, path, html); setSaved(false); };
-    (window as any).__peAction = (action: string) => { applyAction(docRef.current, action); setSaved(false); swapBody(); };
+    (window as any).__peAction = (action: string) => { applyAction(docRef.current, action); setSaved(false); setOpenMk(null); swapBody(); };
     (window as any).__peResize = (h: number) => { if (iframeRef.current) iframeRef.current.style.height = Math.max(h, 480) + 'px'; };
     (window as any).__peOpenPicker = (index: number) => setPickerAt(typeof index === 'number' ? index : 0); // seam → picker (carries insert position)
     (window as any).__peDoc = () => docRef.current; // decorator reads current values (e.g. toolbar editors)
-    (window as any).__peReadiness = (r: { incomplete: number; ready: boolean }) => setReady(r); // derived in-canvas
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    (window as any).__peMarkers = (list: Marker[]) => { setMarkers(list); measure(); }; // readiness, derived in-canvas
+    const onKey = (e: KeyboardEvent) => { if (e.key !== 'Escape') return; if (openMkRef.current != null) setOpenMk(null); else onClose(); };
+    const onResize = () => measure();
     window.addEventListener('keydown', onKey);
-    return () => { delete (window as any).__peField; delete (window as any).__peAction; delete (window as any).__peResize; delete (window as any).__peOpenPicker; delete (window as any).__peDoc; delete (window as any).__peReadiness; window.removeEventListener('keydown', onKey); };
+    window.addEventListener('resize', onResize);
+    return () => { delete (window as any).__peField; delete (window as any).__peAction; delete (window as any).__peResize; delete (window as any).__peOpenPicker; delete (window as any).__peDoc; delete (window as any).__peMarkers; window.removeEventListener('keydown', onKey); window.removeEventListener('resize', onResize); };
   }, [onClose, isHome]);
+
+  // mirror openMk into a ref so the keydown handler (bound once) sees it live
+  const openMkRef = useRef<number | null>(null);
+  openMkRef.current = openMk;
 
   const save = () => { savePageDoc(page.id, docRef.current); setSaved(true); };
   const revert = () => {
     resetPageDoc(page.id);
     docRef.current = seedDoc(page);
-    setSaved(false);
+    setSaved(false); setOpenMk(null);
     const ifr = iframeRef.current;
     if (ifr?.contentDocument?.body) {
       ifr.contentDocument.body.innerHTML = renderBody(docRef.current, isHome);
@@ -61,15 +81,56 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
     }
   };
 
+  const jump = (it: MkItem) => { (iframeRef.current?.contentWindow as any)?.__peJump?.(it.jump, it.addpath); setOpenMk(null); };
+  const todoCount = markers.filter((m) => !m.done).length;
+  const left = (m: Marker) => Math.max(6, mkBox.left - 50); // 50px into the backdrop, left of the canvas
+
   return (
     <div id="pe-overlay">
-      <div className="pe-canvas-area">
-        <iframe ref={iframeRef} className="pe-canvas" title="Page editor" srcDoc={srcDoc} style={{ height: 600 }} />
+      <div className="pe-canvas-area" onMouseDown={(e) => { if (!(e.target as HTMLElement).closest('.pe-mk, .pe-mk-panel')) setOpenMk(null); }}>
+        <iframe ref={iframeRef} className="pe-canvas" title="Page editor" srcDoc={srcDoc} style={{ height: 600 }} onLoad={measure} />
+        {/* readiness rail — out in the backdrop, aligned to each section */}
+        {markers.map((m, i) => (
+          <React.Fragment key={i}>
+            <button
+              className={`pe-mk ${m.done ? 'done' : 'todo'} ${openMk === i ? 'open' : ''}`}
+              style={{ top: mkBox.top + m.top + 6, left: left(m) }}
+              title={m.done ? 'Section ready' : `${m.count} required left`}
+              onClick={(e) => { e.stopPropagation(); setOpenMk(openMk === i ? null : i); }}
+            >
+              <span className="pe-mk-tri">{m.done ? <IcCheck /> : <IcTri />}</span>
+              {!m.done && <span className="pe-mk-count">{m.count}</span>}
+            </button>
+            {openMk === i && (
+              <div className="pe-mk-panel" style={{ top: mkBox.top + m.top, left: left(m) + 46 }} onMouseDown={(e) => e.stopPropagation()}>
+                <div className="pe-mk-head">
+                  <span className="pi">{m.done ? <IcCheck /> : <IcTri />}</span>
+                  <span className="pt">{m.done ? 'Section ready' : 'Needs attention'}</span>
+                  <span className="pn">{m.done ? 'complete' : `${m.count} required`}</span>
+                </div>
+                {m.done ? (
+                  <div className="pe-mk-allgood"><span className="pi"><IcCheck /></span> Everything required is in place.</div>
+                ) : (
+                  m.groups.filter((g) => g.items.some((it) => !it.met)).map((g, gi) => (
+                    <div className="pe-mk-cat" key={gi}>
+                      <div className="pe-mk-cat-label">{g.label}</div>
+                      {g.items.map((it, ii) => (
+                        <button key={ii} className={`pe-mk-item ${it.met ? 'met' : ''}`} disabled={it.met} onClick={() => !it.met && jump(it)}>
+                          <span className="box" /><span className="tx">{it.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+          </React.Fragment>
+        ))}
       </div>
       <div id="pe-chrome">
-        {ready && (
-          <span className={`pe-pgstat ${ready.ready ? 'done' : 'todo'}`} title="Derived from the grammar's required fields">
-            {ready.ready ? <><IcCheck />Page ready</> : <><IcTri />{ready.incomplete} section{ready.incomplete !== 1 ? 's' : ''} need attention</>}
+        {markers.length > 0 && (
+          <span className={`pe-pgstat ${todoCount === 0 ? 'done' : 'todo'}`} title="Derived from the grammar's required fields">
+            {todoCount === 0 ? <><IcCheck />Page ready</> : <><IcTri />{todoCount} section{todoCount !== 1 ? 's' : ''} need attention</>}
           </span>
         )}
         {saved && <span className="pe-chip-status"><IcCheck />saved</span>}

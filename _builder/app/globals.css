@@ -134,6 +134,44 @@ button{ font-family:inherit; }
 /* centered floating sheet (gutters left/right for future UI); iframe auto-resizes */
 .pe-canvas-area{ position:absolute; inset:0; overflow-y:auto; display:flex; justify-content:center; align-items:flex-start; padding:60px 40px; }
 .pe-canvas{ width:min(900px,100%); border:none; border-radius:10px; background:#fff; box-shadow:0 30px 90px rgba(0,0,0,.55), 0 6px 20px rgba(0,0,0,.32); display:block; flex-shrink:0; }
+
+/* ════ READINESS MARKERS — rendered out in the backdrop, to the LEFT of the
+   canvas, aligned to each section (the decorator posts each section's offset
+   + its derived readiness; positions are inline). Scrolls with the canvas
+   because these are absolute children of the scroll area. ════ */
+.pe-mk{ position:absolute; width:34px; height:34px; border:0; padding:0; cursor:pointer; background:none; z-index:30; }
+.pe-mk-tri{ width:34px; height:34px; border-radius:11px; display:flex; align-items:center; justify-content:center; transition:transform .18s cubic-bezier(.2,.8,.2,1), background .2s, color .2s, border-color .2s; }
+.pe-mk-tri svg{ width:18px; height:18px; }
+.pe-mk.todo .pe-mk-tri{ background:linear-gradient(180deg,#fdf0da,#f8e3c2); border:1px solid #f0cf9a; box-shadow:0 4px 14px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.9); color:#b9791f; }
+.pe-mk.done .pe-mk-tri{ background:linear-gradient(180deg,#ecf7ef,#dcefe3); border:1px solid #bfe2cc; box-shadow:0 4px 14px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.9); color:#3f8f5b; }
+.pe-mk:hover .pe-mk-tri{ transform:scale(1.08); } .pe-mk:active .pe-mk-tri{ transform:scale(.9); }
+.pe-mk.open.todo .pe-mk-tri{ background:#c98a2b; color:#fff; border-color:#c98a2b; }
+.pe-mk.open.done .pe-mk-tri{ background:#3f8f5b; color:#fff; border-color:#3f8f5b; }
+@keyframes peMkPulse{ 0%,100%{ box-shadow:0 4px 14px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.9);} 50%{ box-shadow:0 4px 14px rgba(0,0,0,.4), 0 0 0 4px rgba(201,138,43,.22), inset 0 1px 0 rgba(255,255,255,.9);} }
+.pe-mk.todo:not(.open) .pe-mk-tri{ animation:peMkPulse 2.8s ease-in-out infinite; }
+.pe-mk-count{ position:absolute; top:-5px; right:-5px; min-width:15px; height:15px; padding:0 3px; border-radius:8px; background:#c98a2b; color:#fff; font-family:'JetBrains Mono',monospace; font-size:8px; font-weight:600; display:flex; align-items:center; justify-content:center; box-shadow:0 1px 3px rgba(0,0,0,.4); }
+.pe-mk-panel{ position:absolute; width:290px; z-index:40; border-radius:16px; padding:6px; background:#fffdfa; border:1px solid rgba(255,255,255,.7);
+  box-shadow:0 26px 64px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.9); animation:peMkPanel .2s cubic-bezier(.2,.9,.25,1.1); }
+.pe-mk-panel::before{ content:''; position:absolute; left:-7px; top:18px; width:13px; height:13px; background:#fffdfa; border-left:1px solid rgba(255,255,255,.7); border-bottom:1px solid rgba(255,255,255,.7); transform:rotate(45deg); }
+@keyframes peMkPanel{ from{ opacity:0; transform:scale(.9) translateX(-6px);} to{ opacity:1; transform:none;} }
+.pe-mk-head{ display:flex; align-items:center; gap:9px; padding:10px 10px 9px; }
+.pe-mk-head .pi{ width:24px; height:24px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex:none; } .pe-mk-head .pi svg{ width:14px; height:14px; }
+.pe-mk.todo ~ .pe-mk-panel .pe-mk-head .pi, .pe-mk-panel .pe-mk-head .pi{ background:#fbe6cf; color:#c98a2b; }
+.pe-mk-head .pt{ font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:14px; color:#1c1a17; }
+.pe-mk-head .pn{ margin-left:auto; font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.12em; text-transform:uppercase; color:#8a8175; }
+.pe-mk-cat{ margin:2px 4px 0; }
+.pe-mk-cat-label{ font-family:'JetBrains Mono',monospace; font-size:7.5px; letter-spacing:.16em; text-transform:uppercase; color:#8a8175; padding:9px 6px 5px; display:flex; align-items:center; gap:6px; }
+.pe-mk-cat-label::after{ content:''; flex:1; height:1px; background:rgba(20,18,14,.10); }
+.pe-mk-item{ display:flex; align-items:flex-start; gap:9px; width:100%; text-align:left; padding:8px; border:0; background:transparent; border-radius:9px; cursor:pointer; transition:.12s; }
+.pe-mk-item:hover:not(:disabled){ background:rgba(37,99,235,.08); }
+.pe-mk-item .box{ width:15px; height:15px; border-radius:5px; flex:none; margin-top:1px; border:1.6px solid #f0cf9a; background:#fff; position:relative; }
+.pe-mk-item.met{ cursor:default; }
+.pe-mk-item.met .box{ border-color:#3f8f5b; background:#3f8f5b; }
+.pe-mk-item.met .box::after{ content:''; position:absolute; left:4px; top:1px; width:4px; height:8px; border:solid #fff; border-width:0 1.7px 1.7px 0; transform:rotate(45deg); }
+.pe-mk-item .tx{ font-size:12.5px; line-height:1.35; color:#1c1a17; }
+.pe-mk-item.met .tx{ color:#8a8175; text-decoration:line-through; text-decoration-color:rgba(0,0,0,.25); }
+.pe-mk-allgood{ display:flex; align-items:center; gap:9px; padding:13px 12px; color:#3f8f5b; font-size:13px; }
+.pe-mk-allgood .pi{ width:24px; height:24px; border-radius:8px; background:#e3f3e8; display:flex; align-items:center; justify-content:center; } .pe-mk-allgood .pi svg{ width:14px; height:14px; }
 /* ── LIQUID GLASS floating chrome (top-right). This frosted-pill treatment is the
    standing UI design language for the builder going forward. ── */
 #pe-chrome{ position:fixed; top:16px; right:16px; z-index:1002; display:flex; gap:8px; align-items:center; }
