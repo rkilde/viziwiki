@@ -355,7 +355,7 @@ const AFFORDANCE = `
   /* info "i" beside a toggle — the explanatory bubble is PORTALED to <body> as
      a fixed .dr-tip (below) so it clears every overflow:clip container (modal,
      card) and stacks above all chrome. The icon itself is just the trigger. */
-  .dr-info{ position:relative; display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; color:rgba(0,0,0,.4); cursor:help; outline:none; }
+  .dr-info{ position:relative; display:inline-flex; align-items:center; justify-content:center; vertical-align:middle; width:16px; height:16px; color:rgba(0,0,0,.4); cursor:help; outline:none; }
   .dr-info svg{ width:15px; height:15px; }
   .dr-info:hover, .dr-info:focus{ color:#2563eb; }
   /* the single shared tooltip bubble — fixed, top-layer, never clipped */
@@ -459,6 +459,9 @@ const AFFORDANCE = `
   .cc-pop-label-i{ display:flex; align-items:center; gap:6px; }
   .cc-pop-label-i .dr-info{ width:14px; height:14px; color:rgba(0,0,0,.4); }
   .cc-pop-label-i .dr-info svg{ width:13px; height:13px; }
+  /* the timeline tag is a tiny 8px label — shrink its inline "i" to match */
+  .sc-tag .dr-info{ width:12px; height:12px; margin-left:5px; }
+  .sc-tag .dr-info svg{ width:12px; height:12px; }
   .cc-pop.lane-pop{ min-width:230px; }
   .cc-pop.lane-pop .cc-enum{ grid-template-columns:repeat(2,1fr); }
   .cc-pop.lane-pop .cc-month-grid{ grid-template-columns:repeat(4,1fr); }   /* the date picker's month grid */

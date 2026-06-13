@@ -815,7 +815,9 @@
               (function (p) { noteChip.onclick = function () { A('add:' + p); }; })(cpre + 'note');
             }
             cnt.appendChild(noteChip);   // INLINE in the count line (canon position)
-            infoIcon(cnt, 'An optional short qualifier shown after the item count on this category card (e.g. “12 items · seasonal” or “· discontinued”). Use it to flag something about the whole category at a glance.');
+            // the explainer "i" only sits beside the "+ note" prompt — once a note
+            // is added it's self-evident, so the icon goes away.
+            if (cdata.note == null) infoIcon(cnt, 'An optional short qualifier shown after the item count on this category card (e.g. “12 items · seasonal” or “· discontinued”). Use it to flag something about the whole category at a glance.');
           }
 
           // the glass dock (bottom-right): color · ribbon · remove
@@ -1108,7 +1110,8 @@
             (function (kk) { dateEl.onclick = function (e) { e.stopPropagation(); openDatePop(dateEl, kk); }; })(k);
           }
           // tag / title / preview (no layout impact → plain .ce, no re-render)
-          wrapCE(qs('.sc-tag', st), epre + 'tag');
+          var tagEl = qs('.sc-tag', st);
+          if (tagEl) { wrapCE(tagEl, epre + 'tag'); infoIcon(tagEl, 'An optional short label above the event title — a category or phase tag (e.g. “Launch”, “Hardware”, “Era 1”). Use it to group or flag related events at a glance.'); }
           wrapCE(qs('.sc-title', st), epre + 'title');
           wrapCE(qs('.sc-prose', st), epre + 'preview');
           // remove event (× inside the card corner), only above the grammar min
