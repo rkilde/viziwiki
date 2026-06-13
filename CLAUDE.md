@@ -316,28 +316,39 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
 - The **builder app** (`_builder/`, see "The builder app" above) is substantially
   built — derived renderer, section picker, in-place decorator, readiness rail,
   scaled + centered true-1080 desktop preview — with **all 6 extracted banks
-  onboarded** (catalog/timeline/config/spec/lifecycle-lane/delta). Frontier: extract
-  the next banks (swim-lane / ladder / tile-directory / quote-wall), then the back-end.
-- **Admin / builder back-end (master access + in-page edit mode).** The site is
-  static (Cloudflare Pages) and content is already data-in-git, so no DB is
-  needed to start — a "back-end" here = **auth + the builder writing data back +
-  redeploy**. Recommended path (keeps the static/git single-source model):
-  (1) **auth** — Cloudflare Access (Zero-Trust, owner-email gated) in front of an
-  `/admin` route + a Worker holding a **GitHub App** token server-side (keeps the
-  write token out of the browser); or GitHub OAuth in-browser as the simpler
-  bridge. Master = repo admin; contributors = restricted role / PR-only.
-  (2) **editor** — wire OUR builder kit to read a page's `catalog:` front-matter
-  and commit edits via the **GitHub Contents API** (`visuals.yml` is already the
-  registry it reads); a fast bridge is an off-the-shelf git CMS (Sveltia/Decap/
-  Tina) configured against the front-matter schema. (3) **edit mode** — admin-only
-  "Edit" affordance on any live page opens the builder pre-loaded with that page's
-  data. (4) **draft→publish** — saves land on a `draft` branch (preview deploy),
-  "Publish" = merge to main; Cloudflare already rebuilds on push. Trade-off: saves
-  cost a deploy cycle (seconds), not instant-live — fine for a wiki; true instant
-  editing would mean a dynamic app + DB (bigger leap, not now). NOTE: the auth/
-  OAuth/Access/GitHub-App pieces need setup in the owner's GitHub + Cloudflare
-  dashboards (can't be done from the agent env) — code can be built here, clicks
-  walked through.
+  onboarded** (catalog/timeline/config/spec/lifecycle-lane/delta). Two active tracks:
+  **(a) the Supabase back-end** (the public-contributor platform — now the decided
+  direction, see below) and **(b) more banks** (swim-lane / ladder / tile-directory /
+  quote-wall) so the builder can express more page types.
+- **Back-end = the public contributor platform (DECIDED — Supabase).** Target: a
+  crowdsourced platform in the class of **Wikipedia / Fandom** — many wikis, many
+  *public* contributors, moderation, near-instant edits. That scope means a
+  **database backend, not the git/file path** (a commit-per-save + deploy-per-publish
+  model can't carry public scale or public sign-ups). The architecture already has
+  the seam for it: **`_builder/content-store.ts`** defines ONE `ContentStore`
+  interface (`listWikis/listPages/loadPage/savePage/createPage/deletePage`) that the
+  builder UI imports *exclusively* — so the backend swaps WITHOUT touching the builder
+  ("no transfer headache"). Two implementations are stubbed today (both throw TODO;
+  the builder still saves to the `localStorage` stand-in — `lib/store.ts` /
+  `app/page.tsx`):
+    · `GitContentStore` — front-matter + GitHub-API commits; *friends-and-family / dev*
+      only (every save = a deploy cycle). NOT the path for this scope.
+    · `SupabaseContentStore` — **the chosen path.** Postgres `wikis / pages / sections`
+      (section `data` as `jsonb`, validated against `grammar.yml`), **Supabase Auth**
+      (real accounts + roles: admin / contributor / viewer), **Supabase Storage**
+      (media uploads — the grammar's image fields already point here). Instant saves,
+      no rebuild.
+  Build order: (1) wire `SupabaseContentStore` (schema + the six methods, grammar as
+  the validator) and switch the builder off `localStorage`; (2) **auth + roles** —
+  sign-up / sessions, a roles table, row-level security so a contributor edits only
+  what their role allows; (3) **moderation** — contributor edits land as
+  drafts/proposals; an admin approves → published (Wikipedia/Fandom-style review).
+  The dynamic DB serves the **content**; the static Jekyll site stays the
+  single-source home for **canon/design** — the CSS layers, the Liquid includes,
+  `grammar.yml` (the schema both the builder and the DB validate against). Caveat: the
+  Supabase project + auth providers are created in the owner's dashboards (not from the
+  agent env) — code is built here, the dashboard clicks walked through. See
+  `_builder/README.md` + `docs/registry-grammar-proposal.md`.
 - **Vizi-verse** (the narrative side; currently only `top-10.html`) — deferred.
 
 ---
