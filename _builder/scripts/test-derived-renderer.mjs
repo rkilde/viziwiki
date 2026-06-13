@@ -674,8 +674,9 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   renderAndDecorate(doc, false, undefined, (w) => { w.__peMarkers = (list) => { mk = list; }; });
   const pcard = ((mk[mk.length - 1] || {}).cards || []).find((c) => /Photo/.test(c.kind));
   const plabels = pcard ? pcard.reqs.map((r) => r.label) : [];
-  ok(plabels.includes('add image') && plabels.includes('alt text'), 'widget tracks each photo\'s image + alt text');
-  ok(/\.alt(\s|$)/.test(img.getAttribute('data-pe-jump') || ''), 'the image is the jump target for alt too (alt readiness opens the image editor, not the title)');
+  ok(plabels.includes('add image'), 'widget tracks each photo\'s image (required)');
+  ok(!plabels.includes('alt text'), 'alt text is optional — not a readiness requirement');
+  ok(/\.alt(\s|$)/.test(img.getAttribute('data-pe-jump') || ''), 'the image is still the editor for alt (jump target), even though alt is optional');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

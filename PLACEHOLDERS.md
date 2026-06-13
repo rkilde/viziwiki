@@ -164,7 +164,7 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 | `tone` |  | enum | `special`  _(choice: a · b · special)_ |
 | `photos` | • | list<photo> | _(template — see sub-fields)_ |
 | `photos[].src` | • | media | `image URL` |
-| `photos[].alt` | • | text | `describe the photo` |
+| `photos[].alt` |  | text | `describe the photo` |
 | `photos[].strong` |  | text | `Image Title` |
 | `photos[].caption` |  | text | `Caption` |
 | `photos[].source` |  | text | `· source` |

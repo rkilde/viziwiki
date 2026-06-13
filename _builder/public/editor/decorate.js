@@ -1752,7 +1752,7 @@
         // editing the URL live-previews onto the card image. alt rides along.
         var openImgPop = function (anchor, ppre, pd) {
           var html = '<div class="cc-pop-label">Image URL</div><input type="text" class="cc-img-url" placeholder="' + eaP(srcBlankP) + '" value="' + eaP(pd.src) + '">'
-            + '<div class="cc-pop-label" style="margin-top:11px">Alt text <span class="cc-opt">(for accessibility)</span></div><input type="text" class="cc-img-alt" placeholder="' + eaP(altBlankP) + '" value="' + eaP(pd.alt) + '">'
+            + '<div class="cc-pop-label" style="margin-top:11px">Alt text <span class="cc-opt">(for accessibility)</span> ' + infoI('A short written description of the photo, for accessibility — screen readers read it aloud to blind and low-vision visitors, and it shows in place of the image if the file fails to load. It is NOT visible on the page. Optional: describe what the photo shows (e.g. "iPod touch 2G being unboxed"); no need to start with "image of".') + '</div><input type="text" class="cc-img-alt" placeholder="' + eaP(altBlankP) + '" value="' + eaP(pd.alt) + '">'
             + '<button class="cc-apply cc-img-apply">Apply</button>';
           var pop = openPop(anchor, '', html, { cls: 'lane-pop img-pop', onClose: function () { A('commit'); } });
           var u = qs('.cc-img-url', pop), a = qs('.cc-img-alt', pop), card = anchor.closest('.photo-rail-card'), im = card && qs('img', card);
@@ -1795,7 +1795,13 @@
             grip.addEventListener('dragend', function () { card.classList.remove('pe-dragging'); prCards.forEach(function (c) { c.classList.remove('pe-drop-before', 'pe-drop-after'); }); window.__pePhotoDrag = null; });
             card.addEventListener('dragover', function (e) { if (window.__pePhotoDrag == null || window.__pePhotoDrag === kk) return; e.preventDefault(); var rc = card.getBoundingClientRect(); var after = (e.clientX - rc.left) > rc.width / 2; card.classList.toggle('pe-drop-after', after); card.classList.toggle('pe-drop-before', !after); });
             card.addEventListener('dragleave', function () { card.classList.remove('pe-drop-before', 'pe-drop-after'); });
-            card.addEventListener('drop', function (e) { e.preventDefault(); var from = window.__pePhotoDrag; if (from == null || from === kk) return; card.classList.remove('pe-drop-before', 'pe-drop-after'); var rc = card.getBoundingClientRect(); var after = (e.clientX - rc.left) > rc.width / 2; var to = kk; if (after && from > kk) to = kk + 1; else if (!after && from < kk) to = kk - 1; if (to === from) return; dragReorder(qs('.photo-rail-scroll', secEl), qsa('.photo-rail-card', secEl), from, to, prefix + 'photos'); });
+            // reorder via a clean data-mutation + full re-render (A → swapBody),
+            // NOT the optimistic DOM shuffle: the rail's add tile lives inside the
+            // same horizontally-scrolled flex track, and appending nodes around it
+            // during the FLIP desynced the DOM from the data — a card would vanish
+            // (and only return on the next render). Rendering straight from data
+            // keeps the DOM and the array in lockstep.
+            card.addEventListener('drop', function (e) { e.preventDefault(); var from = window.__pePhotoDrag; if (from == null || from === kk) return; card.classList.remove('pe-drop-before', 'pe-drop-after'); var rc = card.getBoundingClientRect(); var after = (e.clientX - rc.left) > rc.width / 2; var to = kk; if (after && from > kk) to = kk + 1; else if (!after && from < kk) to = kk - 1; window.__pePhotoDrag = null; if (to === from) return; A('lmove:' + prefix + 'photos:' + from + ':' + to); });
           })(k);
           card.appendChild(grip);
         });

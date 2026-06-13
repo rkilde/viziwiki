@@ -1157,7 +1157,6 @@
           },
           "alt": {
             "type": "text",
-            "required": true,
             "label": "alt text",
             "blank": "describe the photo"
           },
@@ -1184,7 +1183,7 @@
           }
         ]
       },
-      "min": "≥1 photo, each with an image + alt text"
+      "min": "≥1 photo, each with an image (alt text optional)"
     },
     "catalog": {
       "section": "catalog-section",

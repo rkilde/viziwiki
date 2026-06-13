@@ -326,7 +326,7 @@ components:
         # src is `media` — a URL today; a Supabase Storage upload later, with no
         # change to this bank or its rendered <img>.
         src:     { type: media, required: true, label: "add image", blank: "image URL" }
-        alt:     { type: text,  required: true, label: "alt text", blank: "describe the photo" }
+        alt:     { type: text,  label: "alt text", blank: "describe the photo" }
         # caption text — all three optional, mirroring the image-rail caption:
         # a top bold title, then a caption line, then a dotted source line.
         strong:  { type: text,  blank: "Image Title" }
@@ -335,7 +335,7 @@ components:
     seed:
       photos:
         - { strong: "Image Title", caption: "Caption", source: "· source" }
-    min: "≥1 photo, each with an image + alt text"
+    min: "≥1 photo, each with an image (alt text optional)"
 
   # ---- CATALOG — the data-driven list + expandable cards ---------------
   catalog:
