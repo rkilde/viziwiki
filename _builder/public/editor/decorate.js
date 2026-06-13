@@ -1264,17 +1264,17 @@
             + '<div><div class="dr-label">Unit</div><select class="dr-input dr-select dr-unit"><option' + (idata.unit !== 'TB' ? ' selected' : '') + '>GB</option><option' + (idata.unit === 'TB' ? ' selected' : '') + '>TB</option></select></div>'
             // price + its price-drop toggle + the revised price are GROUPED here
             + '<div><div class="dr-label">Price</div><input class="dr-input dr-price" value="' + ea(oldP) + '">'
-            +   '<div class="tog-row" style="margin-top:8px"><button class="tog dr-drop' + (hasArrow ? ' on' : '') + '"><span class="tog-pip"></span>Price drop (→)</button><span class="dr-info" tabindex="0" data-tip="' + ea('Turn on when this configuration’s price was CUT during its life. It shows the old price struck through with an arrow to the new, lower price (e.g. $399 → $299). Leave off for a single, unchanged price.') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span></div>'
+            +   '<div class="tog-row" style="margin-top:8px"><button class="tog dr-drop' + (hasArrow ? ' on' : '') + '"><span class="tog-pip"></span>Price drop (→)</button>' + infoI('Turn on when this configuration’s price was CUT during its life. It shows the old price struck through with an arrow to the new, lower price (e.g. $399 → $299). Leave off for a single, unchanged price.') + '</div>'
             +   (hasArrow ? '<div style="margin-top:8px"><div class="dr-label">Revised price</div><input class="dr-input dr-price2" value="' + ea(newP) + '"></div>' : '')
             + '</div>'
             + '</div>'
             + '<div class="dr-row c2">'
-            + '<div><div class="dr-label dr-label-i">Model / model number<span class="dr-info" tabindex="0" data-tip="' + ea('A short way to tell this configuration apart from the others. Put either a plain descriptor (e.g. “Base”, “Mid”, “Top”) or the literal model/part number (e.g. “A2178 · MVJD2LL/A”) — whichever best distinguishes it.') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span></div><input class="dr-input dr-model" value="' + ea(idata.model || '') + '"></div>'
+            + '<div><div class="dr-label dr-label-i">Model / model number' + infoI('A short way to tell this configuration apart from the others. Put either a plain descriptor (e.g. “Base”, “Mid”, “Top”) or the literal model/part number (e.g. “A2178 · MVJD2LL/A”) — whichever best distinguishes it.') + '</div><input class="dr-input dr-model" value="' + ea(idata.model || '') + '"></div>'
             + '<div><div class="dr-label">Dates available</div><input class="dr-input dr-dates" value="' + ea(idata.dates || '') + '"></div>'
             + '</div>'
             + '<div><div class="dr-label" style="margin-bottom:8px">Options</div><div class="tog-row">'
             + '<button class="tog dr-revised' + (idata.revised ? ' on' : '') + '"><span class="tog-pip"></span>Mark as special configuration</button>'
-            + '<span class="dr-info" tabindex="0" data-tip="' + ea("Sets a model apart from the standard tiers: it drops below a hairline divider with a striped bar. Use it for a config that doesn't share the lineup's hardware. Real case — the iPod touch (5th gen) shipped in 32 & 64 GB; a year later a cheaper 16 GB 'A1509' arrived with no rear camera, no flash and no loop, in Silver only. Marking it special drops it below the divider with its own note, so it reads as the stripped-down budget exception rather than a normal third tier.") + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>'
+            + infoI("Sets a model apart from the standard tiers: it drops below a hairline divider with a striped bar. Use it for a config that doesn't share the lineup's hardware. Real case — the iPod touch (5th gen) shipped in 32 & 64 GB; a year later a cheaper 16 GB 'A1509' arrived with no rear camera, no flash and no loop, in Silver only. Marking it special drops it below the divider with its own note, so it reads as the stripped-down budget exception rather than a normal third tier.")
             + '</div>'
             + (idata.revised ? '<div style="margin-top:8px"><div class="dr-label">Special configuration label</div><input class="dr-input dr-divlabel" value="' + ea(sdata.divider_label || '') + '" placeholder="e.g. special edition"></div>' : '')
             + '</div>'
@@ -1516,17 +1516,6 @@
         lockCanon(qs('.lane-range', secEl), 'Auto-derived from the segment dates & versions — never hand-typed');
         lockCanon(qs('.lane-legend', secEl), 'Auto-derived from the support tiers present');
 
-        // small chip editor (the weighted-mode end-date control below the chart)
-        var laneChip = function (label, path, val, blank, removable) {
-          var chip = document.createElement('span'); chip.className = 'pe-chip'; chip.appendChild(document.createTextNode(label + ' '));
-          var ce = document.createElement('span'); ce.className = 'ce'; ce.setAttribute('contenteditable', 'true'); ce.setAttribute('data-pe-path', path);
-          if (blank != null) ce.setAttribute('data-ph', blank); ce.textContent = (val != null ? val : (blank || ''));
-          ce.addEventListener('blur', function () { if ((ce.textContent || '') === String(val == null ? '' : val)) return; P(path, ce); A('commit'); }); chip.appendChild(ce);
-          if (removable) { var rm = document.createElement('button'); rm.className = 'pe-tag-rm'; rm.style.opacity = '1'; rm.textContent = '×'; rm.title = 'Remove'; armDelete(rm, function () { A('rm:' + path); }); chip.appendChild(rm); }
-          return chip;
-        };
-
-
         // segments
         var segTypes = (R('lifecycle-lane.segments[].type').enum) || [];
         var badgeTypes = (R('lifecycle-lane.segments[].badge_type').enum) || [];
@@ -1538,17 +1527,20 @@
         // segment controller AND the standalone date popover. Edits are live (PV);
         // the caller commits once → the canon re-sorts + the tiles FLIP (laneSnap).
         var laneMonths = (R('timeline.events[].month').enum) || ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        var laneMonthOf = function (sd) { var dm = String(sd.date == null ? '' : sd.date).match(/([A-Za-z]+)\s*(\d{4})/); var mo = ''; if (dm) { var mm = dm[1].slice(0, 3).toLowerCase(); laneMonths.forEach(function (m) { if (m.toLowerCase() === mm) mo = m; }); } return { mo: mo, yr: dm ? dm[2] : '' }; };
-        var dateGridHtml = function (sd, top) {
-          var d0 = laneMonthOf(sd);
-          return '<div class="cc-pop-label"' + (top ? ' style="margin-top:13px"' : '') + '>Date</div><div class="cc-enum cc-month-grid">'
+        var laneMonthOf = function (dateStr) { var dm = String(dateStr == null ? '' : dateStr).match(/([A-Za-z]+)\s*(\d{4})/); var mo = ''; if (dm) { var mm = dm[1].slice(0, 3).toLowerCase(); laneMonths.forEach(function (m) { if (m.toLowerCase() === mm) mo = m; }); } return { mo: mo, yr: dm ? dm[2] : '' }; };
+        var dateGridHtml = function (dateStr, top, lab) {
+          var d0 = laneMonthOf(dateStr);
+          return '<div class="cc-pop-label"' + (top ? ' style="margin-top:13px"' : '') + '>' + (lab || 'Date') + '</div><div class="cc-enum cc-month-grid">'
             + laneMonths.map(function (m) { return '<button class="cc-enum-opt' + (m === d0.mo ? ' sel' : '') + '" data-m="' + m + '">' + m + '</button>'; }).join('') + '</div>'
             + '<input type="text" class="cc-lane-year" inputmode="numeric" maxlength="4" placeholder="Year" value="' + ea2(d0.yr) + '">';
         };
-        var wireDateGrid = function (pop, spre, sd, onChange) {
+        // path = the FULL data path to the date string (e.g. "...segments.2.date"
+        // or "...end") — so the same picker drives any date field; year is
+        // restricted to 4 numeric digits.
+        var wireDateGrid = function (pop, path, dateStr, onChange) {
           var yr = qs('.cc-lane-year', pop); if (!yr) return;
-          var selMo = laneMonthOf(sd).mo;
-          var write = function () { var y = (yr.value || '').trim(); if (selMo && /^\d{4}$/.test(y)) { PV(spre + 'date', selMo + ' ' + y); onChange(); } };
+          var selMo = laneMonthOf(dateStr).mo;
+          var write = function () { var y = (yr.value || '').trim(); if (selMo && /^\d{4}$/.test(y)) { PV(path, selMo + ' ' + y); onChange(); } };
           qsa('[data-m]', pop).forEach(function (b) { b.onclick = function () { qsa('[data-m]', pop).forEach(function (x) { x.classList.remove('sel'); }); b.classList.add('sel'); selMo = b.getAttribute('data-m'); write(); }; });
           yr.addEventListener('input', function () { yr.value = yr.value.replace(/\D/g, '').slice(0, 4); write(); });
           enterBlurI(yr);
@@ -1557,20 +1549,20 @@
           // version + DATE (month/year) + support type + badge — all in one
           var dirty = false, committed = false;
           var html = '<div class="cc-pop-label">Software version</div><input type="text" class="cc-lane-ver" placeholder="' + ea2(verBlank) + '" value="' + ea2(sd.ver) + '">'
-            + dateGridHtml(sd, true)
+            + dateGridHtml(sd.date, true)
             + '<div class="cc-pop-label cc-pop-label-i" style="margin-top:13px">Support type' + infoI('How well the device is supported at this version. Full (green) = full OS updates; Partial (amber) = limited/late updates; Dropped (grey) = no longer supported; Security (blue) = security-only patches after end-of-life.') + '</div><div class="cc-enum cc-lane-types">'
             + segTypes.map(function (t) { return '<button class="cc-enum-opt cc-type-' + t + (sd.type === t ? ' sel' : '') + '" data-t="' + t + '">' + t + '</button>'; }).join('') + '</div>'
             // BADGE = a bank of preset text+color combos (derived from the
             // badge_type enum + its grammar `presets` map). Pick one → sets the
             // text AND the colour together; no freeform typing.
-            + '<div class="cc-pop-label cc-pop-label-i" style="margin-top:13px">Badge<span class="dr-info" tabindex="0" data-tip="' + ea2("A badge is a small corner label on a tile — use it to flag a milestone: the Launch, the Final update, when support was Dropped, a Security-only patch, a Paid upgrade, or a Limited release. Optional.") + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span></div><div class="cc-enum cc-badge-bank">'
+            + '<div class="cc-pop-label cc-pop-label-i" style="margin-top:13px">Badge' + infoI("A badge is a small corner label on a tile — use it to flag a milestone: the Launch, the Final update, when support was Dropped, a Security-only patch, a Paid upgrade, or a Limited release. Optional.") + '</div><div class="cc-enum cc-badge-bank">'
             + badgeTypes.map(function (b) { var tx = (badgePresets[b] || b); var on = (sd.badge != null && (sd.badge_type || 'ship') === b) ? ' sel' : ''; return '<button class="cc-enum-opt cc-badge-' + b + on + '" data-bt="' + b + '" data-btx="' + ea2(tx) + '">' + tx + '</button>'; }).join('') + '</div>'
             + (sd.badge != null ? '<button class="cc-rm">Remove badge</button>' : '');
           // version + date are LIVE (PV); committed once on close (or when a type/
           // badge button commits, which also persists them) → re-sort + FLIP.
           var pop = openPop(anchor, '', html, { cls: 'lane-pop', onClose: function () { if (dirty && !committed) { laneSnap(); A('commit'); } } });
           var vi = qs('.cc-lane-ver', pop); if (vi) { enterBlurI(vi); vi.addEventListener('input', function () { PV(spre + 'ver', vi.value); dirty = true; }); }
-          wireDateGrid(pop, spre, sd, function () { dirty = true; });
+          wireDateGrid(pop, spre + 'date', sd.date, function () { dirty = true; });
           qsa('[data-t]', pop).forEach(function (b) { b.onclick = function () { committed = true; if (dirty) laneSnap(); closePop(); A('set:' + spre + 'type:' + b.getAttribute('data-t')); }; });
           qsa('[data-bt]', pop).forEach(function (b) { b.onclick = function () { committed = true; if (dirty) laneSnap(); closePop(); PV(spre + 'badge', b.getAttribute('data-btx')); PV(spre + 'badge_type', b.getAttribute('data-bt')); A('commit'); }; });
           var rm = qs('.cc-rm', pop); if (rm) rm.onclick = function () { committed = true; closePop(); A('rm:' + spre + 'badge'); };
@@ -1578,8 +1570,17 @@
         // standalone DATE picker (click the tile's date) — month/year only
         var openLaneDatePop = function (anchor, spre, sd) {
           var dirty = false;
-          var pop = openPop(anchor, '', dateGridHtml(sd, false), { cls: 'lane-pop date-pop', onClose: function () { if (dirty) { laneSnap(); A('commit'); } } });
-          wireDateGrid(pop, spre, sd, function () { dirty = true; });
+          var pop = openPop(anchor, '', dateGridHtml(sd.date, false), { cls: 'lane-pop date-pop', onClose: function () { if (dirty) { laneSnap(); A('commit'); } } });
+          wireDateGrid(pop, spre + 'date', sd.date, function () { dirty = true; });
+        };
+        // weighted-mode END-date picker (the ribbon's right edge) — same month/year
+        // grid as a segment date, wired to the optional `end` field. First open
+        // (no value yet) seeds the field so the readiness check flips to met only
+        // once the user actually picks a month + year.
+        var openLaneEndPop = function (anchor) {
+          var dirty = false;
+          var pop = openPop(anchor, '', dateGridHtml(sdata.end, false, 'End date'), { cls: 'lane-pop date-pop', onClose: function () { if (dirty) { laneSnap(); A('commit'); } } });
+          wireDateGrid(pop, prefix + 'end', sdata.end, function () { dirty = true; });
         };
         var enterBlurI = function (el) { el.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); el.blur(); } }); };
         // inline ver/date: single-line only — Enter LOCKS in (a stray newline/<br>
@@ -1681,8 +1682,12 @@
           wBtn.onclick = function () { A('set:' + prefix + 'weighted:' + (sdata.weighted ? 'false' : 'true')); }; foot.appendChild(wBtn);
           var winfo = document.createElement('span'); winfo.innerHTML = infoI('On: each tile’s WIDTH becomes proportional to the real time between versions — long support gaps look long, rapid releases look tight (a real time axis). Off: every tile is the same width (an even ribbon).'); foot.appendChild(winfo.firstChild);
           if (sdata.weighted) {
-            if (sdata.end != null) foot.appendChild(laneChip('end', prefix + 'end', sdata.end, R('lifecycle-lane.end').blank, true));
-            else foot.appendChild(addBtn('add:' + prefix + 'end', '+ end date', true));
+            // end date = a month/year picker (no freeform typing) — click to open;
+            // a × removes it when set.
+            var endTrig = document.createElement('button'); endTrig.className = 'pe-lane-endbtn' + (sdata.end != null ? ' set' : '');
+            endTrig.textContent = (sdata.end != null ? 'End: ' + sdata.end : '+ end date');
+            endTrig.onclick = function (e) { e.stopPropagation(); openLaneEndPop(endTrig); }; foot.appendChild(endTrig);
+            if (sdata.end != null) { var endRm = document.createElement('button'); endRm.className = 'pe-tag-rm'; endRm.style.opacity = '1'; endRm.textContent = '×'; endRm.title = 'Remove end date'; armDelete(endRm, function () { A('rm:' + prefix + 'end'); }); foot.appendChild(endRm); }
             var einfo = document.createElement('span'); einfo.innerHTML = infoI('The date the ribbon runs TO — it gives the LAST version’s tile a width (weighted mode measures each tile by the gap to the next date, and the last one has no next). Use today’s date if that version is still current, or the end-of-life date if support has fully ended.'); foot.appendChild(einfo.firstChild);
           }
           laneWrap.parentNode.insertBefore(foot, laneWrap.nextSibling);   // sibling AFTER the visual, not inside it

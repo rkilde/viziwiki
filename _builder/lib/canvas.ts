@@ -443,6 +443,12 @@ const AFFORDANCE = `
   .pe-lane-wbtn.on{ border-color:#c7d2fe; color:#4338ca; background:rgba(99,102,241,.07); }
   .pe-lane-wbtn.on .sw{ background:#6366f1; }
   .pe-lane-wbtn.on .sw::after{ transform:translateX(9px); }
+  /* end-date trigger — opens the month/year picker (not freeform). Dashed when
+     unset (an "add" affordance), solid chip once a date is picked. */
+  .pe-lane-endbtn{ display:inline-flex; align-items:center; padding:5px 11px; border-radius:999px; border:1px dashed rgba(0,0,0,.26);
+    background:#fff; cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.1em; text-transform:uppercase; color:rgba(0,0,0,.5); transition:.14s; }
+  .pe-lane-endbtn:hover{ border-color:rgba(0,0,0,.4); color:#1c1a17; }
+  .pe-lane-endbtn.set{ border-style:solid; border-color:rgba(0,0,0,.18); color:#1c1a17; }
   /* the locked range must never wrap (the lock's fit-content/max-width could
      otherwise cap + wrap it) — keep it one line at its natural width */
   .lane-range.pe-canon{ width:max-content; max-width:none; white-space:nowrap; }
