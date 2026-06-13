@@ -52,7 +52,11 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
   const [contentH, setContentH] = useState(600);  // iframe content height (logical px)
   const logicalW = CANVAS_W;
   const PAD = 80;                                  // .pe-canvas-area horizontal padding (40+40)
-  const scale = availW > 0 ? Math.min(1, (availW - PAD) / logicalW) : 1;
+  const DISPLAY_MAX = 900;                         // cap the ON-SCREEN width (old footprint); layout stays at logicalW
+  // scale = the smallest of: 1:1, the display cap, and the fit-to-area width.
+  // So the page always LAYS OUT at logicalW (1080) but is never drawn wider than
+  // DISPLAY_MAX — and still shrinks further on a narrow editor.
+  const scale = availW > 0 ? Math.min(1, DISPLAY_MAX / logicalW, (availW - PAD) / logicalW) : DISPLAY_MAX / logicalW;
 
   // built once — never changes, so the iframe never reloads
   const srcDoc = useMemo(() => buildCanvas(renderBody(docRef.current, isHome), skin), []); // eslint-disable-line react-hooks/exhaustive-deps
