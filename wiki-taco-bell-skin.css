@@ -65,6 +65,7 @@ body.wiki-taco-bell {
   /* ── Bank tokens: shared divider + ribbon + the category accent palette
         and the pre-defined status states (catalog / expandable-card bank) ── */
   --divider:        color-mix(in oklab, var(--foreground) 10%, transparent);
+  --cat-divider:    var(--section-divider, var(--divider));   /* keep TB's warm catalog hairline (now its own token) */
   --ribbon-fg:      #ffffff;
   /* locked "gone / phased out" ribbon grey — TB's warm desaturated tone
      (the original hardcoded discontinued-ribbon color). Never colorful. */

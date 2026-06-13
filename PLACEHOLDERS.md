@@ -61,11 +61,11 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 | `heading` | • | text | `Specifications heading` |
 | `device` | • | text | `Device · MODEL` |
 | `tone` |  | enum | `special`  _(choice: a · b · special)_ |
-| `cards` | • | list<card> | — |
-| `cards[].title` | • | text | `Card title` |
-| `cards[].icon` |  | icon | — |
-| `cards[].rows` | • | list<pair> | — |
-| `cards[].rows[].key` | • | text | `Label` |
+| `cards` | • | list<card> | _(template — see sub-fields)_ |
+| `cards[].title` | • | text | `Spec title` |
+| `cards[].icon` | • | icon | — |
+| `cards[].rows` | • | list<pair> | _(template — see sub-fields)_ |
+| `cards[].rows[].label` | • | text | `Label` |
 | `cards[].rows[].value` | • | text | `Value` |
 
 ## config
@@ -94,18 +94,18 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 
 | Field | Req | Type | Placeholder |
 |---|---|---|---|
-| `heading` | • | richtext | `Software-support heading` |
+| `heading` | • | richtext | `Heading` |
 | `title` | • | text | `Lifecycle title` |
-| `paragraphs` |  | list<richtext> | — |
+| `paragraphs` |  | list<richtext> | `intro text describing the software lifecycle of the device`  _(per new item)_ |
 | `tone` |  | enum | `a`  _(choice: a · b · special)_ |
 | `weighted` |  | bool | `false`  _(default)_ |
-| `end` |  | date | — |
-| `range_note` |  | text | — |
-| `segments` | • | list<segment> | — |
+| `end` |  | date | `Jan 2024` |
+| `range_note` |  | text | `note` |
+| `segments` | • | list<segment> | _(template — see sub-fields)_ |
 | `segments[].ver` | • | text | `Version` |
-| `segments[].date` | • | date | _(driver — real value, no placeholder)_ |
+| `segments[].date` | • | date | `Month Year` |
 | `segments[].type` | • | enum | `full`  _(choice: full · partial · dropped · security)_ |
-| `segments[].badge` |  | text | — |
+| `segments[].badge` |  | text | `Badge` |
 | `segments[].badge_type` |  | enum | `ship`  _(choice: ship · paid · limited · final · dropped · security)_ |
 | `notes` |  | list<note> | _(template — see sub-fields)_ |
 | `notes[].status` | • | enum | `full`  _(choice: full · partial · limited · final · dropped · security)_ |
@@ -157,7 +157,7 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 | `events[].tag` |  | text | `Add a tag` |
 | `events[].title` | • | text | `Name this event` |
 | `events[].preview` | • | text | `Add a short summary of what happened` |
-| `events[].body` |  | richtext | `Write the full story for the expandable card…` |
+| `events[].body` | • | richtext | `Write the full story for the expandable card…` |
 
 ## catalog
 

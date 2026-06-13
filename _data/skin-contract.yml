@@ -32,6 +32,7 @@ neutrals:
   - { token: --wiki-surface-bg,        replaces: [--card],                                  role: "card / panel / modal background" }
   - { token: --wiki-page-bg,           replaces: [--wiki-bg, --page, --paper],              role: "overall page / canvas background" }
   - { token: --wiki-divider-color,     replaces: [--section-divider, --divider],            role: "hairline / divider line" }
+  - { token: --wiki-cat-divider-color, replaces: [--cat-divider],                           role: "catalog card/modal hairline (visible by default, unlike the section divider)" }
 
 accent:
   - { token: --wiki-accent-on-light,   replaces: [--wiki-accent], role: "brand accent on a LIGHT surface" }

@@ -103,6 +103,12 @@ const AFFORDANCE = `
   .cc-swatch{ width:16px; height:16px; border-radius:50%; background:var(--cat-color);
     box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.9), 0 0 0 1px rgba(0,0,0,.14); }
   .cc-sep{ width:1px; height:18px; background:rgba(0,0,0,.12); margin:0 3px; }
+  /* drag-to-reorder: the dock grip + the dragged/drop-target card cues */
+  .cc-grip{ cursor:grab; }
+  .cc-grip:active{ cursor:grabbing; }
+  .cat-card.pe-dragging{ opacity:.4; }
+  .cat-card.pe-drop-before{ box-shadow:inset 0 3px 0 0 #6366f1; }
+  .cat-card.pe-drop-after{ box-shadow:inset 0 -3px 0 0 #6366f1; }
 
   .cc-pop{ position:fixed; z-index:1300; min-width:182px; padding:13px; border-radius:17px;
     background:var(--g-panel,#fff); border:var(--g-edge,1px solid rgba(255,255,255,.6));
@@ -202,8 +208,10 @@ const AFFORDANCE = `
   .pe-del-confirm svg{ width:12px; height:12px; }
   .pe-del-yes{ background:#c0392b; color:#fff; box-shadow:0 3px 10px rgba(192,57,43,.32); }
   .pe-del-yes:hover{ background:#a5281b; }
-  .pe-del-no{ background:rgba(20,18,14,.08); color:#8a8175; animation-delay:.04s; }
-  .pe-del-no:hover{ background:rgba(20,18,14,.14); color:#1c1a17; }
+  /* solid + bordered so "keep" stays visible on ANY background (a faint fill
+     vanished on dark bands like the spec sheet's signature band) */
+  .pe-del-confirm .pe-del-no{ background:#fff; box-sizing:border-box; border:1px solid rgba(0,0,0,.18); color:#5a5a5a; box-shadow:0 3px 10px rgba(0,0,0,.22); animation-delay:.04s; }
+  .pe-del-confirm .pe-del-no:hover{ background:#f1f1f1; color:#1c1a17; border-color:rgba(0,0,0,.34); }
   @keyframes pe-del-pop{ from{ opacity:0; transform:scale(.5); } to{ opacity:1; transform:none; } }
   /* category note: a dashed chip INLINE in the count line (canon position —
      "N items · note") — "+ note" to add, editable text + corner × when present */
@@ -317,9 +325,7 @@ const AFFORDANCE = `
      drawer for the full form. The bars stay CANON-sorted low→high (config.html);
      an inline/drawer capacity, unit or revised change re-runs that sort and the
      decorator FLIPs each row + bar into place (inline transitions). ════ */
-  .cfg-row{ position:relative; }
-  .cfg-cap .pe-cfg-unit{ cursor:pointer; border-radius:4px; padding:0 2px; transition:background .12s, color .12s; }
-  .cfg-cap .pe-cfg-unit:hover{ background:rgba(99,102,241,.12); color:#6366f1; }
+  .cfg-row{ position:relative; }   /* editor-only anchor for the row chevron (does NOT restate the canon grid) */
   /* per-row edit button (chevron), just right of the row */
   .row-edit-btn{ position:absolute; top:4px; right:-38px; width:26px; height:26px; border-radius:7px; border:1px solid rgba(0,0,0,.16);
     background:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; opacity:0; transition:opacity .14s;
@@ -355,6 +361,10 @@ const AFFORDANCE = `
   .dr-info::before{ content:''; position:absolute; left:6px; bottom:calc(100% + 3px); transform:translateY(5px) rotate(45deg); width:9px; height:9px; background:#0a0a0a; opacity:0; transition:opacity .14s ease, transform .14s ease; z-index:40; }
   .dr-info:hover::after, .dr-info:focus::after, .dr-info:hover::before, .dr-info:focus::before{ opacity:1; transform:translateY(0); }
   .dr-info:hover::before, .dr-info:focus::before{ transform:rotate(45deg); }
+  /* edge-flip (set by JS when the bubble would overrun the right edge): anchor it
+     to the icon's right and grow leftward so it stays on-screen */
+  .dr-info.flip-r::after{ left:auto; right:0; }
+  .dr-info.flip-r::before{ left:auto; right:6px; }
   .tog{ display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:6px; border:1px solid rgba(0,0,0,.16); background:#fff;
     font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.08em; text-transform:uppercase; color:rgba(0,0,0,.5); cursor:pointer; transition:.12s; }
   .tog:hover{ border-color:rgba(0,0,0,.3); }
@@ -381,10 +391,129 @@ const AFFORDANCE = `
   .dr-btn.danger{ border-color:#fecaca; color:#ef4444; }
   .dr-btn.danger:hover{ background:#fef2f2; }
   /* toolbar below the chart */
-  .cfg-toolbar{ display:flex; flex-wrap:wrap; gap:6px; margin-top:16px; padding-top:14px; border-top:1px dashed rgba(0,0,0,.14); }
-  .ov-mini{ font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.08em; text-transform:uppercase; padding:6px 10px; border-radius:6px;
+  .pe-cfg-toolbar{ display:flex; flex-wrap:wrap; gap:6px; margin-top:16px; padding-top:14px; border-top:1px dashed rgba(0,0,0,.14); }
+  .pe-cfg-add{ font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.08em; text-transform:uppercase; padding:6px 10px; border-radius:6px;
     border:1px solid rgba(0,0,0,.14); background:#fff; cursor:pointer; color:rgba(0,0,0,.5); }
-  .ov-mini:hover{ border-color:rgba(0,0,0,.3); color:#0a0a0a; }
+  .pe-cfg-add:hover{ border-color:rgba(0,0,0,.3); color:#0a0a0a; }
+
+  /* ════ spec (Specifications Sheet) editor ════ Inline .ce on the heading,
+     device line, card titles + key/value rows; a card-icon picker sourced from
+     the canon sprite. Keep cards/rows full-width so the corner × sits right. */
+  .spec-card{ position:relative; }                                  /* editor anchor for the × + drag handle */
+  .spec-card.pe-removable{ width:auto; }
+  .spec-row.pe-removable{ width:auto; }
+  .spec-card-head .pe-mini-add{ margin-left:0; margin-right:6px; }
+  /* the grid clips to its rounded border (overflow:hidden), so the × + drag
+     handle are INSET into the card's top-right corner — outside-the-card
+     positions get clipped on edge cards (top row / side columns). */
+  .spec-card.pe-removable > .pe-remove{ top:6px; right:6px; left:auto; z-index:14; }
+  .spec-drag{ position:absolute; top:30px; right:6px; width:18px; height:18px; z-index:13; display:flex; align-items:center; justify-content:center;
+    border:1px solid rgba(0,0,0,.16); border-radius:50%; background:#fff; color:rgba(0,0,0,.4); cursor:grab; padding:0;
+    opacity:0; transition:opacity .12s, color .12s, border-color .12s; }
+  .spec-card:hover .spec-drag{ opacity:1; }
+  .spec-drag:hover{ color:#6366f1; border-color:#6366f1; }
+  .spec-drag:active{ cursor:grabbing; }
+  .spec-drag svg{ width:11px; height:11px; }
+  .spec-card.pe-dragging{ opacity:.4; }
+  /* drop-insertion cue — INSET edge (an outside edge would be clipped by the grid) */
+  .spec-card.pe-drop-before{ box-shadow:inset 3px 0 0 0 #6366f1; }
+  .spec-card.pe-drop-after{ box-shadow:inset -3px 0 0 0 #6366f1; }
+  /* icon picker popover — a scrollable grid of the sprite's glyphs */
+  .cc-pop.icon-pop{ min-width:266px; }
+  .cc-icons{ display:grid; grid-template-columns:repeat(6,1fr); gap:5px; max-height:244px; overflow-y:auto; margin-bottom:4px; padding:1px; }
+  .cc-icon{ width:100%; aspect-ratio:1; display:flex; align-items:center; justify-content:center; border:1px solid rgba(0,0,0,.1);
+    border-radius:8px; background:#fff; cursor:pointer; color:#333; transition:.12s; padding:0; }
+  .cc-icon:hover{ border-color:#6366f1; color:#6366f1; background:rgba(99,102,241,.06); }
+  .cc-icon.sel{ border-color:#6366f1; background:#6366f1; color:#fff; }
+  .cc-icon svg{ width:17px; height:17px; }
+
+  /* ════ lifecycle-lane (OS-support ribbon) editor ════ inline fields on the
+     tiles; locked auto range/legend; type + badge picked in a popover. */
+  .pe-lane-opts{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-top:10px; }
+  .lane-seg{ position:relative; }
+  .lane-seg.pe-removable{ width:auto; }
+  .lane-seg.pe-removable > .pe-remove{ top:4px; right:4px; left:auto; z-index:14; }   /* inset: the scroller clips outside-the-tile */
+  .pe-lane-foot{ display:flex; justify-content:flex-end; align-items:center; gap:8px; margin-top:12px; }
+  /* weighted toggle — a clean switch that reads as a toggle, not a raised chip */
+  .pe-lane-wbtn{ display:inline-flex; align-items:center; gap:8px; padding:5px 11px 5px 8px; border-radius:999px; border:1px solid rgba(0,0,0,.13);
+    background:#fff; cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.1em; text-transform:uppercase; color:rgba(0,0,0,.5); transition:.14s; }
+  .pe-lane-wbtn:hover{ border-color:rgba(0,0,0,.26); color:#1c1a17; }
+  .pe-lane-wbtn .sw{ width:22px; height:13px; border-radius:999px; background:rgba(0,0,0,.16); position:relative; flex:none; transition:background .16s; }
+  .pe-lane-wbtn .sw::after{ content:''; position:absolute; top:2px; left:2px; width:9px; height:9px; border-radius:50%; background:#fff; box-shadow:0 1px 2px rgba(0,0,0,.25); transition:transform .16s; }
+  .pe-lane-wbtn.on{ border-color:#c7d2fe; color:#4338ca; background:rgba(99,102,241,.07); }
+  .pe-lane-wbtn.on .sw{ background:#6366f1; }
+  .pe-lane-wbtn.on .sw::after{ transform:translateX(9px); }
+  /* end-date trigger — opens the month/year picker (not freeform). Dashed when
+     unset (an "add" affordance), solid chip once a date is picked. */
+  .pe-lane-endbtn{ display:inline-flex; align-items:center; padding:5px 11px; border-radius:999px; border:1px dashed rgba(0,0,0,.26);
+    background:#fff; cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.1em; text-transform:uppercase; color:rgba(0,0,0,.5); transition:.14s; }
+  .pe-lane-endbtn:hover{ border-color:rgba(0,0,0,.4); color:#1c1a17; }
+  .pe-lane-endbtn.set{ border-style:solid; border-color:rgba(0,0,0,.18); color:#1c1a17; }
+  /* the locked range must never wrap (the lock's fit-content/max-width could
+     otherwise cap + wrap it) — keep it one line at its natural width */
+  .lane-range.pe-canon{ width:max-content; max-width:none; white-space:nowrap; }
+  /* compact badge bank — small wrap chips, not a 2-col grid */
+  .cc-pop.lane-pop .cc-badge-bank{ display:flex; flex-wrap:wrap; gap:5px; grid-template-columns:none; }
+  .cc-pop.lane-pop .cc-badge-bank .cc-enum-opt{ flex:0 0 auto; padding:4px 9px; font-size:8px; border-radius:5px; }
+  .cc-pop-label-i{ display:flex; align-items:center; gap:6px; }
+  .cc-pop-label-i .dr-info{ width:14px; height:14px; color:rgba(0,0,0,.4); }
+  .cc-pop-label-i .dr-info svg{ width:13px; height:13px; }
+  .cc-pop.lane-pop{ min-width:230px; }
+  .cc-pop.lane-pop .cc-enum{ grid-template-columns:repeat(2,1fr); }
+  .cc-pop.lane-pop .cc-month-grid{ grid-template-columns:repeat(4,1fr); }   /* the date picker's month grid */
+  .cc-lane-year{ width:100%; box-sizing:border-box; margin-top:2px; font-family:'JetBrains Mono',monospace; font-size:12px; padding:7px 9px;
+    border-radius:8px; border:1px solid rgba(0,0,0,.14); background:rgba(255,255,255,.66); outline:none; color:#2a1f15; }
+  .cc-lane-year:focus{ border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.16); }
+  .cc-pop.lane-pop.date-pop{ min-width:240px; }
+  .cc-pop.lane-pop .cc-enum-opt{ display:flex; align-items:center; gap:6px; justify-content:center; text-transform:capitalize; }
+  .cc-pop.lane-pop .cc-enum-opt .lane-note-dot{ flex:none; }
+  /* color-coded support-type options (the semantic palette — matches the tiles) */
+  .cc-pop.lane-pop .cc-type-full{ background:#d1fae5; border-color:#a7f3d0; color:#065f46; }
+  .cc-pop.lane-pop .cc-type-partial{ background:#fef3c7; border-color:#fde68a; color:#92400e; }
+  .cc-pop.lane-pop .cc-type-dropped{ background:#f3f4f6; border-color:#e5e7eb; border-style:dashed; color:#6b7280; }
+  .cc-pop.lane-pop .cc-type-security{ background:#dbeafe; border-color:#bfdbfe; color:#1e40af; }
+  .cc-pop.lane-pop .cc-enum-opt.sel{ box-shadow:0 0 0 2px #241a10; }
+  /* badge preset bank — text+color combos (each chip in its badge colour) */
+  .cc-pop.lane-pop .cc-badge-ship{ background:rgba(0,0,0,.06); border-color:rgba(0,0,0,.12); color:#6b6b6b; }
+  .cc-pop.lane-pop .cc-badge-paid{ background:#fbbf24; border-color:#f59e0b; color:#78350f; }
+  .cc-pop.lane-pop .cc-badge-limited{ background:#f59e0b; border-color:#d97706; color:#78350f; }
+  .cc-pop.lane-pop .cc-badge-final{ background:#0a0a0a; border-color:#0a0a0a; color:#fff; }
+  .cc-pop.lane-pop .cc-badge-dropped{ background:transparent; border:1px dashed rgba(0,0,0,.24); color:#8a8a8a; }
+  .cc-pop.lane-pop .cc-badge-security{ background:#3b82f6; border-color:#2563eb; color:#fff; }
+  /* all-in-one note add: segment chips (pick a version → derives colour) + fields */
+  .cc-pop.lane-pop.note-add{ min-width:254px; }
+  .cc-pop.lane-pop .cc-noteseg{ display:flex; flex-wrap:wrap; gap:5px; grid-template-columns:none; }
+  .cc-pop.lane-pop .cc-noteseg .cc-enum-opt{ flex:0 0 auto; padding:4px 9px; font-size:8.5px; }
+  .cc-note-os, .cc-note-text{ width:100%; box-sizing:border-box; margin-top:2px; font-family:'Spectral',Georgia,serif; font-size:12px; padding:7px 9px;
+    border-radius:8px; border:1px solid rgba(0,0,0,.14); background:rgba(255,255,255,.7); outline:none; color:#2a1f15; }
+  .cc-note-text{ resize:vertical; min-height:42px; }
+  .cc-note-os:focus, .cc-note-text:focus{ border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.16); }
+  .cc-opt{ text-transform:none; letter-spacing:0; opacity:.55; }
+  /* live preview that mimics the real note tile (dot + bold label — text) */
+  .cc-note-preview{ display:flex; align-items:flex-start; gap:7px; margin-top:2px; padding:8px 10px; border-radius:8px; background:rgba(0,0,0,.035);
+    font-family:'Spectral',Georgia,serif; font-size:11.5px; line-height:1.45; color:#2a1f15; }
+  .cc-note-preview .lane-note-dot{ margin-top:4px; flex:none; background:rgba(0,0,0,.12); }
+  /* the dot's colour comes from --lane-*-dot tokens scoped to the lane section,
+     which the popover (on document.body) can't see — pin the semantic colours so
+     the preview square shows the chosen version's support colour */
+  .cc-note-preview .lane-dot-full{ background:#6ee7b7; }
+  .cc-note-preview .lane-dot-partial{ background:#fde68a; }
+  .cc-note-preview .lane-dot-dropped{ background:#d1d5db; }
+  .cc-note-preview .lane-dot-security{ background:#3b82f6; }
+  .cc-np-l{ font-weight:600; }
+  .cc-pop.lane-pop .cc-note-add{ margin-top:11px; }
+  .dr-label-i{ display:inline-flex; align-items:center; gap:6px; }
+  .dr-label-i .dr-info{ width:14px; height:14px; color:rgba(0,0,0,.4); }
+  .dr-label-i .dr-info svg{ width:13px; height:13px; }
+  /* version + date, side by side, in the segment popover */
+  .cc-pop-row2{ display:flex; gap:8px; }
+  .cc-pop-fld{ display:flex; flex-direction:column; gap:4px; flex:1; min-width:0; }
+  .cc-pop-fld .cc-pop-label{ margin-bottom:0; }
+  .cc-lane-ver, .cc-lane-date, .cc-lane-badge{ width:100%; box-sizing:border-box; font-family:'JetBrains Mono',monospace; font-size:11px; padding:7px 9px;
+    border-radius:8px; border:1px solid rgba(0,0,0,.14); background:rgba(255,255,255,.66); outline:none; color:#2a1f15; }
+  .cc-lane-badge{ margin-top:2px; }
+  .cc-lane-ver:focus, .cc-lane-date:focus, .cc-lane-badge:focus{ border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.16); }
+  .cc-pop.lane-pop .cc-rm{ margin-top:10px; width:100%; }
 `;
 
 const FONTS = `<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">`;
@@ -520,6 +649,16 @@ export function applyAction(doc: PageDoc, action: string): void {
       if (h.feature) stash.feature = h.feature;
       h.spotlight = null; h.feature = null;
       break;
+    case 'lmove': { // lmove:<listpath>:<from>:<to> — reorder a list item (drag-to-reorder)
+      const li = arg.lastIndexOf(':'), lj = arg.lastIndexOf(':', li - 1);
+      const path = arg.slice(0, lj), from = Number(arg.slice(lj + 1, li)), to = Number(arg.slice(li + 1));
+      const list = getAt(doc, path);
+      if (Array.isArray(list) && from >= 0 && from < list.length && to >= 0 && to < list.length && from !== to) {
+        const [el] = list.splice(from, 1);
+        list.splice(to, 0, el);
+      }
+      break;
+    }
     case 'commit': break; // no-op: forces a re-render so derived displays refresh
     case 'setTone': doc.overview.tone = arg; break;
     // body sections (the ordered list after the locked hero+overview):

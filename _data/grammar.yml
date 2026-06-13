@@ -140,20 +140,20 @@ components:
       heading: { type: text, required: true, blank: "Specifications heading" }
       device:  { type: text, required: true, blank: "Device · MODEL", help: "Identifier line: name · model number" }
       visual:  { type: text, locked: true, default: spec, help: "The slot's visual type — registry hosts constrain it (admin)" }
-      tone:    { type: "enum[a,b,special]", default: special, help: "special = the dark signature band" }
-      cards:   { type: "list<card>", required: true }
+      tone:    { type: "enum[a,b,special]", default: special, modes: { Light: a, Dark: special }, help: "Light/Dark color mode: Dark = the signature inverted band (special), Light = a normal light surface (a)" }
+      cards:   { type: "list<card>", required: true, item_blank: { title: "Spec title", rows: [["Label", "Value"]] } }
     subtypes:
       card:
-        title: { type: text, required: true, blank: "Card title" }
-        icon:  { type: icon }
-        rows:  { type: "list<pair>", required: true }
-      pair: { key: { type: text, required: true, blank: "Label" }, value: { type: text, required: true, blank: "Value" } }
+        title: { type: text, required: true, blank: "Spec title" }
+        icon:  { type: icon, required: true, help: "Every card needs a sprite icon" }
+        rows:  { type: "list<pair>", required: true, item_blank: ["Label", "Value"] }
+      pair: { label: { type: text, required: true, blank: "Label" }, value: { type: text, required: true, blank: "Value" } }
     seed:
       heading: "Specifications heading"
       device: "Device · MODEL"
       cards:
-        - { title: "Card title", icon: monitor, rows: [ { key: "Label", value: "Value" } ] }
-    min: "heading + device + one card with one row"
+        - { title: "Spec title", rows: [ ["Label", "Value"] ] }
+    min: "heading + device + one card (icon + title + one row)"
 
   # ---- CONFIG — the storage/configuration chart ------------------------
   config:
@@ -195,24 +195,26 @@ components:
     section: os-section
     locked: { eyebrow: "Operating system support", icon: layers }
     fields:
-      heading:    { type: richtext,         required: true, blank: "Software-support heading" }
+      heading:    { type: richtext,         required: true, blank: "Heading" }
       title:      { type: text,             required: true, blank: "Lifecycle title", help: "The ribbon's left-hand title" }
       visual:  { type: text, locked: true, default: lifecycle-lane, help: "The slot's visual type — registry hosts constrain it (admin)" }
-      paragraphs: { type: "list<richtext>", help: "Lead prose above the ribbon" }
+      paragraphs: { type: "list<richtext>", item_blank: "intro text describing the software lifecycle of the device", help: "Intro text above the ribbon (one box)" }
       tone:       { type: "enum[a,b,special]", default: a }
       weighted:   { type: bool, default: false, help: "On = tile width ∝ time between dates" }
-      end:        { type: date, help: "Weighted mode only — right edge for the last tile" }
-      range_note: { type: text, help: "Optional suffix on the counter" }
-      segments:   { type: "list<segment>", required: true, min: 2 }
+      end:        { type: date, blank: "Jan 2024", help: "Weighted mode only — right edge for the last tile" }
+      range_note: { type: text, blank: "note", help: "Optional suffix on the counter" }
+      segments:   { type: "list<segment>", required: true, min: 2, item_blank: { ver: "Version", date: "Month Year", type: full } }
       notes:      { type: "list<note>", item_blank: { status: full, label: "Note label", text: "Note body" } }
     subtypes:
       segment:
-        ver:        { type: text, required: true, blank: "Version" }
-        date:       { type: date, required: true, seed_real: true, help: "Drives tile position (a real spread date, not a placeholder)" }
+        ver:        { type: text, required: true, label: "Version", blank: "Version" }
+        date:       { type: date, required: true, blank: "Month Year", help: "Set via the month/year picker; an unset date reads as 'Month Year' and isn't positioned until real" }
         type:       { type: "enum[full,partial,dropped,security]", required: true,
                       help: "full=green · partial=amber · dropped=grey cliff · security=blue post-EOL" }
-        badge:      { type: text }
-        badge_type: { type: "enum[ship,paid,limited,final,dropped,security]", default: ship }
+        badge:      { type: text, blank: "Badge" }
+        badge_type: { type: "enum[ship,paid,limited,final,dropped,security]", default: ship,
+                      presets: { ship: "Launch", paid: "Paid", limited: "Limited", final: "Final", dropped: "Dropped", security: "Security" },
+                      help: "Preset text+color combos: pick one to set the badge" }
       note:
         status: { type: "enum[full,partial,limited,final,dropped,security]", required: true }
         label:  { type: text, required: true, blank: "Note label" }
@@ -224,11 +226,11 @@ components:
       - "exactly one segment SHOULD be type:dropped (the cliff)"
       - "a security tile must be listed AFTER the dropped tile (latest date last)"
     seed:
-      heading: "Software-support heading"
+      heading: "Heading"
       title: "Lifecycle title"
       segments:
-        - { ver: "Version", date: "Jan 2020", type: full,    badge: "Launch",  badge_type: ship }
-        - { ver: "Version", date: "Jan 2023", type: dropped, badge: "Dropped", badge_type: dropped }
+        - { ver: "Version", date: "Month Year", type: full,    badge: "Launch",  badge_type: ship }
+        - { ver: "Version", date: "Month Year", type: dropped, badge: "Dropped", badge_type: dropped }
     min: "heading + title + 2 segments"
 
   # ---- DELTA — the Changes & Improvements comparison table -------------
@@ -272,7 +274,7 @@ components:
       visual:  { type: text, locked: true, default: timeline, help: "The slot's visual type — registry hosts constrain it (admin)" }
       card_type: { type: "enum[station]", default: station }
       events:    { type: "list<event>", required: true, min: 2,
-                   item_blank: { month: "Month", year: "Year", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened" } }
+                   item_blank: { month: "Month", year: "Year", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened", body: "Write the full story for the expandable card…" } }
     subtypes:
       event:
         # month + year DRIVE the layout (date-positioned), so they default to real,
@@ -282,16 +284,16 @@ components:
         day:     { type: text, blank: "##" }
         year:    { type: text, required: true, blank: "Year", help: "Set via the date picker; an unset year reads as 'Year' and isn't date-positioned until real" }
         tag:     { type: text, blank: "Add a tag" }
-        title:   { type: text, required: true, blank: "Name this event", help: "Card headline + modal title" }
-        preview: { type: text, required: true, blank: "Add a short summary of what happened", help: "One-line summary on the collapsed card face" }
-        body:    { type: richtext, blank: "Write the full story for the expandable card…", help: "Full detail in the expandable card" }
+        title:   { type: text, required: true, identity: true, blank: "Name this event", help: "Card headline + modal title (names the event card in the widget)" }
+        preview: { type: text, required: true, label: "Summary line", blank: "Add a short summary of what happened", help: "One-line summary on the collapsed card face" }
+        body:    { type: richtext, required: true, label: "Full text", blank: "Write the full story for the expandable card…", help: "Full detail in the expandable card (required)" }
     derived: ["scroll hint, year bands, positions, gap chips — all from the dates"]
     seed:
       heading: "Timeline heading"
       events:
-        - { month: "Month", year: "Year", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened" }
-        - { month: "Month", year: "Year", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened" }
-        - { month: "Month", year: "Year", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened" }
+        - { month: "Month", year: "Year", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened", body: "Write the full story for the expandable card…" }
+        - { month: "Month", year: "Year", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened", body: "Write the full story for the expandable card…" }
+        - { month: "Month", year: "Year", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened", body: "Write the full story for the expandable card…" }
     min: "≥2 events, each with month + year + title"
 
   # ---- CATALOG — the data-driven list + expandable cards ---------------

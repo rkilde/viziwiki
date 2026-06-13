@@ -464,11 +464,24 @@
         "tone": {
           "type": "enum[a,b,special]",
           "default": "special",
-          "help": "special = the dark signature band"
+          "modes": {
+            "Light": "a",
+            "Dark": "special"
+          },
+          "help": "Light/Dark color mode: Dark = the signature inverted band (special), Light = a normal light surface (a)"
         },
         "cards": {
           "type": "list<card>",
-          "required": true
+          "required": true,
+          "item_blank": {
+            "title": "Spec title",
+            "rows": [
+              [
+                "Label",
+                "Value"
+              ]
+            ]
+          }
         }
       },
       "subtypes": {
@@ -476,18 +489,24 @@
           "title": {
             "type": "text",
             "required": true,
-            "blank": "Card title"
+            "blank": "Spec title"
           },
           "icon": {
-            "type": "icon"
+            "type": "icon",
+            "required": true,
+            "help": "Every card needs a sprite icon"
           },
           "rows": {
             "type": "list<pair>",
-            "required": true
+            "required": true,
+            "item_blank": [
+              "Label",
+              "Value"
+            ]
           }
         },
         "pair": {
-          "key": {
+          "label": {
             "type": "text",
             "required": true,
             "blank": "Label"
@@ -504,18 +523,17 @@
         "device": "Device · MODEL",
         "cards": [
           {
-            "title": "Card title",
-            "icon": "monitor",
+            "title": "Spec title",
             "rows": [
-              {
-                "key": "Label",
-                "value": "Value"
-              }
+              [
+                "Label",
+                "Value"
+              ]
             ]
           }
         ]
       },
-      "min": "heading + device + one card with one row"
+      "min": "heading + device + one card (icon + title + one row)"
     },
     "config": {
       "section": "config-section",
@@ -662,7 +680,7 @@
         "heading": {
           "type": "richtext",
           "required": true,
-          "blank": "Software-support heading"
+          "blank": "Heading"
         },
         "title": {
           "type": "text",
@@ -678,7 +696,8 @@
         },
         "paragraphs": {
           "type": "list<richtext>",
-          "help": "Lead prose above the ribbon"
+          "item_blank": "intro text describing the software lifecycle of the device",
+          "help": "Intro text above the ribbon (one box)"
         },
         "tone": {
           "type": "enum[a,b,special]",
@@ -691,16 +710,23 @@
         },
         "end": {
           "type": "date",
+          "blank": "Jan 2024",
           "help": "Weighted mode only — right edge for the last tile"
         },
         "range_note": {
           "type": "text",
+          "blank": "note",
           "help": "Optional suffix on the counter"
         },
         "segments": {
           "type": "list<segment>",
           "required": true,
-          "min": 2
+          "min": 2,
+          "item_blank": {
+            "ver": "Version",
+            "date": "Month Year",
+            "type": "full"
+          }
         },
         "notes": {
           "type": "list<note>",
@@ -716,13 +742,14 @@
           "ver": {
             "type": "text",
             "required": true,
+            "label": "Version",
             "blank": "Version"
           },
           "date": {
             "type": "date",
             "required": true,
-            "seed_real": true,
-            "help": "Drives tile position (a real spread date, not a placeholder)"
+            "blank": "Month Year",
+            "help": "Set via the month/year picker; an unset date reads as 'Month Year' and isn't positioned until real"
           },
           "type": {
             "type": "enum[full,partial,dropped,security]",
@@ -730,11 +757,21 @@
             "help": "full=green · partial=amber · dropped=grey cliff · security=blue post-EOL"
           },
           "badge": {
-            "type": "text"
+            "type": "text",
+            "blank": "Badge"
           },
           "badge_type": {
             "type": "enum[ship,paid,limited,final,dropped,security]",
-            "default": "ship"
+            "default": "ship",
+            "presets": {
+              "ship": "Launch",
+              "paid": "Paid",
+              "limited": "Limited",
+              "final": "Final",
+              "dropped": "Dropped",
+              "security": "Security"
+            },
+            "help": "Preset text+color combos: pick one to set the badge"
           }
         },
         "note": {
@@ -763,19 +800,19 @@
         "a security tile must be listed AFTER the dropped tile (latest date last)"
       ],
       "seed": {
-        "heading": "Software-support heading",
+        "heading": "Heading",
         "title": "Lifecycle title",
         "segments": [
           {
             "ver": "Version",
-            "date": "Jan 2020",
+            "date": "Month Year",
             "type": "full",
             "badge": "Launch",
             "badge_type": "ship"
           },
           {
             "ver": "Version",
-            "date": "Jan 2023",
+            "date": "Month Year",
             "type": "dropped",
             "badge": "Dropped",
             "badge_type": "dropped"
@@ -944,7 +981,8 @@
             "year": "Year",
             "tag": "Add a tag",
             "title": "Name this event",
-            "preview": "Add a short summary of what happened"
+            "preview": "Add a short summary of what happened",
+            "body": "Write the full story for the expandable card…"
           }
         }
       },
@@ -973,19 +1011,23 @@
           "title": {
             "type": "text",
             "required": true,
+            "identity": true,
             "blank": "Name this event",
-            "help": "Card headline + modal title"
+            "help": "Card headline + modal title (names the event card in the widget)"
           },
           "preview": {
             "type": "text",
             "required": true,
+            "label": "Summary line",
             "blank": "Add a short summary of what happened",
             "help": "One-line summary on the collapsed card face"
           },
           "body": {
             "type": "richtext",
+            "required": true,
+            "label": "Full text",
             "blank": "Write the full story for the expandable card…",
-            "help": "Full detail in the expandable card"
+            "help": "Full detail in the expandable card (required)"
           }
         }
       },
@@ -1000,21 +1042,24 @@
             "year": "Year",
             "tag": "Add a tag",
             "title": "Name this event",
-            "preview": "Add a short summary of what happened"
+            "preview": "Add a short summary of what happened",
+            "body": "Write the full story for the expandable card…"
           },
           {
             "month": "Month",
             "year": "Year",
             "tag": "Add a tag",
             "title": "Name this event",
-            "preview": "Add a short summary of what happened"
+            "preview": "Add a short summary of what happened",
+            "body": "Write the full story for the expandable card…"
           },
           {
             "month": "Month",
             "year": "Year",
             "tag": "Add a tag",
             "title": "Name this event",
-            "preview": "Add a short summary of what happened"
+            "preview": "Add a short summary of what happened",
+            "body": "Write the full story for the expandable card…"
           }
         ]
       },

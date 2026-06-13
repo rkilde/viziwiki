@@ -61,7 +61,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(d.querySelectorAll('.wiki-hero-spotlight-tag .pe-tag-rm').length === 2, 'tags removable');
   ok([...d.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === '+ tag'), '+ tag add button');
   ok(d.querySelectorAll('.wiki-section-prose > p.pe-removable').length === 2, 'paragraphs removable (above grammar min)');
-  ok([...d.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ paragraph'), '+ paragraph button');
+  ok(![...d.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ paragraph'), 'no + paragraph button (overview prose is one box)');
   ok(d.querySelector('.wiki-infobox.pe-removable'), 'infobox removable');
   ok(d.querySelector('.wiki-infobox-data > dt .ce') && d.querySelector('.wiki-infobox-data > dd .ce'), 'infobox row editable');
   // +row / +badge live in an add-bar attached to the infobox, positioned
@@ -176,7 +176,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   // glass dock: colour / ribbon / note / remove
   const dock = cat.querySelector('.cat-card .cc-dock');
   ok(dock, 'glass dock present on the card');
-  ok(dock.querySelectorAll('.cc-btn').length === 3, 'dock has 3 controls (colour/ribbon/remove) — note is NOT a dock control');
+  ok(dock.querySelectorAll('.cc-btn').length === 4, 'dock has 4 controls (drag/colour/ribbon/remove) — note is NOT a dock control');
   ok(dock.querySelector('.cc-btn .cc-swatch'), 'colour control shows the swatch');
   ok(dock.querySelector('.cc-btn.danger'), 'remove-category control (danger)');
   ok(!dock.querySelector('.cc-btn[data-tip*="note"]'), 'no note button in the dock');
@@ -259,17 +259,18 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(richDet.querySelector('.modal-group-label .ce'), 'group label editable');
   ok(richDet.querySelectorAll('.gpill .ce').length === 2, 'string + object pills both editable');
   const gpills = [...richDet.querySelectorAll('.gpill')];
-  ok(gpills.every((g) => g.querySelector('.gpill-menu')), 'each pill has the ⋯ options menu');
+  // delete conforms to the kit-wide two-click × confirm (makeRemovable) on EVERY
+  // pill; the ⋯ menu now carries only the strike toggle, and only object pills get it.
+  ok(gpills.every((g) => g.querySelector('.pe-tag-rm')), 'each pill has the standard two-click × delete');
+  ok(!gpills[0].querySelector('.gpill-menu'), 'string pill: no ⋯ menu (delete is the ×)');
+  ok(gpills[1].querySelector('.gpill-menu'), 'object pill carries the ⋯ strike menu');
   ok(gpills[1].classList.contains('struck') && gpills[1].querySelector('.ce'), 'struck object pill carries the canon struck class (strikes the .ce)');
   const lastPop = () => [...d.querySelectorAll('.cc-pop.pill-pop')].pop();
   gpills[1].querySelector('.gpill-menu').onclick({ stopPropagation() {} });   // object (struck) pill
   let pp = lastPop();
-  ok(pp, '⋯ opens the pill options popover');
+  ok(pp, '⋯ opens the pill strike popover');
   ok([...pp.querySelectorAll('.cc-row')].some((r) => r.textContent === 'Remove strike'), 'struck object pill offers "Remove strike"');
-  ok(pp.querySelector('.cc-row.danger'), 'Remove (danger) row');
-  gpills[0].querySelector('.gpill-menu').onclick({ stopPropagation() {} });   // string pill
-  pp = lastPop();
-  ok(!pp.querySelector('[data-a="strike"]'), 'string pill: no strike option (only Remove)');
+  ok(!pp.querySelector('.cc-row.danger'), 'no Remove row in the strike menu (delete is the standard ×)');
   ok([...richDet.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === '+ item'), '+ item (pill add)');
   ok(richDet.querySelector('.pe-adds'), 'bottom adders row present');
   ok([...richDet.querySelectorAll('.pe-adds .pe-mini-add')].some((b) => b.textContent === '+ group'), '+ group in adders row');
@@ -322,7 +323,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(!chips0.includes('↑') && chips0.includes('↓'), 'first section: ↓ only (nothing above it is movable)');
   ok(chips1.includes('↑') && !chips1.includes('↓'), 'last section: ↑ only');
   // colour popover (opened from the dock) — swatches are skin-derived
-  const colorBtn = secs[0].querySelector('.cat-card .cc-dock .cc-btn');
+  const colorBtn = [...secs[0].querySelectorAll('.cat-card .cc-dock .cc-btn')].find((b) => b.querySelector('.cc-swatch'));
   ok(colorBtn && colorBtn.querySelector('.cc-swatch'), 'dock colour control present');
   colorBtn.onclick.call(colorBtn);
   const pop = d.querySelector('.cc-pop');

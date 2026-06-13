@@ -24,32 +24,53 @@ const ic = (d: string, size = 18) => (
 // slot on the tile's light icon chip.
 const BLANK = '<rect x="2.5" y="2.5" width="19" height="19" rx="3" fill="#fff" stroke="rgba(0,0,0,.18)" stroke-width="1"/>';
 
+// the spec-sheet glyph — reused EVERYWHERE spec appears (its standalone tile AND
+// its entry under the Tech Visuals category), so the icon is identical in both.
+const SHEET = '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/>';
+
 // a typed sub-chooser tile (catalog types, timeline types …). desc is a
 // paragraph; bullets is the dashed-list form. Liveness is NOT stored here — it
 // is derived from `id` via isLive() so the picker and the canon can't disagree.
 type TypeTile = { id: string; name: string; icon: string; desc?: string; bullets?: string[] };
 
-// tiles from the mockup's SECTION_TEMPLATES (names pluralized per the owner)
-const TILES = [
+// tiles from the mockup's SECTION_TEMPLATES (names pluralized per the owner).
+// Two kinds, and the grid shows CATEGORY tiles first then STANDALONE tiles:
+//  · category (pill 'Category', `opens`) → opens a type chooser
+//  · standalone (pill 'Available', `add`) → clicking adds that section directly
+type BrowseTile = {
+  id: string; name: string;
+  pill: 'Category' | 'Available';
+  opens?: 'catalog' | 'timeline' | 'config' | null;   // category → sub-chooser
+  add?: string;                                        // standalone → seed directly
+  icon: string; desc: string;
+};
+const TILES: BrowseTile[] = [
+  // ── category tiles (open a type chooser) ──
   {
-    id: 'catalog', name: 'Catalogs', pill: 'Category' as const, opens: 'catalog' as const,
+    id: 'catalog', name: 'Catalogs', pill: 'Category', opens: 'catalog',
     icon: '<rect x="3.5" y="3.5" width="4" height="4" rx="1"/><line x1="9.5" y1="5.5" x2="20" y2="5.5"/><rect x="3.5" y="10" width="4" height="4" rx="1"/><line x1="9.5" y1="12" x2="20" y2="12"/><rect x="3.5" y="16.5" width="4" height="4" rx="1"/><line x1="9.5" y1="18.5" x2="20" y2="18.5"/>',
     desc: 'Categorized, browsable lists — each item opens an expandable card. Pick a catalog type →',
   },
   {
-    id: 'timeline', name: 'Timelines', pill: 'Category' as const, opens: 'timeline' as const,
+    id: 'timeline', name: 'Timelines', pill: 'Category', opens: 'timeline',
     icon: '<polyline points="18 8 22 12 18 16"/><polyline points="6 8 2 12 6 16"/><line x1="2" y1="12" x2="22" y2="12"/>',
     desc: 'Date-positioned event scrollers on a real time axis. Pick a timeline type →',
   },
   {
-    id: 'delta', name: 'Side by Side Comparisons', pill: 'Available' as const, opens: null,
-    icon: BLANK,
-    desc: 'A previous-vs-current table grouped into Hardware & Software, with color-coded change chips (better, feature, changed, worse, same).',
-  },
-  {
-    id: 'config', name: 'Hardware & Software Tech Visuals', pill: 'Category' as const, opens: 'config' as const,
+    id: 'config', name: 'Hardware & Software Tech Visuals', pill: 'Category', opens: 'config',
     icon: '<rect x="7" y="2" width="10" height="20" rx="3"/><line x1="12" y1="17" x2="12" y2="18" stroke-width="2.5"/><line x1="10" y1="4.5" x2="14" y2="4.5"/>',
     desc: 'Storage/spec tiers with proportional fill bars derived from capacity, plus price, dates & device-color dots. Pick a chart type →',
+  },
+  // ── standalone tiles (click → add directly) ──
+  {
+    id: 'spec', name: 'Specifications Sheet', pill: 'Available', add: 'spec',
+    icon: SHEET,
+    desc: 'A grid of spec cards — each an icon + title + label/value rows (the dark signature band). Click to add it.',
+  },
+  {
+    id: 'delta', name: 'Side by Side Comparisons', pill: 'Available', opens: null,
+    icon: BLANK,
+    desc: 'A previous-vs-current table grouped into Hardware & Software, with color-coded change chips (better, feature, changed, worse, same).',
   },
 ];
 
@@ -70,6 +91,12 @@ const CONFIG_TYPES: TypeTile[] = [
   { id: 'config', name: 'Storage / Configuration Chart',
     icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><text x="12" y="11" text-anchor="middle" dominant-baseline="middle" font-size="7" font-family="monospace" font-weight="bold" fill="currentColor" stroke="none">64</text><text x="12" y="17.5" text-anchor="middle" dominant-baseline="middle" font-size="4.2" font-family="monospace" fill="currentColor" stroke="none">GB</text>',
     desc: 'Capacity tiers as proportional fill bars (lowest → highest), with price, dates & device-color dots. Revised configs drop below a divider.' },
+  { id: 'spec', name: 'Specifications Sheet',
+    icon: SHEET,
+    desc: 'A grid of spec cards — each an icon + title + key/value rows. The dark signature spec band.' },
+  { id: 'lifecycle-lane', name: 'Software Support Lifecycle',
+    icon: '<rect x="1.5" y="9" width="6.5" height="6" rx="1"/><rect x="9" y="9" width="6.5" height="6" rx="1"/><rect x="16.5" y="9" width="4" height="6" rx="1"/><line x1="21.5" y1="8" x2="21.5" y2="16"/>',
+    desc: 'A segmented ribbon of software/OS versions across time, colored by support status, with an auto-derived range, version counter & legend.' },
 ];
 
 // catalog types from the mockup's CATALOG_TYPES — Category Masonry IS the
@@ -196,7 +223,7 @@ export function SectionPicker({ onClose, onPick }: { onClose: () => void; onPick
               </div>
               <div className="sp-grid">
                 {shown.map((t) => (
-                  <div key={t.id} className="sp-card available" onClick={t.opens ? () => setScreen(t.opens!) : undefined}>
+                  <div key={t.id} className="sp-card available" onClick={t.opens ? () => setScreen(t.opens!) : t.add && isLive(t.add) ? () => onPick(t.add!) : undefined}>
                     <span className={`sp-pill ${t.pill === 'Category' ? 'cat' : 'ok'}`}>{t.pill}</span>
                     <div className="sp-card-top">
                       <div className="sp-card-ic">{ic(t.icon, 16)}</div>

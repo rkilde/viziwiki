@@ -78,8 +78,13 @@
     'config.footer':    { root: '.cfg-footer',   label: '+ footer' },
   };
 
-  // a section element's component type, derived from the registry's section
-  // keys (the canon class contract: <type>-section frames carry class <type>)
+  // a body section's component type. The RELIABLE source is the DOC — body
+  // sections map 1:1 to doc.sections in order — so callers with the index use
+  // docTypeAt(i). sectionTypeOf is a DOM-only fallback (class == type) that
+  // works for banks whose section class equals the type, but NOT for ones where
+  // they differ (os-section/class lane-section hosts lifecycle-lane) — hence the
+  // doc-index path. (CLAUDE.md: section→type is derived, not a name guess.)
+  function docTypeAt(i) { try { var d = getDoc(); return (d && d.sections && d.sections[i] && d.sections[i].type) || null; } catch (e) { return null; } }
   function sectionTypeOf(secEl) {
     var regs = (window.__PE_REGISTRY || {}).sections || {};
     for (var key in regs) {
@@ -87,6 +92,13 @@
       if (secEl.classList.contains(t)) return t;
     }
     return null;
+  }
+  // the registry section (eyebrow/icon/hosts…) for a component type, via the
+  // `hosts` map (derived) — handles type ≠ section name (lifecycle-lane↔os-section)
+  function regForType(type) {
+    var regs = (window.__PE_REGISTRY || {}).sections || {};
+    for (var key in regs) { if ((regs[key].hosts || []).indexOf(type) >= 0) return regs[key]; }
+    return regs[type + '-section'] || {};
   }
 
   // grammar rule lookup by policy key (e.g. 'catalog.categories[].ribbon.tone')
@@ -117,7 +129,10 @@
     { path: 'hero.stats',            item: '.wiki-hero-stat', parts: { num: '.wiki-hero-stat-num', label: '.wiki-hero-stat-label' } },
     { path: 'hero.spotlight.tags',   container: '.wiki-hero-spotlight-tags', item: '.wiki-hero-spotlight-tag', whole: true, addLabel: '+ tag', mini: true },
     { path: 'hero.feature.chips',    item: '.wiki-hero-feature-chip', parts: { key: '.wiki-hero-feature-chip-key', val: '.wiki-hero-feature-chip-val' } },
-    { path: 'overview.paragraphs',   container: '.wiki-section-prose', item: '.wiki-section-prose > p', whole: true, addLabel: '+ paragraph' },
+    // overview prose: ONE editable box — the contributor types as many/few
+    // paragraphs as they like inside it (Enter → new paragraph). No "+ paragraph"
+    // (no addLabel) — the single first box is the whole writing surface.
+    { path: 'overview.paragraphs',   container: '.wiki-section-prose', item: '.wiki-section-prose > p', whole: true },
   ];
 
   var qs = function (s, r) { return (r || document).querySelector(s); };
@@ -258,6 +273,10 @@
     trash: '<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
   };
   var csvg = function (d) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + d + '</svg>'; };
+  // a hover/focus info "i" with an explanatory tooltip (shared by every bank)
+  function infoI(tip) { return '<span class="dr-info" tabindex="0" data-tip="' + String(tip == null ? '' : tip).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>'; }
+  // append a shared info "i" (the one master control) to a parent element
+  function infoIcon(parent, tip) { if (!parent) return; var s = document.createElement('span'); s.innerHTML = infoI(tip); parent.appendChild(s.firstChild); }
   function dockBtn(icon, tip, cls, onclick) {
     var b = document.createElement('button');
     b.className = 'cc-btn' + (cls ? ' ' + cls : '');
@@ -290,6 +309,30 @@
       dock.style.transition = 'none'; dock.style.opacity = '0'; dock.classList.add('pinned'); watch();
       setTimeout(function () { place(); dock.style.opacity = ''; raf(function () { dock.style.transition = ''; }); }, 50);
     }
+  }
+
+  // drag-to-reorder, IN PLACE (catalog + spec): move the REAL card nodes into
+  // their new order, mutate the doc WITHOUT a full re-render, then FLIP every
+  // card from its old rect to its new one — a true tracked shuffle (the same
+  // elements migrate; nothing reloads). Only cards that actually move animate.
+  // Once the motion settles, a deferred silent swap re-binds the now-stale
+  // indices; the order already matches so it's visually identical (no flash).
+  function dragReorder(container, cards, from, to, listPath) {
+    if (from === to || !container || !cards.length) return;
+    window.__peDragLock = 1;   // indices are stale until the deferred re-bind → block another drag
+    var firsts = cards.map(function (c) { return c.getBoundingClientRect(); });          // FIRST positions
+    var order = cards.map(function (_, x) { return x; });
+    order.splice(from, 1); order.splice(to, 0, from);
+    order.forEach(function (oi) { container.appendChild(cards[oi]); });                  // reorder the actual nodes
+    try { window.parent.__peReorderData('lmove:' + listPath + ':' + from + ':' + to); } catch (e) {}   // data only
+    var raf2 = window.requestAnimationFrame || function (f) { return setTimeout(f, 16); };
+    cards.forEach(function (c, x) {
+      var nr = c.getBoundingClientRect(); var dx = firsts[x].left - nr.left, dy = firsts[x].top - nr.top;
+      if (!dx && !dy) { c.style.transition = ''; c.style.transform = ''; return; }       // didn't move → no animation
+      c.style.transition = 'none'; c.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';   // INVERT to its old slot
+      raf2(function () { raf2(function () { c.style.transition = 'transform .42s cubic-bezier(.4,0,.2,1)'; c.style.transform = ''; }); });   // PLAY
+    });
+    setTimeout(function () { cards.forEach(function (c) { c.style.transition = ''; c.style.transform = ''; }); window.__peDragLock = 0; A('commit'); }, 470);
   }
 
   // floating glass popover (one at a time)
@@ -377,14 +420,20 @@
     setTimeout(function () { selectAllCE(el); }, 0); // defer past the click's caret placement
   });
 
-  // group-pill action menu (mockup style): a small glass popover with
-  // Strike (object pills only) + Remove
-  function openPillPop(btn, accent, strikePath, isStruck, removePath) {
-    var html = (strikePath ? '<button class="cc-row" data-a="strike">' + (isStruck ? 'Remove strike' : 'Strike through') + '</button>' : '') +
-      '<button class="cc-row danger" data-a="remove">Remove</button>';
+  // info "i" tooltip edge-flip: the bubble is left-anchored + wide, so a right-
+  // side icon (e.g. config price-drop) overruns the canvas. On hover/focus,
+  // flip it to right-anchored when it would overflow the right edge.
+  var flipInfo = function (ic) { if (!ic) return; var r = ic.getBoundingClientRect(); ic.classList.toggle('flip-r', (r.left + 300) > (window.innerWidth - 8)); };
+  document.addEventListener('mouseover', function (e) { var ic = e.target.closest && e.target.closest('.dr-info'); if (ic) flipInfo(ic); });
+  document.addEventListener('focusin', function (e) { var ic = e.target.closest && e.target.closest('.dr-info'); if (ic) flipInfo(ic); });
+
+  // group-pill action menu (object pills only): a small glass popover with the
+  // strike-through toggle. Deletion is NOT here — every pill uses the same
+  // two-click × confirm as the rest of the kit (makeRemovable).
+  function openPillPop(btn, accent, strikePath, isStruck) {
+    var html = '<button class="cc-row" data-a="strike">' + (isStruck ? 'Remove strike' : 'Strike through') + '</button>';
     var pop = openPop(btn, accent, html, { cls: 'pill-pop' });
     var st = pop.querySelector('[data-a="strike"]'); if (st) st.onclick = function () { closePop(); A('set:' + strikePath + ':' + (!isStruck)); };
-    pop.querySelector('[data-a="remove"]').onclick = function () { closePop(); A('rm:' + removePath); };
   }
 
   // centre the item-editor modal card in the VISIBLE viewport (the canvas is a
@@ -499,19 +548,24 @@
       }
     }
 
-    // section tone toolbar (glass pill) — tones from the field's grammar enum
+    // section tone toolbar (glass pill) — tones from the field's grammar enum.
+    // If the field declares `modes` ({Label: enumValue}, e.g. the spec sheet's
+    // {Light: a, Dark: special}), render a LABELED toggle instead of raw enum
+    // chips — both the labels and the value mapping are DERIVED from grammar.
     function toneBar(secEl, polPath, mkAction, extra) {
       var toneRule = ruleFor(polPath) || {};
+      var modes = toneRule.modes;                       // {Label: enumValue} | null
       var tones = toneRule.enum || [];   // derived from grammar — never restate the values
       var cur = secEl.getAttribute('data-tone');
       var bar = document.createElement('div');
       bar.className = 'pe-sec-tools';
-      bar.appendChild(document.createTextNode('tone '));
-      tones.forEach(function (t) {
+      bar.appendChild(document.createTextNode(modes ? 'mode ' : 'tone '));
+      var pairs = modes ? Object.keys(modes).map(function (k) { return [k, modes[k]]; }) : tones.map(function (t) { return [t, t]; });
+      pairs.forEach(function (p) {
         var b = document.createElement('button');
-        b.className = 'pe-tonebtn' + (cur === t ? ' on' : '');
-        b.textContent = t;
-        b.onclick = function () { A(mkAction(t)); };
+        b.className = 'pe-tonebtn' + (cur === p[1] ? ' on' : '');
+        b.textContent = p[0];
+        b.onclick = function () { A(mkAction(p[1])); };
         bar.appendChild(b);
       });
       (extra || []).forEach(function (el) { bar.appendChild(el); });
@@ -532,11 +586,11 @@
     var DOC = null;
     try { DOC = window.__PE_DOC || (window.parent.__peDoc && window.parent.__peDoc()); } catch (e) {}
     bodySecs.forEach(function (secEl, i) {
-      // identify the section's grammar type from its canonical class
-      var type = sectionTypeOf(secEl);
+      // the component type from the DOC (reliable 1:1 order), DOM class fallback
+      var type = docTypeAt(i) || sectionTypeOf(secEl);
       if (!type) return;
       var prefix = 'sections.' + i + '.data.';
-      var reg = REG_SECTIONS[type + '-section'] || {};
+      var reg = regForType(type);   // registry section via the hosts map (handles type ≠ section name)
       var sdata = (DOC && DOC.sections && DOC.sections[i] && DOC.sections[i].data) || {};
 
       // tone + remove (sections are min:0 per page_types → always removable)
@@ -647,6 +701,10 @@
         var openItem = function (j, k, pill) {
           if (!modal || !modalBody) return;
           var det = qs('[id="d-' + j + '-' + k + '"]', secEl); if (!det) return;
+          // move any ALREADY-open detail back first, so opening a different item
+          // doesn't stack two details in the modal (the "dual load" glitch).
+          var prevDet = qs('[data-pe-detail-open]', modal);
+          if (prevDet && prevDet !== det && detRoot) { detRoot.appendChild(prevDet); prevDet.removeAttribute('data-pe-detail-open'); }
           if (modalCard && pill) modalCard.style.setProperty('--cat-color', pill.getAttribute('data-color') || '');
           if (modalRb) {
             // read the ribbon from the CURRENT doc — the pill's data-ribbon
@@ -738,6 +796,7 @@
               (function (p) { noteChip.onclick = function () { A('add:' + p); }; })(cpre + 'note');
             }
             cnt.appendChild(noteChip);   // INLINE in the count line (canon position)
+            infoIcon(cnt, 'An optional short qualifier shown after the item count on this category card (e.g. “12 items · seasonal” or “· discontinued”). Use it to flag something about the whole category at a glance.');
           }
 
           // the glass dock (bottom-right): color · ribbon · remove
@@ -746,6 +805,35 @@
           var sep = document.createElement('span'); sep.className = 'cc-sep'; dock.appendChild(sep);
           (function (cp, ac, cd, jj) { dock.appendChild(dockBtn(csvg(CICON.flag), cd.ribbon ? 'Edit ribbon' : 'Add a ribbon', cd.ribbon ? 'on' : '', function () { openRibbonPop(this, cp, ac, cd.ribbon == null ? null : cd.ribbon, card, jj); })); })(cpre, accent, cdata, j);
           (function (jj) { var tb = dockBtn(csvg(CICON.trash), 'Delete entire category', 'danger', null); armDelete(tb, function () { closePop(); A('rm:' + prefix + 'categories.' + jj); }); dock.appendChild(tb); })(j);
+          // drag-to-reorder grip (first in the dock). Only the grip initiates the
+          // drag (the card is the drag image); drop → reorder + FLIP animation.
+          var grip = document.createElement('button');
+          grip.className = 'cc-btn cc-grip'; grip.setAttribute('data-tip', 'Drag to reorder'); grip.setAttribute('draggable', 'true');
+          grip.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>';
+          (function (jj) {
+            grip.addEventListener('dragstart', function (e) { if (window.__peDragLock) { e.preventDefault(); return; } window.__peCatDrag = jj; card.classList.add('pe-dragging'); try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(jj)); e.dataTransfer.setDragImage(card, 30, 24); } catch (x) {} });
+            grip.addEventListener('dragend', function () { card.classList.remove('pe-dragging'); qsa('.cat-card', secEl).forEach(function (c) { c.classList.remove('pe-drop-before', 'pe-drop-after'); }); window.__peCatDrag = null; });
+          })(j);
+          dock.insertBefore(grip, dock.firstChild);
+          var gsep = document.createElement('span'); gsep.className = 'cc-sep'; dock.insertBefore(gsep, grip.nextSibling);
+          // drop target feedback + commit (insert before/after by vertical midpoint)
+          (function (jj) {
+            card.addEventListener('dragover', function (e) {
+              if (window.__peCatDrag == null || window.__peCatDrag === jj) return;
+              e.preventDefault(); try { e.dataTransfer.dropEffect = 'move'; } catch (x) {}
+              var rc = card.getBoundingClientRect(); var after = (e.clientY - rc.top) > rc.height / 2;
+              card.classList.toggle('pe-drop-after', after); card.classList.toggle('pe-drop-before', !after);
+            });
+            card.addEventListener('dragleave', function () { card.classList.remove('pe-drop-before', 'pe-drop-after'); });
+            card.addEventListener('drop', function (e) {
+              e.preventDefault(); var from = window.__peCatDrag; if (from == null || from === jj) return;
+              card.classList.remove('pe-drop-before', 'pe-drop-after');
+              var rc = card.getBoundingClientRect(); var after = (e.clientY - rc.top) > rc.height / 2;
+              var to = jj; if (after && from > jj) to = jj + 1; else if (!after && from < jj) to = jj - 1;
+              if (to === from) return;
+              dragReorder(qs('.cat-masonry', secEl), qsa('.cat-masonry > .cat-card', secEl), from, to, prefix + 'categories');
+            });
+          })(j);
           card.appendChild(dock); armDockHover(card, dock, cpre);
 
           // the ribbon banner on the card is the jump SCOPE for the ribbon text
@@ -794,12 +882,12 @@
           // status chip → glass popover (the enum is the only styled set)
           var stChip = qs('.chip[class*="st-"]', det);
           if (stChip) { stChip.classList.add('pe-st-chip'); (function () { stChip.onclick = function () { openStatusPop(stChip, ipre, idata.status, mAccent); }; })(); }
-          else if (head) { var gs = document.createElement('button'); gs.className = 'pe-mini-add'; gs.textContent = '+ status'; gs.onclick = function () { openStatusPop(gs, ipre, null, mAccent); }; head.appendChild(gs); }
+          else if (head) { var gs = document.createElement('button'); gs.className = 'pe-mini-add'; gs.textContent = '+ status'; gs.onclick = function () { openStatusPop(gs, ipre, null, mAccent); }; head.appendChild(gs); infoIcon(head, 'A colored status chip at the top of the card — pick from the set (e.g. Available, Limited, Discontinued). It flags the item’s state at a glance. Optional.'); }
 
           // info chip → inline ce (freeform); + info when absent
           var infoChip = qs('.chip.info', det);
           if (infoChip) { wrapCE(infoChip, ipre + 'info'); makeRemovable(infoChip, 'rm:' + ipre + 'info', true); }
-          else if (head) head.appendChild(addBtn('add:' + ipre + 'info', '+ info', true));
+          else if (head) { head.appendChild(addBtn('add:' + ipre + 'info', '+ info', true)); infoIcon(head, 'A free-text info chip next to the status — a short qualifier like a price, a year, or a one-word tag (e.g. “$2.99”, “2014”, “seasonal”). Optional.'); }
 
           // pill groups: label, pills (string or {text,struck}), strike + remove, + pill
           qsa('.modal-group-label', det).forEach(function (gl, g) {
@@ -812,9 +900,14 @@
                 var pdata = (((idata.groups || [])[g] || {}).pills || [])[pm];
                 var isObj = pdata && typeof pdata === 'object';
                 wrapCE(gp, isObj ? ppath + '.text' : ppath);
-                var menu = document.createElement('button'); menu.className = 'gpill-menu'; menu.textContent = '⋯'; menu.title = 'Options'; menu.setAttribute('contenteditable', 'false');
-                (function (p, struck, obj) { menu.onclick = function (e) { e.stopPropagation(); openPillPop(menu, mAccent, obj ? p + '.struck' : null, !!struck, p); }; })(ppath, isObj && pdata.struck, isObj);
-                gp.appendChild(menu);
+                // object pills carry the strike-through toggle in a small ⋯ menu
+                if (isObj) {
+                  var menu = document.createElement('button'); menu.className = 'gpill-menu'; menu.textContent = '⋯'; menu.title = 'Strike through'; menu.setAttribute('contenteditable', 'false');
+                  (function (p, struck) { menu.onclick = function (e) { e.stopPropagation(); openPillPop(menu, mAccent, p + '.struck', !!struck); }; })(ppath, pdata.struck);
+                  gp.appendChild(menu);
+                }
+                // delete = the standard two-click × confirm (same as everywhere else)
+                makeRemovable(gp, 'rm:' + ppath, true);
               });
               pillsDiv.appendChild(addBtn('push:' + ipre + 'groups.' + g + '.pills', '+ item', true));
             }
@@ -843,8 +936,9 @@
           // bottom adders row + remove item
           var adds = document.createElement('div'); adds.className = 'pe-adds';
           adds.appendChild(addBtn('push:' + ipre + 'groups', '+ group', true));
-          if (!co) adds.appendChild(addBtn('add:' + ipre + 'callout', '+ callout', true));
-          if (!noEl) adds.appendChild(addBtn('add:' + ipre + 'notes', '+ notes', true));
+          infoIcon(adds, 'A labeled set of pill tags — a heading (e.g. “Ingredients”, “Sizes”, “Available at”) plus a row of small tags you add, rename, strike through, or remove. Add as many groups as you need.');
+          if (!co) { adds.appendChild(addBtn('add:' + ipre + 'callout', '+ callout', true)); infoIcon(adds, 'A highlighted box inside the card — a short label + a sentence to spotlight one important thing (a warning, a tip, a key fact). One per card.'); }
+          if (!noEl) { adds.appendChild(addBtn('add:' + ipre + 'notes', '+ notes', true)); infoIcon(adds, 'A small footnote at the bottom of the card — fine print, a source, or an aside. One per card.'); }
           (function (dj2, dk2) { var ri = document.createElement('button'); ri.className = 'pe-removeitem'; ri.textContent = 'Remove item'; armDelete(ri, function () { A('rm:' + prefix + 'categories.' + dj2 + '.items.' + dk2); }); adds.appendChild(ri); })(dj, dk);
           det.appendChild(adds);
         });
@@ -1006,7 +1100,13 @@
           // non-field part of the card also opens it.
           var expand = qs('.sc-expand', st);
           if (expand) { expand.classList.add('pe-expand'); (function (kk, ss) { expand.onclick = function (e) { e.stopPropagation(); openEvent(kk, ss); }; })(k, st); }
-          if (card) { card.style.cursor = 'pointer'; (function (kk, ss) { card.addEventListener('click', function (e) { if (e.target.closest('.ce,.pe-remove,.cc-pop')) return; openEvent(kk, ss); }); })(k, st); }
+          if (card) {
+            // the card is the jump SCOPE for the modal-only body field — a
+            // readiness jump to events.K.body opens the expandable card (the body
+            // lives in the modal, not on the face) and then flashes the body.
+            card.setAttribute('data-pe-scope', prefix + 'events.' + k); card.setAttribute('data-pe-opens', '1');
+            card.style.cursor = 'pointer'; (function (kk, ss) { card.addEventListener('click', function (e) { if (e.target.closest('.ce,.pe-remove,.cc-pop')) return; openEvent(kk, ss); }); })(k, st);
+          }
         });
 
         // "+ new event" — upper-right, above the timeline. Appending lands the
@@ -1171,17 +1271,17 @@
             + '<div><div class="dr-label">Unit</div><select class="dr-input dr-select dr-unit"><option' + (idata.unit !== 'TB' ? ' selected' : '') + '>GB</option><option' + (idata.unit === 'TB' ? ' selected' : '') + '>TB</option></select></div>'
             // price + its price-drop toggle + the revised price are GROUPED here
             + '<div><div class="dr-label">Price</div><input class="dr-input dr-price" value="' + ea(oldP) + '">'
-            +   '<div class="tog-row" style="margin-top:8px"><button class="tog dr-drop' + (hasArrow ? ' on' : '') + '"><span class="tog-pip"></span>Price drop (→)</button></div>'
+            +   '<div class="tog-row" style="margin-top:8px"><button class="tog dr-drop' + (hasArrow ? ' on' : '') + '"><span class="tog-pip"></span>Price drop (→)</button>' + infoI('Turn on when this configuration’s price was CUT during its life. It shows the old price struck through with an arrow to the new, lower price (e.g. $399 → $299). Leave off for a single, unchanged price.') + '</div>'
             +   (hasArrow ? '<div style="margin-top:8px"><div class="dr-label">Revised price</div><input class="dr-input dr-price2" value="' + ea(newP) + '"></div>' : '')
             + '</div>'
             + '</div>'
             + '<div class="dr-row c2">'
-            + '<div><div class="dr-label">Model / model number</div><input class="dr-input dr-model" value="' + ea(idata.model || '') + '"></div>'
+            + '<div><div class="dr-label dr-label-i">Model / model number' + infoI('A short way to tell this configuration apart from the others. Put either a plain descriptor (e.g. “Base”, “Mid”, “Top”) or the literal model/part number (e.g. “A2178 · MVJD2LL/A”) — whichever best distinguishes it.') + '</div><input class="dr-input dr-model" value="' + ea(idata.model || '') + '"></div>'
             + '<div><div class="dr-label">Dates available</div><input class="dr-input dr-dates" value="' + ea(idata.dates || '') + '"></div>'
             + '</div>'
             + '<div><div class="dr-label" style="margin-bottom:8px">Options</div><div class="tog-row">'
             + '<button class="tog dr-revised' + (idata.revised ? ' on' : '') + '"><span class="tog-pip"></span>Mark as special configuration</button>'
-            + '<span class="dr-info" tabindex="0" data-tip="' + ea("Sets a model apart from the standard tiers: it drops below a hairline divider with a striped bar. Use it for a config that doesn't share the lineup's hardware. Real case — the iPod touch (5th gen) shipped in 32 & 64 GB; a year later a cheaper 16 GB 'A1509' arrived with no rear camera, no flash and no loop, in Silver only. Marking it special drops it below the divider with its own note, so it reads as the stripped-down budget exception rather than a normal third tier.") + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>'
+            + infoI("Sets a model apart from the standard tiers: it drops below a hairline divider with a striped bar. Use it for a config that doesn't share the lineup's hardware. Real case — the iPod touch (5th gen) shipped in 32 & 64 GB; a year later a cheaper 16 GB 'A1509' arrived with no rear camera, no flash and no loop, in Silver only. Marking it special drops it below the divider with its own note, so it reads as the stripped-down budget exception rather than a normal third tier.")
             + '</div>'
             + (idata.revised ? '<div style="margin-top:8px"><div class="dr-label">Special configuration label</div><input class="dr-input dr-divlabel" value="' + ea(sdata.divider_label || '') + '" placeholder="e.g. special edition"></div>' : '')
             + '</div>'
@@ -1261,8 +1361,8 @@
         // toolbar below the chart — "+ configuration" (intro lives below the H2)
         var cfgChart = qs('.cfg-chart', secEl);
         if (cfgChart) {
-          var tb = document.createElement('div'); tb.className = 'cfg-toolbar';
-          var mk = function (label, action) { var b = document.createElement('button'); b.className = 'ov-mini'; b.textContent = label; var pm = /^push:(.+)$/.exec(action); if (pm) b.setAttribute('data-pe-addpath', pm[1]); b.onclick = function () { A(action); }; return b; };
+          var tb = document.createElement('div'); tb.className = 'pe-cfg-toolbar';
+          var mk = function (label, action) { var b = document.createElement('button'); b.className = 'pe-cfg-add'; b.textContent = label; var pm = /^push:(.+)$/.exec(action); if (pm) b.setAttribute('data-pe-addpath', pm[1]); b.onclick = function () { A(action); }; return b; };
           tb.appendChild(mk('+ configuration', 'push:' + prefix + 'items'));
           cfgChart.appendChild(tb);
         }
@@ -1284,6 +1384,335 @@
               if (dx || dy) { row.style.transition = 'transform .5s cubic-bezier(.4,0,.2,1)'; row.style.transform = ''; }
               if (fl && targetW) { fl.style.transition = 'width .5s cubic-bezier(.4,0,.2,1)'; fl.style.width = targetW; }
             }); });
+          });
+        }
+      }
+
+      // ── spec: the "Specifications Sheet" card grid. Inline .ce on the heading,
+      // device line, each card title, and every key/value row; an icon picker on
+      // each card head (icons DERIVED from the canon sprite in the iframe); add/
+      // remove rows + cards. Positional [key,value] rows bind .0/.1 like the
+      // overview infobox. No layout JS (the grid is pure CSS). ──
+      if (type === 'spec') {
+        wrapCE(qs('.wiki-section-title', secEl), prefix + 'heading');     // required H2
+        wrapCE(qs('.spec-sub', secEl), prefix + 'device');                // required device line
+
+        var labBlank = (R('spec.cards[].rows[].label').blank) || 'Label';
+        var vBlank = (R('spec.cards[].rows[].value').blank) || 'Value';
+        var rowsRule = R('spec.cards[].rows'), cardsRule = R('spec.cards');
+        var rowsMin = rowsRule.min != null ? rowsRule.min : 1;
+        var cardsMin = cardsRule.min != null ? cardsRule.min : 1;
+        var grid = qs('.spec-grid', secEl);
+
+        // icon names are DERIVED from the canon sprite injected into the canvas
+        // (each <symbol id="ic-NAME">) — never a hand-kept list.
+        var iconNames = function () {
+          if (window.__peIcons) return window.__peIcons;
+          window.__peIcons = qsa('svg symbol[id^="ic-"]').map(function (s) { return s.id.replace(/^ic-/, ''); }).sort();
+          return window.__peIcons;
+        };
+        var openIconPop = function (btn, cpre, cur) {
+          var names = iconNames();
+          var html = '<div class="cc-pop-label">Card icon</div><div class="cc-icons">'
+            + names.map(function (n) { return '<button class="cc-icon' + (n === cur ? ' sel' : '') + '" data-n="' + n + '" title="' + n + '"><svg class="wiki-icon" viewBox="0 0 24 24"><use href="#ic-' + n + '"></use></svg></button>'; }).join('')
+            + '</div>' + (cur ? '<button class="cc-rm">Remove icon</button>' : '');
+          var pop = openPop(btn, '', html, { cls: 'icon-pop' });
+          qsa('.cc-icon', pop).forEach(function (b) { b.onclick = function () { closePop(); A('set:' + cpre + 'icon:' + b.getAttribute('data-n')); }; });
+          var rm = qs('.cc-rm', pop); if (rm) rm.onclick = function () { closePop(); A('rm:' + cpre + 'icon'); };
+        };
+
+        qsa('.spec-card', secEl).forEach(function (card, j) {
+          var cpre = prefix + 'cards.' + j + '.';
+          var cdata = (sdata.cards && sdata.cards[j]) || {};
+          var head = qs('.spec-card-head', card);
+          // title (required)
+          wrapCE(qs('span', head), cpre + 'title');
+          // icon (REQUIRED) — click the glyph to change; "+ icon" when absent.
+          // The icon isn't a text field, so it carries a jump SCOPE (not a path):
+          // a readiness jump to a missing icon opens the picker.
+          var iconEl = head && qs('.wiki-icon', head);
+          if (iconEl) {
+            iconEl.style.cursor = 'pointer'; iconEl.setAttribute('title', 'Change icon');
+            iconEl.setAttribute('data-pe-scope', cpre + 'icon'); iconEl.setAttribute('data-pe-opens', '1');
+            (function (cd) { iconEl.onclick = function (e) { e.stopPropagation(); openIconPop(iconEl, cpre, cd.icon); }; })(cdata);
+          } else if (head) {
+            var addIc = addBtn('', '+ icon', true);
+            addIc.setAttribute('data-pe-scope', cpre + 'icon'); addIc.setAttribute('data-pe-opens', '1');
+            addIc.onclick = function () { openIconPop(addIc, cpre, null); };
+            head.insertBefore(addIc, head.firstChild);
+          }
+          // label/value rows (positional [0]/[1], required)
+          var rows = qsa('.spec-row', card);
+          rows.forEach(function (r, k) {
+            var dt = qs('.spec-k', r), dd = qs('.spec-v', r);
+            wrapCE(dt, cpre + 'rows.' + k + '.0'); var dtce = dt && dt.querySelector('.ce'); if (dtce) dtce.setAttribute('data-ph', labBlank);
+            wrapCE(dd, cpre + 'rows.' + k + '.1'); var ddce = dd && dd.querySelector('.ce'); if (ddce) ddce.setAttribute('data-ph', vBlank);
+            if (rows.length > rowsMin) makeRemovable(r, 'rm:' + cpre + 'rows.' + k);
+          });
+          var list = qs('.spec-list', card);
+          if (list) list.appendChild(addBtn('push:' + cpre + 'rows', '+ spec', true));
+          // remove the whole card (above the min)
+          if (qsa('.spec-card', secEl).length > cardsMin) makeRemovable(card, 'rm:' + prefix + 'cards.' + j);
+
+          // drag handle (top-right, below the ×) → reorder cards. Only the handle
+          // initiates the drag (so editing text inside the card is unaffected);
+          // the card is the drag image. On drop, move the data + FLIP-animate.
+          var grab = document.createElement('button');
+          grab.className = 'spec-drag'; grab.title = 'Drag to reorder'; grab.setAttribute('draggable', 'true');
+          grab.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>';
+          (function (jj) {
+            grab.addEventListener('dragstart', function (e) {
+              if (window.__peDragLock) { e.preventDefault(); return; }
+              window.__peSpecDrag = jj; card.classList.add('pe-dragging');
+              try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(jj)); e.dataTransfer.setDragImage(card, 20, 20); } catch (x) {}
+            });
+            grab.addEventListener('dragend', function () { card.classList.remove('pe-dragging'); qsa('.spec-card', secEl).forEach(function (c) { c.classList.remove('pe-drop-before', 'pe-drop-after'); }); window.__peSpecDrag = null; });
+          })(j);
+          card.appendChild(grab);
+
+          // drop target feedback + commit
+          (function (jj) {
+            card.addEventListener('dragover', function (e) {
+              if (window.__peSpecDrag == null || window.__peSpecDrag === jj) return;
+              e.preventDefault(); try { e.dataTransfer.dropEffect = 'move'; } catch (x) {}
+              var rc = card.getBoundingClientRect(); var after = (e.clientX - rc.left) > rc.width / 2;
+              card.classList.toggle('pe-drop-after', after); card.classList.toggle('pe-drop-before', !after);
+            });
+            card.addEventListener('dragleave', function () { card.classList.remove('pe-drop-before', 'pe-drop-after'); });
+            card.addEventListener('drop', function (e) {
+              e.preventDefault(); var from = window.__peSpecDrag; if (from == null || from === jj) return;
+              card.classList.remove('pe-drop-before', 'pe-drop-after');
+              var rc = card.getBoundingClientRect(); var after = (e.clientX - rc.left) > rc.width / 2;
+              var to = jj; if (after && from > jj) to = jj + 1; else if (!after && from < jj) to = jj - 1;
+              if (to === from) return;
+              dragReorder(qs('.spec-grid', secEl), qsa('.spec-card', secEl), from, to, prefix + 'cards');
+            });
+          })(j);
+        });
+
+        // + card — after the grid
+        if (grid) grid.parentNode.insertBefore(addLine('push:' + prefix + 'cards', '+ card'), grid.nextSibling);
+      }
+
+      // ── lifecycle-lane: the OS-support ribbon. Inline .ce on the heading,
+      // lane title, lead prose, each segment's version + date, and the notes.
+      // The auto range + legend are LOCKED (derived). Enum choices — support
+      // TYPE and BADGE type — are picked in a per-segment popover; the note
+      // STATUS in a dot popover. Dates are inline text ("Mon YYYY"); editing one
+      // commits → the canon repositions the tiles + recomputes the range. No
+      // layout JS in the canon (widths are Liquid flex). ──
+      if (type === 'lifecycle-lane') {
+        var ea2 = function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); };
+        var lockCanon = function (el, tip) { if (!el) return; el.classList.add('pe-canon'); var lk = document.createElement('span'); lk.className = 'pe-lock'; lk.title = tip; lk.innerHTML = LOCK; el.appendChild(lk); };
+        // FLIP: snapshot tile rects (by their canon data-idx) BEFORE a date edit
+        // commits — the canon re-sorts chronologically, and the tiles smoothly
+        // slide to their new slots (the buildkit's standard reorder animation).
+        var laneSnap = function () { var snap = {}; qsa('.lane-seg', secEl).forEach(function (s) { snap[s.getAttribute('data-idx')] = s.getBoundingClientRect(); }); window.__peLaneFlip = { s: i, snap: snap }; };
+        wrapCE(qs('.wiki-section-title', secEl), prefix + 'heading');   // required H2
+        wrapCE(qs('.lane-title', secEl), prefix + 'title');            // required lane title
+
+        // lead/intro: ONE box (no "+ lead text"). When there's no intro box (none
+        // added, OR removed → empty .lane-prose), show a single "+ intro text" to
+        // (re)create it; present → edit it (removable).
+        var lprose = qs('.lane-prose', secEl);
+        var lps = lprose ? qsa('p', lprose) : [];
+        lps.forEach(function (p, ix) { wrapCE(p, prefix + 'paragraphs.' + ix); makeRemovable(p, 'rm:' + prefix + 'paragraphs.' + ix); });
+        if (!lps.length) { var lAnchor = lprose || qs('.wiki-section-title', secEl); if (lAnchor && lAnchor.parentNode) lAnchor.parentNode.insertBefore(addLine('push:' + prefix + 'paragraphs', '+ intro text'), lAnchor.nextSibling); }
+
+        // the upper-right range + the legend are DERIVED from the segments → locked
+        lockCanon(qs('.lane-range', secEl), 'Auto-derived from the segment dates & versions — never hand-typed');
+        lockCanon(qs('.lane-legend', secEl), 'Auto-derived from the support tiers present');
+
+        // segments
+        var segTypes = (R('lifecycle-lane.segments[].type').enum) || [];
+        var badgeTypes = (R('lifecycle-lane.segments[].badge_type').enum) || [];
+        var segMin = (R('lifecycle-lane.segments').min != null) ? R('lifecycle-lane.segments').min : 2;
+        var badgePresets = (R('lifecycle-lane.segments[].badge_type').presets) || {};   // {type: text} combos (derived)
+        var segEls = qsa('.lane-seg', secEl);
+        var verBlank = (R('lifecycle-lane.segments[].ver').blank) || 'Version';
+        // ── DATE picker helpers (month grid + a separate year), shared by the
+        // segment controller AND the standalone date popover. Edits are live (PV);
+        // the caller commits once → the canon re-sorts + the tiles FLIP (laneSnap).
+        var laneMonths = (R('timeline.events[].month').enum) || ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var laneMonthOf = function (dateStr) { var dm = String(dateStr == null ? '' : dateStr).match(/([A-Za-z]+)\s*(\d{4})/); var mo = ''; if (dm) { var mm = dm[1].slice(0, 3).toLowerCase(); laneMonths.forEach(function (m) { if (m.toLowerCase() === mm) mo = m; }); } return { mo: mo, yr: dm ? dm[2] : '' }; };
+        var dateGridHtml = function (dateStr, top, lab) {
+          var d0 = laneMonthOf(dateStr);
+          return '<div class="cc-pop-label"' + (top ? ' style="margin-top:13px"' : '') + '>' + (lab || 'Date') + '</div><div class="cc-enum cc-month-grid">'
+            + laneMonths.map(function (m) { return '<button class="cc-enum-opt' + (m === d0.mo ? ' sel' : '') + '" data-m="' + m + '">' + m + '</button>'; }).join('') + '</div>'
+            + '<input type="text" class="cc-lane-year" inputmode="numeric" maxlength="4" placeholder="Year" value="' + ea2(d0.yr) + '">';
+        };
+        // path = the FULL data path to the date string (e.g. "...segments.2.date"
+        // or "...end") — so the same picker drives any date field; year is
+        // restricted to 4 numeric digits.
+        var wireDateGrid = function (pop, path, dateStr, onChange) {
+          var yr = qs('.cc-lane-year', pop); if (!yr) return;
+          var selMo = laneMonthOf(dateStr).mo;
+          var write = function () { var y = (yr.value || '').trim(); if (selMo && /^\d{4}$/.test(y)) { PV(path, selMo + ' ' + y); onChange(); } };
+          qsa('[data-m]', pop).forEach(function (b) { b.onclick = function () { qsa('[data-m]', pop).forEach(function (x) { x.classList.remove('sel'); }); b.classList.add('sel'); selMo = b.getAttribute('data-m'); write(); }; });
+          yr.addEventListener('input', function () { yr.value = yr.value.replace(/\D/g, '').slice(0, 4); write(); });
+          enterBlurI(yr);
+        };
+        var openSegPop = function (anchor, spre, sd) {
+          // version + DATE (month/year) + support type + badge — all in one
+          var dirty = false, committed = false;
+          var html = '<div class="cc-pop-label">Software version</div><input type="text" class="cc-lane-ver" placeholder="' + ea2(verBlank) + '" value="' + ea2(sd.ver) + '">'
+            + dateGridHtml(sd.date, true)
+            + '<div class="cc-pop-label cc-pop-label-i" style="margin-top:13px">Support type' + infoI('How well the device is supported at this version. Full (green) = full OS updates; Partial (amber) = limited/late updates; Dropped (grey) = no longer supported; Security (blue) = security-only patches after end-of-life.') + '</div><div class="cc-enum cc-lane-types">'
+            + segTypes.map(function (t) { return '<button class="cc-enum-opt cc-type-' + t + (sd.type === t ? ' sel' : '') + '" data-t="' + t + '">' + t + '</button>'; }).join('') + '</div>'
+            // BADGE = a bank of preset text+color combos (derived from the
+            // badge_type enum + its grammar `presets` map). Pick one → sets the
+            // text AND the colour together; no freeform typing.
+            + '<div class="cc-pop-label cc-pop-label-i" style="margin-top:13px">Badge' + infoI("A badge is a small corner label on a tile — use it to flag a milestone: the Launch, the Final update, when support was Dropped, a Security-only patch, a Paid upgrade, or a Limited release. Optional.") + '</div><div class="cc-enum cc-badge-bank">'
+            + badgeTypes.map(function (b) { var tx = (badgePresets[b] || b); var on = (sd.badge != null && (sd.badge_type || 'ship') === b) ? ' sel' : ''; return '<button class="cc-enum-opt cc-badge-' + b + on + '" data-bt="' + b + '" data-btx="' + ea2(tx) + '">' + tx + '</button>'; }).join('') + '</div>'
+            + (sd.badge != null ? '<button class="cc-rm">Remove badge</button>' : '');
+          // version + date are LIVE (PV); committed once on close (or when a type/
+          // badge button commits, which also persists them) → re-sort + FLIP.
+          var pop = openPop(anchor, '', html, { cls: 'lane-pop', onClose: function () { if (dirty && !committed) { laneSnap(); A('commit'); } } });
+          var vi = qs('.cc-lane-ver', pop); if (vi) { enterBlurI(vi); vi.addEventListener('input', function () { PV(spre + 'ver', vi.value); dirty = true; }); }
+          wireDateGrid(pop, spre + 'date', sd.date, function () { dirty = true; });
+          qsa('[data-t]', pop).forEach(function (b) { b.onclick = function () { committed = true; if (dirty) laneSnap(); closePop(); A('set:' + spre + 'type:' + b.getAttribute('data-t')); }; });
+          qsa('[data-bt]', pop).forEach(function (b) { b.onclick = function () { committed = true; if (dirty) laneSnap(); closePop(); PV(spre + 'badge', b.getAttribute('data-btx')); PV(spre + 'badge_type', b.getAttribute('data-bt')); A('commit'); }; });
+          var rm = qs('.cc-rm', pop); if (rm) rm.onclick = function () { committed = true; closePop(); A('rm:' + spre + 'badge'); };
+        };
+        // standalone DATE picker (click the tile's date) — month/year only
+        var openLaneDatePop = function (anchor, spre, sd) {
+          var dirty = false;
+          var pop = openPop(anchor, '', dateGridHtml(sd.date, false), { cls: 'lane-pop date-pop', onClose: function () { if (dirty) { laneSnap(); A('commit'); } } });
+          wireDateGrid(pop, spre + 'date', sd.date, function () { dirty = true; });
+        };
+        // weighted-mode END-date picker (the ribbon's right edge) — same month/year
+        // grid as a segment date, wired to the optional `end` field. First open
+        // (no value yet) seeds the field so the readiness check flips to met only
+        // once the user actually picks a month + year.
+        var openLaneEndPop = function (anchor) {
+          var dirty = false;
+          var pop = openPop(anchor, '', dateGridHtml(sdata.end, false, 'End date'), { cls: 'lane-pop date-pop', onClose: function () { if (dirty) { laneSnap(); A('commit'); } } });
+          wireDateGrid(pop, prefix + 'end', sdata.end, function () { dirty = true; });
+        };
+        var enterBlurI = function (el) { el.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); el.blur(); } }); };
+        // inline ver/date: single-line only — Enter LOCKS in (a stray newline/<br>
+        // would corrupt the date so it can't parse, breaking the derived range);
+        // commit on blur ONLY when changed (so the range/positions refresh).
+        var dce0 = function (ce, orig) {
+          ce.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); ce.blur(); } });
+          ce.addEventListener('blur', function () { if ((ce.textContent || '').trim() !== String(orig == null ? '' : orig).trim()) { laneSnap(); A('commit'); } });
+        };
+        segEls.forEach(function (seg, k) {
+          var spre = prefix + 'segments.' + k + '.';
+          var sd = (sdata.segments && sdata.segments[k]) || {};
+          // version + date BOTH feed the derived range (date → edges, ver → the
+          // version count), so an inline edit to either must commit/re-render.
+          var vEl = qs('.lane-ver', seg);
+          if (vEl) { wrapCE(vEl, spre + 'ver'); var vce = vEl.querySelector('.ce'); if (vce) dce0(vce, sd.ver); }
+          // the date is a month/year PICKER (no freeform typing) — click it to
+          // open. It's the readiness jump target for the date requirement (scope
+          // + opens), so a "needed" date jumps here and opens the picker.
+          var dEl = qs('.lane-date', seg);
+          if (dEl) { dEl.classList.add('pe-datefield'); dEl.style.cursor = 'pointer'; dEl.setAttribute('data-pe-scope', spre + 'date'); dEl.setAttribute('data-pe-opens', '1'); (function (sp, d) { dEl.onclick = function (e) { e.stopPropagation(); openLaneDatePop(dEl, sp, d); }; })(spre, sd); }
+          if (segEls.length > segMin) makeRemovable(seg, 'rm:' + prefix + 'segments.' + k);
+          // click the tile (not a field/date/×) → the version + type + badge popover
+          seg.style.cursor = 'pointer';
+          (function (sp, d) { seg.addEventListener('click', function (e) { if (e.target.closest('.ce,.pe-remove,.cc-pop,.lane-badge,.pe-datefield')) return; openSegPop(seg, sp, d); }); })(spre, sd);
+        });
+        var lane = qs('.lane', secEl);
+        if (lane) lane.parentNode.insertBefore(addBtn('push:' + prefix + 'segments', '+ segment', true), lane.nextSibling);
+
+        // notes (optional) — status dot popover · inline label + text · add/remove
+        var noteStatuses = (R('lifecycle-lane.notes[].status').enum) || [];
+        var notesWrap = qs('.lane-notes', secEl);
+        var openNoteStatusPop = function (anchor, npre, cur) {
+          var html = '<div class="cc-pop-label">Status</div><div class="cc-enum">'
+            + noteStatuses.map(function (s) { return '<button class="cc-enum-opt' + (cur === s ? ' sel' : '') + '" data-s="' + s + '"><span class="lane-note-dot lane-dot-' + s + '"></span>' + s + '</button>'; }).join('') + '</div>';
+          var pop = openPop(anchor, '', html, { cls: 'lane-pop' });
+          qsa('[data-s]', pop).forEach(function (b) { b.onclick = function () { closePop(); A('set:' + npre + 'status:' + b.getAttribute('data-s')); }; });
+        };
+        // ALL-IN-ONE note add: pick the software version it's about (→ the colour
+        // is DERIVED from that segment's support type), then type the label + text.
+        var openNoteAddPop = function (anchor) {
+          var segData = sdata.segments || [];
+          if (!segData.length) return;
+          var chips = segData.map(function (s, k) { return '<button class="cc-enum-opt cc-type-' + s.type + '" data-seg="' + k + '">' + ea2(s.ver || '—') + '</button>'; }).join('');
+          // The note's LABEL is the version (auto-derived from the pick) — the
+          // note IS about that number. The OS name (optional, your own) prefixes
+          // it (e.g. "iOS 4.0"). A live preview mimics the actual note tile.
+          var html = '<div class="cc-pop-label">Which version is this note about?</div><div class="cc-enum cc-noteseg">' + chips + '</div>'
+            + '<div class="cc-pop-label" style="margin-top:11px">Operating system <span class="cc-opt">(optional prefix)</span></div><input type="text" class="cc-note-os" placeholder="e.g. iOS">'
+            + '<div class="cc-pop-label" style="margin-top:9px">Note</div><textarea class="cc-note-text" rows="2" placeholder="What happened at this version…"></textarea>'
+            + '<div class="cc-pop-label" style="margin-top:11px">Preview</div>'
+            + '<div class="cc-note-preview"><span class="lane-note-dot"></span><span class="cc-np"><strong class="cc-np-l">—</strong><span class="cc-np-d"> — </span><span class="cc-np-t"></span></span></div>'
+            + '<button class="cc-apply cc-note-add" disabled>Add note</button>';
+          var pop = openPop(anchor, '', html, { cls: 'lane-pop note-add' });
+          var sel = null, os = qs('.cc-note-os', pop), txt = qs('.cc-note-text', pop), addB = qs('.cc-note-add', pop);
+          var pdot = qs('.cc-note-preview .lane-note-dot', pop), pl = qs('.cc-np-l', pop), pd = qs('.cc-np-d', pop), pt = qs('.cc-np-t', pop);
+          var labelOf = function () { var v = sel ? (sel.ver || '') : ''; var o = (os.value || '').trim(); return ((o ? o + ' ' : '') + v).trim(); };
+          var upd = function () {
+            var lab = labelOf(); pl.textContent = lab || '—'; pt.textContent = txt.value || '';
+            pd.style.display = (lab && txt.value) ? '' : 'none';
+            if (pdot) pdot.className = 'lane-note-dot' + (sel ? ' lane-dot-' + sel.type : '');
+            addB.disabled = !(sel && (txt.value || '').trim());
+          };
+          qsa('[data-seg]', pop).forEach(function (b) { b.onclick = function () { qsa('[data-seg]', pop).forEach(function (x) { x.classList.remove('sel'); }); b.classList.add('sel'); sel = segData[+b.getAttribute('data-seg')]; upd(); }; });
+          os.addEventListener('input', upd); txt.addEventListener('input', upd);
+          addB.onclick = function () { if (!sel) return; window.__peNoteAdd = { s: i, status: sel.type, label: labelOf(), text: txt.value }; closePop(); A('push:' + prefix + 'notes'); };
+        };
+        if (notesWrap) {
+          qsa('.lane-note', notesWrap).forEach(function (note, k) {
+            var npre = prefix + 'notes.' + k + '.';
+            var nd = (sdata.notes && sdata.notes[k]) || {};
+            var dot = qs('.lane-note-dot', note);
+            if (dot) { dot.style.cursor = 'pointer'; dot.title = 'Status'; (function (nn, dd) { dot.onclick = function (e) { e.stopPropagation(); openNoteStatusPop(dot, nn, dd.status); }; })(npre, nd); }
+            var strong = qs('strong', note);
+            if (strong) wrapCE(strong, npre + 'label');
+            // the trailing "— text" node: keep the "— " static, edit just the text
+            if (strong) { var tnode = strong.nextSibling; if (tnode && tnode.nodeType === 3) { var m = tnode.nodeValue.match(/^(\s*[—-]\s*)([\s\S]*)$/); if (m) { tnode.nodeValue = m[1]; var tce = document.createElement('span'); tce.className = 'ce'; tce.setAttribute('contenteditable', 'true'); tce.setAttribute('data-pe-path', npre + 'text'); tce.setAttribute('data-ph', (R('lifecycle-lane.notes[].text').blank) || 'Note body'); tce.textContent = m[2]; (function (p, el) { el.addEventListener('blur', function () { P(p, el); }); })(npre + 'text', tce); tnode.parentNode.insertBefore(tce, tnode.nextSibling); } } }
+            makeRemovable(note, 'rm:' + prefix + 'notes.' + k, true);
+          });
+          var addN = addBtn('', '+ note', true); addN.onclick = function () { openNoteAddPop(addN); }; notesWrap.appendChild(addN);
+        } else { var ls = qs('.lane-scroll', secEl); if (ls) { var nline = addLine('', '+ note'); var nlb = qs('.pe-add', nline); if (nlb) nlb.onclick = function () { openNoteAddPop(nlb); }; ls.parentNode.insertBefore(nline, ls.nextSibling); } }
+        // a "+ note" push re-renders → fill the just-added (last) note with the
+        // chosen status/label/text from the all-in-one popover, then commit.
+        var na = window.__peNoteAdd;
+        if (na && na.s === i) {
+          window.__peNoteAdd = null;
+          var nn = ((sdata.notes || []).length) - 1;
+          if (nn >= 0) { PV(prefix + 'notes.' + nn + '.status', na.status); if (na.label) PV(prefix + 'notes.' + nn + '.label', na.label); if (na.text) PV(prefix + 'notes.' + nn + '.text', na.text); A('commit'); }
+        }
+
+        // weighted-widths toggle — OUTSIDE the visual's bounds, just below it,
+        // lower-right. "weighted by time" → tile widths ∝ the gap between dates.
+        // When on, an end-date chip sets the right edge for the last tile.
+        var laneWrap = qs('.lane-wrap', secEl);
+        if (laneWrap && laneWrap.parentNode) {
+          var foot = document.createElement('div'); foot.className = 'pe-lane-foot';
+          var wBtn = document.createElement('button'); wBtn.className = 'pe-lane-wbtn' + (sdata.weighted ? ' on' : ''); wBtn.title = 'On = each tile’s width ∝ the time until the next version';
+          wBtn.innerHTML = '<span class="sw"></span>Weighted by time';
+          wBtn.onclick = function () { A('set:' + prefix + 'weighted:' + (sdata.weighted ? 'false' : 'true')); }; foot.appendChild(wBtn);
+          infoIcon(foot, 'On: each tile’s WIDTH becomes proportional to the real time between versions — long support gaps look long, rapid releases look tight (a real time axis). Off: every tile is the same width (an even ribbon).');
+          if (sdata.weighted) {
+            // end date = a month/year picker (no freeform typing) — click to open;
+            // a × removes it when set.
+            var endTrig = document.createElement('button'); endTrig.className = 'pe-lane-endbtn' + (sdata.end != null ? ' set' : '');
+            endTrig.textContent = (sdata.end != null ? 'End: ' + sdata.end : '+ end date');
+            endTrig.onclick = function (e) { e.stopPropagation(); openLaneEndPop(endTrig); }; foot.appendChild(endTrig);
+            if (sdata.end != null) { var endRm = document.createElement('button'); endRm.className = 'pe-tag-rm'; endRm.style.opacity = '1'; endRm.textContent = '×'; endRm.title = 'Remove end date'; armDelete(endRm, function () { A('rm:' + prefix + 'end'); }); foot.appendChild(endRm); }
+            infoIcon(foot, 'The date the ribbon runs TO — it gives the LAST version’s tile a width (weighted mode measures each tile by the gap to the next date, and the last one has no next). Use today’s date if that version is still current, or the end-of-life date if support has fully ended.');
+          }
+          laneWrap.parentNode.insertBefore(foot, laneWrap.nextSibling);   // sibling AFTER the visual, not inside it
+        }
+
+        // FLIP play — after a date edit re-sorts the tiles, slide each from its
+        // old slot to its new one (match by the canon data-idx, stable across the
+        // re-sort since editing a date doesn't change a segment's data index).
+        var lf = window.__peLaneFlip;
+        if (lf && lf.s === i) {
+          window.__peLaneFlip = null;
+          var lraf = window.requestAnimationFrame || function (f) { return setTimeout(f, 16); };
+          qsa('.lane-seg', secEl).forEach(function (seg) {
+            var old = lf.snap[seg.getAttribute('data-idx')]; if (!old) return;
+            var nr = seg.getBoundingClientRect(); var dx = old.left - nr.left, dy = old.top - nr.top;
+            if (!dx && !dy) return;
+            seg.style.transition = 'none'; seg.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+            lraf(function () { lraf(function () { seg.style.transition = 'transform .42s cubic-bezier(.4,0,.2,1)'; seg.style.transform = ''; }); });
           });
         }
       }
@@ -1362,7 +1791,12 @@
         if (el) { var t = strip(el.textContent); var ph = el.getAttribute('data-ph'); var phv = (ph != null ? ph : b).trim(); return t !== '' && t !== phv; }
         return ne(val) && strip(val) !== b;
       }
-      function scalarLabel(concrete) {
+      // the readiness label for a scalar leaf — the field's grammar `label`
+      // override when set (e.g. preview → "Summary line"), else the humanized
+      // field name. `key` is the policy path (so we can read its rule).
+      function scalarLabel(concrete, key) {
+        var r = key && FIELDS[key];
+        if (r && r.label) return r.label;
         var li = -1; concrete.forEach(function (s, ix) { if (typeof s === 'number') li = ix; });
         return human(concrete.slice(li + 1).join(' '));
       }
@@ -1373,22 +1807,34 @@
         var plur = real ? sing + 's' : listName;
         return need <= 1 ? 'At least one ' + sing : 'At least ' + need + ' ' + plur;
       }
-      // an instance's identifying value = its first required text field (derived).
-      // Tuple (array) instances are read POSITIONALLY by the field's declaration
-      // index (a pair row is ["Label","Value"] → label is index 0).
-      function identTitle(prefix, concretePrefix, instData) {
+      // an instance's identifying value names its card in the widget. The field
+      // is DERIVED: a grammar `identity: true` field if declared (e.g. the
+      // timeline event's title, which isn't its first required text — year is),
+      // else the first required text/richtext field. The value is read LIVE from
+      // the bound .ce (so the card name updates in REAL TIME as you type), else
+      // the doc. Tuple (array) instances index positionally.
+      function identTitle(prefix, concretePrefix, instData, dataPrefix) {
         if (!instData) return '';
         var rel = ''; concretePrefix.forEach(function (seg) { rel += (typeof seg === 'number') ? '[]' : ((rel ? '.' : '') + seg); });
-        var base = prefix + '.' + rel + '.', best = null, isArr = Array.isArray(instData), fi = -1;
+        var base = prefix + '.' + rel + '.', isArr = Array.isArray(instData);
+        // collect this instance's own (depth-0) fields in declaration order
+        var fields = [];
         Object.keys(FIELDS).forEach(function (k) {
           if (k.indexOf(base) !== 0) return;
           var tail = k.slice(base.length); if (tail.indexOf('.') >= 0 || tail.indexOf('[]') >= 0) return;
-          fi++; if (best != null) return;
-          var r = FIELDS[k]; if (!r.required || (r.kind !== 'text' && r.kind !== 'richtext')) return;
-          var v = isArr ? instData[fi] : instData[tail];
-          if (ne(v) && strip(v) !== String(r.blank == null ? '' : r.blank).trim()) best = strip(v);
+          fields.push({ key: k, tail: tail, r: FIELDS[k], fi: fields.length });
         });
-        return best ? (best.length > 26 ? best.slice(0, 24) + '…' : best) : '';
+        var idField = null, firstText = null;
+        fields.forEach(function (f) {
+          if (f.r.identity) idField = idField || f;
+          if (!firstText && f.r.required && (f.r.kind === 'text' || f.r.kind === 'richtext')) firstText = f;
+        });
+        var pick = idField || firstText; if (!pick) return '';
+        var docPath = (dataPrefix || '') + concretePrefix.join('.') + '.' + (isArr ? pick.fi : pick.tail);
+        var el = dataPrefix ? findEl(docPath) : null;
+        var v = el ? strip(el.textContent) : (isArr ? instData[pick.fi] : instData[pick.tail]);
+        if (!ne(v) || strip(v) === String(pick.r.blank == null ? '' : pick.r.blank).trim()) return '';
+        v = strip(v); return v.length > 26 ? v.slice(0, 24) + '…' : v;
       }
       // a `pair`-style subtype is stored POSITIONALLY (the doc + the binding use
       // rows.0.0 / rows.0.1, while grammar names the fields key/value). When the
@@ -1436,7 +1882,7 @@
           var ck = concrete.slice(0, idxPos + 1).join('.');
           if (!cardMap[ck]) {
             cardMap[ck] = { key: dataPrefix + ck, kind: kindOf(prefix, concrete[idxPos - 1]),
-              name: identTitle(prefix, concrete.slice(0, idxPos + 1), nav(concrete.slice(0, idxPos + 1))),
+              name: identTitle(prefix, concrete.slice(0, idxPos + 1), nav(concrete.slice(0, idxPos + 1)), dataPrefix),
               reqs: [], itemMap: {}, itemOrder: [] };
             cardOrder.push(ck);
           }
@@ -1445,7 +1891,7 @@
         function getItem(card, idxPos, concrete) {
           var ik = concrete.slice(0, idxPos + 1).join('.');
           if (!card.itemMap[ik]) {
-            card.itemMap[ik] = { key: dataPrefix + ik, name: identTitle(prefix, concrete.slice(0, idxPos + 1), nav(concrete.slice(0, idxPos + 1))), reqs: [] };
+            card.itemMap[ik] = { key: dataPrefix + ik, name: identTitle(prefix, concrete.slice(0, idxPos + 1), nav(concrete.slice(0, idxPos + 1)), dataPrefix), reqs: [] };
             card.itemOrder.push(ik);
           }
           return card.itemMap[ik];
@@ -1473,14 +1919,14 @@
               var need = r.min != null ? r.min : 1, arr = Array.isArray(val) ? val : [];
               leaf = { label: listLabel(rel, r, need), sub: arr.length + ' / ' + need, met: arr.length >= need, jump: docPath, addpath: docPath, struct: true };
             } else {
-              leaf = { label: scalarLabel(concrete), met: metScalar(docPath, val, r.blank), jump: docPath };
+              leaf = { label: scalarLabel(concrete, key), met: metScalar(docPath, val, r.blank), jump: docPath };
             }
             if (idxs.length === 0) { section.push(leaf); return; }
             var card = getCard(idxs[0], concrete);
             if (idxs.length === 1) { card.reqs.push(leaf); return; }
             // deeper than the item (e.g. a pill inside a group) → tag with the
             // intermediate instance's name as a sub-label
-            if (idxs.length >= 3) { var s3 = identTitle(prefix, concrete.slice(0, idxs[idxs.length - 1] + 1), nav(concrete.slice(0, idxs[idxs.length - 1] + 1))); if (s3) leaf.sub = s3; }
+            if (idxs.length >= 3) { var s3 = identTitle(prefix, concrete.slice(0, idxs[idxs.length - 1] + 1), nav(concrete.slice(0, idxs[idxs.length - 1] + 1)), dataPrefix); if (s3) leaf.sub = s3; }
             getItem(card, idxs[1], concrete).reqs.push(leaf);
           });
         });
@@ -1502,7 +1948,7 @@
         // a match inside a CLOSED editor is no use — prefer the scope opener
         // that opens it. The catalog item fields live in the hidden .cat-details
         // store until openItem moves the detail into [data-catalog-modal].open.
-        var hidden = function (e) { return !!(e && e.closest && e.closest('[data-catalog-modal]:not(.open), .tl-modal:not(.open), .cat-details')); };
+        var hidden = function (e) { return !!(e && e.closest && e.closest('[data-catalog-modal]:not(.open), .tl-modal:not(.open), .cat-details, .tl-details')); };
         var el = findEl(it.jump); if (el && hidden(el)) el = null;
         if (!el) el = qs('[data-pe-jump~="' + it.jump + '"]');
         // composite EDITOR whose scope covers this path (e.g. a catalog item
@@ -1513,6 +1959,12 @@
         if (!el && it.addpath) el = qs('[data-pe-addpath="' + it.addpath + '"]');
         if (!el) { var base = it.jump.replace(/\.[^.]+$/, ''); el = qs('[data-pe-path^="' + base + '"]'); if (el && hidden(el)) el = null; }
         if (!el) return;
+        // if a modal / expanded card is open and the target lives OUTSIDE it
+        // (e.g. a category NAME on the collapsed card, or another card's field),
+        // close it first — so the field is reachable, and so opening a different
+        // item replaces rather than stacks onto the current one.
+        var openMod = qs('[data-catalog-modal].open, .tl-modal.open');
+        if (openMod && !openMod.contains(el)) { var xb = qs('[data-modal-close], [data-tl-close]', openMod); if (xb) try { xb.click(); } catch (e) {} }
         try { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
         flash(el);
         if (el.hasAttribute && el.hasAttribute('contenteditable')) { setTimeout(function () { try { el.focus(); } catch (e) {} }, 300); return; }
@@ -1540,7 +1992,7 @@
       var ovEl = qs('section[data-section="overview"]');
       if (ovEl && rdoc.overview) hosts.push({ el: ovEl, prefix: 'overview', data: rdoc.overview, dataPrefix: 'overview.' });
       (rdoc.sections || []).forEach(function (s, i) {
-        var el = bodySecs[i]; if (!el) return; var t = sectionTypeOf(el); if (!t) return;
+        var el = bodySecs[i]; if (!el) return; var t = s.type || sectionTypeOf(el); if (!t) return;
         hosts.push({ el: el, prefix: t, data: (s.data || {}), dataPrefix: 'sections.' + i + '.data.' });
       });
 
