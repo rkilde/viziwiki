@@ -416,6 +416,13 @@
     setTimeout(function () { selectAllCE(el); }, 0); // defer past the click's caret placement
   });
 
+  // info "i" tooltip edge-flip: the bubble is left-anchored + wide, so a right-
+  // side icon (e.g. config price-drop) overruns the canvas. On hover/focus,
+  // flip it to right-anchored when it would overflow the right edge.
+  var flipInfo = function (ic) { if (!ic) return; var r = ic.getBoundingClientRect(); ic.classList.toggle('flip-r', (r.left + 300) > (window.innerWidth - 8)); };
+  document.addEventListener('mouseover', function (e) { var ic = e.target.closest && e.target.closest('.dr-info'); if (ic) flipInfo(ic); });
+  document.addEventListener('focusin', function (e) { var ic = e.target.closest && e.target.closest('.dr-info'); if (ic) flipInfo(ic); });
+
   // group-pill action menu (mockup style): a small glass popover with
   // Strike (object pills only) + Remove
   function openPillPop(btn, accent, strikePath, isStruck, removePath) {

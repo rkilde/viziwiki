@@ -361,6 +361,10 @@ const AFFORDANCE = `
   .dr-info::before{ content:''; position:absolute; left:6px; bottom:calc(100% + 3px); transform:translateY(5px) rotate(45deg); width:9px; height:9px; background:#0a0a0a; opacity:0; transition:opacity .14s ease, transform .14s ease; z-index:40; }
   .dr-info:hover::after, .dr-info:focus::after, .dr-info:hover::before, .dr-info:focus::before{ opacity:1; transform:translateY(0); }
   .dr-info:hover::before, .dr-info:focus::before{ transform:rotate(45deg); }
+  /* edge-flip (set by JS when the bubble would overrun the right edge): anchor it
+     to the icon's right and grow leftward so it stays on-screen */
+  .dr-info.flip-r::after{ left:auto; right:0; }
+  .dr-info.flip-r::before{ left:auto; right:6px; }
   .tog{ display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:6px; border:1px solid rgba(0,0,0,.16); background:#fff;
     font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.08em; text-transform:uppercase; color:rgba(0,0,0,.5); cursor:pointer; transition:.12s; }
   .tog:hover{ border-color:rgba(0,0,0,.3); }
