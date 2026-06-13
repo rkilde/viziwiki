@@ -120,10 +120,10 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 | `tone` |  | enum | `a`  _(choice: a · b · special)_ |
 | `intro` |  | richtext | `Add an intro line` |
 | `footnote` |  | richtext | `Add a footnote` |
-| `prev` | • | axis_old | — |
+| `prev` |  | axis_old | — |
 | `prev.name` | • | text | `Old model` |
 | `prev.year` |  | text | — |
-| `current` | • | axis_new | — |
+| `current` |  | axis_new | — |
 | `current.name` | • | text | `New model` |
 | `current.year` |  | text | — |
 | `hardware` |  | list<delta_row> | _(template — see sub-fields)_ |

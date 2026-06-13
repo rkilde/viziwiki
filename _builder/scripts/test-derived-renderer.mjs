@@ -600,13 +600,14 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(!row.querySelector('.gd-chip'), 'seed row starts with no chip (blank)');
   const addChip = [...row.querySelectorAll('.pe-mini-add')].find((b) => b.textContent === '+ chip');
   ok(addChip, '"+ chip" slot present on a chipless row');
-  // "no before" is the alternative TOGGLE (dotted-link), not a dashed add-pill
+  // "no before" reads as an OR choice: the value field, an "or", then the toggle
+  ok(row.querySelector('.pe-or') && /^or$/i.test(row.querySelector('.pe-or').textContent.trim()), 'old-value / no-before presented as an "or" choice');
   ok(row.querySelector('.pe-noold') && /no .before. value/i.test(row.querySelector('.pe-noold').textContent), 'no-before is an alternative toggle (.pe-noold), not an add-pill');
   // open the chip picker from "+ chip"
   addChip.onclick();
   const cpop = [...d.querySelectorAll('.cc-pop.chip-pop')].pop();
   ok(cpop, 'chip popover opens');
-  ok(cpop.querySelector('.cc-chip-head .dr-info'), 'picker has an info "i" explaining the chip system');
+  ok(cpop.querySelector('.cc-chip-head .dr-info[data-tip-html]'), 'picker info "i" is a rich legend (color-meaning table), not a wall of text');
   ok(cpop.querySelectorAll('.cc-chip-cat .cc-chip-cat-h').length === 5, 'five category column-headers (from the grammar enum)');
   ok(cpop.querySelectorAll('.cc-chip-opt[data-c="better"]').length >= 1, '"better" category offers derived preset chips (bearings)');
   ok(cpop.querySelector('.cc-chip-opt[data-c="feature"][data-t="New"]'), 'preset labels come from grammar (feature → "New")');

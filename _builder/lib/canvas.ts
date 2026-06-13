@@ -376,6 +376,23 @@ const AFFORDANCE = `
   .dr-tip.in{ opacity:1; transform:translateY(0); }
   .dr-tip::after{ content:''; position:absolute; left:var(--ax,16px); bottom:-4px; transform:translateX(-50%) rotate(45deg); width:9px; height:9px; background:#0a0a0a; }
   .dr-tip.below::after{ bottom:auto; top:-4px; }
+  /* rich tooltip: a small legend table (e.g. the chip color meanings). Pin the
+     --gd-* tokens here so the swatches color even though the bubble is on <body>. */
+  .dr-tip-rich{ width:auto; max-width:270px;
+    --gd-better-bg:#dcfce7;  --gd-better-fg:#15803d;  --gd-feature-bg:#eff6ff; --gd-feature-fg:#1d4ed8;
+    --gd-changed-bg:#fef9c3; --gd-changed-fg:#a16207; --gd-worse-bg:#fee2e2;   --gd-worse-fg:#b91c1c;
+    --gd-same-bg:#f3f4f6;    --gd-same-fg:#6b7280; }
+  .dr-legend-h{ font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.12em; text-transform:uppercase; opacity:.65; margin-bottom:7px; }
+  .dr-legend{ border-collapse:collapse; }
+  .dr-legend td{ padding:2px 8px 2px 0; vertical-align:middle; font-size:12.5px; }
+  .dr-legend .dr-legend-c{ font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.06em; text-transform:uppercase; opacity:.95; }
+  .dr-legend .dr-legend-m{ opacity:.75; }
+  .dr-sw{ display:inline-block; width:12px; height:12px; border-radius:3px; border:1px solid; }
+  .dr-sw.gd-chip-better{ background:var(--gd-better-bg); border-color:var(--gd-better-fg); }
+  .dr-sw.gd-chip-feature{ background:var(--gd-feature-bg); border-color:var(--gd-feature-fg); }
+  .dr-sw.gd-chip-changed{ background:var(--gd-changed-bg); border-color:var(--gd-changed-fg); }
+  .dr-sw.gd-chip-worse{ background:var(--gd-worse-bg); border-color:var(--gd-worse-fg); }
+  .dr-sw.gd-chip-same{ background:var(--gd-same-bg); border-color:var(--gd-same-fg); }
   .tog{ display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:6px; border:1px solid rgba(0,0,0,.16); background:#fff;
     font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.08em; text-transform:uppercase; color:rgba(0,0,0,.5); cursor:pointer; transition:.12s; }
   .tog:hover{ border-color:rgba(0,0,0,.3); }
@@ -491,9 +508,11 @@ const AFFORDANCE = `
   .cc-chip-grid{ display:flex; flex-direction:column; gap:9px; }
   /* each category is a labelled column-header row: the name (in its color) +
      its chips */
-  .cc-chip-cat{ display:flex; align-items:flex-start; gap:9px; }
-  .cc-chip-cat-h{ flex:0 0 60px; padding-top:3px; font-family:'JetBrains Mono',monospace; font-size:8px;
-    font-weight:600; letter-spacing:.12em; text-transform:uppercase; text-align:right; }
+  .cc-chip-cat{ display:flex; align-items:stretch; gap:10px; }
+  /* category column-header: right-aligned, hugging a vertical hairline divider */
+  .cc-chip-cat-h{ flex:0 0 56px; padding:3px 10px 0 0; border-right:1px solid rgba(0,0,0,.12);
+    font-family:'JetBrains Mono',monospace; font-size:8px; font-weight:600; letter-spacing:.12em;
+    text-transform:uppercase; text-align:right; }
   .cc-chip-cat-h.gd-chip-better{ color:var(--gd-better-fg); }
   .cc-chip-cat-h.gd-chip-feature{ color:var(--gd-feature-fg); }
   .cc-chip-cat-h.gd-chip-changed{ color:var(--gd-changed-fg); }
@@ -504,10 +523,12 @@ const AFFORDANCE = `
   .cc-chip-opt:hover{ filter:brightness(.97); box-shadow:0 0 0 2px rgba(0,0,0,.12); }
   .cc-chip-opt.sel{ box-shadow:0 0 0 2px rgba(0,0,0,.45); }
   /* parameterized chip — a fill-in {n} slot + a ✓ to resolve it */
-  .cc-chip-fill{ display:inline-flex; align-items:center; gap:1px; }
-  .cc-chip-fill-in{ width:30px; border:0; border-bottom:1px solid currentColor; background:transparent; color:inherit;
-    font:inherit; text-align:center; padding:0 1px; }
-  .cc-chip-fill-in:focus{ outline:none; }
+  .cc-chip-fill{ display:inline-flex; align-items:baseline; gap:0; font-weight:600; }
+  /* the {n} slot: snug to the unit (2×), a FAINT neutral underline (not the heavy
+     full-color one that blurred the digit) so it reads as one multiplier token */
+  .cc-chip-fill-in{ width:18px; border:0; border-bottom:1px solid rgba(0,0,0,.25); background:transparent; color:inherit;
+    font:inherit; font-weight:600; text-align:center; padding:0; }
+  .cc-chip-fill-in:focus{ outline:none; border-bottom-color:rgba(0,0,0,.55); }
   .cc-chip-fill-go{ border:0; background:transparent; color:inherit; cursor:pointer; font-size:9px; line-height:1; padding:0 0 0 4px; opacity:.6; }
   .cc-chip-fill-go:hover{ opacity:1; }
   .cc-chip-custom{ border-top:1px solid rgba(0,0,0,.1); margin-top:4px; padding-top:9px; }
@@ -526,7 +547,11 @@ const AFFORDANCE = `
   .delta .ce:empty::before{ content:attr(data-ph); color:rgba(0,0,0,.34); font-style:italic; pointer-events:none; }
   /* "no before" — an ALTERNATIVE toggle (dotted-underline link), deliberately NOT
      the dashed add-pill language, so it doesn't read as "add something". */
-  .pe-noold{ display:block; margin-top:9px; padding:0; border:0; background:transparent; cursor:pointer;
+  /* old-value OR no-before: a clear either/or choice — the value field, then an
+     "or", then the alternative toggle */
+  .pe-or{ display:block; margin:7px 0 1px; font-family:'JetBrains Mono',monospace; font-size:8px;
+    letter-spacing:.16em; text-transform:uppercase; color:rgba(0,0,0,.3); }
+  .pe-noold{ display:block; margin-top:0; padding:0; border:0; background:transparent; cursor:pointer;
     font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.1em; text-transform:uppercase;
     color:rgba(0,0,0,.38); text-decoration:underline dotted; text-underline-offset:3px; }
   .pe-noold:hover{ color:rgba(0,0,0,.7); }

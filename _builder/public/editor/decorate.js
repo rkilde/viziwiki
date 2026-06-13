@@ -276,7 +276,12 @@
   };
   var csvg = function (d) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + d + '</svg>'; };
   // a hover/focus info "i" with an explanatory tooltip (shared by every bank)
-  function infoI(tip) { return '<span class="dr-info" tabindex="0" data-tip="' + String(tip == null ? '' : tip).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>'; }
+  var INFO_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
+  function infoI(tip) { return '<span class="dr-info" tabindex="0" data-tip="' + String(tip == null ? '' : tip).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;') + '">' + INFO_SVG + '</span>'; }
+  // a rich (HTML) variant of the info tooltip — same control, but the bubble
+  // renders markup (e.g. a small legend table). HTML goes in an attribute, so
+  // escape only & and " (NOT < >, which we want as real tags); showTip uses it.
+  function infoIHtml(html) { return '<span class="dr-info" tabindex="0" data-tip-html="' + String(html == null ? '' : html).replace(/&/g, '&amp;').replace(/"/g, '&quot;') + '">' + INFO_SVG + '</span>'; }
   // append a shared info "i" (the one master control) to a parent element
   function infoIcon(parent, tip) { if (!parent) return; var s = document.createElement('span'); s.innerHTML = infoI(tip); parent.appendChild(s.firstChild); }
   function dockBtn(icon, tip, cls, onclick) {
@@ -430,8 +435,10 @@
   var drTip = null;
   function ensureTip() { if (!drTip || !drTip.parentNode) { drTip = document.createElement('div'); drTip.className = 'dr-tip'; document.body.appendChild(drTip); } return drTip; }
   function showTip(ic) {
-    var tip = ic.getAttribute('data-tip'); if (!tip) return;
-    var el = ensureTip(); el.textContent = tip; el.className = 'dr-tip';
+    var rich = ic.getAttribute('data-tip-html'), tip = ic.getAttribute('data-tip');
+    if (!rich && !tip) return;
+    var el = ensureTip(); el.className = 'dr-tip' + (rich ? ' dr-tip-rich' : '');
+    if (rich) el.innerHTML = rich; else el.textContent = tip;
     el.style.left = '0px'; el.style.top = '0px';
     var r = ic.getBoundingClientRect(), w = el.offsetWidth, h = el.offsetHeight;
     var left = r.left + r.width / 2 - w / 2, top = r.top - h - 9, below = false;
@@ -1576,10 +1583,16 @@
             + eaD(parts[0] || '') + '<input class="cc-chip-fill-in" inputmode="decimal" placeholder="' + eaD(ph) + '">' + eaD(parts[1] || '')
             + '<button class="cc-chip-fill-go" title="Use this chip">✓</button></span>';
         };
+        // the info "i" renders a small color-meaning LEGEND TABLE (derived from the
+        // enum), not a wall of text. A swatch per category + a one-line gloss.
+        var chipGloss = { better: 'an improvement', feature: 'a new feature', changed: 'reworked / moved', worse: 'a downgrade', same: 'unchanged' };
+        var chipLegend = '<div class="dr-legend-h">Color = direction of change</div><table class="dr-legend">'
+          + chipEnumD.map(function (c) { return '<tr><td><span class="dr-sw gd-chip-' + c + '"></span></td><td class="dr-legend-c">' + c + '</td><td class="dr-legend-m">' + (chipGloss[c] || '') + '</td></tr>'; }).join('')
+          + '</table>';
         var openChipPop = function (anchor, rpre, cur, curText) {
-          // header: title + the one info "i" explaining the chip system
+          // header: title + the one info "i" (a color-meaning legend table)
           var html = '<div class="cc-chip-head"><span class="cc-pop-label">Pick a chip</span>'
-            + infoI('A chip’s COLOR is the direction of change — green = better · blue = a new feature · amber = changed · red = worse · gray = unchanged. Click a ready-made chip, fill the number on a template (e.g. {n}×), or write your own under Custom.')
+            + infoIHtml(chipLegend)
             + '</div><div class="cc-chip-grid">';
           html += chipEnumD.map(function (c) {
             var ts = chipPresets[c] || [];
@@ -1621,14 +1634,18 @@
           // OLD value field + a SUBTLE "no before" alternative toggle (a dotted-
           // underline link, NOT a dashed add-pill — it's an option you select when
           // there's no previous value, not something you add alongside the value).
+          // Reads as an OR choice: enter an old value … or … mark "no before".
           var oldCell = qs('.gd-old', tr);
           var noOldBtn = function (label, on, tip) { var b = document.createElement('button'); b.className = 'pe-noold' + (on ? ' on' : ''); b.textContent = label; if (tip) b.title = tip; (function (v) { b.onclick = function () { A('set:' + rpre + 'no_old:' + v); }; })(on ? 'false' : 'true'); return b; };
+          var orSep = function () { var s = document.createElement('span'); s.className = 'pe-or'; s.textContent = 'or'; return s; };
           if (oldCell) {
             if (rdata.no_old) {
-              oldCell.appendChild(noOldBtn('no “before” value', true, 'This spec had no value on the previous model — click to give it one'));
+              oldCell.appendChild(orSep());
+              oldCell.appendChild(noOldBtn('enter a “before” value', true, 'Give this spec a value on the predecessor instead'));
             } else {
               var ov = qs('.gd-old-val', oldCell); if (ov) { wrapCE(ov, rpre + 'old'); var oce = ov.querySelector('.ce'); if (oce) oce.setAttribute('data-ph', 'old value'); }
-              oldCell.appendChild(noOldBtn('no “before” value', false, 'Select if this spec didn’t exist on the previous model'));
+              oldCell.appendChild(orSep());
+              oldCell.appendChild(noOldBtn('no “before” value', false, 'Select if this spec didn’t exist on the predecessor'));
             }
           }
           // NEW (current) value field + an optional color chip. The chip is changed

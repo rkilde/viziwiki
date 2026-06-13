@@ -861,13 +861,11 @@
         },
         "prev": {
           "type": "axis_old",
-          "required": true,
-          "help": "The 'before' column header"
+          "help": "The 'before' column header (its name is required)"
         },
         "current": {
           "type": "axis_new",
-          "required": true,
-          "help": "The 'after' column header"
+          "help": "The 'after' column header (its name is required)"
         },
         "hardware": {
           "type": "list<delta_row>",
@@ -887,6 +885,7 @@
           "name": {
             "type": "text",
             "required": true,
+            "label": "Old model",
             "blank": "Old model"
           },
           "year": {
@@ -897,6 +896,7 @@
           "name": {
             "type": "text",
             "required": true,
+            "label": "New model",
             "blank": "New model"
           },
           "year": {

@@ -244,8 +244,8 @@ components:
       intro:    { type: richtext, blank: "Add an intro line" }
       footnote: { type: richtext, blank: "Add a footnote" }
       visual:  { type: text, locked: true, default: delta, help: "The slot's visual type — registry hosts constrain it (admin)" }
-      prev:     { type: axis_old, required: true, help: "The 'before' column header" }
-      current:  { type: axis_new, required: true, help: "The 'after' column header" }
+      prev:     { type: axis_old, help: "The 'before' column header (its name is required)" }
+      current:  { type: axis_new, help: "The 'after' column header (its name is required)" }
       hardware: { type: "list<delta_row>", item_blank: { label: "Spec label" } }
       software: { type: "list<delta_row>", item_blank: { label: "Spec label" } }
     subtypes:
@@ -253,8 +253,8 @@ components:
       # placeholders so a contributor knows which column is which. The column
       # LABELS (Predecessor / Successor) are locked canon literals in the visual
       # include — not data — so there is no `tag` field here.
-      axis_old: { name: { type: text, required: true, blank: "Old model" }, year: { type: text } }
-      axis_new: { name: { type: text, required: true, blank: "New model" }, year: { type: text } }
+      axis_old: { name: { type: text, required: true, label: "Old model", blank: "Old model" }, year: { type: text } }
+      axis_new: { name: { type: text, required: true, label: "New model", blank: "New model" }, year: { type: text } }
       delta_row:
         label:     { type: text, required: true, blank: "Spec label" }
         old:       { type: text }
