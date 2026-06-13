@@ -290,7 +290,6 @@ button{ font-family:inherit; }
   backdrop-filter:blur(14px) saturate(150%); -webkit-backdrop-filter:blur(14px) saturate(150%);
   font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.12em; text-transform:uppercase; }
 #pe-chrome .pe-pgstat svg{ width:12px; height:12px; }
-#pe-chrome .pe-pgstat.todo{ color:#f3c98a; border:1px solid rgba(201,138,43,.5); background:rgba(201,138,43,.18); }
 #pe-chrome .pe-pgstat.done{ color:rgba(125,226,182,.95); border:1px solid rgba(94,206,160,.45); background:rgba(94,206,160,.16); }
 #pe-chrome button, #pe-chrome .pe-chip-status{
   display:flex; align-items:center; gap:7px; padding:8px 13px; border-radius:999px;
@@ -304,14 +303,6 @@ button{ font-family:inherit; }
 #pe-chrome button.primary{ background:rgba(157,124,244,.26); border-color:rgba(157,124,244,.55); color:#e6e1fb; }
 #pe-chrome button.primary:hover{ background:rgba(157,124,244,.38); border-color:rgba(157,124,244,.7); }
 #pe-chrome .pe-chip-status{ cursor:default; color:rgba(125,226,182,.95); border-color:rgba(94,206,160,.4); background:rgba(94,206,160,.16); }
-/* view selector — a compact segmented control (one pill · 3 segments) */
-#pe-chrome .pe-viewsel{ display:inline-flex; gap:2px; padding:3px; border-radius:999px;
-  background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);
-  backdrop-filter:blur(14px) saturate(150%); -webkit-backdrop-filter:blur(14px) saturate(150%); }
-#pe-chrome .pe-viewsel button{ padding:5px 11px; border:0; border-radius:999px; background:transparent;
-  backdrop-filter:none; -webkit-backdrop-filter:none; color:rgba(255,255,255,.6); letter-spacing:.12em; }
-#pe-chrome .pe-viewsel button:hover{ background:rgba(255,255,255,.1); color:#fff; }
-#pe-chrome .pe-viewsel button.on{ background:rgba(157,124,244,.34); color:#efeafe; }
 
 /* ── add-section picker (ported from the owner's mockup; screen 1) ── */
 #sec-picker{ position:fixed; inset:0; z-index:1100; display:none; align-items:center; justify-content:center; padding:24px;

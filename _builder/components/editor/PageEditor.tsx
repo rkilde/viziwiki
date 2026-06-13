@@ -10,18 +10,12 @@ import { ReadinessPanel, type Marker, type Leaf } from './ReadinessPanel';
 
 const oneLine = (t: string) => t.replace(/<br\s*\/?>/gi, ' ');
 
-// Preview viewports — the SINGLE source of truth. Each view is one logical
-// width; the canvas always LAYS OUT at this width (so `8vw` and every asset
-// proportion resolve like that screen), then auto-scales to fit the editor's
-// fixed footprint. Everything geometric derives from `scale` (computed from
-// these widths), so resizing a view — or adding one — is a one-line edit here;
-// no in-iframe code ever changes (popovers/tooltips/FLIP scale with the frame).
-const VIEWS = {
-  mobile:  { w: 390,  label: 'Mobile' },
-  desktop: { w: 1080, label: 'Desktop' },
-  large:   { w: 1440, label: 'Large' },
-} as const;
-type ViewKey = keyof typeof VIEWS;
+// Preview viewport — the canvas lays out at this logical desktop width, then
+// auto-scales to fit the editor's footprint (so 8vw and every proportion
+// resolve like a real desktop, not the narrow iframe). Single knob: the
+// scaling machinery stays intact, so re-sizing or re-adding views later is a
+// one-line change here — no in-iframe code touched.
+const CANVAS_W = 1080;
 
 // The marker payload (per section) is built + posted by the decorator, DERIVED
 // from grammar; the markers render out here in the editor chrome — an iframe
@@ -54,10 +48,9 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
   // ── the one scale source ── the canvas lays out at `logicalW`, then scales to
   // fit the available width (never UP-scaled past 1:1). Every geometry below
   // reads `scale`; the iframe content is unaware of it.
-  const [view, setView] = useState<ViewKey>('desktop');
   const [availW, setAvailW] = useState(0);        // canvas-area inner width
   const [contentH, setContentH] = useState(600);  // iframe content height (logical px)
-  const logicalW = VIEWS[view].w;
+  const logicalW = CANVAS_W;
   const PAD = 80;                                  // .pe-canvas-area horizontal padding (40+40)
   const scale = availW > 0 ? Math.min(1, (availW - PAD) / logicalW) : 1;
 
@@ -98,7 +91,7 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
 
   // the scaled canvas's screen offset shifts whenever its footprint changes
   // (view switch, content height, available width) → re-read so markers track it
-  useEffect(() => { measure(); }, [view, scale, contentH, availW, markers]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { measure(); }, [scale, contentH, availW, markers]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // mirror openMk into a ref so the keydown handler (bound once) sees it live
   const openMkRef = useRef<number | null>(null);
@@ -154,18 +147,9 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
       {/* report-a-bug (top-left) — UI only for now */}
       <BugReporter />
       <div id="pe-chrome">
-        {/* view selector — picks the logical width; scale auto-fits the same
-            editor footprint. Derived straight from the VIEWS map (one knob). */}
-        <div className="pe-viewsel" role="group" aria-label="Preview width">
-          {(Object.keys(VIEWS) as ViewKey[]).map((k) => (
-            <button key={k} className={view === k ? 'on' : ''} title={`${VIEWS[k].label} · ${VIEWS[k].w}px`} onClick={() => setView(k)}>
-              {VIEWS[k].label}
-            </button>
-          ))}
-        </div>
-        {markers.length > 0 && (
-          <span className={`pe-pgstat ${todoCount === 0 ? 'done' : 'todo'}`} title="Derived from the grammar's required fields">
-            {todoCount === 0 ? <><IcCheck />Page ready</> : <><IcTri />{todoCount} section{todoCount !== 1 ? 's' : ''} need attention</>}
+        {markers.length > 0 && todoCount === 0 && (
+          <span className="pe-pgstat done" title="Derived from the grammar's required fields">
+            <IcCheck />Page ready
           </span>
         )}
         {saved && <span className="pe-chip-status"><IcCheck />saved</span>}
