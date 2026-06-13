@@ -273,6 +273,8 @@
     trash: '<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
   };
   var csvg = function (d) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + d + '</svg>'; };
+  // a hover/focus info "i" with an explanatory tooltip (shared by every bank)
+  function infoI(tip) { return '<span class="dr-info" tabindex="0" data-tip="' + String(tip == null ? '' : tip).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>'; }
   function dockBtn(icon, tip, cls, onclick) {
     var b = document.createElement('button');
     b.className = 'cc-btn' + (cls ? ' ' + cls : '');
@@ -793,6 +795,7 @@
               (function (p) { noteChip.onclick = function () { A('add:' + p); }; })(cpre + 'note');
             }
             cnt.appendChild(noteChip);   // INLINE in the count line (canon position)
+            var nInfo = document.createElement('span'); nInfo.innerHTML = infoI('An optional short qualifier shown after the item count on this category card (e.g. “12 items · seasonal” or “· discontinued”). Use it to flag something about the whole category at a glance.'); cnt.appendChild(nInfo.firstChild);
           }
 
           // the glass dock (bottom-right): color · ribbon · remove
@@ -1523,9 +1526,6 @@
           return chip;
         };
 
-        // a hover/focus info "i" with an explanatory tooltip (reused across the
-        // lane editor — support type, weighted toggle, badge)
-        var infoI = function (tip) { return '<span class="dr-info" tabindex="0" data-tip="' + ea2(tip) + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>'; };
 
         // segments
         var segTypes = (R('lifecycle-lane.segments[].type').enum) || [];
