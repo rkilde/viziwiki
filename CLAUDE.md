@@ -168,10 +168,37 @@ follows:
   case 10 fails the build if any builder-hosted visual ships a geometry-mutating
   script (`.style.left/top/width/height/cssText =`).
 
+**Onboarded to the builder so far:** catalog, timeline, config, spec, lifecycle-lane
+(live picker tile + in-place editor). **Delta** is extracted and already *renders* in
+the builder (seed + section + registry host) but is the last not yet onboarded — its
+picker tile is inert and it has no decorator editor (next up).
+
+### The builder app (`_builder/`) — the 1.0 product, actively built
+A Next.js app (previewed on **Vercel**) that renders a page by EXECUTING the repo's
+own Liquid includes + canon CSS, then layers editing chrome — the derived renderer
+(rule #5). Key parts:
+- `lib/render.ts` / `render-core.mjs` — LiquidJS in Jekyll mode (the includes, executed).
+- `lib/canvas.ts` — `buildCanvas` (the iframe doc = canon CSS stack + affordance CSS +
+  runtime), `applyAction` (all data mutations), `setIn`.
+- `lib/grammar.ts` / `policy.mjs` — grammar → the policy the decorator + readiness read.
+- `public/editor/decorate.js` — the in-iframe decorator and the editing SURFACE: wraps
+  fields in `.ce`, adds `+`/× affordances, popovers, drag-reorder, posts the readiness
+  payload. (Shared `infoI`/`infoIcon` = the one info-"i" tooltip, portaled to `<body>`.)
+- `components/editor/` — `PageEditor` (iframe host + the scaled, centered true-1080
+  preview + the readiness rail in the left margin), `SectionPicker` (add-section
+  picker), `ReadinessPanel`.
+- `scripts/` — `copy-canon` (CSS + `bank-*.css` discovery), `extract-grammar`/
+  `-includes`/`-visuals`/`-taco-bell`/`-apple`, `gen-placeholders`, and the guards
+  `audit-*` + `test-derived-renderer` + `test-golden-render`.
+- Commands run FROM `/home/user/viziwiki/_builder`: `npm run gen` (regen data + copy
+  canon), `npm test` (the guards), `npm run build`.
+
 ## Workflow norms
-- Develop on branch `claude/quirky-carson-vKj8w`. Commit + push; owner previews
-  the Cloudflare deploy and merges PRs themselves (don't open PRs unless asked).
-- Cannot build Jekyll locally here — verify via the branch preview deploy.
+- Develop on the session's designated feature branch (it rotates per feature — the
+  owner names it; e.g. `claude/catalog-note-fixes`). Commit + push; the owner previews
+  the deploy and merges PRs themselves (don't open PRs unless asked).
+- Cannot build Jekyll locally here — verify the wiki via the Cloudflare branch preview;
+  the builder app (`_builder/`) previews on Vercel.
 - Permalinks are explicit flat slugs (`permalink:`), decoupled from file path;
   keep `.html` URLs.
 - Don't put the model identifier in commits/PRs/code.
@@ -249,6 +276,18 @@ follows:
   bank; prose|infobox or two-column newspaper layout). Driven by an `overview:`
   front-matter block, **rolled out to ~24 pages** (6 iPod + the apple/smurfs/fallout/
   doodle homes + every TB drink + menu page). iPod overview pulled off `renderOverview`.
+- **Bank CSS = a universal layer (DONE).** All six `bank-*.css` load **once** in
+  `_layouts/default.html` (the bank layer, right after `wiki-universals.css`, before
+  `extra_head` so a skin can still pin bank tokens); the old per-page `extra_head` /
+  `class-tb-menu` links were removed (`class-tb-menu.html` carries a note to that
+  effect). Any page can now use any bank with zero CSS wiring. The builder mirrors it:
+  `copy-canon` auto-discovers `bank-*.css` → `data/bank-css.json` → the canvas links them.
+- **Universal-layer additions (builder/live parity).** `.wiki-hero-title` now sets
+  `text-wrap: balance` (balanced headlines; never orphans a trailing word or the accent
+  "." — same on the live site and the builder). `wiki-universals.css` §00 adds
+  `html, body { margin: 0; padding: 0 }`, mirroring the layout's global reset so any
+  context that loads the canon CSS but NOT `default.html`'s inline reset — i.e. the
+  builder's preview iframe — still renders the page flush to its frame (idempotent on live).
 
 **Open**
 - Phase 4 visual bank — **catalog + timeline + config + spec + delta +
@@ -271,18 +310,11 @@ follows:
   archive pages) — a future de-Tailwind pass.
 - Smurfs keeps its own small inline icon sprite (custom Smurf art) — optional
   fold into the universal sprite.
-- **Bank CSS as a universal layer (deferred for now — kept separate on
-  purpose for organization).** Each bank's stylesheet (e.g. `bank-catalog.css`)
-  is already the single source for its visual, but it's currently *loaded*
-  ad-hoc (per-page `extra_head` on drinks/discontinued/proof; via the
-  `class-tb-menu` layout on the 5 menu pages). Once the bank set is built out,
-  promote bank stylesheets to a first-class universal layer — loaded **once**
-  in `_layouts/default.html` (alongside `wiki-universals.css`), and drop the
-  scattered per-page/layout links — so any page can use a bank with zero CSS
-  wiring. (Content is already single-source; this only systematizes the
-  *loading*.)
-- The **builder UI** itself (the 1.0 product) — built once enough components are
-  data-driven banks.
+- The **builder app** (`_builder/`, see "The builder app" above) is substantially
+  built — derived renderer, section picker, in-place decorator, readiness rail,
+  scaled + centered true-1080 desktop preview — with **5 of 6 banks onboarded**
+  (catalog/timeline/config/spec/lifecycle-lane). Frontier: finish **delta**
+  onboarding (picker tile + editor), then the back-end below.
 - **Admin / builder back-end (master access + in-page edit mode).** The site is
   static (Cloudflare Pages) and content is already data-in-git, so no DB is
   needed to start — a "back-end" here = **auth + the builder writing data back +
