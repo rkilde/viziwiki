@@ -257,6 +257,10 @@ const AFFORDANCE = `
   .pe-remove{ border:1px solid rgba(0,0,0,.18); background:#fff; color:rgba(0,0,0,.45); font-size:12px; cursor:pointer; }
   .pe-removable:hover > .pe-remove{ opacity:1; }
   .pe-remove:hover{ border-color:#ef4444; color:#ef4444; }
+  /* the canon stats grid clips its overflow (rounded wrapper, gap-bled dividers),
+     so the default -9px-OUTSIDE corner × gets sliced to a sliver. Pull this
+     block's × INSIDE the clip bounds so it shows whole. */
+  .wiki-hero-stats.pe-removable > .pe-remove{ top:6px; right:6px; }
   .pe-lock{ border:1px solid rgba(0,0,0,.12); background:#fff; color:rgba(0,0,0,.34); cursor:default; }
   .pe-lock svg{ width:10px; height:10px; }
   /* canon-locked (can't edit AND can't delete): red box on hover + padlock */
