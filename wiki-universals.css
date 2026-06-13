@@ -33,6 +33,19 @@
 
 
 /* ════════════════════════════════════════════════════════════════════
+   §00 — PAGE MARGIN RESET
+   The site's global reset (`*{ margin:0; padding:0 }`) lives in
+   default.html's inline <style>. Mirror the html/body part HERE in the
+   universal layer so ANY context that loads the canon CSS but NOT that
+   layout — e.g. the wiki-builder's preview iframe — still renders the page
+   flush to its frame, instead of inset by the UA's default 8px body margin
+   (which otherwise shows the iframe's white sheet as a "border"). Idempotent
+   on the live site (the layout already zeroes these).
+   ════════════════════════════════════════════════════════════════════ */
+html, body { margin: 0; padding: 0; }
+
+
+/* ════════════════════════════════════════════════════════════════════
    §0 — THE SKIN CONTRACT  (semantic token bridge)
    The canonical --wiki-* tokens every visual asset reads (manifest:
    _data/skin-contract.yml). Each RESOLVES through a wiki's existing
