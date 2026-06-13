@@ -118,8 +118,8 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 |---|---|---|---|
 | `heading` | • | text | `Changes heading` |
 | `tone` |  | enum | `a`  _(choice: a · b · special)_ |
-| `intro` |  | richtext | — |
-| `footnote` |  | richtext | — |
+| `intro` |  | richtext | `Add an intro line` |
+| `footnote` |  | richtext | `Add a footnote` |
 | `prev` | • | axis | — |
 | `prev.tag` |  | text | — |
 | `prev.name` | • | text | `Model name` |

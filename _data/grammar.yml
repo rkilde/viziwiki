@@ -241,8 +241,8 @@ components:
     fields:
       heading:  { type: text, required: true, blank: "Changes heading" }
       tone:     { type: "enum[a,b,special]", default: a }
-      intro:    { type: richtext }
-      footnote: { type: richtext }
+      intro:    { type: richtext, blank: "Add an intro line" }
+      footnote: { type: richtext, blank: "Add a footnote" }
       visual:  { type: text, locked: true, default: delta, help: "The slot's visual type — registry hosts constrain it (admin)" }
       prev:     { type: axis, required: true, help: "The 'before' column header" }
       current:  { type: axis, required: true, help: "The 'after' column header" }

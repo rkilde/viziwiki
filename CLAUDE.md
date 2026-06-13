@@ -168,10 +168,13 @@ follows:
   case 10 fails the build if any builder-hosted visual ships a geometry-mutating
   script (`.style.left/top/width/height/cssText =`).
 
-**Onboarded to the builder so far:** catalog, timeline, config, spec, lifecycle-lane
-(live picker tile + in-place editor). **Delta** is extracted and already *renders* in
-the builder (seed + section + registry host) but is the last not yet onboarded — its
-picker tile is inert and it has no decorator editor (next up).
+**Onboarded to the builder:** ALL SIX extracted banks — catalog, timeline, config,
+spec, lifecycle-lane, **delta** — have a live picker tile + an in-place editor.
+(Delta: the picker tile direct-adds; the editor binds the heading, the prev|current
+axis headers — model name required, the `.gd-sec-col` echoes locked as derived — and
+the Hardware/Software rows: label + old→new + a colour chip via a derived enum
+popover, a `no_old` "before" toggle, per-group add/remove; intro/footnote are
+renderer-seeded sentinel "+" slots. Guard: case 13.)
 
 ### The builder app (`_builder/`) — the 1.0 product, actively built
 A Next.js app (previewed on **Vercel**) that renders a page by EXECUTING the repo's
@@ -312,9 +315,9 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
   fold into the universal sprite.
 - The **builder app** (`_builder/`, see "The builder app" above) is substantially
   built — derived renderer, section picker, in-place decorator, readiness rail,
-  scaled + centered true-1080 desktop preview — with **5 of 6 banks onboarded**
-  (catalog/timeline/config/spec/lifecycle-lane). Frontier: finish **delta**
-  onboarding (picker tile + editor), then the back-end below.
+  scaled + centered true-1080 desktop preview — with **all 6 extracted banks
+  onboarded** (catalog/timeline/config/spec/lifecycle-lane/delta). Frontier: extract
+  the next banks (swim-lane / ladder / tile-directory / quote-wall), then the back-end.
 - **Admin / builder back-end (master access + in-page edit mode).** The site is
   static (Cloudflare Pages) and content is already data-in-git, so no DB is
   needed to start — a "back-end" here = **auth + the builder writing data back +

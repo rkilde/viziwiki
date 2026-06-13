@@ -68,8 +68,8 @@ const TILES: BrowseTile[] = [
     desc: 'A grid of spec cards — each an icon + title + label/value rows (the dark signature band). Click to add it.',
   },
   {
-    id: 'delta', name: 'Side by Side Comparisons', pill: 'Available', opens: null,
-    icon: BLANK,
+    id: 'delta', name: 'Side by Side Comparisons', pill: 'Available', add: 'delta',
+    icon: '<rect x="3" y="4" width="7" height="16" rx="1"/><rect x="14" y="4" width="7" height="16" rx="1"/><line x1="10.5" y1="12" x2="13.5" y2="12"/>',
     desc: 'A previous-vs-current table grouped into Hardware & Software, with color-coded change chips (better, feature, changed, worse, same).',
   },
 ];

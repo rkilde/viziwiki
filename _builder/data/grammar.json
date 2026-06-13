@@ -846,10 +846,12 @@
           "default": "a"
         },
         "intro": {
-          "type": "richtext"
+          "type": "richtext",
+          "blank": "Add an intro line"
         },
         "footnote": {
-          "type": "richtext"
+          "type": "richtext",
+          "blank": "Add a footnote"
         },
         "visual": {
           "type": "text",

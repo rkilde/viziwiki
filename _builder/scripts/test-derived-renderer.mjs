@@ -567,5 +567,44 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(catCap.d.querySelector(`[data-pe-scope="${scope}"][data-pe-opens]`), 'catalog item field resolves to its pill scope (which opens the item modal on jump)');
 }
 
+// ── case 13: delta in-place editor (the last onboarded bank) ──
+{
+  console.log('case 13: delta editor — axis, rows, chips, add/remove');
+  const dSeed = JSON.parse(JSON.stringify(grammar.components.delta.seed));
+  const doc = {
+    hero: { eyebrow: null, title: 'T', subtitle: null, subtitle_meta: null, desc: 'D', stats: null, search: false, search_placeholder: '', spotlight: null, feature: null },
+    overview: { tone: 'b', heading: 'H', paragraphs: ['P'], infobox: null },
+    sections: [{ type: 'delta', data: dSeed }],
+  };
+  const d = renderAndDecorate(doc, false);
+  const gd = d.querySelector('section.wiki-section.delta');
+  ok(gd, 'delta section rendered via its canonical include chain');
+  ok(gd.querySelector('.wiki-section-title .ce'), 'heading editable in place');
+  // axis headers — name editable + placeholder from the grammar blank
+  const nm = gd.querySelector('.gd-gen-old .gd-name .ce');
+  ok(nm && nm.getAttribute('data-ph') === 'Model name', 'prev model-name editable (placeholder = grammar blank)');
+  ok(gd.querySelector('.gd-gen-new .gd-name .ce'), 'current model-name editable');
+  ok(gd.querySelector('.gd-gen-old .gd-tag .ce') && gd.querySelector('.gd-gen-old .gd-year .ce'), 'tag + year editable');
+  // the derived per-column echoes + group labels are locked
+  ok([...gd.querySelectorAll('.gd-sec-col')].every((c) => c.classList.contains('pe-canon')), 'gd-sec-col echoes locked (derived from the model name)');
+  ok([...gd.querySelectorAll('.gd-sec-main')].every((c) => c.classList.contains('pe-canon')), 'Hardware/Software group labels locked');
+  // a seed hardware row: label + new editable, chip carries its ⋯ colour menu
+  const row = gd.querySelector('.gd-row');
+  ok(row.querySelector('.gd-label-name .ce'), 'row label editable');
+  ok(row.querySelector('.gd-new-val .ce'), 'row "new" value editable');
+  ok(row.querySelector('.gd-chip .ce') && row.querySelector('.gd-chip .gpill-menu'), 'chip text editable + ⋯ colour menu (the seed row has a chip)');
+  row.querySelector('.gd-chip .gpill-menu').onclick({ stopPropagation() {} });
+  const cpop = [...d.querySelectorAll('.cc-pop.lane-pop')].pop();
+  ok(cpop && [...cpop.querySelectorAll('[data-c]')].map((b) => b.getAttribute('data-c')).join(',') === 'better,feature,changed,worse,same', 'chip popover lists the grammar enum (colour = direction)');
+  // "before" toggle present on a row that has an old value
+  ok([...row.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === 'no before'), 'row offers a "no before" toggle (no_old)');
+  // add-row affordances per group, derived from the list paths
+  const adders = [...gd.querySelectorAll('.pe-gd-addrow .pe-mini-add')].map((b) => b.textContent);
+  ok(adders.includes('+ hardware row') && adders.includes('+ software row'), '+ hardware row / + software row adders present');
+  // optional intro/footnote start as sentinel "+" slots (renderer-seeded), editable once added
+  ok([...gd.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ intro') || gd.querySelector('.delta-prose .ce'), 'intro is a "+" slot when absent (renderer sentinel)');
+  ok([...gd.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ footnote') || gd.querySelector('.gd-foot .ce'), 'footnote is a "+" slot when absent');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
