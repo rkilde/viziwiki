@@ -165,7 +165,7 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 | `photos` | • | list<photo> | _(template — see sub-fields)_ |
 | `photos[].src` | • | media | `image URL` |
 | `photos[].alt` | • | text | `describe the photo` |
-| `photos[].strong` |  | text | `Label` |
+| `photos[].strong` |  | text | `Image Title` |
 | `photos[].caption` |  | text | `Caption` |
 | `photos[].source` |  | text | `· source` |
 

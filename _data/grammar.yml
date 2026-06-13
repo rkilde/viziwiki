@@ -320,21 +320,21 @@ components:
     fields:
       tone:   { type: "enum[a,b,special]", default: special }
       visual: { type: text, locked: true, default: photo-rail, help: "The slot's visual type — registry hosts constrain it (admin)" }
-      photos: { type: "list<photo>", required: true, min: 1, item_blank: { strong: "Label", caption: "Caption", source: "· source" } }
+      photos: { type: "list<photo>", required: true, min: 1, item_blank: { strong: "Image Title", caption: "Caption", source: "· source" } }
     subtypes:
       photo:
         # src is `media` — a URL today; a Supabase Storage upload later, with no
         # change to this bank or its rendered <img>.
-        src:     { type: media, required: true, label: "image", blank: "image URL" }
+        src:     { type: media, required: true, label: "add image", blank: "image URL" }
         alt:     { type: text,  required: true, label: "alt text", blank: "describe the photo" }
         # caption text — all three optional, mirroring the image-rail caption:
-        # a top bold label, then a caption line, then a dotted source line.
-        strong:  { type: text,  blank: "Label" }
+        # a top bold title, then a caption line, then a dotted source line.
+        strong:  { type: text,  blank: "Image Title" }
         caption: { type: text,  blank: "Caption" }
         source:  { type: text,  blank: "· source" }
     seed:
       photos:
-        - { strong: "Label", caption: "Caption", source: "· source" }
+        - { strong: "Image Title", caption: "Caption", source: "· source" }
     min: "≥1 photo, each with an image + alt text"
 
   # ---- CATALOG — the data-driven list + expandable cards ---------------

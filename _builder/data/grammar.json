@@ -1141,7 +1141,7 @@
           "required": true,
           "min": 1,
           "item_blank": {
-            "strong": "Label",
+            "strong": "Image Title",
             "caption": "Caption",
             "source": "· source"
           }
@@ -1152,7 +1152,7 @@
           "src": {
             "type": "media",
             "required": true,
-            "label": "image",
+            "label": "add image",
             "blank": "image URL"
           },
           "alt": {
@@ -1163,7 +1163,7 @@
           },
           "strong": {
             "type": "text",
-            "blank": "Label"
+            "blank": "Image Title"
           },
           "caption": {
             "type": "text",
@@ -1178,7 +1178,7 @@
       "seed": {
         "photos": [
           {
-            "strong": "Label",
+            "strong": "Image Title",
             "caption": "Caption",
             "source": "· source"
           }

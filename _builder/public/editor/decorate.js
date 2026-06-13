@@ -1771,6 +1771,10 @@
           if (im) {
             im.style.cursor = 'pointer';
             im.setAttribute('data-pe-scope', ppre + 'src'); im.setAttribute('data-pe-opens', '1');
+            // BOTH src + alt are edited in this one popover, so the image is the
+            // jump target for each — otherwise the alt readiness line falls through
+            // to the nearest data-pe-path (the title) instead of opening the editor.
+            im.setAttribute('data-pe-jump', ppre + 'src ' + ppre + 'alt');
             (function (pp, d) { im.onclick = function (e) { e.stopPropagation(); openImgPop(im, pp, d); }; })(ppre, pd);
           }
           // caption: three optional inline lines — bold label (strong), a caption
