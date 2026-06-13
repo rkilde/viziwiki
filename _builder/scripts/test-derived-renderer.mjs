@@ -176,7 +176,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   // glass dock: colour / ribbon / note / remove
   const dock = cat.querySelector('.cat-card .cc-dock');
   ok(dock, 'glass dock present on the card');
-  ok(dock.querySelectorAll('.cc-btn').length === 3, 'dock has 3 controls (colour/ribbon/remove) — note is NOT a dock control');
+  ok(dock.querySelectorAll('.cc-btn').length === 4, 'dock has 4 controls (drag/colour/ribbon/remove) — note is NOT a dock control');
   ok(dock.querySelector('.cc-btn .cc-swatch'), 'colour control shows the swatch');
   ok(dock.querySelector('.cc-btn.danger'), 'remove-category control (danger)');
   ok(!dock.querySelector('.cc-btn[data-tip*="note"]'), 'no note button in the dock');
@@ -322,7 +322,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(!chips0.includes('↑') && chips0.includes('↓'), 'first section: ↓ only (nothing above it is movable)');
   ok(chips1.includes('↑') && !chips1.includes('↓'), 'last section: ↑ only');
   // colour popover (opened from the dock) — swatches are skin-derived
-  const colorBtn = secs[0].querySelector('.cat-card .cc-dock .cc-btn');
+  const colorBtn = [...secs[0].querySelectorAll('.cat-card .cc-dock .cc-btn')].find((b) => b.querySelector('.cc-swatch'));
   ok(colorBtn && colorBtn.querySelector('.cc-swatch'), 'dock colour control present');
   colorBtn.onclick.call(colorBtn);
   const pop = d.querySelector('.cc-pop');

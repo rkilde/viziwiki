@@ -103,6 +103,12 @@ const AFFORDANCE = `
   .cc-swatch{ width:16px; height:16px; border-radius:50%; background:var(--cat-color);
     box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.9), 0 0 0 1px rgba(0,0,0,.14); }
   .cc-sep{ width:1px; height:18px; background:rgba(0,0,0,.12); margin:0 3px; }
+  /* drag-to-reorder: the dock grip + the dragged/drop-target card cues */
+  .cc-grip{ cursor:grab; }
+  .cc-grip:active{ cursor:grabbing; }
+  .cat-card.pe-dragging{ opacity:.4; }
+  .cat-card.pe-drop-before{ box-shadow:inset 0 3px 0 0 #6366f1; }
+  .cat-card.pe-drop-after{ box-shadow:inset 0 -3px 0 0 #6366f1; }
 
   .cc-pop{ position:fixed; z-index:1300; min-width:182px; padding:13px; border-radius:17px;
     background:var(--g-panel,#fff); border:var(--g-edge,1px solid rgba(255,255,255,.6));

@@ -731,6 +731,15 @@
         var fn = qs('.cat-footnote', secEl);
         if (fn) { wrapCE(fn, prefix + 'footnote'); makeRemovable(fn, 'rm:' + prefix + 'footnote'); }
 
+        // FLIP for drag-to-reorder: snapshot card rects by their TITLE (stable
+        // identity across the reorder re-render), so each slides to its new slot
+        // (the masonry reflows across columns — all rects, all animated, smooth).
+        var catSnap = function () {
+          var snap = {};
+          qsa('.cat-masonry > .cat-card', secEl).forEach(function (c) { var t = qs('.cat-card-title', c); snap[(t ? t.textContent : '') || Math.random()] = c.getBoundingClientRect(); });
+          window.__peCatFlip = { s: i, snap: snap };
+        };
+
         // ── per category card: name ce + glass dock ──
         qsa('.cat-masonry > .cat-card', secEl).forEach(function (card, j) {
           var cpre = prefix + 'categories.' + j + '.';
@@ -770,6 +779,34 @@
           var sep = document.createElement('span'); sep.className = 'cc-sep'; dock.appendChild(sep);
           (function (cp, ac, cd, jj) { dock.appendChild(dockBtn(csvg(CICON.flag), cd.ribbon ? 'Edit ribbon' : 'Add a ribbon', cd.ribbon ? 'on' : '', function () { openRibbonPop(this, cp, ac, cd.ribbon == null ? null : cd.ribbon, card, jj); })); })(cpre, accent, cdata, j);
           (function (jj) { var tb = dockBtn(csvg(CICON.trash), 'Delete entire category', 'danger', null); armDelete(tb, function () { closePop(); A('rm:' + prefix + 'categories.' + jj); }); dock.appendChild(tb); })(j);
+          // drag-to-reorder grip (first in the dock). Only the grip initiates the
+          // drag (the card is the drag image); drop → reorder + FLIP animation.
+          var grip = document.createElement('button');
+          grip.className = 'cc-btn cc-grip'; grip.setAttribute('data-tip', 'Drag to reorder'); grip.setAttribute('draggable', 'true');
+          grip.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>';
+          (function (jj) {
+            grip.addEventListener('dragstart', function (e) { window.__peCatDrag = jj; card.classList.add('pe-dragging'); try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(jj)); e.dataTransfer.setDragImage(card, 30, 24); } catch (x) {} });
+            grip.addEventListener('dragend', function () { card.classList.remove('pe-dragging'); qsa('.cat-card', secEl).forEach(function (c) { c.classList.remove('pe-drop-before', 'pe-drop-after'); }); window.__peCatDrag = null; });
+          })(j);
+          dock.insertBefore(grip, dock.firstChild);
+          var gsep = document.createElement('span'); gsep.className = 'cc-sep'; dock.insertBefore(gsep, grip.nextSibling);
+          // drop target feedback + commit (insert before/after by vertical midpoint)
+          (function (jj) {
+            card.addEventListener('dragover', function (e) {
+              if (window.__peCatDrag == null || window.__peCatDrag === jj) return;
+              e.preventDefault(); try { e.dataTransfer.dropEffect = 'move'; } catch (x) {}
+              var rc = card.getBoundingClientRect(); var after = (e.clientY - rc.top) > rc.height / 2;
+              card.classList.toggle('pe-drop-after', after); card.classList.toggle('pe-drop-before', !after);
+            });
+            card.addEventListener('dragleave', function () { card.classList.remove('pe-drop-before', 'pe-drop-after'); });
+            card.addEventListener('drop', function (e) {
+              e.preventDefault(); var from = window.__peCatDrag; if (from == null || from === jj) return;
+              var rc = card.getBoundingClientRect(); var after = (e.clientY - rc.top) > rc.height / 2;
+              var to = jj; if (after && from > jj) to = jj + 1; else if (!after && from < jj) to = jj - 1;
+              if (to === from) return;
+              catSnap(); A('lmove:' + prefix + 'categories:' + from + ':' + to);
+            });
+          })(j);
           card.appendChild(dock); armDockHover(card, dock, cpre);
 
           // the ribbon banner on the card is the jump SCOPE for the ribbon text
@@ -896,6 +933,21 @@
           // resized + laid out, else the card's measured position is wrong and
           // the popover jumps to the top.
           if (dk && rb2) setTimeout(function () { if (dk._pin) dk._pin(); rb2.click(); }, 60);
+        }
+
+        // FLIP play — after a drag-reorder re-render, slide each card from its
+        // old slot to its new one (the masonry reflows; this makes it smooth).
+        var catFlip = window.__peCatFlip;
+        if (catFlip && catFlip.s === i) {
+          window.__peCatFlip = null;
+          var craf2 = window.requestAnimationFrame || function (f) { return setTimeout(f, 16); };
+          qsa('.cat-masonry > .cat-card', secEl).forEach(function (c) {
+            var t = qs('.cat-card-title', c); var key = t ? t.textContent : ''; var old = catFlip.snap[key]; if (!old) return;
+            var nr = c.getBoundingClientRect(); var dx = old.left - nr.left, dy = old.top - nr.top;
+            if (!dx && !dy) return;
+            c.style.transition = 'none'; c.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+            craf2(function () { craf2(function () { c.style.transition = 'transform .42s cubic-bezier(.4,0,.2,1)'; c.style.transform = ''; }); });
+          });
         }
       }
 
@@ -1798,7 +1850,7 @@
         // a match inside a CLOSED editor is no use — prefer the scope opener
         // that opens it. The catalog item fields live in the hidden .cat-details
         // store until openItem moves the detail into [data-catalog-modal].open.
-        var hidden = function (e) { return !!(e && e.closest && e.closest('[data-catalog-modal]:not(.open), .tl-modal:not(.open), .cat-details')); };
+        var hidden = function (e) { return !!(e && e.closest && e.closest('[data-catalog-modal]:not(.open), .tl-modal:not(.open), .cat-details, .tl-details')); };
         var el = findEl(it.jump); if (el && hidden(el)) el = null;
         if (!el) el = qs('[data-pe-jump~="' + it.jump + '"]');
         // composite EDITOR whose scope covers this path (e.g. a catalog item
