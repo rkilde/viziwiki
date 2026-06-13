@@ -1536,28 +1536,47 @@
 
         // axis headers (prev | current): tag / name(req) / year. Editing a name
         // commits (the gd-sec-col cells mirror it on re-render).
-        var nameBlankD = (R('delta.prev.name').blank) || 'Model name';
-        var bindAxis = function (cell, base) {
+        var eaD = function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); };
+        var bindAxis = function (cell, base, axisKey) {
           if (!cell) return;
           var tg = qs('.gd-tag', cell), nm = qs('.gd-name', cell), yr = qs('.gd-year', cell);
           if (tg) wrapCE(tg, base + '.tag');
-          if (nm) { wrapCE(nm, base + '.name'); var nce = nm.querySelector('.ce'); if (nce) { nce.setAttribute('data-ph', nameBlankD); nce.addEventListener('blur', function () { A('commit'); }); } }
+          if (nm) { wrapCE(nm, base + '.name'); var nce = nm.querySelector('.ce'); if (nce) { nce.setAttribute('data-ph', (R('delta.' + axisKey + '.name').blank) || 'Model'); nce.addEventListener('blur', function () { A('commit'); }); } }
           if (yr) wrapCE(yr, base + '.year');
         };
-        bindAxis(qs('.gd-gen-old', secEl), prefix + 'prev');
-        bindAxis(qs('.gd-gen-new', secEl), prefix + 'current');
+        bindAxis(qs('.gd-gen-old', secEl), prefix + 'prev', 'prev');
+        bindAxis(qs('.gd-gen-new', secEl), prefix + 'current', 'current');
         // the per-column model-name echoes + the group labels are derived → locked
         qsa('.gd-sec-col', secEl).forEach(function (c) { lockD(c, 'Auto — mirrors the column’s model name'); });
         qsa('.gd-sec-main', secEl).forEach(function (c) { lockD(c, 'Locked group label'); });
 
-        // chip enum popover (colour = the direction of change) — derived enum
+        // chip picker — colour = the DIRECTION of change (the enum). The popover
+        // is a bearings CATALOGUE: each category shows derived `presets` (suggested
+        // labels) the contributor can click; plus a CUSTOM row (pick a colour, type
+        // anything). All derived from grammar (enum + presets); a pick sets BOTH the
+        // colour (chip) and the text (chip_text) in one commit.
         var chipEnumD = (R('delta.hardware[].chip').enum) || [];
-        var openChipPop = function (anchor, rpre, cur) {
-          var html = '<div class="cc-pop-label">Change chip</div><div class="cc-enum">'
-            + chipEnumD.map(function (c) { return '<button class="cc-enum-opt gd-chip gd-chip-' + c + (cur === c ? ' sel' : '') + '" data-c="' + c + '">' + c + '</button>'; }).join('') + '</div>'
+        var chipPresets = (R('delta.hardware[].chip').presets) || {};
+        var openChipPop = function (anchor, rpre, cur, curText) {
+          var html = chipEnumD.map(function (c) {
+            var ts = chipPresets[c] || [];
+            return '<div class="cc-chip-cat"><span class="cc-chip-cat-l gd-chip gd-chip-' + c + '">' + c + '</span><div class="cc-chip-row">'
+              + ts.map(function (t) { return '<button class="cc-chip-opt gd-chip gd-chip-' + c + ((cur === c && curText === t) ? ' sel' : '') + '" data-c="' + c + '" data-t="' + eaD(t) + '">' + eaD(t) + '</button>'; }).join('')
+              + '</div></div>';
+          }).join('');
+          html += '<div class="cc-chip-custom"><div class="cc-pop-label">Custom</div>'
+            + '<input type="text" class="cc-chip-text" placeholder="Your own label…" value="' + eaD(cur ? (curText || '') : '') + '">'
+            + '<div class="cc-chip-sw">' + chipEnumD.map(function (c) { return '<button class="cc-chip-swatch gd-chip-' + c + ((cur || chipEnumD[0]) === c ? ' sel' : '') + '" data-c="' + c + '" title="' + c + '"></button>'; }).join('') + '</div>'
+            + '<button class="cc-apply cc-chip-apply">Apply</button></div>'
             + (cur ? '<button class="cc-rm">Remove chip</button>' : '');
-          var pop = openPop(anchor, '', html, { cls: 'lane-pop' });
-          qsa('[data-c]', pop).forEach(function (b) { b.onclick = function () { closePop(); A('set:' + rpre + 'chip:' + b.getAttribute('data-c')); }; });
+          var pop = openPop(anchor, '', html, { cls: 'lane-pop chip-pop' });
+          // a preset sets colour + text together (one commit)
+          qsa('.cc-chip-opt', pop).forEach(function (b) { b.onclick = function () { closePop(); PV(rpre + 'chip', b.getAttribute('data-c')); PV(rpre + 'chip_text', b.getAttribute('data-t')); A('commit'); }; });
+          // custom: a colour swatch + free text → Apply
+          var selCat = cur || chipEnumD[0];
+          var txt = qs('.cc-chip-text', pop), apply = qs('.cc-chip-apply', pop);
+          qsa('.cc-chip-swatch', pop).forEach(function (s) { s.onclick = function () { qsa('.cc-chip-swatch', pop).forEach(function (x) { x.classList.remove('sel'); }); s.classList.add('sel'); selCat = s.getAttribute('data-c'); }; });
+          if (apply) apply.onclick = function () { closePop(); PV(rpre + 'chip', selCat); PV(rpre + 'chip_text', (txt.value || '').trim()); A('commit'); };
           var rm = qs('.cc-rm', pop); if (rm) rm.onclick = function () { closePop(); A('rm:' + rpre + 'chip'); };
         };
 
@@ -1587,11 +1606,11 @@
             if (chip) {
               wrapCE(chip, rpre + 'chip_text');
               var cMenu = document.createElement('button'); cMenu.className = 'gpill-menu'; cMenu.textContent = '⋯'; cMenu.title = 'Chip colour'; cMenu.setAttribute('contenteditable', 'false');
-              (function (rp, cu) { cMenu.onclick = function (e) { e.stopPropagation(); openChipPop(cMenu, rp, cu); }; })(rpre, rdata.chip);
+              (function (rp, cu, ct) { cMenu.onclick = function (e) { e.stopPropagation(); openChipPop(cMenu, rp, cu, ct); }; })(rpre, rdata.chip, rdata.chip_text);
               chip.appendChild(cMenu);
             } else {
               var addChip = addBtn('', '+ chip', true);
-              (function (rp) { addChip.onclick = function () { openChipPop(addChip, rp, null); }; })(rpre);
+              (function (rp) { addChip.onclick = function () { openChipPop(addChip, rp, null, ''); }; })(rpre);
               newCell.appendChild(addChip);
             }
           }

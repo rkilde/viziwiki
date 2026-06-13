@@ -120,13 +120,13 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 | `tone` |  | enum | `a`  _(choice: a · b · special)_ |
 | `intro` |  | richtext | `Add an intro line` |
 | `footnote` |  | richtext | `Add a footnote` |
-| `prev` | • | axis | — |
+| `prev` | • | axis_old | — |
 | `prev.tag` |  | text | — |
-| `prev.name` | • | text | `Model name` |
+| `prev.name` | • | text | `Old model` |
 | `prev.year` |  | text | — |
-| `current` | • | axis | — |
+| `current` | • | axis_new | — |
 | `current.tag` |  | text | — |
-| `current.name` | • | text | `Model name` |
+| `current.name` | • | text | `New model` |
 | `current.year` |  | text | — |
 | `hardware` |  | list<delta_row> | _(template — see sub-fields)_ |
 | `hardware[].label` | • | text | `Spec label` |

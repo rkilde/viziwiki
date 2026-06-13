@@ -580,10 +580,10 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   const gd = d.querySelector('section.wiki-section.delta');
   ok(gd, 'delta section rendered via its canonical include chain');
   ok(gd.querySelector('.wiki-section-title .ce'), 'heading editable in place');
-  // axis headers — name editable + placeholder from the grammar blank
+  // axis headers — name editable + DISTINCT Old/New placeholders (per-axis blank)
   const nm = gd.querySelector('.gd-gen-old .gd-name .ce');
-  ok(nm && nm.getAttribute('data-ph') === 'Model name', 'prev model-name editable (placeholder = grammar blank)');
-  ok(gd.querySelector('.gd-gen-new .gd-name .ce'), 'current model-name editable');
+  ok(nm && nm.getAttribute('data-ph') === 'Old model', 'prev model-name placeholder is "Old model"');
+  ok(gd.querySelector('.gd-gen-new .gd-name .ce').getAttribute('data-ph') === 'New model', 'current model-name placeholder is "New model"');
   ok(gd.querySelector('.gd-gen-old .gd-tag .ce') && gd.querySelector('.gd-gen-old .gd-year .ce'), 'tag + year editable');
   // the derived per-column echoes + group labels are locked
   ok([...gd.querySelectorAll('.gd-sec-col')].every((c) => c.classList.contains('pe-canon')), 'gd-sec-col echoes locked (derived from the model name)');
@@ -594,8 +594,13 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(row.querySelector('.gd-new-val .ce'), 'row "new" value editable');
   ok(row.querySelector('.gd-chip .ce') && row.querySelector('.gd-chip .gpill-menu'), 'chip text editable + ⋯ colour menu (the seed row has a chip)');
   row.querySelector('.gd-chip .gpill-menu').onclick({ stopPropagation() {} });
-  const cpop = [...d.querySelectorAll('.cc-pop.lane-pop')].pop();
-  ok(cpop && [...cpop.querySelectorAll('[data-c]')].map((b) => b.getAttribute('data-c')).join(',') === 'better,feature,changed,worse,same', 'chip popover lists the grammar enum (colour = direction)');
+  const cpop = [...d.querySelectorAll('.cc-pop.chip-pop')].pop();
+  ok(cpop, 'chip popover opens');
+  ok(cpop.querySelectorAll('.cc-chip-cat').length === 5, 'five chip categories (from the grammar enum)');
+  ok(cpop.querySelectorAll('.cc-chip-opt[data-c="better"]').length >= 1, '"better" category offers derived preset chips (bearings)');
+  ok(cpop.querySelector('.cc-chip-opt[data-c="feature"][data-t="New"]'), 'preset labels come from grammar (feature → "New")');
+  ok(cpop.querySelector('.cc-chip-text') && cpop.querySelector('.cc-chip-apply'), 'a custom chip — free text + Apply');
+  ok(cpop.querySelectorAll('.cc-chip-swatch').length === 5, 'custom colour swatch per category');
   // "before" toggle present on a row that has an old value
   ok([...row.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === 'no before'), 'row offers a "no before" toggle (no_old)');
   // add-row affordances per group, derived from the list paths

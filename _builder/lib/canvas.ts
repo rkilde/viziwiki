@@ -473,6 +473,33 @@ const AFFORDANCE = `
   .sc-tag .dr-info{ width:12px; height:12px; margin-left:5px; }
   .sc-tag .dr-info svg{ width:12px; height:12px; }
   .cc-pop.lane-pop{ min-width:230px; }
+  /* delta chip picker — a bearings catalogue grouped by category + a custom row.
+     The gd-chip-* rules read --gd-* tokens scoped to .delta on the live site; the
+     popover lives on <body>, so pin the (light) token values here so the preset
+     chips render in their category colours. */
+  .cc-pop.chip-pop{ min-width:248px; max-width:300px;
+    --gd-better-bg:#dcfce7;  --gd-better-bd:#bbf7d0;  --gd-better-fg:#15803d;
+    --gd-feature-bg:#eff6ff; --gd-feature-bd:#bfdbfe; --gd-feature-fg:#1d4ed8;
+    --gd-changed-bg:#fef9c3; --gd-changed-bd:#fef08a; --gd-changed-fg:#a16207;
+    --gd-worse-bg:#fee2e2;   --gd-worse-bd:#fecaca;   --gd-worse-fg:#b91c1c;
+    --gd-same-bg:#f3f4f6;    --gd-same-bd:#e5e7eb;    --gd-same-fg:#6b7280; }
+  .cc-chip-cat{ display:flex; align-items:flex-start; gap:7px; margin-bottom:7px; }
+  .cc-chip-cat-l{ flex:0 0 58px; margin:2px 0 0 0 !important; text-align:center; }
+  .cc-chip-row{ display:flex; flex-wrap:wrap; gap:4px; flex:1; }
+  .cc-chip-opt{ cursor:pointer; margin:0 !important; border-width:1px; }
+  .cc-chip-opt:hover{ filter:brightness(.97); box-shadow:0 0 0 2px rgba(0,0,0,.12); }
+  .cc-chip-opt.sel{ box-shadow:0 0 0 2px rgba(0,0,0,.45); }
+  .cc-chip-custom{ border-top:1px solid rgba(0,0,0,.1); margin-top:4px; padding-top:9px; }
+  .cc-chip-text{ width:100%; box-sizing:border-box; padding:6px 8px; border:1px solid rgba(0,0,0,.18); border-radius:6px;
+    font-family:'JetBrains Mono',monospace; font-size:10px; margin-bottom:7px; }
+  .cc-chip-sw{ display:flex; gap:6px; margin-bottom:8px; }
+  .cc-chip-swatch{ width:20px; height:20px; border-radius:50%; cursor:pointer; border:1px solid; padding:0; }
+  .cc-chip-swatch.gd-chip-better{ background:var(--gd-better-bg); border-color:var(--gd-better-fg); }
+  .cc-chip-swatch.gd-chip-feature{ background:var(--gd-feature-bg); border-color:var(--gd-feature-fg); }
+  .cc-chip-swatch.gd-chip-changed{ background:var(--gd-changed-bg); border-color:var(--gd-changed-fg); }
+  .cc-chip-swatch.gd-chip-worse{ background:var(--gd-worse-bg); border-color:var(--gd-worse-fg); }
+  .cc-chip-swatch.gd-chip-same{ background:var(--gd-same-bg); border-color:var(--gd-same-fg); }
+  .cc-chip-swatch.sel{ box-shadow:0 0 0 2px rgba(0,0,0,.5); }
   .cc-pop.lane-pop .cc-enum{ grid-template-columns:repeat(2,1fr); }
   .cc-pop.lane-pop .cc-month-grid{ grid-template-columns:repeat(4,1fr); }   /* the date picker's month grid */
   .cc-lane-year{ width:100%; box-sizing:border-box; margin-top:2px; font-family:'JetBrains Mono',monospace; font-size:12px; padding:7px 9px;

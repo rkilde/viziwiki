@@ -860,12 +860,12 @@
           "help": "The slot's visual type — registry hosts constrain it (admin)"
         },
         "prev": {
-          "type": "axis",
+          "type": "axis_old",
           "required": true,
           "help": "The 'before' column header"
         },
         "current": {
-          "type": "axis",
+          "type": "axis_new",
           "required": true,
           "help": "The 'after' column header"
         },
@@ -883,14 +883,27 @@
         }
       },
       "subtypes": {
-        "axis": {
+        "axis_old": {
           "tag": {
             "type": "text"
           },
           "name": {
             "type": "text",
             "required": true,
-            "blank": "Model name"
+            "blank": "Old model"
+          },
+          "year": {
+            "type": "text"
+          }
+        },
+        "axis_new": {
+          "tag": {
+            "type": "text"
+          },
+          "name": {
+            "type": "text",
+            "required": true,
+            "blank": "New model"
           },
           "year": {
             "type": "text"
@@ -915,7 +928,39 @@
           },
           "chip": {
             "type": "enum[better,feature,changed,worse,same]",
-            "help": "Color = the direction of change"
+            "help": "Colour = the direction of change",
+            "presets": {
+              "better": [
+                "Faster",
+                "2×",
+                "+50%",
+                "Bigger",
+                "Improved"
+              ],
+              "feature": [
+                "New",
+                "Added",
+                "First",
+                "Now supported"
+              ],
+              "changed": [
+                "Redesigned",
+                "Moved",
+                "Swapped",
+                "Relocated"
+              ],
+              "worse": [
+                "Slower",
+                "Smaller",
+                "Removed",
+                "Dropped"
+              ],
+              "same": [
+                "Unchanged",
+                "Carried over",
+                "—"
+              ]
+            }
           },
           "chip_text": {
             "type": "text",
@@ -927,12 +972,12 @@
         "heading": "Changes heading",
         "prev": {
           "tag": "Previous",
-          "name": "Model name",
+          "name": "Old model",
           "year": "2020"
         },
         "current": {
           "tag": "Current",
-          "name": "Model name",
+          "name": "New model",
           "year": "2023"
         },
         "hardware": [

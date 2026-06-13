@@ -244,23 +244,33 @@ components:
       intro:    { type: richtext, blank: "Add an intro line" }
       footnote: { type: richtext, blank: "Add a footnote" }
       visual:  { type: text, locked: true, default: delta, help: "The slot's visual type — registry hosts constrain it (admin)" }
-      prev:     { type: axis, required: true, help: "The 'before' column header" }
-      current:  { type: axis, required: true, help: "The 'after' column header" }
+      prev:     { type: axis_old, required: true, help: "The 'before' column header" }
+      current:  { type: axis_new, required: true, help: "The 'after' column header" }
       hardware: { type: "list<delta_row>", item_blank: { label: "Spec label" } }
       software: { type: "list<delta_row>", item_blank: { label: "Spec label" } }
     subtypes:
-      axis: { tag: { type: text }, name: { type: text, required: true, blank: "Model name" }, year: { type: text } }
+      # prev/current share the tag/name/year shape but carry distinct name
+      # placeholders so a contributor knows which column is which.
+      axis_old: { tag: { type: text }, name: { type: text, required: true, blank: "Old model" }, year: { type: text } }
+      axis_new: { tag: { type: text }, name: { type: text, required: true, blank: "New model" }, year: { type: text } }
       delta_row:
         label:     { type: text, required: true, blank: "Spec label" }
         old:       { type: text }
         new:       { type: text }
         no_old:    { type: bool, default: false, help: "Hide the 'before' cell" }
-        chip:      { type: "enum[better,feature,changed,worse,same]", help: "Color = the direction of change" }
+        # chip colour = the DIRECTION of change; `presets` give contributors a
+        # bearings catalogue of suggested labels per category (plus a custom one).
+        chip:      { type: "enum[better,feature,changed,worse,same]", help: "Colour = the direction of change",
+                     presets: { better:  ["Faster", "2×", "+50%", "Bigger", "Improved"],
+                                feature: ["New", "Added", "First", "Now supported"],
+                                changed: ["Redesigned", "Moved", "Swapped", "Relocated"],
+                                worse:   ["Slower", "Smaller", "Removed", "Dropped"],
+                                same:    ["Unchanged", "Carried over", "—"] } }
         chip_text: { type: text, help: "The short value shown in the chip" }
     seed:
       heading: "Changes heading"
-      prev:    { tag: "Previous", name: "Model name", year: "2020" }
-      current: { tag: "Current",  name: "Model name", year: "2023" }
+      prev:    { tag: "Previous", name: "Old model", year: "2020" }
+      current: { tag: "Current",  name: "New model", year: "2023" }
       hardware: [ { label: "Spec label", new: "Faster SoC", chip: better, chip_text: "2×" } ]
     min: "heading + prev + current + one row"
 
