@@ -481,7 +481,14 @@ const AFFORDANCE = `
   /* live preview that mimics the real note tile (dot + bold label — text) */
   .cc-note-preview{ display:flex; align-items:flex-start; gap:7px; margin-top:2px; padding:8px 10px; border-radius:8px; background:rgba(0,0,0,.035);
     font-family:'Spectral',Georgia,serif; font-size:11.5px; line-height:1.45; color:#2a1f15; }
-  .cc-note-preview .lane-note-dot{ margin-top:4px; flex:none; }
+  .cc-note-preview .lane-note-dot{ margin-top:4px; flex:none; background:rgba(0,0,0,.12); }
+  /* the dot's colour comes from --lane-*-dot tokens scoped to the lane section,
+     which the popover (on document.body) can't see — pin the semantic colours so
+     the preview square shows the chosen version's support colour */
+  .cc-note-preview .lane-dot-full{ background:#6ee7b7; }
+  .cc-note-preview .lane-dot-partial{ background:#fde68a; }
+  .cc-note-preview .lane-dot-dropped{ background:#d1d5db; }
+  .cc-note-preview .lane-dot-security{ background:#3b82f6; }
   .cc-np-l{ font-weight:600; }
   .cc-pop.lane-pop .cc-note-add{ margin-top:11px; }
   .dr-label-i{ display:inline-flex; align-items:center; gap:6px; }
