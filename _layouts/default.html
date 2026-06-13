@@ -2443,14 +2443,14 @@
   <!-- Bank layer — every typed visual bank's stylesheet, loaded ONCE here so
        any page can use any bank with ZERO css wiring (just front-matter + the
        include). Each file is fully namespaced (.cat-/.cfg-/.gd-/.lane-/.spec-/
-       .itl- …), so it's harmless on pages that don't use it (rules match
-       nothing). Loads BEFORE extra_head so a skin can still pin bank tokens. -->
-  <link rel="stylesheet" href="/bank-catalog.css">
-  <link rel="stylesheet" href="/bank-timeline.css">
-  <link rel="stylesheet" href="/bank-config.css">
-  <link rel="stylesheet" href="/bank-delta.css">
-  <link rel="stylesheet" href="/bank-spec.css">
-  <link rel="stylesheet" href="/bank-lifecycle-lane.css">
+       .prail-/.itl- …), so it's harmless on pages that don't use it (rules
+       match nothing). Loads BEFORE extra_head so a skin can still pin bank
+       tokens. DERIVED: auto-discover every bank-*.css at the site root (mirrors
+       the builder's copy-canon discovery), so adding a new bank-*.css loads it
+       here with ZERO edits — single source, never a hand-kept list. -->
+  {%- assign bank_sheets = site.static_files | where_exp: "f", "f.extname == '.css'" -%}
+  {%- for f in bank_sheets -%}{%- assign pfx = f.name | slice: 0, 5 -%}{%- if pfx == "bank-" %}
+  <link rel="stylesheet" href="{{ f.path }}">{%- endif -%}{%- endfor %}
 
   {% if page.extra_head %}{{ page.extra_head }}{% endif %}
 </head>
