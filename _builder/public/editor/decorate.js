@@ -1254,7 +1254,7 @@
             + '<div><div class="dr-label">Unit</div><select class="dr-input dr-select dr-unit"><option' + (idata.unit !== 'TB' ? ' selected' : '') + '>GB</option><option' + (idata.unit === 'TB' ? ' selected' : '') + '>TB</option></select></div>'
             // price + its price-drop toggle + the revised price are GROUPED here
             + '<div><div class="dr-label">Price</div><input class="dr-input dr-price" value="' + ea(oldP) + '">'
-            +   '<div class="tog-row" style="margin-top:8px"><button class="tog dr-drop' + (hasArrow ? ' on' : '') + '"><span class="tog-pip"></span>Price drop (→)</button></div>'
+            +   '<div class="tog-row" style="margin-top:8px"><button class="tog dr-drop' + (hasArrow ? ' on' : '') + '"><span class="tog-pip"></span>Price drop (→)</button><span class="dr-info" tabindex="0" data-tip="' + ea('Turn on when this configuration’s price was CUT during its life. It shows the old price struck through with an arrow to the new, lower price (e.g. $399 → $299). Leave off for a single, unchanged price.') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span></div>'
             +   (hasArrow ? '<div style="margin-top:8px"><div class="dr-label">Revised price</div><input class="dr-input dr-price2" value="' + ea(newP) + '"></div>' : '')
             + '</div>'
             + '</div>'
@@ -1512,6 +1512,10 @@
           return chip;
         };
 
+        // a hover/focus info "i" with an explanatory tooltip (reused across the
+        // lane editor — support type, weighted toggle, badge)
+        var infoI = function (tip) { return '<span class="dr-info" tabindex="0" data-tip="' + ea2(tip) + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>'; };
+
         // segments
         var segTypes = (R('lifecycle-lane.segments[].type').enum) || [];
         var badgeTypes = (R('lifecycle-lane.segments[].badge_type').enum) || [];
@@ -1523,7 +1527,7 @@
           // version + date are ALSO editable here (kept inline on the tile too)
           var html = '<div class="cc-pop-row2"><label class="cc-pop-fld"><span class="cc-pop-label">Software version</span><input type="text" class="cc-lane-ver" placeholder="' + ea2(verBlank) + '" value="' + ea2(sd.ver) + '"></label>'
             + '<label class="cc-pop-fld"><span class="cc-pop-label">Date</span><input type="text" class="cc-lane-date" placeholder="Mon YYYY" value="' + ea2(sd.date) + '"></label></div>'
-            + '<div class="cc-pop-label" style="margin-top:13px">Support type</div><div class="cc-enum cc-lane-types">'
+            + '<div class="cc-pop-label cc-pop-label-i" style="margin-top:13px">Support type' + infoI('How well the device is supported at this version. Full (green) = full OS updates; Partial (amber) = limited/late updates; Dropped (grey) = no longer supported — the cliff where support ends; Security (blue) = security-only patches after end-of-life.') + '</div><div class="cc-enum cc-lane-types">'
             + segTypes.map(function (t) { return '<button class="cc-enum-opt cc-type-' + t + (sd.type === t ? ' sel' : '') + '" data-t="' + t + '">' + t + '</button>'; }).join('') + '</div>'
             // BADGE = a bank of preset text+color combos (derived from the
             // badge_type enum + its grammar `presets` map). Pick one → sets the
@@ -1573,6 +1577,23 @@
           var pop = openPop(anchor, '', html, { cls: 'lane-pop' });
           qsa('[data-s]', pop).forEach(function (b) { b.onclick = function () { closePop(); A('set:' + npre + 'status:' + b.getAttribute('data-s')); }; });
         };
+        // ALL-IN-ONE note add: pick the software version it's about (→ the colour
+        // is DERIVED from that segment's support type), then type the label + text.
+        var openNoteAddPop = function (anchor) {
+          var segData = sdata.segments || [];
+          if (!segData.length) return;
+          var chips = segData.map(function (s, k) { return '<button class="cc-enum-opt cc-type-' + s.type + '" data-seg="' + k + '">' + ea2(s.ver || '—') + '</button>'; }).join('');
+          var html = '<div class="cc-pop-label">Which version is this note about?</div><div class="cc-enum cc-noteseg">' + chips + '</div>'
+            + '<div class="cc-pop-label" style="margin-top:11px">Label</div><input type="text" class="cc-note-label" placeholder="' + ea2((R('lifecycle-lane.notes[].label').blank) || 'Note label') + '">'
+            + '<div class="cc-pop-label" style="margin-top:9px">Note</div><textarea class="cc-note-text" rows="2" placeholder="What happened at this version…"></textarea>'
+            + '<button class="cc-apply cc-note-add" disabled>Add note</button>';
+          var pop = openPop(anchor, '', html, { cls: 'lane-pop note-add' });
+          var sel = null, lab = qs('.cc-note-label', pop), txt = qs('.cc-note-text', pop), addB = qs('.cc-note-add', pop);
+          var upd = function () { addB.disabled = !(sel && ((txt.value || '').trim() || (lab.value || '').trim())); };
+          qsa('[data-seg]', pop).forEach(function (b) { b.onclick = function () { qsa('[data-seg]', pop).forEach(function (x) { x.classList.remove('sel'); }); b.classList.add('sel'); sel = segData[+b.getAttribute('data-seg')]; upd(); }; });
+          lab.addEventListener('input', upd); txt.addEventListener('input', upd);
+          addB.onclick = function () { if (!sel) return; window.__peNoteAdd = { s: i, status: sel.type, label: lab.value, text: txt.value }; closePop(); A('push:' + prefix + 'notes'); };
+        };
         if (notesWrap) {
           qsa('.lane-note', notesWrap).forEach(function (note, k) {
             var npre = prefix + 'notes.' + k + '.';
@@ -1585,8 +1606,16 @@
             if (strong) { var tnode = strong.nextSibling; if (tnode && tnode.nodeType === 3) { var m = tnode.nodeValue.match(/^(\s*[—-]\s*)([\s\S]*)$/); if (m) { tnode.nodeValue = m[1]; var tce = document.createElement('span'); tce.className = 'ce'; tce.setAttribute('contenteditable', 'true'); tce.setAttribute('data-pe-path', npre + 'text'); tce.setAttribute('data-ph', (R('lifecycle-lane.notes[].text').blank) || 'Note body'); tce.textContent = m[2]; (function (p, el) { el.addEventListener('blur', function () { P(p, el); }); })(npre + 'text', tce); tnode.parentNode.insertBefore(tce, tnode.nextSibling); } } }
             makeRemovable(note, 'rm:' + prefix + 'notes.' + k, true);
           });
-          notesWrap.appendChild(addBtn('push:' + prefix + 'notes', '+ note', true));
-        } else { var ls = qs('.lane-scroll', secEl); if (ls) ls.parentNode.insertBefore(addLine('push:' + prefix + 'notes', '+ note'), ls.nextSibling); }
+          var addN = addBtn('', '+ note', true); addN.onclick = function () { openNoteAddPop(addN); }; notesWrap.appendChild(addN);
+        } else { var ls = qs('.lane-scroll', secEl); if (ls) { var nline = addLine('', '+ note'); var nlb = qs('.pe-add', nline); if (nlb) nlb.onclick = function () { openNoteAddPop(nlb); }; ls.parentNode.insertBefore(nline, ls.nextSibling); } }
+        // a "+ note" push re-renders → fill the just-added (last) note with the
+        // chosen status/label/text from the all-in-one popover, then commit.
+        var na = window.__peNoteAdd;
+        if (na && na.s === i) {
+          window.__peNoteAdd = null;
+          var nn = ((sdata.notes || []).length) - 1;
+          if (nn >= 0) { PV(prefix + 'notes.' + nn + '.status', na.status); if (na.label) PV(prefix + 'notes.' + nn + '.label', na.label); if (na.text) PV(prefix + 'notes.' + nn + '.text', na.text); A('commit'); }
+        }
 
         // weighted-widths toggle — OUTSIDE the visual's bounds, just below it,
         // lower-right. "weighted by time" → tile widths ∝ the gap between dates.
@@ -1597,6 +1626,7 @@
           var wBtn = document.createElement('button'); wBtn.className = 'pe-lane-wbtn' + (sdata.weighted ? ' on' : ''); wBtn.title = 'On = each tile’s width ∝ the time until the next version';
           wBtn.innerHTML = '<span class="sw"></span>Weighted by time';
           wBtn.onclick = function () { A('set:' + prefix + 'weighted:' + (sdata.weighted ? 'false' : 'true')); }; foot.appendChild(wBtn);
+          var winfo = document.createElement('span'); winfo.innerHTML = infoI('On: each tile’s WIDTH becomes proportional to the real time between versions — long support gaps look long, rapid releases look tight (a real time axis). Off: every tile is the same width (an even ribbon).'); foot.appendChild(winfo.firstChild);
           if (sdata.weighted) {
             if (sdata.end != null) foot.appendChild(laneChip('end', prefix + 'end', sdata.end, R('lifecycle-lane.end').blank, true));
             else foot.appendChild(addBtn('add:' + prefix + 'end', '+ end date', true));

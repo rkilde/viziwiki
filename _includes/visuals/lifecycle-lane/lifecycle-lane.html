@@ -20,17 +20,32 @@
 {%- endcomment -%}
 {%- assign d = include.data -%}
 {%- assign segs = d.segments -%}
-{%- comment -%} auto range: launch → the drop (first major it was dropped from);
-   duration in years/months, rounded to nearest month. Anything after the drop
-   (post-EOL security patches) is shown as a tile but excluded from the count. {%- endcomment -%}
+{%- comment -%} AUTO-REORDER: render segments chronologically (by parsed date).
+   Key per segment = zero-padded epoch + '#' + original index; sort; use that
+   order for the range, the tiles + the weighted gaps. Already-chronological data
+   sorts to the same order (no change). {%- endcomment -%}
+{%- assign keys = '' -%}
+{%- for s in segs -%}
+  {%- assign ep = s.date | date: '%s' | plus: 0 -%}
+  {%- if ep < 0 -%}{%- assign ep = 0 -%}{%- endif -%}
+  {%- assign pad = ep | prepend: '0000000000000' | slice: -13, 13 -%}
+  {%- assign keys = keys | append: pad | append: '#' | append: forloop.index0 | append: ',' -%}
+{%- endfor -%}
+{%- assign skeys = keys | split: ',' | sort -%}
+{%- comment -%} parallel sorted arrays: original indices + epochs (drop empties) {%- endcomment -%}
+{%- assign sidx = '' -%}{%- assign seps = '' -%}
+{%- for key in skeys -%}{%- if key != '' -%}{%- assign kp = key | split: '#' -%}{%- assign sidx = sidx | append: kp.last | append: ',' -%}{%- assign seps = seps | append: kp.first | append: ',' -%}{%- endif -%}{%- endfor -%}
+{%- assign sidx = sidx | split: ',' -%}{%- assign seps = seps | split: ',' -%}
+{%- assign firstix = sidx.first | plus: 0 -%}{%- assign firstseg = segs[firstix] -%}
+{%- comment -%} range end: the drop date, else the latest NON-security date {%- endcomment -%}
 {%- assign droplist = segs | where: "type", "dropped" -%}
 {%- if droplist.size > 0 -%}
   {%- assign enddate = droplist.first.date -%}
 {%- else -%}
-  {%- assign live = segs | where_exp: "s", "s.type != 'security'" -%}
-  {%- assign enddate = live.last.date -%}
+  {%- assign enddate = '' -%}
+  {%- for ix in sidx -%}{%- assign ixn = ix | plus: 0 -%}{%- unless segs[ixn].type == 'security' -%}{%- assign enddate = segs[ixn].date -%}{%- endunless -%}{%- endfor -%}
 {%- endif -%}
-{%- assign e1 = segs.first.date | date: '%s' | plus: 0 -%}
+{%- assign e1 = firstseg.date | date: '%s' | plus: 0 -%}
 {%- assign e2 = enddate | date: '%s' | plus: 0 -%}
 {%- comment -%} only compute a duration when BOTH dates parse to a sane range —
    an unparseable date falls to epoch 0 (1970) and would print a garbage span.
@@ -50,24 +65,21 @@
 <div class="lane-wrap">
   <div class="lane-head">
     <div class="lane-title fr">{{ d.title }}</div>
-    <div class="lane-range jb">{{ segs.first.date }} &rarr; {{ enddate }}{% if dur != '' %} &middot; {{ dur }}{% endif %} &middot; {{ vcount }} versions{% if d.range_note %} &middot; {{ d.range_note }}{% endif %}</div>
+    <div class="lane-range jb">{{ firstseg.date }} &rarr; {{ enddate }}{% if dur != '' %} &middot; {{ dur }}{% endif %} &middot; {{ vcount }} versions{% if d.range_note %} &middot; {{ d.range_note }}{% endif %}</div>
   </div>
   <div class="lane-scroll"><div class="lane {% if d.weighted %}weighted{% else %}uniform{% endif %}">
-    {%- for s in segs -%}
+    {%- for ix in sidx -%}
+      {%- assign idx = ix | plus: 0 -%}{%- assign s = segs[idx] -%}
       {%- assign segstyle = '' -%}
       {%- if d.weighted -%}
+        {%- assign curep = seps[forloop.index0] | plus: 0 -%}
         {%- if forloop.last -%}
-          {%- assign nextdate = d.end -%}
+          {%- assign nextep = d.end | date: '%s' | plus: 0 -%}
         {%- else -%}
-          {%- assign ni = forloop.index0 | plus: 1 -%}
-          {%- assign nextdate = segs[ni].date -%}
+          {%- assign ni = forloop.index0 | plus: 1 -%}{%- assign nextep = seps[ni] | plus: 0 -%}
         {%- endif -%}
-        {%- if nextdate -%}
-          {%- assign e1 = s.date | date: '%s' | plus: 0 -%}
-          {%- assign e2 = nextdate | date: '%s' | plus: 0 -%}
-          {%- assign w = e2 | minus: e1 -%}
-          {%- if w > 0 -%}{%- assign segstyle = 'flex:' | append: w -%}{%- endif -%}
-        {%- endif -%}
+        {%- assign w = nextep | minus: curep -%}
+        {%- if w > 0 -%}{%- assign segstyle = 'flex:' | append: w -%}{%- endif -%}
       {%- endif -%}
       <div class="lane-seg {{ s.type }}"{% if segstyle != '' %} style="{{ segstyle }}"{% endif %}>
         {%- if s.badge -%}<span class="lane-badge {{ s.badge_type | default: 'ship' }}">{{ s.badge }}</span>{%- endif -%}

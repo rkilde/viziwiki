@@ -465,6 +465,15 @@ const AFFORDANCE = `
   .cc-pop.lane-pop .cc-badge-final{ background:#0a0a0a; border-color:#0a0a0a; color:#fff; }
   .cc-pop.lane-pop .cc-badge-dropped{ background:transparent; border:1px dashed rgba(0,0,0,.24); color:#8a8a8a; }
   .cc-pop.lane-pop .cc-badge-security{ background:#3b82f6; border-color:#2563eb; color:#fff; }
+  /* all-in-one note add: segment chips (pick a version → derives colour) + fields */
+  .cc-pop.lane-pop.note-add{ min-width:254px; }
+  .cc-pop.lane-pop .cc-noteseg{ display:flex; flex-wrap:wrap; gap:5px; grid-template-columns:none; }
+  .cc-pop.lane-pop .cc-noteseg .cc-enum-opt{ flex:0 0 auto; padding:4px 9px; font-size:8.5px; }
+  .cc-note-label, .cc-note-text{ width:100%; box-sizing:border-box; margin-top:2px; font-family:'Spectral',Georgia,serif; font-size:12px; padding:7px 9px;
+    border-radius:8px; border:1px solid rgba(0,0,0,.14); background:rgba(255,255,255,.7); outline:none; color:#2a1f15; }
+  .cc-note-text{ resize:vertical; min-height:42px; }
+  .cc-note-label:focus, .cc-note-text:focus{ border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.16); }
+  .cc-pop.lane-pop .cc-note-add{ margin-top:11px; }
   /* version + date, side by side, in the segment popover */
   .cc-pop-row2{ display:flex; gap:8px; }
   .cc-pop-fld{ display:flex; flex-direction:column; gap:4px; flex:1; min-width:0; }
