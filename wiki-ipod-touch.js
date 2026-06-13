@@ -85,8 +85,8 @@ function addDragScroll(el){
   });
 }
 
-// Apply to all scrollable rails
-document.querySelectorAll('.design-img-rail, .photo-rail-scroll').forEach(addDragScroll);
+// Apply to the legacy scrollable rails (the photo rail is now the photo-rail bank)
+document.querySelectorAll('.design-img-rail').forEach(addDragScroll);
 
 // JB chart static HTML — injected by renderJailbreak()
 var JB_CHART_HTML = '<div class="jb-chart">\n      <div class="jb-chart-head">\n        <div class="jb-chart-head-cell">Capability</div>\n        <div class="jb-chart-head-cell">Stock iOS</div>\n        <div class="jb-chart-head-cell jb-col">Jailbroken</div>\n      </div><div class="jb-row"><div class="jb-cell feature-name">Multitasking</div><div class="jb-cell"><span class="jb-no">&#10005;</span><span class="jb-note"> Excluded from 2G in iOS 4</span></div><div class="jb-cell"><span class="jb-yes">&#10003;</span><span class="jb-note"> Backgrounder app, full background processes</span></div></div>\n<div class="jb-row"><div class="jb-cell feature-name">Alternative app stores</div><div class="jb-cell"><span class="jb-no">&#10005;</span><span class="jb-note"> App Store only</span></div><div class="jb-cell"><span class="jb-yes">&#10003;</span><span class="jb-note"> Cydia, AppSync, Installous</span></div></div>\n<div class="jb-row"><div class="jb-cell feature-name">Visual theming</div><div class="jb-cell"><span class="jb-no">&#10005;</span><span class="jb-note"> No customisation</span></div><div class="jb-cell"><span class="jb-yes">&#10003;</span><span class="jb-note"> Winterboard — full icon packs, UI reskins</span></div></div>\n<div class="jb-row"><div class="jb-cell feature-name">Quick settings toggle</div><div class="jb-cell"><span class="jb-no">&#10005;</span><span class="jb-note"> Requires navigating to Settings app</span></div><div class="jb-cell"><span class="jb-yes">&#10003;</span><span class="jb-note"> SBSettings — pull-down overlay from anywhere</span></div></div>\n<div class="jb-row"><div class="jb-cell feature-name">WiFi tethering</div><div class="jb-cell"><span class="jb-no">&#10005;</span><span class="jb-note"> Not available (WiFi-only device)</span></div><div class="jb-cell"><span class="jb-yes">&#10003;</span><span class="jb-note"> PdaNet — USB tethering from device WiFi</span></div></div>\n<div class="jb-row"><div class="jb-cell feature-name">Home screen customisation</div><div class="jb-cell"><span class="jb-no">&#10005;</span><span class="jb-note"> Fixed grid, no widgets</span></div><div class="jb-cell"><span class="jb-yes">&#10003;</span><span class="jb-note"> Infinidock, FolderEnhancer, lockscreen widgets</span></div></div>\n<div class="jb-row"><div class="jb-cell feature-name">System file access</div><div class="jb-cell"><span class="jb-no">&#10005;</span><span class="jb-note"> Sandboxed, no root</span></div><div class="jb-cell"><span class="jb-yes">&#10003;</span><span class="jb-note"> SSH, iFile, terminal — full filesystem access</span></div></div>\n<div class="jb-row"><div class="jb-cell feature-name">3rd-party background audio</div><div class="jb-cell"><span class="jb-no">&#10005;</span><span class="jb-note"> Stock music app only</span></div><div class="jb-cell"><span class="jb-yes">&#10003;</span><span class="jb-note"> Any app, background playback via Backgrounder</span></div></div>\n<div class="jb-row"><div class="jb-cell feature-name">Custom wallpapers</div><div class="jb-cell"><span class="jb-no">&#10005;</span><span class="jb-note"> Excluded from 2G in iOS 4</span></div><div class="jb-cell"><span class="jb-yes">&#10003;</span><span class="jb-note"> Winterboard — any image, lock & home screen</span></div></div></div>';
@@ -116,21 +116,8 @@ function secLabel(icon, text){
 
 
 // ── renderPhotoRail ───────────────────────────────────────────────────
-function renderPhotoRail(){
-  var el = document.getElementById('photo-rail-inner');
-  if(!el) return;
-  el.innerHTML = '<div class="photo-rail-scroll wiki-section-bleed" id="photoRailScroll">'
-    +'<div class="photo-rail-label">Photo archive <span>→</span></div>'
-    + PAGE_DATA.photos.map(function(im){
-        return '<div class="photo-rail-card">'
-          +'<img src="'+im.src+'" alt="'+im.alt+'" loading="lazy">'
-          +'<div class="design-img-caption"><strong>'+im.strong+'</strong> '+im.caption+'</div>'
-          +'</div>';
-      }).join('')
-    +'</div>';
-  var scroll = document.getElementById('photoRailScroll');
-  if(scroll) addDragScroll(scroll);
-}
+// renderPhotoRail removed — the photo rail is now the canonical photo-rail bank
+// (_includes/visuals/photo-rail/, rendered from front-matter `photo_rail`).
 
 
 
@@ -239,7 +226,6 @@ function renderWIKI_TOC(){
 // ── INIT ──────────────────────────────────────────────────────────────
 function initPage(){
   renderWIKI_TOC();
-  if(PAGE_DATA.photos && PAGE_DATA.photos.length) renderPhotoRail();
   if(PAGE_DATA.gaming) renderProseRail('gaming-content', PAGE_DATA.gaming,
     '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>',
     'Cultural impact');

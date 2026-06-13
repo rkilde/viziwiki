@@ -1,0 +1,32 @@
+/* ════════════════════════════════════════════════════════════════════
+   bank-photo-rail.css — single source for the PHOTO-RAIL bank.
+   A headerless, full-bleed horizontal scroller of image cards (image + bold
+   label + caption) on a toned band, with an optional click-to-zoom lightbox.
+   Skin-tokenized via --prail-* (defaults reproduce the Apple dark-band look).
+   ════════════════════════════════════════════════════════════════════ */
+.photo-rail-scroll{ display:flex; align-items:center; gap:12px; overflow-x:auto; overflow-y:hidden;
+  scrollbar-width:none; -webkit-overflow-scrolling:touch; padding-block:8px; padding-right:48px; }
+.photo-rail-scroll::-webkit-scrollbar{ display:none; }
+.photo-rail-card{ flex-shrink:0; width:280px; height:200px; border-radius:8px; overflow:hidden;
+  position:relative; cursor:zoom-in; border:1px solid var(--prail-card-border, rgba(255,255,255,.08)); }
+.photo-rail-card img{ width:100%; height:100%; object-fit:cover; display:block;
+  transition:transform .35s ease; image-rendering:-webkit-optimize-contrast; }
+.photo-rail-card:hover img{ transform:scale(1.04); }
+.photo-rail-caption{ position:absolute; bottom:0; left:0; right:0; padding:18px 10px 8px;
+  background:linear-gradient(to top, var(--prail-cap-scrim, rgba(0,0,0,.72)) 0%, transparent 100%);
+  font-family:"JetBrains Mono",monospace; font-size:8px; text-transform:uppercase; letter-spacing:.14em;
+  color:var(--prail-cap, rgba(255,255,255,.75)); line-height:1.5; }
+.photo-rail-caption strong{ display:block; font-size:9px; color:var(--prail-cap-strong, #fff); margin-bottom:2px; letter-spacing:.1em; }
+@media(max-width:600px){
+  .photo-rail-card{ width:200px; height:148px; }
+  .photo-rail-scroll{ padding:8px 12px 8px 0; }
+}
+/* click-to-zoom lightbox — the rail's live-only script injects #rail-lb once */
+.rail-lb{ display:none; position:fixed; inset:0; z-index:1000; background:rgba(0,0,0,.85); align-items:center; justify-content:center; }
+.rail-lb.open{ display:flex; }
+.rail-lb-img{ max-width:90vw; max-height:85vh; border-radius:8px; box-shadow:0 24px 64px rgba(0,0,0,.5); }
+.rail-lb-x{ position:fixed; top:18px; right:22px; width:40px; height:40px; border:0; border-radius:50%;
+  background:rgba(255,255,255,.12); color:#fff; font-size:20px; line-height:1; cursor:pointer; }
+.rail-lb-x:hover{ background:rgba(255,255,255,.22); }
+.rail-lb-cap{ position:fixed; bottom:22px; left:0; right:0; text-align:center; color:rgba(255,255,255,.8);
+  font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.1em; }

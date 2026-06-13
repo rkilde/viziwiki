@@ -28,7 +28,7 @@ field_types:
   url:      "validated link"
 
 # ── Layer 1: page grammar — just two types, one shared canon ──
-canon: &canon [hero, overview, spec, config, lifecycle-lane, timeline, delta, catalog]
+canon: &canon [hero, overview, photo-rail, spec, config, lifecycle-lane, timeline, delta, catalog]
 
 page_types:
   standard:                       # every content page (iPod, Taco Bell, anything)
@@ -312,6 +312,27 @@ components:
         - { month: "Month", year: "Year", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened", body: "Write the full story for the expandable card…" }
         - { month: "Month", year: "Year", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened", body: "Write the full story for the expandable card…" }
     min: "≥2 events, each with month + year + title"
+
+  # ---- PHOTO-RAIL — a headerless, full-bleed horizontal image scroller --
+  photo-rail:
+    section: photo-rail-section
+    display: { photos: { kind: "Photo" } }
+    fields:
+      tone:   { type: "enum[a,b,special]", default: special }
+      visual: { type: text, locked: true, default: photo-rail, help: "The slot's visual type — registry hosts constrain it (admin)" }
+      photos: { type: "list<photo>", required: true, min: 1, item_blank: { strong: "Label", caption: "· source" } }
+    subtypes:
+      photo:
+        # src is `media` — a URL today; a Supabase Storage upload later, with no
+        # change to this bank or its rendered <img>.
+        src:     { type: media, required: true, label: "image", blank: "image URL" }
+        alt:     { type: text,  required: true, label: "alt text", blank: "describe the photo" }
+        strong:  { type: text,  blank: "Label" }
+        caption: { type: text,  blank: "· source" }
+    seed:
+      photos:
+        - { strong: "Label", caption: "· source" }
+    min: "≥1 photo, each with an image + alt text"
 
   # ---- CATALOG — the data-driven list + expandable cards ---------------
   catalog:

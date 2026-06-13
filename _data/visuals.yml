@@ -80,6 +80,11 @@ sections:
     paragraphs: optional               # lead prose above the ribbon
     contained: true                    # NOT full-bleed
     hosts: [lifecycle-lane]            # visuals legal in the slot
+  photo-rail-section:
+    partial: sections/photo-rail-section.html
+    h2: none                           # HEADERLESS — no eyebrow, no title
+    full_bleed: true                   # the scroller bleeds edge-to-edge
+    hosts: [photo-rail]                # visuals legal in the slot
 
 config:
   bank: charts
@@ -128,6 +133,13 @@ timeline:
   card_types: [station]                # only one card type for now
   pairs_with: detail-modal             # each card opens this
   event_fields: [month, day, year, tag, title, preview, body]
+
+photo-rail:
+  bank: media
+  partial: visuals/photo-rail/photo-rail.html
+  section: photo-rail-section
+  photo_fields: [src, alt, strong, caption]   # src = media (URL now, Supabase upload later); strong/caption optional
+  lightbox: true                              # click-to-zoom (live-only; builder strips it)
 
 catalog:
   bank: lists

@@ -1,0 +1,34 @@
+{%- comment -%}
+  PHOTO-RAIL visual (Level B: data in → HTML out) — a headerless, full-bleed
+  horizontal scroller of image cards (image + bold label + caption). Fills a
+  photo-rail-section slot.
+  Data: photos[] each { src, alt, strong, caption }.
+  LAYOUT is pure CSS (native overflow-x scroll). The optional click-to-zoom
+  lightbox is a self-contained, idempotent LIVE-ONLY script (the builder strips
+  <script>; it toggles a class + sets img.src — no geometry mutation — so it
+  honors the bank layout contract).
+{%- endcomment -%}
+{%- assign d = include.data -%}
+<div class="photo-rail-scroll wiki-section-bleed">
+  {%- for im in d.photos -%}
+  <div class="photo-rail-card" data-lb-src="{{ im.src }}" data-lb-cap="{{ im.strong }} {{ im.caption }}">
+    <img src="{{ im.src }}" alt="{{ im.alt }}" loading="lazy">
+    <div class="photo-rail-caption"><strong>{{ im.strong }}</strong> {{ im.caption }}</div>
+  </div>
+  {%- endfor -%}
+</div>
+<script>
+(function(){ if(window.__railLb)return; window.__railLb=1;
+  document.addEventListener('click',function(e){
+    var c=e.target.closest&&e.target.closest('.photo-rail-card[data-lb-src]'); if(!c||!c.getAttribute('data-lb-src'))return;
+    var lb=document.getElementById('rail-lb');
+    if(!lb){lb=document.createElement('div');lb.id='rail-lb';lb.className='rail-lb';
+      lb.innerHTML='<button class="rail-lb-x" aria-label="Close">×</button><img class="rail-lb-img" alt=""><div class="rail-lb-cap"></div>';
+      document.body.appendChild(lb);
+      lb.addEventListener('click',function(ev){if(ev.target===lb||(ev.target.className||'').indexOf('rail-lb-x')>-1)lb.classList.remove('open');});}
+    lb.querySelector('.rail-lb-img').src=c.getAttribute('data-lb-src');
+    lb.querySelector('.rail-lb-cap').textContent=c.getAttribute('data-lb-cap');
+    lb.classList.add('open');
+  });
+})();
+</script>

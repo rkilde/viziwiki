@@ -1,0 +1,14 @@
+{%- comment -%}
+  PHOTO-RAIL SECTION — the headerless frame for the horizontal photo rail:
+  no eyebrow, no H2; just the full-bleed scroller on a toned band (default
+  "special"). The "Photo archive" tag is a locked label inside the rail visual.
+  Usage: {% include sections/photo-rail-section.html data=page.photo_rail %}
+  Data: tone?, visual?, photos[]{ src, alt, strong, caption }
+{%- endcomment -%}
+{%- assign data = include.data -%}
+{%- assign visual = data.visual | default: 'photo-rail' -%}
+<section class="wiki-section photo-rail" data-tone="{{ data.tone | default: 'special' }}" id="photo-rail-section">
+  <div class="wiki-section-inner">
+    {% include visual.html type=visual data=data %}
+  </div>
+</section>

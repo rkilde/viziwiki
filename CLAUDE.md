@@ -176,6 +176,17 @@ the Hardware/Software rows: label + old→new + a color chip via a derived enum
 popover, a `no_old` "before" toggle, per-group add/remove; intro/footnote are
 renderer-seeded sentinel "+" slots. Guard: case 13.)
 
+**Photo-rail bank — CANONIZED (onboarding next).** The iPod horizontal photo rail is
+extracted off the legacy `wiki-ipod-touch.js` engine into a bank: a headerless,
+full-bleed scroller of image cards (no "Photo archive" label — photos only), data
+`photo_rail.photos[]{ src, alt, strong?, caption? }` with `src` typed **`media`**
+(a URL today; a Supabase Storage upload later, no bank/output change). `bank-photo-rail.css`
+= single source; the include `_includes/visuals/photo-rail/` + `sections/photo-rail-section.html`
+(registry `photo-rail-section`, full_bleed, no h2). Rolled out to all 6 iPod pages
+(photos moved JS → front-matter; `renderPhotoRail` removed). Click-to-zoom lightbox is
+a self-contained live-only script (builder strips it; no geometry mutation). NOT yet
+onboarded to the builder picker/decorator — that's the next step.
+
 ### The builder app (`_builder/`) — the 1.0 product, actively built
 A Next.js app (previewed on **Vercel**) that renders a page by EXECUTING the repo's
 own Liquid includes + canon CSS, then layers editing chrome — the derived renderer
