@@ -2034,6 +2034,9 @@
         });
       }
       function postMarkers() { try { if (window.parent.__peMarkers) window.parent.__peMarkers(buildPayload()); } catch (e) {} }
+      // expose so the canvas's ResizeObserver can re-post after a reflow (e.g. a
+      // view-width switch) — section tops shift, markers must re-align
+      window.__pePostMarkers = postMarkers;
       hosts.forEach(function (host) {
         host.el.addEventListener('input', function (e) {
           if (!e.target || !e.target.getAttribute || e.target.getAttribute('data-pe-path') == null) return;

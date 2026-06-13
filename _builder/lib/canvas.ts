@@ -564,7 +564,7 @@ window.__retag=tagDark;
 // Enter inside a paragraph box → a block element (div), not a bare <br>, so the
 // new paragraph picks up the canonical inter-paragraph spacing (CSS above).
 try{document.execCommand('defaultParagraphSeparator',false,'div')}catch(e){}
-window.addEventListener('load',function(){if(window.__decorate)window.__decorate();H();try{new ResizeObserver(H).observe(document.body)}catch(e){}});
+window.addEventListener('load',function(){if(window.__decorate)window.__decorate();H();try{new ResizeObserver(function(){H();if(window.__pePostMarkers)window.__pePostMarkers();}).observe(document.body)}catch(e){}});
 </script>
 <script src="/editor/decorate.js"></script>
 </head>
