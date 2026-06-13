@@ -68,13 +68,8 @@ const TILES: BrowseTile[] = [
     desc: 'A grid of spec cards — each an icon + title + label/value rows (the dark signature band). Click to add it.',
   },
   {
-    id: 'delta', name: 'Side by Side Comparisons', pill: 'Available', add: 'delta',
-    icon: '<rect x="3" y="4" width="7" height="16" rx="1"/><rect x="14" y="4" width="7" height="16" rx="1"/><line x1="10.5" y1="12" x2="13.5" y2="12"/>',
-    desc: 'A previous-vs-current table grouped into Hardware & Software, with color-coded change chips (better, feature, changed, worse, same).',
-  },
-  {
     id: 'photo-rail', name: 'Photo Rail', pill: 'Available', add: 'photo-rail',
-    icon: '<rect x="2" y="6" width="5.5" height="12" rx="1"/><rect x="9.25" y="6" width="5.5" height="12" rx="1"/><rect x="16.5" y="6" width="5.5" height="12" rx="1"/>',
+    icon: '<rect x="0.5" y="7.5" width="23" height="9" rx="1.5"/><line x1="8.17" y1="7.5" x2="8.17" y2="16.5"/><line x1="15.83" y1="7.5" x2="15.83" y2="16.5"/>',
     desc: 'A full-bleed horizontal scroller of photos with optional bold label + caption. A headerless image band. Click to add it.',
   },
 ];
@@ -102,6 +97,9 @@ const CONFIG_TYPES: TypeTile[] = [
   { id: 'lifecycle-lane', name: 'Software Support Lifecycle',
     icon: '<rect x="1.5" y="9" width="6.5" height="6" rx="1"/><rect x="9" y="9" width="6.5" height="6" rx="1"/><rect x="16.5" y="9" width="4" height="6" rx="1"/><line x1="21.5" y1="8" x2="21.5" y2="16"/>',
     desc: 'A segmented ribbon of software/OS versions across time, colored by support status, with an auto-derived range, version counter & legend.' },
+  { id: 'delta', name: 'Side by Side Comparison',
+    icon: '<rect x="3" y="4" width="7" height="16" rx="1"/><rect x="14" y="4" width="7" height="16" rx="1"/><line x1="10.5" y1="12" x2="13.5" y2="12"/>',
+    desc: 'A previous-vs-current table grouped into Hardware & Software, with color-coded change chips (better, feature, changed, worse, same).' },
 ];
 
 // catalog types from the mockup's CATALOG_TYPES — Category Masonry IS the
