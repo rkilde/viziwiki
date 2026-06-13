@@ -72,6 +72,11 @@ const TILES: BrowseTile[] = [
     icon: '<rect x="3" y="4" width="7" height="16" rx="1"/><rect x="14" y="4" width="7" height="16" rx="1"/><line x1="10.5" y1="12" x2="13.5" y2="12"/>',
     desc: 'A previous-vs-current table grouped into Hardware & Software, with color-coded change chips (better, feature, changed, worse, same).',
   },
+  {
+    id: 'photo-rail', name: 'Photo Rail', pill: 'Available', add: 'photo-rail',
+    icon: '<rect x="2" y="6" width="5.5" height="12" rx="1"/><rect x="9.25" y="6" width="5.5" height="12" rx="1"/><rect x="16.5" y="6" width="5.5" height="12" rx="1"/>',
+    desc: 'A full-bleed horizontal scroller of photos with optional bold label + caption. A headerless image band. Click to add it.',
+  },
 ];
 
 // timeline types — "Standard Horizontal Timeline" IS the canonical timeline

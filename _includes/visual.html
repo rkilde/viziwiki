@@ -13,5 +13,6 @@
   {%- when 'delta' -%}{%- include visuals/delta/delta.html data=include.data -%}
   {%- when 'spec' -%}{%- include visuals/spec/spec.html data=include.data -%}
   {%- when 'lifecycle-lane' -%}{%- include visuals/lifecycle-lane/lifecycle-lane.html data=include.data -%}
+  {%- when 'photo-rail' -%}{%- include visuals/photo-rail/photo-rail.html data=include.data -%}
   {%- else -%}<!-- visual bank: unknown type "{{ include.type }}" (not in _data/visuals.yml) -->
 {%- endcase -%}

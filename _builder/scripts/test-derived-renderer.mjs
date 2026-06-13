@@ -642,5 +642,38 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(oldLeaf && oldLeaf.met, 'no_old exempts the "old value" requirement (counts as met)');
 }
 
+// ── case 14: photo-rail in-place editor (headerless image bank) ──
+{
+  console.log('case 14: photo-rail editor — image popover, caption, add/remove');
+  const seed = JSON.parse(JSON.stringify(grammar.components['photo-rail'].seed));
+  const doc = {
+    hero: { eyebrow: null, title: 'T', subtitle: null, subtitle_meta: null, desc: 'D', stats: null, search: false, search_placeholder: '', spotlight: null, feature: null },
+    overview: { tone: 'b', heading: 'H', paragraphs: ['P'], infobox: null },
+    sections: [{ type: 'photo-rail', data: seed }],
+  };
+  const d = renderAndDecorate(doc, false);
+  const pr = d.querySelector('section.wiki-section.photo-rail');
+  ok(pr, 'photo-rail section rendered via its canonical include chain');
+  ok(!pr.querySelector('.wiki-section-title') && !pr.querySelector('.wiki-section-eyebrow'), 'headerless — no eyebrow/H2');
+  ok(pr.querySelector('.photo-rail-scroll.wiki-section-bleed'), 'full-bleed horizontal scroller');
+  const card = pr.querySelector('.photo-rail-card');
+  ok(card.classList.contains('pe-img-empty'), 'an empty image shows the dashed "+ image" slot');
+  ok(card.querySelector('.photo-rail-caption strong .ce'), 'caption label (strong) editable in place');
+  ok(card.querySelector('.photo-rail-caption .ce[data-pe-path$=".caption"]'), 'caption text editable in place');
+  ok(card.querySelector('.pr-grip[draggable="true"]'), 'drag-to-reorder grip present');
+  const img = card.querySelector('img');
+  ok(img.getAttribute('data-pe-opens') && /photos\.0\.src$/.test(img.getAttribute('data-pe-scope') || ''), 'image is the jump target for src (opens its editor)');
+  img.onclick({ stopPropagation() {} });
+  const ipop = [...d.querySelectorAll('.cc-pop.img-pop')].pop();
+  ok(ipop && ipop.querySelector('.cc-img-url') && ipop.querySelector('.cc-img-alt'), 'clicking the image opens a URL + alt popover (the media field is a URL today)');
+  ok([...pr.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ photo'), '"+ photo" tile present');
+  // readiness tracks each photo's image (src) + alt text
+  let mk = [];
+  renderAndDecorate(doc, false, undefined, (w) => { w.__peMarkers = (list) => { mk = list; }; });
+  const pcard = ((mk[mk.length - 1] || {}).cards || []).find((c) => /Photo/.test(c.kind));
+  const plabels = pcard ? pcard.reqs.map((r) => r.label) : [];
+  ok(plabels.includes('image') && plabels.includes('alt text'), 'widget tracks each photo\'s image + alt text');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

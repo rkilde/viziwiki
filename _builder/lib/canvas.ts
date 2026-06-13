@@ -393,6 +393,30 @@ const AFFORDANCE = `
   .dr-sw.gd-chip-changed{ background:var(--gd-changed-bg); border-color:var(--gd-changed-fg); }
   .dr-sw.gd-chip-worse{ background:var(--gd-worse-bg); border-color:var(--gd-worse-fg); }
   .dr-sw.gd-chip-same{ background:var(--gd-same-bg); border-color:var(--gd-same-fg); }
+  /* ════ photo-rail editor ════ click the image to set its URL+alt; caption is
+     inline; drag the grip to reorder; an empty image shows a dashed slot. */
+  .photo-rail-card .pe-tag-rm{ position:absolute; top:8px; right:8px; z-index:4; opacity:0;
+    background:rgba(0,0,0,.55); border-color:transparent; color:#fff; }
+  .photo-rail-card:hover .pe-tag-rm{ opacity:1; }
+  .pr-grip{ position:absolute; top:8px; left:8px; z-index:4; width:22px; height:22px; border:0; border-radius:6px;
+    background:rgba(0,0,0,.45); color:#fff; cursor:grab; opacity:0; display:flex; align-items:center; justify-content:center; padding:0; }
+  .pr-grip svg{ width:13px; height:13px; }
+  .photo-rail-card:hover .pr-grip{ opacity:1; }
+  .photo-rail-card.pe-dragging{ opacity:.4; }
+  .photo-rail-card.pe-drop-before{ box-shadow:-3px 0 0 #6366f1; }
+  .photo-rail-card.pe-drop-after{ box-shadow:3px 0 0 #6366f1; }
+  /* empty image → dashed "+ image" slot over the (hidden) broken img */
+  .photo-rail-card.pe-img-empty img{ opacity:0; }
+  .photo-rail-card.pe-img-empty::before{ content:'+ image'; position:absolute; inset:0; display:flex; align-items:center;
+    justify-content:center; border:2px dashed rgba(255,255,255,.3); border-radius:8px; background:rgba(255,255,255,.04);
+    color:rgba(255,255,255,.6); font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.1em; text-transform:uppercase; pointer-events:none; }
+  /* the "+ photo" tile matches a card's footprint */
+  .pr-add{ flex-shrink:0; width:280px; height:200px; display:flex; align-items:center; justify-content:center; border-radius:8px; }
+  @media(max-width:600px){ .pr-add{ width:200px; height:148px; } }
+  .img-pop .cc-img-url, .img-pop .cc-img-alt{ width:100%; box-sizing:border-box; padding:6px 8px; border:1px solid rgba(0,0,0,.18);
+    border-radius:6px; font-family:'JetBrains Mono',monospace; font-size:10px; }
+  .img-pop .cc-opt{ opacity:.55; text-transform:none; letter-spacing:0; }
+  .img-pop .cc-img-apply{ margin-top:9px; }
   .tog{ display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:6px; border:1px solid rgba(0,0,0,.16); background:#fff;
     font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.08em; text-transform:uppercase; color:rgba(0,0,0,.5); cursor:pointer; transition:.12s; }
   .tog:hover{ border-color:rgba(0,0,0,.3); }

@@ -1729,6 +1729,65 @@
         }
       }
 
+      // ── photo-rail: a headerless full-bleed scroller of photo cards. Each card
+      // is an image (the `media` src — a URL today, an upload later) + an optional
+      // bold label + caption. Click the image to set its URL + alt; the caption
+      // text is inline-editable; add/remove + drag-reorder per the kit standard. ──
+      if (type === 'photo-rail') {
+        var eaP = function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); };
+        var photosMin = (R('photo-rail.photos').min != null) ? R('photo-rail.photos').min : 1;
+        var srcBlankP = (R('photo-rail.photos[].src').blank) || 'image URL';
+        var altBlankP = (R('photo-rail.photos[].alt').blank) || 'describe the photo';
+        var prScroll = qs('.photo-rail-scroll', secEl);
+        // image popover — the media field is a URL today (a Supabase upload later);
+        // editing the URL live-previews onto the card image. alt rides along.
+        var openImgPop = function (anchor, ppre, pd) {
+          var html = '<div class="cc-pop-label">Image URL</div><input type="text" class="cc-img-url" placeholder="' + eaP(srcBlankP) + '" value="' + eaP(pd.src) + '">'
+            + '<div class="cc-pop-label" style="margin-top:11px">Alt text <span class="cc-opt">(for accessibility)</span></div><input type="text" class="cc-img-alt" placeholder="' + eaP(altBlankP) + '" value="' + eaP(pd.alt) + '">'
+            + '<button class="cc-apply cc-img-apply">Apply</button>';
+          var pop = openPop(anchor, '', html, { cls: 'lane-pop img-pop', onClose: function () { A('commit'); } });
+          var u = qs('.cc-img-url', pop), a = qs('.cc-img-alt', pop), card = anchor.closest('.photo-rail-card'), im = card && qs('img', card);
+          if (u) { enterBlurP(u); u.addEventListener('input', function () { PV(ppre + 'src', u.value); if (im) im.src = u.value; if (card) card.classList.toggle('pe-img-empty', !u.value); }); }
+          if (a) { enterBlurP(a); a.addEventListener('input', function () { PV(ppre + 'alt', a.value); if (im) im.alt = a.value; }); }
+          var ap = qs('.cc-img-apply', pop); if (ap) ap.onclick = function () { closePop(); A('commit'); };
+        };
+        var enterBlurP = function (el) { el.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); el.blur(); } }); };
+        var prCards = qsa('.photo-rail-card', secEl);
+        prCards.forEach(function (card, k) {
+          var ppre = prefix + 'photos.' + k + '.';
+          var pd = (sdata.photos && sdata.photos[k]) || {};
+          var im = qs('img', card);
+          if (!pd.src) card.classList.add('pe-img-empty');
+          // click the image → set URL + alt. It's the jump target for src/alt.
+          if (im) {
+            im.style.cursor = 'pointer';
+            im.setAttribute('data-pe-scope', ppre + 'src'); im.setAttribute('data-pe-opens', '1');
+            (function (pp, d) { im.onclick = function (e) { e.stopPropagation(); openImgPop(im, pp, d); }; })(ppre, pd);
+          }
+          // caption: bold label (strong) + the trailing caption text, both inline
+          var cap = qs('.photo-rail-caption', card);
+          if (cap) {
+            var st = qs('strong', cap); if (st) { wrapCE(st, ppre + 'strong'); var sce = st.querySelector('.ce'); if (sce) sce.setAttribute('data-ph', (R('photo-rail.photos[].strong').blank) || 'Label'); }
+            if (st) { var tn = st.nextSibling; if (tn && tn.nodeType === 3) { var ce = document.createElement('span'); ce.className = 'ce'; ce.setAttribute('contenteditable', 'true'); ce.setAttribute('data-pe-path', ppre + 'caption'); ce.setAttribute('data-ph', (R('photo-rail.photos[].caption').blank) || '· source'); ce.textContent = (tn.nodeValue || '').replace(/^\s+/, ''); (function (p, el) { el.addEventListener('blur', function () { P(p, el); }); })(ppre + 'caption', ce); tn.parentNode.replaceChild(ce, tn); } }
+          }
+          if (prCards.length > photosMin) makeRemovable(card, 'rm:' + prefix + 'photos.' + k, true);
+          // drag-reorder (the kit standard) — a grip; the card is the drag image
+          var grip = document.createElement('button');
+          grip.className = 'pr-grip'; grip.title = 'Drag to reorder'; grip.setAttribute('draggable', 'true');
+          grip.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>';
+          (function (kk) {
+            grip.addEventListener('dragstart', function (e) { if (window.__peDragLock) { e.preventDefault(); return; } window.__pePhotoDrag = kk; card.classList.add('pe-dragging'); try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setDragImage(card, 20, 20); } catch (x) {} });
+            grip.addEventListener('dragend', function () { card.classList.remove('pe-dragging'); prCards.forEach(function (c) { c.classList.remove('pe-drop-before', 'pe-drop-after'); }); window.__pePhotoDrag = null; });
+            card.addEventListener('dragover', function (e) { if (window.__pePhotoDrag == null || window.__pePhotoDrag === kk) return; e.preventDefault(); var rc = card.getBoundingClientRect(); var after = (e.clientX - rc.left) > rc.width / 2; card.classList.toggle('pe-drop-after', after); card.classList.toggle('pe-drop-before', !after); });
+            card.addEventListener('dragleave', function () { card.classList.remove('pe-drop-before', 'pe-drop-after'); });
+            card.addEventListener('drop', function (e) { e.preventDefault(); var from = window.__pePhotoDrag; if (from == null || from === kk) return; card.classList.remove('pe-drop-before', 'pe-drop-after'); var rc = card.getBoundingClientRect(); var after = (e.clientX - rc.left) > rc.width / 2; var to = kk; if (after && from > kk) to = kk + 1; else if (!after && from < kk) to = kk - 1; if (to === from) return; dragReorder(qs('.photo-rail-scroll', secEl), qsa('.photo-rail-card', secEl), from, to, prefix + 'photos'); });
+          })(k);
+          card.appendChild(grip);
+        });
+        // + photo — a card-sized dashed tile at the end of the rail
+        if (prScroll) { var addP = addBtn('push:' + prefix + 'photos', '+ photo', true); addP.className = 'pe-add pr-add'; prScroll.appendChild(addP); }
+      }
+
       // ── lifecycle-lane: the OS-support ribbon. Inline .ce on the heading,
       // lane title, lead prose, each segment's version + date, and the notes.
       // The auto range + legend are LOCKED (derived). Enum choices — support
