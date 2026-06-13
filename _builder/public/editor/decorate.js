@@ -1547,7 +1547,7 @@
             // BADGE = a bank of preset text+color combos (derived from the
             // badge_type enum + its grammar `presets` map). Pick one → sets the
             // text AND the colour together; no freeform typing.
-            + '<div class="cc-pop-label" style="margin-top:13px">Badge' + (sd.badge != null ? '' : ' (optional)') + '</div><div class="cc-enum cc-badge-bank">'
+            + '<div class="cc-pop-label cc-pop-label-i" style="margin-top:13px">Badge<span class="dr-info" tabindex="0" data-tip="' + ea2("A badge is a small corner label on a tile — use it to flag a milestone: the Launch, the Final update, when support was Dropped, a Security-only patch, a Paid upgrade, or a Limited release. Optional.") + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span></div><div class="cc-enum cc-badge-bank">'
             + badgeTypes.map(function (b) { var tx = (badgePresets[b] || b); var on = (sd.badge != null && (sd.badge_type || 'ship') === b) ? ' sel' : ''; return '<button class="cc-enum-opt cc-badge-' + b + on + '" data-bt="' + b + '" data-btx="' + ea2(tx) + '">' + tx + '</button>'; }).join('') + '</div>'
             + (sd.badge != null ? '<button class="cc-rm">Remove badge</button>' : '');
           var pop = openPop(anchor, '', html, { cls: 'lane-pop' });
@@ -1559,9 +1559,13 @@
           var rm = qs('.cc-rm', pop); if (rm) rm.onclick = function () { closePop(); A('rm:' + spre + 'badge'); };
         };
         var enterBlurI = function (el) { el.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); el.blur(); } }); };
-        // inline ver/date: commit on blur ONLY when changed (so the derived range
-        // + tile positions refresh, without re-rendering on a no-op focus)
-        var dce0 = function (ce, orig) { ce.addEventListener('blur', function () { if ((ce.textContent || '').trim() !== String(orig == null ? '' : orig).trim()) A('commit'); }); };
+        // inline ver/date: single-line only — Enter LOCKS in (a stray newline/<br>
+        // would corrupt the date so it can't parse, breaking the derived range);
+        // commit on blur ONLY when changed (so the range/positions refresh).
+        var dce0 = function (ce, orig) {
+          ce.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); ce.blur(); } });
+          ce.addEventListener('blur', function () { if ((ce.textContent || '').trim() !== String(orig == null ? '' : orig).trim()) A('commit'); });
+        };
         segEls.forEach(function (seg, k) {
           var spre = prefix + 'segments.' + k + '.';
           var sd = (sdata.segments && sdata.segments[k]) || {};
@@ -1609,7 +1613,8 @@
         var laneWrap = qs('.lane-wrap', secEl);
         if (laneWrap && laneWrap.parentNode) {
           var foot = document.createElement('div'); foot.className = 'pe-lane-foot';
-          var wBtn = document.createElement('button'); wBtn.className = 'pe-tonebtn' + (sdata.weighted ? ' on' : ''); wBtn.textContent = 'weighted by time'; wBtn.title = 'On = each tile’s width ∝ the time until the next version';
+          var wBtn = document.createElement('button'); wBtn.className = 'pe-lane-wbtn' + (sdata.weighted ? ' on' : ''); wBtn.title = 'On = each tile’s width ∝ the time until the next version';
+          wBtn.innerHTML = '<span class="sw"></span>Weighted by time';
           wBtn.onclick = function () { A('set:' + prefix + 'weighted:' + (sdata.weighted ? 'false' : 'true')); }; foot.appendChild(wBtn);
           if (sdata.weighted) {
             if (sdata.end != null) foot.appendChild(laneChip('end', prefix + 'end', sdata.end, R('lifecycle-lane.end').blank, true));

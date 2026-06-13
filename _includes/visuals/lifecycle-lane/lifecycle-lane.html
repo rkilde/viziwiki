@@ -32,14 +32,17 @@
 {%- endif -%}
 {%- assign e1 = segs.first.date | date: '%s' | plus: 0 -%}
 {%- assign e2 = enddate | date: '%s' | plus: 0 -%}
-{%- comment -%} | floor so BOTH engines agree: Jekyll integer-divides (floors),
-   LiquidJS float-divides — without floor the builder shows e.g. "3.04 yr". The
-   live (Jekyll) output is unchanged (already integer). {%- endcomment -%}
-{%- assign durmo = e2 | minus: e1 | plus: 1314873 | divided_by: 2629746 | floor -%}
-{%- assign dyr = durmo | divided_by: 12 | floor -%}
-{%- assign dmo = durmo | modulo: 12 -%}
-{%- capture dur -%}{% if dyr > 0 %}{{ dyr }} yr {% endif %}{% if dmo > 0 %}{{ dmo }} mo{% endif %}{% if dyr == 0 and dmo == 0 %}&lt;1 mo{% endif %}{%- endcapture -%}
-{%- assign dur = dur | strip -%}
+{%- comment -%} only compute a duration when BOTH dates parse to a sane range —
+   an unparseable date falls to epoch 0 (1970) and would print a garbage span.
+   | floor so the builder (LiquidJS float-div) matches Jekyll (integer div). {%- endcomment -%}
+{%- assign dur = '' -%}
+{%- if e1 > 0 and e2 > e1 -%}
+  {%- assign durmo = e2 | minus: e1 | plus: 1314873 | divided_by: 2629746 | floor -%}
+  {%- assign dyr = durmo | divided_by: 12 | floor -%}
+  {%- assign dmo = durmo | modulo: 12 -%}
+  {%- capture dur -%}{% if dyr > 0 %}{{ dyr }} yr {% endif %}{% if dmo > 0 %}{{ dmo }} mo{% endif %}{% if dyr == 0 and dmo == 0 %}&lt;1 mo{% endif %}{%- endcapture -%}
+  {%- assign dur = dur | strip -%}
+{%- endif -%}
 {%- comment -%} version count = distinct MAJOR versions received (non-dropped tiles) {%- endcomment -%}
 {%- assign majors = "" -%}
 {%- for s in segs -%}{%- unless s.type == 'dropped' -%}{%- assign mj = s.ver | split: '.' | first -%}{%- assign majors = majors | append: mj | append: ',' -%}{%- endunless -%}{%- endfor -%}
@@ -47,7 +50,7 @@
 <div class="lane-wrap">
   <div class="lane-head">
     <div class="lane-title fr">{{ d.title }}</div>
-    <div class="lane-range jb">{{ segs.first.date }} &rarr; {{ enddate }} &middot; {{ dur }} &middot; {{ vcount }} versions{% if d.range_note %} &middot; {{ d.range_note }}{% endif %}</div>
+    <div class="lane-range jb">{{ segs.first.date }} &rarr; {{ enddate }}{% if dur != '' %} &middot; {{ dur }}{% endif %} &middot; {{ vcount }} versions{% if d.range_note %} &middot; {{ d.range_note }}{% endif %}</div>
   </div>
   <div class="lane-scroll"><div class="lane {% if d.weighted %}weighted{% else %}uniform{% endif %}">
     {%- for s in segs -%}

@@ -430,6 +430,24 @@ const AFFORDANCE = `
   .lane-seg.pe-removable{ width:auto; }
   .lane-seg.pe-removable > .pe-remove{ top:4px; right:4px; left:auto; z-index:14; }   /* inset: the scroller clips outside-the-tile */
   .pe-lane-foot{ display:flex; justify-content:flex-end; align-items:center; gap:8px; margin-top:12px; }
+  /* weighted toggle — a clean switch that reads as a toggle, not a raised chip */
+  .pe-lane-wbtn{ display:inline-flex; align-items:center; gap:8px; padding:5px 11px 5px 8px; border-radius:999px; border:1px solid rgba(0,0,0,.13);
+    background:#fff; cursor:pointer; font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.1em; text-transform:uppercase; color:rgba(0,0,0,.5); transition:.14s; }
+  .pe-lane-wbtn:hover{ border-color:rgba(0,0,0,.26); color:#1c1a17; }
+  .pe-lane-wbtn .sw{ width:22px; height:13px; border-radius:999px; background:rgba(0,0,0,.16); position:relative; flex:none; transition:background .16s; }
+  .pe-lane-wbtn .sw::after{ content:''; position:absolute; top:2px; left:2px; width:9px; height:9px; border-radius:50%; background:#fff; box-shadow:0 1px 2px rgba(0,0,0,.25); transition:transform .16s; }
+  .pe-lane-wbtn.on{ border-color:#c7d2fe; color:#4338ca; background:rgba(99,102,241,.07); }
+  .pe-lane-wbtn.on .sw{ background:#6366f1; }
+  .pe-lane-wbtn.on .sw::after{ transform:translateX(9px); }
+  /* the locked range must never wrap (the lock's fit-content/max-width could
+     otherwise cap + wrap it) — keep it one line at its natural width */
+  .lane-range.pe-canon{ width:max-content; max-width:none; white-space:nowrap; }
+  /* compact badge bank — small wrap chips, not a 2-col grid */
+  .cc-pop.lane-pop .cc-badge-bank{ display:flex; flex-wrap:wrap; gap:5px; grid-template-columns:none; }
+  .cc-pop.lane-pop .cc-badge-bank .cc-enum-opt{ flex:0 0 auto; padding:4px 9px; font-size:8px; border-radius:5px; }
+  .cc-pop-label-i{ display:flex; align-items:center; gap:6px; }
+  .cc-pop-label-i .dr-info{ width:14px; height:14px; color:rgba(0,0,0,.4); }
+  .cc-pop-label-i .dr-info svg{ width:13px; height:13px; }
   .cc-pop.lane-pop{ min-width:230px; }
   .cc-pop.lane-pop .cc-enum{ grid-template-columns:repeat(2,1fr); }
   .cc-pop.lane-pop .cc-enum-opt{ display:flex; align-items:center; gap:6px; justify-content:center; text-transform:capitalize; }
