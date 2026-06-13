@@ -659,7 +659,8 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   const card = pr.querySelector('.photo-rail-card');
   ok(card.classList.contains('pe-img-empty'), 'an empty image shows the dashed "+ image" slot');
   ok(card.querySelector('.photo-rail-caption strong .ce'), 'caption label (strong) editable in place');
-  ok(card.querySelector('.photo-rail-caption .ce[data-pe-path$=".caption"]'), 'caption text editable in place');
+  ok(card.querySelector('.photo-rail-caption .prail-cap-line .ce[data-pe-path$=".caption"]'), 'caption line editable in place');
+  ok(card.querySelector('.photo-rail-caption .prail-cap-src .ce[data-pe-path$=".source"]'), 'source line editable in place');
   ok(card.querySelector('.pr-grip[draggable="true"]'), 'drag-to-reorder grip present');
   const img = card.querySelector('img');
   ok(img.getAttribute('data-pe-opens') && /photos\.0\.src$/.test(img.getAttribute('data-pe-scope') || ''), 'image is the jump target for src (opens its editor)');

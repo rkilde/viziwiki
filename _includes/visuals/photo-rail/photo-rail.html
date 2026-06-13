@@ -2,7 +2,7 @@
   PHOTO-RAIL visual (Level B: data in → HTML out) — a headerless, full-bleed
   horizontal scroller of image cards (image + bold label + caption). Fills a
   photo-rail-section slot.
-  Data: photos[] each { src, alt, strong, caption }.
+  Data: photos[] each { src, alt, strong, caption, source }.
   LAYOUT is pure CSS (native overflow-x scroll). The optional click-to-zoom
   lightbox is a self-contained, idempotent LIVE-ONLY script (the builder strips
   <script>; it toggles a class + sets img.src — no geometry mutation — so it
@@ -11,9 +11,9 @@
 {%- assign d = include.data -%}
 <div class="photo-rail-scroll wiki-section-bleed">
   {%- for im in d.photos -%}
-  <div class="photo-rail-card" data-lb-src="{{ im.src }}" data-lb-cap="{{ im.strong }} {{ im.caption }}">
+  <div class="photo-rail-card" data-lb-src="{{ im.src }}" data-lb-cap="{{ im.strong }} {{ im.caption }} {{ im.source }}">
     <img src="{{ im.src }}" alt="{{ im.alt }}" loading="lazy">
-    <div class="photo-rail-caption"><strong>{{ im.strong }}</strong> {{ im.caption }}</div>
+    <div class="photo-rail-caption"><strong>{{ im.strong }}</strong><span class="prail-cap-line">{{ im.caption }}</span><span class="prail-cap-src">{{ im.source }}</span></div>
   </div>
   {%- endfor -%}
 </div>

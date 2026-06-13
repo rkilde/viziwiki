@@ -17,6 +17,11 @@
   font-family:"JetBrains Mono",monospace; font-size:8px; text-transform:uppercase; letter-spacing:.14em;
   color:var(--prail-cap, rgba(255,255,255,.75)); line-height:1.5; }
 .photo-rail-caption strong{ display:block; font-size:9px; color:var(--prail-cap-strong, #fff); margin-bottom:2px; letter-spacing:.1em; }
+.photo-rail-caption .prail-cap-line{ display:block; }
+.photo-rail-caption .prail-cap-src{ display:block; opacity:.82; margin-top:2px; }
+/* keep empty optional lines from reserving space on the live page */
+.photo-rail-caption .prail-cap-line:empty,
+.photo-rail-caption .prail-cap-src:empty{ display:none; }
 @media(max-width:600px){
   .photo-rail-card{ width:200px; height:148px; }
   .photo-rail-scroll{ padding:8px 12px 8px 0; }

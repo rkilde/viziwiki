@@ -1142,7 +1142,8 @@
           "min": 1,
           "item_blank": {
             "strong": "Label",
-            "caption": "· source"
+            "caption": "Caption",
+            "source": "· source"
           }
         }
       },
@@ -1166,6 +1167,10 @@
           },
           "caption": {
             "type": "text",
+            "blank": "Caption"
+          },
+          "source": {
+            "type": "text",
             "blank": "· source"
           }
         }
@@ -1174,7 +1179,8 @@
         "photos": [
           {
             "strong": "Label",
-            "caption": "· source"
+            "caption": "Caption",
+            "source": "· source"
           }
         ]
       },

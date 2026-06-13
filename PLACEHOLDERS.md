@@ -166,7 +166,8 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 | `photos[].src` | • | media | `image URL` |
 | `photos[].alt` | • | text | `describe the photo` |
 | `photos[].strong` |  | text | `Label` |
-| `photos[].caption` |  | text | `· source` |
+| `photos[].caption` |  | text | `Caption` |
+| `photos[].source` |  | text | `· source` |
 
 ## catalog
 

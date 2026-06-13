@@ -1764,11 +1764,13 @@
             im.setAttribute('data-pe-scope', ppre + 'src'); im.setAttribute('data-pe-opens', '1');
             (function (pp, d) { im.onclick = function (e) { e.stopPropagation(); openImgPop(im, pp, d); }; })(ppre, pd);
           }
-          // caption: bold label (strong) + the trailing caption text, both inline
+          // caption: three optional inline lines — bold label (strong), a caption
+          // line, then a dotted source line — each separately inline-editable.
           var cap = qs('.photo-rail-caption', card);
           if (cap) {
             var st = qs('strong', cap); if (st) { wrapCE(st, ppre + 'strong'); var sce = st.querySelector('.ce'); if (sce) sce.setAttribute('data-ph', (R('photo-rail.photos[].strong').blank) || 'Label'); }
-            if (st) { var tn = st.nextSibling; if (tn && tn.nodeType === 3) { var ce = document.createElement('span'); ce.className = 'ce'; ce.setAttribute('contenteditable', 'true'); ce.setAttribute('data-pe-path', ppre + 'caption'); ce.setAttribute('data-ph', (R('photo-rail.photos[].caption').blank) || '· source'); ce.textContent = (tn.nodeValue || '').replace(/^\s+/, ''); (function (p, el) { el.addEventListener('blur', function () { P(p, el); }); })(ppre + 'caption', ce); tn.parentNode.replaceChild(ce, tn); } }
+            var capLine = qs('.prail-cap-line', cap); if (capLine) { wrapCE(capLine, ppre + 'caption'); var cce = capLine.querySelector('.ce'); if (cce) cce.setAttribute('data-ph', (R('photo-rail.photos[].caption').blank) || 'Caption'); }
+            var srcLine = qs('.prail-cap-src', cap); if (srcLine) { wrapCE(srcLine, ppre + 'source'); var srce = srcLine.querySelector('.ce'); if (srce) srce.setAttribute('data-ph', (R('photo-rail.photos[].source').blank) || '· source'); }
           }
           if (prCards.length > photosMin) makeRemovable(card, 'rm:' + prefix + 'photos.' + k, true);
           // drag-reorder (the kit standard) — a grip; the card is the drag image
