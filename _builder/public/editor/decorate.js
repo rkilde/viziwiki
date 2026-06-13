@@ -1558,7 +1558,7 @@
           var dirty = false, committed = false;
           var html = '<div class="cc-pop-label">Software version</div><input type="text" class="cc-lane-ver" placeholder="' + ea2(verBlank) + '" value="' + ea2(sd.ver) + '">'
             + dateGridHtml(sd, true)
-            + '<div class="cc-pop-label cc-pop-label-i" style="margin-top:13px">Support type' + infoI('How well the device is supported at this version. Full (green) = full OS updates; Partial (amber) = limited/late updates; Dropped (grey) = no longer supported — the cliff where support ends; Security (blue) = security-only patches after end-of-life.') + '</div><div class="cc-enum cc-lane-types">'
+            + '<div class="cc-pop-label cc-pop-label-i" style="margin-top:13px">Support type' + infoI('How well the device is supported at this version. Full (green) = full OS updates; Partial (amber) = limited/late updates; Dropped (grey) = no longer supported; Security (blue) = security-only patches after end-of-life.') + '</div><div class="cc-enum cc-lane-types">'
             + segTypes.map(function (t) { return '<button class="cc-enum-opt cc-type-' + t + (sd.type === t ? ' sel' : '') + '" data-t="' + t + '">' + t + '</button>'; }).join('') + '</div>'
             // BADGE = a bank of preset text+color combos (derived from the
             // badge_type enum + its grammar `presets` map). Pick one → sets the
@@ -1596,9 +1596,11 @@
           // version count), so an inline edit to either must commit/re-render.
           var vEl = qs('.lane-ver', seg);
           if (vEl) { wrapCE(vEl, spre + 'ver'); var vce = vEl.querySelector('.ce'); if (vce) dce0(vce, sd.ver); }
-          // the date is a month/year PICKER (no freeform typing) — click it to open
+          // the date is a month/year PICKER (no freeform typing) — click it to
+          // open. It's the readiness jump target for the date requirement (scope
+          // + opens), so a "needed" date jumps here and opens the picker.
           var dEl = qs('.lane-date', seg);
-          if (dEl) { dEl.classList.add('pe-datefield'); dEl.style.cursor = 'pointer'; (function (sp, d) { dEl.onclick = function (e) { e.stopPropagation(); openLaneDatePop(dEl, sp, d); }; })(spre, sd); }
+          if (dEl) { dEl.classList.add('pe-datefield'); dEl.style.cursor = 'pointer'; dEl.setAttribute('data-pe-scope', spre + 'date'); dEl.setAttribute('data-pe-opens', '1'); (function (sp, d) { dEl.onclick = function (e) { e.stopPropagation(); openLaneDatePop(dEl, sp, d); }; })(spre, sd); }
           if (segEls.length > segMin) makeRemovable(seg, 'rm:' + prefix + 'segments.' + k);
           // click the tile (not a field/date/×) → the version + type + badge popover
           seg.style.cursor = 'pointer';

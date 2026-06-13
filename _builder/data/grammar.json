@@ -724,7 +724,7 @@
           "min": 2,
           "item_blank": {
             "ver": "Version",
-            "date": "Jan 2024",
+            "date": "Month Year",
             "type": "full"
           }
         },
@@ -748,8 +748,8 @@
           "date": {
             "type": "date",
             "required": true,
-            "seed_real": true,
-            "help": "Drives tile position (a real spread date, not a placeholder)"
+            "blank": "Month Year",
+            "help": "Set via the month/year picker; an unset date reads as 'Month Year' and isn't positioned until real"
           },
           "type": {
             "type": "enum[full,partial,dropped,security]",
@@ -805,14 +805,14 @@
         "segments": [
           {
             "ver": "Version",
-            "date": "Jan 2020",
+            "date": "Month Year",
             "type": "full",
             "badge": "Launch",
             "badge_type": "ship"
           },
           {
             "ver": "Version",
-            "date": "Jan 2023",
+            "date": "Month Year",
             "type": "dropped",
             "badge": "Dropped",
             "badge_type": "dropped"

@@ -103,7 +103,7 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 | `range_note` |  | text | `note` |
 | `segments` | • | list<segment> | _(template — see sub-fields)_ |
 | `segments[].ver` | • | text | `Version` |
-| `segments[].date` | • | date | _(driver — real value, no placeholder)_ |
+| `segments[].date` | • | date | `Month Year` |
 | `segments[].type` | • | enum | `full`  _(choice: full · partial · dropped · security)_ |
 | `segments[].badge` |  | text | `Badge` |
 | `segments[].badge_type` |  | enum | `ship`  _(choice: ship · paid · limited · final · dropped · security)_ |
