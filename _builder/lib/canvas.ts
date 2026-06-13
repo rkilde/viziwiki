@@ -484,9 +484,21 @@ const AFFORDANCE = `
     --gd-worse-bg:#fee2e2;   --gd-worse-bd:#fecaca;   --gd-worse-fg:#b91c1c;
     --gd-same-bg:#f3f4f6;    --gd-same-bd:#e5e7eb;    --gd-same-fg:#6b7280; }
   /* in the picker, render chips at a readable size (the live chip is 6.5px) */
+  .chip-pop{ min-width:300px; max-width:340px; }
   .chip-pop .gd-chip{ font-size:9px; padding:4px 8px; margin:0 !important; }
-  .cc-chip-cat{ display:flex; align-items:flex-start; gap:7px; margin-bottom:7px; }
-  .cc-chip-cat-l{ flex:0 0 58px; margin:2px 0 0 0 !important; text-align:center; }
+  .cc-chip-head{ display:flex; align-items:center; gap:6px; margin-bottom:10px; }
+  .cc-chip-head .cc-pop-label{ margin:0; }
+  .cc-chip-grid{ display:flex; flex-direction:column; gap:9px; }
+  /* each category is a labelled column-header row: the name (in its colour) +
+     its chips */
+  .cc-chip-cat{ display:flex; align-items:flex-start; gap:9px; }
+  .cc-chip-cat-h{ flex:0 0 60px; padding-top:3px; font-family:'JetBrains Mono',monospace; font-size:8px;
+    font-weight:600; letter-spacing:.12em; text-transform:uppercase; text-align:right; }
+  .cc-chip-cat-h.gd-chip-better{ color:var(--gd-better-fg); }
+  .cc-chip-cat-h.gd-chip-feature{ color:var(--gd-feature-fg); }
+  .cc-chip-cat-h.gd-chip-changed{ color:var(--gd-changed-fg); }
+  .cc-chip-cat-h.gd-chip-worse{ color:var(--gd-worse-fg); }
+  .cc-chip-cat-h.gd-chip-same{ color:var(--gd-same-fg); }
   .cc-chip-row{ display:flex; flex-wrap:wrap; gap:4px; flex:1; }
   .cc-chip-opt{ cursor:pointer; margin:0 !important; border-width:1px; }
   .cc-chip-opt:hover{ filter:brightness(.97); box-shadow:0 0 0 2px rgba(0,0,0,.12); }
@@ -512,10 +524,23 @@ const AFFORDANCE = `
   /* delta: show the placeholder for an EMPTY old/new value field so both columns
      read as clear, fillable fields (scoped to .delta so other banks are untouched) */
   .delta .ce:empty::before{ content:attr(data-ph); color:rgba(0,0,0,.34); font-style:italic; pointer-events:none; }
-  /* delta: the per-group add affordance spans the WHOLE row (that's what's added) */
-  .pe-gd-addrow td{ padding:0 !important; }
-  .pe-gd-add{ display:block; width:100%; box-sizing:border-box; text-align:center; border-radius:0;
-    border-left:0; border-right:0; padding:8px 9px; }
+  /* "no before" — an ALTERNATIVE toggle (dotted-underline link), deliberately NOT
+     the dashed add-pill language, so it doesn't read as "add something". */
+  .pe-noold{ display:inline-block; margin-top:8px; padding:0; border:0; background:transparent; cursor:pointer;
+    font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.1em; text-transform:uppercase;
+    color:rgba(0,0,0,.38); text-decoration:underline dotted; text-underline-offset:3px; }
+  .pe-noold:hover{ color:rgba(0,0,0,.7); }
+  .pe-noold.on{ color:rgba(0,0,0,.6); }
+  /* chip edit + × controls — revealed on hovering the current cell */
+  .gd-chip-ctrls{ display:inline-flex; gap:3px; margin-left:6px; vertical-align:middle; opacity:0; transition:opacity .12s; }
+  .gd-new:hover .gd-chip-ctrls{ opacity:1; }
+  .gd-chip-ctrl{ display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%;
+    border:1px solid rgba(0,0,0,.18); background:#fff; color:rgba(0,0,0,.5); cursor:pointer; padding:0; line-height:1; font-size:11px; }
+  .gd-chip-ctrl svg{ width:9px; height:9px; }
+  .gd-chip-edit:hover{ border-color:#6366f1; color:#6366f1; }
+  .gd-chip-rm:hover{ border-color:#ef4444; color:#ef4444; }
+  /* delta add-row: a small dashed pill (reverted from full-width) */
+  .pe-gd-addrow td{ padding:7px 18px; border:0; }
   .cc-pop.lane-pop .cc-enum{ grid-template-columns:repeat(2,1fr); }
   .cc-pop.lane-pop .cc-month-grid{ grid-template-columns:repeat(4,1fr); }   /* the date picker's month grid */
   .cc-lane-year{ width:100%; box-sizing:border-box; margin-top:2px; font-family:'JetBrains Mono',monospace; font-size:12px; padding:7px 9px;

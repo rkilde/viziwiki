@@ -1540,12 +1540,19 @@
         // axis headers (prev | current): tag / name(req) / year. Editing a name
         // commits (the gd-sec-col cells mirror it on re-render).
         var eaD = function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); };
+        // year = digits only, 4 max, Enter locks in (no newline), "year" placeholder
+        var caretEnd = function (el) { try { var r = document.createRange(); r.selectNodeContents(el); r.collapse(false); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); } catch (e) {} };
+        var yearCE = function (ce) {
+          ce.setAttribute('data-ph', 'year');
+          ce.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); ce.blur(); } });
+          ce.addEventListener('input', function () { var t = (ce.textContent || '').replace(/\D/g, '').slice(0, 4); if (t !== (ce.textContent || '')) { ce.textContent = t; caretEnd(ce); } });
+        };
         var bindAxis = function (cell, base, axisKey) {
           if (!cell) return;
           var tg = qs('.gd-tag', cell), nm = qs('.gd-name', cell), yr = qs('.gd-year', cell);
           if (tg) wrapCE(tg, base + '.tag');
           if (nm) { wrapCE(nm, base + '.name'); var nce = nm.querySelector('.ce'); if (nce) { nce.setAttribute('data-ph', (R('delta.' + axisKey + '.name').blank) || 'Model'); nce.addEventListener('blur', function () { A('commit'); }); } }
-          if (yr) wrapCE(yr, base + '.year');
+          if (yr) { wrapCE(yr, base + '.year'); var yce = yr.querySelector('.ce'); if (yce) yearCE(yce); }
         };
         bindAxis(qs('.gd-gen-old', secEl), prefix + 'prev', 'prev');
         bindAxis(qs('.gd-gen-new', secEl), prefix + 'current', 'current');
@@ -1570,11 +1577,15 @@
             + '<button class="cc-chip-fill-go" title="Use this chip">✓</button></span>';
         };
         var openChipPop = function (anchor, rpre, cur, curText) {
-          var html = chipEnumD.map(function (c) {
+          // header: title + the one info "i" explaining the chip system
+          var html = '<div class="cc-chip-head"><span class="cc-pop-label">Pick a chip</span>'
+            + infoI('A chip’s COLOUR is the direction of change — green = better · blue = a new feature · amber = changed · red = worse · grey = unchanged. Click a ready-made chip, fill the number on a template (e.g. {n}×), or write your own under Custom.')
+            + '</div><div class="cc-chip-grid">';
+          html += chipEnumD.map(function (c) {
             var ts = chipPresets[c] || [];
-            return '<div class="cc-chip-cat"><span class="cc-chip-cat-l gd-chip gd-chip-' + c + '">' + c + '</span><div class="cc-chip-row">'
+            return '<div class="cc-chip-cat"><div class="cc-chip-cat-h gd-chip-' + c + '">' + c + '</div><div class="cc-chip-row">'
               + ts.map(function (t) { return renderPreset(c, t); }).join('') + '</div></div>';
-          }).join('');
+          }).join('') + '</div>';
           html += '<div class="cc-chip-custom"><div class="cc-pop-label">Custom</div>'
             + '<input type="text" class="cc-chip-text" placeholder="Your own label…" value="' + eaD(cur ? (curText || '') : '') + '">'
             + '<div class="cc-chip-sw">' + chipEnumD.map(function (c) { return '<button class="cc-chip-swatch gd-chip-' + c + ((cur || chipEnumD[0]) === c ? ' sel' : '') + '" data-c="' + c + '" title="' + c + '"></button>'; }).join('') + '</div>'
@@ -1607,27 +1618,35 @@
           if (lab) { wrapCE(lab, rpre + 'label'); var lce = lab.querySelector('.ce'); if (lce) lce.setAttribute('data-ph', labBlankD); }
           // OLD (previous) cell: a clearly-labelled editable value, OR — when the
           // contributor marks "no before" (no_old) — a null cell with a restore.
+          // OLD value field + a SUBTLE "no before" alternative toggle (a dotted-
+          // underline link, NOT a dashed add-pill — it's an option you select when
+          // there's no previous value, not something you add alongside the value).
           var oldCell = qs('.gd-old', tr);
+          var noOldBtn = function (label, on, tip) { var b = document.createElement('button'); b.className = 'pe-noold' + (on ? ' on' : ''); b.textContent = label; if (tip) b.title = tip; (function (v) { b.onclick = function () { A('set:' + rpre + 'no_old:' + v); }; })(on ? 'false' : 'true'); return b; };
           if (oldCell) {
             if (rdata.no_old) {
-              var restore = addBtn('set:' + rpre + 'no_old:false', '+ before value', true); restore.title = 'Give this spec a “before” value';
-              oldCell.appendChild(restore);
+              oldCell.appendChild(noOldBtn('no “before” value', true, 'This spec had no value on the previous model — click to give it one'));
             } else {
               var ov = qs('.gd-old-val', oldCell); if (ov) { wrapCE(ov, rpre + 'old'); var oce = ov.querySelector('.ce'); if (oce) oce.setAttribute('data-ph', 'old value'); }
-              var noBtn = addBtn('set:' + rpre + 'no_old:true', 'no before', true); noBtn.title = 'Mark the “before” column null (e.g. a brand-new feature)';
-              oldCell.appendChild(noBtn);
+              oldCell.appendChild(noOldBtn('no “before” value', false, 'Select if this spec didn’t exist on the previous model'));
             }
           }
-          // NEW (current) cell: a clearly-labelled editable value + an optional chip
+          // NEW (current) value field + an optional colour chip. The chip is changed
+          // through its EDIT button (the picker) and removed with × — both shown on
+          // hovering the cell.
           var newCell = qs('.gd-new', tr);
           if (newCell) {
             var nv = qs('.gd-new-val', newCell); if (nv) { wrapCE(nv, rpre + 'new'); var nce2 = nv.querySelector('.ce'); if (nce2) nce2.setAttribute('data-ph', 'new value'); }
             var chip = qs('.gd-chip', newCell);
             if (chip) {
-              wrapCE(chip, rpre + 'chip_text');
-              var cMenu = document.createElement('button'); cMenu.className = 'gpill-menu'; cMenu.textContent = '⋯'; cMenu.title = 'Chip colour'; cMenu.setAttribute('contenteditable', 'false');
-              (function (rp, cu, ct) { cMenu.onclick = function (e) { e.stopPropagation(); openChipPop(cMenu, rp, cu, ct); }; })(rpre, rdata.chip, rdata.chip_text);
-              chip.appendChild(cMenu);
+              var ctrls = document.createElement('span'); ctrls.className = 'gd-chip-ctrls';
+              var cEdit = document.createElement('button'); cEdit.className = 'gd-chip-ctrl gd-chip-edit'; cEdit.title = 'Edit chip';
+              cEdit.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+              (function (rp, cu, ct) { cEdit.onclick = function (e) { e.stopPropagation(); openChipPop(cEdit, rp, cu, ct); }; })(rpre, rdata.chip, rdata.chip_text);
+              var cRm = document.createElement('button'); cRm.className = 'gd-chip-ctrl gd-chip-rm'; cRm.textContent = '×'; cRm.title = 'Remove chip';
+              (function (rp) { armDelete(cRm, function () { A('rm:' + rp + 'chip'); }); })(rpre);
+              ctrls.appendChild(cEdit); ctrls.appendChild(cRm);
+              chip.parentNode.insertBefore(ctrls, chip.nextSibling);
             } else {
               var addChip = addBtn('', '+ chip', true);
               (function (rp) { addChip.onclick = function () { openChipPop(addChip, rp, null, ''); }; })(rpre);
@@ -1677,12 +1696,10 @@
               if (window.__pePostMarkers) window.__pePostMarkers();          // refresh readiness for the new row
             } catch (e) { A('push:' + prefix + group); }                    // safe fallback: full render
           };
-          // a full-width dashed insert affordance spanning the whole row (that's
-          // what gets added) — not a small pill.
           var makeAddRow = function (group, label) {
             var tr = document.createElement('tr'); tr.className = 'pe-gd-addrow';
             var td = document.createElement('td'); td.colSpan = 3;
-            var b = document.createElement('button'); b.className = 'pe-add pe-gd-add'; b.textContent = label;
+            var b = document.createElement('button'); b.className = 'pe-mini-add'; b.textContent = label;
             td.appendChild(b); tr.appendChild(td);
             b.onclick = function () { addDeltaRow(group, tr); };
             return tr;

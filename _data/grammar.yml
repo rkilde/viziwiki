@@ -272,9 +272,9 @@ components:
         chip_text: { type: text, help: "The short value shown in the chip" }
     seed:
       heading: "Changes heading"
-      prev:    { tag: "Previous", name: "Old model", year: "2020" }
-      current: { tag: "Current",  name: "New model", year: "2023" }
-      hardware: [ { label: "Spec label", new: "Faster SoC", chip: better, chip_text: "2×" } ]
+      prev:    { tag: "Previous", name: "Old model" }
+      current: { tag: "Current",  name: "New model" }
+      hardware: [ { label: "Spec label" } ]
     min: "heading + prev + current + one row"
 
   # ---- TIMELINE — the full-bleed date-positioned scroller --------------

@@ -584,33 +584,43 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   const nm = gd.querySelector('.gd-gen-old .gd-name .ce');
   ok(nm && nm.getAttribute('data-ph') === 'Old model', 'prev model-name placeholder is "Old model"');
   ok(gd.querySelector('.gd-gen-new .gd-name .ce').getAttribute('data-ph') === 'New model', 'current model-name placeholder is "New model"');
-  ok(gd.querySelector('.gd-gen-old .gd-tag .ce') && gd.querySelector('.gd-gen-old .gd-year .ce'), 'tag + year editable');
+  ok(gd.querySelector('.gd-gen-old .gd-tag .ce'), 'tag editable');
+  ok(gd.querySelector('.gd-gen-old .gd-year .ce') && gd.querySelector('.gd-gen-old .gd-year .ce').getAttribute('data-ph') === 'year', 'year field starts as "year" placeholder');
   // the derived per-column echoes + group labels are locked
   ok([...gd.querySelectorAll('.gd-sec-col')].every((c) => c.classList.contains('pe-canon')), 'gd-sec-col echoes locked (derived from the model name)');
   ok([...gd.querySelectorAll('.gd-sec-main')].every((c) => c.classList.contains('pe-canon')), 'Hardware/Software group labels locked');
-  // a seed hardware row: label + new editable, chip carries its ⋯ colour menu
+  // the seed row starts BLANK: label + empty old/new fields + a "+ chip" slot
   const row = gd.querySelector('.gd-row');
   ok(row.querySelector('.gd-label-name .ce'), 'row label editable');
   ok(row.querySelector('.gd-old-val .ce') && row.querySelector('.gd-old-val .ce').getAttribute('data-ph') === 'old value', 'previous-value field is clearly labelled ("old value")');
   ok(row.querySelector('.gd-new-val .ce') && row.querySelector('.gd-new-val .ce').getAttribute('data-ph') === 'new value', 'current-value field is clearly labelled ("new value")');
-  ok(row.querySelector('.gd-chip .ce') && row.querySelector('.gd-chip .gpill-menu'), 'chip text editable + ⋯ colour menu (the seed row has a chip)');
-  row.querySelector('.gd-chip .gpill-menu').onclick({ stopPropagation() {} });
+  ok(!row.querySelector('.gd-chip'), 'seed row starts with no chip (blank)');
+  const addChip = [...row.querySelectorAll('.pe-mini-add')].find((b) => b.textContent === '+ chip');
+  ok(addChip, '"+ chip" slot present on a chipless row');
+  // "no before" is the alternative TOGGLE (dotted-link), not a dashed add-pill
+  ok(row.querySelector('.pe-noold') && /no .before. value/i.test(row.querySelector('.pe-noold').textContent), 'no-before is an alternative toggle (.pe-noold), not an add-pill');
+  // open the chip picker from "+ chip"
+  addChip.onclick();
   const cpop = [...d.querySelectorAll('.cc-pop.chip-pop')].pop();
   ok(cpop, 'chip popover opens');
-  ok(cpop.querySelectorAll('.cc-chip-cat').length === 5, 'five chip categories (from the grammar enum)');
+  ok(cpop.querySelector('.cc-chip-head .dr-info'), 'picker has an info "i" explaining the chip system');
+  ok(cpop.querySelectorAll('.cc-chip-cat .cc-chip-cat-h').length === 5, 'five category column-headers (from the grammar enum)');
   ok(cpop.querySelectorAll('.cc-chip-opt[data-c="better"]').length >= 1, '"better" category offers derived preset chips (bearings)');
   ok(cpop.querySelector('.cc-chip-opt[data-c="feature"][data-t="New"]'), 'preset labels come from grammar (feature → "New")');
   ok(cpop.querySelector('.cc-chip-fill[data-tpl] .cc-chip-fill-in'), 'a parameterized chip (e.g. {n}×) renders a fill-in input');
   ok([...cpop.querySelectorAll('.cc-chip-fill')].some((el) => el.getAttribute('data-tpl').includes('{n}')), 'fill chip carries its {n} template (resolved to chip_text on use)');
   ok(cpop.querySelector('.cc-chip-text') && cpop.querySelector('.cc-chip-apply'), 'a custom chip — free text + Apply');
   ok(cpop.querySelectorAll('.cc-chip-swatch').length === 5, 'custom colour swatch per category');
-  // "before" toggle present on a row that has an old value
-  ok([...row.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === 'no before'), 'row offers a "no before" toggle (no_old)');
-  // add-row affordances per group, derived from the list paths
-  const addRows = [...gd.querySelectorAll('.pe-gd-addrow .pe-gd-add')];
+  // a row WITH a chip → edit (opens picker) + × (remove) controls
+  const dChip = renderAndDecorate({ ...doc, sections: [{ type: 'delta', data: { ...dSeed, hardware: [{ label: 'L', new: 'V', chip: 'better', chip_text: '2×' }] } }] }, false);
+  const cRow = dChip.querySelector('section.wiki-section.delta .gd-row');
+  ok(cRow.querySelector('.gd-chip'), 'chip renders when set');
+  ok(cRow.querySelector('.gd-chip-ctrls .gd-chip-edit') && cRow.querySelector('.gd-chip-ctrls .gd-chip-rm'), 'a set chip carries both an edit (opens picker) and a × (remove)');
+  // add-row affordances: small pills (reverted), still spanning a full-width cell
+  const addRows = [...gd.querySelectorAll('.pe-gd-addrow .pe-mini-add')];
   const adders = addRows.map((b) => b.textContent);
   ok(adders.includes('+ hardware row') && adders.includes('+ software row'), '+ hardware row / + software row adders present');
-  ok(addRows.every((b) => b.closest('td').colSpan === 3), 'add-row affordance spans the whole row (colspan 3)');
+  ok(addRows.every((b) => b.closest('td').colSpan === 3), 'add-row cell still spans the table (colspan 3)');
   // optional intro/footnote start as sentinel "+" slots (renderer-seeded), editable once added
   ok([...gd.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ intro text') || gd.querySelector('.delta-prose .ce'), 'intro is a "+ intro text" slot when absent (renderer sentinel)');
   ok([...gd.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ footnote') || gd.querySelector('.gd-foot .ce'), 'footnote is a "+" slot when absent');
