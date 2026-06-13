@@ -116,12 +116,15 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
   const jump = (it: Leaf) => { (iframeRef.current?.contentWindow as any)?.__peJump?.(it.jump, it.addpath); };
   const todoCount = markers.filter((m) => !m.done).length;
   const left = () => Math.max(6, mkBox.left - 50); // 50px into the backdrop, left of the canvas
-  // readiness panel: pop into the LEFT backdrop, right-anchored just left of the
-  // marker, with real breathing room from the screen edge (never flush at x≈0).
-  // On a wide editor it sits entirely in the margin; on a narrow one it floors at
-  // the gutter. Width = the slim PANEL_W (matches the .pe-mk-panel CSS).
-  const PANEL_W = 310, GUTTER = 20;
-  const panelLeft = Math.max(GUTTER, (mkBox.left - 52) - PANEL_W);
+  // readiness panel: CONTAINED entirely in the left backdrop — its right edge is
+  // pinned a GAP before the canvas (never overlaps the editor) and its left edge
+  // keeps GUTTER breathing room from the screen. The width ADAPTS to the room
+  // available in that margin (clamped between a comfortable min and max), so it
+  // shrinks to fit rather than spilling over the canvas.
+  const GUTTER = 20, GAP = 18, PANEL_MAX = 330, PANEL_MIN = 248;
+  const avail = mkBox.left - GAP - GUTTER;                              // room in the left margin
+  const panelW = Math.round(Math.max(PANEL_MIN, Math.min(PANEL_MAX, avail)));
+  const panelLeft = Math.max(GUTTER, mkBox.left - GAP - panelW);
 
   return (
     <div id="pe-overlay">
@@ -147,7 +150,7 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
               {!m.done && <span className="pe-mk-count">{m.left}</span>}
             </button>
             {openMk === i && (
-              <div className="pe-mk-panel" style={{ top: mkBox.top + m.top * scale, left: panelLeft }} onMouseDown={(e) => e.stopPropagation()}>
+              <div className="pe-mk-panel" style={{ top: mkBox.top + m.top * scale, left: panelLeft, width: panelW }} onMouseDown={(e) => e.stopPropagation()}>
                 <ReadinessPanel marker={m} onJump={jump} onClose={() => setOpenMk(null)} />
               </div>
             )}
@@ -157,9 +160,9 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
       {/* report-a-bug (top-left) — UI only for now */}
       <BugReporter />
       <div id="pe-chrome">
-        {markers.length > 0 && todoCount === 0 && (
-          <span className="pe-pgstat done" title="Derived from the grammar's required fields">
-            <IcCheck />Page ready
+        {markers.length > 0 && (
+          <span className={`pe-pgstat ${todoCount === 0 ? 'done' : 'todo'}`} title="Derived from the grammar's required fields">
+            {todoCount === 0 ? <><IcCheck />Page ready</> : <><IcTri />{todoCount} section{todoCount !== 1 ? 's' : ''} need attention</>}
           </span>
         )}
         {saved && <span className="pe-chip-status"><IcCheck />saved</span>}
