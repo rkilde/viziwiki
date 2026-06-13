@@ -1646,11 +1646,49 @@
             if (tr.classList.contains('gd-sec')) { grp = (grp === null) ? 'hardware' : 'software'; ri = 0; if (grp === 'software') swSec = tr; return; }
             if (tr.classList.contains('gd-row') && grp) { bindDeltaRow(tr, grp, ri); ri++; }
           });
+          // ADD A ROW — splice ONLY the new <tr> in, never recreate the table
+          // (a full re-render repaints the banded HARDWARE/SOFTWARE header rows →
+          // a flash). The new row's HTML still comes from the canon renderer
+          // (__peRenderBody), so it's not hand-built; we just transplant the one
+          // new <tr> the renderer produced. Falls back to a full render on any
+          // hiccup, so it can never wedge.
+          var addDeltaRow = function (group, anchorAdd) {
+            try {
+              // the new row's index = the count of live rows already in this group
+              var lb = qs('.gd tbody', secEl), cg = null, count = 0;
+              qsa('tr', lb).forEach(function (tr) {
+                if (tr.classList.contains('gd-sec')) { cg = (cg === null) ? 'hardware' : 'software'; return; }
+                if (tr.classList.contains('gd-row') && cg === group) count++;
+              });
+              window.parent.__peReorderData('push:' + prefix + group);     // mutate data, no swap
+              var pdoc = new DOMParser().parseFromString(window.parent.__peRenderBody(), 'text/html');
+              var myIdx = qsa('section.wiki-section.delta').indexOf(secEl);
+              var pSec = [].slice.call(pdoc.querySelectorAll('section.wiki-section.delta'))[myIdx];
+              if (!pSec) throw 0;
+              var pg = null, pRows = [];
+              [].slice.call(pSec.querySelectorAll('.gd tbody tr')).forEach(function (tr) {
+                if (tr.classList.contains('gd-sec')) { pg = (pg === null) ? 'hardware' : 'software'; return; }
+                if (tr.classList.contains('gd-row') && pg === group) pRows.push(tr);
+              });
+              var src = pRows[pRows.length - 1]; if (!src) throw 0;
+              var newTr = document.importNode(src, true);
+              lb.insertBefore(newTr, anchorAdd);                            // before the group's add-row
+              bindDeltaRow(newTr, group, count);
+              if (window.__pePostMarkers) window.__pePostMarkers();          // refresh readiness for the new row
+            } catch (e) { A('push:' + prefix + group); }                    // safe fallback: full render
+          };
           // a full-width dashed insert affordance spanning the whole row (that's
           // what gets added) — not a small pill.
-          var addRowTr = function (action, label) { var tr = document.createElement('tr'); tr.className = 'pe-gd-addrow'; var td = document.createElement('td'); td.colSpan = 3; var b = addBtn(action, label); b.className = 'pe-add pe-gd-add'; td.appendChild(b); tr.appendChild(td); return tr; };
-          if (swSec) dBody.insertBefore(addRowTr('push:' + prefix + 'hardware', '+ hardware row'), swSec);   // hardware add: before the Software header
-          dBody.appendChild(addRowTr('push:' + prefix + 'software', '+ software row'));                      // software add: end of table
+          var makeAddRow = function (group, label) {
+            var tr = document.createElement('tr'); tr.className = 'pe-gd-addrow';
+            var td = document.createElement('td'); td.colSpan = 3;
+            var b = document.createElement('button'); b.className = 'pe-add pe-gd-add'; b.textContent = label;
+            td.appendChild(b); tr.appendChild(td);
+            b.onclick = function () { addDeltaRow(group, tr); };
+            return tr;
+          };
+          if (swSec) dBody.insertBefore(makeAddRow('hardware', '+ hardware row'), swSec);   // hardware add: before the Software header
+          dBody.appendChild(makeAddRow('software', '+ software row'));                      // software add: end of table
         }
       }
 

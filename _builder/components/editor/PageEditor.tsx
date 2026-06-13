@@ -84,6 +84,10 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
     // drag-reorder mutates the doc WITHOUT a re-render — the decorator shuffles the
     // DOM nodes + FLIP-animates in place, then re-binds via a deferred swap.
     (window as any).__peReorderData = (action: string) => { applyAction(docRef.current, action); setSaved(false); };
+    // render the current body WITHOUT swapping it in — lets the decorator splice a
+    // single new node (e.g. a delta table row) in place instead of recreating the
+    // whole table, so adds don't flash the static header rows.
+    (window as any).__peRenderBody = () => renderBody(docRef.current, isHome);
     (window as any).__peResize = (h: number) => setContentH(Math.max(h, 480));
     (window as any).__peOpenPicker = (index: number) => setPickerAt(typeof index === 'number' ? index : 0); // seam → picker (carries insert position)
     (window as any).__peDoc = () => docRef.current; // decorator reads current values (e.g. toolbar editors)
@@ -95,7 +99,7 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
     // the canvas area drives the fit width — observe it so scale auto-fits
     const ro = new ResizeObserver(() => measure());
     if (areaRef.current) ro.observe(areaRef.current);
-    return () => { delete (window as any).__peField; delete (window as any).__peAction; delete (window as any).__peReorderData; delete (window as any).__peResize; delete (window as any).__peOpenPicker; delete (window as any).__peDoc; delete (window as any).__peMarkers; window.removeEventListener('keydown', onKey); window.removeEventListener('resize', onResize); ro.disconnect(); };
+    return () => { delete (window as any).__peField; delete (window as any).__peAction; delete (window as any).__peReorderData; delete (window as any).__peRenderBody; delete (window as any).__peResize; delete (window as any).__peOpenPicker; delete (window as any).__peDoc; delete (window as any).__peMarkers; window.removeEventListener('keydown', onKey); window.removeEventListener('resize', onResize); ro.disconnect(); };
   }, [onClose, isHome]);
 
   // the scaled canvas's screen offset shifts whenever its footprint changes
