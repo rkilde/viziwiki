@@ -3,22 +3,22 @@
    --------------------------------------------------------------------
    A side-by-side comparison of two things (previous | current) across
    Hardware + Software rows, each current value optionally carrying a
-   coloured CHIP that signals the DIRECTION of the change (the text says
+   colored CHIP that signals the DIRECTION of the change (the text says
    the value). Structure + type live here (single source); the section
    frame lives in _includes/sections/delta-section.html.
 
-   Colours are SKIN-DERIVED (same pattern as the timeline/config banks):
+   Colors are SKIN-DERIVED (same pattern as the timeline/config banks):
    the table reads --gd-* tokens, each defaulting to a mix of the wiki's
    base palette (--foreground / --card), so any wiki gets a coherent
    table. A skin can pin a token to lock a look — the Apple skin pins the
    originals so the iPod comparison is unchanged.
 
-   THE CHIP VOCABULARY (colour = the judgment; text = the value):
+   THE CHIP VOCABULARY (color = the judgment; text = the value):
      better  · green  — new, or quantifiably better   (256 GB, +33%, A10)
      feature · blue   — a marquee feature highlighted  (Retina, AR, Metal)
      changed · amber  — a lateral change, no +/-       (Lightning, 6 colors)
      worse   · red    — regressed / removed            (Gone)
-     same    · grey   — no change                      (Same)
+     same    · gray   — no change                      (Same)
    ════════════════════════════════════════════════════════════════════ */
 
 .delta{

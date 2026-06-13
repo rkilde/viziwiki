@@ -401,7 +401,7 @@ body.wiki-apple .wiki-hero-spotlight-cta {
 body.wiki-apple {
   /* §12 — background panel alternation */
   --section-tone-a:        #ffffff;            /* pure white                 */
-  --section-tone-b:        #f4f4f6;            /* signature Cupertino grey    */
+  --section-tone-b:        #f4f4f6;            /* signature Cupertino gray    */
   --section-tone-special:  #0a0a0a;            /* pure-black Numbers band      */
   --section-divider:       transparent;        /* no visible line — tone does it */
 
@@ -412,7 +412,7 @@ body.wiki-apple {
   --prose-strong-color:    #0a0a0a;            /* emphasized text — full black */
 
   /* catalog category swatches — achromatic ramp (Apple house restraint;
-     greys only, like the rest of the skin). Recolour here to theme every
+     grays only, like the rest of the skin). Recolor here to theme every
      catalog + the builder's swatch picker at once. */
   --cat-accent-1: #1d1d1f;
   --cat-accent-2: #515154;

@@ -52,8 +52,8 @@ html, body { margin: 0; padding: 0; }
    (legacy / differently-named) token via a var() fallback chain, so every
    wiki's current value "flows up" to the contract with NO skin edits — then
    a neutral default as the safety floor. A wiki overrides any of these under
-   body.wiki-{name} (e.g. the per-wiki harmonised meaning colours + palette).
-   Nothing should hardcode a colour an asset needs; it reads a token here.
+   body.wiki-{name} (e.g. the per-wiki harmonised meaning colors + palette).
+   Nothing should hardcode a color an asset needs; it reads a token here.
    Declared on `body` (NOT :root) on purpose: skins define their legacy tokens
    on `body.wiki-{name}`, and a var() in a custom property resolves at the
    element it's DECLARED on — so the bridge must compute on `body` to see the
@@ -72,7 +72,7 @@ body {
   --wiki-accent-on-light:   var(--wiki-accent, var(--foreground, #18181b));
   --wiki-accent-on-dark:    var(--hero-title-accent, #ffb000);
 
-  /* ── meaning colours — GENERIC FLOOR ONLY. Each wiki overrides these with
+  /* ── meaning colors — GENERIC FLOOR ONLY. Each wiki overrides these with
      values harmonised to its palette in its per-wiki semantic block. ── */
   --wiki-positive:  #16a34a;
   --wiki-negative:  #dc2626;
@@ -608,10 +608,10 @@ body {
 /* ════════════════════════════════════════════════════════════════════
    §11c — DARK HERO TREATMENT  (.wiki-hero.hero-dark)
    Opt-in modifier for heroes on a dark background that don't get their
-   text colour from a skin sheet: flips text to white-on-dark and gives
+   text color from a skin sheet: flips text to white-on-dark and gives
    the eyebrow a frosted-glass fill. (Stat-grid tokens already default to
    the dark-hero palette, so they're left untouched.) Skins/pages that set
-   their own hero colours don't need this.
+   their own hero colors don't need this.
    ════════════════════════════════════════════════════════════════════ */
 .wiki-hero.hero-dark {
   color: #ffffff;

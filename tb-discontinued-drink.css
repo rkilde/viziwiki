@@ -115,7 +115,7 @@
   opacity: 0.5;
 }
 
-/* The track = grey background bar the fill sits in */
+/* The track = gray background bar the fill sits in */
 .swim-track {
   flex: 1;
   height: var(--swim-lane-h);

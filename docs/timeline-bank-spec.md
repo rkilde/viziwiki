@@ -100,7 +100,7 @@ timeline:
       body: >
         <p>Apple released the 7th generation iPod touch on May 28, 2019 — the
         first major update in nearly four years…</p>
-        <p>It launched in six colours across 32, 128, and 256 GB tiers…</p>
+        <p>It launched in six colors across 32, 128, and 256 GB tiers…</p>
     - month: Sep
       year: "2019"            # no day → month-level
       tag: Software

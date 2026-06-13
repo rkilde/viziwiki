@@ -18,7 +18,7 @@ import BANK_CSS from '../data/bank-css.json';
 const TACO_BELL_SKIN: WikiSkin = { bodyClass: 'wiki-page wiki-taco-bell', css: ['wiki-taco-bell-skin.css', 'tb-editorial-base.css'] };
 
 const AFFORDANCE = `
-  /* editing field: grey box on hover (= editable), blue box on click (= editing).
+  /* editing field: gray box on hover (= editable), blue box on click (= editing).
      overflow-wrap:anywhere keeps a long unbroken string from inflating the
      field's min-content — without it the inline-block + fit-content sizing
      blows out the canon's grid/flex tracks (the live site never sees this
@@ -54,7 +54,7 @@ const AFFORDANCE = `
      the infobox value cells (grid-sized), the search bar, the stat grid */
   .wiki-infobox.pe-removable{ width:auto; overflow:visible; }
   .wiki-infobox-data > dd.pe-removable{ width:auto; }
-  /* infobox ONLY: the row × is right-aligned + vertically centred on its row,
+  /* infobox ONLY: the row × is right-aligned + vertically centerd on its row,
      not the upper-right corner — the corner rule still governs everything else */
   .wiki-infobox-data > dd.pe-removable > .pe-remove{ top:50%; right:-9px; left:auto; transform:translateY(-50%); }
   /* +row / +badge sit just BELOW the infobox (absolute, so the panel itself
@@ -182,8 +182,8 @@ const AFFORDANCE = `
   .sc-expand.pe-expand:hover{ color:#6366f1; background:rgba(99,102,241,.08); }
   /* the expandable card: the canvas iframe is full-height (the parent scrolls
      it), so the canon modal's flex-centering lands in the CONTENT middle —
-     off-screen. Pin the box and let centreModal place it at the visible-
-     viewport centre in content coordinates (top set by JS + this translate). */
+     off-screen. Pin the box and let centerModal place it at the visible-
+     viewport center in content coordinates (top set by JS + this translate). */
   .tl-modal-box{ position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); max-height:none; margin:0; }
   /* the body edit box: as a block it fits the text (inline-block left a baseline
      gap that made it look oversized); trim the last paragraph's margin */
@@ -203,7 +203,7 @@ const AFFORDANCE = `
   .cat-add-pill{ border-style:dashed !important; color:rgba(0,0,0,.4) !important; background:transparent !important; }
 
   /* ════ two-click delete confirm (mockup Direction 2) ════ The ✕ trigger fades
-     out and a red "✓ Delete" + grey undo pop in over it; a 2nd click commits,
+     out and a red "✓ Delete" + gray undo pop in over it; a 2nd click commits,
      undo / outside-click / Escape backs out. Routed via armDelete for every
      delete in the kit. */
   .pe-del-armed{ opacity:0 !important; pointer-events:none; }
@@ -332,7 +332,7 @@ const AFFORDANCE = `
   .pe-add-section:hover .pe-add-dot::after{ opacity:1; transform:translateX(-50%) scale(1); }
 
   /* ════ config (storage / configuration chart) editor — the owner's DRAWER
-     flow (configeditorui.html). Inline grey/blue .ce boxes edit the chart
+     flow (configeditorui.html). Inline gray/blue .ce boxes edit the chart
      directly (+ feed the readiness widget); a per-row chevron opens a structured
      drawer for the full form. The bars stay CANON-sorted low→high (config.html);
      an inline/drawer capacity, unit or revised change re-runs that sort and the
@@ -473,10 +473,10 @@ const AFFORDANCE = `
   .sc-tag .dr-info{ width:12px; height:12px; margin-left:5px; }
   .sc-tag .dr-info svg{ width:12px; height:12px; }
   .cc-pop.lane-pop{ min-width:230px; }
-  /* delta chip picker — a bearings catalogue grouped by category + a custom row.
+  /* delta chip picker — a bearings catalog grouped by category + a custom row.
      The gd-chip-* rules read --gd-* tokens scoped to .delta on the live site; the
      popover lives on <body>, so pin the (light) token values here so the preset
-     chips render in their category colours. */
+     chips render in their category colors. */
   .cc-pop.chip-pop{ min-width:248px; max-width:300px;
     --gd-better-bg:#dcfce7;  --gd-better-bd:#bbf7d0;  --gd-better-fg:#15803d;
     --gd-feature-bg:#eff6ff; --gd-feature-bd:#bfdbfe; --gd-feature-fg:#1d4ed8;
@@ -489,7 +489,7 @@ const AFFORDANCE = `
   .cc-chip-head{ display:flex; align-items:center; gap:6px; margin-bottom:10px; }
   .cc-chip-head .cc-pop-label{ margin:0; }
   .cc-chip-grid{ display:flex; flex-direction:column; gap:9px; }
-  /* each category is a labelled column-header row: the name (in its colour) +
+  /* each category is a labelled column-header row: the name (in its color) +
      its chips */
   .cc-chip-cat{ display:flex; align-items:flex-start; gap:9px; }
   .cc-chip-cat-h{ flex:0 0 60px; padding-top:3px; font-family:'JetBrains Mono',monospace; font-size:8px;
@@ -526,7 +526,7 @@ const AFFORDANCE = `
   .delta .ce:empty::before{ content:attr(data-ph); color:rgba(0,0,0,.34); font-style:italic; pointer-events:none; }
   /* "no before" — an ALTERNATIVE toggle (dotted-underline link), deliberately NOT
      the dashed add-pill language, so it doesn't read as "add something". */
-  .pe-noold{ display:inline-block; margin-top:8px; padding:0; border:0; background:transparent; cursor:pointer;
+  .pe-noold{ display:block; margin-top:9px; padding:0; border:0; background:transparent; cursor:pointer;
     font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.1em; text-transform:uppercase;
     color:rgba(0,0,0,.38); text-decoration:underline dotted; text-underline-offset:3px; }
   .pe-noold:hover{ color:rgba(0,0,0,.7); }
@@ -555,14 +555,14 @@ const AFFORDANCE = `
   .cc-pop.lane-pop .cc-type-dropped{ background:#f3f4f6; border-color:#e5e7eb; border-style:dashed; color:#6b7280; }
   .cc-pop.lane-pop .cc-type-security{ background:#dbeafe; border-color:#bfdbfe; color:#1e40af; }
   .cc-pop.lane-pop .cc-enum-opt.sel{ box-shadow:0 0 0 2px #241a10; }
-  /* badge preset bank — text+color combos (each chip in its badge colour) */
+  /* badge preset bank — text+color combos (each chip in its badge color) */
   .cc-pop.lane-pop .cc-badge-ship{ background:rgba(0,0,0,.06); border-color:rgba(0,0,0,.12); color:#6b6b6b; }
   .cc-pop.lane-pop .cc-badge-paid{ background:#fbbf24; border-color:#f59e0b; color:#78350f; }
   .cc-pop.lane-pop .cc-badge-limited{ background:#f59e0b; border-color:#d97706; color:#78350f; }
   .cc-pop.lane-pop .cc-badge-final{ background:#0a0a0a; border-color:#0a0a0a; color:#fff; }
   .cc-pop.lane-pop .cc-badge-dropped{ background:transparent; border:1px dashed rgba(0,0,0,.24); color:#8a8a8a; }
   .cc-pop.lane-pop .cc-badge-security{ background:#3b82f6; border-color:#2563eb; color:#fff; }
-  /* all-in-one note add: segment chips (pick a version → derives colour) + fields */
+  /* all-in-one note add: segment chips (pick a version → derives color) + fields */
   .cc-pop.lane-pop.note-add{ min-width:254px; }
   .cc-pop.lane-pop .cc-noteseg{ display:flex; flex-wrap:wrap; gap:5px; grid-template-columns:none; }
   .cc-pop.lane-pop .cc-noteseg .cc-enum-opt{ flex:0 0 auto; padding:4px 9px; font-size:8.5px; }
@@ -575,9 +575,9 @@ const AFFORDANCE = `
   .cc-note-preview{ display:flex; align-items:flex-start; gap:7px; margin-top:2px; padding:8px 10px; border-radius:8px; background:rgba(0,0,0,.035);
     font-family:'Spectral',Georgia,serif; font-size:11.5px; line-height:1.45; color:#2a1f15; }
   .cc-note-preview .lane-note-dot{ margin-top:4px; flex:none; background:rgba(0,0,0,.12); }
-  /* the dot's colour comes from --lane-*-dot tokens scoped to the lane section,
-     which the popover (on document.body) can't see — pin the semantic colours so
-     the preview square shows the chosen version's support colour */
+  /* the dot's color comes from --lane-*-dot tokens scoped to the lane section,
+     which the popover (on document.body) can't see — pin the semantic colors so
+     the preview square shows the chosen version's support color */
   .cc-note-preview .lane-dot-full{ background:#6ee7b7; }
   .cc-note-preview .lane-dot-partial{ background:#fde68a; }
   .cc-note-preview .lane-dot-dropped{ background:#d1d5db; }

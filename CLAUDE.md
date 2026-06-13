@@ -61,7 +61,7 @@ size/leading/tracking/weight token set (`--t-<role>-*`, body uses the legacy
 document heading/body across the whole site updates. Sizes are universal
 (skins set color, never size).
 **Visual components do NOT use this scale.** Charts, timelines, stat tiles,
-spotlight/infobox panels, catalogues, swim diagrams — *any* data-viz — keep
+spotlight/infobox panels, catalogs, swim diagrams — *any* data-viz — keep
 their own type, tuned to the component and controlled **in the bank** (Phase
 4). Forcing the universal scale onto dense widgets breaks their layouts (it
 did, on the iPod charts — hence this rule). **Rule of thumb: document text →
@@ -93,7 +93,7 @@ did, on the iPod charts — hence this rule). **Rule of thumb: document text →
   helpers + footer credit).
 - `tb-tw-compat.css` — frozen Tailwind utilities (+ a preflight reset) so the
   de-Tailwinded pages render identically without the Tailwind CDN.
-- `tb-drinks.css`, `tb-menu-catalogue.css`, `tb-slogans.css` — page-specific
+- `tb-drinks.css`, `tb-menu-catalog.css`, `tb-slogans.css` — page-specific
   unique-visual components (bank candidates, deferred).
 
 ---
@@ -172,7 +172,7 @@ follows:
 spec, lifecycle-lane, **delta** — have a live picker tile + an in-place editor.
 (Delta: the picker tile direct-adds; the editor binds the heading, the prev|current
 axis headers — model name required, the `.gd-sec-col` echoes locked as derived — and
-the Hardware/Software rows: label + old→new + a colour chip via a derived enum
+the Hardware/Software rows: label + old→new + a color chip via a derived enum
 popover, a `no_old` "before" toggle, per-group add/remove; intro/footnote are
 renderer-seeded sentinel "+" slots. Guard: case 13.)
 
@@ -229,7 +229,7 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
   + rolled out to **7 pages** (drinks, discontinued-drinks, the 5 menu
   sub-pages). Section/visual split (`_includes/sections/` + `_includes/visuals/`
   + the `visual.html` dispatcher + `_data/visuals.yml` registry); add-ons:
-  skin-swatch category colors, ribbon tones (accent / gone-grey),
+  skin-swatch category colors, ribbon tones (accent / gone-gray),
   status·info-chip·pill-groups(+struck)·callout·notes, header+footer hairlines,
   auto-derived summary + optional note. `bank-catalog.css` = single source.
 - **Phase 4 — Timeline bank** (full-bleed, date-positioned scroller + station
@@ -246,7 +246,7 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
   `ic-hard-drive`, required H2 + chart-title, optional intro/footer, contained).
   Bar widths **derived** from capacity (GB/TB normalized, exact proportion).
   Revised-group (`revised` flag → striped bar + `divider_label`); price "old →
-  new" drops; device-colour dots are content hex. **Skin-tokenized** (`--cfg-*`,
+  new" drops; device-color dots are content hex. **Skin-tokenized** (`--cfg-*`,
   Apple pinned) — first chart-bank themed from day one. Extracted out of the
   iPod JS engine (`bank-config.css` = single source; legacy `renderCfg` / CSS /
   placeholder removed).
@@ -260,12 +260,12 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
   rolled out to **all 6 iPod pages**. New `section: delta` (locked eyebrow +
   `ic-chart-column-stacked`, required H2, optional intro/footnote). `prev → current`
   rows in hardware/software groups; change chips (`better/feature/changed/worse/same`)
-  where colour = direction, text = value. **Skin-tokenized** (`--gd-*`, Apple pinned).
+  where color = direction, text = value. **Skin-tokenized** (`--gd-*`, Apple pinned).
   `bank-delta.css` = single source.
 - **Phase 4 — Lifecycle-lane bank** (the OS-support ribbon / "iOS versions chart"):
   built + rolled out to **all 6 iPod pages**. New `section: os-section` (locked
   eyebrow + `ic-layers`, required H2, optional lead prose, contained). A segmented
-  support ribbon: tiers `full/partial/dropped/security` (fill colour), corner badges,
+  support ribbon: tiers `full/partial/dropped/security` (fill color), corner badges,
   an **auto-derived counter** (`launch → drop · duration · N major versions`, rounded
   to the nearest month; post-drop `security` patches excluded), and an **auto legend**.
   Width model `uniform` (default) or opt-in `weighted` (∝ date gap); `security` tile =
@@ -355,7 +355,7 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
 
 ## Reference snapshots (original hand-built code)
 
-The bank port replaced the hand-built catalogue markup/JS in the working
+The bank port replaced the hand-built catalog markup/JS in the working
 tree; the originals live in git history (merging to main preserves them).
 Two anchor commits to compare against — `git show <sha>:<file>`:
 
@@ -363,7 +363,7 @@ Two anchor commits to compare against — `git show <sha>:<file>`:
   page in its first form (pre-convergence).
 - **`910990e`** — *pre-bank-port*: the last all-hand-built state — the catalog
   bank existed as scaffolding, but drinks / discontinued / the 5 menu pages
-  were still hand-built catalogues (with `showDrink` / `showItemCard` /
+  were still hand-built catalogs (with `showDrink` / `showItemCard` /
   `FRESCO_ITEMS` etc.). Best "right before we banked it" reference.
 
 (This environment can't push git tags — the git proxy only accepts the work

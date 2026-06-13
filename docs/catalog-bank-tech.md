@@ -62,7 +62,7 @@ just reads `--cat-color`; adding swatches never touches the bank).
 |---|---|---|
 | `--divider` | `color-mix(in oklab, var(--foreground) 10%, transparent)` | all hairlines, card borders, pill borders |
 | `--ribbon-fg` | `#ffffff` | ribbon text color |
-| `--ribbon-gone-bg` | `rgba(42,31,21,0.72)` | the locked "gone" (phased-out) ribbon grey |
+| `--ribbon-gone-bg` | `rgba(42,31,21,0.72)` | the locked "gone" (phased-out) ribbon gray |
 | `--ribbon-gone-fg` | (falls back to `--ribbon-fg`) | "gone" ribbon text |
 | `--cat-pill-fg` | *(unset → bank default: foreground @ 85% over card)* | **resting** pill text color; set this token to override globally |
 | `--card` | `#fff` (skin/page) | card + modal surface |
@@ -105,7 +105,7 @@ Fonts in use: **Fraunces** (serif titles), **JetBrains Mono** (labels/pills),
 |---|---|---|
 | Box | `.cat-ribbon` | `104×104px` (88px mobile) |
 | Banner | `.cat-ribbon span` | mono **8px** / 700, rotated 45°, bg = category color |
-| "gone" tone | `.cat-ribbon.ribbon-gone span` | bg = `--ribbon-gone-bg` (grey, not category) |
+| "gone" tone | `.cat-ribbon.ribbon-gone span` | bg = `--ribbon-gone-bg` (gray, not category) |
 
 ### Footnote box
 | `.cat-footnote` | mono **10px**, line-height `1.7`, bordered box, muted |
@@ -126,7 +126,7 @@ Fonts in use: **Fraunces** (serif titles), **JetBrains Mono** (labels/pills),
 | Description | `.modal-desc` | Spectral **14px** (13.5 mobile), line-height `1.55` |
 | Group label | `.modal-group-label` | mono **8px** / 600, letter-spacing `.2em` |
 | Group pill | `.gpill` | mono **9px** / 500, category-tinted |
-| Struck pill | `.gpill.struck` | line-through + greyscaled |
+| Struck pill | `.gpill.struck` | line-through + grayscaled |
 | Callout box | `.modal-callout` | category-tinted, `border-left:3px` |
 | Callout label / text | `.modal-callout-label` / `-text` | mono **9px** label / Spectral **14px** text |
 | Notes line | `.modal-note` | Spectral **12.5px** italic, top hairline, muted |
@@ -144,7 +144,7 @@ ribbons; modal padding 12px; title 21px; desc 13.5px.
 |---|---|
 | A category color / add more swatches | `--cat-accent-*` in `wiki-{name}-skin.css` |
 | The status chip colors | `--st-*` in `wiki-{name}-skin.css` |
-| The "gone" ribbon grey | `--ribbon-gone-bg` in `wiki-{name}-skin.css` |
+| The "gone" ribbon gray | `--ribbon-gone-bg` in `wiki-{name}-skin.css` |
 | Resting pill text shade | `--cat-pill-fg` (skin) or its default in `.cat-pill` (`bank-catalog.css`) |
 | Card / modal corner radius | `--card-shape` (skin) |
 | Any font size / weight / spacing | the matching selector in `bank-catalog.css` (§B) |

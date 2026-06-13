@@ -124,7 +124,7 @@ export function createRenderer(includesData, policy, registry) {
   // hero+overview render first; then every body section routes through ITS
   // canonical section partial (registry) → the dispatcher → the visual.
   // <script> blocks are stripped: the editor canvas is deliberately inert
-  // (you edit the data; the live site runs the behaviour).
+  // (you edit the data; the live site runs the behavior).
   function renderBody(doc, isHome = false) {
     const sections = doc.sections || [];
     const tpl = HEAD_TPL + sections

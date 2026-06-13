@@ -8,7 +8,7 @@
    leftover constants — so a skinless page looks half-painted, not clean.
 
    This file is the fix: a COMPLETE, fully-achromatic token set so an
-   unskinned wiki renders as deliberate greyscale — banded tone panels,
+   unskinned wiki renders as deliberate grayscale — banded tone panels,
    neutral accents, mono everything. "No skin = the base skin = mono."
    Designing a real skin = overriding these tokens with color.
 
@@ -24,11 +24,11 @@ body.wiki-base {
   --wiki-fg:     #18181b;               /* primary text — near-black ink  */
   --wiki-muted:  rgba(0,0,0,.45);       /* secondary / dim text           */
   --wiki-faint:  rgba(0,0,0,.08);       /* hairlines, borders             */
-  --wiki-accent: #52525b;               /* NEUTRAL accent — mid grey, no hue */
+  --wiki-accent: #52525b;               /* NEUTRAL accent — mid gray, no hue */
 }
 
 /* ── HERO ─────────────────────────────────────────────────────────────
-   Every --hero-* token the universal hero reads, set to greyscale. The
+   Every --hero-* token the universal hero reads, set to grayscale. The
    amber period/dot/CTA that universals default to are overridden to ink. */
 body.wiki-base {
   --hero-divider:                 rgba(0,0,0,.12);
@@ -83,9 +83,9 @@ body.wiki-base {
 
 /* ── SECTIONS · TONE PANELS · TYPOGRAPHY · OVERVIEW INFOBOX ──────────── */
 body.wiki-base {
-  /* §12 — background panel alternation (the banded greyscale rhythm) */
+  /* §12 — background panel alternation (the banded grayscale rhythm) */
   --section-tone-a:        #ffffff;            /* white                       */
-  --section-tone-b:        #f5f5f5;            /* light grey                  */
+  --section-tone-b:        #f5f5f5;            /* light gray                  */
   --section-tone-special:  #18181b;            /* dark inverted band          */
   --section-divider:       transparent;        /* tone alternation separates  */
 
@@ -120,7 +120,7 @@ body.wiki-base {
   --infobox-badge-color:   rgba(0,0,0,.55);
 }
 
-/* Special band — invert text light-on-dark over the dark grey background
+/* Special band — invert text light-on-dark over the dark gray background
    (mirrors the Apple / Taco Bell special-tone pattern). */
 body.wiki-base .wiki-section[data-tone="special"] {
   --eyebrow-color:        rgba(255,255,255,.55);

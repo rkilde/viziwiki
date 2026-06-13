@@ -210,7 +210,7 @@ components:
         ver:        { type: text, required: true, label: "Version", blank: "Version" }
         date:       { type: date, required: true, blank: "Month Year", help: "Set via the month/year picker; an unset date reads as 'Month Year' and isn't positioned until real" }
         type:       { type: "enum[full,partial,dropped,security]", required: true,
-                      help: "full=green · partial=amber · dropped=grey cliff · security=blue post-EOL" }
+                      help: "full=green · partial=amber · dropped=gray cliff · security=blue post-EOL" }
         badge:      { type: text, blank: "Badge" }
         badge_type: { type: "enum[ship,paid,limited,final,dropped,security]", default: ship,
                       presets: { ship: "Launch", paid: "Paid", limited: "Limited", final: "Final", dropped: "Dropped", security: "Security" },
@@ -260,12 +260,12 @@ components:
         old:       { type: text }
         new:       { type: text }
         no_old:    { type: bool, default: false, help: "Hide the 'before' cell" }
-        # chip colour = the DIRECTION of change. `presets` is a bank of chips per
+        # chip color = the DIRECTION of change. `presets` is a bank of chips per
         # category: a plain string is a ready-made label; an object {tpl, ph} is a
         # PARAMETERIZED chip whose `{n}` slot the contributor fills in (e.g. "{n}×"
         # → 1.5× / 3×). Builder-only authoring aid; the stored chip is still just
-        # chip(colour) + chip_text(the resolved label).
-        chip:      { type: "enum[better,feature,changed,worse,same]", help: "Colour = the direction of change",
+        # chip(color) + chip_text(the resolved label).
+        chip:      { type: "enum[better,feature,changed,worse,same]", help: "Color = the direction of change",
                      presets: { better:  ["Faster", { tpl: "{n}×", ph: "2" }, { tpl: "+{n}%", ph: "50" }, "Bigger", "Improved"],
                                 feature: ["New", "Added", "First", "Now supported"],
                                 changed: ["Redesigned", "Moved", "Swapped", "Relocated"],

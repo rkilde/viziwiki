@@ -2,7 +2,7 @@
 // repo's actual Liquid includes (the REAL lib/render-core.mjs — no fixture
 // copy), run the decorator over the result in jsdom, and assert the editing
 // affordances landed in their canonical positions AND that policy is truly
-// computed from grammar (flipping a grammar rule changes builder behaviour).
+// computed from grammar (flipping a grammar rule changes builder behavior).
 //
 // Run from _builder:  node scripts/test-derived-renderer.mjs
 import fs from 'node:fs';
@@ -125,7 +125,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(d.querySelector('section[data-section="overview"]').getAttribute('data-tone') === 'special', 'tone special rendered');
 }
 
-// ── case 4: DERIVATION — flip a grammar rule, builder behaviour follows ──
+// ── case 4: DERIVATION — flip a grammar rule, builder behavior follows ──
 {
   console.log('case 4: grammar flip (desc → required) changes the builder');
   const g2 = JSON.parse(JSON.stringify(grammar));
@@ -173,11 +173,11 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(aLabels.includes('+ footnote'), '+ footnote slot (sentinel — seed has none)');
   ok(aLabels.includes('+ category'), '+ category button after the masonry');
   ok(cat.querySelector('.cat-card-title .ce'), 'category name editable');
-  // glass dock: colour / ribbon / note / remove
+  // glass dock: color / ribbon / note / remove
   const dock = cat.querySelector('.cat-card .cc-dock');
   ok(dock, 'glass dock present on the card');
-  ok(dock.querySelectorAll('.cc-btn').length === 4, 'dock has 4 controls (drag/colour/ribbon/remove) — note is NOT a dock control');
-  ok(dock.querySelector('.cc-btn .cc-swatch'), 'colour control shows the swatch');
+  ok(dock.querySelectorAll('.cc-btn').length === 4, 'dock has 4 controls (drag/color/ribbon/remove) — note is NOT a dock control');
+  ok(dock.querySelector('.cc-btn .cc-swatch'), 'color control shows the swatch');
   ok(dock.querySelector('.cc-btn.danger'), 'remove-category control (danger)');
   ok(!dock.querySelector('.cc-btn[data-tip*="note"]'), 'no note button in the dock');
   ok([...dock.querySelectorAll('.cc-btn')].every((b) => b.getAttribute('data-tip')), 'every dock control has a hover tooltip');
@@ -305,7 +305,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(!modal.classList.contains('open') && d.querySelector('.cat-details [id="d-0-0"]'), 'close returns the detail to its hidden home');
 }
 
-// ── case 7: section reorder + skin-derived colour swatches ──
+// ── case 7: section reorder + skin-derived color swatches ──
 {
   console.log('case 7: reorder arrows + skin-derived swatches');
   const catData = () => JSON.parse(JSON.stringify(grammar.components.catalog.seed));
@@ -316,7 +316,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   };
   doc.sections[0].data.categories[0].color = 2; // explicit swatch on the first
   const d = renderAndDecorate(doc, false, null, (w) => {
-    // stand in for the skin: define a 3-colour contract palette on the body
+    // stand in for the skin: define a 3-color contract palette on the body
     w.document.body.style.setProperty('--wiki-palette-1', '#111111');
     w.document.body.style.setProperty('--wiki-palette-2', '#222222');
     w.document.body.style.setProperty('--wiki-palette-3', '#333333');
@@ -327,12 +327,12 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   const chips1 = [...secs[1].querySelectorAll('.pe-sec-tools .pe-chip')].map((c) => c.textContent);
   ok(!chips0.includes('↑') && chips0.includes('↓'), 'first section: ↓ only (nothing above it is movable)');
   ok(chips1.includes('↑') && !chips1.includes('↓'), 'last section: ↑ only');
-  // colour popover (opened from the dock) — swatches are skin-derived
+  // color popover (opened from the dock) — swatches are skin-derived
   const colorBtn = [...secs[0].querySelectorAll('.cat-card .cc-dock .cc-btn')].find((b) => b.querySelector('.cc-swatch'));
-  ok(colorBtn && colorBtn.querySelector('.cc-swatch'), 'dock colour control present');
+  ok(colorBtn && colorBtn.querySelector('.cc-swatch'), 'dock color control present');
   colorBtn.onclick.call(colorBtn);
   const pop = d.querySelector('.cc-pop');
-  ok(pop, 'clicking colour opens the popover');
+  ok(pop, 'clicking color opens the popover');
   ok(pop.querySelectorAll('.cc-sw[data-i]').length === 3, 'swatches = exactly the 3 tokens the skin defines');
   ok(pop.querySelector('.cc-sw[data-i="2"]').className.includes('sel'), 'current swatch (color: 2) marked selected');
   ok(pop.querySelector('.cc-sw.auto'), 'auto (cycle) option present');
@@ -613,7 +613,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(cpop.querySelector('.cc-chip-fill[data-tpl] .cc-chip-fill-in'), 'a parameterized chip (e.g. {n}×) renders a fill-in input');
   ok([...cpop.querySelectorAll('.cc-chip-fill')].some((el) => el.getAttribute('data-tpl').includes('{n}')), 'fill chip carries its {n} template (resolved to chip_text on use)');
   ok(cpop.querySelector('.cc-chip-text') && cpop.querySelector('.cc-chip-apply'), 'a custom chip — free text + Apply');
-  ok(cpop.querySelectorAll('.cc-chip-swatch').length === 5, 'custom colour swatch per category');
+  ok(cpop.querySelectorAll('.cc-chip-swatch').length === 5, 'custom color swatch per category');
   // a row WITH a chip → edit (opens picker) + × (remove) controls
   const dChip = renderAndDecorate({ ...doc, sections: [{ type: 'delta', data: { ...dSeed, hardware: [{ label: 'L', new: 'V', chip: 'better', chip_text: '2×' }] } }] }, false);
   const cRow = dChip.querySelector('section.wiki-section.delta .gd-row');

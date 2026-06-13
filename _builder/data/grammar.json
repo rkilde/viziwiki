@@ -754,7 +754,7 @@
           "type": {
             "type": "enum[full,partial,dropped,security]",
             "required": true,
-            "help": "full=green · partial=amber · dropped=grey cliff · security=blue post-EOL"
+            "help": "full=green · partial=amber · dropped=gray cliff · security=blue post-EOL"
           },
           "badge": {
             "type": "text",
@@ -922,7 +922,7 @@
           },
           "chip": {
             "type": "enum[better,feature,changed,worse,same]",
-            "help": "Colour = the direction of change",
+            "help": "Color = the direction of change",
             "presets": {
               "better": [
                 "Faster",

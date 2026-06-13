@@ -1,7 +1,7 @@
 // THE DECORATOR — the builder's editing layer, attached AFTER the canonical
 // Liquid includes render the page. The markup it decorates comes from the
 // repo's own templates (see lib/render-core.mjs); this file only adds editing
-// affordances (grey/blue edit boxes, corner ×, padlocks, "+" slots) and binds
+// affordances (gray/blue edit boxes, corner ×, padlocks, "+" slots) and binds
 // them to data paths.
 //
 // Derivation contract (CLAUDE.md standing rule #5):
@@ -369,9 +369,9 @@
     pePop = pop; return pop;
   }
   // ── two-click delete confirm (mockup Direction 2 — the ✕ trigger arms in
-  // place into a red "✓ Delete" + a grey undo; a 2nd click commits, undo /
+  // place into a red "✓ Delete" + a gray undo; a 2nd click commits, undo /
   // outside-click / Escape backs out). EVERY delete in the kit routes through
-  // armDelete(trigger, doDelete) so the behaviour is uniform. ──
+  // armDelete(trigger, doDelete) so the behavior is uniform. ──
   var CHK_SVG = csvg('<polyline points="20 6 9 17 4 12"/>');
   var UNDO_SVG = csvg('<path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/>');
   var delConfirm = null;
@@ -426,7 +426,7 @@
   // so it clears every overflow:clip container (the modal, the masonry cards)
   // and stacks above the floating dock / section chrome. Positioned per-icon
   // off its rect: above by default, flipped below when there's no room up; the
-  // arrow (--ax) points back at the icon centre, and it's clamped on-screen.
+  // arrow (--ax) points back at the icon center, and it's clamped on-screen.
   var drTip = null;
   function ensureTip() { if (!drTip || !drTip.parentNode) { drTip = document.createElement('div'); drTip.className = 'dr-tip'; document.body.appendChild(drTip); } return drTip; }
   function showTip(ic) {
@@ -457,9 +457,9 @@
     var st = pop.querySelector('[data-a="strike"]'); if (st) st.onclick = function () { closePop(); A('pillstrike:' + pillPath + ':' + (!isStruck)); };
   }
 
-  // centre the item-editor modal card in the VISIBLE viewport (the canvas is a
-  // tall iframe scrolled by the parent — fixed/inset:0 alone would mis-centre)
-  function centreModal(card) {
+  // center the item-editor modal card in the VISIBLE viewport (the canvas is a
+  // tall iframe scrolled by the parent — fixed/inset:0 alone would mis-center)
+  function centerModal(card) {
     try {
       var fr = window.frameElement, ph = (window.parent && window.parent.innerHeight) || window.innerHeight;
       var rect = fr.getBoundingClientRect();
@@ -741,7 +741,7 @@
             if (modalCard) modalCard.classList.toggle('has-ribbon', !!rbText);
           }
           det.setAttribute('data-pe-detail-open', '1'); modalBody.appendChild(det);
-          modal.classList.add('open'); if (modalCard) centreModal(modalCard);
+          modal.classList.add('open'); if (modalCard) centerModal(modalCard);
           window.__peOpenItem = { s: i, j: j, k: k };
         };
         if (modal) {
@@ -764,7 +764,7 @@
           var tones = (R('catalog.categories[].ribbon.tone').enum) || [];   // derived from grammar — never restate the values
           var tone = isObj ? (rb.tone || 'accent') : 'accent';
           var html = '<div class="cc-pop-label">Ribbon</div><div class="cc-ribbon-field"><input type="text" placeholder="Ribbon text">' +
-            (isObj ? '<div class="cc-tone">' + tones.map(function (t) { return '<button data-t="' + t + '" class="' + (t === tone ? 'on' : '') + '">' + (t === 'gone' ? 'Grey' : t) + '</button>'; }).join('') + '</div>' : '') +
+            (isObj ? '<div class="cc-tone">' + tones.map(function (t) { return '<button data-t="' + t + '" class="' + (t === tone ? 'on' : '') + '">' + (t === 'gone' ? 'Gray' : t) + '</button>'; }).join('') + '</div>' : '') +
             '<button class="cc-rm">Remove ribbon</button></div>';
           var pop = openPop(btn, accent, html, { avoid: qs('.cat-ribbon', card) });
           var input = qs('input', pop); input.value = isObj ? (rb.text || '') : rb;
@@ -1088,7 +1088,7 @@
           if (!det.textContent.trim()) det.innerHTML = '<p>' + bodyBlank + '</p>';   // empty body → show its placeholder
           det.setAttribute('data-pe-tl-open', '1'); tlBody.appendChild(det);
           if (!det.querySelector('.ce')) wrapCE(det, prefix + 'events.' + k + '.body');   // guard: don't re-wrap on manual re-open
-          tlModal.classList.add('open'); if (tlBox) centreModal(tlBox);
+          tlModal.classList.add('open'); if (tlBox) centerModal(tlBox);
           window.__peTlOpen = { s: i, k: k };
         };
         if (tlModal) { var tc = qs('[data-tl-close]', tlModal); if (tc) tc.onclick = closeTl; tlModal.onmousedown = function (e) { if (e.target === tlModal) closeTl(); }; }
@@ -1172,7 +1172,7 @@
       }
 
       // ── config: the storage/configuration chart — the owner's DRAWER editing
-      // flow (configeditorui.html). Inline grey/blue .ce boxes edit the chart
+      // flow (configeditorui.html). Inline gray/blue .ce boxes edit the chart
       // directly (and feed the readiness widget); a per-row chevron opens a
       // structured drawer for the full form (capacity/unit/price/model/dates,
       // revised + price-drop toggles, divider label, device colors, remove).
@@ -1184,7 +1184,7 @@
       // item. There is no manual reorder — the order is DERIVED from capacity. ──
       if (type === 'config') {
         var ea = function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); };
-        // number/price field behaviours, mirroring the timeline date fields:
+        // number/price field behaviors, mirroring the timeline date fields:
         //  · numCE/numInput — typing a letter is gracefully filtered out (the
         //    field only keeps digits + a decimal point); you can't break it.
         //  · enterBlur — pressing Enter LOCKS the value in (commits on blur) and
@@ -1522,7 +1522,7 @@
       // intro/footnote (sentinel "+"); the prev|current axis headers (name
       // required — the gd-sec-col cells mirror it, so they're locked); and
       // Hardware/Software groups of rows (label + old→new + an optional color
-      // chip). Add/remove rows per group; chip colour is a derived enum popover;
+      // chip). Add/remove rows per group; chip color is a derived enum popover;
       // the "before" cell can be toggled off (no_old). No layout JS in the canon. ──
       if (type === 'delta') {
         // lock = derived/not-editable. In table cells the floating corner padlock
@@ -1560,11 +1560,11 @@
         qsa('.gd-sec-col', secEl).forEach(function (c) { lockD(c, 'Auto — mirrors the column’s model name'); });
         qsa('.gd-sec-main', secEl).forEach(function (c) { lockD(c, 'Locked group label'); });
 
-        // chip picker — colour = the DIRECTION of change (the enum). The popover
-        // is a bearings CATALOGUE: each category shows derived `presets` (suggested
-        // labels) the contributor can click; plus a CUSTOM row (pick a colour, type
+        // chip picker — color = the DIRECTION of change (the enum). The popover
+        // is a bearings CATALOG: each category shows derived `presets` (suggested
+        // labels) the contributor can click; plus a CUSTOM row (pick a color, type
         // anything). All derived from grammar (enum + presets); a pick sets BOTH the
-        // colour (chip) and the text (chip_text) in one commit.
+        // color (chip) and the text (chip_text) in one commit.
         var chipEnumD = (R('delta.hardware[].chip').enum) || [];
         var chipPresets = (R('delta.hardware[].chip').presets) || {};
         // render one preset: a plain string → a ready-made chip; an object
@@ -1579,7 +1579,7 @@
         var openChipPop = function (anchor, rpre, cur, curText) {
           // header: title + the one info "i" explaining the chip system
           var html = '<div class="cc-chip-head"><span class="cc-pop-label">Pick a chip</span>'
-            + infoI('A chip’s COLOUR is the direction of change — green = better · blue = a new feature · amber = changed · red = worse · grey = unchanged. Click a ready-made chip, fill the number on a template (e.g. {n}×), or write your own under Custom.')
+            + infoI('A chip’s COLOR is the direction of change — green = better · blue = a new feature · amber = changed · red = worse · gray = unchanged. Click a ready-made chip, fill the number on a template (e.g. {n}×), or write your own under Custom.')
             + '</div><div class="cc-chip-grid">';
           html += chipEnumD.map(function (c) {
             var ts = chipPresets[c] || [];
@@ -1593,7 +1593,7 @@
             + (cur ? '<button class="cc-rm">Remove chip</button>' : '');
           var pop = openPop(anchor, '', html, { cls: 'lane-pop chip-pop' });
           var pick = function (cat, text) { closePop(); PV(rpre + 'chip', cat); PV(rpre + 'chip_text', text); A('commit'); };
-          // ready-made chips: colour + text in one commit
+          // ready-made chips: color + text in one commit
           qsa('.cc-chip-opt', pop).forEach(function (b) { b.onclick = function () { pick(b.getAttribute('data-c'), b.getAttribute('data-t')); }; });
           // parameterized chips: fill the {n} slot, then ✓ / Enter resolves the label
           qsa('.cc-chip-fill', pop).forEach(function (el) {
@@ -1602,7 +1602,7 @@
             if (inp) { inp.addEventListener('click', function (e) { e.stopPropagation(); }); inp.addEventListener('input', function () { inp.value = inp.value.replace(/[^0-9.]/g, ''); }); inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); apply(); } }); }
             if (go) go.onclick = function (e) { e.stopPropagation(); apply(); };
           });
-          // custom: a colour swatch + free text → Apply
+          // custom: a color swatch + free text → Apply
           var selCat = cur || chipEnumD[0];
           var txt = qs('.cc-chip-text', pop), applyB = qs('.cc-chip-apply', pop);
           qsa('.cc-chip-swatch', pop).forEach(function (s) { s.onclick = function () { qsa('.cc-chip-swatch', pop).forEach(function (x) { x.classList.remove('sel'); }); s.classList.add('sel'); selCat = s.getAttribute('data-c'); }; });
@@ -1631,7 +1631,7 @@
               oldCell.appendChild(noOldBtn('no “before” value', false, 'Select if this spec didn’t exist on the previous model'));
             }
           }
-          // NEW (current) value field + an optional colour chip. The chip is changed
+          // NEW (current) value field + an optional color chip. The chip is changed
           // through its EDIT button (the picker) and removed with × — both shown on
           // hovering the cell.
           var newCell = qs('.gd-new', tr);
@@ -1772,11 +1772,11 @@
           var dirty = false, committed = false;
           var html = '<div class="cc-pop-label">Software version</div><input type="text" class="cc-lane-ver" placeholder="' + ea2(verBlank) + '" value="' + ea2(sd.ver) + '">'
             + dateGridHtml(sd.date, true)
-            + '<div class="cc-pop-label cc-pop-label-i" style="margin-top:13px">Support type' + infoI('How well the device is supported at this version. Full (green) = full OS updates; Partial (amber) = limited/late updates; Dropped (grey) = no longer supported; Security (blue) = security-only patches after end-of-life.') + '</div><div class="cc-enum cc-lane-types">'
+            + '<div class="cc-pop-label cc-pop-label-i" style="margin-top:13px">Support type' + infoI('How well the device is supported at this version. Full (green) = full OS updates; Partial (amber) = limited/late updates; Dropped (gray) = no longer supported; Security (blue) = security-only patches after end-of-life.') + '</div><div class="cc-enum cc-lane-types">'
             + segTypes.map(function (t) { return '<button class="cc-enum-opt cc-type-' + t + (sd.type === t ? ' sel' : '') + '" data-t="' + t + '">' + t + '</button>'; }).join('') + '</div>'
             // BADGE = a bank of preset text+color combos (derived from the
             // badge_type enum + its grammar `presets` map). Pick one → sets the
-            // text AND the colour together; no freeform typing.
+            // text AND the color together; no freeform typing.
             + '<div class="cc-pop-label cc-pop-label-i" style="margin-top:13px">Badge' + infoI("A badge is a small corner label on a tile — use it to flag a milestone: the Launch, the Final update, when support was Dropped, a Security-only patch, a Paid upgrade, or a Limited release. Optional.") + '</div><div class="cc-enum cc-badge-bank">'
             + badgeTypes.map(function (b) { var tx = (badgePresets[b] || b); var on = (sd.badge != null && (sd.badge_type || 'ship') === b) ? ' sel' : ''; return '<button class="cc-enum-opt cc-badge-' + b + on + '" data-bt="' + b + '" data-btx="' + ea2(tx) + '">' + tx + '</button>'; }).join('') + '</div>'
             + (sd.badge != null ? '<button class="cc-rm">Remove badge</button>' : '');
@@ -1841,7 +1841,7 @@
           var pop = openPop(anchor, '', html, { cls: 'lane-pop' });
           qsa('[data-s]', pop).forEach(function (b) { b.onclick = function () { closePop(); A('set:' + npre + 'status:' + b.getAttribute('data-s')); }; });
         };
-        // ALL-IN-ONE note add: pick the software version it's about (→ the colour
+        // ALL-IN-ONE note add: pick the software version it's about (→ the color
         // is DERIVED from that segment's support type), then type the label + text.
         var openNoteAddPop = function (anchor) {
           var segData = sdata.segments || [];

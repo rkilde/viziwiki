@@ -77,7 +77,7 @@ button{ font-family:inherit; }
 .mil-row{ display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:6px; cursor:pointer; transition:background .1s; }
 .mil-row:hover{ background:var(--bg3); }
 .mil-row.sel{ background:var(--bg4); }
-/* canonical hierarchy dots — solid, role-coloured: gold main-category /
+/* canonical hierarchy dots — solid, role-colored: gold main-category /
    blue subcategory / neutral page */
 .mil-dot{ width:8px; height:8px; border-radius:50%; flex-shrink:0; background:var(--border3); }
 .mil-dot.cat{ background:var(--amber); }

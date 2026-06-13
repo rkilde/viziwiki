@@ -77,13 +77,13 @@ A catalog is a list of **categories**; each renders one card.
 |---|---|---|---|---|
 | `name` | **required** | text | The card title (e.g. "Mountain Dew", "Tacos"). | — |
 | `color` | optional | a **skin swatch number** (1–21 today) | Picks the card's accent color (left border, title, pill hover, modal accent) from the skin's swatch set. In the builder this is a **color-picker of skin swatches**, never a hex. | auto-cycles the palette if omitted |
-| `ribbon` | optional | text **or** `{ text, tone }` | A diagonal corner banner on the card. `tone` ∈ **`accent`** (uses the category color) or **`gone`** (a locked desaturated grey = "phased out / discontinued"). A plain string is treated as `accent`. | none |
+| `ribbon` | optional | text **or** `{ text, tone }` | A diagonal corner banner on the card. `tone` ∈ **`accent`** (uses the category color) or **`gone`** (a locked desaturated gray = "phased out / discontinued"). A plain string is treated as `accent`. | none |
 | `note` | optional | text | A short note appended to the card's auto count line ("6 items · limited run"). | none |
 | `items` | **required** | list | The items in this category (see §5). | — |
 
 **Ribbon tones (the canonical set):**
 - `accent` — colored to the category. Use for "New", "Featured", etc.
-- `gone` — grey, signals retired/discontinued/phased-out. The grey is skin-owned
+- `gone` — gray, signals retired/discontinued/phased-out. The gray is skin-owned
   (each wiki's own shade); never colorful.
 
 ---

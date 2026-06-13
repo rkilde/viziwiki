@@ -6,7 +6,7 @@
    _includes/sections/timeline-section.html. The scroller bleeds edge-to-
    edge via the universal .wiki-section-bleed.
 
-   Colours are SKIN-DERIVED (same pattern as the config bank). The chart
+   Colors are SKIN-DERIVED (same pattern as the config bank). The chart
    reads --tl-* tokens, each defaulting to a mix of the wiki's base palette
    (--foreground / --card / --wiki-accent), so any wiki gets a coherent timeline
    (alternating year bands, an accent on each card's left edge, light

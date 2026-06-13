@@ -20,8 +20,8 @@
     "bytes": 50581
   },
   "taco-bell:taco-bell-discontinued-drinks": {
-    "hash": "9564021b5a25ce1e",
-    "bytes": 93070
+    "hash": "4472ec9100310b24",
+    "bytes": 93068
   },
   "taco-bell:taco-bell-sangrita-blast": {
     "hash": "ce6508cb569e535a",
@@ -44,12 +44,12 @@
     "bytes": 24972
   },
   "taco-bell:taco-bell-menus": {
-    "hash": "7ab10d5234d042b1",
-    "bytes": 26289
+    "hash": "9a981d2cb1f7bc11",
+    "bytes": 26287
   },
   "taco-bell:taco-bell-menu-cantina-chicken": {
-    "hash": "4b2d87a8ebf69687",
-    "bytes": 44566
+    "hash": "aa12b0cb42747fe2",
+    "bytes": 44564
   },
   "taco-bell:taco-bell-menu-2-dollar-deals": {
     "hash": "ef77a61afa5577c5",
@@ -76,27 +76,27 @@
     "bytes": 26681
   },
   "apple:apple-ipod-touch-2g": {
-    "hash": "4c61c62226d5852f",
-    "bytes": 28172
+    "hash": "bf9527b2558c3449",
+    "bytes": 28171
   },
   "apple:apple-ipod-touch-3g": {
-    "hash": "f0b3228de4debe96",
-    "bytes": 27438
+    "hash": "b114afc3a4c175a4",
+    "bytes": 27437
   },
   "apple:apple-ipod-touch-4g": {
     "hash": "f6a9159b9e0668e9",
     "bytes": 27671
   },
   "apple:apple-ipod-touch-5g": {
-    "hash": "1e222799c8d8b432",
-    "bytes": 28060
+    "hash": "caf2aef0d2f6082d",
+    "bytes": 28053
   },
   "apple:apple-ipod-touch-6g": {
-    "hash": "42d02efcddab837b",
-    "bytes": 28496
+    "hash": "61aef5761906442e",
+    "bytes": 28493
   },
   "apple:apple-ipod-touch-7g": {
-    "hash": "af4d4dbe68bfacaa",
-    "bytes": 28277
+    "hash": "815d563992699496",
+    "bytes": 28275
   }
 }
