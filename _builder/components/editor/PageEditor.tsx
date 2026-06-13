@@ -53,6 +53,9 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
     };
     (window as any).__peField = (path: string, html: string) => { setIn(docRef.current, path, html); setSaved(false); };
     (window as any).__peAction = (action: string) => { applyAction(docRef.current, action); setSaved(false); if (/^(secAdd|secRm|secMove):/.test(action)) setOpenMk(null); swapBody(); };
+    // drag-reorder mutates the doc WITHOUT a re-render — the decorator shuffles the
+    // DOM nodes + FLIP-animates in place, then re-binds via a deferred swap.
+    (window as any).__peReorderData = (action: string) => { applyAction(docRef.current, action); setSaved(false); };
     (window as any).__peResize = (h: number) => { if (iframeRef.current) iframeRef.current.style.height = Math.max(h, 480) + 'px'; };
     (window as any).__peOpenPicker = (index: number) => setPickerAt(typeof index === 'number' ? index : 0); // seam → picker (carries insert position)
     (window as any).__peDoc = () => docRef.current; // decorator reads current values (e.g. toolbar editors)
@@ -61,7 +64,7 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
     const onResize = () => measure();
     window.addEventListener('keydown', onKey);
     window.addEventListener('resize', onResize);
-    return () => { delete (window as any).__peField; delete (window as any).__peAction; delete (window as any).__peResize; delete (window as any).__peOpenPicker; delete (window as any).__peDoc; delete (window as any).__peMarkers; window.removeEventListener('keydown', onKey); window.removeEventListener('resize', onResize); };
+    return () => { delete (window as any).__peField; delete (window as any).__peAction; delete (window as any).__peReorderData; delete (window as any).__peResize; delete (window as any).__peOpenPicker; delete (window as any).__peDoc; delete (window as any).__peMarkers; window.removeEventListener('keydown', onKey); window.removeEventListener('resize', onResize); };
   }, [onClose, isHome]);
 
   // mirror openMk into a ref so the keydown handler (bound once) sees it live

@@ -307,6 +307,30 @@
     }
   }
 
+  // drag-to-reorder, IN PLACE (catalog + spec): move the REAL card nodes into
+  // their new order, mutate the doc WITHOUT a full re-render, then FLIP every
+  // card from its old rect to its new one — a true tracked shuffle (the same
+  // elements migrate; nothing reloads). Only cards that actually move animate.
+  // Once the motion settles, a deferred silent swap re-binds the now-stale
+  // indices; the order already matches so it's visually identical (no flash).
+  function dragReorder(container, cards, from, to, listPath) {
+    if (from === to || !container || !cards.length) return;
+    window.__peDragLock = 1;   // indices are stale until the deferred re-bind → block another drag
+    var firsts = cards.map(function (c) { return c.getBoundingClientRect(); });          // FIRST positions
+    var order = cards.map(function (_, x) { return x; });
+    order.splice(from, 1); order.splice(to, 0, from);
+    order.forEach(function (oi) { container.appendChild(cards[oi]); });                  // reorder the actual nodes
+    try { window.parent.__peReorderData('lmove:' + listPath + ':' + from + ':' + to); } catch (e) {}   // data only
+    var raf2 = window.requestAnimationFrame || function (f) { return setTimeout(f, 16); };
+    cards.forEach(function (c, x) {
+      var nr = c.getBoundingClientRect(); var dx = firsts[x].left - nr.left, dy = firsts[x].top - nr.top;
+      if (!dx && !dy) { c.style.transition = ''; c.style.transform = ''; return; }       // didn't move → no animation
+      c.style.transition = 'none'; c.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';   // INVERT to its old slot
+      raf2(function () { raf2(function () { c.style.transition = 'transform .42s cubic-bezier(.4,0,.2,1)'; c.style.transform = ''; }); });   // PLAY
+    });
+    setTimeout(function () { cards.forEach(function (c) { c.style.transition = ''; c.style.transform = ''; }); window.__peDragLock = 0; A('commit'); }, 470);
+  }
+
   // floating glass popover (one at a time)
   var pePop = null;
   function closePop() { if (pePop) { var p = pePop; pePop = null; if (p.__onClose) { try { p.__onClose(); } catch (e) {} } p.classList.remove('in'); setTimeout(function () { if (p.parentNode) p.parentNode.removeChild(p); }, 180); } }
@@ -731,15 +755,6 @@
         var fn = qs('.cat-footnote', secEl);
         if (fn) { wrapCE(fn, prefix + 'footnote'); makeRemovable(fn, 'rm:' + prefix + 'footnote'); }
 
-        // FLIP for drag-to-reorder: snapshot card rects by their TITLE (stable
-        // identity across the reorder re-render), so each slides to its new slot
-        // (the masonry reflows across columns — all rects, all animated, smooth).
-        var catSnap = function () {
-          var snap = {};
-          qsa('.cat-masonry > .cat-card', secEl).forEach(function (c) { var t = qs('.cat-card-title', c); snap[(t ? t.textContent : '') || Math.random()] = c.getBoundingClientRect(); });
-          window.__peCatFlip = { s: i, snap: snap };
-        };
-
         // ── per category card: name ce + glass dock ──
         qsa('.cat-masonry > .cat-card', secEl).forEach(function (card, j) {
           var cpre = prefix + 'categories.' + j + '.';
@@ -785,7 +800,7 @@
           grip.className = 'cc-btn cc-grip'; grip.setAttribute('data-tip', 'Drag to reorder'); grip.setAttribute('draggable', 'true');
           grip.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>';
           (function (jj) {
-            grip.addEventListener('dragstart', function (e) { window.__peCatDrag = jj; card.classList.add('pe-dragging'); try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(jj)); e.dataTransfer.setDragImage(card, 30, 24); } catch (x) {} });
+            grip.addEventListener('dragstart', function (e) { if (window.__peDragLock) { e.preventDefault(); return; } window.__peCatDrag = jj; card.classList.add('pe-dragging'); try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(jj)); e.dataTransfer.setDragImage(card, 30, 24); } catch (x) {} });
             grip.addEventListener('dragend', function () { card.classList.remove('pe-dragging'); qsa('.cat-card', secEl).forEach(function (c) { c.classList.remove('pe-drop-before', 'pe-drop-after'); }); window.__peCatDrag = null; });
           })(j);
           dock.insertBefore(grip, dock.firstChild);
@@ -801,10 +816,11 @@
             card.addEventListener('dragleave', function () { card.classList.remove('pe-drop-before', 'pe-drop-after'); });
             card.addEventListener('drop', function (e) {
               e.preventDefault(); var from = window.__peCatDrag; if (from == null || from === jj) return;
+              card.classList.remove('pe-drop-before', 'pe-drop-after');
               var rc = card.getBoundingClientRect(); var after = (e.clientY - rc.top) > rc.height / 2;
               var to = jj; if (after && from > jj) to = jj + 1; else if (!after && from < jj) to = jj - 1;
               if (to === from) return;
-              catSnap(); A('lmove:' + prefix + 'categories:' + from + ':' + to);
+              dragReorder(qs('.cat-masonry', secEl), qsa('.cat-masonry > .cat-card', secEl), from, to, prefix + 'categories');
             });
           })(j);
           card.appendChild(dock); armDockHover(card, dock, cpre);
@@ -933,21 +949,6 @@
           // resized + laid out, else the card's measured position is wrong and
           // the popover jumps to the top.
           if (dk && rb2) setTimeout(function () { if (dk._pin) dk._pin(); rb2.click(); }, 60);
-        }
-
-        // FLIP play — after a drag-reorder re-render, slide each card from its
-        // old slot to its new one (the masonry reflows; this makes it smooth).
-        var catFlip = window.__peCatFlip;
-        if (catFlip && catFlip.s === i) {
-          window.__peCatFlip = null;
-          var craf2 = window.requestAnimationFrame || function (f) { return setTimeout(f, 16); };
-          qsa('.cat-masonry > .cat-card', secEl).forEach(function (c) {
-            var t = qs('.cat-card-title', c); var key = t ? t.textContent : ''; var old = catFlip.snap[key]; if (!old) return;
-            var nr = c.getBoundingClientRect(); var dx = old.left - nr.left, dy = old.top - nr.top;
-            if (!dx && !dy) return;
-            c.style.transition = 'none'; c.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
-            craf2(function () { craf2(function () { c.style.transition = 'transform .42s cubic-bezier(.4,0,.2,1)'; c.style.transform = ''; }); });
-          });
         }
       }
 
@@ -1403,14 +1404,6 @@
           var rm = qs('.cc-rm', pop); if (rm) rm.onclick = function () { closePop(); A('rm:' + cpre + 'icon'); };
         };
 
-        // FLIP for drag-to-reorder: snapshot card rects by their TITLE (a stable
-        // identity across the reorder re-render), then slide each to its new slot.
-        var specSnap = function () {
-          var snap = {};
-          qsa('.spec-card', secEl).forEach(function (c) { var t = qs('.spec-card-head span', c); snap[(t ? t.textContent : '') || Math.random()] = c.getBoundingClientRect(); });
-          window.__peSpecFlip = { s: i, snap: snap };
-        };
-
         qsa('.spec-card', secEl).forEach(function (card, j) {
           var cpre = prefix + 'cards.' + j + '.';
           var cdata = (sdata.cards && sdata.cards[j]) || {};
@@ -1452,6 +1445,7 @@
           grab.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>';
           (function (jj) {
             grab.addEventListener('dragstart', function (e) {
+              if (window.__peDragLock) { e.preventDefault(); return; }
               window.__peSpecDrag = jj; card.classList.add('pe-dragging');
               try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(jj)); e.dataTransfer.setDragImage(card, 20, 20); } catch (x) {}
             });
@@ -1470,30 +1464,17 @@
             card.addEventListener('dragleave', function () { card.classList.remove('pe-drop-before', 'pe-drop-after'); });
             card.addEventListener('drop', function (e) {
               e.preventDefault(); var from = window.__peSpecDrag; if (from == null || from === jj) return;
+              card.classList.remove('pe-drop-before', 'pe-drop-after');
               var rc = card.getBoundingClientRect(); var after = (e.clientX - rc.left) > rc.width / 2;
               var to = jj; if (after && from > jj) to = jj + 1; else if (!after && from < jj) to = jj - 1;
               if (to === from) return;
-              specSnap(); A('lmove:' + prefix + 'cards:' + from + ':' + to);
+              dragReorder(qs('.spec-grid', secEl), qsa('.spec-card', secEl), from, to, prefix + 'cards');
             });
           })(j);
         });
 
         // + card — after the grid
         if (grid) grid.parentNode.insertBefore(addLine('push:' + prefix + 'cards', '+ card'), grid.nextSibling);
-
-        // FLIP play — after a reorder re-render, slide each card from its old slot
-        var sf = window.__peSpecFlip;
-        if (sf && sf.s === i) {
-          window.__peSpecFlip = null;
-          var sraf = window.requestAnimationFrame || function (f) { return setTimeout(f, 16); };
-          qsa('.spec-card', secEl).forEach(function (c) {
-            var t = qs('.spec-card-head span', c); var key = t ? t.textContent : ''; var old = sf.snap[key]; if (!old) return;
-            var nr = c.getBoundingClientRect(); var dx = old.left - nr.left, dy = old.top - nr.top;
-            if (!dx && !dy) return;
-            c.style.transition = 'none'; c.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
-            sraf(function () { sraf(function () { c.style.transition = 'transform .42s cubic-bezier(.4,0,.2,1)'; c.style.transform = ''; }); });
-          });
-        }
       }
 
       // ── lifecycle-lane: the OS-support ribbon. Inline .ce on the heading,
