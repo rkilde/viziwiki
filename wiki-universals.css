@@ -548,6 +548,7 @@ body {
   line-height: var(--t-display-leading);
   letter-spacing: var(--t-display-tracking);
   color: var(--hero-title-color);
+  text-wrap: balance;   /* even line lengths; never orphan a trailing word or the accent period */
 }
 
 .wiki-hero-title-accent {

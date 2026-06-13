@@ -25,6 +25,12 @@ const AFFORDANCE = `
      because plain text wraps at spaces). Keeps the editor on the master format. */
   .ce{ cursor:text; border-radius:3px; display:inline-block; max-width:100%; overflow-wrap:anywhere;
        outline:2px solid transparent; outline-offset:2px; transition:outline-color .12s; }
+  /* the hero title's editing wrapper must NOT alter canon line-breaking: the
+     inline-block boundary would let the accent "." (a sibling span) orphan onto
+     its own line, and overflow-wrap:anywhere would break words mid-character —
+     neither of which the live site does. Render it as plain inline text so it
+     wraps EXACTLY like canon (which now balances via .wiki-hero-title). */
+  .wiki-hero-title .ce{ display:inline; max-width:none; overflow-wrap:normal; }
   .ce:hover{ outline-color:rgba(0,0,0,.18); }
   .ce:focus{ outline-color:rgba(0,113,227,.55); }
 
