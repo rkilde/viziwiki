@@ -408,11 +408,9 @@ const AFFORDANCE = `
   .photo-rail-card.pe-dragging{ opacity:.4; }
   .photo-rail-card.pe-drop-before{ box-shadow:-3px 0 0 #6366f1; }
   .photo-rail-card.pe-drop-after{ box-shadow:3px 0 0 #6366f1; }
-  /* empty image → dashed "+ image" slot over the (hidden) broken img */
-  .photo-rail-card.pe-img-empty img{ opacity:0; }
-  .photo-rail-card.pe-img-empty::before{ content:'+ image'; position:absolute; inset:0; display:flex; align-items:center;
-    justify-content:center; border:2px dashed rgba(255,255,255,.3); border-radius:8px; background:rgba(255,255,255,.04);
-    color:rgba(255,255,255,.6); font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.1em; text-transform:uppercase; pointer-events:none; }
+  /* empty card → the decorator renders a real 280×200 placeholder image (so the
+     card always has size, even with no sizing CSS); mark it with a dashed outline */
+  .photo-rail-card.pe-img-empty{ outline:2px dashed rgba(255,255,255,.3); outline-offset:-2px; }
   /* the "+ photo" tile matches a card's footprint */
   .pr-add{ flex-shrink:0; width:280px; height:200px; display:flex; align-items:center; justify-content:center; border-radius:8px; }
   @media(max-width:600px){ .pr-add{ width:200px; height:148px; } }

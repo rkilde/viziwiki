@@ -1739,6 +1739,15 @@
         var srcBlankP = (R('photo-rail.photos[].src').blank) || 'image URL';
         var altBlankP = (R('photo-rail.photos[].alt').blank) || 'describe the photo';
         var prScroll = qs('.photo-rail-scroll', secEl);
+        // A blank, fully transparent 280×200 placeholder image for cards with no
+        // URL yet. An empty <img> contributes zero size, so a fresh card (or each
+        // extra "+ photo") would collapse if the sizing CSS hasn't loaded; an SVG
+        // with explicit width/height has intrinsic size even when invisible, so it
+        // always holds the card's footprint open — the user sees only the dashed
+        // outline, not the square. Replaced the moment a real URL is typed; never
+        // written to data (pure builder chrome).
+        var PR_PH = 'data:image/svg+xml,' + encodeURIComponent(
+          "<svg xmlns='http://www.w3.org/2000/svg' width='280' height='200' viewBox='0 0 280 200'><rect width='280' height='200' fill='none'/></svg>");
         // image popover — the media field is a URL today (a Supabase upload later);
         // editing the URL live-previews onto the card image. alt rides along.
         var openImgPop = function (anchor, ppre, pd) {
@@ -1747,7 +1756,7 @@
             + '<button class="cc-apply cc-img-apply">Apply</button>';
           var pop = openPop(anchor, '', html, { cls: 'lane-pop img-pop', onClose: function () { A('commit'); } });
           var u = qs('.cc-img-url', pop), a = qs('.cc-img-alt', pop), card = anchor.closest('.photo-rail-card'), im = card && qs('img', card);
-          if (u) { enterBlurP(u); u.addEventListener('input', function () { PV(ppre + 'src', u.value); if (im) im.src = u.value; if (card) card.classList.toggle('pe-img-empty', !u.value); }); }
+          if (u) { enterBlurP(u); u.addEventListener('input', function () { PV(ppre + 'src', u.value); if (im) im.src = u.value || PR_PH; if (card) card.classList.toggle('pe-img-empty', !u.value); }); }
           if (a) { enterBlurP(a); a.addEventListener('input', function () { PV(ppre + 'alt', a.value); if (im) im.alt = a.value; }); }
           var ap = qs('.cc-img-apply', pop); if (ap) ap.onclick = function () { closePop(); A('commit'); };
         };
@@ -1757,7 +1766,7 @@
           var ppre = prefix + 'photos.' + k + '.';
           var pd = (sdata.photos && sdata.photos[k]) || {};
           var im = qs('img', card);
-          if (!pd.src) card.classList.add('pe-img-empty');
+          if (!pd.src) { card.classList.add('pe-img-empty'); if (im) im.src = PR_PH; }
           // click the image → set URL + alt. It's the jump target for src/alt.
           if (im) {
             im.style.cursor = 'pointer';

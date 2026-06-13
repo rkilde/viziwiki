@@ -657,7 +657,8 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(!pr.querySelector('.wiki-section-title') && !pr.querySelector('.wiki-section-eyebrow'), 'headerless — no eyebrow/H2');
   ok(pr.querySelector('.photo-rail-scroll.wiki-section-bleed'), 'full-bleed horizontal scroller');
   const card = pr.querySelector('.photo-rail-card');
-  ok(card.classList.contains('pe-img-empty'), 'an empty image shows the dashed "+ image" slot');
+  ok(card.classList.contains('pe-img-empty'), 'an empty image is flagged as a placeholder');
+  ok((card.querySelector('img').getAttribute('src') || '').indexOf('data:image/svg+xml') === 0, 'empty card renders a real placeholder image (holds its 280×200 footprint with no sizing CSS)');
   ok(card.querySelector('.photo-rail-caption strong .ce'), 'caption label (strong) editable in place');
   ok(card.querySelector('.photo-rail-caption .prail-cap-line .ce[data-pe-path$=".caption"]'), 'caption line editable in place');
   ok(card.querySelector('.photo-rail-caption .prail-cap-src .ce[data-pe-path$=".source"]'), 'source line editable in place');
