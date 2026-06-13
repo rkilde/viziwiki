@@ -1550,7 +1550,7 @@
         var bindAxis = function (cell, base, axisKey) {
           if (!cell) return;
           var tg = qs('.gd-tag', cell), nm = qs('.gd-name', cell), yr = qs('.gd-year', cell);
-          if (tg) wrapCE(tg, base + '.tag');
+          if (tg) lockD(tg, 'Locked label (canon: Predecessor / Successor)');
           if (nm) { wrapCE(nm, base + '.name'); var nce = nm.querySelector('.ce'); if (nce) { nce.setAttribute('data-ph', (R('delta.' + axisKey + '.name').blank) || 'Model'); nce.addEventListener('blur', function () { A('commit'); }); } }
           if (yr) { wrapCE(yr, base + '.year'); var yce = yr.querySelector('.ce'); if (yce) yearCE(yce); }
         };

@@ -249,10 +249,12 @@ components:
       hardware: { type: "list<delta_row>", item_blank: { label: "Spec label" } }
       software: { type: "list<delta_row>", item_blank: { label: "Spec label" } }
     subtypes:
-      # prev/current share the tag/name/year shape but carry distinct name
-      # placeholders so a contributor knows which column is which.
-      axis_old: { tag: { type: text }, name: { type: text, required: true, blank: "Old model" }, year: { type: text } }
-      axis_new: { tag: { type: text }, name: { type: text, required: true, blank: "New model" }, year: { type: text } }
+      # prev/current share the name/year shape but carry distinct name
+      # placeholders so a contributor knows which column is which. The column
+      # LABELS (Predecessor / Successor) are locked canon literals in the visual
+      # include — not data — so there is no `tag` field here.
+      axis_old: { name: { type: text, required: true, blank: "Old model" }, year: { type: text } }
+      axis_new: { name: { type: text, required: true, blank: "New model" }, year: { type: text } }
       delta_row:
         label:     { type: text, required: true, blank: "Spec label" }
         old:       { type: text }
@@ -272,8 +274,8 @@ components:
         chip_text: { type: text, help: "The short value shown in the chip" }
     seed:
       heading: "Changes heading"
-      prev:    { tag: "Previous", name: "Old model" }
-      current: { tag: "Current",  name: "New model" }
+      prev:    { name: "Old model" }
+      current: { name: "New model" }
       hardware: [ { label: "Spec label" } ]
     min: "heading + prev + current + one row"
 

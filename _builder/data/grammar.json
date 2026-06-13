@@ -884,9 +884,6 @@
       },
       "subtypes": {
         "axis_old": {
-          "tag": {
-            "type": "text"
-          },
           "name": {
             "type": "text",
             "required": true,
@@ -897,9 +894,6 @@
           }
         },
         "axis_new": {
-          "tag": {
-            "type": "text"
-          },
           "name": {
             "type": "text",
             "required": true,
@@ -980,11 +974,9 @@
       "seed": {
         "heading": "Changes heading",
         "prev": {
-          "tag": "Previous",
           "name": "Old model"
         },
         "current": {
-          "tag": "Current",
           "name": "New model"
         },
         "hardware": [

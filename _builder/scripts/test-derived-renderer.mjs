@@ -584,7 +584,10 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   const nm = gd.querySelector('.gd-gen-old .gd-name .ce');
   ok(nm && nm.getAttribute('data-ph') === 'Old model', 'prev model-name placeholder is "Old model"');
   ok(gd.querySelector('.gd-gen-new .gd-name .ce').getAttribute('data-ph') === 'New model', 'current model-name placeholder is "New model"');
-  ok(gd.querySelector('.gd-gen-old .gd-tag .ce'), 'tag editable');
+  // column labels are LOCKED canon literals (Predecessor / Successor), not editable
+  const ptag = gd.querySelector('.gd-gen-old .gd-tag'), ctag = gd.querySelector('.gd-gen-new .gd-tag');
+  ok(ptag.textContent.trim() === 'Predecessor' && ptag.classList.contains('pe-canon') && !ptag.querySelector('.ce'), 'predecessor label locked canon (not editable)');
+  ok(ctag.textContent.trim() === 'Successor' && ctag.classList.contains('pe-canon'), 'successor label locked canon');
   ok(gd.querySelector('.gd-gen-old .gd-year .ce') && gd.querySelector('.gd-gen-old .gd-year .ce').getAttribute('data-ph') === 'year', 'year field starts as "year" placeholder');
   // the derived per-column echoes + group labels are locked
   ok([...gd.querySelectorAll('.gd-sec-col')].every((c) => c.classList.contains('pe-canon')), 'gd-sec-col echoes locked (derived from the model name)');

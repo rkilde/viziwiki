@@ -4,7 +4,9 @@
   + a Hardware section + a Software section, each a labelled row followed by
   its data rows (see row.html). The section frame (eyebrow / H2 / intro /
   footnote) lives in _includes/sections/delta-section.html.
-  Data: prev{tag,name,year} · current{tag,name,year} · hardware[] · software[]
+  The "Predecessor" / "Successor" column labels are LOCKED canon literals (here),
+  not data — change them once here and every page + the builder follow.
+  Data: prev{name,year} · current{name,year} · hardware[] · software[]
 {%- endcomment -%}
 {%- assign d = include.data -%}
 {%- capture hwIcon -%}<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>{%- endcapture -%}
@@ -12,7 +14,7 @@
 <div class="gd-wrap">
 <table class="gd"><colgroup><col class="gd-c1"><col class="gd-c2"><col class="gd-c3"></colgroup>
 <thead>
-<tr class="gd-gen"><td class="gd-gen-label"></td><td class="gd-gen-old"><span class="gd-tag">{{ d.prev.tag }}</span><span class="gd-name">{{ d.prev.name }}</span><span class="gd-year">{{ d.prev.year }}</span></td><td class="gd-gen-new"><span class="gd-tag">{{ d.current.tag }}</span><span class="gd-name">{{ d.current.name }}</span><span class="gd-year">{{ d.current.year }}</span></td></tr>
+<tr class="gd-gen"><td class="gd-gen-label"></td><td class="gd-gen-old"><span class="gd-tag">Predecessor</span><span class="gd-name">{{ d.prev.name }}</span><span class="gd-year">{{ d.prev.year }}</span></td><td class="gd-gen-new"><span class="gd-tag">Successor</span><span class="gd-name">{{ d.current.name }}</span><span class="gd-year">{{ d.current.year }}</span></td></tr>
 </thead>
 <tbody>
 <tr class="gd-sec"><td class="gd-sec-main">{{ hwIcon }}Hardware</td><td class="gd-sec-col">{{ d.prev.name }}</td><td class="gd-sec-col">{{ d.current.name }}</td></tr>

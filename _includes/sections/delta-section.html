@@ -8,8 +8,9 @@
     · an optional footnote
   Contained (not full-bleed). Usage:
     {% include sections/delta-section.html data=page.delta %}
-  Data: heading (req), intro?, footnote?, tone?, visual?, prev{tag,name,year},
-        current{tag,name,year}, hardware[], software[]
+  Data: heading (req), intro?, footnote?, tone?, visual?, prev{name,year},
+        current{name,year}, hardware[], software[]
+  (The Predecessor/Successor column labels are locked canon in the visual.)
 {%- endcomment -%}
 {%- assign data = include.data -%}
 {%- assign visual = data.visual | default: 'delta' -%}

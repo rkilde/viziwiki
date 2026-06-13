@@ -121,11 +121,9 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 | `intro` |  | richtext | `Add an intro line` |
 | `footnote` |  | richtext | `Add a footnote` |
 | `prev` | • | axis_old | — |
-| `prev.tag` |  | text | — |
 | `prev.name` | • | text | `Old model` |
 | `prev.year` |  | text | — |
 | `current` | • | axis_new | — |
-| `current.tag` |  | text | — |
 | `current.name` | • | text | `New model` |
 | `current.year` |  | text | — |
 | `hardware` |  | list<delta_row> | _(template — see sub-fields)_ |
