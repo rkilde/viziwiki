@@ -51,14 +51,17 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
   const [availW, setAvailW] = useState(0);        // canvas-area inner width
   const [contentH, setContentH] = useState(600);  // iframe content height (logical px)
   const logicalW = CANVAS_W;
-  // LEFT-ANCHOR the canvas: preserve the left margin (the gutter the readiness
-  // panel lives in — same as the old centered-900 position), then render at TRUE
-  // 1080 (scale 1) whenever it fits, letting the RIGHT space absorb the growth.
-  // Shrink only if even the left-anchored 1080 would run past the viewport.
-  const PANEL_NEED = 286;                                  // keep room for the panel (GUTTER+PANEL_MIN+GAP)
-  const RIGHT_MIN = 12;
-  const leftM = Math.max(PANEL_NEED, (availW - 900) / 2);  // the left margin to preserve
-  const scale = availW > 0 ? Math.min(1, (availW - leftM - RIGHT_MIN) / logicalW) : 1;
+  // shared layout constants for the canvas AND the readiness widget in its left
+  // margin (so the two can't disagree).
+  const GUTTER = 20, GAP = 18, PANEL_MAX = 330, PANEL_MIN = 248;
+  const WIDGET_MIN = GUTTER + PANEL_MIN + GAP;            // 286 — min left margin the widget needs
+  // Keep the canvas CENTERED at TRUE 1080. Only scale down if a centered 1080
+  // wouldn't leave the widget its margin — reserve WIDGET_MIN on BOTH sides so it
+  // stays symmetric. So "true 1080 + centered + widget contained" hold together
+  // when the editor is wide enough (~1652px+); below that the canvas shrinks a
+  // touch so the widget still fits in the (now smaller) centered margin.
+  const maxDisp = availW - 2 * WIDGET_MIN;
+  const scale = availW > 0 ? Math.min(1, maxDisp / logicalW) : 1;
 
   // built once — never changes, so the iframe never reloads
   const srcDoc = useMemo(() => buildCanvas(renderBody(docRef.current, isHome), skin), []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -118,14 +121,11 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
   const jump = (it: Leaf) => { (iframeRef.current?.contentWindow as any)?.__peJump?.(it.jump, it.addpath); };
   const todoCount = markers.filter((m) => !m.done).length;
   const left = () => Math.max(6, mkBox.left - 50); // 50px into the backdrop, left of the canvas
-  // readiness panel: CONTAINED entirely in the left backdrop — its right edge is
-  // pinned a GAP before the canvas (never overlaps the editor) and its left edge
-  // keeps GUTTER breathing room from the screen. The width ADAPTS to the room
-  // available in that margin (clamped between a comfortable min and max), so it
-  // shrinks to fit rather than spilling over the canvas.
-  const GUTTER = 20, GAP = 18, PANEL_MAX = 330, PANEL_MIN = 248;
-  const avail = mkBox.left - GAP - GUTTER;                              // room in the left margin
-  const panelW = Math.round(Math.max(PANEL_MIN, Math.min(PANEL_MAX, avail)));
+  // readiness panel: CONTAINED entirely in the left margin — right edge pinned a
+  // GAP before the canvas, left edge a GUTTER from the screen. Width adapts to the
+  // margin (clamped PANEL_MIN..PANEL_MAX); the left margin above guarantees room.
+  const panelAvail = mkBox.left - GAP - GUTTER;
+  const panelW = Math.round(Math.max(PANEL_MIN, Math.min(PANEL_MAX, panelAvail)));
   const panelLeft = Math.max(GUTTER, mkBox.left - GAP - panelW);
 
   return (
@@ -134,7 +134,7 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
         {/* the wrapper reserves the SCALED footprint; the iframe lays out at the
             full logical width and is scaled (top-left) to fit — so the page
             renders like that screen, just shown smaller. */}
-        <div ref={wrapRef} className="pe-canvas-wrap" style={{ width: logicalW * scale, height: contentH * scale, marginLeft: leftM }}>
+        <div ref={wrapRef} className="pe-canvas-wrap" style={{ width: logicalW * scale, height: contentH * scale }}>
           <iframe ref={iframeRef} className="pe-canvas" title="Page editor" srcDoc={srcDoc}
             style={{ width: logicalW, height: contentH, transform: `scale(${scale})`, transformOrigin: 'top left' }} onLoad={measure} />
         </div>

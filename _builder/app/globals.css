@@ -191,9 +191,9 @@ button{ font-family:inherit; }
 .pe-bug-toast svg{ width:15px; height:15px; color:#7de2b6; }
 @keyframes pe-bug-pop{ from{ opacity:0; transform:translateX(-50%) translateY(12px); } to{ opacity:1; transform:translateX(-50%) translateY(0); } }
 /* centered floating sheet (gutters left/right for future UI); iframe auto-resizes */
-/* left-anchored: the canvas sits at a preserved left margin (marginLeft on the
-   wrap) and grows rightward to true 1080; the right space is sacrificed. */
-.pe-canvas-area{ position:absolute; inset:0; overflow-y:auto; overflow-x:hidden; display:flex; justify-content:flex-start; align-items:flex-start; padding:60px 0; }
+/* centered: the canvas (true 1080) is centered; the scale reserves a left/right
+   margin so the readiness widget stays fully contained in the left gutter. */
+.pe-canvas-area{ position:absolute; inset:0; overflow-y:auto; overflow-x:hidden; display:flex; justify-content:center; align-items:flex-start; padding:60px 0; }
 /* the wrapper reserves the scaled footprint (flow + centering); the iframe lays
    out at the logical width and is scale()'d from its top-left to fill it. */
 .pe-canvas-wrap{ flex-shrink:0; }
