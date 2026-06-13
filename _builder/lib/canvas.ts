@@ -483,12 +483,21 @@ const AFFORDANCE = `
     --gd-changed-bg:#fef9c3; --gd-changed-bd:#fef08a; --gd-changed-fg:#a16207;
     --gd-worse-bg:#fee2e2;   --gd-worse-bd:#fecaca;   --gd-worse-fg:#b91c1c;
     --gd-same-bg:#f3f4f6;    --gd-same-bd:#e5e7eb;    --gd-same-fg:#6b7280; }
+  /* in the picker, render chips at a readable size (the live chip is 6.5px) */
+  .chip-pop .gd-chip{ font-size:9px; padding:4px 8px; margin:0 !important; }
   .cc-chip-cat{ display:flex; align-items:flex-start; gap:7px; margin-bottom:7px; }
   .cc-chip-cat-l{ flex:0 0 58px; margin:2px 0 0 0 !important; text-align:center; }
   .cc-chip-row{ display:flex; flex-wrap:wrap; gap:4px; flex:1; }
   .cc-chip-opt{ cursor:pointer; margin:0 !important; border-width:1px; }
   .cc-chip-opt:hover{ filter:brightness(.97); box-shadow:0 0 0 2px rgba(0,0,0,.12); }
   .cc-chip-opt.sel{ box-shadow:0 0 0 2px rgba(0,0,0,.45); }
+  /* parameterized chip — a fill-in {n} slot + a ✓ to resolve it */
+  .cc-chip-fill{ display:inline-flex; align-items:center; gap:1px; }
+  .cc-chip-fill-in{ width:30px; border:0; border-bottom:1px solid currentColor; background:transparent; color:inherit;
+    font:inherit; text-align:center; padding:0 1px; }
+  .cc-chip-fill-in:focus{ outline:none; }
+  .cc-chip-fill-go{ border:0; background:transparent; color:inherit; cursor:pointer; font-size:9px; line-height:1; padding:0 0 0 4px; opacity:.6; }
+  .cc-chip-fill-go:hover{ opacity:1; }
   .cc-chip-custom{ border-top:1px solid rgba(0,0,0,.1); margin-top:4px; padding-top:9px; }
   .cc-chip-text{ width:100%; box-sizing:border-box; padding:6px 8px; border:1px solid rgba(0,0,0,.18); border-radius:6px;
     font-family:'JetBrains Mono',monospace; font-size:10px; margin-bottom:7px; }

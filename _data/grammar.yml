@@ -258,13 +258,16 @@ components:
         old:       { type: text }
         new:       { type: text }
         no_old:    { type: bool, default: false, help: "Hide the 'before' cell" }
-        # chip colour = the DIRECTION of change; `presets` give contributors a
-        # bearings catalogue of suggested labels per category (plus a custom one).
+        # chip colour = the DIRECTION of change. `presets` is a bank of chips per
+        # category: a plain string is a ready-made label; an object {tpl, ph} is a
+        # PARAMETERIZED chip whose `{n}` slot the contributor fills in (e.g. "{n}×"
+        # → 1.5× / 3×). Builder-only authoring aid; the stored chip is still just
+        # chip(colour) + chip_text(the resolved label).
         chip:      { type: "enum[better,feature,changed,worse,same]", help: "Colour = the direction of change",
-                     presets: { better:  ["Faster", "2×", "+50%", "Bigger", "Improved"],
+                     presets: { better:  ["Faster", { tpl: "{n}×", ph: "2" }, { tpl: "+{n}%", ph: "50" }, "Bigger", "Improved"],
                                 feature: ["New", "Added", "First", "Now supported"],
                                 changed: ["Redesigned", "Moved", "Swapped", "Relocated"],
-                                worse:   ["Slower", "Smaller", "Removed", "Dropped"],
+                                worse:   ["Slower", "Smaller", "Removed", { tpl: "−{n}%", ph: "30" }],
                                 same:    ["Unchanged", "Carried over", "—"] } }
         chip_text: { type: text, help: "The short value shown in the chip" }
     seed:

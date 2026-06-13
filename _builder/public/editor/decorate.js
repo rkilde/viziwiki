@@ -1557,12 +1557,20 @@
         // colour (chip) and the text (chip_text) in one commit.
         var chipEnumD = (R('delta.hardware[].chip').enum) || [];
         var chipPresets = (R('delta.hardware[].chip').presets) || {};
+        // render one preset: a plain string → a ready-made chip; an object
+        // {tpl, ph} → a parameterized chip with a fill-in for its `{n}` slot.
+        var renderPreset = function (cat, p) {
+          if (typeof p === 'string') return '<button class="cc-chip-opt gd-chip gd-chip-' + cat + '" data-c="' + cat + '" data-t="' + eaD(p) + '">' + eaD(p) + '</button>';
+          var tpl = (p && p.tpl) || '', ph = (p && p.ph != null) ? String(p.ph) : '', parts = tpl.split('{n}');
+          return '<span class="cc-chip-fill gd-chip gd-chip-' + cat + '" data-c="' + cat + '" data-tpl="' + eaD(tpl) + '">'
+            + eaD(parts[0] || '') + '<input class="cc-chip-fill-in" inputmode="decimal" placeholder="' + eaD(ph) + '">' + eaD(parts[1] || '')
+            + '<button class="cc-chip-fill-go" title="Use this chip">✓</button></span>';
+        };
         var openChipPop = function (anchor, rpre, cur, curText) {
           var html = chipEnumD.map(function (c) {
             var ts = chipPresets[c] || [];
             return '<div class="cc-chip-cat"><span class="cc-chip-cat-l gd-chip gd-chip-' + c + '">' + c + '</span><div class="cc-chip-row">'
-              + ts.map(function (t) { return '<button class="cc-chip-opt gd-chip gd-chip-' + c + ((cur === c && curText === t) ? ' sel' : '') + '" data-c="' + c + '" data-t="' + eaD(t) + '">' + eaD(t) + '</button>'; }).join('')
-              + '</div></div>';
+              + ts.map(function (t) { return renderPreset(c, t); }).join('') + '</div></div>';
           }).join('');
           html += '<div class="cc-chip-custom"><div class="cc-pop-label">Custom</div>'
             + '<input type="text" class="cc-chip-text" placeholder="Your own label…" value="' + eaD(cur ? (curText || '') : '') + '">'
@@ -1570,13 +1578,21 @@
             + '<button class="cc-apply cc-chip-apply">Apply</button></div>'
             + (cur ? '<button class="cc-rm">Remove chip</button>' : '');
           var pop = openPop(anchor, '', html, { cls: 'lane-pop chip-pop' });
-          // a preset sets colour + text together (one commit)
-          qsa('.cc-chip-opt', pop).forEach(function (b) { b.onclick = function () { closePop(); PV(rpre + 'chip', b.getAttribute('data-c')); PV(rpre + 'chip_text', b.getAttribute('data-t')); A('commit'); }; });
+          var pick = function (cat, text) { closePop(); PV(rpre + 'chip', cat); PV(rpre + 'chip_text', text); A('commit'); };
+          // ready-made chips: colour + text in one commit
+          qsa('.cc-chip-opt', pop).forEach(function (b) { b.onclick = function () { pick(b.getAttribute('data-c'), b.getAttribute('data-t')); }; });
+          // parameterized chips: fill the {n} slot, then ✓ / Enter resolves the label
+          qsa('.cc-chip-fill', pop).forEach(function (el) {
+            var inp = qs('.cc-chip-fill-in', el), go = qs('.cc-chip-fill-go', el);
+            var apply = function () { var v = ((inp && inp.value) || (inp && inp.getAttribute('placeholder')) || '').trim(); pick(el.getAttribute('data-c'), el.getAttribute('data-tpl').replace('{n}', v)); };
+            if (inp) { inp.addEventListener('click', function (e) { e.stopPropagation(); }); inp.addEventListener('input', function () { inp.value = inp.value.replace(/[^0-9.]/g, ''); }); inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); apply(); } }); }
+            if (go) go.onclick = function (e) { e.stopPropagation(); apply(); };
+          });
           // custom: a colour swatch + free text → Apply
           var selCat = cur || chipEnumD[0];
-          var txt = qs('.cc-chip-text', pop), apply = qs('.cc-chip-apply', pop);
+          var txt = qs('.cc-chip-text', pop), applyB = qs('.cc-chip-apply', pop);
           qsa('.cc-chip-swatch', pop).forEach(function (s) { s.onclick = function () { qsa('.cc-chip-swatch', pop).forEach(function (x) { x.classList.remove('sel'); }); s.classList.add('sel'); selCat = s.getAttribute('data-c'); }; });
-          if (apply) apply.onclick = function () { closePop(); PV(rpre + 'chip', selCat); PV(rpre + 'chip_text', (txt.value || '').trim()); A('commit'); };
+          if (applyB) applyB.onclick = function () { pick(selCat, (txt.value || '').trim()); };
           var rm = qs('.cc-rm', pop); if (rm) rm.onclick = function () { closePop(); A('rm:' + rpre + 'chip'); };
         };
 

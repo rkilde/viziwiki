@@ -599,6 +599,8 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(cpop.querySelectorAll('.cc-chip-cat').length === 5, 'five chip categories (from the grammar enum)');
   ok(cpop.querySelectorAll('.cc-chip-opt[data-c="better"]').length >= 1, '"better" category offers derived preset chips (bearings)');
   ok(cpop.querySelector('.cc-chip-opt[data-c="feature"][data-t="New"]'), 'preset labels come from grammar (feature → "New")');
+  ok(cpop.querySelector('.cc-chip-fill[data-tpl] .cc-chip-fill-in'), 'a parameterized chip (e.g. {n}×) renders a fill-in input');
+  ok([...cpop.querySelectorAll('.cc-chip-fill')].some((el) => el.getAttribute('data-tpl').includes('{n}')), 'fill chip carries its {n} template (resolved to chip_text on use)');
   ok(cpop.querySelector('.cc-chip-text') && cpop.querySelector('.cc-chip-apply'), 'a custom chip — free text + Apply');
   ok(cpop.querySelectorAll('.cc-chip-swatch').length === 5, 'custom colour swatch per category');
   // "before" toggle present on a row that has an old value

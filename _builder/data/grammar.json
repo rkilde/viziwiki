@@ -932,8 +932,14 @@
             "presets": {
               "better": [
                 "Faster",
-                "2×",
-                "+50%",
+                {
+                  "tpl": "{n}×",
+                  "ph": "2"
+                },
+                {
+                  "tpl": "+{n}%",
+                  "ph": "50"
+                },
                 "Bigger",
                 "Improved"
               ],
@@ -953,7 +959,10 @@
                 "Slower",
                 "Smaller",
                 "Removed",
-                "Dropped"
+                {
+                  "tpl": "−{n}%",
+                  "ph": "30"
+                }
               ],
               "same": [
                 "Unchanged",
