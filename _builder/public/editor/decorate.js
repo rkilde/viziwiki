@@ -1683,6 +1683,7 @@
           if (sdata.weighted) {
             if (sdata.end != null) foot.appendChild(laneChip('end', prefix + 'end', sdata.end, R('lifecycle-lane.end').blank, true));
             else foot.appendChild(addBtn('add:' + prefix + 'end', '+ end date', true));
+            var einfo = document.createElement('span'); einfo.innerHTML = infoI('The date the ribbon runs TO — it gives the LAST version’s tile a width (weighted mode measures each tile by the gap to the next date, and the last one has no next). Use today’s date if that version is still current, or the end-of-life date if support has fully ended.'); foot.appendChild(einfo.firstChild);
           }
           laneWrap.parentNode.insertBefore(foot, laneWrap.nextSibling);   // sibling AFTER the visual, not inside it
         }
