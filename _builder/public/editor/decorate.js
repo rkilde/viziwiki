@@ -1535,9 +1535,9 @@
         var segEls = qsa('.lane-seg', secEl);
         var verBlank = (R('lifecycle-lane.segments[].ver').blank) || 'Version';
         var openSegPop = function (anchor, spre, sd) {
-          // version + date are ALSO editable here (kept inline on the tile too)
-          var html = '<div class="cc-pop-row2"><label class="cc-pop-fld"><span class="cc-pop-label">Software version</span><input type="text" class="cc-lane-ver" placeholder="' + ea2(verBlank) + '" value="' + ea2(sd.ver) + '"></label>'
-            + '<label class="cc-pop-fld"><span class="cc-pop-label">Date</span><input type="text" class="cc-lane-date" placeholder="Mon YYYY" value="' + ea2(sd.date) + '"></label></div>'
+          // version, support type + badge here; the DATE has its own month/year
+          // picker popover (opened from the tile's date — like the timeline).
+          var html = '<div class="cc-pop-label">Software version</div><input type="text" class="cc-lane-ver" placeholder="' + ea2(verBlank) + '" value="' + ea2(sd.ver) + '">'
             + '<div class="cc-pop-label cc-pop-label-i" style="margin-top:13px">Support type' + infoI('How well the device is supported at this version. Full (green) = full OS updates; Partial (amber) = limited/late updates; Dropped (grey) = no longer supported — the cliff where support ends; Security (blue) = security-only patches after end-of-life.') + '</div><div class="cc-enum cc-lane-types">'
             + segTypes.map(function (t) { return '<button class="cc-enum-opt cc-type-' + t + (sd.type === t ? ' sel' : '') + '" data-t="' + t + '">' + t + '</button>'; }).join('') + '</div>'
             // BADGE = a bank of preset text+color combos (derived from the
@@ -1548,11 +1548,28 @@
             + (sd.badge != null ? '<button class="cc-rm">Remove badge</button>' : '');
           var pop = openPop(anchor, '', html, { cls: 'lane-pop' });
           var vi = qs('.cc-lane-ver', pop); if (vi) { enterBlurI(vi); vi.addEventListener('change', function () { PV(spre + 'ver', vi.value); A('commit'); }); }
-          var di = qs('.cc-lane-date', pop); if (di) { enterBlurI(di); di.addEventListener('change', function () { laneSnap(); PV(spre + 'date', di.value); A('commit'); }); }
           qsa('[data-t]', pop).forEach(function (b) { b.onclick = function () { closePop(); A('set:' + spre + 'type:' + b.getAttribute('data-t')); }; });
           // a preset sets BOTH badge text + badge_type in one commit
           qsa('[data-bt]', pop).forEach(function (b) { b.onclick = function () { closePop(); PV(spre + 'badge', b.getAttribute('data-btx')); PV(spre + 'badge_type', b.getAttribute('data-bt')); A('commit'); }; });
           var rm = qs('.cc-rm', pop); if (rm) rm.onclick = function () { closePop(); A('rm:' + spre + 'badge'); };
+        };
+        // DATE picker — a month grid + a separate year field (like the timeline).
+        // Edits are live (PV); on close, if changed, commit once → the canon re-
+        // sorts chronologically and the tiles FLIP into place (laneSnap).
+        var laneMonths = (R('timeline.events[].month').enum) || ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var openLaneDatePop = function (anchor, spre, sd) {
+          var cur = String(sd.date == null ? '' : sd.date), dm = cur.match(/([A-Za-z]+)\s*(\d{4})/);
+          var selMo = ''; if (dm) { var mm = dm[1].slice(0, 3).toLowerCase(); laneMonths.forEach(function (m) { if (m.toLowerCase() === mm) selMo = m; }); }
+          var dirty = false;
+          var html = '<div class="cc-pop-label">Month</div><div class="cc-enum cc-month-grid">'
+            + laneMonths.map(function (m) { return '<button class="cc-enum-opt' + (m === selMo ? ' sel' : '') + '" data-m="' + m + '">' + m + '</button>'; }).join('') + '</div>'
+            + '<div class="cc-pop-label" style="margin-top:11px">Year</div><input type="text" class="cc-lane-year" inputmode="numeric" maxlength="4" placeholder="YYYY" value="' + ea2(dm ? dm[2] : '') + '">';
+          var pop = openPop(anchor, '', html, { cls: 'lane-pop date-pop', onClose: function () { if (dirty) { laneSnap(); A('commit'); } } });
+          var yr = qs('.cc-lane-year', pop);
+          var write = function () { var y = (yr.value || '').trim(); if (selMo && /^\d{4}$/.test(y)) { PV(spre + 'date', selMo + ' ' + y); dirty = true; } };
+          qsa('[data-m]', pop).forEach(function (b) { b.onclick = function () { qsa('[data-m]', pop).forEach(function (x) { x.classList.remove('sel'); }); b.classList.add('sel'); selMo = b.getAttribute('data-m'); write(); }; });
+          yr.addEventListener('input', function () { yr.value = yr.value.replace(/\D/g, '').slice(0, 4); write(); });
+          enterBlurI(yr);
         };
         var enterBlurI = function (el) { el.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); el.blur(); } }); };
         // inline ver/date: single-line only — Enter LOCKS in (a stray newline/<br>
@@ -1569,12 +1586,13 @@
           // version count), so an inline edit to either must commit/re-render.
           var vEl = qs('.lane-ver', seg);
           if (vEl) { wrapCE(vEl, spre + 'ver'); var vce = vEl.querySelector('.ce'); if (vce) dce0(vce, sd.ver); }
+          // the date is a month/year PICKER (no freeform typing) — click it to open
           var dEl = qs('.lane-date', seg);
-          if (dEl) { wrapCE(dEl, spre + 'date'); var dce = dEl.querySelector('.ce'); if (dce) dce0(dce, sd.date); }
+          if (dEl) { dEl.classList.add('pe-datefield'); dEl.style.cursor = 'pointer'; (function (sp, d) { dEl.onclick = function (e) { e.stopPropagation(); openLaneDatePop(dEl, sp, d); }; })(spre, sd); }
           if (segEls.length > segMin) makeRemovable(seg, 'rm:' + prefix + 'segments.' + k);
-          // click the tile (not a field/×) → the type + badge popover
+          // click the tile (not a field/date/×) → the version + type + badge popover
           seg.style.cursor = 'pointer';
-          (function (sp, d) { seg.addEventListener('click', function (e) { if (e.target.closest('.ce,.pe-remove,.cc-pop,.lane-badge')) return; openSegPop(seg, sp, d); }); })(spre, sd);
+          (function (sp, d) { seg.addEventListener('click', function (e) { if (e.target.closest('.ce,.pe-remove,.cc-pop,.lane-badge,.pe-datefield')) return; openSegPop(seg, sp, d); }); })(spre, sd);
         });
         var lane = qs('.lane', secEl);
         if (lane) lane.parentNode.insertBefore(addBtn('push:' + prefix + 'segments', '+ segment', true), lane.nextSibling);

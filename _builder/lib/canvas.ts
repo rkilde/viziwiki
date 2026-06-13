@@ -454,6 +454,11 @@ const AFFORDANCE = `
   .cc-pop-label-i .dr-info svg{ width:13px; height:13px; }
   .cc-pop.lane-pop{ min-width:230px; }
   .cc-pop.lane-pop .cc-enum{ grid-template-columns:repeat(2,1fr); }
+  .cc-pop.lane-pop .cc-month-grid{ grid-template-columns:repeat(4,1fr); }   /* the date picker's month grid */
+  .cc-lane-year{ width:100%; box-sizing:border-box; margin-top:2px; font-family:'JetBrains Mono',monospace; font-size:12px; padding:7px 9px;
+    border-radius:8px; border:1px solid rgba(0,0,0,.14); background:rgba(255,255,255,.66); outline:none; color:#2a1f15; }
+  .cc-lane-year:focus{ border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.16); }
+  .cc-pop.lane-pop.date-pop{ min-width:240px; }
   .cc-pop.lane-pop .cc-enum-opt{ display:flex; align-items:center; gap:6px; justify-content:center; text-transform:capitalize; }
   .cc-pop.lane-pop .cc-enum-opt .lane-note-dot{ flex:none; }
   /* color-coded support-type options (the semantic palette — matches the tiles) */

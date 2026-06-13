@@ -742,6 +742,7 @@
           "ver": {
             "type": "text",
             "required": true,
+            "label": "Version",
             "blank": "Version"
           },
           "date": {
