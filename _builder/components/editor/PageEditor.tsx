@@ -51,12 +51,14 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
   const [availW, setAvailW] = useState(0);        // canvas-area inner width
   const [contentH, setContentH] = useState(600);  // iframe content height (logical px)
   const logicalW = CANVAS_W;
-  const PAD = 80;                                  // .pe-canvas-area horizontal padding (40+40)
-  const DISPLAY_MAX = 900;                         // cap the ON-SCREEN width (old footprint); layout stays at logicalW
-  // scale = the smallest of: 1:1, the display cap, and the fit-to-area width.
-  // So the page always LAYS OUT at logicalW (1080) but is never drawn wider than
-  // DISPLAY_MAX — and still shrinks further on a narrow editor.
-  const scale = availW > 0 ? Math.min(1, DISPLAY_MAX / logicalW, (availW - PAD) / logicalW) : DISPLAY_MAX / logicalW;
+  // LEFT-ANCHOR the canvas: preserve the left margin (the gutter the readiness
+  // panel lives in — same as the old centered-900 position), then render at TRUE
+  // 1080 (scale 1) whenever it fits, letting the RIGHT space absorb the growth.
+  // Shrink only if even the left-anchored 1080 would run past the viewport.
+  const PANEL_NEED = 286;                                  // keep room for the panel (GUTTER+PANEL_MIN+GAP)
+  const RIGHT_MIN = 12;
+  const leftM = Math.max(PANEL_NEED, (availW - 900) / 2);  // the left margin to preserve
+  const scale = availW > 0 ? Math.min(1, (availW - leftM - RIGHT_MIN) / logicalW) : 1;
 
   // built once — never changes, so the iframe never reloads
   const srcDoc = useMemo(() => buildCanvas(renderBody(docRef.current, isHome), skin), []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -132,7 +134,7 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
         {/* the wrapper reserves the SCALED footprint; the iframe lays out at the
             full logical width and is scaled (top-left) to fit — so the page
             renders like that screen, just shown smaller. */}
-        <div ref={wrapRef} className="pe-canvas-wrap" style={{ width: logicalW * scale, height: contentH * scale }}>
+        <div ref={wrapRef} className="pe-canvas-wrap" style={{ width: logicalW * scale, height: contentH * scale, marginLeft: leftM }}>
           <iframe ref={iframeRef} className="pe-canvas" title="Page editor" srcDoc={srcDoc}
             style={{ width: logicalW, height: contentH, transform: `scale(${scale})`, transformOrigin: 'top left' }} onLoad={measure} />
         </div>
