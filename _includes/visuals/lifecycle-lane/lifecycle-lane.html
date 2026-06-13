@@ -81,7 +81,7 @@
         {%- assign w = nextep | minus: curep -%}
         {%- if w > 0 -%}{%- assign segstyle = 'flex:' | append: w -%}{%- endif -%}
       {%- endif -%}
-      <div class="lane-seg {{ s.type }}"{% if segstyle != '' %} style="{{ segstyle }}"{% endif %}>
+      <div class="lane-seg {{ s.type }}" data-idx="{{ idx }}"{% if segstyle != '' %} style="{{ segstyle }}"{% endif %}>
         {%- if s.badge -%}<span class="lane-badge {{ s.badge_type | default: 'ship' }}">{{ s.badge }}</span>{%- endif -%}
         <div class="lane-ver fr">{{ s.ver }}</div>
         <div class="lane-date jb">{{ s.date }}</div>

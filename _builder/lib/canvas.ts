@@ -473,11 +473,20 @@ const AFFORDANCE = `
   .cc-pop.lane-pop.note-add{ min-width:254px; }
   .cc-pop.lane-pop .cc-noteseg{ display:flex; flex-wrap:wrap; gap:5px; grid-template-columns:none; }
   .cc-pop.lane-pop .cc-noteseg .cc-enum-opt{ flex:0 0 auto; padding:4px 9px; font-size:8.5px; }
-  .cc-note-label, .cc-note-text{ width:100%; box-sizing:border-box; margin-top:2px; font-family:'Spectral',Georgia,serif; font-size:12px; padding:7px 9px;
+  .cc-note-os, .cc-note-text{ width:100%; box-sizing:border-box; margin-top:2px; font-family:'Spectral',Georgia,serif; font-size:12px; padding:7px 9px;
     border-radius:8px; border:1px solid rgba(0,0,0,.14); background:rgba(255,255,255,.7); outline:none; color:#2a1f15; }
   .cc-note-text{ resize:vertical; min-height:42px; }
-  .cc-note-label:focus, .cc-note-text:focus{ border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.16); }
+  .cc-note-os:focus, .cc-note-text:focus{ border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.16); }
+  .cc-opt{ text-transform:none; letter-spacing:0; opacity:.55; }
+  /* live preview that mimics the real note tile (dot + bold label — text) */
+  .cc-note-preview{ display:flex; align-items:flex-start; gap:7px; margin-top:2px; padding:8px 10px; border-radius:8px; background:rgba(0,0,0,.035);
+    font-family:'Spectral',Georgia,serif; font-size:11.5px; line-height:1.45; color:#2a1f15; }
+  .cc-note-preview .lane-note-dot{ margin-top:4px; flex:none; }
+  .cc-np-l{ font-weight:600; }
   .cc-pop.lane-pop .cc-note-add{ margin-top:11px; }
+  .dr-label-i{ display:inline-flex; align-items:center; gap:6px; }
+  .dr-label-i .dr-info{ width:14px; height:14px; color:rgba(0,0,0,.4); }
+  .dr-label-i .dr-info svg{ width:13px; height:13px; }
   /* version + date, side by side, in the segment popover */
   .cc-pop-row2{ display:flex; gap:8px; }
   .cc-pop-fld{ display:flex; flex-direction:column; gap:4px; flex:1; min-width:0; }

@@ -1266,7 +1266,7 @@
             + '</div>'
             + '</div>'
             + '<div class="dr-row c2">'
-            + '<div><div class="dr-label">Model / model number</div><input class="dr-input dr-model" value="' + ea(idata.model || '') + '"></div>'
+            + '<div><div class="dr-label dr-label-i">Model / model number<span class="dr-info" tabindex="0" data-tip="' + ea('A short way to tell this configuration apart from the others. Put either a plain descriptor (e.g. “Base”, “Mid”, “Top”) or the literal model/part number (e.g. “A2178 · MVJD2LL/A”) — whichever best distinguishes it.') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span></div><input class="dr-input dr-model" value="' + ea(idata.model || '') + '"></div>'
             + '<div><div class="dr-label">Dates available</div><input class="dr-input dr-dates" value="' + ea(idata.dates || '') + '"></div>'
             + '</div>'
             + '<div><div class="dr-label" style="margin-bottom:8px">Options</div><div class="tog-row">'
@@ -1494,6 +1494,10 @@
       if (type === 'lifecycle-lane') {
         var ea2 = function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); };
         var lockCanon = function (el, tip) { if (!el) return; el.classList.add('pe-canon'); var lk = document.createElement('span'); lk.className = 'pe-lock'; lk.title = tip; lk.innerHTML = LOCK; el.appendChild(lk); };
+        // FLIP: snapshot tile rects (by their canon data-idx) BEFORE a date edit
+        // commits — the canon re-sorts chronologically, and the tiles smoothly
+        // slide to their new slots (the buildkit's standard reorder animation).
+        var laneSnap = function () { var snap = {}; qsa('.lane-seg', secEl).forEach(function (s) { snap[s.getAttribute('data-idx')] = s.getBoundingClientRect(); }); window.__peLaneFlip = { s: i, snap: snap }; };
         wrapCE(qs('.wiki-section-title', secEl), prefix + 'heading');   // required H2
         wrapCE(qs('.lane-title', secEl), prefix + 'title');            // required lane title
 
@@ -1544,7 +1548,7 @@
             + (sd.badge != null ? '<button class="cc-rm">Remove badge</button>' : '');
           var pop = openPop(anchor, '', html, { cls: 'lane-pop' });
           var vi = qs('.cc-lane-ver', pop); if (vi) { enterBlurI(vi); vi.addEventListener('change', function () { PV(spre + 'ver', vi.value); A('commit'); }); }
-          var di = qs('.cc-lane-date', pop); if (di) { enterBlurI(di); di.addEventListener('change', function () { PV(spre + 'date', di.value); A('commit'); }); }
+          var di = qs('.cc-lane-date', pop); if (di) { enterBlurI(di); di.addEventListener('change', function () { laneSnap(); PV(spre + 'date', di.value); A('commit'); }); }
           qsa('[data-t]', pop).forEach(function (b) { b.onclick = function () { closePop(); A('set:' + spre + 'type:' + b.getAttribute('data-t')); }; });
           // a preset sets BOTH badge text + badge_type in one commit
           qsa('[data-bt]', pop).forEach(function (b) { b.onclick = function () { closePop(); PV(spre + 'badge', b.getAttribute('data-btx')); PV(spre + 'badge_type', b.getAttribute('data-bt')); A('commit'); }; });
@@ -1556,7 +1560,7 @@
         // commit on blur ONLY when changed (so the range/positions refresh).
         var dce0 = function (ce, orig) {
           ce.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); ce.blur(); } });
-          ce.addEventListener('blur', function () { if ((ce.textContent || '').trim() !== String(orig == null ? '' : orig).trim()) A('commit'); });
+          ce.addEventListener('blur', function () { if ((ce.textContent || '').trim() !== String(orig == null ? '' : orig).trim()) { laneSnap(); A('commit'); } });
         };
         segEls.forEach(function (seg, k) {
           var spre = prefix + 'segments.' + k + '.';
@@ -1590,16 +1594,28 @@
           var segData = sdata.segments || [];
           if (!segData.length) return;
           var chips = segData.map(function (s, k) { return '<button class="cc-enum-opt cc-type-' + s.type + '" data-seg="' + k + '">' + ea2(s.ver || '—') + '</button>'; }).join('');
+          // The note's LABEL is the version (auto-derived from the pick) — the
+          // note IS about that number. The OS name (optional, your own) prefixes
+          // it (e.g. "iOS 4.0"). A live preview mimics the actual note tile.
           var html = '<div class="cc-pop-label">Which version is this note about?</div><div class="cc-enum cc-noteseg">' + chips + '</div>'
-            + '<div class="cc-pop-label" style="margin-top:11px">Label</div><input type="text" class="cc-note-label" placeholder="' + ea2((R('lifecycle-lane.notes[].label').blank) || 'Note label') + '">'
+            + '<div class="cc-pop-label" style="margin-top:11px">Operating system <span class="cc-opt">(optional prefix)</span></div><input type="text" class="cc-note-os" placeholder="e.g. iOS">'
             + '<div class="cc-pop-label" style="margin-top:9px">Note</div><textarea class="cc-note-text" rows="2" placeholder="What happened at this version…"></textarea>'
+            + '<div class="cc-pop-label" style="margin-top:11px">Preview</div>'
+            + '<div class="cc-note-preview"><span class="lane-note-dot"></span><span class="cc-np"><strong class="cc-np-l">—</strong><span class="cc-np-d"> — </span><span class="cc-np-t"></span></span></div>'
             + '<button class="cc-apply cc-note-add" disabled>Add note</button>';
           var pop = openPop(anchor, '', html, { cls: 'lane-pop note-add' });
-          var sel = null, lab = qs('.cc-note-label', pop), txt = qs('.cc-note-text', pop), addB = qs('.cc-note-add', pop);
-          var upd = function () { addB.disabled = !(sel && ((txt.value || '').trim() || (lab.value || '').trim())); };
+          var sel = null, os = qs('.cc-note-os', pop), txt = qs('.cc-note-text', pop), addB = qs('.cc-note-add', pop);
+          var pdot = qs('.cc-note-preview .lane-note-dot', pop), pl = qs('.cc-np-l', pop), pd = qs('.cc-np-d', pop), pt = qs('.cc-np-t', pop);
+          var labelOf = function () { var v = sel ? (sel.ver || '') : ''; var o = (os.value || '').trim(); return ((o ? o + ' ' : '') + v).trim(); };
+          var upd = function () {
+            var lab = labelOf(); pl.textContent = lab || '—'; pt.textContent = txt.value || '';
+            pd.style.display = (lab && txt.value) ? '' : 'none';
+            if (pdot) pdot.className = 'lane-note-dot' + (sel ? ' lane-dot-' + sel.type : '');
+            addB.disabled = !(sel && (txt.value || '').trim());
+          };
           qsa('[data-seg]', pop).forEach(function (b) { b.onclick = function () { qsa('[data-seg]', pop).forEach(function (x) { x.classList.remove('sel'); }); b.classList.add('sel'); sel = segData[+b.getAttribute('data-seg')]; upd(); }; });
-          lab.addEventListener('input', upd); txt.addEventListener('input', upd);
-          addB.onclick = function () { if (!sel) return; window.__peNoteAdd = { s: i, status: sel.type, label: lab.value, text: txt.value }; closePop(); A('push:' + prefix + 'notes'); };
+          os.addEventListener('input', upd); txt.addEventListener('input', upd);
+          addB.onclick = function () { if (!sel) return; window.__peNoteAdd = { s: i, status: sel.type, label: labelOf(), text: txt.value }; closePop(); A('push:' + prefix + 'notes'); };
         };
         if (notesWrap) {
           qsa('.lane-note', notesWrap).forEach(function (note, k) {
@@ -1639,6 +1655,22 @@
             else foot.appendChild(addBtn('add:' + prefix + 'end', '+ end date', true));
           }
           laneWrap.parentNode.insertBefore(foot, laneWrap.nextSibling);   // sibling AFTER the visual, not inside it
+        }
+
+        // FLIP play — after a date edit re-sorts the tiles, slide each from its
+        // old slot to its new one (match by the canon data-idx, stable across the
+        // re-sort since editing a date doesn't change a segment's data index).
+        var lf = window.__peLaneFlip;
+        if (lf && lf.s === i) {
+          window.__peLaneFlip = null;
+          var lraf = window.requestAnimationFrame || function (f) { return setTimeout(f, 16); };
+          qsa('.lane-seg', secEl).forEach(function (seg) {
+            var old = lf.snap[seg.getAttribute('data-idx')]; if (!old) return;
+            var nr = seg.getBoundingClientRect(); var dx = old.left - nr.left, dy = old.top - nr.top;
+            if (!dx && !dy) return;
+            seg.style.transition = 'none'; seg.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+            lraf(function () { lraf(function () { seg.style.transition = 'transform .42s cubic-bezier(.4,0,.2,1)'; seg.style.transform = ''; }); });
+          });
         }
       }
     });
