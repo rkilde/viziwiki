@@ -49,8 +49,10 @@ export function ReadinessPanel({ marker, onJump, onClose }: { marker: Marker; on
       <div key={c.key} className={`pe-mk-cg ${ready ? 'ready' : ''} ${isOpen ? 'open' : ''}`}>
         <button className="pe-mk-cg-head" onClick={() => toggle(open, c.key, setOpen)}>
           <span className="cg-chev"><Chev /></span>
-          <span className="cg-kind">{c.kind}</span>
-          <span className="cg-name">{c.name || <span className="un">{c.kind}</span>}</span>
+          {/* one identifier only, in mono: the card's name when it has one, else
+              the kind. (Was a mono kind tag PLUS a Fraunces name that just
+              repeated the kind when unnamed — doubled text that didn't fit.) */}
+          <span className={`cg-id ${c.name ? '' : 'un'}`}>{c.name || c.kind}</span>
           {ready ? <span className="cg-stat done"><Chk /> Ready</span> : <span className="cg-stat todo"><Tri /> {c.unmet} left</span>}
         </button>
         <div className="pe-mk-cg-body">

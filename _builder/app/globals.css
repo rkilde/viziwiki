@@ -251,9 +251,9 @@ button{ font-family:inherit; }
 .pe-mk-cg-head{ display:flex; align-items:center; gap:9px; width:100%; text-align:left; padding:10px 11px; border:0; background:transparent; cursor:pointer; font-family:inherit; }
 .pe-mk-cg-head:hover{ background:rgba(0,0,0,.02); } .pe-mk-cg.ready .pe-mk-cg-head:hover{ background:rgba(63,143,91,.06); }
 .pe-mk-cg-head .cg-chev{ color:#b3a99c; transition:transform .2s; display:inline-flex; flex:none; } .pe-mk-cg-head .cg-chev svg{ width:13px; height:13px; } .pe-mk-cg.open .pe-mk-cg-head .cg-chev{ transform:rotate(90deg); }
-.pe-mk-cg-head .cg-kind{ font-family:'JetBrains Mono',monospace; font-size:7px; letter-spacing:.13em; text-transform:uppercase; color:#b3a99c; flex:none; }
-.pe-mk-cg-head .cg-name{ font-family:'Fraunces',Georgia,serif; font-weight:600; font-size:14px; color:#1c1a17; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.pe-mk-cg-head .cg-name .un{ color:#b3a99c; font-style:italic; font-weight:500; }
+/* one mono identifier per card — the name when present, else the kind tag */
+.pe-mk-cg-head .cg-id{ font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.04em; color:#2c2620; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.pe-mk-cg-head .cg-id.un{ color:#b3a99c; font-size:8.5px; letter-spacing:.13em; text-transform:uppercase; }
 .pe-mk-cg-head .cg-stat{ flex:none; display:inline-flex; align-items:center; gap:5px; font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.06em; text-transform:uppercase; padding:3px 8px; border-radius:999px; }
 .pe-mk-cg-head .cg-stat.todo{ background:#fbe6cf; color:#c98a2b; } .pe-mk-cg-head .cg-stat.todo svg{ width:10px; height:10px; }
 .pe-mk-cg-head .cg-stat.done{ background:transparent; color:#3f8f5b; } .pe-mk-cg-head .cg-stat.done svg{ width:13px; height:13px; }
