@@ -219,7 +219,9 @@ const AFFORDANCE = `
     border:1px dashed rgba(0,0,0,.28); background:transparent; color:rgba(0,0,0,.46); position:relative;
     font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; }
   button.pe-note-chip:hover{ border-color:rgba(0,0,0,.45); color:rgba(0,0,0,.62); }
-  .pe-note-chip.has{ cursor:default; }
+  /* filled note: drop the dashed "add" affordance — it reads as plain inline
+     text (the corner × handles removal), only the empty "+ note" stays dashed */
+  .pe-note-chip.has{ cursor:default; border-color:transparent; padding-left:2px; padding-right:2px; }
   .pe-note-chip .ce{ text-transform:none; letter-spacing:normal; }
   .pe-note-chip > .pe-remove{ top:-7px; right:-7px; width:14px; height:14px; font-size:10px; }
   .modal-scroll .pe-mini-add, .modal-scroll .pe-add{ opacity:.7; }
@@ -350,21 +352,20 @@ const AFFORDANCE = `
   .dr-input:focus{ border-color:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,.14); }
   .dr-select{ appearance:none; cursor:pointer; padding-right:28px; background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E") no-repeat right 10px center; }
   .tog-row{ display:flex; gap:7px; flex-wrap:wrap; align-items:center; }
-  /* info "i" beside a toggle — a hover/focus tooltip explaining the option */
+  /* info "i" beside a toggle — the explanatory bubble is PORTALED to <body> as
+     a fixed .dr-tip (below) so it clears every overflow:clip container (modal,
+     card) and stacks above all chrome. The icon itself is just the trigger. */
   .dr-info{ position:relative; display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; color:rgba(0,0,0,.4); cursor:help; outline:none; }
   .dr-info svg{ width:15px; height:15px; }
   .dr-info:hover, .dr-info:focus{ color:#2563eb; }
-  .dr-info::after{ content:attr(data-tip); position:absolute; left:0; bottom:calc(100% + 9px); transform:translateY(5px); width:300px; max-width:300px;
-    white-space:normal; text-align:left; background:#0a0a0a; color:#fff; font-family:'Spectral',Georgia,serif; font-size:12px; font-weight:400; line-height:1.5;
-    letter-spacing:0; text-transform:none; padding:10px 12px; border-radius:9px; box-shadow:0 10px 28px rgba(0,0,0,.24); opacity:0; pointer-events:none;
-    transition:opacity .14s ease, transform .14s ease; z-index:40; }
-  .dr-info::before{ content:''; position:absolute; left:6px; bottom:calc(100% + 3px); transform:translateY(5px) rotate(45deg); width:9px; height:9px; background:#0a0a0a; opacity:0; transition:opacity .14s ease, transform .14s ease; z-index:40; }
-  .dr-info:hover::after, .dr-info:focus::after, .dr-info:hover::before, .dr-info:focus::before{ opacity:1; transform:translateY(0); }
-  .dr-info:hover::before, .dr-info:focus::before{ transform:rotate(45deg); }
-  /* edge-flip (set by JS when the bubble would overrun the right edge): anchor it
-     to the icon's right and grow leftward so it stays on-screen */
-  .dr-info.flip-r::after{ left:auto; right:0; }
-  .dr-info.flip-r::before{ left:auto; right:6px; }
+  /* the single shared tooltip bubble — fixed, top-layer, never clipped */
+  .dr-tip{ position:fixed; z-index:1600; width:300px; max-width:300px; white-space:normal; text-align:left;
+    background:#0a0a0a; color:#fff; font-family:'Spectral',Georgia,serif; font-size:12px; font-weight:400; line-height:1.5;
+    letter-spacing:0; text-transform:none; padding:10px 12px; border-radius:9px; box-shadow:0 10px 28px rgba(0,0,0,.24);
+    opacity:0; transform:translateY(5px); pointer-events:none; transition:opacity .14s ease, transform .14s ease; }
+  .dr-tip.in{ opacity:1; transform:translateY(0); }
+  .dr-tip::after{ content:''; position:absolute; left:var(--ax,16px); bottom:-4px; transform:translateX(-50%) rotate(45deg); width:9px; height:9px; background:#0a0a0a; }
+  .dr-tip.below::after{ bottom:auto; top:-4px; }
   .tog{ display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:6px; border:1px solid rgba(0,0,0,.16); background:#fff;
     font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.08em; text-transform:uppercase; color:rgba(0,0,0,.5); cursor:pointer; transition:.12s; }
   .tog:hover{ border-color:rgba(0,0,0,.3); }

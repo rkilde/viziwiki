@@ -420,12 +420,31 @@
     setTimeout(function () { selectAllCE(el); }, 0); // defer past the click's caret placement
   });
 
-  // info "i" tooltip edge-flip: the bubble is left-anchored + wide, so a right-
-  // side icon (e.g. config price-drop) overruns the canvas. On hover/focus,
-  // flip it to right-anchored when it would overflow the right edge.
-  var flipInfo = function (ic) { if (!ic) return; var r = ic.getBoundingClientRect(); ic.classList.toggle('flip-r', (r.left + 300) > (window.innerWidth - 8)); };
-  document.addEventListener('mouseover', function (e) { var ic = e.target.closest && e.target.closest('.dr-info'); if (ic) flipInfo(ic); });
-  document.addEventListener('focusin', function (e) { var ic = e.target.closest && e.target.closest('.dr-info'); if (ic) flipInfo(ic); });
+  // info "i" tooltip — ONE shared bubble portaled to <body> (fixed, top-layer),
+  // so it clears every overflow:clip container (the modal, the masonry cards)
+  // and stacks above the floating dock / section chrome. Positioned per-icon
+  // off its rect: above by default, flipped below when there's no room up; the
+  // arrow (--ax) points back at the icon centre, and it's clamped on-screen.
+  var drTip = null;
+  function ensureTip() { if (!drTip || !drTip.parentNode) { drTip = document.createElement('div'); drTip.className = 'dr-tip'; document.body.appendChild(drTip); } return drTip; }
+  function showTip(ic) {
+    var tip = ic.getAttribute('data-tip'); if (!tip) return;
+    var el = ensureTip(); el.textContent = tip; el.className = 'dr-tip';
+    el.style.left = '0px'; el.style.top = '0px';
+    var r = ic.getBoundingClientRect(), w = el.offsetWidth, h = el.offsetHeight;
+    var left = r.left + r.width / 2 - w / 2, top = r.top - h - 9, below = false;
+    if (top < 8) { top = r.bottom + 9; below = true; }
+    left = Math.max(8, Math.min(left, window.innerWidth - w - 8));
+    el.style.left = left + 'px'; el.style.top = top + 'px';
+    el.style.setProperty('--ax', (r.left + r.width / 2 - left) + 'px');
+    if (below) el.classList.add('below');
+    (window.requestAnimationFrame || function (f) { setTimeout(f, 0); })(function () { el.classList.add('in'); });
+  }
+  function hideTip() { if (drTip) drTip.classList.remove('in'); }
+  document.addEventListener('mouseover', function (e) { var ic = e.target.closest && e.target.closest('.dr-info'); if (ic) showTip(ic); });
+  document.addEventListener('mouseout', function (e) { var ic = e.target.closest && e.target.closest('.dr-info'); if (ic) hideTip(); });
+  document.addEventListener('focusin', function (e) { var ic = e.target.closest && e.target.closest('.dr-info'); if (ic) showTip(ic); });
+  document.addEventListener('focusout', function (e) { var ic = e.target.closest && e.target.closest('.dr-info'); if (ic) hideTip(); });
 
   // group-pill action menu (object pills only): a small glass popover with the
   // strike-through toggle. Deletion is NOT here — every pill uses the same
