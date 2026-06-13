@@ -509,6 +509,13 @@ const AFFORDANCE = `
   .cc-chip-swatch.gd-chip-worse{ background:var(--gd-worse-bg); border-color:var(--gd-worse-fg); }
   .cc-chip-swatch.gd-chip-same{ background:var(--gd-same-bg); border-color:var(--gd-same-fg); }
   .cc-chip-swatch.sel{ box-shadow:0 0 0 2px rgba(0,0,0,.5); }
+  /* delta: show the placeholder for an EMPTY old/new value field so both columns
+     read as clear, fillable fields (scoped to .delta so other banks are untouched) */
+  .delta .ce:empty::before{ content:attr(data-ph); color:rgba(0,0,0,.34); font-style:italic; pointer-events:none; }
+  /* delta: the per-group add affordance spans the WHOLE row (that's what's added) */
+  .pe-gd-addrow td{ padding:0 !important; }
+  .pe-gd-add{ display:block; width:100%; box-sizing:border-box; text-align:center; border-radius:0;
+    border-left:0; border-right:0; padding:8px 9px; }
   .cc-pop.lane-pop .cc-enum{ grid-template-columns:repeat(2,1fr); }
   .cc-pop.lane-pop .cc-month-grid{ grid-template-columns:repeat(4,1fr); }   /* the date picker's month grid */
   .cc-lane-year{ width:100%; box-sizing:border-box; margin-top:2px; font-family:'JetBrains Mono',monospace; font-size:12px; padding:7px 9px;

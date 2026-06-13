@@ -591,7 +591,8 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   // a seed hardware row: label + new editable, chip carries its ⋯ colour menu
   const row = gd.querySelector('.gd-row');
   ok(row.querySelector('.gd-label-name .ce'), 'row label editable');
-  ok(row.querySelector('.gd-new-val .ce'), 'row "new" value editable');
+  ok(row.querySelector('.gd-old-val .ce') && row.querySelector('.gd-old-val .ce').getAttribute('data-ph') === 'old value', 'previous-value field is clearly labelled ("old value")');
+  ok(row.querySelector('.gd-new-val .ce') && row.querySelector('.gd-new-val .ce').getAttribute('data-ph') === 'new value', 'current-value field is clearly labelled ("new value")');
   ok(row.querySelector('.gd-chip .ce') && row.querySelector('.gd-chip .gpill-menu'), 'chip text editable + ⋯ colour menu (the seed row has a chip)');
   row.querySelector('.gd-chip .gpill-menu').onclick({ stopPropagation() {} });
   const cpop = [...d.querySelectorAll('.cc-pop.chip-pop')].pop();
@@ -606,10 +607,12 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   // "before" toggle present on a row that has an old value
   ok([...row.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === 'no before'), 'row offers a "no before" toggle (no_old)');
   // add-row affordances per group, derived from the list paths
-  const adders = [...gd.querySelectorAll('.pe-gd-addrow .pe-mini-add')].map((b) => b.textContent);
+  const addRows = [...gd.querySelectorAll('.pe-gd-addrow .pe-gd-add')];
+  const adders = addRows.map((b) => b.textContent);
   ok(adders.includes('+ hardware row') && adders.includes('+ software row'), '+ hardware row / + software row adders present');
+  ok(addRows.every((b) => b.closest('td').colSpan === 3), 'add-row affordance spans the whole row (colspan 3)');
   // optional intro/footnote start as sentinel "+" slots (renderer-seeded), editable once added
-  ok([...gd.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ intro') || gd.querySelector('.delta-prose .ce'), 'intro is a "+" slot when absent (renderer sentinel)');
+  ok([...gd.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ intro text') || gd.querySelector('.delta-prose .ce'), 'intro is a "+ intro text" slot when absent (renderer sentinel)');
   ok([...gd.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ footnote') || gd.querySelector('.gd-foot .ce'), 'footnote is a "+" slot when absent');
 }
 

@@ -76,7 +76,7 @@
   var SECTION_SLOTS = {
     'catalog.footnote': { root: '.cat-footnote', label: '+ footnote' },
     'config.footer':    { root: '.cfg-footer',   label: '+ footer' },
-    'delta.intro':      { root: '.delta-prose',  label: '+ intro' },
+    'delta.intro':      { root: '.delta-prose',  label: '+ intro text' },
     'delta.footnote':   { root: '.gd-foot',      label: '+ footnote' },
   };
 
@@ -1525,7 +1525,10 @@
       // chip). Add/remove rows per group; chip colour is a derived enum popover;
       // the "before" cell can be toggled off (no_old). No layout JS in the canon. ──
       if (type === 'delta') {
-        var lockD = function (el, tip) { if (!el) return; el.classList.add('pe-canon'); var lk = document.createElement('span'); lk.className = 'pe-lock'; lk.title = tip; lk.innerHTML = LOCK; el.appendChild(lk); };
+        // lock = derived/not-editable. In table cells the floating corner padlock
+        // pokes into neighbours (z-overlap), so signal it with the .pe-canon hover
+        // outline + a title tooltip only — no padlock glyph.
+        var lockD = function (el, tip) { if (!el) return; el.classList.add('pe-canon'); el.title = tip; };
         wrapCE(qs('.wiki-section-title', secEl), prefix + 'heading');     // required H2
 
         // intro / footnote: only the PRESENT case here (wrapCE + ×). When absent,
@@ -1602,22 +1605,23 @@
           var rdata = ((sdata[group] || [])[k]) || {};
           var lab = qs('.gd-label-name', tr);
           if (lab) { wrapCE(lab, rpre + 'label'); var lce = lab.querySelector('.ce'); if (lce) lce.setAttribute('data-ph', labBlankD); }
-          // OLD cell: editable value, OR (no_old) a "—" with a restore toggle
+          // OLD (previous) cell: a clearly-labelled editable value, OR — when the
+          // contributor marks "no before" (no_old) — a null cell with a restore.
           var oldCell = qs('.gd-old', tr);
           if (oldCell) {
             if (rdata.no_old) {
-              var restore = addBtn('set:' + rpre + 'no_old:false', '+ before', true); restore.title = 'Add a “before” value';
+              var restore = addBtn('set:' + rpre + 'no_old:false', '+ before value', true); restore.title = 'Give this spec a “before” value';
               oldCell.appendChild(restore);
             } else {
-              var ov = qs('.gd-old-val', oldCell); if (ov) wrapCE(ov, rpre + 'old');
-              var noBtn = addBtn('set:' + rpre + 'no_old:true', 'no before', true); noBtn.title = 'No “before” value (e.g. a brand-new feature)';
+              var ov = qs('.gd-old-val', oldCell); if (ov) { wrapCE(ov, rpre + 'old'); var oce = ov.querySelector('.ce'); if (oce) oce.setAttribute('data-ph', 'old value'); }
+              var noBtn = addBtn('set:' + rpre + 'no_old:true', 'no before', true); noBtn.title = 'Mark the “before” column null (e.g. a brand-new feature)';
               oldCell.appendChild(noBtn);
             }
           }
-          // NEW cell: editable value + an optional colour chip
+          // NEW (current) cell: a clearly-labelled editable value + an optional chip
           var newCell = qs('.gd-new', tr);
           if (newCell) {
-            var nv = qs('.gd-new-val', newCell); if (nv) wrapCE(nv, rpre + 'new');
+            var nv = qs('.gd-new-val', newCell); if (nv) { wrapCE(nv, rpre + 'new'); var nce2 = nv.querySelector('.ce'); if (nce2) nce2.setAttribute('data-ph', 'new value'); }
             var chip = qs('.gd-chip', newCell);
             if (chip) {
               wrapCE(chip, rpre + 'chip_text');
@@ -1642,7 +1646,9 @@
             if (tr.classList.contains('gd-sec')) { grp = (grp === null) ? 'hardware' : 'software'; ri = 0; if (grp === 'software') swSec = tr; return; }
             if (tr.classList.contains('gd-row') && grp) { bindDeltaRow(tr, grp, ri); ri++; }
           });
-          var addRowTr = function (action, label) { var tr = document.createElement('tr'); tr.className = 'pe-gd-addrow'; var td = document.createElement('td'); td.colSpan = 3; td.appendChild(addBtn(action, label, true)); tr.appendChild(td); return tr; };
+          // a full-width dashed insert affordance spanning the whole row (that's
+          // what gets added) — not a small pill.
+          var addRowTr = function (action, label) { var tr = document.createElement('tr'); tr.className = 'pe-gd-addrow'; var td = document.createElement('td'); td.colSpan = 3; var b = addBtn(action, label); b.className = 'pe-add pe-gd-add'; td.appendChild(b); tr.appendChild(td); return tr; };
           if (swSec) dBody.insertBefore(addRowTr('push:' + prefix + 'hardware', '+ hardware row'), swSec);   // hardware add: before the Software header
           dBody.appendChild(addRowTr('push:' + prefix + 'software', '+ software row'));                      // software add: end of table
         }
