@@ -116,6 +116,12 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
   const jump = (it: Leaf) => { (iframeRef.current?.contentWindow as any)?.__peJump?.(it.jump, it.addpath); };
   const todoCount = markers.filter((m) => !m.done).length;
   const left = () => Math.max(6, mkBox.left - 50); // 50px into the backdrop, left of the canvas
+  // readiness panel: pop into the LEFT backdrop, right-anchored just left of the
+  // marker, with real breathing room from the screen edge (never flush at x≈0).
+  // On a wide editor it sits entirely in the margin; on a narrow one it floors at
+  // the gutter. Width = the slim PANEL_W (matches the .pe-mk-panel CSS).
+  const PANEL_W = 310, GUTTER = 20;
+  const panelLeft = Math.max(GUTTER, (mkBox.left - 52) - PANEL_W);
 
   return (
     <div id="pe-overlay">
@@ -141,7 +147,7 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
               {!m.done && <span className="pe-mk-count">{m.left}</span>}
             </button>
             {openMk === i && (
-              <div className="pe-mk-panel" style={{ top: mkBox.top + m.top * scale, left: Math.max(6, left() - 354) }} onMouseDown={(e) => e.stopPropagation()}>
+              <div className="pe-mk-panel" style={{ top: mkBox.top + m.top * scale, left: panelLeft }} onMouseDown={(e) => e.stopPropagation()}>
                 <ReadinessPanel marker={m} onJump={jump} onClose={() => setOpenMk(null)} />
               </div>
             )}
