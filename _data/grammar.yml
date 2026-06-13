@@ -257,8 +257,10 @@ components:
       axis_new: { name: { type: text, required: true, label: "New model", blank: "New model" }, year: { type: text } }
       delta_row:
         label:     { type: text, required: true, blank: "Spec label" }
-        old:       { type: text }
-        new:       { type: text }
+        # both the previous and current values are tracked; `old` is exempt when
+        # the row is marked no_old ("no before" — e.g. a brand-new feature).
+        old:       { type: text, required: true, label: "old value", blank: "old value", optional_when: no_old }
+        new:       { type: text, required: true, label: "new value", blank: "new value" }
         no_old:    { type: bool, default: false, help: "Hide the 'before' cell" }
         # chip color = the DIRECTION of change. `presets` is a bank of chips per
         # category: a plain string is a ready-made label; an object {tpl, ph} is a

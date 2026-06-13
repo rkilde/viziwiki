@@ -910,10 +910,17 @@
             "blank": "Spec label"
           },
           "old": {
-            "type": "text"
+            "type": "text",
+            "required": true,
+            "label": "old value",
+            "blank": "old value",
+            "optional_when": "no_old"
           },
           "new": {
-            "type": "text"
+            "type": "text",
+            "required": true,
+            "label": "new value",
+            "blank": "new value"
           },
           "no_old": {
             "type": "bool",

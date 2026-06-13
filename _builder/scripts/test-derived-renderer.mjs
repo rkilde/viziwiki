@@ -628,6 +628,18 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   // optional intro/footnote start as sentinel "+" slots (renderer-seeded), editable once added
   ok([...gd.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ intro text') || gd.querySelector('.delta-prose .ce'), 'intro is a "+ intro text" slot when absent (renderer sentinel)');
   ok([...gd.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ footnote') || gd.querySelector('.gd-foot .ce'), 'footnote is a "+" slot when absent');
+  // the readiness widget tracks the per-row OLD value + NEW value (new always;
+  // old unless the row is marked no_old)
+  let mk = [];
+  renderAndDecorate(doc, false, undefined, (w) => { w.__peMarkers = (list) => { mk = list; }; });
+  const hwCard = ((mk[mk.length - 1] || {}).cards || []).find((c) => /Hardware/.test(c.kind));
+  const reqLabels = hwCard ? hwCard.reqs.map((r) => r.label) : [];
+  ok(reqLabels.includes('old value') && reqLabels.includes('new value'), 'widget tracks a row\'s old value AND new value');
+  let mk2 = [];
+  renderAndDecorate({ ...doc, sections: [{ type: 'delta', data: { ...dSeed, hardware: [{ label: 'L', no_old: true }] } }] }, false, undefined, (w) => { w.__peMarkers = (list) => { mk2 = list; }; });
+  const hwCard2 = ((mk2[mk2.length - 1] || {}).cards || []).find((c) => /Hardware/.test(c.kind));
+  const oldLeaf = hwCard2 && hwCard2.reqs.find((r) => r.label === 'old value');
+  ok(oldLeaf && oldLeaf.met, 'no_old exempts the "old value" requirement (counts as met)');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

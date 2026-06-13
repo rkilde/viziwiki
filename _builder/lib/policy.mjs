@@ -44,6 +44,7 @@ export function buildPolicy(grammar) {
         label: spec.label ?? null,           // readiness-widget label override (else the humanized field name)
         identity: spec.identity === true,    // this field names its instance (the card label in the widget)
         presets: spec.presets ?? null,       // {enumValue: text} preset combos (e.g. badge type→text bank)
+        optional_when: spec.optional_when ?? null,  // required, EXCEPT when this sibling field is truthy (e.g. delta `old` is exempt when `no_old`)
       };
       // recurse into component-typed fields (spotlight/feature/infobox…) and
       // list item subtypes (stat/chip/pair…) — paths use `[]` for list items

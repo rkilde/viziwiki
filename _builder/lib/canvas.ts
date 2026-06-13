@@ -382,8 +382,8 @@ const AFFORDANCE = `
     --gd-better-bg:#dcfce7;  --gd-better-fg:#15803d;  --gd-feature-bg:#eff6ff; --gd-feature-fg:#1d4ed8;
     --gd-changed-bg:#fef9c3; --gd-changed-fg:#a16207; --gd-worse-bg:#fee2e2;   --gd-worse-fg:#b91c1c;
     --gd-same-bg:#f3f4f6;    --gd-same-fg:#6b7280; }
-  .dr-legend-h{ font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.12em; text-transform:uppercase; opacity:.65; margin-bottom:7px; }
-  .dr-legend{ border-collapse:collapse; }
+  .dr-tip-rich .dr-tip-p{ margin:0; }
+  .dr-legend{ border-collapse:collapse; margin:8px 0; }
   .dr-legend td{ padding:2px 8px 2px 0; vertical-align:middle; font-size:12.5px; }
   .dr-legend .dr-legend-c{ font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.06em; text-transform:uppercase; opacity:.95; }
   .dr-legend .dr-legend-m{ opacity:.75; }

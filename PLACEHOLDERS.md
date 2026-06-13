@@ -128,15 +128,15 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 | `current.year` |  | text | — |
 | `hardware` |  | list<delta_row> | _(template — see sub-fields)_ |
 | `hardware[].label` | • | text | `Spec label` |
-| `hardware[].old` |  | text | — |
-| `hardware[].new` |  | text | — |
+| `hardware[].old` | • | text | `old value` |
+| `hardware[].new` | • | text | `new value` |
 | `hardware[].no_old` |  | bool | `false`  _(default)_ |
 | `hardware[].chip` |  | enum | `better`  _(choice: better · feature · changed · worse · same)_ |
 | `hardware[].chip_text` |  | text | — |
 | `software` |  | list<delta_row> | _(template — see sub-fields)_ |
 | `software[].label` | • | text | `Spec label` |
-| `software[].old` |  | text | — |
-| `software[].new` |  | text | — |
+| `software[].old` | • | text | `old value` |
+| `software[].new` | • | text | `new value` |
 | `software[].no_old` |  | bool | `false`  _(default)_ |
 | `software[].chip` |  | enum | `better`  _(choice: better · feature · changed · worse · same)_ |
 | `software[].chip_text` |  | text | — |

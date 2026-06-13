@@ -1586,9 +1586,12 @@
         // the info "i" renders a small color-meaning LEGEND TABLE (derived from the
         // enum), not a wall of text. A swatch per category + a one-line gloss.
         var chipGloss = { better: 'an improvement', feature: 'a new feature', changed: 'reworked / moved', worse: 'a downgrade', same: 'unchanged' };
-        var chipLegend = '<div class="dr-legend-h">Color = direction of change</div><table class="dr-legend">'
+        // keep the original explanatory text; only the color-MEANINGS become a table
+        var chipLegend = '<p class="dr-tip-p">A chip’s color is the direction of change:</p>'
+          + '<table class="dr-legend">'
           + chipEnumD.map(function (c) { return '<tr><td><span class="dr-sw gd-chip-' + c + '"></span></td><td class="dr-legend-c">' + c + '</td><td class="dr-legend-m">' + (chipGloss[c] || '') + '</td></tr>'; }).join('')
-          + '</table>';
+          + '</table>'
+          + '<p class="dr-tip-p">Click a ready-made chip, fill in a number on a template (e.g. 2×), or write your own under Custom.</p>';
         var openChipPop = function (anchor, rpre, cur, curText) {
           // header: title + the one info "i" (a color-meaning legend table)
           var html = '<div class="cc-chip-head"><span class="cc-pop-label">Pick a chip</span>'
@@ -2152,6 +2155,8 @@
               leaf = { label: listLabel(rel, r, need), sub: arr.length + ' / ' + need, met: arr.length >= need, jump: docPath, addpath: docPath, struct: true };
             } else {
               leaf = { label: scalarLabel(concrete, key), met: metScalar(docPath, val, r.blank), jump: docPath };
+              // conditionally-required: a sibling flag (e.g. no_old) exempts it
+              if (r.optional_when && inst.node && inst.node[r.optional_when]) leaf.met = true;
             }
             if (idxs.length === 0) { section.push(leaf); return; }
             var card = getCard(idxs[0], concrete);
