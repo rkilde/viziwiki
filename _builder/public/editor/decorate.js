@@ -275,6 +275,8 @@
   var csvg = function (d) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + d + '</svg>'; };
   // a hover/focus info "i" with an explanatory tooltip (shared by every bank)
   function infoI(tip) { return '<span class="dr-info" tabindex="0" data-tip="' + String(tip == null ? '' : tip).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>'; }
+  // append a shared info "i" (the one master control) to a parent element
+  function infoIcon(parent, tip) { if (!parent) return; var s = document.createElement('span'); s.innerHTML = infoI(tip); parent.appendChild(s.firstChild); }
   function dockBtn(icon, tip, cls, onclick) {
     var b = document.createElement('button');
     b.className = 'cc-btn' + (cls ? ' ' + cls : '');
@@ -425,14 +427,13 @@
   document.addEventListener('mouseover', function (e) { var ic = e.target.closest && e.target.closest('.dr-info'); if (ic) flipInfo(ic); });
   document.addEventListener('focusin', function (e) { var ic = e.target.closest && e.target.closest('.dr-info'); if (ic) flipInfo(ic); });
 
-  // group-pill action menu (mockup style): a small glass popover with
-  // Strike (object pills only) + Remove
-  function openPillPop(btn, accent, strikePath, isStruck, removePath) {
-    var html = (strikePath ? '<button class="cc-row" data-a="strike">' + (isStruck ? 'Remove strike' : 'Strike through') + '</button>' : '') +
-      '<button class="cc-row danger" data-a="remove">Remove</button>';
+  // group-pill action menu (object pills only): a small glass popover with the
+  // strike-through toggle. Deletion is NOT here — every pill uses the same
+  // two-click × confirm as the rest of the kit (makeRemovable).
+  function openPillPop(btn, accent, strikePath, isStruck) {
+    var html = '<button class="cc-row" data-a="strike">' + (isStruck ? 'Remove strike' : 'Strike through') + '</button>';
     var pop = openPop(btn, accent, html, { cls: 'pill-pop' });
     var st = pop.querySelector('[data-a="strike"]'); if (st) st.onclick = function () { closePop(); A('set:' + strikePath + ':' + (!isStruck)); };
-    pop.querySelector('[data-a="remove"]').onclick = function () { closePop(); A('rm:' + removePath); };
   }
 
   // centre the item-editor modal card in the VISIBLE viewport (the canvas is a
@@ -795,7 +796,7 @@
               (function (p) { noteChip.onclick = function () { A('add:' + p); }; })(cpre + 'note');
             }
             cnt.appendChild(noteChip);   // INLINE in the count line (canon position)
-            var nInfo = document.createElement('span'); nInfo.innerHTML = infoI('An optional short qualifier shown after the item count on this category card (e.g. “12 items · seasonal” or “· discontinued”). Use it to flag something about the whole category at a glance.'); cnt.appendChild(nInfo.firstChild);
+            infoIcon(cnt, 'An optional short qualifier shown after the item count on this category card (e.g. “12 items · seasonal” or “· discontinued”). Use it to flag something about the whole category at a glance.');
           }
 
           // the glass dock (bottom-right): color · ribbon · remove
@@ -881,12 +882,12 @@
           // status chip → glass popover (the enum is the only styled set)
           var stChip = qs('.chip[class*="st-"]', det);
           if (stChip) { stChip.classList.add('pe-st-chip'); (function () { stChip.onclick = function () { openStatusPop(stChip, ipre, idata.status, mAccent); }; })(); }
-          else if (head) { var gs = document.createElement('button'); gs.className = 'pe-mini-add'; gs.textContent = '+ status'; gs.onclick = function () { openStatusPop(gs, ipre, null, mAccent); }; head.appendChild(gs); }
+          else if (head) { var gs = document.createElement('button'); gs.className = 'pe-mini-add'; gs.textContent = '+ status'; gs.onclick = function () { openStatusPop(gs, ipre, null, mAccent); }; head.appendChild(gs); infoIcon(head, 'A colored status chip at the top of the card — pick from the set (e.g. Available, Limited, Discontinued). It flags the item’s state at a glance. Optional.'); }
 
           // info chip → inline ce (freeform); + info when absent
           var infoChip = qs('.chip.info', det);
           if (infoChip) { wrapCE(infoChip, ipre + 'info'); makeRemovable(infoChip, 'rm:' + ipre + 'info', true); }
-          else if (head) head.appendChild(addBtn('add:' + ipre + 'info', '+ info', true));
+          else if (head) { head.appendChild(addBtn('add:' + ipre + 'info', '+ info', true)); infoIcon(head, 'A free-text info chip next to the status — a short qualifier like a price, a year, or a one-word tag (e.g. “$2.99”, “2014”, “seasonal”). Optional.'); }
 
           // pill groups: label, pills (string or {text,struck}), strike + remove, + pill
           qsa('.modal-group-label', det).forEach(function (gl, g) {
@@ -899,9 +900,14 @@
                 var pdata = (((idata.groups || [])[g] || {}).pills || [])[pm];
                 var isObj = pdata && typeof pdata === 'object';
                 wrapCE(gp, isObj ? ppath + '.text' : ppath);
-                var menu = document.createElement('button'); menu.className = 'gpill-menu'; menu.textContent = '⋯'; menu.title = 'Options'; menu.setAttribute('contenteditable', 'false');
-                (function (p, struck, obj) { menu.onclick = function (e) { e.stopPropagation(); openPillPop(menu, mAccent, obj ? p + '.struck' : null, !!struck, p); }; })(ppath, isObj && pdata.struck, isObj);
-                gp.appendChild(menu);
+                // object pills carry the strike-through toggle in a small ⋯ menu
+                if (isObj) {
+                  var menu = document.createElement('button'); menu.className = 'gpill-menu'; menu.textContent = '⋯'; menu.title = 'Strike through'; menu.setAttribute('contenteditable', 'false');
+                  (function (p, struck) { menu.onclick = function (e) { e.stopPropagation(); openPillPop(menu, mAccent, p + '.struck', !!struck); }; })(ppath, pdata.struck);
+                  gp.appendChild(menu);
+                }
+                // delete = the standard two-click × confirm (same as everywhere else)
+                makeRemovable(gp, 'rm:' + ppath, true);
               });
               pillsDiv.appendChild(addBtn('push:' + ipre + 'groups.' + g + '.pills', '+ item', true));
             }
@@ -930,8 +936,9 @@
           // bottom adders row + remove item
           var adds = document.createElement('div'); adds.className = 'pe-adds';
           adds.appendChild(addBtn('push:' + ipre + 'groups', '+ group', true));
-          if (!co) adds.appendChild(addBtn('add:' + ipre + 'callout', '+ callout', true));
-          if (!noEl) adds.appendChild(addBtn('add:' + ipre + 'notes', '+ notes', true));
+          infoIcon(adds, 'A labeled set of pill tags — a heading (e.g. “Ingredients”, “Sizes”, “Available at”) plus a row of small tags you add, rename, strike through, or remove. Add as many groups as you need.');
+          if (!co) { adds.appendChild(addBtn('add:' + ipre + 'callout', '+ callout', true)); infoIcon(adds, 'A highlighted box inside the card — a short label + a sentence to spotlight one important thing (a warning, a tip, a key fact). One per card.'); }
+          if (!noEl) { adds.appendChild(addBtn('add:' + ipre + 'notes', '+ notes', true)); infoIcon(adds, 'A small footnote at the bottom of the card — fine print, a source, or an aside. One per card.'); }
           (function (dj2, dk2) { var ri = document.createElement('button'); ri.className = 'pe-removeitem'; ri.textContent = 'Remove item'; armDelete(ri, function () { A('rm:' + prefix + 'categories.' + dj2 + '.items.' + dk2); }); adds.appendChild(ri); })(dj, dk);
           det.appendChild(adds);
         });
@@ -1680,7 +1687,7 @@
           var wBtn = document.createElement('button'); wBtn.className = 'pe-lane-wbtn' + (sdata.weighted ? ' on' : ''); wBtn.title = 'On = each tile’s width ∝ the time until the next version';
           wBtn.innerHTML = '<span class="sw"></span>Weighted by time';
           wBtn.onclick = function () { A('set:' + prefix + 'weighted:' + (sdata.weighted ? 'false' : 'true')); }; foot.appendChild(wBtn);
-          var winfo = document.createElement('span'); winfo.innerHTML = infoI('On: each tile’s WIDTH becomes proportional to the real time between versions — long support gaps look long, rapid releases look tight (a real time axis). Off: every tile is the same width (an even ribbon).'); foot.appendChild(winfo.firstChild);
+          infoIcon(foot, 'On: each tile’s WIDTH becomes proportional to the real time between versions — long support gaps look long, rapid releases look tight (a real time axis). Off: every tile is the same width (an even ribbon).');
           if (sdata.weighted) {
             // end date = a month/year picker (no freeform typing) — click to open;
             // a × removes it when set.
@@ -1688,7 +1695,7 @@
             endTrig.textContent = (sdata.end != null ? 'End: ' + sdata.end : '+ end date');
             endTrig.onclick = function (e) { e.stopPropagation(); openLaneEndPop(endTrig); }; foot.appendChild(endTrig);
             if (sdata.end != null) { var endRm = document.createElement('button'); endRm.className = 'pe-tag-rm'; endRm.style.opacity = '1'; endRm.textContent = '×'; endRm.title = 'Remove end date'; armDelete(endRm, function () { A('rm:' + prefix + 'end'); }); foot.appendChild(endRm); }
-            var einfo = document.createElement('span'); einfo.innerHTML = infoI('The date the ribbon runs TO — it gives the LAST version’s tile a width (weighted mode measures each tile by the gap to the next date, and the last one has no next). Use today’s date if that version is still current, or the end-of-life date if support has fully ended.'); foot.appendChild(einfo.firstChild);
+            infoIcon(foot, 'The date the ribbon runs TO — it gives the LAST version’s tile a width (weighted mode measures each tile by the gap to the next date, and the last one has no next). Use today’s date if that version is still current, or the end-of-life date if support has fully ended.');
           }
           laneWrap.parentNode.insertBefore(foot, laneWrap.nextSibling);   // sibling AFTER the visual, not inside it
         }
