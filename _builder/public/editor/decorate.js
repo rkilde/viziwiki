@@ -1534,10 +1534,30 @@
         var badgePresets = (R('lifecycle-lane.segments[].badge_type').presets) || {};   // {type: text} combos (derived)
         var segEls = qsa('.lane-seg', secEl);
         var verBlank = (R('lifecycle-lane.segments[].ver').blank) || 'Version';
+        // ── DATE picker helpers (month grid + a separate year), shared by the
+        // segment controller AND the standalone date popover. Edits are live (PV);
+        // the caller commits once → the canon re-sorts + the tiles FLIP (laneSnap).
+        var laneMonths = (R('timeline.events[].month').enum) || ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var laneMonthOf = function (sd) { var dm = String(sd.date == null ? '' : sd.date).match(/([A-Za-z]+)\s*(\d{4})/); var mo = ''; if (dm) { var mm = dm[1].slice(0, 3).toLowerCase(); laneMonths.forEach(function (m) { if (m.toLowerCase() === mm) mo = m; }); } return { mo: mo, yr: dm ? dm[2] : '' }; };
+        var dateGridHtml = function (sd, top) {
+          var d0 = laneMonthOf(sd);
+          return '<div class="cc-pop-label"' + (top ? ' style="margin-top:13px"' : '') + '>Date</div><div class="cc-enum cc-month-grid">'
+            + laneMonths.map(function (m) { return '<button class="cc-enum-opt' + (m === d0.mo ? ' sel' : '') + '" data-m="' + m + '">' + m + '</button>'; }).join('') + '</div>'
+            + '<input type="text" class="cc-lane-year" inputmode="numeric" maxlength="4" placeholder="Year" value="' + ea2(d0.yr) + '">';
+        };
+        var wireDateGrid = function (pop, spre, sd, onChange) {
+          var yr = qs('.cc-lane-year', pop); if (!yr) return;
+          var selMo = laneMonthOf(sd).mo;
+          var write = function () { var y = (yr.value || '').trim(); if (selMo && /^\d{4}$/.test(y)) { PV(spre + 'date', selMo + ' ' + y); onChange(); } };
+          qsa('[data-m]', pop).forEach(function (b) { b.onclick = function () { qsa('[data-m]', pop).forEach(function (x) { x.classList.remove('sel'); }); b.classList.add('sel'); selMo = b.getAttribute('data-m'); write(); }; });
+          yr.addEventListener('input', function () { yr.value = yr.value.replace(/\D/g, '').slice(0, 4); write(); });
+          enterBlurI(yr);
+        };
         var openSegPop = function (anchor, spre, sd) {
-          // version, support type + badge here; the DATE has its own month/year
-          // picker popover (opened from the tile's date — like the timeline).
+          // version + DATE (month/year) + support type + badge — all in one
+          var dirty = false, committed = false;
           var html = '<div class="cc-pop-label">Software version</div><input type="text" class="cc-lane-ver" placeholder="' + ea2(verBlank) + '" value="' + ea2(sd.ver) + '">'
+            + dateGridHtml(sd, true)
             + '<div class="cc-pop-label cc-pop-label-i" style="margin-top:13px">Support type' + infoI('How well the device is supported at this version. Full (green) = full OS updates; Partial (amber) = limited/late updates; Dropped (grey) = no longer supported — the cliff where support ends; Security (blue) = security-only patches after end-of-life.') + '</div><div class="cc-enum cc-lane-types">'
             + segTypes.map(function (t) { return '<button class="cc-enum-opt cc-type-' + t + (sd.type === t ? ' sel' : '') + '" data-t="' + t + '">' + t + '</button>'; }).join('') + '</div>'
             // BADGE = a bank of preset text+color combos (derived from the
@@ -1546,30 +1566,20 @@
             + '<div class="cc-pop-label cc-pop-label-i" style="margin-top:13px">Badge<span class="dr-info" tabindex="0" data-tip="' + ea2("A badge is a small corner label on a tile — use it to flag a milestone: the Launch, the Final update, when support was Dropped, a Security-only patch, a Paid upgrade, or a Limited release. Optional.") + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span></div><div class="cc-enum cc-badge-bank">'
             + badgeTypes.map(function (b) { var tx = (badgePresets[b] || b); var on = (sd.badge != null && (sd.badge_type || 'ship') === b) ? ' sel' : ''; return '<button class="cc-enum-opt cc-badge-' + b + on + '" data-bt="' + b + '" data-btx="' + ea2(tx) + '">' + tx + '</button>'; }).join('') + '</div>'
             + (sd.badge != null ? '<button class="cc-rm">Remove badge</button>' : '');
-          var pop = openPop(anchor, '', html, { cls: 'lane-pop' });
-          var vi = qs('.cc-lane-ver', pop); if (vi) { enterBlurI(vi); vi.addEventListener('change', function () { PV(spre + 'ver', vi.value); A('commit'); }); }
-          qsa('[data-t]', pop).forEach(function (b) { b.onclick = function () { closePop(); A('set:' + spre + 'type:' + b.getAttribute('data-t')); }; });
-          // a preset sets BOTH badge text + badge_type in one commit
-          qsa('[data-bt]', pop).forEach(function (b) { b.onclick = function () { closePop(); PV(spre + 'badge', b.getAttribute('data-btx')); PV(spre + 'badge_type', b.getAttribute('data-bt')); A('commit'); }; });
-          var rm = qs('.cc-rm', pop); if (rm) rm.onclick = function () { closePop(); A('rm:' + spre + 'badge'); };
+          // version + date are LIVE (PV); committed once on close (or when a type/
+          // badge button commits, which also persists them) → re-sort + FLIP.
+          var pop = openPop(anchor, '', html, { cls: 'lane-pop', onClose: function () { if (dirty && !committed) { laneSnap(); A('commit'); } } });
+          var vi = qs('.cc-lane-ver', pop); if (vi) { enterBlurI(vi); vi.addEventListener('input', function () { PV(spre + 'ver', vi.value); dirty = true; }); }
+          wireDateGrid(pop, spre, sd, function () { dirty = true; });
+          qsa('[data-t]', pop).forEach(function (b) { b.onclick = function () { committed = true; if (dirty) laneSnap(); closePop(); A('set:' + spre + 'type:' + b.getAttribute('data-t')); }; });
+          qsa('[data-bt]', pop).forEach(function (b) { b.onclick = function () { committed = true; if (dirty) laneSnap(); closePop(); PV(spre + 'badge', b.getAttribute('data-btx')); PV(spre + 'badge_type', b.getAttribute('data-bt')); A('commit'); }; });
+          var rm = qs('.cc-rm', pop); if (rm) rm.onclick = function () { committed = true; closePop(); A('rm:' + spre + 'badge'); };
         };
-        // DATE picker — a month grid + a separate year field (like the timeline).
-        // Edits are live (PV); on close, if changed, commit once → the canon re-
-        // sorts chronologically and the tiles FLIP into place (laneSnap).
-        var laneMonths = (R('timeline.events[].month').enum) || ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        // standalone DATE picker (click the tile's date) — month/year only
         var openLaneDatePop = function (anchor, spre, sd) {
-          var cur = String(sd.date == null ? '' : sd.date), dm = cur.match(/([A-Za-z]+)\s*(\d{4})/);
-          var selMo = ''; if (dm) { var mm = dm[1].slice(0, 3).toLowerCase(); laneMonths.forEach(function (m) { if (m.toLowerCase() === mm) selMo = m; }); }
           var dirty = false;
-          var html = '<div class="cc-pop-label">Month</div><div class="cc-enum cc-month-grid">'
-            + laneMonths.map(function (m) { return '<button class="cc-enum-opt' + (m === selMo ? ' sel' : '') + '" data-m="' + m + '">' + m + '</button>'; }).join('') + '</div>'
-            + '<div class="cc-pop-label" style="margin-top:11px">Year</div><input type="text" class="cc-lane-year" inputmode="numeric" maxlength="4" placeholder="YYYY" value="' + ea2(dm ? dm[2] : '') + '">';
-          var pop = openPop(anchor, '', html, { cls: 'lane-pop date-pop', onClose: function () { if (dirty) { laneSnap(); A('commit'); } } });
-          var yr = qs('.cc-lane-year', pop);
-          var write = function () { var y = (yr.value || '').trim(); if (selMo && /^\d{4}$/.test(y)) { PV(spre + 'date', selMo + ' ' + y); dirty = true; } };
-          qsa('[data-m]', pop).forEach(function (b) { b.onclick = function () { qsa('[data-m]', pop).forEach(function (x) { x.classList.remove('sel'); }); b.classList.add('sel'); selMo = b.getAttribute('data-m'); write(); }; });
-          yr.addEventListener('input', function () { yr.value = yr.value.replace(/\D/g, '').slice(0, 4); write(); });
-          enterBlurI(yr);
+          var pop = openPop(anchor, '', dateGridHtml(sd, false), { cls: 'lane-pop date-pop', onClose: function () { if (dirty) { laneSnap(); A('commit'); } } });
+          wireDateGrid(pop, spre, sd, function () { dirty = true; });
         };
         var enterBlurI = function (el) { el.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); el.blur(); } }); };
         // inline ver/date: single-line only — Enter LOCKS in (a stray newline/<br>

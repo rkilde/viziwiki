@@ -68,11 +68,6 @@ const TILES: BrowseTile[] = [
     desc: 'A grid of spec cards — each an icon + title + label/value rows (the dark signature band). Click to add it.',
   },
   {
-    id: 'lifecycle-lane', name: 'OS Support Lifecycle', pill: 'Available', add: 'lifecycle-lane',
-    icon: '<rect x="1.5" y="9" width="6.5" height="6" rx="1"/><rect x="9" y="9" width="6.5" height="6" rx="1"/><rect x="16.5" y="9" width="4" height="6" rx="1"/><line x1="21.5" y1="8" x2="21.5" y2="16"/>',
-    desc: 'A segmented OS-support ribbon — support tiers across time, with an auto-derived range, version counter & legend. Click to add it.',
-  },
-  {
     id: 'delta', name: 'Side by Side Comparisons', pill: 'Available', opens: null,
     icon: BLANK,
     desc: 'A previous-vs-current table grouped into Hardware & Software, with color-coded change chips (better, feature, changed, worse, same).',
@@ -99,6 +94,9 @@ const CONFIG_TYPES: TypeTile[] = [
   { id: 'spec', name: 'Specifications Sheet',
     icon: SHEET,
     desc: 'A grid of spec cards — each an icon + title + key/value rows. The dark signature spec band.' },
+  { id: 'lifecycle-lane', name: 'Software Support Lifecycle',
+    icon: '<rect x="1.5" y="9" width="6.5" height="6" rx="1"/><rect x="9" y="9" width="6.5" height="6" rx="1"/><rect x="16.5" y="9" width="4" height="6" rx="1"/><line x1="21.5" y1="8" x2="21.5" y2="16"/>',
+    desc: 'A segmented ribbon of software/OS versions across time, colored by support status, with an auto-derived range, version counter & legend.' },
 ];
 
 // catalog types from the mockup's CATALOG_TYPES — Category Masonry IS the
