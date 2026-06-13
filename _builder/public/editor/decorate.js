@@ -446,13 +446,13 @@
   document.addEventListener('focusin', function (e) { var ic = e.target.closest && e.target.closest('.dr-info'); if (ic) showTip(ic); });
   document.addEventListener('focusout', function (e) { var ic = e.target.closest && e.target.closest('.dr-info'); if (ic) hideTip(); });
 
-  // group-pill action menu (object pills only): a small glass popover with the
-  // strike-through toggle. Deletion is NOT here — every pill uses the same
-  // two-click × confirm as the rest of the kit (makeRemovable).
-  function openPillPop(btn, accent, strikePath, isStruck) {
+  // group-pill ⋯ menu: the strike-through toggle. The strike action converts a
+  // string pill ↔ {text, struck}, so a plain pill can be struck too. Deletion is
+  // NOT here — every pill uses the standard two-click × (sitting to the ⋯'s right).
+  function openPillPop(btn, accent, pillPath, isStruck) {
     var html = '<button class="cc-row" data-a="strike">' + (isStruck ? 'Remove strike' : 'Strike through') + '</button>';
     var pop = openPop(btn, accent, html, { cls: 'pill-pop' });
-    var st = pop.querySelector('[data-a="strike"]'); if (st) st.onclick = function () { closePop(); A('set:' + strikePath + ':' + (!isStruck)); };
+    var st = pop.querySelector('[data-a="strike"]'); if (st) st.onclick = function () { closePop(); A('pillstrike:' + pillPath + ':' + (!isStruck)); };
   }
 
   // centre the item-editor modal card in the VISIBLE viewport (the canvas is a
@@ -921,13 +921,13 @@
                 var pdata = (((idata.groups || [])[g] || {}).pills || [])[pm];
                 var isObj = pdata && typeof pdata === 'object';
                 wrapCE(gp, isObj ? ppath + '.text' : ppath);
-                // object pills carry the strike-through toggle in a small ⋯ menu
-                if (isObj) {
-                  var menu = document.createElement('button'); menu.className = 'gpill-menu'; menu.textContent = '⋯'; menu.title = 'Strike through'; menu.setAttribute('contenteditable', 'false');
-                  (function (p, struck) { menu.onclick = function (e) { e.stopPropagation(); openPillPop(menu, mAccent, p + '.struck', !!struck); }; })(ppath, pdata.struck);
-                  gp.appendChild(menu);
-                }
-                // delete = the standard two-click × confirm (same as everywhere else)
+                // ⋯ menu → the strike-through toggle, on EVERY pill. Striking a
+                // plain string pill converts it to {text, struck} (the only way to
+                // add a strike); un-striking collapses it back to a string.
+                var menu = document.createElement('button'); menu.className = 'gpill-menu'; menu.textContent = '⋯'; menu.title = 'Strike through'; menu.setAttribute('contenteditable', 'false');
+                (function (p, struck) { menu.onclick = function (e) { e.stopPropagation(); openPillPop(menu, mAccent, p, !!struck); }; })(ppath, isObj && pdata.struck);
+                gp.appendChild(menu);
+                // delete = the standard two-click × confirm, sitting to the RIGHT of ⋯
                 makeRemovable(gp, 'rm:' + ppath, true);
               });
               pillsDiv.appendChild(addBtn('push:' + ipre + 'groups.' + g + '.pills', '+ item', true));

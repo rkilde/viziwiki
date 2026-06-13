@@ -663,6 +663,17 @@ export function applyAction(doc: PageDoc, action: string): void {
       }
       break;
     }
+    case 'pillstrike': { // pillstrike:<pillpath>:<true|false> — toggle a group pill's
+      // strikethrough, converting a plain string pill ↔ {text, struck} (a string
+      // can't carry struck, so striking promotes it; un-striking collapses it back)
+      const ci3 = arg.lastIndexOf(':');
+      const on = arg.slice(ci3 + 1) === 'true';
+      const ppath = arg.slice(0, ci3);
+      const cur = getAt(doc, ppath);
+      const text = (cur && typeof cur === 'object') ? (cur as any).text : cur;
+      setAt(doc, ppath, on ? { text, struck: true } : text);
+      break;
+    }
     case 'commit': break; // no-op: forces a re-render so derived displays refresh
     case 'setTone': doc.overview.tone = arg; break;
     // body sections (the ordered list after the locked hero+overview):

@@ -259,18 +259,23 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(richDet.querySelector('.modal-group-label .ce'), 'group label editable');
   ok(richDet.querySelectorAll('.gpill .ce').length === 2, 'string + object pills both editable');
   const gpills = [...richDet.querySelectorAll('.gpill')];
-  // delete conforms to the kit-wide two-click × confirm (makeRemovable) on EVERY
-  // pill; the ⋯ menu now carries only the strike toggle, and only object pills get it.
+  // EVERY pill carries BOTH controls: the ⋯ strike menu, and — to its right — the
+  // standard two-click × delete (makeRemovable). The ⋯ works on string pills too:
+  // striking promotes a plain string to {text, struck}.
   ok(gpills.every((g) => g.querySelector('.pe-tag-rm')), 'each pill has the standard two-click × delete');
-  ok(!gpills[0].querySelector('.gpill-menu'), 'string pill: no ⋯ menu (delete is the ×)');
-  ok(gpills[1].querySelector('.gpill-menu'), 'object pill carries the ⋯ strike menu');
+  ok(gpills.every((g) => g.querySelector('.gpill-menu')), 'each pill has the ⋯ strike menu (string pills too)');
   ok(gpills[1].classList.contains('struck') && gpills[1].querySelector('.ce'), 'struck object pill carries the canon struck class (strikes the .ce)');
   const lastPop = () => [...d.querySelectorAll('.cc-pop.pill-pop')].pop();
-  gpills[1].querySelector('.gpill-menu').onclick({ stopPropagation() {} });   // object (struck) pill
+  // string pill (gpills[0], unstruck) → offers "Strike through", never a danger Remove
+  gpills[0].querySelector('.gpill-menu').onclick({ stopPropagation() {} });
   let pp = lastPop();
   ok(pp, '⋯ opens the pill strike popover');
-  ok([...pp.querySelectorAll('.cc-row')].some((r) => r.textContent === 'Remove strike'), 'struck object pill offers "Remove strike"');
+  ok([...pp.querySelectorAll('.cc-row')].some((r) => r.textContent === 'Strike through'), 'unstruck pill offers "Strike through"');
   ok(!pp.querySelector('.cc-row.danger'), 'no Remove row in the strike menu (delete is the standard ×)');
+  // object struck pill (gpills[1]) → offers "Remove strike"
+  gpills[1].querySelector('.gpill-menu').onclick({ stopPropagation() {} });
+  pp = lastPop();
+  ok([...pp.querySelectorAll('.cc-row')].some((r) => r.textContent === 'Remove strike'), 'struck object pill offers "Remove strike"');
   ok([...richDet.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === '+ item'), '+ item (pill add)');
   ok(richDet.querySelector('.pe-adds'), 'bottom adders row present');
   ok([...richDet.querySelectorAll('.pe-adds .pe-mini-add')].some((b) => b.textContent === '+ group'), '+ group in adders row');
