@@ -664,10 +664,10 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(card.querySelector('.photo-rail-caption .prail-cap-src .ce[data-pe-path$=".source"]'), 'source line editable in place');
   ok(card.querySelector('.pr-grip[draggable="true"]'), 'drag-to-reorder grip present');
   const img = card.querySelector('img');
-  ok(img.getAttribute('data-pe-opens') && /photos\.0\.src$/.test(img.getAttribute('data-pe-scope') || ''), 'image is the jump target for src (opens its editor)');
-  img.onclick({ stopPropagation() {} });
+  ok(card.getAttribute('data-pe-opens') && /photos\.0\.src$/.test(card.getAttribute('data-pe-scope') || ''), 'the card (whole slot) is the jump target for src — so the red flash boxes the slot, not the clipped img');
+  card.dispatchEvent(new d.defaultView.MouseEvent('click', { bubbles: true }));
   const ipop = [...d.querySelectorAll('.cc-pop.img-pop')].pop();
-  ok(ipop && ipop.querySelector('.cc-img-url') && ipop.querySelector('.cc-img-alt'), 'clicking the image opens a URL + alt popover (the media field is a URL today)');
+  ok(ipop && ipop.querySelector('.cc-img-url') && ipop.querySelector('.cc-img-alt'), 'clicking the slot opens a URL + alt popover (the media field is a URL today)');
   ok([...pr.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ photo'), '"+ photo" tile present');
   // readiness tracks each photo's image (src) + alt text
   let mk = [];
@@ -676,7 +676,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   const plabels = pcard ? pcard.reqs.map((r) => r.label) : [];
   ok(plabels.includes('add image'), 'widget tracks each photo\'s image (required)');
   ok(!plabels.includes('alt text'), 'alt text is optional — not a readiness requirement');
-  ok(/\.alt(\s|$)/.test(img.getAttribute('data-pe-jump') || ''), 'the image is still the editor for alt (jump target), even though alt is optional');
+  ok(/\.alt(\s|$)/.test(card.getAttribute('data-pe-jump') || ''), 'the slot is still the editor for alt (jump target), even though alt is optional');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

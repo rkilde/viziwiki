@@ -1767,16 +1767,20 @@
           var pd = (sdata.photos && sdata.photos[k]) || {};
           var im = qs('img', card);
           if (!pd.src) { card.classList.add('pe-img-empty'); if (im) im.src = PR_PH; }
-          // click the image → set URL + alt. It's the jump target for src/alt.
-          if (im) {
-            im.style.cursor = 'pointer';
-            im.setAttribute('data-pe-scope', ppre + 'src'); im.setAttribute('data-pe-opens', '1');
-            // BOTH src + alt are edited in this one popover, so the image is the
-            // jump target for each — otherwise the alt readiness line falls through
-            // to the nearest data-pe-path (the title) instead of opening the editor.
-            im.setAttribute('data-pe-jump', ppre + 'src ' + ppre + 'alt');
-            (function (pp, d) { im.onclick = function (e) { e.stopPropagation(); openImgPop(im, pp, d); }; })(ppre, pd);
-          }
+          if (im) im.style.cursor = 'pointer';
+          // The CARD (not the inner <img>) is the readiness jump target + opener:
+          // src + alt are both edited in one popover, and flashing the card boxes
+          // the whole photo slot in red. A flash on the <img> was clipped away by
+          // the card's overflow:hidden, so the widget gave no visible feedback.
+          // Clicking the slot opens the image popover; clicks on the caption,
+          // grip, or × are left to their own handlers.
+          card.style.cursor = 'pointer';
+          card.setAttribute('data-pe-scope', ppre + 'src'); card.setAttribute('data-pe-opens', '1');
+          card.setAttribute('data-pe-jump', ppre + 'src ' + ppre + 'alt');
+          (function (pp, d, anchor) { card.addEventListener('click', function (e) {
+            if (e.target.closest && e.target.closest('.ce, .pr-grip, .pe-tag-rm')) return;
+            e.stopPropagation(); openImgPop(anchor || card, pp, d);
+          }); })(ppre, pd, im);
           // caption: three optional inline lines — bold label (strong), a caption
           // line, then a dotted source line — each separately inline-editable.
           var cap = qs('.photo-rail-caption', card);
