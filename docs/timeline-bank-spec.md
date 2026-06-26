@@ -44,9 +44,10 @@ type, no per-category colors / swatches / ribbons.
 - **Card design** (the station face) and the **detail modal layout** — fixed
   (the `station` card type). A second card template is a future option
   (`card_type`), not something a contributor edits today.
-- **All colors** come from the theme. *(Today the timeline uses a fixed
-  monochrome palette — see tech doc; recoloring is an owner task, not a
-  contributor one.)*
+- **All colors** come from the **theme (skin tokens, `--tl-*`)** — the timeline
+  auto-themes to each wiki, and a skin can **pin** tokens to lock a look (the
+  Apple/iPod skin pins the original monochrome). Recoloring is an owner/admin
+  task, never a contributor one.
 
 ---
 
@@ -54,7 +55,7 @@ type, no per-category colors / swatches / ribbons.
 
 | Field | Required? | Type / allowed values | What it does | Default |
 |---|---|---|---|---|
-| `heading` | optional | text | The H2 under the eyebrow (e.g. "One chip jump. Three years."). **Optional** — omit it for eyebrow-only. | none |
+| `heading` | **required** | text | The H2 under the eyebrow (e.g. "One chip jump. Three years."). | — |
 | `tone` | optional | `a` / `b` / `special` | The section's background tone. | `b` |
 | `visual` | optional | `timeline` | Which visual fills the slot. Only `timeline` today. | `timeline` |
 | `card_type` | optional | `station` | Which card template renders each event (face + modal). Only `station` today; reserved for future templates. | `station` |
@@ -71,12 +72,12 @@ type, no per-category colors / swatches / ribbons.
 | `year` | **required** | 4-digit year (e.g. `2019`) | The floating date + the axis position. |
 | `tag` | optional | text | A small label on the card and in the modal header ("Launch", "Software"). |
 | `title` | **required** | text | The card headline *and* the modal title. |
-| `preview` | optional | text | One-line summary shown on the card face. |
-| `body` | optional | rich text (paragraphs) | The full detail shown in the expandable card (modal). Supports multiple paragraphs and **bold**. |
+| `preview` | **required** | text | One-line summary shown on the card face. |
+| `body` | **required** | rich text (paragraphs) | The full detail shown in the expandable card (modal). Supports multiple paragraphs and **bold**. |
 
-> Minimum to render an event: `month` + `year` + `title`. `preview` fills the
-> card face; `body` fills the modal. The timeline needs **≥ 2 events** to
-> position (it lays them out relative to each other).
+> Each event requires `month` + `year` + `title` + `preview` + `body`
+> (`day` and `tag` are the only optional event fields). The timeline needs
+> **≥ 2 events** to position (it lays them out relative to each other).
 
 ---
 
@@ -87,7 +88,7 @@ this from form fields:
 
 ```yaml
 timeline:
-  heading: "One chip jump. Three years. The end of the iPod."   # optional H2
+  heading: "One chip jump. Three years. The end of the iPod."   # required H2
   visual: timeline            # only timeline today (default)
   card_type: station          # only station today (default)
   events:                     # chronological; ≥ 2
