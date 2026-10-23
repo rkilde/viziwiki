@@ -503,12 +503,36 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
     `/read` index renders tile covers (`wikiCoverTile` in reader-core +
     canon sprite). Guard: case 20 (363 total) — including "browse.html no
     longer restates the taxonomy".
-  · **Iteration 2 (NEXT): origination** — an admin "New wiki" flow in the
-    builder (id/slug/name/skin + identity fields from the taxonomy, grant a
-    wiki master from the UI).
-  · **Iteration 3: all surfaces consume** — builder dashboard swatches off
-    hardcoded WIKI_COLOR, browse/home pages read the DB as they go DB-native,
-    the recommendations module (algorithm deferred, owner wants it later).
+  · **TILE ART IS PER-WIKI CONTENT, not canon design (owner's model, Oct
+    2026):** every wiki's tile cover is unique artwork — the canon owns only
+    the tile FRAME (card shape, genre/title/tagline placement). Three kinds:
+    `themed` (the derived default) · `art` (the wiki's own uploaded cover
+    image — master media pattern, URL today / Storage upload later) ·
+    `bespoke` (the 5 hand-coded flagship covers, grandfathered). Dropping in
+    the art is part of originating a wiki.
+  · **Iteration 2 — ORIGINATION (DONE):** the admin "New wiki" entry opens the
+    origination modal (`components/OriginateWiki.tsx`): name → slugified id,
+    category chips from the MERGED taxonomy, blurb/tagline/status, tile art
+    URL (else themed), and an OPTIONAL wiki-master grant by email (admin can
+    originate + work it themselves — `grantWikiMaster` is a profiles update,
+    retryable in-modal if the account doesn't exist yet). **Admins can
+    originate NEW CATEGORIES in the flow** — migration `0007_origination.sql`
+    adds `wiki_categories` (admin-written rows: key/label/sprite icon +
+    literal gradient colors picked from the canon palette's swatches); the
+    canon 12 stay in the yml, `lib/taxonomy.mjs` merges (canon wins key
+    collisions) and every surface renders the merged set (`/read` fetches
+    both). The modal's live cover preview IS the reader's renderer + CSS
+    (`wikiCoverTile` + exported `COVER_CSS` — never a restated preview), its
+    icon picker derives from the canon sprite (`spriteIconNames`). The
+    dashboard now lists ORIGINATED (cloud) wikis for everyone (grant filter
+    still applies) and loads their pages from the store on switch
+    (`wikiFromMeta`/`pageFromMeta`; home id = `<wiki>-home`), so an
+    originated wiki is immediately workable and survives devices. Guard:
+    case 21 (377 total). Owner switch-on: run 0007 (docs/supabase-setup.md).
+  · **Iteration 3 (NEXT): all surfaces consume** — builder dashboard swatches
+    off hardcoded WIKI_COLOR, browse/home pages read the DB as they go
+    DB-native, the recommendations module (algorithm deferred, owner wants it
+    later).
 - **Vizi-verse** (the narrative side; currently only `top-10.html`) — deferred.
 
 ---

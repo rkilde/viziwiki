@@ -10,17 +10,9 @@ const Swatch = ({ color, label }: { color: string; label: string }) => (
 
 const WIKI_COLOR: Record<string, string> = { 'taco-bell': '#702082', 'apple': '#1d1d1f' };
 
-export function Topbar({ wikis, current, onSwitch, onNewWiki, account }: { wikis: Wiki[]; current?: Wiki; onSwitch: (w: Wiki) => void; onNewWiki?: (name: string) => void; account?: React.ReactNode }) {
+export function Topbar({ wikis, current, onSwitch, onNewWiki, account }: { wikis: Wiki[]; current?: Wiki; onSwitch: (w: Wiki) => void; onNewWiki?: () => void; account?: React.ReactNode }) {
   const [open, setOpen] = useState(false);
-  const [naming, setNaming] = useState(false);
-  const [name, setName] = useState('');
   const color = current ? (WIKI_COLOR[current.id] || '#9d7cf4') : '#9d7cf4';
-
-  const commitNew = () => {
-    const n = name.trim();
-    if (n && onNewWiki) { onNewWiki(n); setOpen(false); }
-    setNaming(false); setName('');
-  };
 
   return (
     <div id="topbar">
@@ -43,15 +35,10 @@ export function Topbar({ wikis, current, onSwitch, onNewWiki, account }: { wikis
               </button>
             ))}
             {onNewWiki && <div className="wdrop-divider" />}
-            {!onNewWiki ? null : naming ? (
-              <input
-                className="wdrop-new-input" autoFocus value={name} placeholder="New wiki name…"
-                onChange={(e) => setName(e.target.value)}
-                onKeyDown={(e) => { if (e.key === 'Enter') commitNew(); if (e.key === 'Escape') { setNaming(false); setName(''); } }}
-                onBlur={commitNew}
-              />
-            ) : (
-              <button className="wdrop-item wdrop-new" onClick={() => setNaming(true)}>
+            {onNewWiki && (
+              /* opens the ORIGINATION modal (identity + categories + tile
+                 cover + optional wiki-master grant) — the admin flow */
+              <button className="wdrop-item wdrop-new" onClick={() => { setOpen(false); onNewWiki(); }}>
                 <span className="wiki-btn-icon" style={{ background: 'transparent', border: '1px dashed var(--border3)', color: 'var(--muted)', fontWeight: 700 }}>+</span>
                 <span className="wdrop-name">New wiki</span>
               </button>

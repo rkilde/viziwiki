@@ -5,7 +5,9 @@ import type { Page, Wiki } from '../lib/wiki';
 import { Topbar } from '../components/miller/Topbar';
 import { MillerView } from '../components/miller/MillerView';
 import { PageEditor } from '../components/editor/PageEditor';
-import { blankWiki, blankPage, loadUserWikis, saveUserWikis, loadChildren, saveChildren, mergeWiki, type ChildOverlay } from '../lib/builder';
+import { blankPage, loadUserWikis, loadChildren, saveChildren, mergeWiki, wikiFromMeta, pageFromMeta, type ChildOverlay } from '../lib/builder';
+import { contentStore, type WikiMeta } from '../content-store';
+import { OriginateWiki } from '../components/OriginateWiki';
 import { AccountChip } from '../components/AccountChip';
 import { onAuth, fetchProfile, type Profile, type ContributorClass } from '../lib/auth';
 import { capsFor, grantedWikiIds, canApprove } from '../lib/caps.mjs';
@@ -26,9 +28,22 @@ export default function Page() {
   const [authEmail, setAuthEmail] = useState<string | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [viewAs, setViewAs] = useState<string>('me');
+  // the origination arc: ORIGINATED (cloud) wikis + their pages, and the modal
+  const [cloudWikis, setCloudWikis] = useState<Wiki[]>([]);
+  const [cloudPages, setCloudPages] = useState<Record<string, Page[]>>({});
+  const [originating, setOriginating] = useState(false);
 
   // hydrate user-created content from localStorage (client only) + auth state
   useEffect(() => { setUserWikis(loadUserWikis()); setChildren(loadChildren()); }, []);
+  // originated wikis come from the content store (rows beyond the extracted
+  // flagships) — they exist for every account; the grant filter below decides
+  // who sees which
+  useEffect(() => {
+    if (!contentStore) return;
+    contentStore.listWikis()
+      .then((rows) => setCloudWikis(rows.filter((r) => !WIKIS.some((w) => w.id === r.id)).map((r) => wikiFromMeta(r.id, r.name))))
+      .catch(() => {});
+  }, []);
   useEffect(() => onAuth((email) => {
     setAuthEmail(email);
     if (email) fetchProfile().then(setProfile); else setProfile(null);
@@ -43,7 +58,9 @@ export default function Page() {
   const realClass = (profile?.class ?? null) as ContributorClass | null;
   const grantRole = realRole === 'admin' && viewAs !== 'me' ? (viewAs === 'viewer' ? 'viewer' : 'contributor') : realRole;
   const grantClass = grantRole === 'contributor' ? (realRole === 'admin' && viewAs !== 'me' ? (viewAs as ContributorClass) : realClass) : null;
-  const allWikis = useMemo(() => (realRole === 'admin' ? [...WIKIS, ...userWikis] : [...WIKIS]), [userWikis, realRole]);
+  const allWikis = useMemo(
+    () => (realRole === 'admin' ? [...WIKIS, ...cloudWikis, ...userWikis] : [...WIKIS, ...cloudWikis]),
+    [userWikis, cloudWikis, realRole]);
   const shownWikis = useMemo(() => {
     const ids = grantedWikiIds(grantRole, grantClass, profile?.wiki_id ?? null, allWikis.map((w) => w.id));
     return allWikis.filter((w) => ids.includes(w.id));
@@ -53,14 +70,32 @@ export default function Page() {
     if (shownWikis.length && !shownWikis.some((w) => w.id === wikiId)) { setEditing(null); setWikiId(shownWikis[0].id); }
   }, [shownWikis, wikiId]);
   const baseWiki = shownWikis.find((w) => w.id === wikiId) || shownWikis[0] || null;
-  // splice user-added nodes into the tree at render time
-  const wiki = useMemo(() => (baseWiki ? mergeWiki(baseWiki, children) : null), [baseWiki, children]);
+  // a selected ORIGINATED wiki loads its pages from the content store (once),
+  // so its tree survives devices and sessions — unlike the localStorage overlay
+  const isCloudWiki = !!baseWiki && cloudWikis.some((w) => w.id === baseWiki.id);
+  useEffect(() => {
+    if (!contentStore || !baseWiki || !isCloudWiki || cloudPages[baseWiki.id]) return;
+    contentStore.listPages(baseWiki.id)
+      .then((rows) => setCloudPages((prev) => ({ ...prev, [baseWiki.id]: rows.filter((r) => r.id !== `${baseWiki.id}-home`).map(pageFromMeta) })))
+      .catch(() => {});
+  }, [baseWiki, isCloudWiki, cloudPages]);
+  // splice user-added nodes into the tree at render time (+ the cloud pages of
+  // an originated wiki, deduped — a node added here and saved comes back from
+  // the store under the same id on the next load)
+  const wiki = useMemo(() => {
+    if (!baseWiki) return null;
+    const merged = mergeWiki(baseWiki, children);
+    const cloud = cloudPages[baseWiki.id] || [];
+    if (!cloud.length) return merged;
+    const have = new Set(merged.pages.map((p) => p.id));
+    return { ...merged, pages: [...merged.pages, ...cloud.filter((p) => !have.has(p.id))] };
+  }, [baseWiki, children, cloudPages]);
 
-  const addWiki = (name: string) => {
-    const w = blankWiki(name);
-    setUserWikis((prev) => { const next = [...prev, w]; saveUserWikis(next); return next; });
+  const onOriginated = (meta: WikiMeta) => {
+    setOriginating(false);
+    setCloudWikis((prev) => (prev.some((w) => w.id === meta.id) ? prev : [...prev, wikiFromMeta(meta.id, meta.name)]));
     setEditing(null);
-    setWikiId(w.id);
+    setWikiId(meta.id);
   };
   const addNode = (parentId: string, title: string): Page => {
     const node = blankPage(title);
@@ -103,7 +138,8 @@ export default function Page() {
 
   return (
     <>
-      <Topbar wikis={shownWikis} current={wiki || undefined} onSwitch={(w) => { setEditing(null); setWikiId(w.id); }} onNewWiki={realRole === 'admin' ? addWiki : undefined} account={account} />
+      <Topbar wikis={shownWikis} current={wiki || undefined} onSwitch={(w) => { setEditing(null); setWikiId(w.id); }} onNewWiki={realRole === 'admin' ? () => setOriginating(true) : undefined} account={account} />
+      {originating && <OriginateWiki existingIds={allWikis.map((w) => w.id)} onClose={() => setOriginating(false)} onCreated={onOriginated} />}
       {wiki && baseWiki ? (
         <>
           <div id="miller">

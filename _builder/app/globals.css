@@ -411,6 +411,33 @@ button{ font-family:inherit; }
 .acct-msg{ font-family:'JetBrains Mono',monospace; font-size:10px; color:#fca5a5; line-height:1.5; }
 .acct-note{ font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.04em; color:var(--dim); line-height:1.6; }
 
+/* ════ originate-wiki modal (the origination arc) ════ */
+.ow-modal{ width:min(760px, calc(100vw - 32px)); max-height:min(86vh, 900px); overflow-y:auto; }
+.ow-cols{ display:grid; grid-template-columns:1fr 218px; gap:18px; align-items:start; }
+@media (max-width:640px){ .ow-cols{ grid-template-columns:1fr; } }
+.ow-form{ display:flex; flex-direction:column; gap:10px; min-width:0; }
+.ow-label{ font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:var(--dim); }
+.ow-cats{ display:flex; flex-wrap:wrap; gap:6px; }
+.ow-cat{ font-family:'JetBrains Mono',monospace; font-size:10px; padding:5px 10px; border-radius:999px; border:1px solid var(--purple-bd); background:var(--bg3); color:var(--muted); cursor:pointer; }
+.ow-cat.on{ background:#6366f1; border-color:#6366f1; color:#fff; }
+.ow-cat:disabled{ opacity:.5; cursor:default; }
+.ow-cat-new{ border-style:dashed; }
+.ow-newcat{ display:flex; flex-direction:column; gap:8px; padding:10px; border:1px dashed var(--purple-bd); border-radius:10px; }
+.ow-icons{ display:flex; flex-wrap:wrap; gap:4px; max-height:96px; overflow-y:auto; }
+.ow-icon{ width:26px; height:26px; display:flex; align-items:center; justify-content:center; border-radius:6px; border:1px solid transparent; background:none; color:var(--muted); cursor:pointer; }
+.ow-icon svg{ width:14px; height:14px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.ow-icon.on{ border-color:#6366f1; color:#fff; background:rgba(99,102,241,.18); }
+.ow-swatches{ display:flex; align-items:center; gap:5px; }
+.ow-swatch-label{ font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--dim); width:34px; text-transform:uppercase; letter-spacing:.1em; }
+.ow-swatch{ width:18px; height:18px; border-radius:5px; border:1px solid rgba(255,255,255,.18); cursor:pointer; }
+.ow-swatch.on{ outline:2px solid #6366f1; outline-offset:1px; }
+.ow-newcat-actions,.ow-actions{ display:flex; align-items:center; gap:12px; }
+.ow-blurb{ resize:vertical; min-height:52px; font:inherit; font-size:12px; }
+.ow-row{ display:grid; grid-template-columns:auto 1fr; gap:8px; }
+.ow-id{ font-size:10px; color:var(--muted); }
+.ow-preview{ position:sticky; top:0; display:flex; flex-direction:column; gap:8px; }
+.ow-preview .rd-cover{ pointer-events:none; }
+
 /* ════ no-grant empty state (phase-2 wiki visibility) ════ */
 .no-grant{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
   min-height:60vh; text-align:center; padding:40px 24px; }

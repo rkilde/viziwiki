@@ -56,6 +56,22 @@ ${bodyHtml}
 </html>`;
 }
 
+/** The tile-cover styles — ONE source for every surface that paints covers
+ *  (the reader index interpolates it; the origination modal's live preview
+ *  injects it, so the preview IS the reader's render, never a restatement). */
+export const COVER_CSS = `
+.rd-covers{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:560px){.rd-covers{grid-template-columns:repeat(2,1fr);gap:10px}}
+.rd-cover{position:relative;overflow:hidden;display:block;aspect-ratio:3/4;border-radius:14px;padding:13px;text-decoration:none;color:#fff;box-shadow:0 10px 26px -14px rgba(26,23,20,.4);transition:transform .2s}
+.rd-cover:hover{transform:translateY(-4px)}
+.rd-cover-glyph{position:absolute;right:-12px;bottom:-10px;width:120px;height:120px;opacity:.16;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.rd-cover-genre{position:absolute;top:12px;left:13px;font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:rgba(255,255,255,.82)}
+.rd-cover-soon{position:absolute;top:12px;right:13px;font-family:'JetBrains Mono',monospace;font-size:7px;text-transform:uppercase;letter-spacing:.12em;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.35);border-radius:100px;padding:2px 7px}
+.rd-cover-foot{position:absolute;left:13px;right:13px;bottom:13px;display:block}
+.rd-cover-title{display:block;font-family:'Fraunces',Georgia,serif;font-weight:700;font-size:21px;line-height:1.02;letter-spacing:-.02em}
+.rd-cover-tag{display:block;font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.08em;margin-top:6px;opacity:.85}
+`;
+
 /** One wiki's TILE COVER on the reader index (the origination arc) — the
  *  data-driven "themed" treatment: gradient + glyph DERIVED from the wiki's
  *  first category in the canon taxonomy (_data/wiki_categories.yml →
@@ -68,11 +84,22 @@ export function wikiCoverTile(w, taxonomy) {
   const cats = Array.isArray(w.categories) ? w.categories : [];
   const cat = ((taxonomy && taxonomy.categories) || []).find((c) => c.key === cats[0]) || null;
   const pal = (taxonomy && taxonomy.palette) || {};
-  const from = (cat && pal[cat.grad.from]) || '#2a2630';
-  const to = (cat && pal[cat.grad.to]) || '#4a4454';
-  const glyph = (w.tile_cover && w.tile_cover.glyph) || (cat && cat.icon) || null;
+  // a gradient stop is a palette NAME (canon categories) or a literal color
+  // value (originated categories store resolved colors)
+  const stop = (nameOrValue, fb) => (nameOrValue && (pal[nameOrValue] || nameOrValue)) || fb;
+  const from = stop(cat && cat.grad.from, '#2a2630');
+  const to = stop(cat && cat.grad.to, '#4a4454');
+  const cover = w.tile_cover || {};
+  // tile ART is per-wiki CONTENT (the master media pattern — a URL today, a
+  // Supabase Storage upload later): kind 'art' paints the uploaded image with
+  // a legibility scrim; 'themed' (and, until canonized, 'bespoke') paints the
+  // category gradient + glyph.
+  const art = cover.kind === 'art' && cover.src
+    ? `background-image:linear-gradient(to top,rgba(10,8,12,.78) 0%,rgba(10,8,12,.12) 45%,rgba(10,8,12,.18) 100%),url('${escapeHtml(cover.src)}');background-size:cover;background-position:center`
+    : `background-image:linear-gradient(to bottom right,${from},${to})`;
+  const glyph = cover.kind === 'art' ? null : (cover.glyph || (cat && cat.icon) || null);
   const tag = w.tagline || w.blurb || '';
-  return `<a class="rd-cover" href="/read/${encodeURIComponent(w.id)}" style="background-image:linear-gradient(to bottom right,${from},${to})">` +
+  return `<a class="rd-cover" href="/read/${encodeURIComponent(w.id)}" style="${art}">` +
     (glyph ? `<svg class="rd-cover-glyph" aria-hidden="true"><use href="#ic-${escapeHtml(glyph)}"></use></svg>` : '') +
     `<span class="rd-cover-genre">${escapeHtml(cat ? cat.label : 'Wiki')}</span>` +
     (w.status === 'coming_soon' ? `<span class="rd-cover-soon">Coming soon</span>` : '') +
@@ -102,17 +129,7 @@ h1{font-family:'Fraunces',Georgia,serif;font-size:34px;font-weight:700;letter-sp
 .rd-name{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:17px}
 .rd-meta{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#6b655c;margin-left:auto}
 .rd-empty{font-family:'JetBrains Mono',monospace;font-size:11px;color:#6b655c;line-height:1.8}
-.rd-covers{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-@media (max-width:560px){.rd-covers{grid-template-columns:repeat(2,1fr);gap:10px}}
-.rd-cover{position:relative;overflow:hidden;display:block;aspect-ratio:3/4;border-radius:14px;padding:13px;text-decoration:none;color:#fff;box-shadow:0 10px 26px -14px rgba(26,23,20,.4);transition:transform .2s}
-.rd-cover:hover{transform:translateY(-4px)}
-.rd-cover-glyph{position:absolute;right:-12px;bottom:-10px;width:120px;height:120px;opacity:.16;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.rd-cover-genre{position:absolute;top:12px;left:13px;font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.18em;color:rgba(255,255,255,.82)}
-.rd-cover-soon{position:absolute;top:12px;right:13px;font-family:'JetBrains Mono',monospace;font-size:7px;text-transform:uppercase;letter-spacing:.12em;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.35);border-radius:100px;padding:2px 7px}
-.rd-cover-foot{position:absolute;left:13px;right:13px;bottom:13px;display:block}
-.rd-cover-title{display:block;font-family:'Fraunces',Georgia,serif;font-weight:700;font-size:21px;line-height:1.02;letter-spacing:-.02em}
-.rd-cover-tag{display:block;font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.08em;margin-top:6px;opacity:.85}
-${''}</style>
+${COVER_CSS}</style>
 </head>
 <body>
 ${nav || ''}
