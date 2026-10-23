@@ -35,10 +35,10 @@ export function blankWiki(name: string): Wiki {
 // ── cloud (ORIGINATED) wikis — rows from ContentStore mapped into the same
 // Wiki/Page tree shapes the dashboard renders. A cloud wiki's home page id is
 // `${wikiId}-home` (the extraction convention), so saves land predictably.
-export function wikiFromMeta(id: string, name: string): Wiki {
+export function wikiFromMeta(id: string, name: string, status?: string): Wiki {
   const home = blankHome(name);
   home.id = `${id}-home`;
-  return { id, name, home, pages: [], skin: BASE_SKIN };
+  return { id, name, home, pages: [], skin: BASE_SKIN, status };
 }
 export function pageFromMeta(meta: { id: string; title: string }): Page {
   return {

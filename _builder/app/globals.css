@@ -49,7 +49,12 @@ button{ font-family:inherit; }
 #wiki-btn-name{ font-family:'Fraunces',serif; font-size:13px; font-weight:600; letter-spacing:-.01em; max-width:160px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .wiki-btn-caret{ color:var(--muted); flex-shrink:0; transition:transform .15s; }
 #wiki-btn.open .wiki-btn-caret{ transform:rotate(180deg); }
-#wiki-dropdown{ position:absolute; top:calc(100% + 6px); left:0; min-width:220px; background:var(--bg3); border:1px solid var(--border2); border-radius:8px; padding:6px; z-index:600; box-shadow:0 8px 24px rgba(0,0,0,.6); }
+#wiki-dropdown{ position:absolute; top:calc(100% + 6px); left:0; min-width:220px; background:var(--bg3); border:1px solid var(--border2); border-radius:8px; padding:6px; z-index:600; box-shadow:0 8px 24px rgba(0,0,0,.6);
+  /* the whole DB directory lists here now — scroll the list, keep "+ New
+     wiki" (the sticky footer below) always reachable */
+  max-height:min(70vh, 560px); overflow-y:auto; overscroll-behavior:contain; }
+.wdrop-foot{ position:sticky; bottom:-6px; margin:0 -6px -6px; padding:0 6px 6px; background:var(--bg3); }
+.wdrop-soon{ margin-left:auto; font-family:'JetBrains Mono',monospace; font-size:7.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--dim); border:1px solid var(--border2); border-radius:999px; padding:1px 6px; flex:none; }
 .wdrop-item{ display:flex; align-items:center; gap:8px; padding:7px 9px; border-radius:5px; cursor:pointer; transition:background .1s; width:100%; border:none; background:none; color:var(--text); text-align:left; }
 .wdrop-item:hover{ background:var(--bg4); }
 .wdrop-item.active{ background:var(--purple-bg); color:var(--purple); }

@@ -41,7 +41,12 @@ export default function Page() {
   useEffect(() => {
     if (!contentStore) return;
     contentStore.listWikis()
-      .then((rows) => setCloudWikis(rows.filter((r) => !WIKIS.some((w) => w.id === r.id)).map((r) => wikiFromMeta(r.id, r.name))))
+      .then((rows) => setCloudWikis(rows
+        .filter((r) => !WIKIS.some((w) => w.id === r.id))
+        // live wikis first (the ones with work in them), then the coming-soon
+        // directory seeds, A–Z within each
+        .sort((a, b) => (a.status === 'coming_soon' ? 1 : 0) - (b.status === 'coming_soon' ? 1 : 0) || a.name.localeCompare(b.name))
+        .map((r) => wikiFromMeta(r.id, r.name, r.status))))
       .catch(() => {});
   }, []);
   useEffect(() => onAuth((email) => {
