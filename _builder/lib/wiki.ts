@@ -39,7 +39,9 @@ export type Page = {
 export type WikiSkin = { bodyClass: string; css: string[] };
 // every wiki has exactly one HOME page (hero + browse + overview canon) —
 // pinned, singular, always present.
-export type Wiki = { id: string; name: string; home: Page; pages: Page[]; skin: WikiSkin };
+export type Wiki = { id: string; name: string; home: Page; pages: Page[]; skin: WikiSkin;
+  /** identity status for DB-listed wikis — 'coming_soon' badges in the switcher */
+  status?: string };
 
 export const WIKIS: Wiki[] = [
   { ...(tacoBell as unknown as Wiki), skin: { bodyClass: 'wiki-page wiki-taco-bell', css: ['wiki-taco-bell-skin.css', 'tb-editorial-base.css'] } },

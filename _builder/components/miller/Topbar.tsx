@@ -32,19 +32,24 @@ export function Topbar({ wikis, current, onSwitch, onNewWiki, account }: { wikis
               <button key={w.id} className={`wdrop-item ${w.id === current.id ? 'active' : ''}`} onClick={() => { setOpen(false); if (w.id !== current.id) onSwitch(w); }}>
                 <Swatch color={WIKI_COLOR[w.id] || '#9d7cf4'} label={w.name[0]} />
                 <span className="wdrop-name">{w.name}</span>
+                {w.status === 'coming_soon' && <span className="wdrop-soon">soon</span>}
               </button>
             ))}
-            {onNewWiki && <div className="wdrop-divider" />}
-            {onNewWiki && (
-              /* opens the ORIGINATION modal (identity + categories + tile
-                 cover + optional wiki-master grant) — the admin flow */
-              <button className="wdrop-item wdrop-new" onClick={() => { setOpen(false); onNewWiki(); }}>
-                <span className="wiki-btn-icon" style={{ background: 'transparent', border: '1px dashed var(--border3)', color: 'var(--muted)', fontWeight: 700 }}>+</span>
-                <span className="wdrop-name">New wiki</span>
-              </button>
-            )}
-            <div style={{ padding: '8px 9px 4px', fontFamily: "'JetBrains Mono',monospace", fontSize: 9, letterSpacing: '.1em', color: 'var(--dim)', textTransform: 'uppercase' }}>
-              {onNewWiki ? 'more wikis load from the content store' : 'wikis you hold a grant for'}
+            {/* sticky footer — "+ New wiki" stays reachable however long the
+               directory list above gets */}
+            <div className="wdrop-foot">
+              {onNewWiki && <div className="wdrop-divider" />}
+              {onNewWiki && (
+                /* opens the ORIGINATION modal (identity + categories + tile
+                   cover + optional wiki-master grant) — the admin flow */
+                <button className="wdrop-item wdrop-new" onClick={() => { setOpen(false); onNewWiki(); }}>
+                  <span className="wiki-btn-icon" style={{ background: 'transparent', border: '1px dashed var(--border3)', color: 'var(--muted)', fontWeight: 700 }}>+</span>
+                  <span className="wdrop-name">New wiki</span>
+                </button>
+              )}
+              <div style={{ padding: '8px 9px 4px', fontFamily: "'JetBrains Mono',monospace", fontSize: 9, letterSpacing: '.1em', color: 'var(--dim)', textTransform: 'uppercase' }}>
+                {onNewWiki ? `${wikis.length} wikis · the content store` : 'wikis you hold a grant for'}
+              </div>
             </div>
           </div>
         )}
