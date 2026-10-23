@@ -17,8 +17,10 @@ export async function GET() {
   const db = serverSupabase();
   if (!db) return NextResponse.json({ error: 'no database configured' }, { status: 503, headers: CORS });
   let w: { data: any[] | null; error: any } = await db.from('wikis')
+    .select('id, name, categories, blurb, tagline, status, tile_cover, icon, entries, popularity').order('name');
+  // pre-0009 / pre-0006 databases — serve what exists so the page still renders
+  if (w.error) w = await db.from('wikis')
     .select('id, name, categories, blurb, tagline, status, tile_cover, entries, popularity').order('name');
-  // pre-0006/0008 database — serve what exists so the page still renders
   if (w.error) w = await db.from('wikis').select('id, name').order('name');
   if (w.error) return NextResponse.json({ error: 'directory unavailable' }, { status: 503, headers: CORS });
   const c = await db.from('wiki_categories').select('key, label, icon, grad_from, grad_to');

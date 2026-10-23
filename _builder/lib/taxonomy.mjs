@@ -41,6 +41,7 @@ export function directoryPayload(wikiRows, canonTax, dbCats) {
     wikis: (wikiRows || []).map((w) => ({
       id: w.id, name: w.name, categories: w.categories || [], blurb: w.blurb || null,
       tagline: w.tagline || null, status: w.status || 'live', tile_cover: w.tile_cover || { kind: 'themed' },
+      icon: w.icon || { kind: 'auto' },   // the wiki MARK (0009) — for compact listings
       entries: w.entries || 0, popularity: w.popularity || 0,
     })),
     categories: merged.categories.map((c) => ({

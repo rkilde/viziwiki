@@ -1,9 +1,9 @@
 'use client';
 import React, { useEffect, useMemo, useState } from 'react';
-import { contentStore, type CategoryRow, type TileCover, type WikiMeta } from '../content-store';
+import { contentStore, type CategoryRow, type TileCover, type WikiIcon, type WikiMeta } from '../content-store';
 import { ICON_SPRITE } from '../lib/render';
 import taxonomyCanon from '../data/wiki-categories.json';
-import { mergeTaxonomy } from '../lib/taxonomy.mjs';
+import { mergeTaxonomy, spriteIconNames } from '../lib/taxonomy.mjs';
 import { COVER_CSS, wikiCoverTile } from '../lib/reader-core.mjs';
 
 // The WIKI IDENTITY editor — alter the current wiki's tile cover art, tags,
@@ -25,6 +25,10 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved }: {
   const [kind, setKind] = useState<'themed' | 'art' | 'bespoke'>('themed');
   const [artUrl, setArtUrl] = useState('');
   const [bespokeCls, setBespokeCls] = useState<string | null>(null);
+  // the wiki MARK (migration 0009): auto letter · sprite glyph · art image
+  const [icKind, setIcKind] = useState<'auto' | 'glyph' | 'art'>('auto');
+  const [icGlyph, setIcGlyph] = useState<string | null>(null);
+  const [icSrc, setIcSrc] = useState('');
   const [dbCats, setDbCats] = useState<CategoryRow[]>([]);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -40,6 +44,8 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved }: {
         setStatus((w.status as any) ?? 'live');
         const tc = (w.tile_cover ?? { kind: 'themed' }) as TileCover;
         setKind(tc.kind); setArtUrl(tc.src ?? ''); setBespokeCls(tc.cls ?? null);
+        const wi = (w.icon ?? { kind: 'auto' }) as WikiIcon;
+        setIcKind(wi.kind); setIcGlyph(wi.name ?? null); setIcSrc(wi.src ?? '');
       }
       setLoaded(true);
     }).catch(() => setLoaded(true));
@@ -51,10 +57,14 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved }: {
   }, [onClose]);
 
   const tax = useMemo(() => mergeTaxonomy(taxonomyCanon as any, dbCats), [dbCats]);
+  const icons = useMemo(() => spriteIconNames(ICON_SPRITE), []);
   const cover: TileCover = kind === 'art'
     ? { kind: 'art', src: artUrl.trim() }
     : kind === 'bespoke' && bespokeCls ? { kind: 'bespoke', cls: bespokeCls } : { kind: 'themed' };
-  const meta = { id: wikiId, name: wikiName, categories: cats, blurb: blurb.trim() || null, tagline: tagline.trim() || null, status, tile_cover: cover };
+  const mark: WikiIcon = icKind === 'art'
+    ? { kind: 'art', src: icSrc.trim() }
+    : icKind === 'glyph' && icGlyph ? { kind: 'glyph', name: icGlyph } : { kind: 'auto' };
+  const meta = { id: wikiId, name: wikiName, categories: cats, blurb: blurb.trim() || null, tagline: tagline.trim() || null, status, tile_cover: cover, icon: mark };
   const previewHtml = useMemo(
     () => `<div class="rd-covers" style="grid-template-columns:1fr">${wikiCoverTile(meta, tax)}</div>`,
     [cats, blurb, tagline, status, kind, artUrl, bespokeCls, tax]);  // eslint-disable-line react-hooks/exhaustive-deps
@@ -65,9 +75,11 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved }: {
     if (!contentStore) { setErr('Cloud not configured'); return; }
     if (!cats.length) { setErr('pick at least one category'); return; }
     if (kind === 'art' && !artUrl.trim()) { setErr('give the art an image URL, or switch the cover kind'); return; }
+    if (icKind === 'art' && !icSrc.trim()) { setErr('give the icon an image URL, or switch the icon kind'); return; }
+    if (icKind === 'glyph' && !icGlyph) { setErr('pick a glyph for the icon, or switch the icon kind'); return; }
     setBusy(true); setErr(null);
     try {
-      await contentStore.updateWikiIdentity(wikiId, meta as Pick<WikiMeta, 'categories' | 'blurb' | 'tagline' | 'status' | 'tile_cover'>);
+      await contentStore.updateWikiIdentity(wikiId, meta as Pick<WikiMeta, 'categories' | 'blurb' | 'tagline' | 'status' | 'tile_cover' | 'icon'>);
       fetch('/api/revalidate', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ paths: ['/read', '/api/directory'] }) }).catch(() => {});
       setSavedTick(true); setTimeout(() => setSavedTick(false), 1800);
       onSaved();
@@ -108,6 +120,33 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved }: {
               <input className="acct-input" placeholder="tile art URL — an image upload at public launch" value={artUrl} onChange={(e) => setArtUrl(e.target.value)} />
             )}
             {kind === 'bespoke' && <div className="acct-note">This wiki wears one of the five hand-built covers (browse page art). Switch the kind above to replace it; the reference is kept if you switch back before saving.</div>}
+            <div className="ow-label">wiki icon — the small mark (switcher, wiki bar / rail)</div>
+            <div className="ow-row wi-icon-row">
+              <select className="acct-input" value={icKind} onChange={(e) => setIcKind(e.target.value as any)}>
+                <option value="auto">auto (letter mark)</option>
+                <option value="glyph">sprite glyph</option>
+                <option value="art">icon art (your image)</option>
+              </select>
+              <span className="wi-mark-preview" title="icon preview">
+                {icKind === 'art' && icSrc.trim()
+                  ? <img src={icSrc.trim()} alt="" />
+                  : icKind === 'glyph' && icGlyph
+                    ? <svg><use href={`#ic-${icGlyph}`} /></svg>
+                    : <b>{wikiName[0]}</b>}
+              </span>
+            </div>
+            {icKind === 'glyph' && (
+              <div className="ow-icons">
+                {icons.map((ic) => (
+                  <button key={ic} type="button" title={ic} className={`ow-icon ${icGlyph === ic ? 'on' : ''}`} onClick={() => setIcGlyph(ic)}>
+                    <svg><use href={`#ic-${ic}`} /></svg>
+                  </button>
+                ))}
+              </div>
+            )}
+            {icKind === 'art' && (
+              <input className="acct-input" placeholder="icon image URL — square works best; an upload at public launch" value={icSrc} onChange={(e) => setIcSrc(e.target.value)} />
+            )}
             {err && <div className="acct-msg">{err}</div>}
             <div className="ow-actions">
               <button className="acct-primary" onClick={save} disabled={busy}>{busy ? '…' : savedTick ? 'Saved ✓' : 'Save identity'}</button>

@@ -41,7 +41,10 @@ export type WikiSkin = { bodyClass: string; css: string[] };
 // pinned, singular, always present.
 export type Wiki = { id: string; name: string; home: Page; pages: Page[]; skin: WikiSkin;
   /** identity status for DB-listed wikis — 'coming_soon' badges in the switcher */
-  status?: string };
+  status?: string;
+  /** the wiki's small MARK (auto letter / sprite glyph / art image) — from the
+   *  DB identity (migration 0009); the switcher renders it */
+  icon?: { kind: 'auto' | 'glyph' | 'art'; name?: string; src?: string } };
 
 export const WIKIS: Wiki[] = [
   { ...(tacoBell as unknown as Wiki), skin: { bodyClass: 'wiki-page wiki-taco-bell', css: ['wiki-taco-bell-skin.css', 'tb-editorial-base.css'] } },

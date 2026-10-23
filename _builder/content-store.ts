@@ -25,12 +25,18 @@ import { docToRows, rowsToDoc, validateDoc, persistableDoc } from './lib/content
  *  today, a Supabase Storage upload later). "bespoke" REFERENCES a hand-built
  *  flagship cover class in browse.html by name (never restated art). */
 export interface TileCover { kind: 'themed' | 'art' | 'bespoke'; src?: string; cls?: string; glyph?: string; }
+/** The wiki's small MARK (migration 0009) — the compact identity shown in the
+ *  build kit's switcher and, as the chrome goes DB-native, the live wiki-bar
+ *  logo / TOC rail. Per-wiki content: "auto" = derived letter mark (default),
+ *  "glyph" = a canon sprite icon, "art" = the wiki's own image (master media
+ *  pattern — a URL today, a Storage upload at launch). */
+export interface WikiIcon { kind: 'auto' | 'glyph' | 'art'; name?: string; src?: string; }
 export interface WikiMeta {
   id: string; slug: string; name: string; skin: string;
   /** Identity (migration 0006) — optional so pre-0006 rows and the extracted
    *  flagship metas stay valid; listWikis fills defaults when absent. */
   categories?: string[]; blurb?: string | null; tagline?: string | null;
-  status?: 'live' | 'coming_soon'; tile_cover?: TileCover;
+  status?: 'live' | 'coming_soon'; tile_cover?: TileCover; icon?: WikiIcon;
 }
 export interface PageMeta { id: string; slug: string; title: string; type: string; }
 /** One row of a page's history (phase 3 — the revision system). */
@@ -71,7 +77,7 @@ export interface ContentStore {
   createWiki(meta: WikiMeta): Promise<void>;
   /** Update a wiki's IDENTITY (tile cover, tags, blurb, tagline, status) —
    *  admin or the wiki's master; never touches id/slug/skin/content. */
-  updateWikiIdentity(id: string, patch: Pick<WikiMeta, 'categories' | 'blurb' | 'tagline' | 'status' | 'tile_cover'>): Promise<void>;
+  updateWikiIdentity(id: string, patch: Pick<WikiMeta, 'categories' | 'blurb' | 'tagline' | 'status' | 'tile_cover' | 'icon'>): Promise<void>;
   /** Admin-originated categories ([] on a pre-0007 database). */
   listCategories(): Promise<CategoryRow[]>;
   createCategory(cat: CategoryRow): Promise<void>;
@@ -115,7 +121,10 @@ export class SupabaseContentStore implements ContentStore {
   async listWikis(): Promise<WikiMeta[]> {
     // identity columns arrive with migration 0006 — fall back gracefully on a
     // pre-0006 database (same pattern as the 0004 revision-insert fallback)
+    // identity columns arrive across 0006–0009 — fall back by generation
     let r: { data: any[] | null; error: any } = await this.db.from('wikis')
+      .select('id, slug, name, skin, categories, blurb, tagline, status, tile_cover, icon').order('id');
+    if (r.error) r = await this.db.from('wikis')
       .select('id, slug, name, skin, categories, blurb, tagline, status, tile_cover').order('id');
     if (r.error) {
       r = await this.db.from('wikis').select('id, slug, name, skin').order('id');
@@ -124,7 +133,7 @@ export class SupabaseContentStore implements ContentStore {
         ...w, categories: [], blurb: null, tagline: null, status: 'live', tile_cover: { kind: 'themed' },
       })) as WikiMeta[];
     }
-    return (r.data ?? []) as WikiMeta[];
+    return (r.data ?? []).map((w: any) => ({ icon: { kind: 'auto' }, ...w })) as WikiMeta[];
   }
 
   async listPages(wiki: string): Promise<PageMeta[]> {
@@ -220,13 +229,15 @@ export class SupabaseContentStore implements ContentStore {
     if (error) throw error;
   }
 
-  async updateWikiIdentity(id: string, patch: Pick<WikiMeta, 'categories' | 'blurb' | 'tagline' | 'status' | 'tile_cover'>): Promise<void> {
-    const { data, error } = await this.db.from('wikis').update({
+  async updateWikiIdentity(id: string, patch: Pick<WikiMeta, 'categories' | 'blurb' | 'tagline' | 'status' | 'tile_cover' | 'icon'>): Promise<void> {
+    const base: any = {
       categories: patch.categories ?? [], blurb: patch.blurb ?? null, tagline: patch.tagline ?? null,
       status: patch.status ?? 'live', tile_cover: patch.tile_cover ?? { kind: 'themed' },
-    }).eq('id', id).select('id');
-    if (error) throw error;
-    if (!data?.length) throw new Error(`no wiki "${id}" to update`);
+    };
+    let r = await this.db.from('wikis').update({ ...base, icon: patch.icon ?? { kind: 'auto' } }).eq('id', id).select('id');
+    if (r.error) r = await this.db.from('wikis').update(base).eq('id', id).select('id');   // pre-0009
+    if (r.error) throw r.error;
+    if (!r.data?.length) throw new Error(`no wiki "${id}" to update`);
   }
 
   async listCategories(): Promise<CategoryRow[]> {

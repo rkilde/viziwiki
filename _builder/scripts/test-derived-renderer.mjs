@@ -975,7 +975,9 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(tt22 && tt22.from === '#123' && tt22.to === '#456', 'originated categories ride the same feed');
   const bare = pay.wikis.find((w) => w.id === 'bare');
   ok(bare && bare.status === 'live' && bare.tile_cover.kind === 'themed' && bare.entries === 0, 'identity-less rows (pre-0006) get safe defaults');
+  ok(bare.icon && bare.icon.kind === 'auto', 'the wiki MARK (icon slot) defaults to auto');
   ok(pay.wikis[0].tile_cover.cls === 'c-tacobell' && pay.wikis[0].popularity === 96, 'identity and stats pass through');
+  ok(directoryPayload([{ id: 'x', name: 'X', icon: { kind: 'glyph', name: 'pizza' } }], canonTax, []).wikis[0].icon.name === 'pizza', 'a set icon rides the feed');
 
   // migration 0008 seeds the WHOLE hand-built directory
   const mig = fs.readFileSync('supabase/migrations/0008_directory_seed.sql', 'utf8');
