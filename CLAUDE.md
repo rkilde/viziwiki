@@ -415,11 +415,27 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
   clicks (run the SQL, set the two `NEXT_PUBLIC_SUPABASE_*` vars in Vercel) are the
   remaining switch-on — walkthrough: `docs/supabase-setup.md`; (2) **auth + roles** —
   sign-up / sessions, a roles table, row-level security so a contributor edits only
-  what their role allows; (3) **moderation** — contributor edits land as
-  drafts/proposals; a curator/admin approves → published. Build the draft/approval
-  records as VERSION HISTORY from day one (the trust ladder: pre-approval now →
-  per-user auto-publish → publish-on-save + patrol/revert at Fandom scale — the
-  same records become history instead of a queue, so scaling is a setting flip).
+  what their role allows; (3) **moderation — PHASE 3 BUILT (Oct 2026)**: the
+  revision system, designed as VERSION HISTORY from day one. Migration
+  `0004_revisions.sql`: `revisions` (full PageDoc snapshot + author + status
+  pending/published/rejected + reviewed-by), `pages.published_rev` pointer
+  (trigger-guarded; moves ONLY via the security-definer fns `publish_revision`
+  / `reject_revision` / `revert_to` — revert = a NEW published revision,
+  linear Wikipedia-style history; `is_approver` = admin or the wiki's
+  curator), public-read RLS (Wikipedia-style transparent history), backfill of
+  one published revision per existing page. Store: savePage appends a revision
+  (+ auto-publish for approvers — DB re-checks), listRevisions/getRevisionDoc/
+  publishRevision/rejectRevision/revertTo. Builder: Save chip says
+  "published" (approvers) vs "saved — pending review"; **History** panel =
+  the whole trail + GREEN/RED DIFFS vs predecessor (`lib/diff-core.mjs`,
+  pure) + Publish/Reject/Revert for approvers. Reader: serves ONLY
+  `published_rev` (unpublished → friendly 404), page index lists published
+  only; `/api/revalidate` invalidates the edge cache on publish/revert so
+  readers update in SECONDS. Guard: case 19 (348 total). Owner switch-on:
+  run 0004 (docs/supabase-setup.md §phase 3). The trust ladder remains the
+  scaling plan: pre-approval now → per-user auto-publish → publish-on-save +
+  patrol/revert at Fandom scale — same records, setting flips, no schema
+  changes.
   **PUBLISHING MODEL (DECIDED Oct 2026 — the Wikipedia/Fandom model; export-to-git
   SUPERSEDED):** readers are served pages RENDERED FROM THE DATABASE through the
   SAME derived renderer the builder uses (rule #5 — one renderer, two surfaces),

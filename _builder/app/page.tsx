@@ -8,7 +8,7 @@ import { PageEditor } from '../components/editor/PageEditor';
 import { blankWiki, blankPage, loadUserWikis, saveUserWikis, loadChildren, saveChildren, mergeWiki, type ChildOverlay } from '../lib/builder';
 import { AccountChip } from '../components/AccountChip';
 import { onAuth, fetchProfile, type Profile, type ContributorClass } from '../lib/auth';
-import { capsFor, grantedWikiIds } from '../lib/caps.mjs';
+import { capsFor, grantedWikiIds, canApprove } from '../lib/caps.mjs';
 import type { EditCaps } from '../lib/canvas';
 
 // The builder home: wiki switcher + Miller column view (real wikis from git +
@@ -109,7 +109,11 @@ export default function Page() {
           <div id="miller">
             <MillerView key={wiki.id} wiki={wiki} onOpen={setEditing} onAddNode={caps.structure ? addNode : undefined} />
           </div>
-          {editing && <PageEditor key={`${editing.id}:${JSON.stringify(caps)}`} page={editing} skin={baseWiki.skin} wikiMeta={{ id: baseWiki.id, slug: baseWiki.id, name: baseWiki.name, skin: baseWiki.skin.bodyClass }} caps={caps} onClose={() => setEditing(null)} />}
+          {editing && <PageEditor key={`${editing.id}:${JSON.stringify(caps)}`} page={editing} skin={baseWiki.skin} wikiMeta={{ id: baseWiki.id, slug: baseWiki.id, name: baseWiki.name, skin: baseWiki.skin.bodyClass }} caps={caps}
+            canApprove={realRole === 'admin' && viewAs !== 'me'
+              ? viewAs === 'curator'   // preview honors the previewed class
+              : canApprove(realRole, realClass, profile?.wiki_id ?? null, baseWiki.id)}
+            onClose={() => setEditing(null)} />}
         </>
       ) : (
         <div className="no-grant">

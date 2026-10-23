@@ -8,7 +8,8 @@ export async function GET(_req: Request, { params }: { params: { wiki: string } 
   if (!db) return noDb();
   const { data: wiki } = await db.from('wikis').select('id, name').eq('id', params.wiki).single();
   if (!wiki) return notFound(`No wiki "${params.wiki}" in the content database.`);
-  const { data: pages } = await db.from('pages').select('id, title, type').eq('wiki_id', wiki.id).order('title');
+  // readers list only PUBLISHED pages (phase 3)
+  const { data: pages } = await db.from('pages').select('id, title, type').eq('wiki_id', wiki.id).not('published_rev', 'is', null).order('title');
   const items = (pages || []).map((p) =>
     `<a href="/read/${encodeURIComponent(wiki.id)}/${encodeURIComponent(p.id)}"><span class="rd-name">${escapeHtml(p.title)}</span><span class="rd-meta">${p.type === 'home' ? 'home' : 'page'}</span></a>`).join('');
   return html(readerIndexShell(`${wiki.name} — ViziWiki Reader`, readerNav([['Wikis', '/read'], [wiki.name, null]]),

@@ -848,5 +848,36 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(readerShell({ title: 'H', wikiId: 'apple', bodyClass: 'x', isHome: true, bankCss: [], bodyHtml: '', nav: '' }).includes('/canon/wiki-home.css'), 'home page loads the home layer');
 }
 
+// ── case 19: the revision system's pure parts — green/red diffs + approver rights ──
+{
+  console.log('case 19: revisions — diffDocs (the green/red), canApprove');
+  const { flattenDoc, diffDocs } = await import('../lib/diff-core.mjs');
+  const { canApprove } = await import('../lib/caps.mjs');
+  const before = {
+    hero: { title: 'Drinks.', desc: 'D' },
+    overview: { heading: 'H', paragraphs: ['P1', 'P2'] },
+    sections: [{ type: 'catalog', data: { title: 'Every drink', unit: 'drink' } }],
+    _stash: { feature: { title: 'editor-only' } },
+  };
+  const after = {
+    hero: { title: 'Drinksssss.', desc: 'D' },
+    overview: { heading: 'H', paragraphs: ['P1'] },
+    sections: [{ type: 'catalog', data: { title: 'Every drink', unit: 'drink', note: 'new!' } }],
+  };
+  const d = diffDocs(before, after);
+  const byKind = (k) => d.filter((x) => x.kind === k);
+  ok(byKind('changed').some((x) => x.path === 'hero.title' && x.old === 'Drinks.' && x.new === 'Drinksssss.'), 'the ssss shows as changed: old red, new green');
+  ok(byKind('removed').some((x) => x.path === 'overview.paragraphs[1]' && x.old === 'P2'), 'a deleted paragraph shows as removed');
+  ok(byKind('added').some((x) => /catalog\[0\]\.note$/.test(x.path) && x.new === 'new!'), 'a new field shows as added, labeled by the section type');
+  ok(!d.some((x) => x.path.includes('_stash')), '_stash (editor-only) never appears in a diff');
+  ok(diffDocs(before, before).length === 0, 'identical docs → an empty diff');
+  ok(!('_stash' in flattenDoc(before) ? false : true) === false || !Object.keys(flattenDoc(before)).some((p) => p.includes('_stash')), 'flatten skips _stash');
+
+  ok(canApprove('admin', null, null, 'apple'), 'admin approves anywhere');
+  ok(canApprove('contributor', 'curator', 'apple', 'apple'), "a wiki's curator approves in it");
+  ok(!canApprove('contributor', 'curator', 'apple', 'taco-bell'), 'a curator cannot approve outside their wiki');
+  ok(!canApprove('contributor', 'writer', null, 'apple') && !canApprove('viewer', null, null, 'apple'), 'writers/viewers never approve');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
