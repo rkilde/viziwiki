@@ -40,15 +40,20 @@ export async function POST(req: Request) {
   //   never stored server-side) bills THAT user's own Anthropic account;
   // · the platform key (Vercel env) is reserved for ADMINS, so contributors
   //   can never spend the owner's credits.
+  // the admin "view as" preview extends here: x-anthropic-as-user makes the
+  // billing split treat the (verified-admin) caller like a contributor, so
+  // the owner can test the connect-your-key experience. Auth stays real.
+  const asUser = req.headers.get('x-anthropic-as-user') === '1';
+  const effRole = asUser ? 'contributor' : role.data;
   const userKey = (req.headers.get('x-anthropic-key') || '').trim();
-  const apiKey = userKey || (role.data === 'admin' ? process.env.ANTHROPIC_API_KEY : null);
+  const apiKey = userKey || (effRole === 'admin' ? process.env.ANTHROPIC_API_KEY : null);
   if (!apiKey) {
     return NextResponse.json({
-      error: role.data === 'admin'
+      error: effRole === 'admin'
         ? 'AI generation is not configured — set ANTHROPIC_API_KEY in Vercel (see docs/supabase-setup.md)'
         : 'connect your own Anthropic API key to generate (the 🔑 button) — generations bill YOUR account, and the key never leaves your browser',
-      needKey: role.data !== 'admin',
-    }, { status: role.data === 'admin' ? 503 : 402 });
+      needKey: effRole !== 'admin',
+    }, { status: effRole === 'admin' ? 503 : 402 });
   }
 
   const prompt = buildSvgPrompt(kind, {

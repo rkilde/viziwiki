@@ -19,7 +19,7 @@ const KEY_LS = 'viziwiki:anthropic-key';
 const loadKey = () => { try { return localStorage.getItem(KEY_LS) || ''; } catch { return ''; } };
 const saveKey = (k: string) => { try { k ? localStorage.setItem(KEY_LS, k) : localStorage.removeItem(KEY_LS); } catch { /* ignore */ } };
 
-export function GenArtRow({ kind, wiki, onResult }: { kind: 'icon' | 'cover'; wiki: GenWiki; onResult: (dataUri: string) => void }) {
+export function GenArtRow({ kind, wiki, onResult, asUser = false }: { kind: 'icon' | 'cover'; wiki: GenWiki; onResult: (dataUri: string) => void; asUser?: boolean }) {
   const [hint, setHint] = useState('');
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -37,6 +37,8 @@ export function GenArtRow({ kind, wiki, onResult }: { kind: 'icon' | 'cover'; wi
           'content-type': 'application/json',
           ...(token ? { authorization: `Bearer ${token}` } : {}),
           ...(key.trim() ? { 'x-anthropic-key': key.trim() } : {}),
+          // admin "view as" preview: billing behaves like a contributor's
+          ...(asUser ? { 'x-anthropic-as-user': '1' } : {}),
         },
         body: JSON.stringify({ kind, wiki, hint: hint.trim() || undefined }),
       });

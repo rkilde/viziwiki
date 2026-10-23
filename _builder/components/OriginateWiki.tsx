@@ -19,10 +19,12 @@ import { GenArtRow } from './GenArt';
 
 type NewCat = { label: string; icon: string | null; from: string | null; to: string | null };
 
-export function OriginateWiki({ existingIds, onClose, onCreated }: {
+export function OriginateWiki({ existingIds, onClose, onCreated, genAsUser = false }: {
   existingIds: string[];
   onClose: () => void;
   onCreated: (meta: WikiMeta) => void;
+  /** admin "view as" preview: AI generation bills like a contributor's */
+  genAsUser?: boolean;
 }) {
   const [name, setName] = useState('');
   const [id, setId] = useState('');
@@ -173,7 +175,7 @@ export function OriginateWiki({ existingIds, onClose, onCreated }: {
                 name: name.trim() || 'a new wiki', genreLabel: pc?.label ?? null,
                 tagline: tagline.trim() || null, blurb: blurb.trim() || null,
                 colors: pc ? [resolveColor((taxonomyCanon as any).palette, pc.grad.from, ''), resolveColor((taxonomyCanon as any).palette, pc.grad.to, '')].filter(Boolean) : [],
-              }} onResult={setArtUrl} />;
+              }} onResult={setArtUrl} asUser={genAsUser} />;
             })()}
             <input className="acct-input" placeholder="grant wiki master — email (optional)" value={grantEmail}
               onChange={(e) => setGrantEmail(e.target.value)} />
