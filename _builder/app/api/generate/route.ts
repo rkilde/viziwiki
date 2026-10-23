@@ -19,9 +19,6 @@ export const maxDuration = 60;   // vector covers can take a while to draw
 const MODEL = process.env.ANTHROPIC_MODEL || 'claude-opus-5-5';
 
 export async function POST(req: Request) {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return NextResponse.json({ error: 'AI generation is not configured — set ANTHROPIC_API_KEY in Vercel (see docs/supabase-setup.md)' }, { status: 503 });
-  }
   let body: any;
   try { body = await req.json(); } catch { return NextResponse.json({ error: 'bad request' }, { status: 400 }); }
   const kind = body?.kind === 'icon' ? 'icon' : body?.kind === 'cover' ? 'cover' : null;
@@ -38,6 +35,22 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'generation is for contributor accounts' }, { status: 403 });
   }
 
+  // ── WHO PAYS (the billing split) ──
+  // · a user-connected key (x-anthropic-key header — kept in THEIR browser,
+  //   never stored server-side) bills THAT user's own Anthropic account;
+  // · the platform key (Vercel env) is reserved for ADMINS, so contributors
+  //   can never spend the owner's credits.
+  const userKey = (req.headers.get('x-anthropic-key') || '').trim();
+  const apiKey = userKey || (role.data === 'admin' ? process.env.ANTHROPIC_API_KEY : null);
+  if (!apiKey) {
+    return NextResponse.json({
+      error: role.data === 'admin'
+        ? 'AI generation is not configured — set ANTHROPIC_API_KEY in Vercel (see docs/supabase-setup.md)'
+        : 'connect your own Anthropic API key to generate (the 🔑 button) — generations bill YOUR account, and the key never leaves your browser',
+      needKey: role.data !== 'admin',
+    }, { status: role.data === 'admin' ? 503 : 402 });
+  }
+
   const prompt = buildSvgPrompt(kind, {
     name: String(w.name).slice(0, 120),
     genreLabel: w.genreLabel ? String(w.genreLabel).slice(0, 60) : null,
@@ -47,7 +60,7 @@ export async function POST(req: Request) {
   }, body?.hint ? String(body.hint).slice(0, 400) : null);
 
   try {
-    const client = new Anthropic();
+    const client = new Anthropic({ apiKey });
     const res = await client.messages.create({
       model: MODEL,
       max_tokens: 16000,

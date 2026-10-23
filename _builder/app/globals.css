@@ -468,10 +468,14 @@ button{ font-family:inherit; }
 .mc-del{ color:#f87171; }
 .mc-empty{ font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--dim); padding:8px 4px; }
 
-/* ════ AI art generator row (✨ Generate) ════ */
-.gen-row{ display:grid; grid-template-columns:1fr auto; gap:8px; align-items:center; }
+/* ════ AI art generator row (✨ Generate + 🔑 connect-your-key) ════ */
+.gen-row{ display:grid; grid-template-columns:1fr auto auto; gap:8px; align-items:center; }
 .gen-hint{ font-size:10px; }
 .gen-btn{ white-space:nowrap; font-size:12px; padding:8px 12px; }
+.gen-key{ font-size:11px; }
+.gen-key.on{ color:var(--green); border-color:rgba(94,206,160,.4); }
+.gen-key-box{ grid-column:1 / -1; display:flex; flex-direction:column; gap:7px; padding:9px; border:1px dashed var(--purple-bd); border-radius:9px; }
+.gen-key-acts{ display:flex; align-items:center; gap:10px; }
 .gen-err{ grid-column:1 / -1; }
 
 /* ════ no-grant empty state (phase-2 wiki visibility) ════ */
