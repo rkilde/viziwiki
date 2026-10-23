@@ -380,14 +380,12 @@ const BESPOKE = {
     <svg class="plats" viewBox="0 0 300 375" preserveAspectRatio="none" aria-hidden="true" style="position:absolute;inset:0;z-index:2"><rect class="plat" x="40" y="250" width="60" height="12" rx="6"/><rect class="plat" x="150" y="300" width="60" height="12" rx="6"/></svg>` },
 };
 
-const esc = (s) => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
-
 function coverTile(w){
   const cat = catBy((w.categories||[])[0]);
   // the genre corner lists EVERY tag the wiki wears (first tag still drives
-  // the themed gradient/glyph); the blurb surfaces as the tile's tooltip
+  // the themed gradient/glyph). The blurb stays off the tile entirely — it
+  // powers search only (owner's call: no hover tooltip).
   const genre = (w.categories||[]).map(k => { const c = catBy(k); return c ? c.label : null; }).filter(Boolean).join(' · ') || 'Wiki';
-  const tip = w.blurb ? ` title="${esc(w.blurb)}"` : '';
   const cover = w.tile_cover || {};
   // live flagship (bespoke cover) → its built page here; any other live wiki
   // is DB-native and reads on the platform's reader; coming soon → no link
@@ -398,7 +396,7 @@ function coverTile(w){
   const b = cover.cls ? BESPOKE[cover.cls] : null;
   if(b){
     // bespoke cover (built wiki) — hand-coded art + the DB's identity text
-    return `<a class="cover ${cover.cls}" href="${href}"${tip}>
+    return `<a class="cover ${cover.cls}" href="${href}">
       ${b.inner}
       <div class="c-genre">${genre}</div>
       <div class="c-vol">${b.vol}</div>
@@ -413,7 +411,7 @@ function coverTile(w){
   const art = cover.kind === 'art' && cover.src
     ? `background-image:linear-gradient(to top,rgba(10,8,12,.78) 0%,rgba(10,8,12,.12) 45%,rgba(10,8,12,.18) 100%),url('${cover.src}');background-size:cover;background-position:center`
     : `background-image:linear-gradient(to bottom right,${cat?cat.from:'#2a2630'},${cat?cat.to:'#4a4454'})`;
-  return `<a class="cover c-themed" href="${href}" style="${art}"${tip}>
+  return `<a class="cover c-themed" href="${href}" style="${art}">
     ${cover.kind === 'art' ? '' : `<div class="sheen"></div>
     ${cat && cat.iconSvg
       ? `<svg class="wiki-icon glyph" viewBox="0 0 24 24">${cat.iconSvg}</svg>`
