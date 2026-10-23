@@ -42,6 +42,17 @@ export function fieldCap(path, rule) {
   return 'text';
 }
 
+/** Which wikis this account may SEE in the build kit (the owner's rule: no
+ *  grant → no wikis). admin → all · curator (wiki_id set) → theirs only ·
+ *  writer/designer (platform-wide grant, wiki_id null) → all, until per-wiki
+ *  memberships exist · viewer / no class / signed out → none. */
+export function grantedWikiIds(role, cls, wikiId, allIds) {
+  const ids = Array.isArray(allIds) ? allIds : [];
+  if (role === 'admin') return [...ids];
+  if (role === 'contributor' && cls) return wikiId ? ids.filter((id) => id === wikiId) : [...ids];
+  return [];
+}
+
 /** Which capability an ACTION verb needs (the parent-side backstop). */
 export function actionCap(action) {
   const a = String(action || '');

@@ -758,7 +758,15 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
 // ── case 17: roles — class→caps mapping + class-gated decoration ──
 {
   console.log('case 17: roles — class caps, field/action gating, decorated surface per class');
-  const { capsFor, fieldCap, actionCap, CLASS_CAPS, NO_CAPS, canEditAnything } = await import('../lib/caps.mjs');
+  const { capsFor, fieldCap, actionCap, CLASS_CAPS, NO_CAPS, canEditAnything, grantedWikiIds } = await import('../lib/caps.mjs');
+
+  // wiki VISIBILITY (the owner's rule: no grant → no wikis shown)
+  const ALL = ['apple', 'taco-bell', 'fallout'];
+  ok(grantedWikiIds('admin', null, null, ALL).length === 3, 'admin sees every wiki');
+  ok(JSON.stringify(grantedWikiIds('contributor', 'curator', 'apple', ALL)) === JSON.stringify(['apple']), 'curator sees only their wiki');
+  ok(grantedWikiIds('contributor', 'writer', null, ALL).length === 3, 'writer (platform-wide grant) sees all — until per-wiki memberships');
+  ok(grantedWikiIds('viewer', null, null, ALL).length === 0, 'viewer: no wikis');
+  ok(grantedWikiIds('contributor', null, null, ALL).length === 0, 'contributor WITHOUT a class: no wikis (no grant)');
   const { buildPolicy } = await import('../lib/policy.mjs');
   const P = buildPolicy(grammar).fields;
 
