@@ -15,8 +15,10 @@ import { GenArtRow, type GenWiki } from './GenArt';
 // image — a URL today, a Storage upload at public launch) · bespoke (the five
 // hand-built flagship covers; kept unless deliberately switched away).
 
-export function WikiIdentity({ wikiId, wikiName, onClose, onSaved }: {
+export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, genAsUser = false }: {
   wikiId: string; wikiName: string; onClose: () => void; onSaved: () => void;
+  /** admin "view as" preview: AI generation bills like a contributor's */
+  genAsUser?: boolean;
 }) {
   const [loaded, setLoaded] = useState(false);
   const [cats, setCats] = useState<string[]>([]);
@@ -126,7 +128,7 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved }: {
             </div>
             {kind === 'art' && (<>
               <input className="acct-input" placeholder="tile art URL — an image upload at public launch" value={artUrl} onChange={(e) => setArtUrl(e.target.value)} />
-              <GenArtRow kind="cover" wiki={genWiki} onResult={setArtUrl} />
+              <GenArtRow kind="cover" wiki={genWiki} onResult={setArtUrl} asUser={genAsUser} />
             </>)}
             {kind === 'bespoke' && <div className="acct-note">This wiki wears one of the five hand-built covers (browse page art). Switch the kind above to replace it; the reference is kept if you switch back before saving.</div>}
             <div className="ow-label">wiki icon — the small mark (switcher, wiki bar / rail)</div>
@@ -155,7 +157,7 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved }: {
             )}
             {icKind === 'art' && (<>
               <input className="acct-input" placeholder="icon image URL — square works best; an upload at public launch" value={icSrc} onChange={(e) => setIcSrc(e.target.value)} />
-              <GenArtRow kind="icon" wiki={genWiki} onResult={setIcSrc} />
+              <GenArtRow kind="icon" wiki={genWiki} onResult={setIcSrc} asUser={genAsUser} />
             </>)}
             {err && <div className="acct-msg">{err}</div>}
             <div className="ow-actions">

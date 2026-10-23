@@ -164,9 +164,9 @@ export default function Page() {
   return (
     <>
       <Topbar wikis={shownWikis} current={wiki || undefined} onSwitch={(w) => { setEditing(null); setWikiId(w.id); }} onNewWiki={realRole === 'admin' ? () => setOriginating(true) : undefined} onEditIdentity={canEditIdentity ? () => setEditingIdentity(true) : undefined} account={account} />
-      {originating && <OriginateWiki existingIds={allWikis.map((w) => w.id)} onClose={() => setOriginating(false)} onCreated={onOriginated} />}
+      {originating && <OriginateWiki existingIds={allWikis.map((w) => w.id)} onClose={() => setOriginating(false)} onCreated={onOriginated} genAsUser={realRole === 'admin' && viewAs !== 'me'} />}
       {managingTags && <ManageCategories onClose={() => setManagingTags(false)} />}
-      {editingIdentity && baseWiki && <WikiIdentity wikiId={baseWiki.id} wikiName={baseWiki.name} onClose={() => setEditingIdentity(false)} onSaved={refreshCloudWikis} />}
+      {editingIdentity && baseWiki && <WikiIdentity wikiId={baseWiki.id} wikiName={baseWiki.name} onClose={() => setEditingIdentity(false)} onSaved={refreshCloudWikis} genAsUser={realRole === 'admin' && viewAs !== 'me'} />}
       {wiki && baseWiki ? (
         <>
           <div id="miller">
