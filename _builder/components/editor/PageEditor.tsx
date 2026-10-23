@@ -266,7 +266,7 @@ export function PageEditor({ page, skin, wikiMeta, caps = ALL_CAPS, canApprove =
             {todoCount === 0 ? <><IcCheck />Page ready</> : <><IcTri />{todoCount} section{todoCount !== 1 ? 's' : ''} need attention</>}
           </span>
         )}
-        {saved && <span className="pe-chip-status" title={cloud === 'off' ? 'Saved in this browser (no cloud keys configured)' : cloud === 'err' ? 'Saved in this browser; the cloud save failed — check the Supabase keys/project' : saveFate === 'published' ? 'Published — readers see this version' : saveFate === 'pending' ? 'Saved as a revision awaiting curator/admin review' : 'Saved'}><IcCheck />{cloud === 'saving' ? 'saving…' : cloud === 'err' ? 'saved (local only)' : saveFate === 'published' ? 'published' : saveFate === 'pending' ? 'saved — pending review' : 'saved'}</span>}
+        {saved && <span className="pe-chip-status" title={cloud === 'off' ? 'Saved in this browser (no cloud keys configured)' : cloud === 'err' ? 'Saved in this browser; the cloud save failed — check the Supabase keys/project' : saveFate === 'published' ? 'Published — readers see this version' : saveFate === 'pending' ? 'Saved as a revision awaiting wiki_master/admin review' : 'Saved'}><IcCheck />{cloud === 'saving' ? 'saving…' : cloud === 'err' ? 'saved (local only)' : saveFate === 'published' ? 'published' : saveFate === 'pending' ? 'saved — pending review' : 'saved'}</span>}
         {contentStore && wikiMeta && <button onClick={openHistory} title="Revision history — who changed what, diffs, publish/revert">History</button>}
         {canEdit && <button onClick={revert} title="Discard changes"><IcUndo />Revert</button>}
         <button onClick={onClose} title="Close (Esc)"><IcX />Close</button>

@@ -396,10 +396,10 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
   the legacy anon key; the new sb_publishable key blanket-401'd on this project —
   and a builder Save landed rows in Postgres)**. **Phase 2 (auth + roles) BUILT**:
   the owner's role model — viewer · contributor classes **writer** (prose alone) /
-  **designer** (design alone) / **curator** (everything, scoped to their one wiki) ·
-  **admin** (originates wikis, grants curators) — "editor" (text+titles+structure)
+  **designer** (design alone) / **wiki master** (everything, scoped to their one wiki; RENAMED from "curator" Oct 2026 — stored as class `wiki_master`, migration 0005) ·
+  **admin** (originates wikis, grants wiki masters) — "editor" (text+titles+structure)
   designed but SHELVED for simplicity. Migration `0003_roles.sql` (profiles +
-  signup trigger + role-gated RLS replacing the open phase-1 policies; curator
+  signup trigger + role-gated RLS replacing the open phase-1 policies; wiki-master
   wiki-scope DB-enforced). Builder: email+password sign-in (AccountChip, OAuth at
   public launch), capabilities derived per class (`lib/caps.mjs`: grammar identity
   flag + the canon title-field naming convention + icon/tone kinds → text/titles/
@@ -422,7 +422,7 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
   (trigger-guarded; moves ONLY via the security-definer fns `publish_revision`
   / `reject_revision` / `revert_to` — revert = a NEW published revision,
   linear Wikipedia-style history; `is_approver` = admin or the wiki's
-  curator), public-read RLS (Wikipedia-style transparent history), backfill of
+  wiki master), public-read RLS (Wikipedia-style transparent history), backfill of
   one published revision per existing page. Store: savePage appends a revision
   (+ auto-publish for approvers — DB re-checks), listRevisions/getRevisionDoc/
   publishRevision/rejectRevision/revertTo. Builder: Save chip says
@@ -468,11 +468,11 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
   editor/reader-vs-live differences on TB archive-styled pages are EXPECTED,
   not bugs.
 - **CURATOR PAGE CLASSES (deferred — owner-named, Oct 2026).** The build-kit,
-  per-wiki version of Layer-2 page classes: a curator composes a page once
+  per-wiki version of Layer-2 page classes: a wiki master composes a page once
   (its sections, emblem choices, seeded defaults, locked bits) and saves it
   as a reusable CLASS/template; every new entry of that kind instantiates
   from it — e.g. ONE "Taco Bell drink entry" class → every drink page.
-  Exactly what `class-tb-drink.html` does in Jekyll, but curator-authored in
+  Exactly what `class-tb-drink.html` does in Jekyll, but wiki-master-authored in
   the builder and stored in the DB (a per-wiki `page_classes` table holding
   a template PageDoc + per-field lock/seed flags; "New page → from class" in
   the picker). OPEN DESIGN QUESTION for when it's built: copy-on-create

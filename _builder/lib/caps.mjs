@@ -7,17 +7,17 @@
 // designer deliberately has design WITHOUT text:
 //   writer    prose/text values only
 //   designer  design only (tones, icons, theme)
-//   curator   everything, scoped to their one wiki (scope enforced in the DB)
+//   wiki_master   everything, scoped to their one wiki (scope enforced in the DB)
 //   admin     everything, everywhere
-// (An "editor" class — text + titles + structure, between writer and curator —
+// (An "editor" class — text + titles + structure, between writer and wiki_master —
 // was designed and deliberately shelved to keep the foundation simple; titles
-// and structure are curator-only until it returns.)
+// and structure are wiki_master-only until it returns.)
 export const NO_CAPS = Object.freeze({ text: false, titles: false, structure: false, design: false });
 
 export const CLASS_CAPS = Object.freeze({
   writer:   { text: true,  titles: false, structure: false, design: false },
   designer: { text: false, titles: false, structure: false, design: true  },
-  curator:  { text: true,  titles: true,  structure: true,  design: true  },
+  wiki_master:  { text: true,  titles: true,  structure: true,  design: true  },
 });
 
 export function capsFor(role, cls) {
@@ -43,7 +43,7 @@ export function fieldCap(path, rule) {
 }
 
 /** Which wikis this account may SEE in the build kit (the owner's rule: no
- *  grant → no wikis). admin → all · curator (wiki_id set) → theirs only ·
+ *  grant → no wikis). admin → all · wiki_master (wiki_id set) → theirs only ·
  *  writer/designer (platform-wide grant, wiki_id null) → all, until per-wiki
  *  memberships exist · viewer / no class / signed out → none. */
 export function grantedWikiIds(role, cls, wikiId, allIds) {
@@ -54,11 +54,11 @@ export function grantedWikiIds(role, cls, wikiId, allIds) {
 }
 
 /** Who may APPROVE (publish/reject/revert) in wiki W — mirrors the DB's
- *  is_approver(): the platform admin, or W's curator. (The DB re-checks;
+ *  is_approver(): the platform admin, or W's wiki_master. (The DB re-checks;
  *  this powers the UI.) */
 export function canApprove(role, cls, profileWikiId, wikiId) {
   if (role === 'admin') return true;
-  return role === 'contributor' && cls === 'curator' && !!profileWikiId && profileWikiId === wikiId;
+  return role === 'contributor' && cls === 'wiki_master' && !!profileWikiId && profileWikiId === wikiId;
 }
 
 /** Which capability an ACTION verb needs (the parent-side backstop). */

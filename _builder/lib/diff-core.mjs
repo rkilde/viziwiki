@@ -1,6 +1,6 @@
 // diff-core.mjs — the PURE green/red machinery: compare two PageDoc
 // snapshots and emit a human-readable change list (the data behind the
-// builder's history diffs and a curator's review). Plain .mjs so the UI and
+// builder's history diffs and a wiki_master's review). Plain .mjs so the UI and
 // the guard suite (case 19) share it.
 
 /** Flatten a doc into { "hero.title": "Drinks.", "sections.0.data.…": … } —

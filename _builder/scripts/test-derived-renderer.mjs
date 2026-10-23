@@ -763,7 +763,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   // wiki VISIBILITY (the owner's rule: no grant → no wikis shown)
   const ALL = ['apple', 'taco-bell', 'fallout'];
   ok(grantedWikiIds('admin', null, null, ALL).length === 3, 'admin sees every wiki');
-  ok(JSON.stringify(grantedWikiIds('contributor', 'curator', 'apple', ALL)) === JSON.stringify(['apple']), 'curator sees only their wiki');
+  ok(JSON.stringify(grantedWikiIds('contributor', 'wiki_master', 'apple', ALL)) === JSON.stringify(['apple']), 'wiki_master sees only their wiki');
   ok(grantedWikiIds('contributor', 'writer', null, ALL).length === 3, 'writer (platform-wide grant) sees all — until per-wiki memberships');
   ok(grantedWikiIds('viewer', null, null, ALL).length === 0, 'viewer: no wikis');
   ok(grantedWikiIds('contributor', null, null, ALL).length === 0, 'contributor WITHOUT a class: no wikis (no grant)');
@@ -776,8 +776,8 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(w.text && !w.titles && !w.structure && !w.design, 'writer: prose alone');
   const dgn = capsFor('contributor', 'designer');
   ok(!dgn.text && !dgn.titles && !dgn.structure && dgn.design, 'designer: design alone');
-  const cu = capsFor('contributor', 'curator');
-  ok(cu.text && cu.titles && cu.structure && cu.design, 'curator: everything (wiki scope lives in the DB + UI)');
+  const cu = capsFor('contributor', 'wiki_master');
+  ok(cu.text && cu.titles && cu.structure && cu.design, 'wiki_master: everything (wiki scope lives in the DB + UI)');
   ok(JSON.stringify(capsFor('admin', null)) === JSON.stringify(cu), 'admin: everything');
   ok(JSON.stringify(capsFor('contributor', 'nope')) === JSON.stringify(NO_CAPS), 'unknown class → no capabilities');
 
@@ -818,8 +818,8 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(!dd.querySelector('.ce'), 'designer: no text editing at all');
   ok(!dd.querySelector('.pe-add:not([hidden]), .pe-mini-add:not([hidden])'), 'designer: no structural adds');
 
-  const dc = withCaps(capsFor('contributor', 'curator'));
-  ok(dc.querySelector('.wiki-section-title .ce') && dc.querySelector('.pe-mini-add') && dc.querySelector('.pe-tonebtn'), 'curator: titles + structure + design all live');
+  const dc = withCaps(capsFor('contributor', 'wiki_master'));
+  ok(dc.querySelector('.wiki-section-title .ce') && dc.querySelector('.pe-mini-add') && dc.querySelector('.pe-tonebtn'), 'wiki_master: titles + structure + design all live');
 }
 
 // ── case 18: the READER surface (Wikipedia/Fandom model) — same renderer,
@@ -874,8 +874,8 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(!('_stash' in flattenDoc(before) ? false : true) === false || !Object.keys(flattenDoc(before)).some((p) => p.includes('_stash')), 'flatten skips _stash');
 
   ok(canApprove('admin', null, null, 'apple'), 'admin approves anywhere');
-  ok(canApprove('contributor', 'curator', 'apple', 'apple'), "a wiki's curator approves in it");
-  ok(!canApprove('contributor', 'curator', 'apple', 'taco-bell'), 'a curator cannot approve outside their wiki');
+  ok(canApprove('contributor', 'wiki_master', 'apple', 'apple'), "a wiki's wiki_master approves in it");
+  ok(!canApprove('contributor', 'wiki_master', 'apple', 'taco-bell'), 'a wiki_master cannot approve outside their wiki');
   ok(!canApprove('contributor', 'writer', null, 'apple') && !canApprove('viewer', null, null, 'apple'), 'writers/viewers never approve');
 }
 

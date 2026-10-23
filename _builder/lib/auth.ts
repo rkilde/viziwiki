@@ -4,7 +4,7 @@
 import { supabase } from './supabase';
 
 export type Role = 'viewer' | 'contributor' | 'admin';
-export type ContributorClass = 'writer' | 'editor' | 'designer' | 'curator';
+export type ContributorClass = 'writer' | 'editor' | 'designer' | 'wiki_master';
 export type Profile = { id: string; email: string; role: Role; class: ContributorClass | null; wiki_id: string | null };
 
 export const authAvailable = !!supabase;

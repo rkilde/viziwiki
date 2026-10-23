@@ -69,9 +69,9 @@ saved version. That's persistence.
 ## Phase 2 — accounts, roles, classes (BUILT — switch-on steps)
 
 The role model: **viewer** (read-only) · **contributor** with a class —
-**writer** (prose alone) / **designer** (design alone) / **curator**
+**writer** (prose alone) / **designer** (design alone) / **wiki master**
 (everything, scoped to their one wiki) · **admin** (the platform: originates
-wikis, grants them to curators, manages roles). An "editor" class
+wikis, grants them to wiki masters, manages roles). An "editor" class
 (text+titles+structure) is designed but shelved for simplicity.
 
 Owner steps to switch phase 2 on:
@@ -85,15 +85,15 @@ Owner steps to switch phase 2 on:
 4. Back in SQL Editor, crown the founding Admin (one line, your email):
    `update public.profiles set role='admin' where email='you@example.com';`
 5. Reload the builder — the topbar badge should read **admin**, with the
-   "view as" preview (curator/designer/writer/viewer) next to it.
+   "view as" preview (wiki master/designer/writer/viewer) next to it.
 
 Granting roles (until the admin UI exists) — SQL Editor one-liners:
-- Curator of a wiki: `update public.profiles set role='contributor',
-  class='curator', wiki_id='taco-bell' where email='them@example.com';`
+- Wiki master of a wiki: `update public.profiles set role='contributor',
+  class='wiki_master', wiki_id='taco-bell' where email='them@example.com';`
 - Writer / designer: same with `class='writer'` (or `'designer'`), `wiki_id=null`.
 
 Enforcement in phase 2: the DATABASE enforces who may write at all and the
-curator's wiki boundary; the builder UI enforces the class detail (what a
+wiki master's wiki boundary; the builder UI enforces the class detail (what a
 writer vs designer may touch). Phase 3's moderation adds the review gate
 that makes class detail tamper-proof.
 
@@ -101,7 +101,7 @@ that makes class detail tamper-proof.
 
 The revision system (the Wikipedia model's data layer): every save appends a
 full-snapshot **revision** (who + when + status); **approvers** (admin, or a
-wiki's curator) publish/reject; readers are served only the **published**
+wiki's wiki master) publish/reject; readers are served only the **published**
 version; **revert** makes any old version current again as a new published
 revision (history stays linear). The builder's **History** button shows the
 whole trail with **green/red diffs** between versions.
@@ -111,7 +111,7 @@ Owner steps to switch phase 3 on:
    (approve the dialog). It also BACKFILLS one published revision per existing
    page from the current content, so `/read` keeps serving what it serves.
 2. That's it. Behavior from then on:
-   - **Approver saves** (you, or a wiki's curator): Save = publish — chip says
+   - **Approver saves** (you, or a wiki's wiki master): Save = publish — chip says
      **"published"**, readers update in seconds (on-demand invalidation).
    - **Writer/designer saves**: chip says **"saved — pending review"**; the
      revision waits in the page's History until an approver hits **Publish**

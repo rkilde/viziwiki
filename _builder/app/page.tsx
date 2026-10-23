@@ -35,7 +35,7 @@ export default function Page() {
   }), []);
 
   // ── wiki VISIBILITY (the owner's rule: no grant → no wikis) ──
-  // admin sees all (+ their local experiments); a curator sees only their
+  // admin sees all (+ their local experiments); a wiki_master sees only their
   // wiki; writer/designer hold a platform-wide grant (all wikis) until
   // per-wiki memberships exist; viewer / ungranted / signed-out see NONE.
   // The admin "view as" preview applies to visibility too.
@@ -74,14 +74,14 @@ export default function Page() {
   };
 
   // effective capabilities for THIS wiki: the profile's role/class, with the
-  // curator's wiki boundary applied (their wiki = full curator; any other
+  // wiki_master's wiki boundary applied (their wiki = full wiki_master; any other
   // wiki = read-only), and the admin's "view as" preview on top.
   const caps: EditCaps = useMemo(() => {
     if (realRole === 'admin' && viewAs !== 'me') {
       return viewAs === 'viewer' ? capsFor('viewer', null) : capsFor('contributor', viewAs);
     }
-    if (realRole === 'contributor' && realClass === 'curator' && profile?.wiki_id && profile.wiki_id !== baseWiki?.id) {
-      return capsFor('viewer', null);   // curators are viewers outside their wiki
+    if (realRole === 'contributor' && realClass === 'wiki_master' && profile?.wiki_id && profile.wiki_id !== baseWiki?.id) {
+      return capsFor('viewer', null);   // wiki_masters are viewers outside their wiki
     }
     return capsFor(realRole, realClass);
   }, [realRole, realClass, viewAs, profile?.wiki_id, baseWiki?.id]);
@@ -92,7 +92,7 @@ export default function Page() {
       {realRole === 'admin' && (
         <select className="vt-btn acct-viewas" title="Preview the builder as a class" value={viewAs} onChange={(e) => setViewAs(e.target.value)}>
           <option value="me">view as: admin</option>
-          <option value="curator">curator</option>
+          <option value="wiki_master">wiki master</option>
           <option value="designer">designer</option>
           <option value="writer">writer</option>
           <option value="viewer">viewer</option>
@@ -111,7 +111,7 @@ export default function Page() {
           </div>
           {editing && <PageEditor key={`${editing.id}:${JSON.stringify(caps)}`} page={editing} skin={baseWiki.skin} wikiMeta={{ id: baseWiki.id, slug: baseWiki.id, name: baseWiki.name, skin: baseWiki.skin.bodyClass }} caps={caps}
             canApprove={realRole === 'admin' && viewAs !== 'me'
-              ? viewAs === 'curator'   // preview honors the previewed class
+              ? viewAs === 'wiki_master'   // preview honors the previewed class
               : canApprove(realRole, realClass, profile?.wiki_id ?? null, baseWiki.id)}
             onClose={() => setEditing(null)} />}
         </>
@@ -120,7 +120,7 @@ export default function Page() {
           <div className="no-grant-title">No wikis granted{authEmail ? '' : ' — sign in'}</div>
           <div className="no-grant-body">
             {authEmail
-              ? 'This account holds no grant yet. An admin can grant a class — writer (prose), designer (visuals), or curator (a whole wiki) — and the granted wikis will appear here.'
+              ? 'This account holds no grant yet. An admin can grant a class — writer (prose), designer (visuals), or wiki_master (a whole wiki) — and the granted wikis will appear here.'
               : 'Sign in (top right) to see the wikis your account has been granted access to.'}
           </div>
         </div>
