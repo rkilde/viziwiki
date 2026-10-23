@@ -2,8 +2,9 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import type { Page, WikiSkin } from '../../lib/wiki';
 import { loadPageDoc, savePageDoc, resetPageDoc, seedDoc, type PageDoc } from '../../lib/store';
-import { contentStore, type WikiMeta } from '../../content-store';
+import { contentStore, type WikiMeta, type RevisionMeta } from '../../content-store';
 import { canEditAnything, actionCap } from '../../lib/caps.mjs';
+import { diffDocs } from '../../lib/diff-core.mjs';
 import type { EditCaps } from '../../lib/canvas';
 import { buildCanvas, setIn, applyAction } from '../../lib/canvas';
 import { renderBody } from '../../lib/render';
@@ -35,7 +36,7 @@ const CANVAS_W = 1080;
  */
 const ALL_CAPS: EditCaps = { text: true, titles: true, structure: true, design: true };
 
-export function PageEditor({ page, skin, wikiMeta, caps = ALL_CAPS, onClose }: { page: Page; skin: WikiSkin; wikiMeta?: WikiMeta; caps?: EditCaps; onClose: () => void }) {
+export function PageEditor({ page, skin, wikiMeta, caps = ALL_CAPS, canApprove = false, onClose }: { page: Page; skin: WikiSkin; wikiMeta?: WikiMeta; caps?: EditCaps; canApprove?: boolean; onClose: () => void }) {
   const docRef = useRef<PageDoc>(loadPageDoc(page));
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const areaRef = useRef<HTMLDivElement>(null);   // the scroll area (sets the fit width)
@@ -143,13 +144,23 @@ export function PageEditor({ page, skin, wikiMeta, caps = ALL_CAPS, onClose }: {
   openMkRef.current = openMk;
 
   const canEdit = canEditAnything(caps);
+  // phase 3: whether the last cloud save went LIVE (approver auto-publish)
+  // or sits in the review queue
+  const [saveFate, setSaveFate] = useState<'published' | 'pending' | null>(null);
+  // the reader paths this page answers to — pinged after publish/revert so
+  // readers update in seconds (on-demand cache invalidation)
+  const readerPaths = wikiMeta ? [`/read/${wikiMeta.id}/${page.id}`, `/read/${wikiMeta.id}`, '/read'] : [];
+  const pingReader = () => { try { fetch('/api/revalidate', { method: 'POST', body: JSON.stringify({ paths: readerPaths }) }); } catch { /* cache catches up in ≤60s */ } };
   const save = () => {
     if (!canEdit) return;
     savePageDoc(page.id, docRef.current); setSaved(true);   // local always (instant + offline fallback)
     if (contentStore && wikiMeta) {
-      setCloud('saving');
+      setCloud('saving'); setSaveFate(null);
       const meta = { id: page.id, slug: (page.permalink || '/' + page.id).replace(/^\//, ''), title: oneLine(page.title || page.id), type: isHome ? 'home' : 'standard' };
-      contentStore.savePage(wikiMeta, meta, docRef.current).then(() => setCloud('ok'), (e) => { console.error('cloud save failed', e); setCloud('err'); });
+      contentStore.savePage(wikiMeta, meta, docRef.current, { publish: canApprove }).then((r) => {
+        setCloud('ok'); setSaveFate(r.published ? 'published' : r.revId ? 'pending' : null);
+        if (r.published) pingReader();
+      }, (e) => { console.error('cloud save failed', e); setCloud('err'); });
     }
   };
   const revert = () => {
@@ -161,6 +172,49 @@ export function PageEditor({ page, skin, wikiMeta, caps = ALL_CAPS, onClose }: {
       ifr.contentDocument.body.innerHTML = renderBody(docRef.current, isHome);
       (ifr.contentWindow as any)?.__decorate?.();
     }
+  };
+
+  // ── phase 3: the HISTORY panel — every revision (who/when/status), a
+  // green/red diff vs its predecessor, and approver actions ──
+  const [histOpen, setHistOpen] = useState(false);
+  const [revs, setRevs] = useState<RevisionMeta[]>([]);
+  const [histBusy, setHistBusy] = useState(false);
+  const [diffFor, setDiffFor] = useState<number | null>(null);
+  const [diffRows, setDiffRows] = useState<Array<{ path: string; kind: string; old: string | null; new: string | null }>>([]);
+  const loadHistory = () => {
+    if (!contentStore || !wikiMeta) return;
+    setHistBusy(true);
+    contentStore.listRevisions(wikiMeta.id, page.id).then((list) => { setRevs(list); setHistBusy(false); }, () => setHistBusy(false));
+  };
+  const openHistory = () => { setHistOpen(true); setDiffFor(null); loadHistory(); };
+  const showDiff = async (rev: RevisionMeta) => {
+    if (!contentStore) return;
+    setDiffFor(rev.id); setDiffRows([]);
+    const older = revs.find((r) => r.id < rev.id);   // list is newest-first
+    const [next, prev] = await Promise.all([
+      contentStore.getRevisionDoc(rev.id),
+      older ? contentStore.getRevisionDoc(older.id) : Promise.resolve(null),
+    ]);
+    setDiffRows(diffDocs(prev, next));
+  };
+  const reviewAct = async (kind: 'publish' | 'reject' | 'revert', rev: RevisionMeta) => {
+    if (!contentStore) return;
+    setHistBusy(true);
+    try {
+      if (kind === 'publish') { await contentStore.publishRevision(rev.id); pingReader(); }
+      if (kind === 'reject') { await contentStore.rejectRevision(rev.id, 'rejected in review'); }
+      if (kind === 'revert') {
+        await contentStore.revertTo(rev.id); pingReader();
+        // the working copy changed under us — adopt the reverted doc
+        const doc = await contentStore.getRevisionDoc(rev.id);
+        if (doc) {
+          docRef.current = doc; savePageDoc(page.id, doc); setSaved(true);
+          const ifr = iframeRef.current;
+          if (ifr?.contentDocument?.body) { ifr.contentDocument.body.innerHTML = renderBody(docRef.current, isHome); (ifr.contentWindow as any)?.__decorate?.(); }
+        }
+      }
+    } catch (e) { console.error(`${kind} failed`, e); }
+    loadHistory();
   };
 
   const jump = (it: Leaf) => { (iframeRef.current?.contentWindow as any)?.__peJump?.(it.jump, it.addpath); };
@@ -212,7 +266,8 @@ export function PageEditor({ page, skin, wikiMeta, caps = ALL_CAPS, onClose }: {
             {todoCount === 0 ? <><IcCheck />Page ready</> : <><IcTri />{todoCount} section{todoCount !== 1 ? 's' : ''} need attention</>}
           </span>
         )}
-        {saved && <span className="pe-chip-status" title={cloud === 'off' ? 'Saved in this browser (no cloud keys configured)' : cloud === 'err' ? 'Saved in this browser; the cloud save failed — check the Supabase keys/project' : 'Saved'}><IcCheck />{cloud === 'saving' ? 'saving…' : cloud === 'err' ? 'saved (local only)' : 'saved'}</span>}
+        {saved && <span className="pe-chip-status" title={cloud === 'off' ? 'Saved in this browser (no cloud keys configured)' : cloud === 'err' ? 'Saved in this browser; the cloud save failed — check the Supabase keys/project' : saveFate === 'published' ? 'Published — readers see this version' : saveFate === 'pending' ? 'Saved as a revision awaiting curator/admin review' : 'Saved'}><IcCheck />{cloud === 'saving' ? 'saving…' : cloud === 'err' ? 'saved (local only)' : saveFate === 'published' ? 'published' : saveFate === 'pending' ? 'saved — pending review' : 'saved'}</span>}
+        {contentStore && wikiMeta && <button onClick={openHistory} title="Revision history — who changed what, diffs, publish/revert">History</button>}
         {canEdit && <button onClick={revert} title="Discard changes"><IcUndo />Revert</button>}
         <button onClick={onClose} title="Close (Esc)"><IcX />Close</button>
         {canEdit
@@ -224,6 +279,50 @@ export function PageEditor({ page, skin, wikiMeta, caps = ALL_CAPS, onClose }: {
           onClose={() => setPickerAt(null)}
           onPick={(type) => { (window as any).__peAction?.(`secAdd:${pickerAt}:${type}`); setPickerAt(null); }}
         />
+      )}
+      {histOpen && (
+        <div className="pe-hist-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) setHistOpen(false); }}>
+          <div className="pe-hist" onMouseDown={(e) => e.stopPropagation()}>
+            <div className="pe-hist-head">
+              <span className="pe-hist-title">History</span>
+              <span className="pe-hist-sub">{oneLine(page.title || page.id)}</span>
+              <button className="pe-hist-x" onClick={() => setHistOpen(false)}><IcX /></button>
+            </div>
+            <div className="pe-hist-body">
+              {histBusy && !revs.length && <div className="pe-hist-empty">loading…</div>}
+              {!histBusy && !revs.length && <div className="pe-hist-empty">No revisions yet — they appear from the first save after migration 0004.</div>}
+              {revs.map((r) => (
+                <div key={r.id} className={`pe-hist-rev st-${r.status} ${diffFor === r.id ? 'open' : ''}`}>
+                  <button className="pe-hist-row" onClick={() => (diffFor === r.id ? setDiffFor(null) : showDiff(r))}>
+                    <span className={`pe-hist-st st-${r.status}`}>{r.status}</span>
+                    <span className="pe-hist-who">{r.author_email || 'system'}</span>
+                    <span className="pe-hist-when">{new Date(r.created_at).toLocaleString()}</span>
+                    {r.note && <span className="pe-hist-note" title={r.note}>{r.note}</span>}
+                  </button>
+                  {canApprove && (
+                    <span className="pe-hist-acts">
+                      {r.status === 'pending' && <button disabled={histBusy} onClick={() => reviewAct('publish', r)}>Publish</button>}
+                      {r.status === 'pending' && <button disabled={histBusy} className="danger" onClick={() => reviewAct('reject', r)}>Reject</button>}
+                      <button disabled={histBusy} onClick={() => reviewAct('revert', r)} title="Make this version current + published (as a new revision)">Revert to</button>
+                    </span>
+                  )}
+                  {diffFor === r.id && (
+                    <div className="pe-hist-diff">
+                      {!diffRows.length && <div className="pe-hist-empty">no textual changes vs the previous revision</div>}
+                      {diffRows.map((d, i) => (
+                        <div key={i} className={`pe-diff-row ${d.kind}`}>
+                          <span className="pe-diff-path">{d.path}</span>
+                          {d.old != null && <span className="pe-diff-old">{d.old}</span>}
+                          {d.new != null && <span className="pe-diff-new">{d.new}</span>}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

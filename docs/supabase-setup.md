@@ -97,6 +97,29 @@ curator's wiki boundary; the builder UI enforces the class detail (what a
 writer vs designer may touch). Phase 3's moderation adds the review gate
 that makes class detail tamper-proof.
 
-## Next phase
-3. **Moderation** — contributor edits land as drafts; a curator/admin
-   approves → published.
+## Phase 3 — revisions, review, publish (BUILT — switch-on steps)
+
+The revision system (the Wikipedia model's data layer): every save appends a
+full-snapshot **revision** (who + when + status); **approvers** (admin, or a
+wiki's curator) publish/reject; readers are served only the **published**
+version; **revert** makes any old version current again as a new published
+revision (history stays linear). The builder's **History** button shows the
+whole trail with **green/red diffs** between versions.
+
+Owner steps to switch phase 3 on:
+1. **SQL Editor** → paste + Run `_builder/supabase/migrations/0004_revisions.sql`
+   (approve the dialog). It also BACKFILLS one published revision per existing
+   page from the current content, so `/read` keeps serving what it serves.
+2. That's it. Behavior from then on:
+   - **Approver saves** (you, or a wiki's curator): Save = publish — chip says
+     **"published"**, readers update in seconds (on-demand invalidation).
+   - **Writer/designer saves**: chip says **"saved — pending review"**; the
+     revision waits in the page's History until an approver hits **Publish**
+     (or **Reject**). The working copy in the editor does advance; readers
+     don't see it until approval.
+   - **History** (button in the editor chrome): every revision, who/when,
+     status, click a row for the green/red diff vs its predecessor,
+     **Revert to** any version (approvers).
+3. Trust ladder (recorded in CLAUDE.md, future flips — no schema changes
+   needed): per-user auto-publish for proven contributors → publish-on-save +
+   patrol/revert at scale.

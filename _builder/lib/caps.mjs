@@ -53,6 +53,14 @@ export function grantedWikiIds(role, cls, wikiId, allIds) {
   return [];
 }
 
+/** Who may APPROVE (publish/reject/revert) in wiki W — mirrors the DB's
+ *  is_approver(): the platform admin, or W's curator. (The DB re-checks;
+ *  this powers the UI.) */
+export function canApprove(role, cls, profileWikiId, wikiId) {
+  if (role === 'admin') return true;
+  return role === 'contributor' && cls === 'curator' && !!profileWikiId && profileWikiId === wikiId;
+}
+
 /** Which capability an ACTION verb needs (the parent-side backstop). */
 export function actionCap(action) {
   const a = String(action || '');
