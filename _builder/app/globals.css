@@ -468,6 +468,12 @@ button{ font-family:inherit; }
 .mc-del{ color:#f87171; }
 .mc-empty{ font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--dim); padding:8px 4px; }
 
+/* ════ AI art generator row (✨ Generate) ════ */
+.gen-row{ display:grid; grid-template-columns:1fr auto; gap:8px; align-items:center; }
+.gen-hint{ font-size:10px; }
+.gen-btn{ white-space:nowrap; font-size:12px; padding:8px 12px; }
+.gen-err{ grid-column:1 / -1; }
+
 /* ════ no-grant empty state (phase-2 wiki visibility) ════ */
 .no-grant{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
   min-height:60vh; text-align:center; padding:40px 24px; }

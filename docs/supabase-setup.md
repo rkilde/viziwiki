@@ -198,3 +198,23 @@ a canon sprite glyph, or the wiki's own image URL.
 Owner step: **SQL Editor** → paste + Run
 `_builder/supabase/migrations/0009_wiki_icon.sql`, then set any wiki's icon
 from its **identity** modal (the button beside the wiki switcher).
+
+## AI art generation (switch-on step — optional)
+
+The identity editor and origination modal have **✨ Generate** buttons that
+draw vector tile-cover art and wiki-icon marks with Claude, from the wiki's
+own identity (name, tags, tagline, blurb, category colors) plus an optional
+art-direction hint. Output is sanitized SVG stored straight into the art
+slots — no file storage involved.
+
+Owner steps to switch it on:
+1. Get an Anthropic API key: console.anthropic.com → API keys → Create key
+   (this is separate from a claude.ai subscription; usage is pay-per-use —
+   a generation costs on the order of a few cents).
+2. Vercel → your project → Settings → Environment Variables → add
+   `ANTHROPIC_API_KEY` = the key (all environments) → redeploy.
+3. Until the key is set, the ✨ buttons respond with "AI generation is not
+   configured" — everything else works normally.
+
+The key lives only in the server route (/api/generate); it is never sent to
+browsers. Generation requires a signed-in contributor/admin account.

@@ -35,6 +35,14 @@ export function onAuth(cb: (email: string | null) => void): () => void {
   return () => sub.subscription.unsubscribe();
 }
 
+/** The signed-in session's access token (JWT) — for first-party API routes
+ *  that verify the caller's role server-side (e.g. /api/generate). */
+export async function getAccessToken(): Promise<string | null> {
+  if (!supabase) return null;
+  const { data } = await supabase.auth.getSession();
+  return data.session?.access_token ?? null;
+}
+
 export async function fetchProfile(): Promise<Profile | null> {
   if (!supabase) return null;
   const { data: u } = await supabase.auth.getUser();

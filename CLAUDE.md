@@ -574,6 +574,22 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
     flagship hand-set `toc.wikiLogo` marks stay page-side till then).
     Editable in the identity editor (kind select + glyph grid + art URL +
     live mark preview); rides `/api/directory` for future compact listings.
+  · **AI ART GENERATOR (DONE, Oct 2026):** ✨ Generate buttons on the art
+    slots (tile cover in identity + origination; icon in identity) draw
+    VECTOR art with Claude — `POST /api/generate` (server-side
+    ANTHROPIC_API_KEY in Vercel, never the browser; model env-overridable,
+    default claude-opus-5-5; caller must be a signed-in admin/contributor,
+    verified via my_role() with the caller's JWT). The prompt DERIVES from
+    the wiki's identity (name, genre label, tagline, blurb, resolved
+    category colors) + an optional designer hint — the golden rule's
+    relatedness made automatic. Pure parts in `lib/svg-gen.mjs` (prompt
+    builders with a hard output contract — no scripts/foreignObject/
+    external refs/text; extractSvg; sanitizeSvg defense-in-depth, local
+    refs kept; svgToDataUri) → the sanitized SVG lands as a data URI in the
+    EXISTING art slots (tile_cover.src / icon.src — no storage needed, and
+    rendered only via <img>/CSS background where scripts can't run).
+    Guard: case 23 (405 total). Owner switch-on: ANTHROPIC_API_KEY in
+    Vercel (docs/supabase-setup.md).
 - **Vizi-verse** (the narrative side; currently only `top-10.html`) — deferred.
 
 ---
