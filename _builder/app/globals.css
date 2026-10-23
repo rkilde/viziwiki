@@ -410,3 +410,10 @@ button{ font-family:inherit; }
 .acct-switch{ font-family:'JetBrains Mono',monospace; font-size:10px; background:none; border:0; color:var(--muted); cursor:pointer; text-decoration:underline; }
 .acct-msg{ font-family:'JetBrains Mono',monospace; font-size:10px; color:#fca5a5; line-height:1.5; }
 .acct-note{ font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.04em; color:var(--dim); line-height:1.6; }
+
+/* ════ no-grant empty state (phase-2 wiki visibility) ════ */
+.no-grant{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+  min-height:60vh; text-align:center; padding:40px 24px; }
+.no-grant-title{ font-family:'Fraunces',Georgia,serif; font-size:26px; font-weight:600; color:var(--ink, #efeaf5); }
+.no-grant-body{ font-family:'JetBrains Mono',monospace; font-size:11px; line-height:1.8; letter-spacing:.02em;
+  color:var(--muted); max-width:460px; }

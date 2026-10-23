@@ -10,15 +10,15 @@ const Swatch = ({ color, label }: { color: string; label: string }) => (
 
 const WIKI_COLOR: Record<string, string> = { 'taco-bell': '#702082', 'apple': '#1d1d1f' };
 
-export function Topbar({ wikis, current, onSwitch, onNewWiki, account }: { wikis: Wiki[]; current: Wiki; onSwitch: (w: Wiki) => void; onNewWiki: (name: string) => void; account?: React.ReactNode }) {
+export function Topbar({ wikis, current, onSwitch, onNewWiki, account }: { wikis: Wiki[]; current?: Wiki; onSwitch: (w: Wiki) => void; onNewWiki?: (name: string) => void; account?: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const [naming, setNaming] = useState(false);
   const [name, setName] = useState('');
-  const color = WIKI_COLOR[current.id] || '#9d7cf4';
+  const color = current ? (WIKI_COLOR[current.id] || '#9d7cf4') : '#9d7cf4';
 
   const commitNew = () => {
     const n = name.trim();
-    if (n) { onNewWiki(n); setOpen(false); }
+    if (n && onNewWiki) { onNewWiki(n); setOpen(false); }
     setNaming(false); setName('');
   };
 
@@ -27,6 +27,7 @@ export function Topbar({ wikis, current, onSwitch, onNewWiki, account }: { wikis
       {/* brand lockup (ViziWiki + Build Kit), then a separator, then the existing chrome */}
       <BrandLockup />
       <span className="brand-sep" />
+      {current ? (
       <div id="wiki-switcher">
         <button id="wiki-btn" className={open ? 'open' : ''} onClick={() => setOpen((o) => !o)}>
           <Swatch color={color} label={current.name[0]} />
@@ -41,8 +42,8 @@ export function Topbar({ wikis, current, onSwitch, onNewWiki, account }: { wikis
                 <span className="wdrop-name">{w.name}</span>
               </button>
             ))}
-            <div className="wdrop-divider" />
-            {naming ? (
+            {onNewWiki && <div className="wdrop-divider" />}
+            {!onNewWiki ? null : naming ? (
               <input
                 className="wdrop-new-input" autoFocus value={name} placeholder="New wiki name…"
                 onChange={(e) => setName(e.target.value)}
@@ -56,11 +57,12 @@ export function Topbar({ wikis, current, onSwitch, onNewWiki, account }: { wikis
               </button>
             )}
             <div style={{ padding: '8px 9px 4px', fontFamily: "'JetBrains Mono',monospace", fontSize: 9, letterSpacing: '.1em', color: 'var(--dim)', textTransform: 'uppercase' }}>
-              more wikis load from the content store
+              {onNewWiki ? 'more wikis load from the content store' : 'wikis you hold a grant for'}
             </div>
           </div>
         )}
       </div>
+      ) : null}
 
       <div id="view-toggle">
         <button className="vt-btn" disabled title="Coming soon">Tree</button>

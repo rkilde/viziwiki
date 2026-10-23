@@ -1,0 +1,2412 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ViziWiki · Fallout home — standalone handoff</title>
+<!-- ════════════════════════════════════════════════════════════════════
+     VIZIWIKI · FULL HOME PAGE HANDOFF (self-contained — open in a browser;
+     needs internet only for the Google Fonts + Tailwind CDN this page already uses).
+     Extracted from the live codebase: the canon stylesheets are inlined below
+     (READ-ONLY reference layers), the hero + overview sections were rendered
+     through the site's own canonical templates, and everything else is the
+     page's own markup/CSS/scripts verbatim — iterate on the page-local layer.
+     ════════════════════════════════════════════════════════════════════ -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={corePlugins:{preflight:false}}</script>
+<style>
+/* ═══ wiki-typography.css (CANON COPY — read-only reference) ═══ */
+/* ════════════════════════════════════════════════════════════════════
+   WIKI TYPOGRAPHY CANON
+   ════════════════════════════════════════════════════════════════════
+   Wiki-website-wide canon. Applies to every page on the ViziWiki
+   product — wiki home pages AND detail pages alike. Loaded by adding
+   this stylesheet to every page's <head>:
+
+     <link rel="stylesheet" href="/wiki-typography.css">
+
+   Defines the three-font stack used across the entire product:
+
+     1. Fraunces       — display serif for titles, headlines
+     2. Spectral       — reading serif for body prose, paragraphs
+     3. JetBrains Mono — monospace for eyebrows, labels, UI accents
+
+   Font CHOICE is universal (these three, everywhere across the wiki
+   product). What each wiki's skin customizes is COLOR, decorative
+   effects (glow, gradients, animation), and weight/size adjustments
+   if it deviates from the base typography rules.
+
+   To change a font across the entire product, edit this file.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* Load the three font families from Google Fonts ------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&family=Spectral:wght@400;500;600&display=swap');
+
+/* Body default — every page starts with Spectral as the reading font */
+body {
+  font-family: 'Spectral', Georgia, serif;
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Display font — for titles, headlines, infobox titles ------------- */
+/* Fraunces is a variable serif; SOFT and WONK are axis settings.    */
+.font-display {
+  font-family: 'Fraunces', 'Spectral', Georgia, serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+  letter-spacing: -0.02em;
+}
+
+/* Monospace accent — for eyebrows, labels, key-names, UI accents --- */
+.font-mono-acc {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  letter-spacing: 0.05em;
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   TYPE ROLE SYSTEM — the locked, universal typographic scale
+   ════════════════════════════════════════════════════════════════════
+   This scale governs ONLY non-visual DOCUMENT text — prose, body copy,
+   eyebrows, and headings (the editorial reading layer). Visual components
+   (charts, timelines, stat tiles, spotlight/infobox panels, catalogs,
+   data-viz of any kind) do NOT use this scale: their type is tuned to the
+   component and controlled centrally IN THE BANK (Phase 4). Forcing the
+   universal scale onto dense widgets breaks their layouts — so the rule is
+   simple: DOCUMENT text here, WIDGET text in its bank.
+
+   Sizes are UNIVERSAL and FIXED: a wiki/skin sets COLOR + decoration, never
+   size. Body sizes are constant across viewport; only the heading roles
+   scale down on mobile. One source of truth (the tokens), two deliveries:
+     • tokens  --t-<role>-size / -leading / -tracking   (components read these)
+     • class   .t-<role>                                 (markup / builder emit)
+
+   The 8 DOCUMENT roles, largest → smallest:
+     display · title · subtitle · lead · body · body-sm · caption · label
+   ════════════════════════════════════════════════════════════════════ */
+:root {
+  /* Each role = size · leading · tracking · weight — all centrally tunable.
+     (font-family + case are role identity; they live on the classes below.)
+     Values are grounded in the canonical components they govern. */
+
+  /* ── Headings (Fraunces) ── */
+  --t-display-size:      clamp(48px, 8vw, 96px);
+  --t-display-leading:   0.95;
+  --t-display-tracking:  -0.02em;
+  --t-display-weight:    700;
+
+  --t-title-size:        30px;          /* → 36px ≥768 (media block below) */
+  --t-title-leading:     1.15;
+  --t-title-tracking:    -0.02em;
+  --t-title-weight:      600;
+
+  --t-subtitle-size:     17px;          /* → 19px ≥768 (media block below) */
+  --t-subtitle-leading:  1.2;
+  --t-subtitle-tracking: -0.01em;
+  --t-subtitle-weight:   600;
+
+  /* ── Reading text (Spectral · constant across viewport · weight 400) ──
+     Body + Body-sm keep their established --wiki-prose-* names (already
+     referenced sitewide) — they ARE the body roles. */
+  --t-lead-size:         18px;          /* hero / section intro */
+  --t-lead-leading:      1.6;
+  --wiki-prose-size:     16px;          /* = body */
+  --wiki-prose-sm-size:  14px;          /* = body-sm */
+  --wiki-prose-leading:  1.65;          /* shared reading leading */
+  --t-caption-size:      13px;
+  --t-caption-leading:   1.5;
+
+  /* ── Label (JetBrains Mono · uppercase · tracked) — the eyebrow / overline.
+     The one mono DOCUMENT role: section + hero eyebrows. Dense in-component
+     mono labels (tags, keys, chips, axis ticks, badges) are NOT here — they
+     live in their bank component. */
+  --t-label-size:        10px;
+  --t-label-tracking:    0.3em;
+  --t-label-weight:      400;
+}
+@media (min-width: 768px) {
+  :root {
+    --t-title-size:      36px;
+    --t-subtitle-size:   19px;
+  }
+}
+
+/* Role classes — one bundle each; size / leading / tracking / weight all
+   read from the tokens above (font-family + case are role identity). */
+.t-display, .t-title, .t-subtitle {
+  font-family: 'Fraunces', 'Spectral', Georgia, serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+}
+.t-display  { font-size: var(--t-display-size);  line-height: var(--t-display-leading);  letter-spacing: var(--t-display-tracking);  font-weight: var(--t-display-weight); }
+.t-title    { font-size: var(--t-title-size);    line-height: var(--t-title-leading);    letter-spacing: var(--t-title-tracking);    font-weight: var(--t-title-weight); }
+.t-subtitle { font-size: var(--t-subtitle-size); line-height: var(--t-subtitle-leading); letter-spacing: var(--t-subtitle-tracking); font-weight: var(--t-subtitle-weight); }
+
+.t-lead, .t-body, .t-body-sm, .t-caption {
+  font-family: 'Spectral', Georgia, serif;
+  font-weight: 400;
+}
+.t-lead     { font-size: var(--t-lead-size);        line-height: var(--t-lead-leading); }
+.t-body     { font-size: var(--wiki-prose-size);    line-height: var(--wiki-prose-leading); }
+.t-body-sm  { font-size: var(--wiki-prose-sm-size); line-height: var(--wiki-prose-leading); }
+.t-caption  { font-size: var(--t-caption-size);     line-height: var(--t-caption-leading); }
+
+.t-label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  line-height: 1.2;
+  text-transform: uppercase;
+  font-size: var(--t-label-size);
+  letter-spacing: var(--t-label-tracking);
+  font-weight: var(--t-label-weight);
+}
+
+
+/* ═══ wiki-universals.css (CANON COPY — read-only reference) ═══ */
+/* ====================================================================
+   wiki-universals.css
+   ViziWiki · Universal spacing, sizing, and rhythm
+   --------------------------------------------------------------------
+   Loaded by EVERY wiki page (home pages AND all sub-pages) via
+   default.html. Controls the rules that should propagate sitewide
+   from a single file — edit once here, every page updates.
+
+   This file owns:
+     · Section container sizing (max-width, padding, centering)
+     · Vertical section rhythm (64px top/bottom padding)
+     · Horizontal side spacing (24px mobile / 72px desktop)
+     · Background tonal alternation (data-tone="a/b/special")
+     · Section divider lines
+     · Section ordering (the flex-column page wrapper)
+     · Section eyebrow typography (font, size, icon slot)
+     · Section H2 title typography (font, size, weight, spacing)
+     · Section prose (max-width, paragraph spacing)
+     · First-child margin resets
+
+   This file does NOT own:
+     · The hero (§2–§10 in wiki-home.css)
+     · The spotlight card (wiki-home.css)
+     · The stat grid (wiki-home.css)
+     · The search bar (wiki-home.css)
+     · The overview infobox layout (wiki-home.css for now)
+     · Colors of anything — skins own all color tokens
+     · Font loading — assumed loaded by default.html
+
+   Load order on every page:
+     wiki-universals.css → wiki-home.css (home only) → wiki-{name}-skin.css
+   ==================================================================== */
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §00 — PAGE MARGIN RESET
+   The site's global reset (`*{ margin:0; padding:0 }`) lives in
+   default.html's inline <style>. Mirror the html/body part HERE in the
+   universal layer so ANY context that loads the canon CSS but NOT that
+   layout — e.g. the wiki-builder's preview iframe — still renders the page
+   flush to its frame, instead of inset by the UA's default 8px body margin
+   (which otherwise shows the iframe's white sheet as a "border"). Idempotent
+   on the live site (the layout already zeroes these).
+   ════════════════════════════════════════════════════════════════════ */
+html, body { margin: 0; padding: 0; }
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §0 — THE SKIN CONTRACT  (semantic token bridge)
+   The canonical --wiki-* tokens every visual asset reads (manifest:
+   _data/skin-contract.yml). Each RESOLVES through a wiki's existing
+   (legacy / differently-named) token via a var() fallback chain, so every
+   wiki's current value "flows up" to the contract with NO skin edits — then
+   a neutral default as the safety floor. A wiki overrides any of these under
+   body.wiki-{name} (e.g. the per-wiki harmonised meaning colors + palette).
+   Nothing should hardcode a color an asset needs; it reads a token here.
+   Declared on `body` (NOT :root) on purpose: skins define their legacy tokens
+   on `body.wiki-{name}`, and a var() in a custom property resolves at the
+   element it's DECLARED on — so the bridge must compute on `body` to see the
+   skin's values (on :root it would resolve the §1 floors and inherit those).
+   ════════════════════════════════════════════════════════════════════ */
+body {
+  /* ── neutrals ── */
+  --wiki-text-color:        var(--foreground, var(--ink, var(--wiki-fg, #18181b)));
+  --wiki-text-muted-color:  var(--muted-foreground, var(--wiki-muted, var(--mut, rgba(24,24,27,.6))));
+  --wiki-text-faint-color:  var(--wiki-faint, rgba(24,24,27,.4));
+  --wiki-surface-bg:        var(--card, #ffffff);
+  --wiki-page-bg:           var(--wiki-bg, var(--page, var(--paper, #ffffff)));
+  --wiki-divider-color:     var(--section-divider, var(--divider, rgba(0,0,0,.1)));
+
+  /* ── brand accent (background-aware) ── */
+  --wiki-accent-on-light:   var(--wiki-accent, var(--foreground, #18181b));
+  --wiki-accent-on-dark:    var(--hero-title-accent, #ffb000);
+
+  /* ── meaning colors — GENERIC FLOOR ONLY. Each wiki overrides these with
+     values harmonised to its palette in its per-wiki semantic block. ── */
+  --wiki-positive:  #16a34a;
+  --wiki-negative:  #dc2626;
+  --wiki-warning:   #d97706;
+  --wiki-info:      #2563eb;
+  --wiki-neutral:   var(--wiki-text-muted-color);
+
+  /* ── categorical palette — bridges each wiki's swatch ramp; generic ramp
+     underneath (overridden per wiki). ── */
+  --wiki-palette-1: var(--cat-accent-1, #3b6d11);
+  --wiki-palette-2: var(--cat-accent-2, #0284c7);
+  --wiki-palette-3: var(--cat-accent-3, #7c3aed);
+  --wiki-palette-4: var(--cat-accent-4, #db2777);
+  --wiki-palette-5: var(--cat-accent-5, #059669);
+  --wiki-palette-6: var(--cat-accent-6, #d97706);
+  --wiki-palette-7: var(--cat-accent-7, #4f46e5);
+  --wiki-palette-8: var(--cat-accent-8, #be123c);
+  /* extras beyond the guaranteed 8 — a wiki may publish as many as it has (e.g.
+     Taco Bell's 21). No floor here, so an index a wiki doesn't define stays
+     unset (the swatch picker simply won't show it). */
+  --wiki-palette-9:  var(--cat-accent-9);  --wiki-palette-10: var(--cat-accent-10); --wiki-palette-11: var(--cat-accent-11);
+  --wiki-palette-12: var(--cat-accent-12); --wiki-palette-13: var(--cat-accent-13); --wiki-palette-14: var(--cat-accent-14);
+  --wiki-palette-15: var(--cat-accent-15); --wiki-palette-16: var(--cat-accent-16); --wiki-palette-17: var(--cat-accent-17);
+  --wiki-palette-18: var(--cat-accent-18); --wiki-palette-19: var(--cat-accent-19); --wiki-palette-20: var(--cat-accent-20);
+  --wiki-palette-21: var(--cat-accent-21); --wiki-palette-22: var(--cat-accent-22); --wiki-palette-23: var(--cat-accent-23);
+  --wiki-palette-24: var(--cat-accent-24);
+
+  /* ── section system ── */
+  --wiki-section-panel-tone-a:       var(--section-tone-a, transparent);
+  --wiki-section-panel-tone-b:       var(--section-tone-b, transparent);
+  --wiki-section-panel-tone-special: var(--section-tone-special, transparent);
+  --wiki-h2-color:           var(--section-title-color, currentColor);
+  --wiki-eyebrow-color:      var(--eyebrow-color, currentColor);
+  --wiki-prose-color:        var(--prose-color, currentColor);
+  --wiki-prose-strong-color: var(--prose-strong-color, currentColor);
+
+  /* ── shapes (radii) ── */
+  --wiki-card-radius: var(--card-shape, 14px);
+  --wiki-chip-radius: var(--chip-shape, 999px);
+
+  /* ── hero ── */
+  --wiki-hero-bg:            var(--hero-bg, transparent);
+  --wiki-hero-text-color:    var(--hero-text, currentColor);
+  --wiki-hero-divider-color: var(--hero-divider, rgba(0,0,0,.12));
+  --wiki-hero-title-color:   var(--hero-title-color, currentColor);
+  --wiki-hero-period-color:  var(--hero-title-accent, var(--wiki-accent-on-dark, #ffb000));
+  --wiki-hero-eyebrow-dot-color:    var(--hero-eyebrow-dot, #ffb000);
+  --wiki-hero-desc-color:           var(--hero-desc-color, currentColor);
+  --wiki-hero-eyebrow-bg:           var(--hero-eyebrow-bg, rgba(255,255,255,.06));
+  --wiki-hero-eyebrow-border-color: var(--hero-eyebrow-border, rgba(255,255,255,.18));
+  --wiki-hero-eyebrow-text-color:   var(--hero-eyebrow-text, currentColor);
+  --wiki-hero-search-bg:                var(--hero-search-bg, rgba(255,255,255,.1));
+  --wiki-hero-search-border-color:      var(--hero-search-border, rgba(255,255,255,.2));
+  --wiki-hero-search-icon-color:        var(--hero-search-icon, currentColor);
+  --wiki-hero-search-placeholder-color: var(--hero-search-placeholder, rgba(255,255,255,.5));
+  --wiki-hero-search-text-color:        var(--hero-search-text, currentColor);
+  --wiki-hero-spotlight-bg:             var(--hero-spotlight-bg, rgba(255,255,255,.05));
+  --wiki-hero-spotlight-border-color:   var(--hero-spotlight-border, rgba(255,255,255,.15));
+  --wiki-hero-spotlight-title-color:    var(--hero-spotlight-title, currentColor);
+  --wiki-hero-spotlight-eyebrow-color:  var(--hero-spotlight-eyebrow, currentColor);
+  --wiki-hero-spotlight-desc-color:     var(--hero-spotlight-desc, currentColor);
+  --wiki-hero-spotlight-cta-bg:         var(--hero-spotlight-cta-bg, #ffffff);
+  --wiki-hero-spotlight-cta-hover-bg:   var(--hero-spotlight-cta-hover-bg, #f0f0f0);
+  --wiki-hero-spotlight-cta-text-color: var(--hero-spotlight-cta-text, #111111);
+  --wiki-hero-spotlight-tag-bg:           var(--hero-spotlight-tag-bg, rgba(255,255,255,.1));
+  --wiki-hero-spotlight-tag-border-color: var(--hero-spotlight-tag-border, rgba(255,255,255,.2));
+  --wiki-hero-spotlight-tag-text-color:   var(--hero-spotlight-tag-text, currentColor);
+  --wiki-hero-stat-num-color:            var(--hero-stat-num, currentColor);
+  --wiki-hero-stat-label-color:          var(--hero-stat-label, rgba(255,255,255,.6));
+  --wiki-hero-stat-cell-bg:              var(--hero-stat-cell-bg, rgba(0,0,0,.25));
+  --wiki-hero-stat-wrapper-bg:           var(--hero-stat-wrapper-bg, rgba(255,255,255,.18));
+  --wiki-hero-stat-wrapper-border-color: var(--hero-stat-wrapper-border, rgba(255,255,255,.18));
+  --wiki-hero-feature-bg:                var(--hero-feature-bg, #1a1a1a);
+  --wiki-hero-feature-halftone-color:    var(--hero-feature-halftone, rgba(255,255,255,.1));
+  --wiki-hero-feature-border-color:      var(--hero-feature-border, rgba(255,255,255,.15));
+  --wiki-hero-feature-title-color:       var(--hero-feature-title, currentColor);
+  --wiki-hero-feature-desc-color:        var(--hero-feature-desc, currentColor);
+  --wiki-hero-feature-label-color:       var(--hero-feature-label, currentColor);
+  --wiki-hero-feature-chip-bg:           var(--hero-feature-chip-bg, rgba(255,255,255,.08));
+  --wiki-hero-feature-chip-border-color: var(--hero-feature-chip-border, rgba(255,255,255,.15));
+  --wiki-hero-feature-chip-key-color:    var(--hero-feature-chip-key, currentColor);
+  --wiki-hero-feature-chip-val-color:    var(--hero-feature-chip-val, currentColor);
+
+  /* ── infobox ── */
+  --wiki-infobox-bg:            var(--infobox-bg, #ffffff);
+  --wiki-infobox-header-bg:     var(--infobox-header-bg, #f4f4f5);
+  --wiki-infobox-border-color:  var(--infobox-border, rgba(0,0,0,.12));
+  --wiki-infobox-divider-color: var(--infobox-divider, rgba(0,0,0,.08));
+  /* catalog card/modal hairlines — a COMPONENT line (own token, visible by
+     default), NOT the section divider (which is transparent — tone separates
+     sections). Skins can recolor via --cat-divider. */
+  --wiki-cat-divider-color:     var(--cat-divider, rgba(0,0,0,.1));
+  --wiki-infobox-title-color:   var(--infobox-title-color, currentColor);
+  --wiki-infobox-label-color:   var(--infobox-label-color, rgba(0,0,0,.55));
+  --wiki-infobox-key-color:     var(--infobox-key-color, rgba(0,0,0,.55));
+  --wiki-infobox-value-color:   var(--infobox-value-color, currentColor);
+  --wiki-infobox-badge-color:        var(--infobox-badge-color, currentColor);
+  --wiki-infobox-badge-border-color: var(--infobox-badge-border, rgba(0,0,0,.2));
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §1 — UNIVERSAL CSS VARIABLE DEFAULTS
+   Spacing/color tokens that every page may need. Skins override these
+   under body.wiki-{name} in their own skin file.
+   ════════════════════════════════════════════════════════════════════ */
+:root {
+  /* ── Section tonal panels ── */
+  --section-tone-a:       transparent;   /* skin required */
+  --section-tone-b:       transparent;   /* skin required */
+  --section-tone-special: transparent;   /* skin optional */
+  --section-divider:      transparent;   /* skin colors it */
+
+  /* ── Section typography colors (defaults; skins override) ── */
+  --eyebrow-color:        currentColor;
+  --section-title-color:  currentColor;
+  --prose-color:          currentColor;
+  --prose-strong-color:   currentColor;
+
+  /* ── Prose / body sizing ──
+     The body roles — --wiki-prose-size (body), --wiki-prose-sm-size
+     (body-sm) and --wiki-prose-leading — now live with the full 8-role
+     type scale in wiki-typography.css (the single home for ALL type
+     sizing). Components in this file still read them via var(); they
+     resolve from the type canon (loaded first). Size is universal: skins
+     set color, never size. */
+
+  /* ── Bank component shapes (universal; admin retunes) ──
+     The corner treatment shared across bank components — catalog cards and
+     the paired expandable card both read --card-shape (locked together);
+     status / info chips read --chip-shape. Change once → reshapes every
+     bank card/chip site-wide. */
+  --card-shape:  14px;     /* squircle — cards + expandable cards */
+  --chip-shape:  999px;    /* circular — status / info chips */
+
+  /* ── Hero color tokens (defaults; skins override) ──────────────────
+     The hero is a UNIVERSAL element (every wiki, home + sub-pages), so its
+     color defaults live here — not in the home layer. The hero STRUCTURE is
+     §9–§14 below. (Search-bar tokens are intentionally NOT here: the search
+     bar is a home-hero-only element and keeps its tokens in wiki-home.css.) */
+  --hero-divider:         rgba(0,0,0,.12);
+  --hero-eyebrow-bg:      rgba(255,255,255,.06);
+  --hero-eyebrow-border:  rgba(255,255,255,.18);
+  --hero-eyebrow-text:    currentColor;
+  --hero-eyebrow-dot:     #ffb000;      /* matches the H1 period */
+  --hero-title-color:     currentColor;
+  --hero-title-accent:    #ffb000;      /* the period — same as dot */
+  --hero-desc-color:      currentColor;
+  --hero-stat-wrapper-bg:     rgba(255,255,255,.18);
+  --hero-stat-wrapper-border: rgba(255,255,255,.18);
+  --hero-stat-cell-bg:        rgba(0,0,0,.25);
+  --hero-stat-num:            currentColor;
+  --hero-stat-label:          rgba(255,255,255,.6);
+
+  /* ── Spotlight bank tokens (defaults; skins override) ──────────────
+     Treatment 1 = card (the home/Cantina style). Treatment 2 = feature
+     (the Diablo style). Structure is §14; skins set the colors. */
+  --hero-spotlight-bg:           rgba(255,255,255,.05);
+  --hero-spotlight-border:       rgba(255,255,255,.18);
+  --hero-spotlight-eyebrow:      rgba(255,255,255,.7);
+  --hero-spotlight-title:        currentColor;
+  --hero-spotlight-desc:         rgba(255,255,255,.75);
+  --hero-spotlight-tag-bg:       rgba(255,255,255,.08);
+  --hero-spotlight-tag-border:   rgba(255,255,255,.22);
+  --hero-spotlight-tag-text:     currentColor;
+  --hero-spotlight-cta-bg:       #ffb000;
+  --hero-spotlight-cta-text:     #0a0a0a;
+  --hero-spotlight-cta-hover-bg: #ffffff;
+
+  --hero-feature-bg:        rgba(255,255,255,.05);   /* treatment 2 fill (skin: a gradient) */
+  --hero-feature-border:    rgba(255,255,255,.20);
+  --hero-feature-halftone:  rgba(255,255,255,.5);    /* dot-pattern color */
+  --hero-feature-label:     rgba(255,255,255,.8);
+  --hero-feature-title:     currentColor;
+  --hero-feature-desc:      rgba(255,255,255,.85);
+  --hero-feature-chip-bg:     rgba(255,255,255,.10);
+  --hero-feature-chip-border: rgba(255,255,255,.30);
+  --hero-feature-chip-key:    rgba(255,255,255,.6);
+  --hero-feature-chip-val:    #ffffff;
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §2 — SECTION CONTAINER
+   Every section uses the same two-element wrapper:
+
+     <section class="wiki-section" data-tone="a">
+       <div class="wiki-section-inner">…content…</div>
+     </section>
+
+   .wiki-section       → outer; carries background + divider
+   .wiki-section-inner → inner; carries max-width + padding
+
+   Box rules mirror the hero container in wiki-home.css (§3) so
+   content edges align at every viewport size. If you change the
+   horizontal padding or max-width here, update wiki-home.css §3
+   to match (or centralise into a shared variable later).
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-section-inner {
+  margin-inline: auto;
+  max-width: 1320px;           /* default — laptop and below */
+  padding: 64px 24px;          /* mobile: 64px vertical, 24px horizontal */
+}
+
+@media (min-width: 768px) {
+  .wiki-section-inner {
+    padding: 64px 72px;        /* desktop: wider air at large viewports */
+  }
+}
+
+@media (min-width: 1600px) {
+  .wiki-section-inner {
+    max-width: 1500px;         /* big monitors get the wider cap */
+  }
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §2-b — FULL-BLEED SCROLLER  (canonical edge-to-edge rail / timeline)
+   ════════════════════════════════════════════════════════════════════
+   For horizontal scrollers (timelines, photo rails) meant to run off the
+   screen edge. Put this on the SCROLL container, placed INSIDE a normal
+   .wiki-section-inner — so the eyebrow/title above it keep the standard
+   gutters, while the scroller itself spans the FULL viewport: it starts at
+   the left screen edge and runs off both edges as it scrolls. One canonical
+   treatment for every full-bleed visual — edit here once.
+   ════════════════════════════════════════════════════════════════════ */
+.wiki-section-bleed {
+  margin-inline: calc(50% - 50vw);   /* full-viewport width: the track starts at the left
+                                        screen edge and runs off both edges (the eyebrow/title
+                                        above it keep the normal section gutters). */
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §3 — BACKGROUND TONAL ALTERNATION + SECTION DIVIDER
+   Sections alternate between tone-a and tone-b panels. The divider
+   is a 1px border-bottom whose color comes from the skin token.
+   The hero does NOT participate — it has its own background system.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* Each toned section also exposes its own background as --panel-bg, so a
+   panel-aware component (e.g. an infobox) can fill itself to match whatever
+   tone it is sitting on. */
+.wiki-section[data-tone="a"]       { background: var(--section-tone-a);       --panel-bg: var(--section-tone-a); }
+.wiki-section[data-tone="b"]       { background: var(--section-tone-b);       --panel-bg: var(--section-tone-b); }
+.wiki-section[data-tone="special"] { background: var(--section-tone-special); --panel-bg: var(--section-tone-special); }
+
+.wiki-section {
+  border-bottom: 1px solid var(--section-divider, transparent);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §4 — PAGE WRAPPER + SECTION ORDERING  (THE WIKI-HOME CANON)
+   ════════════════════════════════════════════════════════════════════
+   .wiki-home is the flex-column wrapper that holds every section on a
+   wiki home page. Because it is the flex container, the `order:` values
+   below decide RENDER order regardless of the order sections appear in
+   the source HTML — so a contributor cannot break the canonical layout
+   by writing sections in the wrong order.
+
+   THE CANON (render order, top → bottom):
+     order   0   hero       — the page header                 [universal]
+     order  10   browse     — entry directory / index         [universal]
+     order  20   overview   — topic introduction              [universal]
+     order 30–80 freeform   — each wiki's own sections,        [skin-owned]
+                              ordered in its skin file via
+                              body.wiki-{name} .wiki-section[data-section=…]
+     order  90   seealso    — cross-references (optional)      [universal]
+     order 100   footer     — always dead last                [universal]
+
+   Contract: the first three (hero → browse → overview), seealso, and the
+   footer are FIXED here and identical on every wiki. Everything between
+   overview (20) and seealso (90) is the wiki's own — a skin assigns those
+   sections order values in the 30–80 band. Keep universal order numbers
+   spaced so skins have room (35, 40, 45…).
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-home {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Hero pinned first — explicit order prevents footer floating up */
+.wiki-home > .wiki-hero  { order: 0; }
+
+/* Universal canon sections — scoped to .wiki-home so these order values
+   only apply on home pages. A sub-page's overview/other sections render
+   in normal document flow, unaffected by this ordering. */
+.wiki-home > .wiki-section[data-section="browse"]   { order: 10; }   /* entry directory */
+.wiki-home > .wiki-section[data-section="overview"] { order: 20; }   /* topic introduction */
+.wiki-home > .wiki-section[data-section="seealso"]  { order: 90; }   /* cross-references — always last */
+
+/* Footer pinned absolutely last */
+.wiki-home > footer { order: 100; }
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §5 — SECTION EYEBROW
+   The small mono label that sits above every section H2.
+   Supports an optional icon (12×12px) as a direct child <i> or <svg>.
+   line-height is pinned to 12px to match the icon height exactly,
+   which keeps dependent offsets (e.g. infobox margin-top) accurate.
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: var(--t-label-size);             /* type scale · Label */
+  font-weight: var(--t-label-weight);
+  line-height: 12px;           /* pinned to icon height — do not change without
+                                  also updating the infobox margin-top offset */
+  letter-spacing: var(--t-label-tracking);
+  text-transform: uppercase;
+  color: var(--eyebrow-color, currentColor);
+}
+
+/* Icon slot — each eyebrow can carry its own 12×12 icon */
+.wiki-section-eyebrow > i,
+.wiki-section-eyebrow > svg {
+  width: 12px;
+  height: 12px;
+  flex: none;
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §6 — SECTION H2 TITLE
+   Fraunces display serif. 30px mobile → 36px desktop.
+   Sits tight below the eyebrow (margin-top: 0) so the two read
+   as one typographic unit rather than separate elements.
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-section-title {
+  font-family: 'Fraunces', 'Spectral', Georgia, serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+  font-size: var(--t-title-size);   /* type scale · Title (30 → 36 ≥768, the token scales it) */
+  font-weight: var(--t-title-weight);
+  line-height: var(--t-title-leading);
+  letter-spacing: var(--t-title-tracking);
+  margin-top: 0;               /* flush to eyebrow — reads as one unit */
+  color: var(--section-title-color, currentColor);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §6-b — SECTION SUBTITLE  (the site's <h3>: a sub-heading)
+   ════════════════════════════════════════════════════════════════════
+   A sub-heading that introduces a sub-topic *within* a section's prose,
+   typically followed by body text (e.g. each item in a Controversies
+   section). One canonical style sitewide. Supports an optional 12×12 icon
+   as a direct child, like the eyebrow.
+   ════════════════════════════════════════════════════════════════════ */
+.wiki-section-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 32px 0 8px;
+  font-family: 'Fraunces', 'Spectral', Georgia, serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+  font-size: var(--t-subtitle-size);   /* type scale · Subtitle (17 → 19 ≥768) */
+  font-weight: var(--t-subtitle-weight);
+  line-height: var(--t-subtitle-leading);
+  letter-spacing: var(--t-subtitle-tracking);
+  color: var(--section-title-color, currentColor);
+}
+.wiki-section-subtitle > i,
+.wiki-section-subtitle > svg { width: 12px; height: 12px; flex: none; }
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §7 — SECTION PROSE
+   Body copy that follows a section title. Max-width keeps lines
+   readable (65ch ≈ 60–70 characters). Paragraph spacing is applied
+   via adjacent sibling selector so it only appears between paragraphs,
+   not after the last one.
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-section-prose {
+  margin-top: 24px;            /* breathing room from the title above */
+  max-width: 65ch;             /* comfortable reading line length */
+  font-size: var(--wiki-prose-size);      /* the universal prose-size switch (§1 :root) */
+  line-height: var(--wiki-prose-leading);
+  color: var(--prose-color, currentColor);
+}
+
+.wiki-section-prose > p + p {
+  margin-top: 20px;            /* inter-paragraph rhythm */
+}
+
+.wiki-section-prose strong {
+  color: var(--prose-strong-color, currentColor);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §9 — HERO CONTAINER SIZING
+   Shared dimensions for every wiki hero — home page AND sub-pages.
+   The horizontal padding matches the section container (§2) exactly
+   so all content edges align across every page type.
+
+   What stays in wiki-home.css:
+     · The two-column grid layout (1.5fr / 1fr) — home only
+     · The spotlight, stat grid, search bar components — home only
+     · Colors and backgrounds — skin's job
+
+   What lives here:
+     · The container dimensions any hero needs wherever it appears
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.wiki-hero-inner {
+  position: relative;
+  margin-inline: auto;
+  max-width: 1320px;
+  padding: 64px 24px;          /* mobile: matches section container */
+}
+
+@media (min-width: 768px) {
+  .wiki-hero-inner {
+    padding: 64px 72px;        /* desktop: matches section container */
+  }
+}
+
+@media (min-width: 1600px) {
+  .wiki-hero-inner {
+    max-width: 1500px;
+  }
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §10 — HERO EYEBROW PILL
+   The small mono pill that sits above the H1 on any hero.
+   Sizing and shape are universal; colors come from the skin.
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--hero-eyebrow-border);
+  background: var(--hero-eyebrow-bg);
+  color: var(--hero-eyebrow-text);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: var(--t-label-size);             /* type scale · Label */
+  font-weight: var(--t-label-weight);
+  text-transform: uppercase;
+  letter-spacing: var(--t-label-tracking);
+}
+
+.wiki-hero-eyebrow-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--hero-eyebrow-dot);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §11 — HERO H1 TITLE
+   Fraunces display serif, fluid size via clamp().
+   Used on every wiki hero — home, sub-pages, sub-sub-pages.
+   Color comes from the skin (--hero-title-color).
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-hero-title {
+  margin: 0;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: var(--t-display-size);   /* type scale · Display (clamp 48 → 96) */
+  font-weight: var(--t-display-weight);
+  line-height: var(--t-display-leading);
+  letter-spacing: var(--t-display-tracking);
+  color: var(--hero-title-color);
+  text-wrap: balance;   /* even line lengths; never orphan a trailing word or the accent period */
+}
+
+.wiki-hero-title-accent {
+  color: var(--hero-title-accent);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §11b — HERO SUB-H1 (subtitle line)
+   An optional secondary headline under the H1 — e.g. an edition, a
+   generation, a model line (the iPod "(7th generation) · Model A2178").
+   Uses the universal `title` document role so it's under master control
+   like every other heading. Optional mono `-meta` tag after a separator.
+   Color comes from the skin (--hero-subtitle-* tokens).
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-hero-subtitle {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: var(--t-title-size);        /* type scale · Title */
+  font-weight: var(--t-title-weight);
+  line-height: var(--t-title-leading);
+  letter-spacing: var(--t-title-tracking);
+  color: var(--hero-subtitle-color, var(--hero-title-color, currentColor));
+}
+
+.wiki-hero-subtitle-sep {
+  color: var(--hero-subtitle-sep, var(--hero-title-accent));
+}
+
+.wiki-hero-subtitle-meta {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: var(--t-label-size);        /* type scale · Label */
+  font-weight: var(--t-label-weight);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--hero-subtitle-meta, var(--hero-desc-color));
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   §11c — DARK HERO TREATMENT  (.wiki-hero.hero-dark)
+   Opt-in modifier for heroes on a dark background that don't get their
+   text color from a skin sheet: flips text to white-on-dark and gives
+   the eyebrow a frosted-glass fill. (Stat-grid tokens already default to
+   the dark-hero palette, so they're left untouched.) Skins/pages that set
+   their own hero colors don't need this.
+   ════════════════════════════════════════════════════════════════════ */
+.wiki-hero.hero-dark {
+  color: #ffffff;
+  --hero-desc-color:     rgba(255,255,255,.85);
+  --hero-eyebrow-bg:     rgba(255,255,255,.1);
+  --hero-eyebrow-border: rgba(255,255,255,.3);
+}
+.wiki-hero.hero-dark .wiki-hero-eyebrow {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §12 — HERO DESCRIPTION
+   The intro paragraph below the H1. 18px, capped at 36rem.
+   Used on any hero that has a description — home or sub-page.
+   Color comes from the skin (--hero-desc-color).
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-hero-desc {
+  margin: 24px 0 0;
+  max-width: 36rem;
+  font-size: var(--t-lead-size);   /* type scale · Lead (18, constant) */
+  line-height: var(--t-lead-leading);
+  color: var(--hero-desc-color);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §13 — STAT GRID (1×4)
+   The four-cell band showing key numbers (entries, etc.).
+   Appears on main wiki heroes, sub-page heroes, and some sub-sub-
+   page heroes — wherever the HTML is included.
+   Pages without it simply don't include the markup; the CSS is
+   harmless. Sizing and structure are universal; colors are skin-owned.
+
+   Desktop: 4 columns, single row. Mobile (≤767px): a 2×2 grid (the 1×4
+   was too cramped on narrow screens). The 1px gaps act as dividers via the
+   wrapper background bleeding through the gap (set --hero-stat-wrapper-bg
+   in the skin).
+
+   margin-top: 40px assumes placement after a description or search
+   bar. Override locally if the grid appears in a different context.
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  overflow: hidden;
+  margin-top: 40px;
+  max-width: 36rem;
+  border-radius: 4px;
+  border: 1px solid var(--hero-stat-wrapper-border, rgba(255,255,255,.18));
+  background: var(--hero-stat-wrapper-bg, rgba(255,255,255,.18));
+}
+
+.wiki-hero-stat {
+  padding: 12px;
+  background: var(--hero-stat-cell-bg, rgba(0,0,0,.25));
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.wiki-hero-stat-num {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--hero-stat-num, currentColor);
+  line-height: 1.1;
+}
+
+.wiki-hero-stat-label {
+  margin-top: 2px;
+  color: var(--hero-stat-label, rgba(255,255,255,.6));
+}
+
+/* Mobile — break the 1×4 into a 2×2 grid so the cells aren't cramped.
+   The 1px gaps still bleed the wrapper bg → a centered divider cross.
+   (Desktop stays 1×4, untouched.) */
+@media (max-width: 767px) {
+  .wiki-hero-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .wiki-hero-stat {
+    padding: 14px 16px;
+    font-size: 9px;
+    letter-spacing: 0.05em;
+  }
+  .wiki-hero-stat-num {
+    font-size: 22px;
+  }
+  .wiki-hero-stat-label {
+    font-size: 9px;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   §14 — HERO ASIDE + SPOTLIGHT BANK  (optional, universal)
+   ════════════════════════════════════════════════════════════════════
+   A hero may carry an optional aside holding a "spotlight". The spotlight
+   is a small BANK of swappable treatments — same idea as the infobox bank:
+     • treatment 1 — .wiki-hero-spotlight  (card: eyebrow/title/desc/tags/cta;
+                       the Taco Bell home "Cantina Chicken" style)
+     • treatment 2 — .wiki-hero-feature     (the Taco Bell sauces "Diablo"
+                       style: label row, big title, desc, 3 stat chips)
+   Structure is universal; every color comes from skin tokens. Opt into a
+   treatment by using its classes. The bank can grow over time.
+
+   Two-column hero is opt-in: when .wiki-hero-inner contains a
+   .wiki-hero-aside it becomes content | aside; otherwise single-column.
+   ════════════════════════════════════════════════════════════════════ */
+.wiki-hero-inner:has(> .wiki-hero-aside) { display: grid; gap: 32px; }
+@media (min-width: 768px) {
+  .wiki-hero-inner:has(> .wiki-hero-aside) { grid-template-columns: 1.5fr 1fr; }
+}
+.wiki-hero-content { min-width: 0; }   /* lets max-width children clamp in-grid */
+.wiki-hero-aside { align-self: start; padding-right: 16px; }
+@media (max-width: 767px) { .wiki-hero-aside { padding-right: 0; } }
+
+/* ── Spotlight treatment 1 — CARD ─────────────────────────────────── */
+.wiki-hero-spotlight {
+  padding: 20px;
+  border-radius: 4px;
+  border: 1px solid var(--hero-spotlight-border);
+  background: var(--hero-spotlight-bg);
+}
+.wiki-hero-spotlight-eyebrow {
+  margin-bottom: 12px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--hero-spotlight-eyebrow);
+}
+.wiki-hero-spotlight-title {
+  margin: 0;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--hero-spotlight-title);
+}
+.wiki-hero-spotlight-desc {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--hero-spotlight-desc);
+}
+.wiki-hero-spotlight-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.wiki-hero-spotlight-tag {
+  padding: 2px 8px;
+  border-radius: 3px;
+  border: 1px solid var(--hero-spotlight-tag-border);
+  background: var(--hero-spotlight-tag-bg);
+  color: var(--hero-spotlight-tag-text);
+}
+.wiki-hero-spotlight-cta {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--hero-spotlight-cta-bg);
+  color: var(--hero-spotlight-cta-text);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background .15s ease;
+}
+.wiki-hero-spotlight-cta:hover { background: var(--hero-spotlight-cta-hover-bg); }
+
+/* ── Spotlight treatment 2 — FEATURE (label row · big title · chips) ── */
+.wiki-hero-feature {
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  border-radius: 6px;
+  border: 1px solid var(--hero-feature-border);
+  background: var(--hero-feature-bg);
+}
+.wiki-hero-feature-halftone {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(var(--hero-feature-halftone) 1.4px, transparent 1.6px);
+  background-size: 10px 10px;
+  opacity: 0.25;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+.wiki-hero-feature-body { position: relative; }
+.wiki-hero-feature-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--hero-feature-label);
+}
+.wiki-hero-feature-title {
+  margin: 0;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--hero-feature-title);
+}
+.wiki-hero-feature-desc {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--hero-feature-desc);
+}
+.wiki-hero-feature-stats {
+  display: grid;
+  /* one equal column per chip — the count is data-driven (the canon feature
+     card is exactly 3 today, but the grid adapts if that rule changes; the
+     count lives once, in _data/grammar.yml, not hardcoded here) */
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 8px;
+  margin-top: 16px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.wiki-hero-feature-chip {
+  padding: 6px 8px;
+  border-radius: 2px;
+  border: 1px solid var(--hero-feature-chip-border);
+  background: var(--hero-feature-chip-bg);
+}
+.wiki-hero-feature-chip-key { color: var(--hero-feature-chip-key); }
+.wiki-hero-feature-chip-val { color: var(--hero-feature-chip-val); }
+
+
+/* ════════════════════════════════════════════════════════════════════
+   FIRST-CHILD MARGIN RESET
+   When the eyebrow or title is the very first element inside
+   .wiki-section-inner, its top margin would add to the section's
+   64px padding — resulting in too much space. This reset removes
+   that margin so the first element always sits flush against the
+   64px top padding, keeping vertical rhythm consistent.
+   ════════════════════════════════════════════════════════════════════ */
+
+.wiki-section-inner > *:first-child,
+.wiki-section-inner > *:first-child > *:first-child {
+  margin-top: 0;
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §15 — OVERVIEW (master section structure)
+   ════════════════════════════════════════════════════════════════════
+   The canonical Overview section: a content column (.wiki-overview-prose)
+   plus an OPTIONAL infobox (.wiki-infobox — defined as its own standalone
+   component in §15-INFOBOX below). The layout adapts to the infobox:
+     • WITH infobox    → prose (left) | infobox (right)
+     • WITHOUT infobox → body prose flows into two newspaper-style columns
+                         (eyebrow + title stay full-width above)
+   So the infobox is an opt-in slot, not a requirement.
+
+   This section owns ONLY the overview layout (the grid + how it positions
+   an embedded infobox). The infobox's own format lives in §15-INFOBOX so
+   it can be reused outside an overview.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── Grid wrapper ───────────────────────────────────────────────── */
+.wiki-overview {
+  display: grid;
+  gap: 48px;
+  grid-template-columns: 1fr;   /* default: single column (prose only) */
+}
+
+/* The infobox is an OPTIONAL slot; the overview adapts to its presence
+   with no modifier class (:has):
+     • WITH an infobox  → two columns: prose (left) | infobox (right)
+     • WITHOUT an infobox → the body prose flows into two newspaper-style
+       columns to fill the full width (eyebrow + title stay full-width above). */
+@media (min-width: 768px) {
+  .wiki-overview:has(> .wiki-infobox) {
+    grid-template-columns: 1.6fr 1fr;
+  }
+  .wiki-overview:not(:has(> .wiki-infobox)) .wiki-section-prose {
+    max-width: none;        /* drop the single-column reading cap */
+    columns: 2;
+    column-gap: 48px;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   §15-INFOBOX — INFOBOX (standalone bank component — BANK TYPE #1)
+   ════════════════════════════════════════════════════════════════════
+   A self-contained, parent-agnostic component: a key/value fact panel
+   with a header (label + title) and an OPTIONAL status badge (§15-b).
+   Used inside the overview today, but reusable anywhere. Edit here once
+   and every infobox sitewide updates. Colors come from skin tokens:
+     --infobox-bg / -border / -header-bg / -label-color / -title-color
+     --infobox-key-color / -value-color / -divider
+     --infobox-badge-border / -badge-color   (optional badge)
+   (When the bank grows, this block moves to its own _bank/infobox.css.)
+   ════════════════════════════════════════════════════════════════════ */
+/* ── Infobox container ──────────────────────────────────────────── */
+.wiki-infobox {
+  align-self: start;
+  background: var(--infobox-bg, transparent);
+  border: 1px solid var(--infobox-border, transparent);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* On desktop (side-by-side grid), drop the infobox down so it sits lower
+   in its column. On mobile the infobox stacks below the prose, so this
+   offset must NOT apply there. */
+@media (min-width: 768px) {
+  /* Scoped to the overview grid so the infobox COMPONENT stays
+     parent-agnostic — reusable in any layout without inheriting this
+     grid-specific offset. */
+  .wiki-overview > .wiki-infobox {
+    margin-top: 54px;
+  }
+}
+
+/* ── Infobox header band ────────────────────────────────────────── */
+.wiki-infobox-header {
+  padding: 12px 16px;
+  background: var(--infobox-header-bg, transparent);
+  border-bottom: 1px solid var(--infobox-divider, transparent);
+}
+
+.wiki-infobox-label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--infobox-label-color, currentColor);
+}
+
+.wiki-infobox-title {
+  font-family: 'Fraunces', 'Spectral', Georgia, serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 30, "WONK" 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-top: 2px;
+  color: var(--infobox-title-color, currentColor);
+}
+
+/* ── Infobox data list (dl) with row dividers ───────────────────── */
+.wiki-infobox-data {
+  margin: 0;
+  padding: 0 16px;
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  row-gap: 0;       /* no row gap — border-top handles separation */
+  column-gap: 0;    /* no column gap so border-top spans across both columns */
+}
+
+.wiki-infobox-data > dt,
+.wiki-infobox-data > dd {
+  padding: 12px 0;
+  margin: 0;
+  border-top: 1px solid var(--infobox-divider, transparent);
+}
+
+/* Visual column separation: pad <dt> on the right so key + value
+   aren't flush against each other (borders still connect underneath). */
+.wiki-infobox-data > dt {
+  padding-right: 16px;
+}
+
+/* Remove top border from first row (the row right under the header band) */
+.wiki-infobox-data > dt:first-of-type,
+.wiki-infobox-data > dt:first-of-type + dd {
+  border-top: 0;
+}
+
+.wiki-infobox-data > dt {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--infobox-key-color, currentColor);
+}
+
+.wiki-infobox-data > dd {
+  font-size: 14px;
+  color: var(--infobox-value-color, currentColor);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §15-b — OPTIONAL STATUS BADGE (chip)
+   ════════════════════════════════════════════════════════════════════
+   An OPT-IN slot of the infobox type: rendered only when an instance
+   supplies badge text (e.g. "Discontinued · July 2015"). Sits below the
+   data list. This is an optional add-on of the ONE canonical infobox —
+   not a separate variant. Colors come from skin tokens, with safe
+   fallbacks to the infobox's own divider/key colors.
+
+   Tokens (skin-defined, optional):
+     --infobox-badge-border
+     --infobox-badge-color
+   ════════════════════════════════════════════════════════════════════ */
+.wiki-infobox-badge {
+  display: inline-block;
+  margin: 14px 16px 16px;
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 1px solid var(--infobox-badge-border, var(--infobox-divider, currentColor));
+  color: var(--infobox-badge-color, var(--infobox-key-color, currentColor));
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   §17 — UNIVERSAL ICON  (sprite-referenced inline SVG)
+   ════════════════════════════════════════════════════════════════════
+   The site's one icon mechanism: <svg class="wiki-icon"><use href="#ic-NAME">
+   </use></svg>, where every icon is defined once in _includes/icon-sprite.html
+   (injected per page from default.html). Stroke style matches the Lucide set.
+   Sizes to 1em by default; context can override (the section eyebrow sizes its
+   icon to 12px in §5). No CDN, no runtime JS.
+   ════════════════════════════════════════════════════════════════════ */
+.wiki-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+/* ═══ wiki-home.css (CANON COPY — read-only reference) ═══ */
+/* ====================================================================
+   wiki-home.css
+   ViziWiki · Master wiki-home layout
+   --------------------------------------------------------------------
+   Universal structure for every wiki home page. Loaded BEFORE each
+   wiki's own skin file, so skin rules cascade over these defaults.
+
+   This file owns:
+     · Hero layout, dimensions, spacing, shapes
+     · Element structure (eyebrow, H1, description, search, stats, spotlight)
+     · Mobile breakpoints and stacking order
+     · Section divider rule (the bottom border exists; skin colors it)
+
+   This file does NOT own (skin's job):
+     · Colors of anything (backgrounds, borders, text, accents)
+     · Background treatments (gradients, images, textures, overlays)
+     · The search icon, ghost watermark, decorative spotlight elements
+     · Card backgrounds, CTA button colors, tag pill colors
+
+   Skins override via CSS variables declared in §1 below, scoped under
+   `body.wiki-{name}` in their own skin file. One variable change in a
+   skin propagates everywhere the variable is used.
+
+   Fonts (Fraunces, JetBrains Mono) are assumed loaded by default.html.
+   ==================================================================== */
+
+
+/* --------------------------------------------------------------------
+   1 · DEFAULT TOKENS
+   Every skinnable color has a default here. Skins override under
+   `body.wiki-{name}` to re-flavor the entire hero in one place.
+   -------------------------------------------------------------------- */
+:root {
+  /* ── search bar (HOME-ONLY hero element) ──
+     The search bar is a required element of HOME wiki heroes only — never on
+     sub-page / deeper-page heroes — so its tokens stay in the home layer.
+     All other hero tokens (eyebrow, title, desc, stat, spotlight) now live in
+     wiki-universals.css :root, because the hero itself is universal. */
+  --hero-search-bg:               rgba(255,255,255,.06);
+  --hero-search-border:           rgba(255,255,255,.18);
+  --hero-search-text:             currentColor;
+  --hero-search-placeholder:      rgba(255,255,255,.5);
+  --hero-search-icon:             currentColor;
+}
+
+
+/* ====================================================================
+   2 · HERO SECTION — outer <section>  (HOME-SPECIFIC)
+   Container sizing (position/overflow) lives in wiki-universals.css §9.
+   This file adds only the home hero's color tokens.
+   ==================================================================== */
+.wiki-hero {
+  background: var(--hero-bg, #1a1a1a);
+  color: var(--hero-text, #ffffff);
+  border-bottom: 1px solid var(--hero-divider);
+}
+
+
+/* ====================================================================
+   3 · HERO INNER — grid layout  (HOME-SPECIFIC)
+   Box sizing (margin-inline / max-width / padding) lives in
+   wiki-universals.css §9 and applies to every hero. This file adds only
+   the home hero's two-column grid layout (content + spotlight aside).
+   ==================================================================== */
+/* The 2-column hero layout (content | aside) moved to wiki-universals.css
+   §14 as an opt-in rule (.wiki-hero-inner:has(> .wiki-hero-aside)), so any
+   hero with a spotlight aside gets it — not just the home page. */
+
+
+/* ====================================================================
+   4 · LEFT COLUMN  — content wrapper
+   ==================================================================== */
+/* .wiki-hero-content moved to wiki-universals.css §14 (universal). */
+
+
+/* ====================================================================
+   5–7 · HERO EYEBROW / H1 / DESCRIPTION
+   Moved to wiki-universals.css (§10–§12). These elements share sizing
+   across every hero (home + sub-pages), so they're universal now.
+   Colors still come from the skin's --hero-* tokens.
+   ==================================================================== */
+
+
+/* ====================================================================
+   8 · SEARCH BAR
+   Left icon slot + input. ⌘K dropped. Visual only for now.
+   ==================================================================== */
+.wiki-hero-search {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  margin-top: 32px;
+  max-width: 36rem;            /* matches description */
+  border-radius: 4px;
+  border: 1px solid var(--hero-search-border);
+  background: var(--hero-search-bg);
+}
+
+.wiki-hero-search-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  padding-left: 12px;
+  color: var(--hero-search-icon);
+}
+.wiki-hero-search-icon svg,
+.wiki-hero-search-icon img {
+  width: 16px;
+  height: 16px;
+}
+
+.wiki-hero-search-input {
+  flex: 1;
+  padding: 12px;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--hero-search-text);
+}
+.wiki-hero-search-input::placeholder {
+  color: var(--hero-search-placeholder);
+}
+
+
+/* ====================================================================
+   9 · 4-CELL STAT GRID
+   Moved to wiki-universals.css (§13). The stat grid appears on home
+   heroes, sub-page heroes, and some sub-sub-pages, so its sizing
+   is universal. Colors still come from the skin's --hero-stat-* tokens.
+   ==================================================================== */
+
+
+/* ====================================================================
+   10 · SPOTLIGHT ASIDE
+   Moved to wiki-universals.css §14 as the universal spotlight BANK
+   (.wiki-hero-aside + treatment 1 .wiki-hero-spotlight [this card] +
+   treatment 2 .wiki-hero-feature). Opt-in, swappable, skin-colored.
+   ==================================================================== */
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §11–§15 — SECTION STRUCTURE, ORDERING & TYPOGRAPHY
+   ════════════════════════════════════════════════════════════════════
+   Moved to wiki-universals.css (§2–§8). These rules — section container
+   sizing, background tonal alternation, dividers, section ordering,
+   eyebrow / H2 / prose typography, and first-child resets — are
+   universal and now load on every page from one place. Edit there.
+   ════════════════════════════════════════════════════════════════════ */
+
+
+/* ════════════════════════════════════════════════════════════════════
+   §16 — STANDARD SECTION: OVERVIEW
+   ════════════════════════════════════════════════════════════════════
+   Moved to wiki-universals.css (§15). The Overview section (2-column
+   prose + infobox layout) is used on home pages AND sub-pages, so its
+   format is universal now — edit it there and it propagates everywhere.
+   Colors still come from each skin's --overview-* tokens.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ════════════════════════════════════════════════════════════════════
+   HERO LOAD-IN — canonical staggered rise (HOME heroes only)
+   ════════════════════════════════════════════════════════════════════
+   Every wiki HOME hero cascades its elements in on load: each child rises
+   8px and fades in, staggered ~.05s apart. This is the Fallout "boot"
+   treatment promoted to the canonical entrance for all home pages.
+
+   • Scoped to .wiki-home, so ONLY home-page heroes animate — never
+     sub-pages or deeper pages (their heroes have .wiki-hero-content too,
+     but no .wiki-home ancestor).
+   • Gated by .hero-intro on <html>, which the early nav-gate script in
+     default.html adds for normal navigations and DELIBERATELY withholds on
+     browser Back/Forward — so returning to a page shows it instantly,
+     with no replay.
+   • The stagger is automatic via :nth-child(), so pages need no per-element
+     animation classes.
+   ════════════════════════════════════════════════════════════════════ */
+@keyframes wiki-hero-rise { to { opacity: 1; transform: translateY(0); } }
+
+.hero-intro .wiki-home .wiki-hero-content > *,
+.hero-intro .wiki-home .wiki-hero-aside {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: wiki-hero-rise .5s ease forwards;
+}
+.hero-intro .wiki-home .wiki-hero-content > *:nth-child(1) { animation-delay: .05s; }
+.hero-intro .wiki-home .wiki-hero-content > *:nth-child(2) { animation-delay: .12s; }
+.hero-intro .wiki-home .wiki-hero-content > *:nth-child(3) { animation-delay: .20s; }
+.hero-intro .wiki-home .wiki-hero-content > *:nth-child(4) { animation-delay: .28s; }
+.hero-intro .wiki-home .wiki-hero-content > *:nth-child(5) { animation-delay: .36s; }
+.hero-intro .wiki-home .wiki-hero-aside { animation-delay: .44s; }
+
+/* Respect reduced-motion: show the hero instantly, no entrance. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-intro .wiki-home .wiki-hero-content > *,
+  .hero-intro .wiki-home .wiki-hero-aside { animation: none; opacity: 1; transform: none; }
+}
+
+
+/* ═══ wiki-fallout-skin.css (CANON COPY — read-only reference) ═══ */
+/* ====================================================================
+   wiki-fallout-skin.css
+   ViziWiki · Fallout wiki — "Pip-Boy Terminal" chrome skin
+   --------------------------------------------------------------------
+   Layered ON TOP of the shared default.html chrome. Loaded per Fallout
+   page through the `extra_head` front-matter hook.
+
+   EVERY rule is scoped under `body.wiki-fallout`, so nothing in this
+   file can reach the global white ViziWiki main-bar or any other
+   wiki's chrome. This skins the WIKI-LEVEL chrome only:
+     · the wiki-bar      (mobile top bar)
+     · the wiki-toc rail (desktop left rail / mobile drawer)
+   The global ViziWiki main-bar is deliberately left alone — it sits
+   above all of this and stays identical on every wiki.
+
+   Fonts used (Fraunces, JetBrains Mono) are already loaded by
+   default.html — this file adds no <link>s of its own.
+   ==================================================================== */
+
+
+/* --------------------------------------------------------------------
+   1 · PERSONALITY TOKENS
+   Remap the shared --wiki-* group to the Pip-Boy palette. `body.wiki-
+   fallout` outranks default.html's :root, so the whole wiki chrome
+   re-flavors from these five values. Dimension tokens (--wiki-bar-h,
+   --wiki-rail-w) are frozen and intentionally NOT touched.
+   -------------------------------------------------------------------- */
+body.wiki-fallout {
+  --wiki-bg:     #0e150d;               /* CRT surface — bar + rail     */
+  --wiki-fg:     #c6f5be;               /* phosphor-tinted text         */
+  --wiki-muted:  #6f9e6a;               /* dim readout text             */
+  --wiki-faint:  rgba(62,230,61,.22);   /* hairlines / borders          */
+  --wiki-accent: #3ee63d;               /* phosphor — primary accent    */
+
+  /* Pip-Boy extras the texture layer needs (outside the shared set) */
+  --phosphor: #3ee63d;
+  --phos-dim: #2c9b2c;
+  --amber:    #ffb000;
+  --crt-deep: #050805;                  /* deepest screen black         */
+  --crt-glow: 0 0 10px rgba(62,230,61,.45), 0 0 28px rgba(62,230,61,.18);
+
+  /* ── skin contract: semantic meaning roles, mapped to Fallout's own CRT
+     palette so any bank's status/chips come out on-brand. --wiki-palette is
+     deferred to a dedicated pass — Fallout has only ~2 base hues. ── */
+  --wiki-positive: var(--phosphor);              /* green = go / active        */
+  --wiki-negative: #e8442e;                      /* CRT alert red (none in base palette) */
+  --wiki-warning:  var(--amber);                 /* amber = caution            */
+  --wiki-info:     var(--phos-dim);              /* dim phosphor               */
+  --wiki-neutral:  var(--wiki-text-muted-color);
+
+  /* §12 section canon — alternating panel tones + divider */
+  --section-tone-a:       #0b0f0a;               /* default Pip-Boy bg            */
+  --section-tone-b:       #0e150d;               /* slightly tinted alt panel     */
+  --section-tone-special: #050805;               /* dark band (used for factions) */
+  --section-divider:      rgba(62,230,61,.22);   /* phosphor-green hairline       */
+
+  /* §15 section typography — color tokens (sizing is universal canon) */
+  --eyebrow-color:        #3ee63d;               /* phosphor — eyebrow text + icon */
+  --section-title-color:  #3ee63d;               /* phosphor — H2 titles           */
+  --prose-color:          #c6f5be;               /* phosphor-tinted ink            */
+  --prose-strong-color:   #3ee63d;               /* phosphor — emphasized text     */
+
+  /* §16 overview infobox tokens */
+  --infobox-bg:            rgba(62,230,61,0.035);   /* surface */
+  --infobox-border:        rgba(62,230,61,0.22);    /* line    */
+  --infobox-header-bg:     transparent;             /* no separate header band */
+  --infobox-label-color:   #ffb000;                 /* amber accent */
+  --infobox-title-color:   #3ee63d;                 /* phosphor */
+  --infobox-key-color:     #6f9e6a;                 /* dim phosphor — <dt> */
+  --infobox-value-color:   #c6f5be;                 /* ink — <dd> */
+  --infobox-divider:       rgba(62,230,61,.12);     /* soft phosphor */
+}
+
+
+/* ====================================================================
+   2 · CRT OVERLAY
+   ==================================================================== */
+
+/* scanline texture — viewport-fixed, pinned to the glass */
+body.wiki-fallout .fo-page { position: relative; }
+body.wiki-fallout .fo-page::before {
+  content: "";
+  position: fixed;
+  inset: var(--main-h, 56px) 0 0 0;
+  pointer-events: none;
+  z-index: 40;                 /* above content, below vignette + sweep */
+  background: repeating-linear-gradient(
+    0deg, transparent 0 2px, rgba(0,0,0,.22) 2px 3.5px);
+  animation: fo-flicker 5.5s steps(2, end) infinite;
+}
+
+/* vignette — viewport-fixed (static edge-darkening, safe to pin) */
+body.wiki-fallout::after {
+  content: "";
+  position: fixed;
+  inset: var(--main-h, 56px) 0 0 0;
+  pointer-events: none;
+  z-index: 50;
+  background: radial-gradient(
+    120% 90% at 50% 42%, transparent 55%, rgba(0,0,0,.62) 100%);
+}
+@keyframes fo-flicker {
+  0%, 96% { opacity: .70; }
+  97%     { opacity: .55; }
+  98%     { opacity: .82; }
+  100%    { opacity: .70; }
+}
+
+/* Optional moving phosphor sweep + faint green tint. Both ride
+   position:fixed, so DOM location is irrelevant — drop these two divs
+   anywhere inside the Fallout PAGE content:
+     <div class="crt-sweep" aria-hidden="true"></div>
+     <div class="crt-tint"  aria-hidden="true"></div>                */
+body.wiki-fallout .crt-sweep,
+body.wiki-fallout .crt-tint {
+  position: fixed; left: 0; right: 0;
+  pointer-events: none; z-index: 51;
+}
+body.wiki-fallout .crt-sweep {
+  height: 140px;
+  background: linear-gradient(180deg,
+    transparent, rgba(62,230,61,.05), transparent);
+  animation: fo-sweep 9s linear infinite;
+  /* z-index 104 lifts the sweep ABOVE the wiki-toc rail (102) and the
+     wiki-bar (99) so it crosses the full screen width — yet stays
+     below the drawer + backdrop (108-110). The global ViziWiki nav is
+     still safe: every CRT layer is geometrically inset to start at
+     --main-h, and the nav occupies only that top strip. */
+  z-index: 104;
+}
+body.wiki-fallout .crt-tint {
+  top: var(--main-h, 56px); bottom: 0;
+  background: rgba(62,230,61,.025);
+}
+@keyframes fo-sweep {
+  0%   { top: var(--main-h, 56px); }
+  100% { top: 100%; }
+}
+
+
+/* ====================================================================
+   3 · WIKI-BAR  — Fallout top chrome (mobile)
+   Structure (hamburger · logo · title · actions) is default.html's.
+   Here it becomes a screen-bezel surface with a phosphor hairline and
+   its own scanline. The scanline ::after is faint + pointer-events:
+   none, so it washes over the whole bar yet stays click-through.
+   ==================================================================== */
+body.wiki-fallout .wiki-bar {
+  background: var(--crt-deep);
+  border-bottom: 1px solid var(--phos-dim);
+  box-shadow: 0 0 22px rgba(62,230,61,.10);
+}
+body.wiki-fallout .wiki-bar::after {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg, transparent 0 2px, rgba(0,0,0,.28) 2px 3.5px);
+}
+
+/* hamburger + save/share — terminal keys */
+body.wiki-fallout .wiki-hamburger,
+body.wiki-fallout .wiki-bar-btn {
+  color: var(--phosphor);
+  background: rgba(62,230,61,.04);
+  border: 1px solid var(--wiki-faint);
+  border-radius: 4px;
+}
+body.wiki-fallout .wiki-hamburger:hover,
+body.wiki-fallout .wiki-bar-btn:hover {
+  border-color: var(--phosphor);
+  background: rgba(62,230,61,.10);
+  box-shadow: 0 0 12px rgba(62,230,61,.25);
+}
+
+/* Wordmark — mobile bar shows just "Fallout", glowing.
+   (The drawer head right below carries the full "· Visual Wiki".)   */
+body.wiki-fallout .wiki-bar-title {
+  font-family: 'Fraunces', Georgia, serif;
+  color: var(--phosphor);
+  text-shadow: var(--crt-glow);
+  letter-spacing: -.01em;
+}
+
+
+/* ====================================================================
+   4 · WIKI-TOC RAIL  — Fallout contents chrome (desktop) / drawer
+   Most of the rail recolors automatically from the --wiki-* remap in
+   §1. The rules below add the CRT surface, a static scanline, and the
+   phosphor accents the token cascade can't express.
+   ==================================================================== */
+body.wiki-fallout .wiki-toc {
+  background: var(--wiki-bg);
+  border-right: 1px solid var(--phos-dim);
+}
+body.wiki-fallout .wiki-toc::after {
+  content: "";
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg, transparent 0 2px, rgba(0,0,0,.22) 2px 3.5px);
+}
+
+/* ── Rail wordmark · "Fallout / THE VISUAL WIKI" ──────────────────────
+   pageTitle (WIKI_TOC) fills .wiki-toc-hero-title with "Fallout".
+   The second line is a skin-owned ::after suffix — full wordmark, no
+   edit to the shared markup.                                         */
+body.wiki-fallout .wiki-toc-hero-title {
+  font-family: 'Fraunces', Georgia, serif;
+  color: var(--phosphor);
+  text-shadow: var(--crt-glow);
+}
+body.wiki-fallout .wiki-toc-hero-title::after {
+  content: "The Visual Wiki";
+  display: block;
+  margin-top: 3px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--amber);
+  text-shadow: 0 0 10px rgba(255,176,0,.4);
+}
+
+/* "Contents:" label + section list */
+body.wiki-fallout .wiki-toc-contents-label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  color: var(--amber);
+  letter-spacing: .22em;
+}
+body.wiki-fallout .wiki-section-item { color: var(--wiki-fg); }
+body.wiki-fallout .wiki-section-item:hover { color: var(--phosphor); }
+body.wiki-fallout .wiki-section-item.active {
+  color: var(--phosphor);
+  text-shadow: 0 0 8px rgba(62,230,61,.45);
+}
+
+/* Save / collapse buttons + back tile */
+body.wiki-fallout .wiki-toc-save,
+body.wiki-fallout .wiki-toc-close,
+body.wiki-fallout .wiki-back-tile {
+  color: var(--phosphor);
+  border-color: var(--wiki-faint);
+}
+body.wiki-fallout .wiki-toc-save:hover,
+body.wiki-fallout .wiki-toc-close:hover,
+body.wiki-fallout .wiki-back-tile:hover {
+  border-color: var(--phosphor);
+  box-shadow: 0 0 12px rgba(62,230,61,.2);
+}
+body.wiki-fallout .wiki-toc-save.saved { color: var(--amber); }
+
+/* Wiki Home chip + category pills (mobile drawer) */
+body.wiki-fallout .wiki-home-chip {
+  font-family: 'Fraunces', Georgia, serif;
+  color: var(--phosphor);
+  border-color: var(--wiki-faint);
+}
+body.wiki-fallout .wiki-home-chip:hover {
+  border-color: var(--phosphor);
+  background: rgba(62,230,61,.06);
+}
+body.wiki-fallout .wiki-wpill {
+  color: var(--phosphor);
+  border-color: var(--wiki-faint);
+}
+body.wiki-fallout .wiki-wpill-chev { color: var(--amber); }
+/* default.html hardcodes .wiki-cat-item text to Taco Bell's dark brown,
+   which is invisible on the dark Fallout rail — restate the resting
+   color here (dim phosphor), brightening on hover. */
+body.wiki-fallout .wiki-cat-item { color: var(--wiki-fg); }
+body.wiki-fallout .wiki-cat-item:hover { color: var(--phosphor); }
+
+
+/* ====================================================================
+   5 · MOBILE DRAWER HEAD  — "Fallout / Visual Wiki"
+   The structure already exists in default.html; .wiki-mob-vizi ships
+   a HARD-CODED blue (#0284c7) that the token cascade can't reach, so
+   it is overridden explicitly here.
+   ==================================================================== */
+body.wiki-fallout .wiki-mob-head-name {
+  font-family: 'Fraunces', Georgia, serif;
+  color: var(--phosphor);
+  text-shadow: var(--crt-glow);
+}
+body.wiki-fallout .wiki-mob-head-vw {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+body.wiki-fallout .wiki-mob-vizi {        /* overrides hard-coded blue */
+  color: var(--phosphor);
+}
+
+
+/* ====================================================================
+   6 · SELECTION  — keep it on-brand inside Fallout pages
+   ==================================================================== */
+body.wiki-fallout ::selection {
+  background: rgba(62,230,61,.30);
+  color: #eafff0;
+}
+
+
+/* ====================================================================
+   7 · HERO  ·  CANONICAL WIKI-HOME SPEC OVERRIDES
+   The hero structure now comes from wiki-home.css. This section reflavors
+   it via --hero-* tokens plus the Fallout-specific decoration scaffolding
+   (radiation watermark + assumed inline helper classes: .boot .glow
+   .glow-amber .cursor .scan, defined in fallout.html's <style>).
+   ==================================================================== */
+
+body.wiki-fallout {
+  /* divider that closes the hero section */
+  --hero-divider:                 var(--phos-dim);
+
+  /* eyebrow pill */
+  --hero-eyebrow-bg:              rgba(62,230,61,0.035);     /* surface */
+  --hero-eyebrow-border:          rgba(62,230,61,0.22);      /* line */
+  --hero-eyebrow-text:            var(--phosphor);
+  --hero-eyebrow-dot:             var(--amber);
+
+  /* H1 + accent period */
+  --hero-title-color:             var(--phosphor);
+  --hero-title-accent:            var(--amber);
+
+  /* description */
+  --hero-desc-color:              #c6f5be;                   /* ink */
+
+  /* search bar — Pip-Boy terminal treatment */
+  --hero-search-bg:               rgba(62,230,61,0.035);
+  --hero-search-border:           rgba(62,230,61,0.22);
+  --hero-search-text:             #c6f5be;
+  --hero-search-placeholder:      #6f9e6a;                   /* ink-dim */
+  --hero-search-icon:             var(--amber);
+
+  /* stat grid */
+  --hero-stat-wrapper-bg:         rgba(62,230,61,0.22);      /* line — bleeds through gap-px */
+  --hero-stat-wrapper-border:     rgba(62,230,61,0.22);
+  --hero-stat-cell-bg:            #050805;                   /* bg-dark */
+  --hero-stat-num:                var(--phosphor);
+  --hero-stat-label:              #6f9e6a;
+
+  /* spotlight card */
+  --hero-spotlight-bg:            rgba(62,230,61,0.035);
+  --hero-spotlight-border:        rgba(62,230,61,0.22);
+  --hero-spotlight-eyebrow:       var(--amber);
+  --hero-spotlight-title:         var(--phosphor);
+  --hero-spotlight-desc:          #c6f5be;
+
+  --hero-spotlight-tag-bg:        rgba(62,230,61,0.035);
+  --hero-spotlight-tag-border:    rgba(62,230,61,0.22);
+  --hero-spotlight-tag-text:      #6f9e6a;
+
+  --hero-spotlight-cta-bg:        var(--amber);
+  --hero-spotlight-cta-text:      #050805;
+  --hero-spotlight-cta-hover-bg:  var(--phosphor);
+}
+
+/* Hero background — solid CRT surface */
+body.wiki-fallout .wiki-hero {
+  background: var(--crt-deep);
+}
+
+/* Hero search bar — Pip-Boy prompt sits in monospace, no svg */
+body.wiki-fallout .wiki-hero-search-icon {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 14px;
+}
+
+/* Hero search bar input — uppercase mono tone */
+body.wiki-fallout .wiki-hero-search-input {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+/* Hero ghost watermark — radiation icon, set right */
+body.wiki-fallout .wiki-hero .hero-watermark {
+  position: absolute;
+  top: 40px;
+  right: -64px;
+  width: 460px;
+  height: 460px;
+  color: var(--phosphor);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Lift canonical content above the watermark */
+body.wiki-fallout .wiki-hero-inner { position: relative; z-index: 2; }
+
+
+/* ====================================================================
+   §13 SECTION ORDER — Fallout sections
+   --------------------------------------------------------------------
+   The master canon only owns browse (10) and overview (20). Every
+   other section type on Fallout is per-wiki, so its order lives here.
+   Numbers chosen to match the desired top-to-bottom flow.
+   ==================================================================== */
+
+body.wiki-fallout .wiki-section[data-section="timeline"]   { order: 40; }
+body.wiki-fallout .wiki-section[data-section="factions"]   { order: 45; }
+body.wiki-fallout .wiki-section[data-section="chronology"] { order: 50; }
+body.wiki-fallout .wiki-section[data-section="numbers"]    { order: 60; }
+body.wiki-fallout .wiki-section[data-section="seealso"]    { order: 90; }
+
+</style>
+</head>
+<body class="wiki-page wiki-fallout">
+<!-- UNIVERSAL ICON SPRITE — single source of truth for site icons.
+     Injected once per page (top of <body>, default.html). Reference with
+     <svg class="wiki-icon"><use href="#ic-NAME"></use></svg> or the
+     _includes/icon.html helper. Pinned Lucide paths under stable ic-* names
+     (immune to Lucide renames). Add an icon = add one <symbol>. -->
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden">
+  <symbol id="ic-archive" viewBox="0 0 24 24"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></symbol>
+  <symbol id="ic-bar-chart-horizontal" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 16h8"/><path d="M7 11h12"/><path d="M7 6h3"/></symbol>
+  <symbol id="ic-beaker" viewBox="0 0 24 24"><path d="M4.5 3h15"/><path d="M6 3v16a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V3"/><path d="M6 14h12"/></symbol>
+  <symbol id="ic-book-open" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></symbol>
+  <symbol id="ic-chart-column-stacked" viewBox="0 0 24 24"><path d="M11 13H7"/><path d="M19 9h-4"/><path d="M3 3v16a2 2 0 0 0 2 2h16"/><rect x="15" y="5" width="4" height="12" rx="1"/><rect x="7" y="8" width="4" height="9" rx="1"/></symbol>
+  <symbol id="ic-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></symbol>
+  <symbol id="ic-radio" viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></symbol>
+  <symbol id="ic-camera" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></symbol>
+  <symbol id="ic-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="ic-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+  <symbol id="ic-cpu" viewBox="0 0 24 24"><path d="M12 20v2"/><path d="M12 2v2"/><path d="M17 20v2"/><path d="M17 2v2"/><path d="M2 12h2"/><path d="M2 17h2"/><path d="M2 7h2"/><path d="M20 12h2"/><path d="M20 17h2"/><path d="M20 7h2"/><path d="M7 20v2"/><path d="M7 2v2"/><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8" y="8" width="8" height="8" rx="1"/></symbol>
+  <symbol id="ic-cup-soda" viewBox="0 0 24 24"><path d="m6 8 1.75 12.28a2 2 0 0 0 2 1.72h4.54a2 2 0 0 0 2-1.72L18 8"/><path d="M5 8h14"/><path d="M7 15a6.47 6.47 0 0 1 5 0 6.47 6.47 0 0 0 5 0"/><path d="m12 8 1-6h2"/></symbol>
+  <symbol id="ic-droplet" viewBox="0 0 24 24"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></symbol>
+  <symbol id="ic-film" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18"/><path d="M3 7.5h4"/><path d="M3 12h18"/><path d="M3 16.5h4"/><path d="M17 3v18"/><path d="M17 7.5h4"/><path d="M17 16.5h4"/></symbol>
+  <symbol id="ic-flame" viewBox="0 0 24 24"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></symbol>
+  <symbol id="ic-gamepad-2" viewBox="0 0 24 24"><line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></symbol>
+  <symbol id="ic-gavel" viewBox="0 0 24 24"><path d="m14 13-8.381 8.38a1 1 0 0 1-3.001-3l8.384-8.381"/><path d="m16 16 6-6"/><path d="m21.5 10.5-8-8"/><path d="m8 8 6-6"/><path d="m8.5 7.5 8 8"/></symbol>
+  <symbol id="ic-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol>
+  <symbol id="ic-globe-2" viewBox="0 0 24 24"><path d="M21.54 15H17a2 2 0 0 0-2 2v4.54"/><path d="M7 3.34V5a3 3 0 0 0 3 3a2 2 0 0 1 2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2c0-1.1.9-2 2-2h3.17"/><path d="M11 21.95V18a2 2 0 0 0-2-2a2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05"/><circle cx="12" cy="12" r="10"/></symbol>
+  <symbol id="ic-hash" viewBox="0 0 24 24"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></symbol>
+  <symbol id="ic-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></symbol>
+  <symbol id="ic-lightbulb" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></symbol>
+  <symbol id="ic-link-2" viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><line x1="8" x2="16" y1="12" y2="12"/></symbol>
+  <symbol id="ic-list" viewBox="0 0 24 24"><path d="M3 5h.01"/><path d="M3 12h.01"/><path d="M3 19h.01"/><path d="M8 5h13"/><path d="M8 12h13"/><path d="M8 19h13"/></symbol>
+  <symbol id="ic-list-ordered" viewBox="0 0 24 24"><path d="M11 5h10"/><path d="M11 12h10"/><path d="M11 19h10"/><path d="M4 4h1v5"/><path d="M4 9h2"/><path d="M6.5 20H3.4c0-1 2.6-1.925 2.6-3.5a1.5 1.5 0 0 0-2.6-1.02"/></symbol>
+  <symbol id="ic-move-horizontal" viewBox="0 0 24 24"><polyline points="18 8 22 12 18 16"/><polyline points="6 8 2 12 6 16"/><line x1="2" x2="22" y1="12" y2="12"/></symbol>
+  <symbol id="ic-hard-drive" viewBox="0 0 24 24"><line x1="22" x2="2" y1="12" y2="12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/><line x1="6" x2="6.01" y1="16" y2="16"/><line x1="10" x2="10.01" y1="16" y2="16"/></symbol>
+  <symbol id="ic-message-square-quote" viewBox="0 0 24 24"><path d="M14 14a2 2 0 0 0 2-2V8h-2"/><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/><path d="M8 14a2 2 0 0 0 2-2V8H8"/></symbol>
+  <symbol id="ic-music" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
+  <symbol id="ic-pizza" viewBox="0 0 24 24"><path d="m12 14-1 1"/><path d="m13.75 18.25-1.25 1.42"/><path d="M17.775 5.654a15.68 15.68 0 0 0-12.121 12.12"/><path d="M18.8 9.3a1 1 0 0 0 2.1 7.7"/><path d="M21.964 20.732a1 1 0 0 1-1.232 1.232l-18-5a1 1 0 0 1-.695-1.232A19.68 19.68 0 0 1 15.732 2.037a1 1 0 0 1 1.232.695z"/></symbol>
+  <symbol id="ic-quote" viewBox="0 0 24 24"><path d="M16 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/><path d="M5 3a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2 1 1 0 0 1 1 1v1a2 2 0 0 1-2 2 1 1 0 0 0-1 1v2a1 1 0 0 0 1 1 6 6 0 0 0 6-6V5a2 2 0 0 0-2-2z"/></symbol>
+  <symbol id="ic-shirt" viewBox="0 0 24 24"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></symbol>
+  <symbol id="ic-smartphone" viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></symbol>
+  <symbol id="ic-soup" viewBox="0 0 24 24"><path d="M12 21a9 9 0 0 0 9-9H3a9 9 0 0 0 9 9Z"/><path d="M7 21h10"/><path d="M19.5 12 22 6"/><path d="M16.25 3c.27.1.8.53.75 1.36-.06.83-.93 1.2-1 2.02-.05.78.34 1.24.73 1.62"/><path d="M11.25 3c.27.1.8.53.74 1.36-.05.83-.93 1.2-.98 2.02-.06.78.33 1.24.72 1.62"/><path d="M6.25 3c.27.1.8.53.75 1.36-.06.83-.93 1.2-1 2.02-.05.78.34 1.24.74 1.62"/></symbol>
+  <symbol id="ic-sparkles" viewBox="0 0 24 24"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></symbol>
+  <symbol id="ic-trophy" viewBox="0 0 24 24"><path d="M10 14.66v1.626a2 2 0 0 1-.976 1.696A5 5 0 0 0 7 21.978"/><path d="M14 14.66v1.626a2 2 0 0 0 .976 1.696A5 5 0 0 1 17 21.978"/><path d="M18 9h1.5a1 1 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6 9H4.5a1 1 0 0 1 0-5H6"/></symbol>
+  <symbol id="ic-tv" viewBox="0 0 24 24"><path d="m17 2-5 5-5-5"/><rect width="20" height="15" x="2" y="7" rx="2"/></symbol>
+  <symbol id="ic-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol>
+  <symbol id="ic-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+  <symbol id="ic-arrow-up-right" viewBox="0 0 24 24"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></symbol>
+  <symbol id="ic-beef" viewBox="0 0 24 24"><path d="M16.4 13.7A6.5 6.5 0 1 0 6.28 6.6c-1.1 3.13-.78 3.9-3.18 6.08A3 3 0 0 0 5 18c4 0 8.4-1.8 11.4-4.3"/><path d="m18.5 6 2.19 4.5a6.48 6.48 0 0 1-2.29 7.2C15.4 20.2 11 22 7 22a3 3 0 0 1-2.68-1.66L2.4 16.5"/><circle cx="12.5" cy="8.5" r="2.5"/></symbol>
+  <symbol id="ic-bell" viewBox="0 0 24 24"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></symbol>
+  <symbol id="ic-box" viewBox="0 0 24 24"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></symbol>
+  <symbol id="ic-bug" viewBox="0 0 24 24"><path d="M12 20v-9"/><path d="M14 7a4 4 0 0 1 4 4v3a6 6 0 0 1-12 0v-3a4 4 0 0 1 4-4z"/><path d="M14.12 3.88 16 2"/><path d="M21 21a4 4 0 0 0-3.81-4"/><path d="M21 5a4 4 0 0 1-3.55 3.97"/><path d="M22 13h-4"/><path d="M3 21a4 4 0 0 1 3.81-4"/><path d="M3 5a4 4 0 0 0 3.55 3.97"/><path d="M6 13H2"/><path d="m8 2 1.88 1.88"/><path d="M9 7.13V6a3 3 0 1 1 6 0v1.13"/></symbol>
+  <symbol id="ic-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="ic-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+  <symbol id="ic-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></symbol>
+  <symbol id="ic-circle-dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="1"/></symbol>
+  <symbol id="ic-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+  <symbol id="ic-dog" viewBox="0 0 24 24"><path d="M11.25 16.25h1.5L12 17z"/><path d="M16 14v.5"/><path d="M4.42 11.247A13.152 13.152 0 0 0 4 14.556C4 18.728 7.582 21 12 21s8-2.272 8-6.444a11.702 11.702 0 0 0-.493-3.309"/><path d="M8 14v.5"/><path d="M8.5 8.5c-.384 1.05-1.083 2.028-2.344 2.5-1.931.722-3.576-.297-3.656-1-.113-.994 1.177-6.53 4-7 1.923-.321 3.651.845 3.651 2.235A7.497 7.497 0 0 1 14 5.277c0-1.39 1.844-2.598 3.767-2.277 2.823.47 4.113 6.006 4 7-.08.703-1.725 1.722-3.656 1-1.261-.472-1.855-1.45-2.239-2.5"/></symbol>
+  <symbol id="ic-droplets" viewBox="0 0 24 24"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/></symbol>
+  <symbol id="ic-drumstick" viewBox="0 0 24 24"><path d="M15.4 15.63a7.875 6 135 1 1 6.23-6.23 4.5 3.43 135 0 0-6.23 6.23"/><path d="m8.29 12.71-2.6 2.6a2.5 2.5 0 1 0-1.65 4.65A2.5 2.5 0 1 0 8.7 18.3l2.59-2.59"/></symbol>
+  <symbol id="ic-file-text" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
+  <symbol id="ic-folder-tree" viewBox="0 0 24 24"><path d="M20 10a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-2.5a1 1 0 0 1-.8-.4l-.9-1.2A1 1 0 0 0 15 3h-2a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1Z"/><path d="M20 21a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-2.9a1 1 0 0 1-.88-.55l-.42-.85a1 1 0 0 0-.92-.6H13a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1Z"/><path d="M3 5a2 2 0 0 0 2 2h3"/><path d="M3 3v13a2 2 0 0 0 2 2h3"/></symbol>
+  <symbol id="ic-ghost" viewBox="0 0 24 24"><path d="M9 10h.01"/><path d="M15 10h.01"/><path d="M12 2a8 8 0 0 0-8 8v12l3-3 2.5 2.5L12 19l2.5 2.5L17 19l3 3V10a8 8 0 0 0-8-8z"/></symbol>
+  <symbol id="ic-grid-2x2" viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M3 12h18"/><rect x="3" y="3" width="18" height="18" rx="2"/></symbol>
+  <symbol id="ic-heart" viewBox="0 0 24 24"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></symbol>
+  <symbol id="ic-hexagon" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></symbol>
+  <symbol id="ic-hotel" viewBox="0 0 24 24"><path d="M10 22v-6.57"/><path d="M12 11h.01"/><path d="M12 7h.01"/><path d="M14 15.43V22"/><path d="M15 16a5 5 0 0 0-6 0"/><path d="M16 11h.01"/><path d="M16 7h.01"/><path d="M8 11h.01"/><path d="M8 7h.01"/><rect x="4" y="2" width="16" height="20" rx="2"/></symbol>
+  <symbol id="ic-layers" viewBox="0 0 24 24"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z"/><path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12"/><path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17"/></symbol>
+  <symbol id="ic-layout-grid" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></symbol>
+  <symbol id="ic-layout-list" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/><path d="M14 4h7"/><path d="M14 9h7"/><path d="M14 15h7"/><path d="M14 20h7"/></symbol>
+  <symbol id="ic-layout-template" viewBox="0 0 24 24"><rect width="18" height="7" x="3" y="3" rx="1"/><rect width="9" height="7" x="3" y="14" rx="1"/><rect width="5" height="7" x="16" y="14" rx="1"/></symbol>
+  <symbol id="ic-leaf" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></symbol>
+  <symbol id="ic-map" viewBox="0 0 24 24"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15"/><path d="M9 3.236v15"/></symbol>
+  <symbol id="ic-map-pin" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="ic-megaphone" viewBox="0 0 24 24"><path d="M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/><path d="M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14"/><path d="M8 6v8"/></symbol>
+  <symbol id="ic-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></symbol>
+  <symbol id="ic-palette" viewBox="0 0 24 24"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></symbol>
+  <symbol id="ic-radiation" viewBox="0 0 24 24"><path d="M12 12h.01"/><path d="M14 15.4641a4 4 0 0 1-4 0L7.52786 19.74597A1 1 0 0 0 7.99303 21.16211 10 10 0 0 0 16.00697 21.16211 1 1 0 0 0 16.47214 19.74597z"/><path d="M16 12a4 4 0 0 0-2-3.464l2.472-4.282a1 1 0 0 1 1.46-.305 10 10 0 0 1 4.006 6.94A1 1 0 0 1 21 12z"/><path d="M8 12a4 4 0 0 1 2-3.464L7.528 4.254a1 1 0 0 0-1.46-.305 10 10 0 0 0-4.006 6.94A1 1 0 0 0 3 12z"/></symbol>
+  <symbol id="ic-salad" viewBox="0 0 24 24"><path d="M7 21h10"/><path d="M12 21a9 9 0 0 0 9-9H3a9 9 0 0 0 9 9Z"/><path d="M11.38 12a2.4 2.4 0 0 1-.4-4.77 2.4 2.4 0 0 1 3.2-2.77 2.4 2.4 0 0 1 3.47-.63 2.4 2.4 0 0 1 3.37 3.37 2.4 2.4 0 0 1-1.1 3.7 2.51 2.51 0 0 1 .03 1.1"/><path d="m13 12 4-4"/><path d="M10.9 7.25A3.99 3.99 0 0 0 4 10c0 .73.2 1.41.54 2"/></symbol>
+  <symbol id="ic-sandwich" viewBox="0 0 24 24"><path d="m2.37 11.223 8.372-6.777a2 2 0 0 1 2.516 0l8.371 6.777"/><path d="M21 15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-5.25"/><path d="M3 15a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h9"/><path d="m6.67 15 6.13 4.6a2 2 0 0 0 2.8-.4l3.15-4.2"/><rect width="20" height="4" x="2" y="11" rx="1"/></symbol>
+  <symbol id="ic-scroll" viewBox="0 0 24 24"><path d="M19 17V5a2 2 0 0 0-2-2H4"/><path d="M8 21h12a2 2 0 0 0 2-2v-1a1 1 0 0 0-1-1H11a1 1 0 0 0-1 1v1a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v2a1 1 0 0 0 1 1h3"/></symbol>
+  <symbol id="ic-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></symbol>
+  <symbol id="ic-shapes" viewBox="0 0 24 24"><path d="M8.3 10a.7.7 0 0 1-.626-1.079L11.4 3a.7.7 0 0 1 1.198-.043L16.3 8.9a.7.7 0 0 1-.572 1.1Z"/><rect x="3" y="14" width="7" height="7" rx="1"/><circle cx="17.5" cy="17.5" r="3.5"/></symbol>
+  <symbol id="ic-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></symbol>
+  <symbol id="ic-skull" viewBox="0 0 24 24"><path d="m12.5 17-.5-1-.5 1h1z"/><path d="M15 22a1 1 0 0 0 1-1v-1a2 2 0 0 0 1.56-3.25 8 8 0 1 0-11.12 0A2 2 0 0 0 8 20v1a1 1 0 0 0 1 1z"/><circle cx="15" cy="12" r="1"/><circle cx="9" cy="12" r="1"/></symbol>
+  <symbol id="ic-sliders-horizontal" viewBox="0 0 24 24"><path d="M10 5H3"/><path d="M12 19H3"/><path d="M14 3v4"/><path d="M16 17v4"/><path d="M21 12h-9"/><path d="M21 19h-5"/><path d="M21 5h-7"/><path d="M8 10v4"/><path d="M8 12H3"/></symbol>
+  <symbol id="ic-bar-chart-3" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></symbol>
+  <symbol id="ic-circle-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+  <symbol id="ic-star" viewBox="0 0 24 24"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></symbol>
+  <symbol id="ic-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></symbol>
+  <symbol id="ic-sunrise" viewBox="0 0 24 24"><path d="M12 2v8"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m8 6 4-4 4 4"/><path d="M16 18a4 4 0 0 0-8 0"/></symbol>
+  <symbol id="ic-tag" viewBox="0 0 24 24"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></symbol>
+  <symbol id="ic-thermometer" viewBox="0 0 24 24"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></symbol>
+  <symbol id="ic-trending-up" viewBox="0 0 24 24"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></symbol>
+  <symbol id="ic-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="ic-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></symbol>
+  <symbol id="ic-wind" viewBox="0 0 24 24"><path d="M12.8 19.6A2 2 0 1 0 14 16H2"/><path d="M17.5 8a2.5 2.5 0 1 1 2 4H2"/><path d="M9.8 4.4A2 2 0 1 1 11 8H2"/></symbol>
+  <symbol id="ic-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+  <symbol id="ic-zap" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></symbol>
+  <symbol id="ic-plus-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></symbol>
+  <symbol id="ic-scale" viewBox="0 0 24 24"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></symbol>
+  <symbol id="ic-snowflake" viewBox="0 0 24 24"><path d="m10 20-1.25-2.5L6 18"/><path d="M10 4 8.75 6.5 6 6"/><path d="m14 20 1.25-2.5L18 18"/><path d="m14 4 1.25 2.5L18 6"/><path d="m17 21-3-6h-4"/><path d="m17 3-3 6 1.5 3"/><path d="M2 12h6.5L10 9"/><path d="m20 10-1.5 2 1.5 2"/><path d="M22 12h-6.5L14 15"/><path d="m4 10 1.5 2L4 14"/><path d="m7 21 3-6-1.5-3"/><path d="m7 3 3 6h4"/></symbol>
+  <symbol id="ic-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="ic-hourglass" viewBox="0 0 24 24"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></symbol>
+  <symbol id="ic-camera-off" viewBox="0 0 24 24"><line x1="2" x2="22" y1="2" y2="22"/><path d="M7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16"/><path d="M9.5 4h5L17 7h3a2 2 0 0 1 2 2v7.5"/><path d="M14.121 15.121A3 3 0 1 1 9.88 10.88"/></symbol>
+  <symbol id="ic-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></symbol>
+  <symbol id="ic-video" viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></symbol>
+  <symbol id="ic-cable" viewBox="0 0 24 24"><path d="M12 22V12m0 0l-3 3m3-3l3 3M6 9a6 6 0 1 1 12 0v3H6V9z"/></symbol>
+  <symbol id="ic-alert-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></symbol>
+  <symbol id="ic-memory-card" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+</svg>
+
+
+<!-- ====================================================================
+     Fallout — wiki home page  (ViziWiki / "Pip-Boy Terminal" skin)
+     --------------------------------------------------------------------
+     A CONTENT page: it renders inside _layouts/default.html, so it
+     carries NO global chrome — topbar, breadcrumb and footer all come
+     from the layout. The wiki-level chrome (wiki-bar + contents rail) is
+     populated from window.WIKI_TOC below and skinned by
+     /wiki-fallout-skin.css.
+     ==================================================================== -->
+
+<!-- ── wiki chrome config — populates the wiki-bar + contents rail ── -->
+<script>
+window.WIKI_TOC = {
+  pageTitle: "Fallout",
+  wikiTitle: "Fallout",
+  wikiHome:  "/fallout.html",
+  pageLogo:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M7 9l3 3-3 3"/><line x1="13" y1="15" x2="17" y2="15"/></svg>`,
+  categories: [
+    { name: "Games",       url: "/fallout-games.html",      color: "#3ee63d" },
+    { name: "Factions",    url: "/fallout-factions.html",   color: "#3ee63d" },
+    { name: "Locations",   url: "/fallout-locations.html",  color: "#3ee63d" },
+    { name: "Characters",  url: "/fallout-characters.html", color: "#3ee63d" },
+    { name: "Creatures",   url: "/fallout-creatures.html",  color: "#3ee63d" },
+    { name: "Tech & Gear", url: "/fallout-tech.html",       color: "#3ee63d" }
+  ],
+  sections: [
+    { group: "The Wiki",  id: "browse",   label: "Browse the directory" },
+    { group: "The Wiki",  id: "overview", label: "Overview" },
+    { group: "Reference", id: "timeline", label: "Release timeline" },
+    { group: "Reference", id: "factions",   label: "Factions" },
+    { group: "Reference", id: "chronology", label: "Wasteland chronology" },
+    { group: "Reference", id: "numbers",    label: "By the numbers" },
+    { group: "Beyond",    id: "seealso",  label: "See also" }
+  ]
+};
+</script>
+
+<style>
+/* ====================================================================
+   Fallout wiki — PAGE-LEVEL styling (Pip-Boy Terminal).
+   Every rule is scoped under .fo-page, so nothing here reaches the
+   shared chrome. The wiki-bar/rail skin and the fixed CRT overlay live
+   in /wiki-fallout-skin.css.
+
+   Tailwind's preflight is disabled in the front-matter (so it can't
+   touch the layout's chrome). The :where() block below restores the
+   handful of resets the content needs — at zero specificity, so every
+   Tailwind utility and component rule still wins.
+   ==================================================================== */
+
+/* preflight replacement — zero-specificity, .fo-page-scoped */
+:where(.fo-page *, .fo-page *::before, .fo-page *::after){ border-width:0; border-style:solid; }
+:where(.fo-page ul, .fo-page ol, .fo-page li){ list-style:none; }
+:where(.fo-page a){ color:inherit; text-decoration:none; }
+:where(.fo-page svg){ display:block; }
+:where(.fo-page img){ max-width:100%; height:auto; }
+:where(.fo-page button, .fo-page input){ font:inherit; color:inherit; background:transparent; appearance:none; -webkit-appearance:none; }
+:where(.fo-page button){ cursor:pointer; }
+:where(.fo-page input)::placeholder{ color:inherit; opacity:1; }
+
+/* personality tokens — scoped to .fo-page, NOT :root, so the layout's
+   own --bg etc. are never overridden */
+.fo-page{
+  --bg:#0b0f0a; --bg-alt:#0e150d; --bg-dark:#050805;
+  --surface:rgba(62,230,61,0.035);
+  --phosphor:#3ee63d; --phos-dim:#2c9b2c; --amber:#ffb000;
+  --ink:#c6f5be; --ink-dim:#6f9e6a;
+  --line:rgba(62,230,61,0.22); --line-soft:rgba(62,230,61,0.12);
+  --radius:5px;
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+}
+/* dark body so overscroll / section gaps stay in-world */
+body.wiki-fallout{ background:#0b0f0a; }
+
+/* font stack — provided by /wiki-typography.css */
+
+/* phosphor glow */
+.fo-page .glow{text-shadow:0 0 10px rgba(62,230,61,.45),0 0 28px rgba(62,230,61,.18);}
+.fo-page .glow-amber{text-shadow:0 0 10px rgba(255,176,0,.5),0 0 24px rgba(255,176,0,.22);}
+
+/* color utilities */
+.fo-page .text-phos{color:var(--phosphor);} .fo-page .text-amber{color:var(--amber);}
+.fo-page .text-ink{color:var(--ink);} .fo-page .text-dim{color:var(--ink-dim);}
+.fo-page .text-bg-dark{color:var(--bg-dark);}
+.fo-page .bg-bg{background:var(--bg);} .fo-page .bg-bg-alt{background:var(--bg-alt);} .fo-page .bg-bg-dark{background:var(--bg-dark);}
+.fo-page .bg-surface{background:var(--surface);} .fo-page .bg-line{background:var(--line);}
+.fo-page .border-line{border-color:var(--line);} .fo-page .border-line-soft{border-color:var(--line-soft);}
+.fo-page .bg-phos{background:var(--phosphor);} .fo-page .bg-amber{background:var(--amber);}
+
+/* .scan is now just a positioning hook. The scanline texture is drawn
+   once, globally, by the content-locked layer in wiki-fallout-skin.css —
+   a second per-panel texture here would moiré against it. */
+.fo-page .scan{position:relative;}
+
+/* blinking terminal cursor */
+.fo-page .cursor{display:inline-block;width:.55em;height:1em;background:var(--amber);
+  transform:translateY(.12em);margin-left:.06em;animation:fo-blink 1.1s steps(1,end) infinite;
+  box-shadow:0 0 12px rgba(255,176,0,.6);}
+@keyframes fo-blink{0%,49%{opacity:1;}50%,100%{opacity:0;}}
+.fo-page .cursor-sm{width:.5em;height:.95em;}
+
+/* Hero flourishes applied by SELECTOR so the hero markup stays canonical
+   (the hero is now {% include sections/hero.html %} — no per-element classes). */
+.fo-page .wiki-hero-title{text-shadow:0 0 10px rgba(62,230,61,.45),0 0 28px rgba(62,230,61,.18);}
+.fo-page .wiki-hero-title-accent{text-shadow:0 0 10px rgba(255,176,0,.5),0 0 24px rgba(255,176,0,.22);}
+.fo-page .wiki-hero-title::after{content:"";display:inline-block;width:.55em;height:1em;background:var(--amber);transform:translateY(.12em);margin-left:.06em;animation:fo-blink 1.1s steps(1,end) infinite;box-shadow:0 0 12px rgba(255,176,0,.6);}
+.fo-page .wiki-hero-spotlight-title{text-shadow:0 0 10px rgba(62,230,61,.45),0 0 28px rgba(62,230,61,.18);}
+/* Section headings glow by selector too, so the canonical overview/section
+   include (which has no per-element 'glow' class) still gets the phosphor. */
+.fo-page .wiki-section-title{text-shadow:0 0 10px rgba(62,230,61,.45),0 0 28px rgba(62,230,61,.18);}
+
+/* directory expand */
+.fo-page .dir-body{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+.fo-page .dir-panel.is-open .dir-body{max-height:520px;}
+.fo-page .dir-panel.is-open{border-color:var(--phosphor);box-shadow:0 0 0 1px var(--phos-dim),0 0 26px rgba(62,230,61,.12);}
+.fo-page .dir-panel.is-open .dir-caret{transform:rotate(90deg);}
+.fo-page .dir-caret{transition:transform .3s ease;}
+
+/* hover lifts — terminal, not bouncy */
+.fo-page .lift{transition:border-color .2s ease,box-shadow .2s ease,background .2s ease;}
+.fo-page .lift:hover{border-color:var(--phosphor);box-shadow:0 0 22px rgba(62,230,61,.1);}
+
+
+.fo-page ::selection{background:rgba(62,230,61,.3);color:#eafff0;}
+</style>
+
+<div class="fo-page wiki-home">
+
+  <!-- moving phosphor sweep + faint green tint — styled by the skin -->
+  <div class="crt-sweep" aria-hidden="true"></div>
+  <div class="crt-tint" aria-hidden="true"></div>
+
+  <!-- ================================================================
+       HERO  ·  canonical wiki-home spec (see wiki-home.css)
+       Skin owns: bg, radiation watermark, terminal cursor, "boot" / "glow"
+                  animation classes, and all colors via --hero-* tokens.
+       ================================================================ -->
+  <section class="wiki-hero"><!-- skin-owned ghost watermark, set right -->
+    <svg class="wiki-icon hero-watermark" style="opacity:.05;stroke-width:.8" aria-hidden="true"><use href="#ic-radiation"></use></svg>
+
+<div class="wiki-hero-inner">
+    <div class="wiki-hero-content"><div class="wiki-hero-eyebrow"><span class="wiki-hero-eyebrow-dot"></span> Visual Wiki · Vol. 2</div><h1 class="wiki-hero-title">Fallout<span class="wiki-hero-title-accent">.</span></h1><p class="wiki-hero-desc">A retro-future that never let go of <strong>1950s America</strong> — then dropped the bombs on it. Since <strong>1997</strong>, the post-nuclear RPG series indexed here entry by entry: every game, faction, vault, wasteland and walking horror, catalogd from the wrist up.</p><div class="wiki-hero-search">
+  <span class="wiki-hero-search-icon">&gt;</span>
+  <input class="wiki-hero-search-input" placeholder="QUERY 1,140 ENTRIES — try 'Deathclaw' or 'New Vegas'" />
+</div>
+<div class="wiki-hero-stats"><div class="wiki-hero-stat"><div class="wiki-hero-stat-num">1,140</div><div class="wiki-hero-stat-label">entries</div></div><div class="wiki-hero-stat"><div class="wiki-hero-stat-num">1997</div><div class="wiki-hero-stat-label">debut</div></div><div class="wiki-hero-stat"><div class="wiki-hero-stat-num">9</div><div class="wiki-hero-stat-label">games</div></div><div class="wiki-hero-stat"><div class="wiki-hero-stat-num">122</div><div class="wiki-hero-stat-label">vaults</div></div></div>
+</div><aside class="wiki-hero-aside"><div class="wiki-hero-spotlight"><div class="wiki-hero-spotlight-eyebrow">★ Spotlight</div><h3 class="wiki-hero-spotlight-title">Pip-Boy 3000</h3><p class="wiki-hero-spotlight-desc">The wrist-mounted Personal Information Processor — RobCo's pre-war handheld that every player wears for 200 years. Maps, stats, radio, and a soft green light in the dark.</p><div class="wiki-hero-spotlight-tags"><span class="wiki-hero-spotlight-tag">Tech</span><span class="wiki-hero-spotlight-tag">Iconic</span><span class="wiki-hero-spotlight-tag">RobCo</span></div><button class="wiki-hero-spotlight-cta">Open entry &nbsp;&rarr;</button></div>
+</aside></div>
+</section>
+
+  <!-- ================================================================
+       BROWSE THE WIKI  (shared nav slot — Pip-Boy "RobCo directory":
+       categories, entry counts, contents preview, drill-down.)
+       ================================================================ -->
+  <section class="wiki-section" id="browse" data-section="browse" data-tone="b">
+    <div class="wiki-section-inner">
+      <div class="wiki-section-eyebrow">
+        <svg class="wiki-icon" aria-hidden="true"><use href="#ic-folder-tree"></use></svg> Directory
+      </div>
+      <div class="flex items-end justify-between">
+        <h2 class="wiki-section-title glow">Browse the wiki</h2>
+        <span class="hidden font-mono-acc text-[10px] uppercase tracking-wider text-dim md:block">
+          select a node to expand
+        </span>
+      </div>
+      <p class="mt-2 max-w-2xl font-mono-acc text-[11px] uppercase tracking-wide text-dim">
+        7 root categories · everything nested beneath its parent
+      </p>
+
+      <!-- directory grid -->
+      <div class="mt-8 grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3" id="dirGrid">
+        <!-- panels injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       OVERVIEW  (▸ eyebrow + prose + infobox)
+       ================================================================ -->
+  <section class="wiki-section" data-section="overview" id="overview" data-tone="a">
+  <div class="wiki-section-inner">
+    <div class="wiki-overview">
+      <div class="wiki-overview-prose">
+        <div class="wiki-section-eyebrow"><svg class="wiki-icon" aria-hidden="true"><use href="#ic-book-open"></use></svg>
+ Overview</div>
+        <h2 class="wiki-section-title">War. War never changes — but the company that catalogs it does.</h2>
+        <div class="wiki-section-prose"><p><strong>Fallout</strong> is a post-apocalyptic role-playing series set in a retro-futuristic United States — a timeline where transistor-era optimism and 1950s design never ended, and atomic power went everywhere before the bombs fell on October 23, <strong>2077</strong>.</p><p>The series began in <strong>1997</strong> as an isometric RPG from Interplay's Black Isle Studios, built around the S.P.E.C.I.A.L. character system. After <em>Fallout 2</em>, the property passed to <strong>Bethesda Game Studios</strong>, which rebuilt it in first person with <em>Fallout 3</em> (2008). <em>New Vegas</em> (2010), developed by Obsidian, returned much of the original writing team to the Mojave.</p><p>This wiki indexes the canon from the wrist up — every game, faction, vault, location, character, creature and piece of pre-war tech — and renders it the way a Pip-Boy would: green phosphor on a dark screen, organized as a directory you can drill straight into.</p></div>
+      </div><aside class="wiki-infobox scan"><div class="wiki-infobox-header">
+    <div class="wiki-infobox-label">Infobox</div>
+    <div class="wiki-infobox-title">The Fallout series</div></div>
+  <dl class="wiki-infobox-data"><dt>Debut</dt><dd>Fallout — 1997</dd><dt>Genre</dt><dd>Post-apocalyptic action RPG</dd><dt>Setting</dt><dd>Retro-future post-nuclear USA</dd><dt>Developers</dt><dd>Interplay · Bethesda · Obsidian</dd><dt>System</dt><dd>S.P.E.C.I.A.L.</dd><dt>Great War</dt><dd>October 23, 2077</dd><dt>Adaptation</dt><dd>Fallout — TV series, 2024</dd></dl></aside>
+</div>
+  </div>
+</section>
+
+  <!-- ================================================================
+       TIMELINE  (horizontal spine with markers)
+       ================================================================ -->
+  <section class="wiki-section" id="timeline" data-section="timeline" data-tone="b">
+    <div class="wiki-section-inner">
+      <div class="wiki-section-eyebrow">
+        <svg class="wiki-icon" aria-hidden="true"><use href="#ic-clock"></use></svg> Release timeline
+      </div>
+      <h2 class="wiki-section-title glow">Seven entries in the log.</h2>
+
+      <div class="relative mt-12">
+        <div class="absolute left-0 right-0 top-[27px] h-px bg-line"></div>
+        <ol class="relative grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-7" id="timelineList"></ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       FACTIONS BAND  (dark band — alternating section tone)
+       ================================================================ -->
+  <section class="wiki-section" id="factions" data-section="factions" data-tone="special">
+    <div class="wiki-section-inner">
+      <div class="wiki-section-eyebrow">
+        <svg class="wiki-icon" aria-hidden="true"><use href="#ic-shield"></use></svg> Factions
+      </div>
+      <h2 class="wiki-section-title glow">Who's left fighting over the ash.</h2>
+      <div class="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-[4px] bg-line md:grid-cols-2 lg:grid-cols-3" id="factionGrid"></div>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       CHRONOLOGY  (in-universe timeline — a vertical terminal log,
+       deliberately a different shape from the release timeline above
+       so the two never read as duplicates)
+       ================================================================ -->
+  <section class="wiki-section" id="chronology" data-section="chronology" data-tone="b">
+    <div class="wiki-section-inner">
+      <div class="wiki-section-eyebrow">
+        <svg class="wiki-icon" aria-hidden="true"><use href="#ic-history"></use></svg> In-universe
+      </div>
+      <h2 class="wiki-section-title glow">Chronology of the wasteland.</h2>
+      <p class="mt-2 max-w-2xl font-mono-acc text-[11px] uppercase tracking-wide text-dim">
+        Not release dates — when each story actually happens inside the timeline.
+      </p>
+      <ol class="mt-10 max-w-3xl" id="chronologyLog"><!-- injected by JS --></ol>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       BY THE NUMBERS  (dark large-text ledger)
+       ================================================================ -->
+  <section class="wiki-section" id="numbers" data-section="numbers" data-tone="a">
+    <div class="wiki-section-inner">
+      <div class="wiki-section-eyebrow">
+        <svg class="wiki-icon" aria-hidden="true"><use href="#ic-bar-chart-3"></use></svg> Numbers
+      </div>
+      <h2 class="wiki-section-title glow">The wasteland, quantified.</h2>
+      <dl class="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-[4px] bg-line md:grid-cols-2 lg:grid-cols-3" id="numberGrid"></dl>
+    </div>
+  </section>
+
+  <!-- ================================================================
+       SEE ALSO
+       ================================================================ -->
+  <section class="wiki-section" id="seealso" data-section="seealso" data-tone="b">
+    <div class="wiki-section-inner">
+      <div class="wiki-section-eyebrow">
+        <svg class="wiki-icon" aria-hidden="true"><use href="#ic-link-2"></use></svg> See also
+      </div>
+      <h2 class="wiki-section-title glow">Adjacent rabbit holes.</h2>
+      <div class="mt-6 grid gap-3 md:grid-cols-3" id="seealsoGrid"></div>
+    </div>
+  </section>
+
+</div><!-- /.fo-page -->
+
+<script>
+/* ============================================================
+   DATA
+   ============================================================ */
+const CATEGORIES = [
+  { key:"games", name:"Games", icon:"gamepad-2", count:12,
+    preview:"Every mainline game, the spin-offs, the expansions, the show…",
+    children:["Fallout (1997)","Fallout 2","Fallout 3","Fallout: New Vegas","Fallout 4","Fallout 76","Fallout Tactics","Fallout: Brotherhood of Steel","Fallout Shelter","DLC & Expansions","Fallout (TV series)"] },
+  { key:"factions", name:"Factions", icon:"shield", count:34,
+    preview:"Brotherhood of Steel, NCR, Legion, Enclave, Vault-Tec…",
+    children:["Brotherhood of Steel","New California Republic","Caesar's Legion","Enclave","The Institute","Railroad","Minutemen","Raiders","Pre-war Corporations"] },
+  { key:"locations", name:"Locations", icon:"map", count:182,
+    preview:"Capital Wasteland, Mojave, Commonwealth, Vaults…",
+    children:["Capital Wasteland","Mojave Wasteland","The Commonwealth","Appalachia","New California","Vault network"] },
+  { key:"characters", name:"Characters", icon:"users", count:264,
+    preview:"Protagonists, companions, NPCs, the named dead…",
+    children:["The Vault Dweller","The Lone Wanderer","The Courier","Sole Survivor","Companions","Named NPCs"] },
+  { key:"creatures", name:"Creatures", icon:"bug", count:96,
+    preview:"Deathclaws, super mutants, ghouls, mirelurks…",
+    children:["Deathclaw","Super Mutant","Ghoul","Mirelurk","Radroach","Yao Guai"] },
+  { key:"tech", name:"Tech & Gear", icon:"cpu", count:211,
+    preview:"Power armor, energy weapons, the Pip-Boy…",
+    children:["Power Armor","Energy weapons","Ballistic weapons","The Pip-Boy","Stimpaks & chems","Pre-war robotics"] },
+  { key:"systems", name:"Game Systems", icon:"sliders-horizontal", count:48,
+    preview:"S.P.E.C.I.A.L., perks, survival, crafting, settlements…",
+    children:["S.P.E.C.I.A.L. & Stats","Perks & Traits","Survival & Hardcore Mode","Crafting & Modification","Settlements & Base Building"] },
+];
+
+const TIMELINE = [
+  { yr:"1997", mk:"I",   label:"Fallout",      note:"Interplay ships the isometric original." },
+  { yr:"1998", mk:"II",  label:"Fallout 2",    note:"A bigger California; sharper satire." },
+  { yr:"2008", mk:"III", label:"Fallout 3",    note:"Bethesda rebuilds it in first person." },
+  { yr:"2010", mk:"IV",  label:"New Vegas",    note:"Obsidian returns to the Mojave." },
+  { yr:"2015", mk:"V",   label:"Fallout 4",    note:"The Commonwealth; settlement building." },
+  { yr:"2018", mk:"VI",  label:"Fallout 76",   note:"Multiplayer Appalachia." },
+  { yr:"2024", mk:"VII", label:"Fallout (TV)", note:"Prime Video adaptation airs." },
+];
+
+/* In-universe dates — verified against Fallout canon. Note this is the
+   STORY timeline, distinct from the release TIMELINE above: Fallout 76
+   is chronologically first (2102) and the TV series last (2296). */
+const CHRONOLOGY = [
+  { yr:"2052", title:"The Resource Wars begin", note:"Europe and the Middle East go to war over the last of the oil. The long collapse starts here." },
+  { yr:"2077", title:"The Great War", note:"October 23 — barely two hours of nuclear exchange ends the old world." },
+  { yr:"2102", title:"Fallout 76", note:"Reclamation Day: Vault 76 opens in Appalachia — the earliest point the series plays." },
+  { yr:"2161", title:"Fallout", note:"The Vault Dweller leaves Vault 13 to find a water chip. Southern California." },
+  { yr:"2241", title:"Fallout 2", note:"The Chosen One hunts for a G.E.C.K. — eighty years after the first game." },
+  { yr:"2277", title:"Fallout 3", note:"The Lone Wanderer steps out into the Capital Wasteland." },
+  { yr:"2281", title:"Fallout: New Vegas", note:"The Courier crosses the Mojave, four years after Fallout 3." },
+  { yr:"2287", title:"Fallout 4", note:"The Sole Survivor thaws out into the Commonwealth." },
+  { yr:"2296", title:"Fallout — the series", note:"Lucy of Vault 33 surfaces. The furthest point the canon has reached." },
+];
+
+const FACTIONS = [
+  { name:"Brotherhood of Steel", focus:"Tech-hoarders", note:"Codex-bound order salvaging pre-war technology from the wasteland." },
+  { name:"New California Republic", focus:"Statebuilders", note:"A sprawling democracy trying to rebuild civilisation — and an army." },
+  { name:"Caesar's Legion", focus:"Slaver empire", note:"A brutal Roman-cosplay autocracy east of the Colorado River." },
+  { name:"Enclave", focus:"Pre-war remnant", note:"Self-declared continuity of the old U.S. government." },
+  { name:"The Institute", focus:"Synthetic frontier", note:"Underground scientists building synths beneath the Commonwealth." },
+  { name:"Minutemen", focus:"Citizen militia", note:"A loose volunteer defense force for Commonwealth settlements." },
+];
+
+const NUMBERS = [
+  ["2077", "The Great War. Roughly two hours of nuclear exchange ended the old world."],
+  ["122",  "Vault-Tec vaults constructed across the United States — most of them experiments."],
+  ["1997", "The year Interplay's Black Isle Studios shipped the original Fallout."],
+  ["200 yrs", "Approximate gap between the bombs and most playable wasteland eras."],
+  ["7",    "Attributes in S.P.E.C.I.A.L. — the system governing every character build."],
+  ["9",    "Mainline and spin-off Fallout titles catalogd in this wiki to date."],
+];
+
+const SEEALSO = [
+  { label:"Browse all wikis", note:"Every encyclopedia on ViziWiki.", icon:"layout-grid" },
+  { label:"Minecraft", note:"Adjacent wiki: the survival sandbox.", icon:"box" },
+  { label:"Apple", note:"Adjacent wiki: the retro-future that shipped.", icon:"cpu" },
+];
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+function dirPanel(c){
+  const kids = c.children.map(k =>
+    `<li class="flex items-center gap-2 border-t border-line-soft px-4 py-2 font-mono-acc text-[11px] text-ink hover:text-phos hover:bg-surface cursor-pointer">
+       <span class="text-phos">&#9492;&#9472;</span><span class="uppercase tracking-wide">${k}</span>
+       <svg class="wiki-icon ml-auto h-3 w-3 text-dim" aria-hidden="true"><use href="#ic-chevron-right"></use></svg>
+     </li>`).join("");
+  return `
+  <div class="dir-panel scan rounded-[5px] border border-line bg-surface lift">
+    <button class="dir-head flex w-full items-start gap-3 px-4 pt-4 pb-3 text-left">
+      <svg class="wiki-icon mt-0.5 h-5 w-5 shrink-0 text-phos" style="stroke-width:1.5" aria-hidden="true"><use href="#ic-${c.icon}"></use></svg>
+      <span class="flex-1">
+        <span class="flex items-baseline justify-between gap-2">
+          <span class="font-display text-xl font-semibold text-phos">${c.name}</span>
+          <span class="font-mono-acc text-[9px] uppercase tracking-wider text-amber">[ ${c.count} entries ]</span>
+        </span>
+        <span class="mt-1 block font-mono-acc text-[11px] leading-relaxed text-dim">${c.preview}</span>
+      </span>
+      <svg class="wiki-icon dir-caret mt-1 h-4 w-4 shrink-0 text-amber" aria-hidden="true"><use href="#ic-chevron-right"></use></svg>
+    </button>
+    <div class="dir-body">
+      <div class="px-4 pb-1 font-mono-acc text-[9px] uppercase tracking-[0.25em] text-dim">&gt; nested nodes</div>
+      <ul class="pb-2">${kids}</ul>
+      <a href="#" class="flex items-center gap-1 border-t border-line px-4 py-2.5 font-mono-acc text-[10px] uppercase tracking-wider text-amber hover:text-phos">
+        Open full ${c.name} index <svg class="wiki-icon h-3 w-3" aria-hidden="true"><use href="#ic-arrow-right"></use></svg>
+      </a>
+    </div>
+  </div>`;
+}
+
+document.getElementById("dirGrid").innerHTML = CATEGORIES.map(dirPanel).join("");
+
+document.getElementById("timelineList").innerHTML = TIMELINE.map(t => `
+  <li class="relative">
+    <div class="mx-auto grid h-14 w-14 place-items-center rounded-full border border-line bg-bg font-mono-acc text-xs text-phos">${t.mk}</div>
+    <div class="mt-4 text-center font-mono-acc text-[10px] uppercase tracking-wider text-amber">${t.yr}</div>
+    <div class="mt-1 text-center font-display text-base font-semibold text-phos">${t.label}</div>
+    <div class="mt-3 rounded-[4px] border border-line-soft bg-surface p-3 scan">
+      <p class="text-[12px] leading-snug text-ink">${t.note}</p>
+    </div>
+  </li>`).join("");
+
+document.getElementById("chronologyLog").innerHTML = CHRONOLOGY.map((c, i) => {
+  const last = i === CHRONOLOGY.length - 1;
+  return `
+  <li class="grid grid-cols-[58px_1fr] gap-4 sm:grid-cols-[88px_1fr] sm:gap-6">
+    <div class="pt-0.5 text-right font-mono-acc text-base font-semibold text-amber glow-amber">${c.yr}</div>
+    <div class="relative border-l border-line pl-6 ${last ? "pb-1" : "pb-8"}">
+      <span class="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full bg-phos" style="box-shadow:0 0 10px var(--phosphor)"></span>
+      <div class="font-display text-xl font-semibold leading-tight text-phos">${c.title}</div>
+      <p class="mt-1.5 text-[14px] leading-relaxed text-ink">${c.note}</p>
+    </div>
+  </li>`;
+}).join("");
+
+document.getElementById("factionGrid").innerHTML = FACTIONS.map(f => `
+  <div class="bg-bg-dark p-6">
+    <div class="flex items-baseline justify-between gap-3">
+      <div class="font-display text-2xl font-semibold text-phos">${f.name}</div>
+      <div class="font-mono-acc text-[9px] uppercase tracking-wider text-dim">${f.focus}</div>
+    </div>
+    <p class="mt-2 text-[14px] text-ink">${f.note}</p>
+  </div>`).join("");
+
+document.getElementById("numberGrid").innerHTML = NUMBERS.map(([k,v]) => `
+  <div class="bg-bg p-6">
+    <dt class="font-display text-5xl font-bold leading-none text-phos glow">${k}</dt>
+    <dd class="mt-3 text-sm text-dim">${v}</dd>
+  </div>`).join("");
+
+document.getElementById("seealsoGrid").innerHTML = SEEALSO.map(l => `
+  <a href="#" class="group flex items-center gap-4 rounded-[4px] border border-line bg-surface p-4 lift scan">
+    <svg class="wiki-icon h-7 w-7 shrink-0 text-phos" style="stroke-width:1.5" aria-hidden="true"><use href="#ic-${l.icon}"></use></svg>
+    <div class="flex-1">
+      <div class="font-display text-lg font-semibold leading-tight text-phos">${l.label}</div>
+      <div class="text-sm text-dim">${l.note}</div>
+    </div>
+    <svg class="wiki-icon h-4 w-4 text-amber opacity-0 transition group-hover:opacity-100" aria-hidden="true"><use href="#ic-arrow-up-right"></use></svg>
+  </a>`).join("");
+
+/* directory expand/collapse */
+document.querySelectorAll(".dir-panel .dir-head").forEach(btn => {
+  btn.addEventListener("click", () => btn.closest(".dir-panel").classList.toggle("is-open"));
+});
+
+</script>
+
+</body>
+</html>

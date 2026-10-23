@@ -8,7 +8,7 @@ import { PageEditor } from '../components/editor/PageEditor';
 import { blankWiki, blankPage, loadUserWikis, saveUserWikis, loadChildren, saveChildren, mergeWiki, type ChildOverlay } from '../lib/builder';
 import { AccountChip } from '../components/AccountChip';
 import { onAuth, fetchProfile, type Profile, type ContributorClass } from '../lib/auth';
-import { capsFor } from '../lib/caps.mjs';
+import { capsFor, grantedWikiIds } from '../lib/caps.mjs';
 import type { EditCaps } from '../lib/canvas';
 
 // The builder home: wiki switcher + Miller column view (real wikis from git +
@@ -34,10 +34,27 @@ export default function Page() {
     if (email) fetchProfile().then(setProfile); else setProfile(null);
   }), []);
 
-  const allWikis = useMemo(() => [...WIKIS, ...userWikis], [userWikis]);
-  const baseWiki = allWikis.find((w) => w.id === wikiId) || WIKIS[0];
+  // ── wiki VISIBILITY (the owner's rule: no grant → no wikis) ──
+  // admin sees all (+ their local experiments); a curator sees only their
+  // wiki; writer/designer hold a platform-wide grant (all wikis) until
+  // per-wiki memberships exist; viewer / ungranted / signed-out see NONE.
+  // The admin "view as" preview applies to visibility too.
+  const realRole = profile?.role ?? 'viewer';
+  const realClass = (profile?.class ?? null) as ContributorClass | null;
+  const grantRole = realRole === 'admin' && viewAs !== 'me' ? (viewAs === 'viewer' ? 'viewer' : 'contributor') : realRole;
+  const grantClass = grantRole === 'contributor' ? (realRole === 'admin' && viewAs !== 'me' ? (viewAs as ContributorClass) : realClass) : null;
+  const allWikis = useMemo(() => (realRole === 'admin' ? [...WIKIS, ...userWikis] : [...WIKIS]), [userWikis, realRole]);
+  const shownWikis = useMemo(() => {
+    const ids = grantedWikiIds(grantRole, grantClass, profile?.wiki_id ?? null, allWikis.map((w) => w.id));
+    return allWikis.filter((w) => ids.includes(w.id));
+  }, [grantRole, grantClass, profile?.wiki_id, allWikis]);
+  // keep the selected wiki inside the granted set
+  useEffect(() => {
+    if (shownWikis.length && !shownWikis.some((w) => w.id === wikiId)) { setEditing(null); setWikiId(shownWikis[0].id); }
+  }, [shownWikis, wikiId]);
+  const baseWiki = shownWikis.find((w) => w.id === wikiId) || shownWikis[0] || null;
   // splice user-added nodes into the tree at render time
-  const wiki = useMemo(() => mergeWiki(baseWiki, children), [baseWiki, children]);
+  const wiki = useMemo(() => (baseWiki ? mergeWiki(baseWiki, children) : null), [baseWiki, children]);
 
   const addWiki = (name: string) => {
     const w = blankWiki(name);
@@ -48,7 +65,7 @@ export default function Page() {
   const addNode = (parentId: string, title: string): Page => {
     const node = blankPage(title);
     setChildren((prev) => {
-      const key = `${baseWiki.id}::${parentId}`;
+      const key = `${baseWiki!.id}::${parentId}`;
       const next = { ...prev, [key]: [...(prev[key] || []), node] };
       saveChildren(next);
       return next;
@@ -59,22 +76,20 @@ export default function Page() {
   // effective capabilities for THIS wiki: the profile's role/class, with the
   // curator's wiki boundary applied (their wiki = full curator; any other
   // wiki = read-only), and the admin's "view as" preview on top.
-  const role = profile?.role ?? 'viewer';
-  const cls = (profile?.class ?? null) as ContributorClass | null;
   const caps: EditCaps = useMemo(() => {
-    if (role === 'admin' && viewAs !== 'me') {
+    if (realRole === 'admin' && viewAs !== 'me') {
       return viewAs === 'viewer' ? capsFor('viewer', null) : capsFor('contributor', viewAs);
     }
-    if (role === 'contributor' && cls === 'curator' && profile?.wiki_id && profile.wiki_id !== baseWiki.id) {
+    if (realRole === 'contributor' && realClass === 'curator' && profile?.wiki_id && profile.wiki_id !== baseWiki?.id) {
       return capsFor('viewer', null);   // curators are viewers outside their wiki
     }
-    return capsFor(role, cls);
-  }, [role, cls, viewAs, profile?.wiki_id, baseWiki.id]);
+    return capsFor(realRole, realClass);
+  }, [realRole, realClass, viewAs, profile?.wiki_id, baseWiki?.id]);
 
   const account = (
     <>
       <AccountChip email={authEmail} profile={profile} />
-      {role === 'admin' && (
+      {realRole === 'admin' && (
         <select className="vt-btn acct-viewas" title="Preview the builder as a class" value={viewAs} onChange={(e) => setViewAs(e.target.value)}>
           <option value="me">view as: admin</option>
           <option value="curator">curator</option>
@@ -88,11 +103,24 @@ export default function Page() {
 
   return (
     <>
-      <Topbar wikis={allWikis} current={wiki} onSwitch={(w) => { setEditing(null); setWikiId(w.id); }} onNewWiki={addWiki} account={account} />
-      <div id="miller">
-        <MillerView key={wiki.id} wiki={wiki} onOpen={setEditing} onAddNode={addNode} />
-      </div>
-      {editing && <PageEditor key={`${editing.id}:${JSON.stringify(caps)}`} page={editing} skin={baseWiki.skin} wikiMeta={{ id: baseWiki.id, slug: baseWiki.id, name: baseWiki.name, skin: baseWiki.skin.bodyClass }} caps={caps} onClose={() => setEditing(null)} />}
+      <Topbar wikis={shownWikis} current={wiki || undefined} onSwitch={(w) => { setEditing(null); setWikiId(w.id); }} onNewWiki={realRole === 'admin' ? addWiki : undefined} account={account} />
+      {wiki && baseWiki ? (
+        <>
+          <div id="miller">
+            <MillerView key={wiki.id} wiki={wiki} onOpen={setEditing} onAddNode={caps.structure ? addNode : undefined} />
+          </div>
+          {editing && <PageEditor key={`${editing.id}:${JSON.stringify(caps)}`} page={editing} skin={baseWiki.skin} wikiMeta={{ id: baseWiki.id, slug: baseWiki.id, name: baseWiki.name, skin: baseWiki.skin.bodyClass }} caps={caps} onClose={() => setEditing(null)} />}
+        </>
+      ) : (
+        <div className="no-grant">
+          <div className="no-grant-title">No wikis granted{authEmail ? '' : ' — sign in'}</div>
+          <div className="no-grant-body">
+            {authEmail
+              ? 'This account holds no grant yet. An admin can grant a class — writer (prose), designer (visuals), or curator (a whole wiki) — and the granted wikis will appear here.'
+              : 'Sign in (top right) to see the wikis your account has been granted access to.'}
+          </div>
+        </div>
+      )}
     </>
   );
 }

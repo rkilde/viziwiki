@@ -416,10 +416,24 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
   remaining switch-on — walkthrough: `docs/supabase-setup.md`; (2) **auth + roles** —
   sign-up / sessions, a roles table, row-level security so a contributor edits only
   what their role allows; (3) **moderation** — contributor edits land as
-  drafts/proposals; an admin approves → published (Wikipedia/Fandom-style review).
-  The dynamic DB serves the **content**; the static Jekyll site stays the
-  single-source home for **canon/design** — the CSS layers, the Liquid includes,
-  `grammar.yml` (the schema both the builder and the DB validate against). Caveat: the
+  drafts/proposals; a curator/admin approves → published. Build the draft/approval
+  records as VERSION HISTORY from day one (the trust ladder: pre-approval now →
+  per-user auto-publish → publish-on-save + patrol/revert at Fandom scale — the
+  same records become history instead of a queue, so scaling is a setting flip).
+  **PUBLISHING MODEL (DECIDED Oct 2026 — the Wikipedia/Fandom model; export-to-git
+  SUPERSEDED):** readers are served pages RENDERED FROM THE DATABASE through the
+  SAME derived renderer the builder uses (rule #5 — one renderer, two surfaces),
+  with rendered copies CACHED AT THE EDGE ("cache until edited"; ISR). Slice 1 is
+  BUILT: `/read` → `/read/[wiki]` → `/read/[wiki]/[page]` route handlers in the
+  builder app (revalidate=60) render the stored doc — canon interaction scripts
+  KEPT (`renderBody(..., {keepScripts})`), sentinels STRIPPED, wrapped in the live
+  canon CSS stack + the wiki's skin (`lib/reader-core.mjs` pure + `lib/reader.ts`,
+  guard case 18). Phase 3 swaps "latest saved" → "latest PUBLISHED" + on-demand
+  cache invalidation on approve. The Jekyll site remains the reader surface for
+  git-authored pages and is superseded page-by-page as wikis go DB-native; git
+  stays the single-source home for **canon/design** — the CSS layers, the Liquid
+  includes, `grammar.yml` (the schema both the builder and the DB validate
+  against). Caveat: the
   Supabase project + auth providers are created in the owner's dashboards (not from the
   agent env) — code is built here, the dashboard clicks walked through. See
   `_builder/README.md` + `docs/registry-grammar-proposal.md`.

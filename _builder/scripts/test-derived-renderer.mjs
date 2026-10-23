@@ -758,7 +758,15 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
 // ── case 17: roles — class→caps mapping + class-gated decoration ──
 {
   console.log('case 17: roles — class caps, field/action gating, decorated surface per class');
-  const { capsFor, fieldCap, actionCap, CLASS_CAPS, NO_CAPS, canEditAnything } = await import('../lib/caps.mjs');
+  const { capsFor, fieldCap, actionCap, CLASS_CAPS, NO_CAPS, canEditAnything, grantedWikiIds } = await import('../lib/caps.mjs');
+
+  // wiki VISIBILITY (the owner's rule: no grant → no wikis shown)
+  const ALL = ['apple', 'taco-bell', 'fallout'];
+  ok(grantedWikiIds('admin', null, null, ALL).length === 3, 'admin sees every wiki');
+  ok(JSON.stringify(grantedWikiIds('contributor', 'curator', 'apple', ALL)) === JSON.stringify(['apple']), 'curator sees only their wiki');
+  ok(grantedWikiIds('contributor', 'writer', null, ALL).length === 3, 'writer (platform-wide grant) sees all — until per-wiki memberships');
+  ok(grantedWikiIds('viewer', null, null, ALL).length === 0, 'viewer: no wikis');
+  ok(grantedWikiIds('contributor', null, null, ALL).length === 0, 'contributor WITHOUT a class: no wikis (no grant)');
   const { buildPolicy } = await import('../lib/policy.mjs');
   const P = buildPolicy(grammar).fields;
 
@@ -812,6 +820,32 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
 
   const dc = withCaps(capsFor('contributor', 'curator'));
   ok(dc.querySelector('.wiki-section-title .ce') && dc.querySelector('.pe-mini-add') && dc.querySelector('.pe-tonebtn'), 'curator: titles + structure + design all live');
+}
+
+// ── case 18: the READER surface (Wikipedia/Fandom model) — same renderer,
+// scripts kept, sentinels stripped, canon shell ──
+{
+  console.log('case 18: reader — keepScripts render, sentinel strip, canon shell');
+  const { stripSentinels, renderReaderBody, readerShell } = await import('../lib/reader-core.mjs');
+  const { buildPolicy: bp18 } = await import('../lib/policy.mjs');
+  const r18 = createRenderer(includes, bp18(grammar), registry);
+  const doc = {
+    hero: { eyebrow: null, title: 'T', subtitle: null, subtitle_meta: null, desc: null, stats: null, search: false, search_placeholder: '', spotlight: null, feature: null },
+    overview: { tone: 'b', heading: 'H', paragraphs: ['P'], infobox: null },
+    sections: [{ type: 'photo-rail', data: { tone: 'special', photos: [{ src: 'x.jpg', alt: 'a', strong: 'S' }] } }],
+  };
+  const editor = r18.renderBody(doc, false);
+  ok(editor.includes(SENT_PREFIX), 'editor render carries sentinels (the "+"-slot protocol)');
+  ok(!/<script/.test(editor), 'editor render strips scripts (inert canvas)');
+  const reader = renderReaderBody(r18, SENT_PREFIX, doc, false);
+  ok(!reader.includes(SENT_PREFIX), 'reader render strips every sentinel (no builder plumbing for readers)');
+  ok(/<script/.test(reader) && /__railLb/.test(reader), 'reader render KEEPS the canon interaction scripts (the photo-rail lightbox)');
+  ok(reader.includes('photo-rail-card'), 'reader renders the same canon markup');
+  ok(stripSentinels('a' + SENT_PREFIX + 'add:hero.desc__' + 'b', SENT_PREFIX) === 'ab', 'sentinel stripper is exact');
+  const shell = readerShell({ title: 'P — W', wikiId: 'apple', bodyClass: 'wiki-page wiki-apple', isHome: false, bankCss: ['bank-photo-rail.css'], bodyHtml: '<main>X</main>', nav: '' });
+  ok(shell.includes('/canon/wiki-typography.css') && shell.includes('/canon/wiki-universals.css') && shell.includes('/canon/bank-photo-rail.css') && shell.includes('/canon/wiki-apple-skin.css'), 'reader shell loads the live canon stack');
+  ok(!shell.includes('wiki-home.css'), 'non-home page skips the home layer');
+  ok(readerShell({ title: 'H', wikiId: 'apple', bodyClass: 'x', isHome: true, bankCss: [], bodyHtml: '', nav: '' }).includes('/canon/wiki-home.css'), 'home page loads the home layer');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);
