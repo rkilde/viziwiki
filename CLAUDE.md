@@ -437,6 +437,20 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
   Supabase project + auth providers are created in the owner's dashboards (not from the
   agent env) — code is built here, the dashboard clicks walked through. See
   `_builder/README.md` + `docs/registry-grammar-proposal.md`.
+- **THE DESIGN-SYSTEM ARC (deferred — owner-named, Oct 2026).** The canon so far
+  governs two of its three pillars: FORMATTING (type scale, sections, tones,
+  spacing) and EMBLEMS (the standardized visuals). The third — the SITE-WIDE
+  DESIGN SYSTEM — is not yet canonized: page-level visual treatments still live
+  in pre-canon supporting CSS (`tb-editorial-base.css`, `tb-drinks.css`, per-page
+  extra_head flourishes…). Visible symptom: the live Taco Bell drinks page is
+  teal/editorial while the editor canvas + reader render the same page purple —
+  the derived surfaces draw pure canon, the Jekyll page wears un-canonized
+  clothes. The arc = design the whole-site system (per-wiki palettes, sub-page
+  vs home hero treatments, page-type looks) and fold the supporting CSS into
+  skin/canon tokens so all three surfaces (Jekyll · editor · reader) converge.
+  The reader is the permanent visual diff-checker for this work. Until then,
+  editor/reader-vs-live differences on TB archive-styled pages are EXPECTED,
+  not bugs.
 - **Vizi-verse** (the narrative side; currently only `top-10.html`) — deferred.
 
 ---
