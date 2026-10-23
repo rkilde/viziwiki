@@ -123,9 +123,11 @@ export function createRenderer(includesData, policy, registry) {
   // includes' <use href="#ic-*"> resolve after every body swap). The locked
   // hero+overview render first; then every body section routes through ITS
   // canonical section partial (registry) → the dispatcher → the visual.
-  // <script> blocks are stripped: the editor canvas is deliberately inert
-  // (you edit the data; the live site runs the behavior).
-  function renderBody(doc, isHome = false) {
+  // <script> blocks are stripped BY DEFAULT: the editor canvas is deliberately
+  // inert (you edit the data; the decorator owns interaction). The READER
+  // passes keepScripts — a reader page runs the canon interaction (lightboxes,
+  // modals) exactly like the Jekyll site does.
+  function renderBody(doc, isHome = false, opts = {}) {
     const sections = doc.sections || [];
     const tpl = HEAD_TPL + sections
       .map((s, i) => {
@@ -135,7 +137,7 @@ export function createRenderer(includesData, policy, registry) {
       .join('');
     const page = { hero: projectHero(doc, isHome), overview: projectOverview(doc), sections: projectSections(doc).map((data) => ({ data })) };
     const out = engine.parseAndRenderSync(tpl, { page });
-    return SPRITE + out.replace(/<script[\s\S]*?<\/script>/gi, '');
+    return SPRITE + (opts.keepScripts ? out : out.replace(/<script[\s\S]*?<\/script>/gi, ''));
   }
 
   return { renderBody, sprite: SPRITE };
