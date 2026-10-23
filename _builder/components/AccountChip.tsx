@@ -42,21 +42,26 @@ export function AccountChip({ email, profile }: { email: string | null; profile:
       <button className="vt-btn active" onClick={() => { setOpen(true); setMsg(null); }}>Sign in</button>
       {open && (
         <div className="acct-modal-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) setOpen(false); }}>
-          <div className="acct-modal" onMouseDown={(e) => e.stopPropagation()}>
+          {/* a REAL <form> with autocomplete hints — this is what lets Chrome
+              (and every password manager) recognize the login, offer saved
+              credentials, and prompt to save new ones */}
+          <form className="acct-modal" method="post" onMouseDown={(e) => e.stopPropagation()}
+            onSubmit={(e) => { e.preventDefault(); submit(); }}>
             <div className="acct-title">{mode === 'in' ? 'Sign in' : 'Create account'}</div>
-            <input className="acct-input" type="email" placeholder="email" autoFocus value={em} onChange={(e) => setEm(e.target.value)} />
-            <input className="acct-input" type="password" placeholder="password" value={pw}
-              onChange={(e) => setPw(e.target.value)}
-              onKeyDown={(e) => { if (e.key === 'Enter') submit(); }} />
+            <input className="acct-input" type="email" name="email" autoComplete="username email"
+              placeholder="email" autoFocus value={em} onChange={(e) => setEm(e.target.value)} />
+            <input className="acct-input" type="password" name="password"
+              autoComplete={mode === 'in' ? 'current-password' : 'new-password'}
+              placeholder="password" value={pw} onChange={(e) => setPw(e.target.value)} />
             {msg && <div className="acct-msg">{msg}</div>}
-            <button className="acct-primary" disabled={busy || !em.trim() || pw.length < 6} onClick={submit}>
+            <button className="acct-primary" type="submit" disabled={busy || !em.trim() || pw.length < 6}>
               {busy ? '…' : mode === 'in' ? 'Sign in' : 'Create account'}
             </button>
-            <button className="acct-switch" onClick={() => { setMode(mode === 'in' ? 'up' : 'in'); setMsg(null); }}>
+            <button className="acct-switch" type="button" onClick={() => { setMode(mode === 'in' ? 'up' : 'in'); setMsg(null); }}>
               {mode === 'in' ? 'No account? Create one' : 'Have an account? Sign in'}
             </button>
             <div className="acct-note">New accounts start as read-only viewers; an admin grants contributor classes.</div>
-          </div>
+          </form>
         </div>
       )}
     </>
