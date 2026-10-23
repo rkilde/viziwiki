@@ -38,12 +38,13 @@ function parseFile(file) {
   try { fm = fmMatch ? (yaml.load(fmMatch[1]) || {}) : {}; } catch {}
   const h = fm.hero || {};
   const ov = fm.overview || null;
-  // contributor-added body sections (beyond the locked hero+overview) the
-  // editor can render today — carried verbatim (canonical front-matter shape)
-  const BODY_TYPES = ['catalog'];
+  // EVERY canonized body section rides into the editable doc, in the page's
+  // layout order (parity with extract-apple — all these banks have editors)
+  const BODY_TYPES = ['photo_rail', 'spec', 'config', 'os', 'timeline', 'delta', 'catalog'];
+  const keyType = (k) => (k === 'os' ? 'lifecycle-lane' : k === 'photo_rail' ? 'photo-rail' : k);
   return {
-    sections: SECTION_ORDER.filter((k) => fm[k] != null).map((k) => ({ type: k === 'os' ? 'lifecycle-lane' : k, label: SECTION_LABEL[k] })),
-    body: BODY_TYPES.filter((k) => fm[k] != null).map((k) => ({ type: k, data: fm[k] })),
+    sections: SECTION_ORDER.filter((k) => fm[k] != null).map((k) => ({ type: keyType(k), label: SECTION_LABEL[k] })),
+    body: BODY_TYPES.filter((k) => fm[k] != null).map((k) => ({ type: keyType(k), data: fm[k] })),
     hero: { eyebrow: h.eyebrow || null, title: h.title || null, subtitle: h.subtitle || null, subtitle_meta: h.subtitle_meta || null, desc: h.desc || null, stats: Array.isArray(h.stats) ? h.stats : [], search: !!h.search, search_placeholder: h.search_placeholder || null, spotlight: h.spotlight || null, feature: h.feature || null },
     overview: ov ? {
       tone: ov.tone || 'b',

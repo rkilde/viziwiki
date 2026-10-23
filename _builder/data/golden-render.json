@@ -76,27 +76,27 @@
     "bytes": 28039
   },
   "apple:apple-ipod-touch-2g": {
-    "hash": "78e8316eaec1cac6",
-    "bytes": 47961
+    "hash": "6c3742025cd552b9",
+    "bytes": 92540
   },
   "apple:apple-ipod-touch-3g": {
-    "hash": "4835bcc04cd63da0",
-    "bytes": 35269
+    "hash": "e58770ff5be683d2",
+    "bytes": 81181
   },
   "apple:apple-ipod-touch-4g": {
-    "hash": "5eccf7de265bfc1e",
-    "bytes": 43281
+    "hash": "7dc0f2d59bb6ad56",
+    "bytes": 84052
   },
   "apple:apple-ipod-touch-5g": {
-    "hash": "237f74eb743b5000",
-    "bytes": 41979
+    "hash": "9a7c4e4eea661462",
+    "bytes": 84057
   },
   "apple:apple-ipod-touch-6g": {
-    "hash": "43fe7b15d05639c2",
-    "bytes": 36376
+    "hash": "3090b0c66467835b",
+    "bytes": 75996
   },
   "apple:apple-ipod-touch-7g": {
-    "hash": "1b69bbcf9466aa7e",
-    "bytes": 45297
+    "hash": "5180acaf75c96cb3",
+    "bytes": 89060
   }
 }
