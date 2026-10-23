@@ -102,10 +102,15 @@ export function wikiCoverTile(w, taxonomy) {
   // (attachIconBodies) — rendered inline; sprite icons stay <use> refs
   const glyphSvg = cover.kind === 'art' ? null : (!cover.glyph && cat && cat.iconSvg) || null;
   const tag = w.tagline || w.blurb || '';
-  return `<a class="rd-cover" href="/read/${encodeURIComponent(w.id)}" style="${art}">` +
+  // the genre corner lists EVERY tag the wiki wears; the blurb is the tooltip
+  const genre = cats
+    .map((k) => { const c = ((taxonomy && taxonomy.categories) || []).find((x) => x.key === k); return c ? c.label : null; })
+    .filter(Boolean).join(' · ') || 'Wiki';
+  const tip = w.blurb ? ` title="${escapeHtml(w.blurb)}"` : '';
+  return `<a class="rd-cover" href="/read/${encodeURIComponent(w.id)}" style="${art}"${tip}>` +
     (glyphSvg ? `<svg class="rd-cover-glyph" viewBox="0 0 24 24" aria-hidden="true">${glyphSvg}</svg>`
       : glyph ? `<svg class="rd-cover-glyph" aria-hidden="true"><use href="#ic-${escapeHtml(glyph)}"></use></svg>` : '') +
-    `<span class="rd-cover-genre">${escapeHtml(cat ? cat.label : 'Wiki')}</span>` +
+    `<span class="rd-cover-genre">${escapeHtml(genre)}</span>` +
     (w.status === 'coming_soon' ? `<span class="rd-cover-soon">Coming soon</span>` : '') +
     `<span class="rd-cover-foot"><span class="rd-cover-title">${escapeHtml(w.name)}</span>` +
     (tag ? `<span class="rd-cover-tag">${escapeHtml(tag)}</span>` : '') +

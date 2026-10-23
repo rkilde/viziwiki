@@ -157,9 +157,11 @@ export function OriginateWiki({ existingIds, onClose, onCreated, genAsUser = fal
                 </div>
               </div>
             )}
-            <input className="acct-input" placeholder="tagline — e.g. Houses · Spice · Lore" value={tagline}
+            <div className="ow-label">tagline — the dotted line under the title on the tile; a few words separated by ·</div>
+            <input className="acct-input" placeholder="e.g. Teams · Players · Seasons" value={tagline}
               onChange={(e) => setTagline(e.target.value)} disabled={!!createdId} />
-            <textarea className="acct-input ow-blurb" placeholder="blurb — one sentence for cards and search" value={blurb}
+            <div className="ow-label">blurb — not shown on the tile: it powers browse search and the tile's hover tooltip</div>
+            <textarea className="acct-input ow-blurb" placeholder="one sentence describing the wiki" value={blurb}
               onChange={(e) => setBlurb(e.target.value)} disabled={!!createdId} />
             <div className="ow-row">
               <select className="acct-input" value={status} onChange={(e) => setStatus(e.target.value as any)} disabled={!!createdId}>
