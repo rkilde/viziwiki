@@ -14,7 +14,10 @@ import yaml from 'js-yaml';
 const ROOT = path.resolve(process.cwd(), '..');
 const AP = path.join(ROOT, 'apple');
 const HOME = path.join(AP, 'apple.html');
-const SECTION_ORDER = ['hero', 'overview', 'photo_rail', 'spec', 'config', 'gaming', 'os', 'timeline', 'delta', 'catalog', 'budget', 'design', 'controversies'];
+// the REAL layout order from _layouts/class-ipod-touch.html (hero, overview,
+// photo rail, timeline, delta, config, gaming, [jailbreak — legacy, not
+// carried], budget, design, os, controversies, spec)
+const SECTION_ORDER = ['hero', 'overview', 'photo_rail', 'timeline', 'delta', 'config', 'gaming', 'budget', 'design', 'os', 'controversies', 'spec', 'catalog'];
 const SECTION_LABEL = { hero: 'Hero', overview: 'Overview', photo_rail: 'Photos', spec: 'Specifications', config: 'Configurations', gaming: 'Cultural impact', os: 'OS support', timeline: 'Timeline', delta: 'Changes', catalog: 'Catalog', budget: 'Market positioning', design: 'Industrial design', controversies: 'Controversies' };
 // front-matter key → canonical section TYPE where they differ (the key is the
 // page's name for the block; the type is the bank that renders it)
@@ -48,10 +51,14 @@ function parseFile(file) {
   const ov = fm.overview || null;
   // contributor-added body sections (beyond the locked hero+overview) the
   // editor can render today — carried verbatim (canonical front-matter shape)
-  const BODY_TYPES = ['catalog', 'photo_rail', 'gaming', 'budget', 'design', 'controversies'];
+  // EVERY canonized body section rides into the editable doc (all these banks
+  // have builder editors — cases 9-15). Order follows SECTION_ORDER, i.e. the
+  // page's real layout order, so the builder shows the page as the live site
+  // lays it out.
+  const BODY_TYPES = ['photo_rail', 'spec', 'config', 'gaming', 'os', 'timeline', 'delta', 'catalog', 'budget', 'design', 'controversies'];
   return {
     sections: SECTION_ORDER.filter((k) => fm[k] != null).map((k) => ({ type: KEY_TYPE[k] || k, label: SECTION_LABEL[k] })),
-    body: BODY_TYPES.filter((k) => fm[k] != null).map((k) => ({ type: KEY_TYPE[k] || k, data: fm[k] })),
+    body: SECTION_ORDER.filter((k) => BODY_TYPES.includes(k) && fm[k] != null).map((k) => ({ type: KEY_TYPE[k] || k, data: fm[k] })),
     hero: { eyebrow: h.eyebrow || null, title: h.title || null, subtitle: h.subtitle || null, subtitle_meta: h.subtitle_meta || null, desc: h.desc || null, stats: Array.isArray(h.stats) ? h.stats : [], search: !!h.search, search_placeholder: h.search_placeholder || null, spotlight: h.spotlight || null, feature: h.feature || null },
     overview: ov ? {
       tone: ov.tone || 'b',
