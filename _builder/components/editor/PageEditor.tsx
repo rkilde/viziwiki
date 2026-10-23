@@ -3,6 +3,8 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import type { Page, WikiSkin } from '../../lib/wiki';
 import { loadPageDoc, savePageDoc, resetPageDoc, seedDoc, type PageDoc } from '../../lib/store';
 import { contentStore, type WikiMeta } from '../../content-store';
+import { canEditAnything, actionCap } from '../../lib/caps.mjs';
+import type { EditCaps } from '../../lib/canvas';
 import { buildCanvas, setIn, applyAction } from '../../lib/canvas';
 import { renderBody } from '../../lib/render';
 import { SectionPicker } from './SectionPicker';
@@ -31,7 +33,9 @@ const CANVAS_W = 1080;
  * decorator (editing affordances). Field edits sync via __peField; +add /
  * ×remove via __peAction; both update the live body.
  */
-export function PageEditor({ page, skin, wikiMeta, onClose }: { page: Page; skin: WikiSkin; wikiMeta?: WikiMeta; onClose: () => void }) {
+const ALL_CAPS: EditCaps = { text: true, titles: true, structure: true, design: true };
+
+export function PageEditor({ page, skin, wikiMeta, caps = ALL_CAPS, onClose }: { page: Page; skin: WikiSkin; wikiMeta?: WikiMeta; caps?: EditCaps; onClose: () => void }) {
   const docRef = useRef<PageDoc>(loadPageDoc(page));
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const areaRef = useRef<HTMLDivElement>(null);   // the scroll area (sets the fit width)
@@ -71,7 +75,7 @@ export function PageEditor({ page, skin, wikiMeta, onClose }: { page: Page; skin
   const scale = availW > 0 ? Math.min(1, maxDisp / logicalW) : 1;
 
   // built once — never changes, so the iframe never reloads
-  const srcDoc = useMemo(() => buildCanvas(renderBody(docRef.current, isHome), skin), []); // eslint-disable-line react-hooks/exhaustive-deps
+  const srcDoc = useMemo(() => buildCanvas(renderBody(docRef.current, isHome), skin, caps), []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // remeasure both the available width AND the scaled canvas's screen offset
   const measure = () => {
@@ -86,8 +90,17 @@ export function PageEditor({ page, skin, wikiMeta, onClose }: { page: Page; skin
       ifr.contentDocument.body.innerHTML = renderBody(docRef.current, isHome);
       (ifr.contentWindow as any)?.__decorate?.();
     };
-    (window as any).__peField = (path: string, html: string) => { setIn(docRef.current, path, html); setSaved(false); touchedRef.current = true; };
-    (window as any).__peAction = (action: string) => { applyAction(docRef.current, action); setSaved(false); touchedRef.current = true; if (/^(secAdd|secRm|secMove):/.test(action)) setOpenMk(null); swapBody(); };
+    // parent-side capability backstop (phase-2 roles): the decorator already
+    // withholds affordances the class lacks; these refuse the underlying
+    // mutations too, so canvas-side tampering can't climb classes.
+    const may = canEditAnything(caps);
+    (window as any).__peField = (path: string, html: string) => { if (!may) return; setIn(docRef.current, path, html); setSaved(false); touchedRef.current = true; };
+    (window as any).__peAction = (action: string) => {
+      const need = actionCap(action);
+      if (need && !(caps as any)[need]) return;
+      if (!may && need !== null) return;
+      applyAction(docRef.current, action); setSaved(false); touchedRef.current = true; if (/^(secAdd|secRm|secMove):/.test(action)) setOpenMk(null); swapBody();
+    };
     // drag-reorder mutates the doc WITHOUT a re-render — the decorator shuffles the
     // DOM nodes + FLIP-animates in place, then re-binds via a deferred swap.
     (window as any).__peReorderData = (action: string) => { applyAction(docRef.current, action); setSaved(false); touchedRef.current = true; };
@@ -129,7 +142,9 @@ export function PageEditor({ page, skin, wikiMeta, onClose }: { page: Page; skin
   const openMkRef = useRef<number | null>(null);
   openMkRef.current = openMk;
 
+  const canEdit = canEditAnything(caps);
   const save = () => {
+    if (!canEdit) return;
     savePageDoc(page.id, docRef.current); setSaved(true);   // local always (instant + offline fallback)
     if (contentStore && wikiMeta) {
       setCloud('saving');
@@ -198,9 +213,11 @@ export function PageEditor({ page, skin, wikiMeta, onClose }: { page: Page; skin
           </span>
         )}
         {saved && <span className="pe-chip-status" title={cloud === 'off' ? 'Saved in this browser (no cloud keys configured)' : cloud === 'err' ? 'Saved in this browser; the cloud save failed — check the Supabase keys/project' : 'Saved'}><IcCheck />{cloud === 'saving' ? 'saving…' : cloud === 'err' ? 'saved (local only)' : 'saved'}</span>}
-        <button onClick={revert} title="Discard changes"><IcUndo />Revert</button>
+        {canEdit && <button onClick={revert} title="Discard changes"><IcUndo />Revert</button>}
         <button onClick={onClose} title="Close (Esc)"><IcX />Close</button>
-        <button className="primary" onClick={save}><IcCheck />Save</button>
+        {canEdit
+          ? <button className="primary" onClick={save}><IcCheck />Save</button>
+          : <span className="pe-chip-status" title="Sign in with a contributor account to edit">read only</span>}
       </div>
       {pickerAt != null && (
         <SectionPicker

@@ -66,8 +66,37 @@ saved version. That's persistence.
   Supabase serves the builder only. The publish path (DB → public site) is a
   later-phase decision recorded in CLAUDE.md.
 
-## Next phases
-2. **Auth + roles** — sign-up/sessions, admin/contributor/viewer, row-level
-   security per role (replaces the open policies).
-3. **Moderation** — contributor edits land as drafts; admin approves →
-   published.
+## Phase 2 — accounts, roles, classes (BUILT — switch-on steps)
+
+The role model: **viewer** (read-only) · **contributor** with a class —
+**writer** (prose alone) / **designer** (design alone) / **curator**
+(everything, scoped to their one wiki) · **admin** (the platform: originates
+wikis, grants them to curators, manages roles). An "editor" class
+(text+titles+structure) is designed but shelved for simplicity.
+
+Owner steps to switch phase 2 on:
+1. **SQL Editor** → paste + Run `_builder/supabase/migrations/0003_roles.sql`
+   (approve the "destructive" dialog — it replaces the phase-1 open policies;
+   content is untouched). From this moment, writes REQUIRE an account.
+2. (Recommended during build-out) **Authentication → Sign In / Providers →
+   Email** → turn OFF "Confirm email" so new accounts work instantly; turn it
+   back on before the public launch.
+3. In the builder: **Sign in → Create account** with your own email.
+4. Back in SQL Editor, crown the founding Admin (one line, your email):
+   `update public.profiles set role='admin' where email='you@example.com';`
+5. Reload the builder — the topbar badge should read **admin**, with the
+   "view as" preview (curator/designer/writer/viewer) next to it.
+
+Granting roles (until the admin UI exists) — SQL Editor one-liners:
+- Curator of a wiki: `update public.profiles set role='contributor',
+  class='curator', wiki_id='taco-bell' where email='them@example.com';`
+- Writer / designer: same with `class='writer'` (or `'designer'`), `wiki_id=null`.
+
+Enforcement in phase 2: the DATABASE enforces who may write at all and the
+curator's wiki boundary; the builder UI enforces the class detail (what a
+writer vs designer may touch). Phase 3's moderation adds the review gate
+that makes class detail tamper-proof.
+
+## Next phase
+3. **Moderation** — contributor edits land as drafts; a curator/admin
+   approves → published.

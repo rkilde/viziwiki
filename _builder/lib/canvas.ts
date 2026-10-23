@@ -426,6 +426,16 @@ const AFFORDANCE = `
     border:2px dashed rgba(255,255,255,.3); background:rgba(255,255,255,.04); color:rgba(255,255,255,.65); }
   .ar-add:hover{ background:rgba(255,255,255,.08); color:#fff; }
   .ar-add-rail{ align-self:stretch; min-height:220px; display:flex; align-items:center; justify-content:center; border-radius:14px; }
+  /* ════ capability hiding (phase-2 roles) ════ the account's class bakes
+     pe-nostructure / pe-nodesign / pe-notext onto <body>; whole families of
+     chrome vanish for classes that may not use them. The decorator also
+     refuses the underlying actions — this is the visual layer of that gate. */
+  body.pe-nostructure .pe-add, body.pe-nostructure .pe-mini-add, body.pe-nostructure .pe-addline,
+  body.pe-nostructure .pe-remove, body.pe-nostructure .pe-tag-rm, body.pe-nostructure .pr-grip,
+  body.pe-nostructure .pe-reorder, body.pe-nostructure .ar-add, body.pe-nostructure .ar-add-rail,
+  body.pe-nostructure .pe-aside-ctrls{ display:none !important; }
+  body.pe-nodesign .pe-tonebtn{ display:none !important; }
+  body.pe-nostructure.pe-nodesign .pe-sec-tools{ display:none !important; }
   .img-pop .cc-img-url, .img-pop .cc-img-alt{ width:100%; box-sizing:border-box; padding:6px 8px; border:1px solid rgba(0,0,0,.18);
     border-radius:6px; font-family:'JetBrains Mono',monospace; font-size:10px; }
   .img-pop .cc-opt{ opacity:.55; text-transform:none; letter-spacing:0; }
@@ -664,7 +674,16 @@ const FONTS = `<link href="https://fonts.googleapis.com/css2?family=Fraunces:ita
 
 // the iframe document: canonical CSS stack + affordance CSS + runtime +
 // the decorator (grammar + sentinel protocol injected for it).
-export function buildCanvas(bodyHtml: string, skin: WikiSkin = TACO_BELL_SKIN): string {
+// the editing capabilities baked into this canvas (phase-2 roles). Defaults to
+// everything (admin/tests); PageEditor passes the signed-in account's caps.
+export type EditCaps = { text: boolean; titles: boolean; structure: boolean; design: boolean };
+const ALL_CAPS: EditCaps = { text: true, titles: true, structure: true, design: true };
+
+export function buildCanvas(bodyHtml: string, skin: WikiSkin = TACO_BELL_SKIN, caps: EditCaps = ALL_CAPS): string {
+  // body classes let the affordance CSS hide whole families of chrome the
+  // account's class may not use (belt to the decorator's suspenders)
+  const capCls = [caps.structure ? '' : 'pe-nostructure', caps.design ? '' : 'pe-nodesign',
+    caps.text || caps.titles ? '' : 'pe-notext'].filter(Boolean).join(' ');
   const skinLinks = skin.css.map((f) => `<link rel="stylesheet" href="/canon/${f}">`).join('\n');
   return `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>${FONTS}
@@ -675,6 +694,7 @@ ${skinLinks}
 <style>${AFFORDANCE}</style>
 <script>
 window.__PE_POLICY=${JSON.stringify(POLICY)};
+window.__PE_CAPS=${JSON.stringify(caps)};
 window.__PE_REGISTRY=${JSON.stringify(REGISTRY)};
 window.__PE_SENT=${JSON.stringify(SENT_PREFIX)};
 function P(p,el){try{window.parent.__peField(p,el.innerHTML)}catch(e){}}
@@ -698,7 +718,7 @@ window.addEventListener('load',function(){if(window.__decorate)window.__decorate
 </script>
 <script src="/editor/decorate.js"></script>
 </head>
-<body class="${skin.bodyClass}" style="overflow-x:hidden">${bodyHtml}</body></html>`;
+<body class="${skin.bodyClass}${capCls ? ' ' + capCls : ''}" style="overflow-x:hidden">${bodyHtml}</body></html>`;
 }
 
 // ── data sync (called from the React side) ──

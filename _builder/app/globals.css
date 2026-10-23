@@ -390,3 +390,23 @@ button{ font-family:inherit; }
 .pp-ib-k{ font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:#9a8c7a; }
 .pp-ib-v{ font-size:14px; color:#1a1410; }
 @media(max-width:760px){ .pp-ov.has-ib{ grid-template-columns:1fr; } }
+
+/* ════ account control (phase-2 roles) — the topbar chip + sign-in modal ════ */
+.acct{ display:flex; align-items:center; gap:6px; padding:0 4px; }
+.acct-email{ font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--muted); max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.acct-badge{ font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.1em; text-transform:uppercase; padding:3px 8px; border-radius:999px; background:var(--bg3); border:1px solid var(--purple-bd); color:var(--muted); }
+.acct-admin{ background:#6366f1; border-color:#6366f1; color:#fff; }
+.acct-curator{ background:#0e7490; border-color:#0e7490; color:#fff; }
+.acct-designer{ background:#9d174d; border-color:#9d174d; color:#fff; }
+.acct-writer{ background:#a16207; border-color:#a16207; color:#fff; }
+.acct-viewas{ font-family:'JetBrains Mono',monospace; font-size:10px; }
+.acct-modal-backdrop{ position:fixed; inset:0; z-index:4000; background:rgba(10,8,18,.55); backdrop-filter:blur(3px); display:flex; align-items:center; justify-content:center; }
+.acct-modal{ width:min(340px, calc(100vw - 32px)); background:var(--bg2, #17141f); border:1px solid var(--purple-bd); border-radius:14px; padding:20px; display:flex; flex-direction:column; gap:10px; box-shadow:0 24px 80px rgba(0,0,0,.5); }
+.acct-title{ font-family:'Fraunces',Georgia,serif; font-size:20px; font-weight:600; color:var(--ink, #efeaf5); }
+.acct-input{ font-family:'JetBrains Mono',monospace; font-size:12px; padding:9px 11px; border-radius:8px; border:1px solid var(--purple-bd); background:var(--bg3); color:var(--ink, #efeaf5); outline:none; }
+.acct-input:focus{ border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.18); }
+.acct-primary{ font:inherit; font-weight:600; padding:9px 11px; border-radius:8px; border:0; background:#6366f1; color:#fff; cursor:pointer; }
+.acct-primary:disabled{ opacity:.45; cursor:default; }
+.acct-switch{ font-family:'JetBrains Mono',monospace; font-size:10px; background:none; border:0; color:var(--muted); cursor:pointer; text-decoration:underline; }
+.acct-msg{ font-family:'JetBrains Mono',monospace; font-size:10px; color:#fca5a5; line-height:1.5; }
+.acct-note{ font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.04em; color:var(--dim); line-height:1.6; }

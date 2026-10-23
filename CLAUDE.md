@@ -394,7 +394,19 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
   the validator) and switch the builder off `localStorage` — **phase 1 DONE +
   VERIFIED LIVE (Oct 2026: owner ran migrations 0001+0002, keys set in Vercel —
   the legacy anon key; the new sb_publishable key blanket-401'd on this project —
-  and a builder Save landed rows in Postgres)**:
+  and a builder Save landed rows in Postgres)**. **Phase 2 (auth + roles) BUILT**:
+  the owner's role model — viewer · contributor classes **writer** (prose alone) /
+  **designer** (design alone) / **curator** (everything, scoped to their one wiki) ·
+  **admin** (originates wikis, grants curators) — "editor" (text+titles+structure)
+  designed but SHELVED for simplicity. Migration `0003_roles.sql` (profiles +
+  signup trigger + role-gated RLS replacing the open phase-1 policies; curator
+  wiki-scope DB-enforced). Builder: email+password sign-in (AccountChip, OAuth at
+  public launch), capabilities derived per class (`lib/caps.mjs`: grammar identity
+  flag + the canon title-field naming convention + icon/tone kinds → text/titles/
+  structure/design caps), decorator + parent-action backstop gate every affordance,
+  admin "view as" preview replaces the old level seam. Guard: case 17 (324 total).
+  Owner switch-on steps in docs/supabase-setup.md (run 0003, create account,
+  one-line admin crowning)**:
   schema at `_builder/supabase/migrations/0001_init.sql` (RLS wide-open on purpose,
   phase 2 replaces the policies), env-gated client (`lib/supabase.ts` — unset keys =
   localStorage fallback), store + pure doc↔rows mapping (`content-store.ts` +
