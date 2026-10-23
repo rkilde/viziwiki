@@ -17,12 +17,14 @@ import { GRAMMAR } from './lib/grammar';
 import { supabase } from './lib/supabase';
 import { docToRows, rowsToDoc, validateDoc, persistableDoc } from './lib/content-map.mjs';
 
-/** A wiki's tile cover (migration 0006 — the origination arc). "themed" is the
- *  data-driven cover: gradient + glyph DERIVED from the wiki's first category
- *  (taxonomy: _data/wiki_categories.yml → data/wiki-categories.json); `glyph`
- *  optionally overrides the category icon. "bespoke" REFERENCES a hand-built
- *  canon cover class (the 5 flagship covers in browse.html) by name. */
-export interface TileCover { kind: 'themed' | 'bespoke'; cls?: string; glyph?: string; }
+/** A wiki's tile cover (migrations 0006/0007 — the origination arc). Tile art
+ *  is PER-WIKI CONTENT, not canon design — the canon owns only the tile frame.
+ *  "themed" = the data-driven default: gradient + glyph DERIVED from the
+ *  wiki's first category (`glyph` optionally overrides the icon). "art" = the
+ *  wiki's own uploaded cover image (`src` — the master media pattern: a URL
+ *  today, a Supabase Storage upload later). "bespoke" REFERENCES a hand-built
+ *  flagship cover class in browse.html by name (never restated art). */
+export interface TileCover { kind: 'themed' | 'art' | 'bespoke'; src?: string; cls?: string; glyph?: string; }
 export interface WikiMeta {
   id: string; slug: string; name: string; skin: string;
   /** Identity (migration 0006) — optional so pre-0006 rows and the extracted
@@ -38,6 +40,9 @@ export interface RevisionMeta {
   reviewed_email: string | null; created_at: string;
 }
 export interface SaveResult { revId: number | null; published: boolean; }
+/** An admin-ORIGINATED category (migration 0007) — the canon 12 live in
+ *  _data/wiki_categories.yml; surfaces render the merged set (lib/taxonomy.mjs). */
+export interface CategoryRow { key: string; label: string; icon: string; grad_from: string; grad_to: string; }
 
 /** The contract. Every backend implements exactly these six methods. */
 export interface ContentStore {
@@ -61,6 +66,15 @@ export interface ContentStore {
   rejectRevision(id: number, reason?: string): Promise<void>;
   /** Revert = a NEW published revision copied from `id` (linear history). */
   revertTo(id: number): Promise<number>;
+  // ── the origination arc (iteration 2) ──
+  /** Originate a wiki: insert its row WITH identity (admin; RLS re-checks). */
+  createWiki(meta: WikiMeta): Promise<void>;
+  /** Admin-originated categories ([] on a pre-0007 database). */
+  listCategories(): Promise<CategoryRow[]>;
+  createCategory(cat: CategoryRow): Promise<void>;
+  /** OPTIONAL grant: make `email`'s account the wiki master of `wikiId`
+   *  (admin updates profiles). Throws a clear error if no such account. */
+  grantWikiMaster(email: string, wikiId: string): Promise<void>;
 }
 
 /* ── Implementation A — git/files (dev-era idea; superseded) ────────────
@@ -78,6 +92,10 @@ export class GitContentStore implements ContentStore {
   async publishRevision(): Promise<void>  { throw new Error("GitContentStore not built"); }
   async rejectRevision(): Promise<void>   { throw new Error("GitContentStore not built"); }
   async revertTo(): Promise<number>       { throw new Error("GitContentStore not built"); }
+  async createWiki(): Promise<void>       { throw new Error("GitContentStore not built"); }
+  async listCategories(): Promise<CategoryRow[]> { throw new Error("GitContentStore not built"); }
+  async createCategory(): Promise<void>   { throw new Error("GitContentStore not built"); }
+  async grantWikiMaster(): Promise<void>  { throw new Error("GitContentStore not built"); }
 }
 
 /* ── Implementation B — Supabase (the platform path) ──────────────────── */
@@ -180,6 +198,36 @@ export class SupabaseContentStore implements ContentStore {
   async createPage(wiki: WikiMeta, meta: PageMeta, doc: PageDoc): Promise<PageMeta> {
     await this.savePage(wiki, meta, doc);
     return meta;
+  }
+
+  // ── the origination arc (iteration 2) ──
+  async createWiki(meta: WikiMeta): Promise<void> {
+    const { error } = await this.db.from('wikis').insert({
+      id: meta.id, slug: meta.slug, name: meta.name, skin: meta.skin,
+      categories: meta.categories ?? [], blurb: meta.blurb ?? null, tagline: meta.tagline ?? null,
+      status: meta.status ?? 'live', tile_cover: meta.tile_cover ?? { kind: 'themed' },
+    });
+    if (error) throw error;
+  }
+
+  async listCategories(): Promise<CategoryRow[]> {
+    const { data, error } = await this.db.from('wiki_categories')
+      .select('key, label, icon, grad_from, grad_to').order('key');
+    if (error) return [];   // pre-0007 database — the canon taxonomy still renders
+    return (data ?? []) as CategoryRow[];
+  }
+
+  async createCategory(cat: CategoryRow): Promise<void> {
+    const { error } = await this.db.from('wiki_categories').insert(cat);
+    if (error) throw error;
+  }
+
+  async grantWikiMaster(email: string, wikiId: string): Promise<void> {
+    const { data, error } = await this.db.from('profiles')
+      .update({ role: 'contributor', class: 'wiki_master', wiki_id: wikiId })
+      .eq('email', email.trim().toLowerCase()).select('id');
+    if (error) throw error;
+    if (!data?.length) throw new Error(`no account with the email "${email.trim()}" — they need to sign up first (the grant can be given any time after origination)`);
   }
 
   async deletePage(wiki: string, page: string): Promise<void> {

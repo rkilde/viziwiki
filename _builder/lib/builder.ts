@@ -32,6 +32,21 @@ export function blankWiki(name: string): Wiki {
   return { id: uid('w-'), name, home: blankHome(name), pages: [], skin: BASE_SKIN };
 }
 
+// ── cloud (ORIGINATED) wikis — rows from ContentStore mapped into the same
+// Wiki/Page tree shapes the dashboard renders. A cloud wiki's home page id is
+// `${wikiId}-home` (the extraction convention), so saves land predictably.
+export function wikiFromMeta(id: string, name: string): Wiki {
+  const home = blankHome(name);
+  home.id = `${id}-home`;
+  return { id, name, home, pages: [], skin: BASE_SKIN };
+}
+export function pageFromMeta(meta: { id: string; title: string }): Page {
+  return {
+    id: meta.id, title: meta.title, permalink: null, status: 'draft', folder: false,
+    count: null, accent: null, sections: [], hero: { ...EMPTY_HERO }, overview: null, pages: [],
+  };
+}
+
 // ── overlay model ──────────────────────────────────────────────────────
 // children[`${wikiId}::${parentId}`] = nodes added under that parent (parentId
 // '' = the wiki root). User-created wikis are stored whole (with empty pages —

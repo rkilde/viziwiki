@@ -915,5 +915,43 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(bare.includes('href="/read/y"') && bare.includes('linear-gradient'), 'a wiki with no identity yet (pre-0006) still renders a cover');
 }
 
+// ── case 21: ORIGINATION (origination arc, iteration 2) — merged taxonomy,
+// originated categories, tile art, id slugs, validation ──
+{
+  console.log('case 21: origination — merged taxonomy, tile art, validation');
+  const { mergeTaxonomy, resolveColor, slugifyId, spriteIconNames, validateCategory, validateNewWiki } = await import('../lib/taxonomy.mjs');
+  const { wikiCoverTile, COVER_CSS, readerIndexShell } = await import('../lib/reader-core.mjs');
+  const canonTax = JSON.parse(fs.readFileSync('data/wiki-categories.json', 'utf8'));
+
+  ok(slugifyId('Smurfs’ Village!') === 'smurfs-village' && slugifyId('Film & TV') === 'film-and-tv', 'names slugify to clean ids');
+
+  const dbRows = [
+    { key: 'tabletop', label: 'Tabletop Games', icon: 'gamepad-2', grad_from: 'oklch(0.55 0.10 200)', grad_to: 'oklch(0.40 0.13 340)' },
+    { key: 'food', label: 'A collision', icon: 'pizza', grad_from: '#000', grad_to: '#111' },
+  ];
+  const merged = mergeTaxonomy(canonTax, dbRows);
+  ok(merged.categories.length === canonTax.categories.length + 1, 'originated categories merge in; canon wins a key collision');
+  const tt = merged.categories.find((c) => c.key === 'tabletop');
+  ok(tt && tt.originated && tt.grad.from === 'oklch(0.55 0.10 200)', 'an originated category carries literal gradient colors');
+  ok(merged.categories.find((c) => c.key === 'food').label === 'Fast Food', 'the colliding canon category is untouched');
+  ok(resolveColor(canonTax.palette, 'gold', 'x') === canonTax.palette.gold && resolveColor(canonTax.palette, '#123', 'x') === '#123', 'a stop resolves palette names AND literal colors');
+
+  // a wiki tagged with an ORIGINATED category paints its literal colors
+  const t21 = wikiCoverTile({ id: 'catan', name: 'Catan', categories: ['tabletop'], tagline: 'Hexes · Trades' }, merged);
+  ok(t21.includes('oklch(0.55 0.10 200)') && t21.includes('#ic-gamepad-2') && t21.includes('Tabletop Games'), 'tile covers render originated categories');
+  // tile ART is per-wiki content: an image cover with a legibility scrim, no glyph
+  const art = wikiCoverTile({ id: 'dune', name: 'Dune', categories: ['film'], tile_cover: { kind: 'art', src: 'https://x/y.jpg' } }, merged);
+  ok(art.includes("url('https://x/y.jpg')") && art.includes('background-size:cover') && !art.includes('rd-cover-glyph'), "tile_cover kind 'art' paints the uploaded image (master media pattern)");
+  ok(readerIndexShell('t', '', '').includes('.rd-cover{') && COVER_CSS.includes('.rd-cover{'), 'ONE cover stylesheet serves the reader and the origination preview');
+
+  const icons = spriteIconNames(includes.sprite);
+  ok(icons.includes('pizza') && icons.includes('book-open') && icons.length > 20, 'icon-picker choices derive from the canon sprite');
+  ok(validateCategory({ key: 'tabletop', label: 'T', icon: 'pizza', grad_from: '#000', grad_to: '#111' }, merged.categories.map((c) => c.key), icons).length === 1, 'a taken key is rejected');
+  ok(validateCategory({ key: 'new-cat', label: 'New', icon: 'pizza', grad_from: '#000', grad_to: '#111' }, merged.categories.map((c) => c.key), icons).length === 0, 'a valid category passes');
+  ok(validateNewWiki({ name: 'Dune', id: 'dune', categories: ['film'] }, ['apple'], merged.categories.map((c) => c.key)).length === 0, 'a valid wiki passes');
+  ok(validateNewWiki({ name: 'Apple', id: 'apple', categories: ['tech'] }, ['apple'], merged.categories.map((c) => c.key)).length === 1, 'a taken wiki id is rejected');
+  ok(validateNewWiki({ name: 'X', id: 'x', categories: [] }, [], []).length === 1, 'a wiki needs at least one category');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

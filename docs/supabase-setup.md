@@ -146,3 +146,22 @@ now. The five hand-built flagship covers (the Apple logo tile etc.) live in
 browse.html and get canonized in the design-system arc; the database already
 stores the reference (`tile_cover: {"kind":"bespoke","cls":"c-apple"}`) so
 nothing moves twice.
+
+## Origination (origination arc, iteration 2 — switch-on step)
+
+Admins **originate wikis from the builder** — the "New wiki" entry in the wiki
+switcher opens the origination modal: name → id, categories from the merged
+taxonomy (**"+ new category"** right there for wikis the canon 12 don't
+cover), blurb, tagline, live/coming-soon, the tile cover (themed by default;
+paste an image URL for per-wiki cover **art** — a Storage upload at public
+launch), and an **optional** wiki-master grant by email. No grant needed — you
+can originate and work the wiki yourself; grant any time later. The new wiki
+appears in the builder immediately (add pages, save, publish) and its tile
+shows on `/read` in seconds.
+
+Owner step to switch it on:
+1. **SQL Editor** → paste + Run `_builder/supabase/migrations/0007_origination.sql`
+   (the `wiki_categories` table for admin-originated tags — the canon 12 stay
+   in the repo; surfaces render the merged set).
+2. Verify: builder → wiki switcher → **New wiki** → originate a test wiki →
+   it opens in the builder and its cover tile appears on `/read`.
