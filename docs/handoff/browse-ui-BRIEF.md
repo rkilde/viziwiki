@@ -13,7 +13,7 @@ and behaves real.
 
 A platform of visually-designed wikis. Admins own a design system (the
 **canon**); contributors supply content. A page is a stack of **sections**
-(horizontal sections, each an eyebrow + H2 + content on a toned band); most
+(horizontal bands, each an eyebrow + H2 + content on a toned panel); most
 sections hold an **emblem** — a canonized, data-driven visual format that
 renders entirely from supplied data. The browse UI is the home page's
 directory section: how a reader descends from a wiki's home into its content
