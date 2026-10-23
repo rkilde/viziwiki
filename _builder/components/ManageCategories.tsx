@@ -18,7 +18,9 @@ const PAL = Object.entries((taxonomyCanon as any).palette as Record<string, stri
 
 export function ManageCategories({ onClose }: { onClose: () => void }) {
   const [rows, setRows] = useState<CategoryRow[]>([]);
-  const [usage, setUsage] = useState<Record<string, number>>({});
+  // which WIKIS wear each tag (names) — deletes are BLOCKED while a tag is
+  // worn: the owner re-assigns those wikis' tags first (identity editor)
+  const [usage, setUsage] = useState<Record<string, string[]>>({});
   const [draft, setDraft] = useState<Draft | null>(null);   // key=null → creating
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -27,10 +29,9 @@ export function ManageCategories({ onClose }: { onClose: () => void }) {
 
   const load = () => {
     contentStore?.listCategories().then(setRows).catch(() => {});
-    // usage counts — so deleting a tag that wikis wear asks twice
     contentStore?.listWikis().then((ws) => {
-      const u: Record<string, number> = {};
-      for (const w of ws) for (const k of w.categories ?? []) u[k] = (u[k] || 0) + 1;
+      const u: Record<string, string[]> = {};
+      for (const w of ws) for (const k of w.categories ?? []) (u[k] = u[k] || []).push(w.name);
       setUsage(u);
     }).catch(() => {});
   };
@@ -63,11 +64,14 @@ export function ManageCategories({ onClose }: { onClose: () => void }) {
 
   const remove = async (r: CategoryRow) => {
     if (!contentStore) return;
-    const used = usage[r.key] || 0;
-    const warn = used
-      ? `Delete "${r.label}"? ${used} wiki${used !== 1 ? 's' : ''} carr${used !== 1 ? 'y' : 'ies'} this tag — their tiles fall back until retagged.`
-      : `Delete "${r.label}"? No wiki carries this tag.`;
-    if (!window.confirm(warn)) return;
+    const wearers = usage[r.key] || [];
+    if (wearers.length) {
+      // the owner's rule: a worn tag can't be deleted — re-assign first
+      const shown = wearers.slice(0, 8).join(', ') + (wearers.length > 8 ? ` + ${wearers.length - 8} more` : '');
+      setErr(`"${r.label}" is worn by ${wearers.length} wiki${wearers.length !== 1 ? 's' : ''} (${shown}). Re-assign their tags first — open each wiki's identity editor — then delete.`);
+      return;
+    }
+    if (!window.confirm(`Delete "${r.label}"? No wiki carries this tag.`)) return;
     setBusy(true); setErr(null);
     try { await contentStore.deleteCategory(r.key); load(); ping(); }
     catch (e: any) { setErr(e?.message || String(e)); }
@@ -105,7 +109,7 @@ export function ManageCategories({ onClose }: { onClose: () => void }) {
               <svg className="mc-ic"><use href={`#ic-${c.icon}`} /></svg>
               <span className="mc-label">{c.label}</span>
               <span className="mc-key">{c.key}</span>
-              {usage[c.key] ? <span className="mc-usage">{usage[c.key]} wiki{usage[c.key] !== 1 ? 's' : ''}</span> : null}
+              {usage[c.key]?.length ? <span className="mc-usage" title={usage[c.key].join(', ')}>{usage[c.key].length} wiki{usage[c.key].length !== 1 ? 's' : ''}</span> : null}
               <span className="mc-lock" title="Canon — defined in the repo (_data/wiki_categories.yml)">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg> canon
               </span>
@@ -117,7 +121,7 @@ export function ManageCategories({ onClose }: { onClose: () => void }) {
               <svg className="mc-ic"><use href={`#ic-${r.icon}`} /></svg>
               <span className="mc-label">{r.label}</span>
               <span className="mc-key">{r.key}</span>
-              {usage[r.key] ? <span className="mc-usage">{usage[r.key]} wiki{usage[r.key] !== 1 ? 's' : ''}</span> : null}
+              {usage[r.key]?.length ? <span className="mc-usage" title={usage[r.key].join(', ')}>{usage[r.key].length} wiki{usage[r.key].length !== 1 ? 's' : ''}</span> : null}
               <span className="mc-acts">
                 <button className="vt-btn" disabled={busy} onClick={() => edit(r)}>Edit</button>
                 <button className="vt-btn mc-del" disabled={busy} onClick={() => remove(r)}>Delete</button>

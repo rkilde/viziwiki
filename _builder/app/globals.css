@@ -40,7 +40,14 @@ button{ font-family:inherit; }
 .brand-sep{ width:1px; height:24px; background:var(--border3); margin:0 13px 0 9px; flex:none; }
 /* menu drawer (empty placeholder for now) — slides in from the left below the topbar */
 .brand-drawer-scrim{ position:fixed; inset:var(--topbar-h) 0 0 0; z-index:540; background:rgba(0,0,0,.32); }
-.brand-drawer{ position:fixed; top:var(--topbar-h); left:0; bottom:0; width:280px; z-index:545; background:var(--bg2); border-right:1px solid var(--border2); box-shadow:8px 0 30px rgba(0,0,0,.45); animation:brand-drawer-in .22s cubic-bezier(.2,.9,.25,1.1); }
+.brand-drawer{ position:fixed; top:var(--topbar-h); left:0; bottom:0; width:280px; z-index:545; background:var(--bg2); border-right:1px solid var(--border2); box-shadow:8px 0 30px rgba(0,0,0,.45); animation:brand-drawer-in .22s cubic-bezier(.2,.9,.25,1.1);
+  display:flex; flex-direction:column; gap:2px; padding:12px 10px; overflow-y:auto; }
+.brand-drawer-head{ font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:var(--dim); padding:2px 9px 8px; }
+.brand-drawer-item{ display:flex; flex-direction:column; gap:2px; text-align:left; padding:9px 10px; border-radius:8px; border:1px solid transparent; background:none; color:var(--text); cursor:pointer; transition:background .12s,border-color .12s; }
+.brand-drawer-item:hover{ background:var(--bg3); border-color:var(--border2); }
+.bdi-label{ font-family:'Fraunces',serif; font-size:13px; font-weight:600; }
+.bdi-hint{ font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.04em; color:var(--muted); }
+.brand-drawer-empty{ font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--dim); padding:10px; }
 @keyframes brand-drawer-in{ from{ transform:translateX(-100%); } to{ transform:none; } }
 #wiki-switcher{ position:relative; }
 #wiki-btn{ display:flex; align-items:center; gap:8px; background:none; border:1px solid transparent; border-radius:6px; padding:5px 10px; cursor:pointer; color:var(--text); transition:border-color .12s,background .12s; height:30px; }
