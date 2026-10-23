@@ -135,12 +135,12 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, genAsUser = f
               <GenArtRow kind="cover" wiki={genWiki} onResult={setArtUrl} asUser={genAsUser} />
             </>)}
             {kind === 'bespoke' && <div className="acct-note">This wiki wears one of the five hand-built covers (browse page art). Switch the kind above to replace it; the reference is kept if you switch back before saving.</div>}
-            <div className="ow-label">wiki icon — the small mark (switcher, wiki bar / rail)</div>
+            <div className="ow-label">wiki emblem — the small mark (switcher, wiki bar / rail)</div>
             <div className="ow-row wi-icon-row">
               <select className="acct-input" value={icKind} onChange={(e) => setIcKind(e.target.value as any)}>
                 <option value="auto">auto (letter mark)</option>
                 <option value="glyph">sprite glyph</option>
-                <option value="art">icon art (your image)</option>
+                <option value="art">emblem art (your image)</option>
               </select>
               <span className="wi-mark-preview" title="icon preview">
                 {icKind === 'art' && icSrc.trim()

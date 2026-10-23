@@ -15,7 +15,7 @@ page-local layer.
 A platform of visually-designed wikis. Admins own a design system (the
 **canon**); contributors supply content. A page is a stack of **sections**
 (horizontal bands — eyebrow + H2 + content on a toned panel); most sections
-hold an **emblem** — a canonized, data-driven visual format. Home pages
+hold a **data form** — a canonized, data-driven visual format. Home pages
 follow a canon order: hero → browse → overview, then freeform sections,
 see-also pinned last.
 

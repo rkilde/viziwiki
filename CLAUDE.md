@@ -81,19 +81,24 @@ did, on the iPod charts — hence this rule). **Rule of thumb: document text →
   icon.html name="X" %}`. **No icon CDN.** Add an icon = add one `<symbol>`.
 
 ### Terminology (be precise — the OWNER'S CHOSEN VOCABULARY, use it consistently)
-- **Emblem** = one canonized visual format (what code/docs previously called a
-  "bank component" or "visual"): catalog, timeline, config, spec, delta,
-  lifecycle-lane, photo-rail, prose-rail… From Greek *emblēma* — the
-  prefabricated mosaic panel a master made once and inlaid into many floors:
-  made once in canon, inserted into any page, data in → HTML+CSS out.
-- **Section** = one horizontal band of a page — the frame that holds an emblem
-  (matches the code: `.wiki-section`, `_includes/sections/`). Hero and overview
-  are the two locked sections; the rest are contributor-added. (The owner
-  briefly adopted "stanza" for this, then reverted to "section" — don't use
-  "stanza".)
-- The tiering: **page** → **sections** → each section frames one **emblem** →
-  emblems live in the **banks** → everything obeys the **canon**.
-  ("Pick a section slot, choose an emblem from the bank, fill it in place.")
+- **Data form** = one canonized visual format (what code/docs previously
+  called an "emblem", a "bank component" or a "visual"): catalog, timeline,
+  config, spec, delta, lifecycle-lane, photo-rail, prose-rail… Made once in
+  canon, inserted into any page, data in → HTML+CSS out. (RENAMED from
+  "emblem" Oct 2026 — "emblem" now means something else, below. Older docs/
+  commit messages that say "emblem" in this sense mean data form.)
+- **Emblem** = the small icon MARK a wiki or page wears in the rails and
+  chrome: each wiki's mark (the `wikis.icon` slot — switcher swatch, the
+  live wiki-bar logo / TOC-rail slot) and the icons main-category and other
+  pages show in the rails. "Wiki emblem", "page emblem".
+- **Section** = one horizontal band of a page — the frame that holds a data
+  form (matches the code: `.wiki-section`, `_includes/sections/`). Hero and
+  overview are the two locked sections; the rest are contributor-added. (The
+  owner briefly adopted "stanza" for this, then reverted to "section" —
+  don't use "stanza".)
+- The tiering: **page** → **sections** → each section frames one **data
+  form** → data forms live in the **banks** → everything obeys the **canon**.
+  ("Pick a section slot, choose a data form from the bank, fill it in place.")
 - These are VOCABULARY terms (chat, docs, UI copy) — never rename existing
   code identifiers, CSS classes, or `bank-*.css` files to match.
 - **Token** = a CSS custom property (`--section-title-color`, `--panel-bg`, …)
@@ -455,7 +460,7 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
   `_builder/README.md` + `docs/registry-grammar-proposal.md`.
 - **THE DESIGN-SYSTEM ARC (deferred — owner-named, Oct 2026).** The canon so far
   governs two of its three pillars: FORMATTING (type scale, sections, tones,
-  spacing) and EMBLEMS (the standardized visuals). The third — the SITE-WIDE
+  spacing) and DATA FORMS (the standardized visuals). The third — the SITE-WIDE
   DESIGN SYSTEM — is not yet canonized: page-level visual treatments still live
   in pre-canon supporting CSS (`tb-editorial-base.css`, `tb-drinks.css`, per-page
   extra_head flourishes…). Visible symptom: the live Taco Bell drinks page is
@@ -469,7 +474,7 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
   not bugs.
 - **CURATOR PAGE CLASSES (deferred — owner-named, Oct 2026).** The build-kit,
   per-wiki version of Layer-2 page classes: a wiki master composes a page once
-  (its sections, emblem choices, seeded defaults, locked bits) and saves it
+  (its sections, data-form choices, seeded defaults, locked bits) and saves it
   as a reusable CLASS/template; every new entry of that kind instantiates
   from it — e.g. ONE "Taco Bell drink entry" class → every drink page.
   Exactly what `class-tb-drink.html` does in Jekyll, but wiki-master-authored in
@@ -564,7 +569,9 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
     origination (store: updateWikiIdentity — identity only, never
     id/slug/skin/content). Both ping /read + /api/directory on save so
     every surface updates in seconds.
-  · **WIKI ICON slot (DONE, Oct 2026):** migration `0009_wiki_icon.sql` —
+  · **WIKI ICON slot — the wiki's EMBLEM (DONE, Oct 2026; "emblem" is the
+    owner's vocabulary for this mark — the code keeps `icon`):** migration
+    `0009_wiki_icon.sql` —
     `wikis.icon jsonb` (`{"kind":"auto"}` letter mark default ·
     `{"kind":"glyph","name":…}` canon sprite · `{"kind":"art","src":…}` the
     wiki's own image, master media pattern). The wiki's compact MARK: the
