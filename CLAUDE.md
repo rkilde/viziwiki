@@ -590,6 +590,18 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
     rendered only via <img>/CSS background where scripts can't run).
     Guard: case 23 (405 total). Owner switch-on: ANTHROPIC_API_KEY in
     Vercel (docs/supabase-setup.md).
+- **READER ON THE MAIN DOMAIN (deferred — owner-requested, Oct 2026).** The
+  owner wants DB-native wikis at `viziwiki.com/the-renaissance`-style URLs
+  instead of `vizwiki.vercel.app/read/<id>`. Config-level, two tiers:
+  (1) nearly free — a Cloudflare Worker proxying `/read/*` → the Vercel
+  reader (no reader code changes; its links already start `/read/`);
+  (2) bare top-level slugs — the Worker routes paths matching a wiki id
+  (checked against the cached `/api/directory` feed, so new originations
+  route automatically; no collision with flagship pages — they all end
+  `.html`) + an env-driven URL helper so the reader emits public-shaped
+  links. OPEN TASTE CALL at build time: bare root slugs vs a
+  `/wiki/<id>` prefix (Wikipedia's pattern — keeps the root namespace
+  free); same effort either way.
 - **Vizi-verse** (the narrative side; currently only `top-10.html`) — deferred.
 
 ---
