@@ -21,7 +21,7 @@ export function AccountChip({ email, profile }: { email: string | null; profile:
     return (
       <span className="acct">
         <span className="acct-email" title={email}>{email}</span>
-        <span className={`acct-badge acct-${badge}`}>{badge}{profile?.class === 'curator' && profile.wiki_id ? ` · ${profile.wiki_id}` : ''}</span>
+        <span className={`acct-badge acct-${badge}`}>{badge.replace("_", " ")}{profile?.class === 'wiki_master' && profile.wiki_id ? ` · ${profile.wiki_id}` : ''}</span>
         <button className="vt-btn" onClick={() => signOut()}>Sign out</button>
       </span>
     );

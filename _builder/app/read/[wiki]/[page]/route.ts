@@ -1,7 +1,7 @@
 // GET /read/[wiki]/[page] — a READER page: the PUBLISHED revision rendered
 // through the canonical derived renderer (scripts kept, sentinels stripped),
 // wrapped in the live site's canon CSS stack, edge-cached. Phase 3: readers
-// see what a curator/admin APPROVED (pages.published_rev), never raw drafts;
+// see what a wiki_master/admin APPROVED (pages.published_rev), never raw drafts;
 // publishing/reverting pings /api/revalidate so this refreshes in seconds.
 import { html, noDb, notFound, readerNav, readerShell, renderReaderBody, renderer, SENT_PREFIX, serverSupabase, bankCss } from '../../../../lib/reader';
 
@@ -15,7 +15,7 @@ export async function GET(_req: Request, { params }: { params: { wiki: string; p
     db.from('pages').select('id, title, type, published_rev').eq('wiki_id', params.wiki).eq('id', params.page).single(),
   ]);
   if (!wiki || !page) return notFound(`No page "${params.wiki}/${params.page}" in the content database.`);
-  if (!page.published_rev) return notFound('This page has no published version yet — a curator or admin must approve one.');
+  if (!page.published_rev) return notFound('This page has no published version yet — a wiki_master or admin must approve one.');
   const { data: rev, error } = await db.from('revisions').select('doc').eq('id', page.published_rev).single();
   if (error || !rev?.doc) return noDb();
   const doc = rev.doc;

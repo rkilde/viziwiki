@@ -396,7 +396,7 @@ button{ font-family:inherit; }
 .acct-email{ font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--muted); max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .acct-badge{ font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.1em; text-transform:uppercase; padding:3px 8px; border-radius:999px; background:var(--bg3); border:1px solid var(--purple-bd); color:var(--muted); }
 .acct-admin{ background:#6366f1; border-color:#6366f1; color:#fff; }
-.acct-curator{ background:#0e7490; border-color:#0e7490; color:#fff; }
+.acct-wiki_master{ background:#0e7490; border-color:#0e7490; color:#fff; }
 .acct-designer{ background:#9d174d; border-color:#9d174d; color:#fff; }
 .acct-writer{ background:#a16207; border-color:#a16207; color:#fff; }
 .acct-viewas{ font-family:'JetBrains Mono',monospace; font-size:10px; }
