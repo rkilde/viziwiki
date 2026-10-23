@@ -391,7 +391,14 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
       (media uploads — the grammar's image fields already point here). Instant saves,
       no rebuild.
   Build order: (1) wire `SupabaseContentStore` (schema + the six methods, grammar as
-  the validator) and switch the builder off `localStorage`; (2) **auth + roles** —
+  the validator) and switch the builder off `localStorage` — **phase 1 CODE DONE**:
+  schema at `_builder/supabase/migrations/0001_init.sql` (RLS wide-open on purpose,
+  phase 2 replaces the policies), env-gated client (`lib/supabase.ts` — unset keys =
+  localStorage fallback), store + pure doc↔rows mapping (`content-store.ts` +
+  `lib/content-map.mjs`, guard case 16), editor wired (cloud hydrate on open unless
+  already edited; Save writes local + cloud with a status chip). Owner's dashboard
+  clicks (run the SQL, set the two `NEXT_PUBLIC_SUPABASE_*` vars in Vercel) are the
+  remaining switch-on — walkthrough: `docs/supabase-setup.md`; (2) **auth + roles** —
   sign-up / sessions, a roles table, row-level security so a contributor edits only
   what their role allows; (3) **moderation** — contributor edits land as
   drafts/proposals; an admin approves → published (Wikipedia/Fandom-style review).

@@ -1,28 +1,21 @@
 /* ════════════════════════════════════════════════════════════════════
    content-store.ts — the ONE seam between the builder and where content lives.
    --------------------------------------------------------------------
-   The builder UI imports ONLY this interface. It never talks to git or to
-   Supabase directly. To change backends (git → Supabase, or anything else),
-   you swap the IMPLEMENTATION below — the builder code never changes. This is
-   the single thing that makes "no transfer headache" true (see
-   docs/registry-grammar-proposal.md).
+   The builder UI imports ONLY this interface (plus the `contentStore`
+   singleton below). It never talks to git or to Supabase directly. To change
+   backends you swap the implementation — the builder code never changes
+   ("no transfer headache", see docs/registry-grammar-proposal.md).
 
-   The `component` strings and `type` strings below are keys in _data/grammar.yml
-   (`components` and `page_types`). The grammar is the validator; this is the pipe.
+   The persisted document IS the editor's PageDoc (lib/store.ts) — which is
+   itself the canonical front-matter data contract the Liquid includes
+   consume. Mapping doc ↔ DB rows + grammar validation live in
+   lib/content-map.mjs (pure, covered by guard case 16). Schema:
+   supabase/migrations/0001_init.sql.
    ════════════════════════════════════════════════════════════════════ */
-
-/** One component instance on a page: its type + its field data.
- *  `data` is validated against the matching component schema in grammar.yml. */
-export interface Section {
-  component: string;                 // a key in grammar.yml → components (e.g. "lifecycle-lane")
-  data: Record<string, unknown>;     // the contributor-edited fields for that component
-}
-
-/** A full page: which page-type it is + its ordered list of sections. */
-export interface PageData {
-  type: "standard" | "home";         // a key in grammar.yml → page_types
-  sections: Section[];               // ordered; the renderer walks this list top-to-bottom
-}
+import type { PageDoc } from './lib/store';
+import { GRAMMAR } from './lib/grammar';
+import { supabase } from './lib/supabase';
+import { docToRows, rowsToDoc, validateDoc, persistableDoc } from './lib/content-map.mjs';
 
 export interface WikiMeta { id: string; slug: string; name: string; skin: string; }
 export interface PageMeta { id: string; slug: string; title: string; type: string; }
@@ -31,35 +24,80 @@ export interface PageMeta { id: string; slug: string; title: string; type: strin
 export interface ContentStore {
   listWikis(): Promise<WikiMeta[]>;
   listPages(wiki: string): Promise<PageMeta[]>;
-  loadPage(wiki: string, page: string): Promise<PageData>;
-  /** Validates `data` against grammar.yml, then persists. */
-  savePage(wiki: string, page: string, data: PageData): Promise<void>;
-  /** Creates a page pre-seeded from the page-type's grammar (hero + blanks). */
-  createPage(wiki: string, type: PageData["type"], slug: string): Promise<PageMeta>;
+  /** The stored doc, or null if this page has never been saved to the store. */
+  loadPage(wiki: string, page: string): Promise<PageDoc | null>;
+  /** Validates against grammar.yml (rule #5 — the grammar is the validator),
+   *  then persists. Upserts the wiki + page rows so an empty database
+   *  bootstraps itself from the first save. */
+  savePage(wiki: WikiMeta, page: PageMeta, doc: PageDoc): Promise<void>;
+  createPage(wiki: WikiMeta, meta: PageMeta, doc: PageDoc): Promise<PageMeta>;
   deletePage(wiki: string, page: string): Promise<void>;
 }
 
-/* ── Implementation A — git/files (now / dev) ───────────────────────────
-   Reads & writes a page's front-matter blocks; commits via the GitHub API.
-   Good for friends-and-family scale; every save costs a deploy cycle. */
+/* ── Implementation A — git/files (dev-era idea; superseded) ────────────
+   Front-matter + GitHub-API commits. Kept as the documented alternative;
+   never built — the platform scope decided Supabase (see CLAUDE.md). */
 export class GitContentStore implements ContentStore {
-  async listWikis(): Promise<WikiMeta[]> { throw new Error("TODO: list wiki dirs in the repo"); }
-  async listPages(): Promise<PageMeta[]> { throw new Error("TODO: list pages in a wiki dir"); }
-  async loadPage(): Promise<PageData>     { throw new Error("TODO: parse front-matter → PageData"); }
-  async savePage(): Promise<void>         { throw new Error("TODO: validate → write front-matter → commit via GitHub API"); }
-  async createPage(): Promise<PageMeta>   { throw new Error("TODO: seed from grammar → new file → commit"); }
-  async deletePage(): Promise<void>       { throw new Error("TODO: remove file → commit"); }
+  async listWikis(): Promise<WikiMeta[]> { throw new Error("GitContentStore not built — Supabase is the decided path"); }
+  async listPages(): Promise<PageMeta[]> { throw new Error("GitContentStore not built"); }
+  async loadPage(): Promise<PageDoc | null> { throw new Error("GitContentStore not built"); }
+  async savePage(): Promise<void>         { throw new Error("GitContentStore not built"); }
+  async createPage(): Promise<PageMeta>   { throw new Error("GitContentStore not built"); }
+  async deletePage(): Promise<void>       { throw new Error("GitContentStore not built"); }
 }
 
-/* ── Implementation B — Supabase (scale / recommended) ──────────────────
-   Same six methods, backed by Postgres (wikis / pages / sections tables,
-   section data as jsonb validated by grammar.yml). Instant saves, no rebuild.
-   Build this when you outgrow FnF; the builder above does not change. */
+/* ── Implementation B — Supabase (the platform path) ──────────────────── */
 export class SupabaseContentStore implements ContentStore {
-  async listWikis(): Promise<WikiMeta[]> { throw new Error("TODO: select from wikis"); }
-  async listPages(): Promise<PageMeta[]> { throw new Error("TODO: select from pages where wiki_id = …"); }
-  async loadPage(): Promise<PageData>     { throw new Error("TODO: select sections where page_id = … (ordered)"); }
-  async savePage(): Promise<void>         { throw new Error("TODO: validate → upsert sections (jsonb)"); }
-  async createPage(): Promise<PageMeta>   { throw new Error("TODO: insert page + seeded sections from grammar"); }
-  async deletePage(): Promise<void>       { throw new Error("TODO: delete page (cascade sections)"); }
+  constructor(private db: NonNullable<typeof supabase>) {}
+
+  async listWikis(): Promise<WikiMeta[]> {
+    const { data, error } = await this.db.from('wikis').select('id, slug, name, skin').order('id');
+    if (error) throw error;
+    return data ?? [];
+  }
+
+  async listPages(wiki: string): Promise<PageMeta[]> {
+    const { data, error } = await this.db.from('pages').select('id, slug, title, type').eq('wiki_id', wiki).order('id');
+    if (error) throw error;
+    return data ?? [];
+  }
+
+  async loadPage(wiki: string, page: string): Promise<PageDoc | null> {
+    const { data, error } = await this.db
+      .from('sections').select('position, component, data')
+      .eq('wiki_id', wiki).eq('page_id', page).order('position');
+    if (error) throw error;
+    return rowsToDoc(data ?? []) as PageDoc | null;
+  }
+
+  async savePage(wiki: WikiMeta, page: PageMeta, doc: PageDoc): Promise<void> {
+    const clean = persistableDoc(doc);
+    const v = validateDoc(clean, GRAMMAR);
+    if (!v.ok) throw new Error('doc failed grammar validation: ' + v.errors.join('; '));
+    // bootstrap parents (idempotent)
+    let r = await this.db.from('wikis').upsert({ id: wiki.id, slug: wiki.slug, name: wiki.name, skin: wiki.skin }, { onConflict: 'id' });
+    if (r.error) throw r.error;
+    r = await this.db.from('pages').upsert({ wiki_id: wiki.id, id: page.id, slug: page.slug, title: page.title, type: page.type }, { onConflict: 'wiki_id,id' });
+    if (r.error) throw r.error;
+    // replace the section rows: upsert the new set, then drop any stale tail
+    const rows = docToRows(clean).map((row: any) => ({ wiki_id: wiki.id, page_id: page.id, ...row }));
+    r = await this.db.from('sections').upsert(rows, { onConflict: 'wiki_id,page_id,position' });
+    if (r.error) throw r.error;
+    r = await this.db.from('sections').delete().eq('wiki_id', wiki.id).eq('page_id', page.id).gte('position', rows.length);
+    if (r.error) throw r.error;
+  }
+
+  async createPage(wiki: WikiMeta, meta: PageMeta, doc: PageDoc): Promise<PageMeta> {
+    await this.savePage(wiki, meta, doc);
+    return meta;
+  }
+
+  async deletePage(wiki: string, page: string): Promise<void> {
+    const { error } = await this.db.from('pages').delete().eq('wiki_id', wiki).eq('id', page);
+    if (error) throw error;  // sections cascade
+  }
 }
+
+/** The live store: Supabase when the env keys are set, otherwise null and the
+ *  builder stays on its localStorage stand-in (lib/store.ts). */
+export const contentStore: ContentStore | null = supabase ? new SupabaseContentStore(supabase) : null;

@@ -2,6 +2,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import type { Page, WikiSkin } from '../../lib/wiki';
 import { loadPageDoc, savePageDoc, resetPageDoc, seedDoc, type PageDoc } from '../../lib/store';
+import { contentStore, type WikiMeta } from '../../content-store';
 import { buildCanvas, setIn, applyAction } from '../../lib/canvas';
 import { renderBody } from '../../lib/render';
 import { SectionPicker } from './SectionPicker';
@@ -30,12 +31,18 @@ const CANVAS_W = 1080;
  * decorator (editing affordances). Field edits sync via __peField; +add /
  * ×remove via __peAction; both update the live body.
  */
-export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin; onClose: () => void }) {
+export function PageEditor({ page, skin, wikiMeta, onClose }: { page: Page; skin: WikiSkin; wikiMeta?: WikiMeta; onClose: () => void }) {
   const docRef = useRef<PageDoc>(loadPageDoc(page));
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const areaRef = useRef<HTMLDivElement>(null);   // the scroll area (sets the fit width)
   const wrapRef = useRef<HTMLDivElement>(null);   // the scaled canvas footprint
   const [saved, setSaved] = useState(false);
+  // cloud persistence (ContentStore → Supabase when env keys are set):
+  // 'off' = not configured (localStorage only) · ok/saving/err per last sync
+  const [cloud, setCloud] = useState<'off' | 'ok' | 'saving' | 'err'>(contentStore && wikiMeta ? 'ok' : 'off');
+  // set once the user edits anything — a late-arriving cloud doc must never
+  // clobber in-progress edits
+  const touchedRef = useRef(false);
   // per-section readiness markers (DERIVED in-canvas, rendered in the backdrop)
   const [markers, setMarkers] = useState<Marker[]>([]);
   // the SCALED canvas's screen offset, so markers align to it
@@ -79,11 +86,11 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
       ifr.contentDocument.body.innerHTML = renderBody(docRef.current, isHome);
       (ifr.contentWindow as any)?.__decorate?.();
     };
-    (window as any).__peField = (path: string, html: string) => { setIn(docRef.current, path, html); setSaved(false); };
-    (window as any).__peAction = (action: string) => { applyAction(docRef.current, action); setSaved(false); if (/^(secAdd|secRm|secMove):/.test(action)) setOpenMk(null); swapBody(); };
+    (window as any).__peField = (path: string, html: string) => { setIn(docRef.current, path, html); setSaved(false); touchedRef.current = true; };
+    (window as any).__peAction = (action: string) => { applyAction(docRef.current, action); setSaved(false); touchedRef.current = true; if (/^(secAdd|secRm|secMove):/.test(action)) setOpenMk(null); swapBody(); };
     // drag-reorder mutates the doc WITHOUT a re-render — the decorator shuffles the
     // DOM nodes + FLIP-animates in place, then re-binds via a deferred swap.
-    (window as any).__peReorderData = (action: string) => { applyAction(docRef.current, action); setSaved(false); };
+    (window as any).__peReorderData = (action: string) => { applyAction(docRef.current, action); setSaved(false); touchedRef.current = true; };
     // render the current body WITHOUT swapping it in — lets the decorator splice a
     // single new node (e.g. a delta table row) in place instead of recreating the
     // whole table, so adds don't flash the static header rows.
@@ -92,6 +99,18 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
     (window as any).__peOpenPicker = (index: number) => setPickerAt(typeof index === 'number' ? index : 0); // seam → picker (carries insert position)
     (window as any).__peDoc = () => docRef.current; // decorator reads current values (e.g. toolbar editors)
     (window as any).__peMarkers = (list: Marker[]) => { setMarkers(list); measure(); }; // readiness, derived in-canvas
+    // cloud hydrate (ContentStore): the editor opens instantly on the local
+    // doc, then adopts the stored cloud doc when it arrives — unless the user
+    // already started editing (their in-progress edits always win).
+    let cloudLive = true;
+    if (contentStore && wikiMeta) {
+      contentStore.loadPage(wikiMeta.id, page.id).then((doc) => {
+        if (!cloudLive || !doc || touchedRef.current) return;
+        docRef.current = { ...(doc as PageDoc), _stash: docRef.current._stash };
+        setSaved(true); setCloud('ok');
+        swapBody();
+      }).catch(() => { if (cloudLive) setCloud('err'); });
+    }
     const onKey = (e: KeyboardEvent) => { if (e.key !== 'Escape') return; if (openMkRef.current != null) setOpenMk(null); else onClose(); };
     const onResize = () => measure();
     window.addEventListener('keydown', onKey);
@@ -99,7 +118,7 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
     // the canvas area drives the fit width — observe it so scale auto-fits
     const ro = new ResizeObserver(() => measure());
     if (areaRef.current) ro.observe(areaRef.current);
-    return () => { delete (window as any).__peField; delete (window as any).__peAction; delete (window as any).__peReorderData; delete (window as any).__peRenderBody; delete (window as any).__peResize; delete (window as any).__peOpenPicker; delete (window as any).__peDoc; delete (window as any).__peMarkers; window.removeEventListener('keydown', onKey); window.removeEventListener('resize', onResize); ro.disconnect(); };
+    return () => { cloudLive = false; delete (window as any).__peField; delete (window as any).__peAction; delete (window as any).__peReorderData; delete (window as any).__peRenderBody; delete (window as any).__peResize; delete (window as any).__peOpenPicker; delete (window as any).__peDoc; delete (window as any).__peMarkers; window.removeEventListener('keydown', onKey); window.removeEventListener('resize', onResize); ro.disconnect(); };
   }, [onClose, isHome]);
 
   // the scaled canvas's screen offset shifts whenever its footprint changes
@@ -110,7 +129,14 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
   const openMkRef = useRef<number | null>(null);
   openMkRef.current = openMk;
 
-  const save = () => { savePageDoc(page.id, docRef.current); setSaved(true); };
+  const save = () => {
+    savePageDoc(page.id, docRef.current); setSaved(true);   // local always (instant + offline fallback)
+    if (contentStore && wikiMeta) {
+      setCloud('saving');
+      const meta = { id: page.id, slug: (page.permalink || '/' + page.id).replace(/^\//, ''), title: oneLine(page.title || page.id), type: isHome ? 'home' : 'standard' };
+      contentStore.savePage(wikiMeta, meta, docRef.current).then(() => setCloud('ok'), (e) => { console.error('cloud save failed', e); setCloud('err'); });
+    }
+  };
   const revert = () => {
     resetPageDoc(page.id);
     docRef.current = seedDoc(page);
@@ -171,7 +197,7 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
             {todoCount === 0 ? <><IcCheck />Page ready</> : <><IcTri />{todoCount} section{todoCount !== 1 ? 's' : ''} need attention</>}
           </span>
         )}
-        {saved && <span className="pe-chip-status"><IcCheck />saved</span>}
+        {saved && <span className="pe-chip-status" title={cloud === 'off' ? 'Saved in this browser (no cloud keys configured)' : cloud === 'err' ? 'Saved in this browser; the cloud save failed — check the Supabase keys/project' : 'Saved'}><IcCheck />{cloud === 'saving' ? 'saving…' : cloud === 'err' ? 'saved (local only)' : 'saved'}</span>}
         <button onClick={revert} title="Discard changes"><IcUndo />Revert</button>
         <button onClick={onClose} title="Close (Esc)"><IcX />Close</button>
         <button className="primary" onClick={save}><IcCheck />Save</button>

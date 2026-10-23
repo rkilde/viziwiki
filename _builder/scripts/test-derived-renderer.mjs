@@ -726,5 +726,34 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(pcard15 && pcard15.reqs.some((r) => r.label === 'add image'), 'widget tracks the rail photo\'s image ("add image")');
 }
 
+// ── case 16: ContentStore doc↔rows mapping + grammar validation (no network) ──
+{
+  console.log('case 16: content-store mapping — doc↔rows round-trip, grammar validation');
+  const { docToRows, rowsToDoc, validateDoc, persistableDoc } = await import('../lib/content-map.mjs');
+  const doc = {
+    hero: { title: 'T', desc: 'D' },
+    overview: { heading: 'H', paragraphs: ['P'] },
+    sections: [
+      { type: 'prose-rail', data: JSON.parse(JSON.stringify(grammar.components['prose-rail'].seed)) },
+      { type: 'photo-rail', data: JSON.parse(JSON.stringify(grammar.components['photo-rail'].seed)) },
+    ],
+    _stash: { feature: { title: 'editor-only' } },
+  };
+  const clean = persistableDoc(doc);
+  ok(!('_stash' in clean), '_stash (editor-only state) is never persisted');
+  const rows = docToRows(clean);
+  ok(rows.length === 4 && rows[0].component === 'hero' && rows[0].position === 0 && rows[1].component === 'overview' && rows[1].position === 1, 'hero + overview are the locked rows 0/1');
+  ok(rows[2].component === 'prose-rail' && rows[3].position === 3, 'body sections follow in order');
+  const back = rowsToDoc(rows);
+  ok(JSON.stringify(back) === JSON.stringify(clean), 'doc → rows → doc round-trips byte-identically');
+  ok(rowsToDoc(rows.slice().reverse()) && JSON.stringify(rowsToDoc(rows.slice().reverse())) === JSON.stringify(clean), 'row order in the DB does not matter (sorted by position)');
+  ok(rowsToDoc([]) === null, 'no rows → null (page never stored)');
+  ok(validateDoc(clean, grammar).ok, 'a doc of real grammar components validates');
+  const bad = { ...clean, sections: [{ type: 'not-a-component', data: {} }] };
+  const v = validateDoc(bad, grammar);
+  ok(!v.ok && /not-a-component/.test(v.errors.join(' ')), 'an unknown component type is refused (grammar is the validator)');
+  ok(!validateDoc({ sections: [] }, grammar).ok, 'a doc missing the locked hero/overview is refused');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
