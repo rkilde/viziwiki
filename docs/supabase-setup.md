@@ -188,3 +188,13 @@ Owner step to switch it on:
 2. Verify: hard-refresh the live `/browse.html` — the full library renders as
    before (now from the database; coming-soon tiles say "Coming soon"), and a
    freshly originated wiki shows up on it within a minute.
+
+## Wiki icons (switch-on step)
+
+Each wiki has an **icon slot** — its small mark (the build-kit switcher now;
+the live wiki-bar/rail logo as the chrome goes DB-native): auto letter mark,
+a canon sprite glyph, or the wiki's own image URL.
+
+Owner step: **SQL Editor** → paste + Run
+`_builder/supabase/migrations/0009_wiki_icon.sql`, then set any wiki's icon
+from its **identity** modal (the button beside the wiki switcher).
