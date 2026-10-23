@@ -14,7 +14,7 @@ and behaves real.
 A platform of visually-designed wikis. Admins own a design system (the
 **canon**); contributors supply content. A page is a stack of **sections**
 (horizontal bands, each an eyebrow + H2 + content on a toned panel); most
-sections hold an **emblem** — a canonized, data-driven visual format that
+sections hold a **data form** — a canonized, data-driven visual format that
 renders entirely from supplied data. The browse UI is the home page's
 directory section: how a reader descends from a wiki's home into its content
 tree.
@@ -22,9 +22,9 @@ tree.
 ## Status: browse is NOT yet canonized
 
 Browse is currently hand-built per wiki (this drill-in grid is Apple's). It is
-on the roadmap to become an **emblem** — a data-driven component any wiki gets
+on the roadmap to become a **data form** — a data-driven component any wiki gets
 for free. That is exactly why your design pass matters: whatever you and the
-owner converge on becomes the canonical browse emblem. Design accordingly:
+owner converge on becomes the canonical browse data form. Design accordingly:
 
 ## Hard constraints (the canon — your design must fit these)
 
