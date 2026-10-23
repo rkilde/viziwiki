@@ -80,7 +80,21 @@ did, on the iPod charts — hence this rule). **Rule of thumb: document text →
   `<svg class="wiki-icon"><use href="#ic-NAME"></use></svg>` or `{% include
   icon.html name="X" %}`. **No icon CDN.** Add an icon = add one `<symbol>`.
 
-### Terminology (be precise)
+### Terminology (be precise — the OWNER'S CHOSEN VOCABULARY, use it consistently)
+- **Emblem** = one canonized visual format (what code/docs previously called a
+  "bank component" or "visual"): catalog, timeline, config, spec, delta,
+  lifecycle-lane, photo-rail, prose-rail… From Greek *emblēma* — the
+  prefabricated mosaic panel a master made once and inlaid into many floors:
+  made once in canon, inserted into any page, data in → HTML+CSS out.
+- **Stanza** = one horizontal band of a page — the room that holds an emblem
+  (Italian *stanza*, "room"; a page is composed of stanzas the way a poem is).
+  Hero and overview are the two locked stanzas; the rest are contributor-added.
+  In code this is still a "section" (`.wiki-section`, `_includes/sections/`).
+- The tiering: **page** → **stanzas** → each stanza frames one **emblem** →
+  emblems live in the **banks** → everything obeys the **canon**.
+  ("Pick a stanza slot, choose an emblem from the bank, fill it in place.")
+- These are VOCABULARY terms (chat, docs, UI copy) — never rename existing
+  code identifiers, CSS classes, or `bank-*.css` files to match.
 - **Token** = a CSS custom property (`--section-title-color`, `--panel-bg`, …)
   holding a design value. Skins set them; components read them.
 - **Utility class** = a Tailwind-style shorthand (`flex`, `px-6`). The
