@@ -72,6 +72,11 @@ const TILES: BrowseTile[] = [
     icon: '<rect x="0.5" y="7.5" width="23" height="9" rx="1.5"/><line x1="8.17" y1="7.5" x2="8.17" y2="16.5"/><line x1="15.83" y1="7.5" x2="15.83" y2="16.5"/>',
     desc: 'A full-bleed horizontal scroller of photos with optional bold label + caption. A headerless image band. Click to add it.',
   },
+  {
+    id: 'prose-rail', name: 'Prose + Image Rail', pill: 'Available', add: 'prose-rail',
+    icon: '<line x1="2.5" y1="5.5" x2="13" y2="5.5"/><line x1="2.5" y1="9.5" x2="13" y2="9.5"/><line x1="2.5" y1="13.5" x2="13" y2="13.5"/><line x1="2.5" y1="17.5" x2="9.5" y2="17.5"/><rect x="16" y="4.5" width="5.5" height="15" rx="1.2"/><line x1="16" y1="12" x2="21.5" y2="12"/>',
+    desc: 'Editorial prose beside a sticky vertical photo archive — your own eyebrow label + icon, optional subtitled blocks, optional rail. Click to add it.',
+  },
 ];
 
 // timeline types — "Standard Horizontal Timeline" IS the canonical timeline

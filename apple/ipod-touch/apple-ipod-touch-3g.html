@@ -341,6 +341,35 @@ config:
     - name: Silver
       hex: '#d4d4d8'
       ring: true
+gaming:
+  eyebrow: "Cultural impact"
+  icon: gamepad-2
+  anchor: gaming-section
+  heading: "The game machine."
+  body:
+  - { text: "No previous iPod touch had been sold primarily as a gaming device. The third generation changed that. Apple's September 2009 event benchmarked the 3G against the Nintendo DS and the Sony PlayStation Portable — two devices that had defined portable gaming for nearly a decade — and claimed superiority on available software alone. The App Store already carried over 21,000 game titles." }
+  - { text: "The hardware justified the pitch. The PowerVR SGX535 GPU supported OpenGL ES 2.0, enabling per-pixel lighting, bloom effects, and shader-driven rendering that the previous generation's MBX Lite could not produce. Titles like <strong>Modern Combat</strong>, <strong>Infinity Blade</strong>, and <strong>Real Racing</strong> were built specifically for the 3G's graphics ceiling." }
+  - { text: "Doubled RAM changed the experience more subtly but more fundamentally. The 2nd generation's 128 MB ceiling forced developers to aggressively compress assets and limit scene complexity. At 256 MB, the 3G could hold larger textures, run more complex physics, and switch between apps without the hard reloads that characterized its predecessor." }
+  - { text: "The 3G's commercial timing was fortunate. iOS gaming was entering its first serious growth phase, and the 3G arrived exactly as the market needed a non-phone device capable of running its most demanding titles. It seeded a generation of players who had no console — only a pocket-sized slab with a touch screen and an App Store account." }
+design:
+  eyebrow: "Industrial design"
+  icon: palette
+  anchor: design-section
+  heading: "The invisible upgrade."
+  body:
+  - { text: "The 3rd generation iPod touch was externally indistinguishable from the 2nd generation. Same curved polished stainless steel back. Same flush 3.5 mm headphone jack. Same 110 × 61.8 × 8.5 mm footprint. Same weight. The home button, the dock connector, the volume buttons — unchanged. A user holding both devices simultaneously could not tell them apart by touch." }
+  - { text: "This was a deliberate choice. Apple had invested in the 2G chassis — the curved stainless rear, the form that sat better in the hand than the flat aluminum of the original — and saw no reason to retire it after a single cycle. The industrial design story for the 3G was not the shell but the interior: what Apple had managed to fit inside an unchanged body." }
+  - { text: "The one visible difference was in the retail box. The 3G shipped with the new earbuds including a three-button remote and microphone — the same accessory included with the iPhone 3GS. The EarPods era was still two years away, but these earbuds represented a meaningful upgrade over the plain earbuds in previous iPod touch boxes." }
+  - { text: "For case manufacturers, the unchanged design was a gift and, briefly, a source of embarrassment. Cases designed for the 2G fit the 3G perfectly — but those same manufacturers had already tooled up for a 3G with a rear camera cutout, based on leaked designs that never materialised. For a few weeks in September 2009, camera cases for a camera-less device sat on the shelves at Best Buy." }
+controversies:
+  eyebrow: "Controversies"
+  icon: scale
+  anchor: controversies-section
+  heading: "Ghost in the machine."
+  body:
+  - { icon: camera-off, subtitle: "The missing camera", text: "Before the September 9 launch, leaked images showed a 3rd generation iPod touch prototype with a rear camera centerd on the back panel. Case manufacturers — including products stocked at Best Buy retail locations — built and shipped camera-cutout cases based on these leaks. When the device launched with no camera and an unchanged back panel, the disconnect was immediate. A subsequent iFixit teardown of the 3rd generation confirmed the story: the camera socket was physically present inside the device. The hardware had been designed to accommodate a camera. Something — widely attributed to manufacturing yield problems with the camera module — removed it from the final product. Apple never commented. Prototypes with functioning cameras later surfaced on eBay in 2010, corroborating the teardown findings." }
+  - { icon: tag, subtitle: "The 8GB labeling confusion", text: "At launch, Apple continued selling the 2nd generation iPod touch in 8 GB form alongside the new 3G. Resellers — not Apple — began labeling these as \"3rd generation,\" creating persistent confusion in secondary markets that lasted years. The 8 GB model was hardware-identical to the original 2nd gen MC revision: same ARM11 processor, same 128 MB RAM, same GPU. It was not a 3rd generation device by any internal measure. Apple never publicly addressed the mislabeling." }
+  - { icon: ban, subtitle: "The iOS 6 cutoff", text: "The 3G's ARMv7 Cortex-A8 architecture nominally met the hardware requirements Apple later cited for iOS 6 compatibility. The decision to exclude it was not driven by an absolute hardware barrier — the iPhone 3GS, using the same SoC family, received iOS 6. The practical effect was that owners of a device discontinued in September 2010 lost software support in September 2012: a window of less than 24 months post-sale." }
 ---
 
 <!-- ═══════════════════════════════════════════════════════════════
@@ -385,82 +414,10 @@ window.WIKI_TOC = {
 // Copy this file, update PAGE_DATA and TIMELINE. Everything renders.
 // ═══════════════════════════════════════════════════════════════════
 var PAGE_DATA = {
-
-  // ── Meta ─────────────────────────────────────────────────────────
-  wikiHome:    "/apple-ipod-touch-3g.html",
-  pageTitle:   "iPod touch (3rd generation) — Apple · ViziWiki",
-  wikiTitle:   "Apple",
-
-  // ── Hero ─────────────────────────────────────────────────────────
-
-  // ── Overview ─────────────────────────────────────────────────────
-
-  // ── Photo rail ───────────────────────────────────────────────────
-  // photos → front-matter photo_rail (photo-rail bank)
-
-  // ── Timeline header ──────────────────────────────────────────────
-
-  // ── Generation delta ─────────────────────────────────────────────
-
-  // ── Configurations ───────────────────────────────────────────────
-
-  // ── Cultural impact / gaming ─────────────────────────────────────
-  gaming: {
-    heading: "The game machine.",
-    paragraphs: [
-      "No previous iPod touch had been sold primarily as a gaming device. The third generation changed that. Apple\'s September 2009 event benchmarked the 3G against the Nintendo DS and the Sony PlayStation Portable — two devices that had defined portable gaming for nearly a decade — and claimed superiority on available software alone. The App Store already carried over 21,000 game titles.",
-      "The hardware justified the pitch. The PowerVR SGX535 GPU supported OpenGL ES 2.0, enabling per-pixel lighting, bloom effects, and shader-driven rendering that the previous generation\'s MBX Lite could not produce. Titles like <strong>Modern Combat</strong>, <strong>Infinity Blade</strong>, and <strong>Real Racing</strong> were built specifically for the 3G\'s graphics ceiling.",
-      "Doubled RAM changed the experience more subtly but more fundamentally. The 2nd generation\'s 128 MB ceiling forced developers to aggressively compress assets and limit scene complexity. At 256 MB, the 3G could hold larger textures, run more complex physics, and switch between apps without the hard reloads that characterized its predecessor.",
-      "The 3G\'s commercial timing was fortunate. iOS gaming was entering its first serious growth phase, and the 3G arrived exactly as the market needed a non-phone device capable of running its most demanding titles. It seeded a generation of players who had no console — only a pocket-sized slab with a touch screen and an App Store account."
-    ],
-    images: [],  // ← add gaming images here
-  },
-
-  // ── Jailbreaking — set to null, 3G jailbreak less architecturally notable
-  // The 3G was jailbreakable via software exploits (GreenPois0n, RedSn0w)
-  // but had no hardware-level BootROM exploit like the 2G
-  jailbreak: null,
-
-  // ── Budget — set to null, 3G was not a budget device
-  budget: null,
-
-  // ── Industrial design ────────────────────────────────────────────
-  design: {
-    heading: "The invisible upgrade.",
-    paragraphs: [
-      "The 3rd generation iPod touch was externally indistinguishable from the 2nd generation. Same curved polished stainless steel back. Same flush 3.5 mm headphone jack. Same 110 × 61.8 × 8.5 mm footprint. Same weight. The home button, the dock connector, the volume buttons — unchanged. A user holding both devices simultaneously could not tell them apart by touch.",
-      "This was a deliberate choice. Apple had invested in the 2G chassis — the curved stainless rear, the form that sat better in the hand than the flat aluminum of the original — and saw no reason to retire it after a single cycle. The industrial design story for the 3G was not the shell but the interior: what Apple had managed to fit inside an unchanged body.",
-      "The one visible difference was in the retail box. The 3G shipped with the new earbuds including a three-button remote and microphone — the same accessory included with the iPhone 3GS. The EarPods era was still two years away, but these earbuds represented a meaningful upgrade over the plain earbuds in previous iPod touch boxes.",
-      "For case manufacturers, the unchanged design was a gift and, briefly, a source of embarrassment. Cases designed for the 2G fit the 3G perfectly — but those same manufacturers had already tooled up for a 3G with a rear camera cutout, based on leaked designs that never materialised. For a few weeks in September 2009, camera cases for a camera-less device sat on the shelves at Best Buy."
-    ],
-    images: [],  // ← add design images here
-  },
-
-  // ── Controversies ────────────────────────────────────────────────
-  controversies: {
-    heading: "Ghost in the machine.",
-    items: [
-      {
-        icon:  '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" x2="22" y1="2" y2="22"/><path d="M7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16"/><path d="M9.5 4h5L17 7h3a2 2 0 0 1 2 2v7.5"/><path d="M14.121 15.121A3 3 0 1 1 9.88 10.88"/></svg>',
-        title: "The missing camera",
-        body:  "Before the September 9 launch, leaked images showed a 3rd generation iPod touch prototype with a rear camera centerd on the back panel. Case manufacturers — including products stocked at Best Buy retail locations — built and shipped camera-cutout cases based on these leaks. When the device launched with no camera and an unchanged back panel, the disconnect was immediate. A subsequent iFixit teardown of the 3rd generation confirmed the story: the camera socket was physically present inside the device. The hardware had been designed to accommodate a camera. Something — widely attributed to manufacturing yield problems with the camera module — removed it from the final product. Apple never commented. Prototypes with functioning cameras later surfaced on eBay in 2010, corroborating the teardown findings."
-      },
-      {
-        icon:  '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>',
-        title: "The 8GB labelling confusion",
-        body:  "At launch, Apple continued selling the 2nd generation iPod touch in 8 GB form alongside the new 3G. Resellers — not Apple — began labelling these as \"3rd generation,\" creating persistent confusion in secondary markets that lasted years. The 8 GB model was hardware-identical to the original 2nd gen MC revision: same ARM11 processor, same 128 MB RAM, same GPU. It was not a 3rd generation device by any internal measure. Apple never publicly addressed the mislabelling."
-      },
-      {
-        icon:  '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg>',
-        title: "The iOS 6 cutoff",
-        body:  "The 3G\'s ARMv7 Cortex-A8 architecture nominally met the hardware requirements Apple later cited for iOS 6 compatibility. The decision to exclude it was not driven by an absolute hardware barrier — the iPhone 3GS, using the same SoC family, received iOS 6. The practical effect was that owners of a device discontinued in September 2010 lost software support in September 2012: a window of less than 24 months post-sale."
-      },
-    ],
-    images: [],  // ← add controversies images here
-  },
-
-  // ── Technical specifications ──────────────────────────────────────
-
-}; // end PAGE_DATA
+  "wikiHome": "/apple-ipod-touch-3g.html",
+  "pageTitle": "iPod touch (3rd generation) — Apple · ViziWiki",
+  "wikiTitle": "Apple",
+  "jailbreak": null
+}; // end PAGE_DATA (migrated sections live in front matter)
 
 </script>

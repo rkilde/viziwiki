@@ -284,6 +284,24 @@
   function infoIHtml(html) { return '<span class="dr-info" tabindex="0" data-tip-html="' + String(html == null ? '' : html).replace(/&/g, '&amp;').replace(/"/g, '&quot;') + '">' + INFO_SVG + '</span>'; }
   // append a shared info "i" (the one master control) to a parent element
   function infoIcon(parent, tip) { if (!parent) return; var s = document.createElement('span'); s.innerHTML = infoI(tip); parent.appendChild(s.firstChild); }
+
+  // ── shared icon picker — the names are DERIVED from the canon sprite that the
+  // canvas injects (each <symbol id="ic-NAME">), never a hand-kept list. `path`
+  // is the icon field's doc path; picking → set:, "Remove icon" → rm:.
+  function peIconNames() {
+    if (window.__peIcons) return window.__peIcons;
+    window.__peIcons = qsa('svg symbol[id^="ic-"]').map(function (s) { return s.id.replace(/^ic-/, ''); }).sort();
+    return window.__peIcons;
+  }
+  function openIconPicker(btn, path, cur, label) {
+    var names = peIconNames();
+    var html = '<div class="cc-pop-label">' + (label || 'Icon') + '</div><div class="cc-icons">'
+      + names.map(function (n) { return '<button class="cc-icon' + (n === cur ? ' sel' : '') + '" data-n="' + n + '" title="' + n + '"><svg class="wiki-icon" viewBox="0 0 24 24"><use href="#ic-' + n + '"></use></svg></button>'; }).join('')
+      + '</div>' + (cur ? '<button class="cc-rm">Remove icon</button>' : '');
+    var pop = openPop(btn, '', html, { cls: 'icon-pop' });
+    qsa('.cc-icon', pop).forEach(function (b) { b.onclick = function () { closePop(); A('set:' + path + ':' + b.getAttribute('data-n')); }; });
+    var rm = qs('.cc-rm', pop); if (rm) rm.onclick = function () { closePop(); A('rm:' + path); };
+  }
   function dockBtn(icon, tip, cls, onclick) {
     var b = document.createElement('button');
     b.className = 'cc-btn' + (cls ? ' ' + cls : '');
@@ -1435,22 +1453,8 @@
         var cardsMin = cardsRule.min != null ? cardsRule.min : 1;
         var grid = qs('.spec-grid', secEl);
 
-        // icon names are DERIVED from the canon sprite injected into the canvas
-        // (each <symbol id="ic-NAME">) — never a hand-kept list.
-        var iconNames = function () {
-          if (window.__peIcons) return window.__peIcons;
-          window.__peIcons = qsa('svg symbol[id^="ic-"]').map(function (s) { return s.id.replace(/^ic-/, ''); }).sort();
-          return window.__peIcons;
-        };
-        var openIconPop = function (btn, cpre, cur) {
-          var names = iconNames();
-          var html = '<div class="cc-pop-label">Card icon</div><div class="cc-icons">'
-            + names.map(function (n) { return '<button class="cc-icon' + (n === cur ? ' sel' : '') + '" data-n="' + n + '" title="' + n + '"><svg class="wiki-icon" viewBox="0 0 24 24"><use href="#ic-' + n + '"></use></svg></button>'; }).join('')
-            + '</div>' + (cur ? '<button class="cc-rm">Remove icon</button>' : '');
-          var pop = openPop(btn, '', html, { cls: 'icon-pop' });
-          qsa('.cc-icon', pop).forEach(function (b) { b.onclick = function () { closePop(); A('set:' + cpre + 'icon:' + b.getAttribute('data-n')); }; });
-          var rm = qs('.cc-rm', pop); if (rm) rm.onclick = function () { closePop(); A('rm:' + cpre + 'icon'); };
-        };
+        // icon picker — the shared, sprite-derived openIconPicker
+        var openIconPop = function (btn, cpre, cur) { openIconPicker(btn, cpre + 'icon', cur, 'Card icon'); };
 
         qsa('.spec-card', secEl).forEach(function (card, j) {
           var cpre = prefix + 'cards.' + j + '.';
@@ -1811,6 +1815,119 @@
         });
         // + photo — a card-sized dashed tile at the end of the rail
         if (prScroll) { var addP = addBtn('push:' + prefix + 'photos', '+ photo', true); addP.className = 'pe-add pr-add'; prScroll.appendChild(addP); }
+      }
+
+      // ── prose-rail: prose + an optional sticky side image rail. The ONLY bank
+      // with an editable eyebrow (text .ce + sprite icon picker — one bank, many
+      // section kinds). Body blocks: each <p> is a block; a preceding
+      // .wiki-section-subtitle belongs to the same block (subtitle + its own
+      // icon, both optional). The rail mirrors the photo-rail editor: click a
+      // card to set image URL + alt, three inline caption lines, add/remove;
+      // the whole rail is addable/removable (grammar optional field). ──
+      if (type === 'prose-rail') {
+        var eaA = function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); };
+        // eyebrow: text editable (icon stays outside the .ce), icon → picker
+        var ebA = qs('.wiki-section-eyebrow', secEl);
+        if (ebA) {
+          wrapCE(ebA, prefix + 'eyebrow', ['svg']);
+          var ebce = ebA.querySelector('.ce'); if (ebce) ebce.setAttribute('data-ph', (R('prose-rail.eyebrow').blank) || 'Section label');
+          var ebIc = qs('svg', ebA);
+          if (ebIc) {
+            ebIc.style.cursor = 'pointer';
+            ebIc.setAttribute('data-pe-scope', prefix + 'icon'); ebIc.setAttribute('data-pe-opens', '1');
+            ebIc.addEventListener('click', function (e) { e.stopPropagation(); openIconPicker(ebIc, prefix + 'icon', sdata.icon, 'Section icon'); });
+          }
+        }
+        wrapCE(qs('.wiki-section-title', secEl), prefix + 'heading');
+
+        // body blocks
+        var blocksMin = (R('prose-rail.body').min != null) ? R('prose-rail.body').min : 1;
+        var proseCol = qs('.wiki-section-prose', secEl);
+        var bps = proseCol ? qsa('.wiki-section-prose > p', secEl) : [];
+        bps.forEach(function (p, k) {
+          var bpre = prefix + 'body.' + k + '.';
+          var bd = (sdata.body && sdata.body[k]) || {};
+          wrapCE(p, bpre + 'text');
+          var sub = (p.previousElementSibling && p.previousElementSibling.classList && p.previousElementSibling.classList.contains('wiki-section-subtitle')) ? p.previousElementSibling : null;
+          if (sub) {
+            wrapCE(sub, bpre + 'subtitle', ['svg']);
+            var sce = sub.querySelector('.ce'); if (sce) sce.setAttribute('data-ph', (R('prose-rail.body[].subtitle').blank) || 'Subtitle');
+            var sic = qs('svg', sub);
+            if (sic) {
+              sic.style.cursor = 'pointer';
+              sic.setAttribute('data-pe-scope', bpre + 'icon'); sic.setAttribute('data-pe-opens', '1');
+              (function (el, bp, cur) { el.addEventListener('click', function (e) { e.stopPropagation(); openIconPicker(el, bp + 'icon', cur, 'Subtitle icon'); }); })(sic, bpre, bd.icon);
+            }
+            makeRemovable(sub, 'rm:' + bpre + 'subtitle', true);
+          } else {
+            var sb = addBtn('add:' + bpre + 'subtitle', '+ subtitle', true);
+            p.parentNode.insertBefore(sb, p);
+          }
+          if (bps.length > blocksMin) makeRemovable(p, 'rm:' + prefix + 'body.' + k, true);
+        });
+        if (proseCol) proseCol.appendChild(addBtn('push:' + prefix + 'body', '+ paragraph', true));
+
+        // the rail (optional) — present: edit in place + removable; absent: add it
+        var railEl = qs('.arch-rail', secEl);
+        if (railEl) {
+          var rt = qs('.arch-rail-title', railEl);
+          if (rt) { wrapCE(rt, prefix + 'rail.title'); var rtce = rt.querySelector('.ce'); if (rtce) rtce.setAttribute('data-ph', (R('prose-rail.rail.title').blank) || 'Archive'); }
+          makeRemovable(railEl, 'rm:' + prefix + 'rail');
+
+          var AR_PH = 'data:image/svg+xml,' + encodeURIComponent(
+            "<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'><rect width='240' height='240' fill='none'/></svg>");
+          var arSrcBlank = (R('prose-rail.rail.photos[].src').blank) || 'image URL';
+          var arAltBlank = (R('prose-rail.rail.photos[].alt').blank) || 'describe the photo';
+          var arMin = (R('prose-rail.rail.photos').min != null) ? R('prose-rail.rail.photos').min : 1;
+          var openArImgPop = function (anchor, ppre, pd, card) {
+            var html = '<div class="cc-pop-label">Image URL</div><input type="text" class="cc-img-url" placeholder="' + eaA(arSrcBlank) + '" value="' + eaA(pd.src) + '">'
+              + '<div class="cc-pop-label" style="margin-top:11px">Alt text <span class="cc-opt">(for accessibility)</span> ' + infoI('A short written description of the photo, for accessibility — screen readers read it aloud, and it shows if the image fails to load. It is NOT visible on the page. Optional.') + '</div><input type="text" class="cc-img-alt" placeholder="' + eaA(arAltBlank) + '" value="' + eaA(pd.alt) + '">'
+              + '<button class="cc-apply cc-img-apply">Apply</button>';
+            var pop = openPop(anchor, '', html, { cls: 'lane-pop img-pop', onClose: function () { A('commit'); } });
+            var u = qs('.cc-img-url', pop), a = qs('.cc-img-alt', pop), im = card && qs('img', card);
+            var enterBlurA = function (el) { el.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); el.blur(); } }); };
+            if (u) { enterBlurA(u); u.addEventListener('input', function () { PV(ppre + 'src', u.value); if (im) im.src = u.value || AR_PH; if (card) card.classList.toggle('pe-img-empty', !u.value); }); }
+            if (a) { enterBlurA(a); a.addEventListener('input', function () { PV(ppre + 'alt', a.value); if (im) im.alt = a.value; }); }
+            var ap = qs('.cc-img-apply', pop); if (ap) ap.onclick = function () { closePop(); A('commit'); };
+          };
+          var arCards = qsa('.arch-rail-card', secEl);
+          arCards.forEach(function (card, k) {
+            var ppre = prefix + 'rail.photos.' + k + '.';
+            var pd = (sdata.rail && sdata.rail.photos && sdata.rail.photos[k]) || {};
+            var im = qs('img', card);
+            if (!pd.src) { card.classList.add('pe-img-empty'); if (im) im.src = AR_PH; }
+            if (im) im.style.cursor = 'pointer';
+            // the CARD is the jump target + opener (src + alt share one popover;
+            // flashing the whole slot is the visible feedback)
+            card.style.cursor = 'pointer';
+            card.setAttribute('data-pe-scope', ppre + 'src'); card.setAttribute('data-pe-opens', '1');
+            card.setAttribute('data-pe-jump', ppre + 'src ' + ppre + 'alt');
+            (function (pp, d, anchor, c) { c.addEventListener('click', function (e) {
+              if (e.target.closest && e.target.closest('.ce, .pe-tag-rm')) return;
+              e.stopPropagation(); openArImgPop(anchor || c, pp, d, c);
+            }); })(ppre, pd, im, card);
+            // caption: the MASTER three-line format, each inline-editable
+            var cap = qs('.arch-rail-caption', card);
+            if (cap) {
+              var st = qs('strong', cap); if (st) { wrapCE(st, ppre + 'strong'); var s1 = st.querySelector('.ce'); if (s1) s1.setAttribute('data-ph', (R('prose-rail.rail.photos[].strong').blank) || 'Image Title'); }
+              var cl = qs('.arail-cap-line', cap); if (cl) { wrapCE(cl, ppre + 'caption'); var s2 = cl.querySelector('.ce'); if (s2) s2.setAttribute('data-ph', (R('prose-rail.rail.photos[].caption').blank) || 'Caption'); }
+              var cs = qs('.arail-cap-src', cap); if (cs) { wrapCE(cs, ppre + 'source'); var s3 = cs.querySelector('.ce'); if (s3) s3.setAttribute('data-ph', (R('prose-rail.rail.photos[].source').blank) || '· source'); }
+            }
+            if (arCards.length > arMin) makeRemovable(card, 'rm:' + prefix + 'rail.photos.' + k, true);
+          });
+          var addAr = addBtn('push:' + prefix + 'rail.photos', '+ photo', true);
+          addAr.className = 'pe-add ar-add';
+          railEl.appendChild(addAr);
+        } else {
+          // no rail → a dashed "+ image rail" column beside the prose
+          var colsA = qs('.prose-rail-cols', secEl);
+          if (colsA) {
+            colsA.classList.remove('prose-rail-solo');   // open the second column for the affordance
+            var addRail = addBtn('add:' + prefix + 'rail', '+ image rail', true);
+            addRail.className = 'pe-add ar-add-rail';
+            colsA.appendChild(addRail);
+          }
+        }
       }
 
       // ── lifecycle-lane: the OS-support ribbon. Inline .ce on the heading,

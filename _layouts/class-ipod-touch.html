@@ -36,36 +36,21 @@ layout: default
 
 {% include sections/config-section.html data=page.config %}
 
-<section class="gaming-section wiki-section" data-tone="a" id="gaming-section">
-  <div id="gaming-content"></div>
-</section>
+{%- if page.gaming -%}{% include sections/prose-rail-section.html data=page.gaming %}{%- endif -%}
 
 <section class="jailbreak-section wiki-section" data-tone="a" id="jailbreak-section">
   <div id="jailbreak-content"></div>
 </section>
 
-<section class="budget-section wiki-section" data-tone="a" id="budget-section">
-  <div id="budget-content"></div>
-</section>
+{%- if page.budget -%}{% include sections/prose-rail-section.html data=page.budget %}{%- endif -%}
 
-<section class="design-section wiki-section" data-tone="a" id="design-section">
-  <div id="design-content"></div>
-</section>
+{%- if page.design -%}{% include sections/prose-rail-section.html data=page.design %}{%- endif -%}
 
 {% include sections/os-section.html data=page.os %}
 
-<section class="controversies-section wiki-section" data-tone="a" id="controversies-section">
-  <div id="controversies-content"></div>
-</section>
+{%- if page.controversies -%}{% include sections/prose-rail-section.html data=page.controversies %}{%- endif -%}
 
 {% include sections/spec-section.html data=page.spec %}
-
-<!-- Lightbox -->
-<div class="lb-backdrop" id="lb" onclick="lbClose(event)">
-  <button class="lb-close" onclick="lbHide()">✕</button>
-  <img class="lb-img" id="lbImg" src="" alt="" onclick="event.stopPropagation()">
-  <div class="lb-caption" id="lbCaption"></div>
-</div>
 
 <!-- Shared render engine -->
 <script src="/wiki-ipod-touch.js"></script>

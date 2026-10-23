@@ -176,16 +176,42 @@ the Hardware/Software rows: label + old→new + a color chip via a derived enum
 popover, a `no_old` "before" toggle, per-group add/remove; intro/footnote are
 renderer-seeded sentinel "+" slots. Guard: case 13.)
 
-**Photo-rail bank — CANONIZED (onboarding next).** The iPod horizontal photo rail is
+**Photo-rail bank — DONE (canonized + onboarded).** The iPod horizontal photo rail is
 extracted off the legacy `wiki-ipod-touch.js` engine into a bank: a headerless,
-full-bleed scroller of image cards (no "Photo archive" label — photos only), data
-`photo_rail.photos[]{ src, alt, strong?, caption? }` with `src` typed **`media`**
-(a URL today; a Supabase Storage upload later, no bank/output change). `bank-photo-rail.css`
+full-bleed scroller of image cards, data `photo_rail.photos[]` in the **MASTER
+image-caption format** — `src` (typed **`media`**: a URL today, a Supabase Storage
+upload later, no bank/output change) + optional `alt`, then three optional caption
+lines `strong` (Image Title) / `caption` / `source` (· source). `bank-photo-rail.css`
 = single source; the include `_includes/visuals/photo-rail/` + `sections/photo-rail-section.html`
 (registry `photo-rail-section`, full_bleed, no h2). Rolled out to all 6 iPod pages
 (photos moved JS → front-matter; `renderPhotoRail` removed). Click-to-zoom lightbox is
-a self-contained live-only script (builder strips it; no geometry mutation). NOT yet
-onboarded to the builder picker/decorator — that's the next step.
+a self-contained live-only script (builder strips it; no geometry mutation). Builder:
+picker tile, image popover (URL + alt with an accessibility "i"; alt optional), inline
+caption lines, data-then-rerender drag reorder, transparent placeholder so empty slots
+hold their size, slot-level readiness jump+flash. Guard: case 14.
+
+**Prose-rail bank — DONE (canonized + onboarded).** The iPod "prose + side image
+rail" pattern (Cultural impact / Industrial design / Controversies — and, railless,
+Market positioning) extracted into ONE unified bank: `prose-rail` — the FIRST bank
+with an **editable eyebrow + sprite icon** (one bank serves many section kinds).
+Data: `eyebrow`, `icon`, `heading`, `anchor` (TOC id), `body[]` of blocks
+`{ icon?, subtitle?, text }` (plain paragraphs, or the subtitled controversies
+style), and an optional `rail { title, photos[] }` — photos in the same MASTER
+caption format as photo-rail. The rail is the sticky dark "archive" column
+(horizontal strip on mobile) with its own self-contained lightbox.
+`bank-prose-rail.css` = single source (`--arail-*` tokens);
+`sections/prose-rail-section.html` + `visuals/prose-rail/prose-rail.html`
+(registry `prose-rail-section`, eyebrow/icon editable, hosts `[prose-rail]`).
+Rolled out to all 6 iPod pages: `PAGE_DATA.gaming/budget/design/controversies` →
+front-matter blocks; `renderProseRail`/`renderBudget`/`renderControversies`/
+`imgRail`/`addDragScroll` + the `.design-*`/`.lb-*` CSS + the layout's lightbox
+markup all removed — **the legacy iPod JS engine is now jailbreak-only**. 8 new
+sprite icons (lock, hourglass, camera-off, ban, video, cable, alert-circle,
+memory-card). Builder: picker tile ("Prose + Image Rail"), shared sprite-derived
+icon picker (openIconPicker — spec reuses it), block add/remove + "+ subtitle",
+rail add/remove + the photo-rail-style card editor. `extract-apple` now carries
+photo_rail + the four prose-rail keys as body sections (they load in the editor).
+Guard: case 15.
 
 ### The builder app (`_builder/`) — the 1.0 product, actively built
 A Next.js app (previewed on **Vercel**) that renders a page by EXECUTING the repo's

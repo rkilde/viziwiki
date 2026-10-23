@@ -1,0 +1,34 @@
+{%- comment -%}
+  PROSE-RAIL SECTION (a page-section type — the framing + the prose column).
+  One bank serves many section kinds (Cultural impact, Industrial design,
+  Controversies, Market positioning …), so unlike every other section the
+  eyebrow TEXT + ICON are data (grammar `eyebrow` + `icon`), not locked canon.
+  Layout: a two-column grid — prose left, the sticky archive rail right
+  (via the dispatcher). Omit `rail` → the prose runs full width.
+  Body is a list of BLOCKS: { icon?, subtitle?, text } — a block with a
+  subtitle renders the run-in subtitle line (its icon defaults to the
+  section icon), then its paragraph.
+  Usage: {% include sections/prose-rail-section.html data=page.design %}
+  Data: eyebrow, icon?, heading, tone?, anchor?, body[], rail?{title, photos[]}
+{%- endcomment -%}
+{%- assign data = include.data -%}
+{%- assign visual = data.visual | default: 'prose-rail' -%}
+{%- assign secic = data.icon | default: 'sparkles' -%}
+<section class="wiki-section prose-rail" data-tone="{{ data.tone | default: 'a' }}" id="{{ data.anchor | default: 'prose-rail-section' }}">
+  <div class="wiki-section-inner">
+    <div class="prose-rail-cols{% unless data.rail %} prose-rail-solo{% endunless %}">
+      <div class="wiki-section-prose">
+        <div class="wiki-section-eyebrow">{% include icon.html name=secic %} {{ data.eyebrow }}</div>
+        <h2 class="wiki-section-title" style="margin-bottom:24px;">{{ data.heading }}</h2>
+        {%- for b in data.body -%}
+          {%- if b.subtitle and b.subtitle != blank -%}
+            {%- assign bic = b.icon | default: secic -%}
+            <div class="wiki-section-subtitle">{% include icon.html name=bic %}{{ b.subtitle }}</div>
+          {%- endif -%}
+          <p>{{ b.text }}</p>
+        {%- endfor -%}
+      </div>
+      {%- if data.rail -%}{% include visual.html type=visual data=data %}{%- endif -%}
+    </div>
+  </div>
+</section>

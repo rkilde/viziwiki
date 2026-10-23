@@ -169,6 +169,27 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 | `photos[].caption` |  | text | `Caption` |
 | `photos[].source` |  | text | `· source` |
 
+## prose-rail
+
+| Field | Req | Type | Placeholder |
+|---|---|---|---|
+| `eyebrow` | • | text | `Section label` |
+| `icon` |  | icon | `sparkles`  _(default)_ |
+| `heading` | • | text | `Section heading` |
+| `tone` |  | enum | `a`  _(choice: a · b · special)_ |
+| `body` | • | list<block> | _(template — see sub-fields)_ |
+| `body[].icon` |  | icon | — |
+| `body[].subtitle` |  | text | `Subtitle` |
+| `body[].text` | • | richtext | `Write this section's prose…` |
+| `rail` |  | rail | _(template — see sub-fields)_ |
+| `rail.title` |  | text | `Archive` |
+| `rail.photos` | • | list<photo> | _(template — see sub-fields)_ |
+| `rail.photos[].src` | • | media | `image URL` |
+| `rail.photos[].alt` |  | text | `describe the photo` |
+| `rail.photos[].strong` |  | text | `Image Title` |
+| `rail.photos[].caption` |  | text | `Caption` |
+| `rail.photos[].source` |  | text | `· source` |
+
 ## catalog
 
 | Field | Req | Type | Placeholder |
