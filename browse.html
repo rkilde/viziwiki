@@ -410,7 +410,9 @@ function coverTile(w){
     : `background-image:linear-gradient(to bottom right,${cat?cat.from:'#2a2630'},${cat?cat.to:'#4a4454'})`;
   return `<a class="cover c-themed" href="${href}" style="${art}">
     ${cover.kind === 'art' ? '' : `<div class="sheen"></div>
-    <svg class="wiki-icon glyph"><use href="#ic-${cat?cat.icon:'sparkles'}"></use></svg>`}
+    ${cat && cat.iconSvg
+      ? `<svg class="wiki-icon glyph" viewBox="0 0 24 24">${cat.iconSvg}</svg>`
+      : `<svg class="wiki-icon glyph"><use href="#ic-${cat?cat.icon:'sparkles'}"></use></svg>`}`}
     <div class="c-genre">${genre}</div>
     <span class="c-soon">${w.status === 'coming_soon' ? 'Coming soon' : 'Indexed'}</span>
     <div class="c-foot">

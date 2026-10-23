@@ -2,9 +2,9 @@
   "name": "viziwiki-builder",
   "version": "0.0.1",
   "private": true,
-  "description": "ViziWiki 1.0 builder — Phase 1 vertical slice (spec grid). Run with `npm run dev`.",
+  "description": "ViziWiki 1.0 builder \u2014 Phase 1 vertical slice (spec grid). Run with `npm run dev`.",
   "scripts": {
-    "gen": "node scripts/copy-canon.mjs && node scripts/extract-grammar.mjs && node scripts/extract-includes.mjs && node scripts/extract-visuals.mjs && node scripts/extract-taco-bell.mjs && node scripts/extract-apple.mjs && node scripts/gen-placeholders.mjs",
+    "gen": "node scripts/copy-canon.mjs && node scripts/extract-grammar.mjs && node scripts/extract-includes.mjs && node scripts/extract-visuals.mjs && node scripts/extract-taco-bell.mjs && node scripts/extract-apple.mjs && node scripts/gen-lucide.mjs && node scripts/gen-placeholders.mjs",
     "dev": "next dev",
     "test": "node scripts/audit-grammar-includes.mjs && node scripts/audit-skin-contract.mjs && node scripts/audit-seeds.mjs && node scripts/test-derived-renderer.mjs && node scripts/test-golden-render.mjs",
     "golden": "node scripts/test-golden-render.mjs --update",
@@ -27,6 +27,7 @@
     "@types/react": "18.3.11",
     "@types/react-dom": "18.3.1",
     "jsdom": "^29.1.1",
+    "lucide-static": "^1.61.0",
     "typescript": "5.6.3"
   }
 }

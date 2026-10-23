@@ -98,9 +98,13 @@ export function wikiCoverTile(w, taxonomy) {
     ? `background-image:linear-gradient(to top,rgba(10,8,12,.78) 0%,rgba(10,8,12,.12) 45%,rgba(10,8,12,.18) 100%),url('${escapeHtml(cover.src)}');background-size:cover;background-position:center`
     : `background-image:linear-gradient(to bottom right,${from},${to})`;
   const glyph = cover.kind === 'art' ? null : (cover.glyph || (cat && cat.icon) || null);
+  // a category icon beyond the canon sprite carries its vector body
+  // (attachIconBodies) — rendered inline; sprite icons stay <use> refs
+  const glyphSvg = cover.kind === 'art' ? null : (!cover.glyph && cat && cat.iconSvg) || null;
   const tag = w.tagline || w.blurb || '';
   return `<a class="rd-cover" href="/read/${encodeURIComponent(w.id)}" style="${art}">` +
-    (glyph ? `<svg class="rd-cover-glyph" aria-hidden="true"><use href="#ic-${escapeHtml(glyph)}"></use></svg>` : '') +
+    (glyphSvg ? `<svg class="rd-cover-glyph" viewBox="0 0 24 24" aria-hidden="true">${glyphSvg}</svg>`
+      : glyph ? `<svg class="rd-cover-glyph" aria-hidden="true"><use href="#ic-${escapeHtml(glyph)}"></use></svg>` : '') +
     `<span class="rd-cover-genre">${escapeHtml(cat ? cat.label : 'Wiki')}</span>` +
     (w.status === 'coming_soon' ? `<span class="rd-cover-soon">Coming soon</span>` : '') +
     `<span class="rd-cover-foot"><span class="rd-cover-title">${escapeHtml(w.name)}</span>` +

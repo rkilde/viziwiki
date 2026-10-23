@@ -6,8 +6,10 @@
 // resolved (lib/taxonomy.mjs — the same pipe /read uses), edge-cached.
 import { NextResponse } from 'next/server';
 import { serverSupabase } from '../../../lib/supabase-server';
-import { directoryPayload } from '../../../lib/taxonomy.mjs';
+import { attachIconBodies, directoryPayload } from '../../../lib/taxonomy.mjs';
 import taxonomyCanon from '../../../data/wiki-categories.json';
+import includes from '../../../data/includes.json';
+import lucide from '../../../data/lucide-library.json';
 
 export const revalidate = 60;   // cache until edited (same model as /read)
 
@@ -24,7 +26,10 @@ export async function GET() {
   if (w.error) w = await db.from('wikis').select('id, name').order('name');
   if (w.error) return NextResponse.json({ error: 'directory unavailable' }, { status: 503, headers: CORS });
   const c = await db.from('wiki_categories').select('key, label, icon, grad_from, grad_to');
-  return NextResponse.json(
-    directoryPayload(w.data || [], taxonomyCanon as any, c.error ? [] : c.data || []),
-    { headers: CORS });
+  const payload = directoryPayload(w.data || [], taxonomyCanon as any, c.error ? [] : c.data || []);
+  // category icons beyond the canon sprite ride the feed WITH their vector
+  // body (resolved from the pinned Lucide library) so consumers render them
+  // inline — the browse page needs no sprite edit for any library icon
+  payload.categories = attachIconBodies(payload.categories, (includes as any).sprite, lucide as any);
+  return NextResponse.json(payload, { headers: CORS });
 }

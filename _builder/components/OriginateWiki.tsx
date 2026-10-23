@@ -6,6 +6,7 @@ import taxonomyCanon from '../data/wiki-categories.json';
 import { mergeTaxonomy, resolveColor, slugifyId, spriteIconNames, validateCategory, validateNewWiki } from '../lib/taxonomy.mjs';
 import { COVER_CSS, wikiCoverTile } from '../lib/reader-core.mjs';
 import { GenArtRow } from './GenArt';
+import { LucidePicker, loadLucide, type LucideLib } from './LucidePicker';
 
 // The admin "New wiki" flow — ORIGINATION (the origination arc, iteration 2).
 // Identity in, wiki out: name → id, categories from the MERGED taxonomy (the
@@ -44,7 +45,13 @@ export function OriginateWiki({ existingIds, onClose, onCreated, genAsUser = fal
   useEffect(() => { contentStore?.listCategories().then(setDbCats).catch(() => {}); }, []);
 
   const tax = useMemo(() => mergeTaxonomy(taxonomyCanon as any, dbCats), [dbCats]);
-  const icons = useMemo(() => spriteIconNames(ICON_SPRITE), []);
+  // valid icons for a new category = canon sprite ∪ the full Lucide library
+  // (loaded when the new-category form opens)
+  const [lib, setLib] = useState<LucideLib | null>(null);
+  useEffect(() => { if (newCat) loadLucide().then(setLib); }, [newCat]);
+  const icons = useMemo(
+    () => Array.from(new Set([...spriteIconNames(ICON_SPRITE), ...(lib?.icons.map((i) => i.n) ?? [])])),
+    [lib]);
   const palette = Object.entries((taxonomyCanon as any).palette as Record<string, string>);
   const wikiId = idTouched ? id : slugifyId(name);
 
@@ -141,14 +148,7 @@ export function OriginateWiki({ existingIds, onClose, onCreated, genAsUser = fal
               <div className="ow-newcat">
                 <input className="acct-input" placeholder="category label — e.g. Tabletop Games" value={newCat.label}
                   onChange={(e) => setNewCat({ ...newCat, label: e.target.value })} />
-                <div className="ow-icons">
-                  {icons.map((ic) => (
-                    <button key={ic} type="button" title={ic} className={`ow-icon ${newCat.icon === ic ? 'on' : ''}`}
-                      onClick={() => setNewCat({ ...newCat, icon: ic })}>
-                      <svg><use href={`#ic-${ic}`} /></svg>
-                    </button>
-                  ))}
-                </div>
+                <LucidePicker value={newCat.icon} onPick={(n) => setNewCat({ ...newCat, icon: n })} />
                 {swatchRow('from')}
                 {swatchRow('to')}
                 <div className="ow-newcat-actions">
