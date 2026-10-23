@@ -28,6 +28,25 @@
   }
   var optional = function (path) { var r = ruleFor(path); return !r || !r.required; };
 
+  // ── phase-2 roles: the signed-in account's editing capabilities, baked into
+  // the canvas by buildCanvas. Which cap a FIELD needs is DERIVED from its
+  // grammar rule (identity → titles; icon kind / tone enums → design; else
+  // text) — the same mapping as lib/caps.mjs fieldCap (case 17 guards both).
+  var CAPS = window.__PE_CAPS || { text: true, titles: true, structure: true, design: true };
+  var TITLE_FIELD = /(^|\.)(title|heading|name|eyebrow|subtitle|strong)$/;
+  function capForField(path) {
+    var r = ruleFor(path) || {};
+    var p = String(path || '').replace(/\.\d+(?=\.|$)/g, '');
+    if (r.kind === 'icon') return 'design';
+    if (/(^|\.)tone$/.test(p)) return 'design';
+    if (r.identity || TITLE_FIELD.test(p)) return 'titles';
+    return 'text';
+  }
+  var fieldAllowed = function (path) { return !!CAPS[capForField(path)]; };
+  // an inert, invisible stand-in for suppressed chrome (keeps callers safe —
+  // some override className, so `hidden` is the durable invisibility marker)
+  function peGhost() { var g = document.createElement('span'); g.hidden = true; g.style.display = 'none'; return g; }
+
   // "+" slot specs, keyed by the action carried in the sentinel. root = the
   // canonical element to replace (closest ancestor); no root = replace the
   // sentinel-bearing element itself. kind: aside|infobox specials.
@@ -141,6 +160,7 @@
   var qsa = function (s, r) { return [].slice.call((r || document).querySelectorAll(s)); };
 
   function addBtn(action, label, mini) {
+    if (!CAPS.structure) return peGhost();   // class gate: no add affordances
     var b = document.createElement('button');
     b.className = mini ? 'pe-mini-add' : 'pe-add';
     b.textContent = label;
@@ -150,6 +170,7 @@
     return b;
   }
   function addLine(action, label, pad) {
+    if (!CAPS.structure) return peGhost();   // class gate
     var d = document.createElement('div');
     d.className = 'pe-addline';
     if (pad) d.style.padding = pad;
@@ -220,6 +241,7 @@
   }
   function wrapCE(root, path, excl) {
     if (!root) return;
+    if (!fieldAllowed(path)) return;   // class gate: the field stays static
     var ph = phFor(path);
     if (root.matches && root.matches('input')) { // input placeholder → editable span
       var span = document.createElement('span');
@@ -257,7 +279,7 @@
 
   // ── 3) removable → corner × (only when grammar says the field is optional) ─
   function makeRemovable(el, action, mini, sibling) {
-    if (!el) return;
+    if (!el || !CAPS.structure) return;   // class gate: no remove affordances
     var b = document.createElement('button');
     b.className = mini ? 'pe-tag-rm' : 'pe-remove';
     b.title = 'Remove';
@@ -343,6 +365,7 @@
   // Once the motion settles, a deferred silent swap re-binds the now-stale
   // indices; the order already matches so it's visually identical (no flash).
   function dragReorder(container, cards, from, to, listPath) {
+    if (!CAPS.structure) return;   // class gate: no reordering
     if (from === to || !container || !cards.length) return;
     window.__peDragLock = 1;   // indices are stale until the deferred re-bind → block another drag
     var firsts = cards.map(function (c) { return c.getBoundingClientRect(); });          // FIRST positions
@@ -382,6 +405,10 @@
     el.style.left = left + 'px'; el.style.top = Math.max(10, Math.min(r.top + r.height / 2 - h / 2, window.innerHeight - h - 10)) + 'px';
   }
   function openPop(btn, accent, html, opts) {
+    // class gate: the icon picker is a DESIGN edit; every other popover edits
+    // content values/structure (dates, chips, images, status…) → editor+.
+    var need = (opts && opts.cls && /icon-pop/.test(opts.cls)) ? 'design' : 'structure';
+    if (!CAPS[need]) return peGhost();
     closePop(); opts = opts || {};
     var pop = document.createElement('div'); pop.className = 'cc-pop' + (opts.cls ? ' ' + opts.cls : '');
     if (accent) pop.style.setProperty('--cat-color', accent);
@@ -499,6 +526,9 @@
   // ── main ───────────────────────────────────────────────────────────────────
   window.__decorate = function () {
     var POLICY = window.__PE_POLICY || {};
+    // viewer (or signed-out): a clean read-only render — no editing chrome,
+    // no readiness payload (the parent hides the rail when nothing arrives)
+    if (!CAPS.text && !CAPS.titles && !CAPS.structure && !CAPS.design) return;
     sentinelPass();
 
     // hero card controls (both treatments are "cards" — canon naming)
@@ -605,16 +635,19 @@
       var cur = secEl.getAttribute('data-tone');
       var bar = document.createElement('div');
       bar.className = 'pe-sec-tools';
-      bar.appendChild(document.createTextNode(modes ? 'mode ' : 'tone '));
-      var pairs = modes ? Object.keys(modes).map(function (k) { return [k, modes[k]]; }) : tones.map(function (t) { return [t, t]; });
-      pairs.forEach(function (p) {
-        var b = document.createElement('button');
-        b.className = 'pe-tonebtn' + (cur === p[1] ? ' on' : '');
-        b.textContent = p[0];
-        b.onclick = function () { A(mkAction(p[1])); };
-        bar.appendChild(b);
-      });
+      if (CAPS.design) {   // class gate: tone is a DESIGN control
+        bar.appendChild(document.createTextNode(modes ? 'mode ' : 'tone '));
+        var pairs = modes ? Object.keys(modes).map(function (k) { return [k, modes[k]]; }) : tones.map(function (t) { return [t, t]; });
+        pairs.forEach(function (p) {
+          var b = document.createElement('button');
+          b.className = 'pe-tonebtn' + (cur === p[1] ? ' on' : '');
+          b.textContent = p[0];
+          b.onclick = function () { A(mkAction(p[1])); };
+          bar.appendChild(b);
+        });
+      }
       (extra || []).forEach(function (el) { bar.appendChild(el); });
+      if (!bar.childNodes.length) return;   // nothing this class may use
       secEl.classList.add('pe-sec');
       secEl.insertBefore(bar, secEl.firstChild);
     }

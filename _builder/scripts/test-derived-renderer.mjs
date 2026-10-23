@@ -755,5 +755,64 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(!validateDoc({ sections: [] }, grammar).ok, 'a doc missing the locked hero/overview is refused');
 }
 
+// ── case 17: roles — class→caps mapping + class-gated decoration ──
+{
+  console.log('case 17: roles — class caps, field/action gating, decorated surface per class');
+  const { capsFor, fieldCap, actionCap, CLASS_CAPS, NO_CAPS, canEditAnything } = await import('../lib/caps.mjs');
+  const { buildPolicy } = await import('../lib/policy.mjs');
+  const P = buildPolicy(grammar).fields;
+
+  ok(!('editor' in CLASS_CAPS), 'the shelved "editor" class does not exist');
+  ok(JSON.stringify(capsFor('viewer', null)) === JSON.stringify(NO_CAPS) && !canEditAnything(capsFor('viewer', null)), 'viewer: no capabilities');
+  const w = capsFor('contributor', 'writer');
+  ok(w.text && !w.titles && !w.structure && !w.design, 'writer: prose alone');
+  const dgn = capsFor('contributor', 'designer');
+  ok(!dgn.text && !dgn.titles && !dgn.structure && dgn.design, 'designer: design alone');
+  const cu = capsFor('contributor', 'curator');
+  ok(cu.text && cu.titles && cu.structure && cu.design, 'curator: everything (wiki scope lives in the DB + UI)');
+  ok(JSON.stringify(capsFor('admin', null)) === JSON.stringify(cu), 'admin: everything');
+  ok(JSON.stringify(capsFor('contributor', 'nope')) === JSON.stringify(NO_CAPS), 'unknown class → no capabilities');
+
+  // field caps DERIVE from grammar rules + the canon naming convention
+  ok(fieldCap('sections.0.data.body.0.text', P['prose-rail.body[].text']) === 'text', 'prose body → text');
+  ok(fieldCap('sections.0.data.heading', P['prose-rail.heading']) === 'titles', 'section heading → titles (naming convention)');
+  ok(fieldCap('sections.0.data.events.0.title', P['timeline.events[].title']) === 'titles', 'event title → titles (identity flag)');
+  ok(fieldCap('sections.0.data.categories.0.name', P['catalog.categories[].name']) === 'titles', 'catalog names → titles');
+  ok(fieldCap('sections.0.data.icon', P['prose-rail.icon']) === 'design', 'sprite icon field → design');
+  ok(fieldCap('sections.0.data.tone', P['prose-rail.tone']) === 'design', 'tone → design');
+  ok(fieldCap('sections.0.data.rail.photos.0.caption', P['prose-rail.rail.photos[].caption']) === 'text', 'photo caption → text');
+  ok(fieldCap('sections.0.data.rail.photos.0.strong', P['prose-rail.rail.photos[].strong']) === 'titles', 'photo Image Title → titles');
+
+  ok(actionCap('commit') === null, 'commit is always allowed');
+  ok(actionCap('setTone:a') === 'design' && actionCap('set:sections.0.data.body.0.icon:lock') === 'design', 'tone/icon actions → design');
+  ok(actionCap('push:sections.0.data.rail.photos') === 'structure' && actionCap('secRm:2') === 'structure' && actionCap('lmove:sections.0.data.body:0:1') === 'structure', 'mutating actions → structure');
+
+  // decorated surface per class (the prose-rail seed exercises all four caps)
+  const seed17 = JSON.parse(JSON.stringify(grammar.components['prose-rail'].seed));
+  const doc17 = {
+    hero: { eyebrow: null, title: 'T', subtitle: null, subtitle_meta: null, desc: 'D', stats: null, search: false, search_placeholder: '', spotlight: null, feature: null },
+    overview: { tone: 'b', heading: 'H', paragraphs: ['P'], infobox: null },
+    sections: [{ type: 'prose-rail', data: seed17 }],
+  };
+  const withCaps = (caps) => renderAndDecorate(doc17, false, undefined, (win) => { win.__PE_CAPS = caps; });
+
+  const dv = withCaps(capsFor('viewer', null));
+  ok(!dv.querySelector('.ce') && !dv.querySelector('.pe-add, .pe-mini-add, .pe-remove'), 'viewer: a clean render — zero editing chrome');
+
+  const dw = withCaps(capsFor('contributor', 'writer'));
+  ok(dw.querySelector('.wiki-section-prose > p .ce'), 'writer: prose editable');
+  ok(!dw.querySelector('.wiki-section-title .ce') && !dw.querySelector('.wiki-section-eyebrow .ce'), 'writer: headings/eyebrows stay static');
+  ok(!dw.querySelector('.pe-add:not([hidden]), .pe-mini-add:not([hidden]), .pe-remove, .pe-tag-rm'), 'writer: no add/remove chrome');
+  ok(!dw.querySelector('.pe-tonebtn'), 'writer: no tone controls');
+
+  const dd = withCaps(capsFor('contributor', 'designer'));
+  ok(dd.querySelector('.pe-tonebtn'), 'designer: tone controls present');
+  ok(!dd.querySelector('.ce'), 'designer: no text editing at all');
+  ok(!dd.querySelector('.pe-add:not([hidden]), .pe-mini-add:not([hidden])'), 'designer: no structural adds');
+
+  const dc = withCaps(capsFor('contributor', 'curator'));
+  ok(dc.querySelector('.wiki-section-title .ce') && dc.querySelector('.pe-mini-add') && dc.querySelector('.pe-tonebtn'), 'curator: titles + structure + design all live');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

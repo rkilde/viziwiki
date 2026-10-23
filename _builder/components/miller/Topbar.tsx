@@ -10,7 +10,7 @@ const Swatch = ({ color, label }: { color: string; label: string }) => (
 
 const WIKI_COLOR: Record<string, string> = { 'taco-bell': '#702082', 'apple': '#1d1d1f' };
 
-export function Topbar({ wikis, current, onSwitch, onNewWiki, level, onLevel }: { wikis: Wiki[]; current: Wiki; onSwitch: (w: Wiki) => void; onNewWiki: (name: string) => void; level: number; onLevel: (n: number) => void }) {
+export function Topbar({ wikis, current, onSwitch, onNewWiki, account }: { wikis: Wiki[]; current: Wiki; onSwitch: (w: Wiki) => void; onNewWiki: (name: string) => void; account?: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const [naming, setNaming] = useState(false);
   const [name, setName] = useState('');
@@ -67,12 +67,9 @@ export function Topbar({ wikis, current, onSwitch, onNewWiki, level, onLevel }: 
         <button className="vt-btn active" data-mode="columns">Columns</button>
       </div>
 
-      <div id="level-toggle" title="Admin only — preview the builder as a contributor access level">
-        <span className="lvl-label">Access</span>
-        {[1, 2, 3].map((n) => (
-          <button key={n} className={`vt-btn ${level === n ? 'active' : ''}`} onClick={() => onLevel(n)}>Level {n}</button>
-        ))}
-      </div>
+      {/* the account control (phase-2 roles) — sign-in / identity + class badge;
+          admins also get the "view as" class preview (the old level seam, real) */}
+      <div id="level-toggle">{account}</div>
 
       <div id="topbar-kbd">
         <span><span className="kbd">click</span> a page to preview</span>
