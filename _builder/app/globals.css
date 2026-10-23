@@ -443,6 +443,23 @@ button{ font-family:inherit; }
 .ow-preview{ position:sticky; top:0; display:flex; flex-direction:column; gap:8px; }
 .ow-preview .rd-cover{ pointer-events:none; }
 
+/* ════ category manager (admin tags) + identity button ════ */
+.wiki-identity-btn{ display:inline-flex; align-items:center; gap:5px; margin-left:4px; }
+.mc-modal{ width:min(640px, calc(100vw - 32px)); max-height:min(86vh, 900px); overflow-y:auto; }
+.mc-list{ display:flex; flex-direction:column; gap:4px; }
+.mc-row{ display:flex; align-items:center; gap:9px; padding:6px 8px; border:1px solid var(--border2); border-radius:8px; background:var(--bg3); }
+.mc-row.canon{ opacity:.78; }
+.mc-grad{ width:22px; height:22px; border-radius:6px; flex:none; border:1px solid rgba(255,255,255,.14); }
+.mc-ic{ width:14px; height:14px; flex:none; fill:none; stroke:var(--muted); stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.mc-label{ font-family:'Fraunces',serif; font-size:12px; font-weight:600; }
+.mc-key{ font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--dim); }
+.mc-usage{ font-family:'JetBrains Mono',monospace; font-size:8.5px; color:var(--muted); background:var(--bg4); border-radius:999px; padding:2px 7px; }
+.mc-lock{ margin-left:auto; display:inline-flex; align-items:center; gap:4px; font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--dim); }
+.mc-lock svg{ width:10px; height:10px; }
+.mc-acts{ margin-left:auto; display:inline-flex; gap:5px; }
+.mc-del{ color:#f87171; }
+.mc-empty{ font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--dim); padding:8px 4px; }
+
 /* ════ no-grant empty state (phase-2 wiki visibility) ════ */
 .no-grant{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
   min-height:60vh; text-align:center; padding:40px 24px; }

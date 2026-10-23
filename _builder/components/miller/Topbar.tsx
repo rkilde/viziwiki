@@ -10,7 +10,7 @@ const Swatch = ({ color, label }: { color: string; label: string }) => (
 
 const WIKI_COLOR: Record<string, string> = { 'taco-bell': '#702082', 'apple': '#1d1d1f' };
 
-export function Topbar({ wikis, current, onSwitch, onNewWiki, account }: { wikis: Wiki[]; current?: Wiki; onSwitch: (w: Wiki) => void; onNewWiki?: () => void; account?: React.ReactNode }) {
+export function Topbar({ wikis, current, onSwitch, onNewWiki, onEditIdentity, account }: { wikis: Wiki[]; current?: Wiki; onSwitch: (w: Wiki) => void; onNewWiki?: () => void; onEditIdentity?: () => void; account?: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const color = current ? (WIKI_COLOR[current.id] || '#9d7cf4') : '#9d7cf4';
 
@@ -55,6 +55,14 @@ export function Topbar({ wikis, current, onSwitch, onNewWiki, account }: { wikis
         )}
       </div>
       ) : null}
+      {current && onEditIdentity && (
+        /* the WIKI IDENTITY editor (tile cover art, tags, tagline, status) —
+           admin or this wiki's master */
+        <button className="vt-btn wiki-identity-btn" title={`Wiki identity — ${current.name}'s tile cover, tags, tagline, status`} onClick={onEditIdentity}>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg>
+          identity
+        </button>
+      )}
 
       <div id="view-toggle">
         <button className="vt-btn" disabled title="Coming soon">Tree</button>

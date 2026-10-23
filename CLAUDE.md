@@ -551,6 +551,19 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
     Remaining iteration-3 surfaces: home-page tiles, builder dashboard
     swatches off hardcoded WIKI_COLOR, the recommendations module (algorithm
     deferred, owner wants it later).
+  · **IDENTITY MANAGEMENT (DONE, Oct 2026):** two build-kit surfaces.
+    **Tags manager** (`components/ManageCategories.tsx`, admin-only "Tags"
+    topbar button): create/relabel/re-icon/regrade/delete ORIGINATED
+    categories (store: updateCategory/deleteCategory; delete confirms with
+    a usage count from wikis.categories); the canon 12 render as LOCKED
+    rows ("canon" + lock icon — editing those is a repo edit, never UI).
+    **Wiki identity editor** (`components/WikiIdentity.tsx`, "identity"
+    button beside the switcher; admin or that wiki's master): alter the
+    CURRENT wiki's tile cover (themed / art URL / keep-bespoke), tags,
+    tagline, blurb, status — same live reader-rendered preview as
+    origination (store: updateWikiIdentity — identity only, never
+    id/slug/skin/content). Both ping /read + /api/directory on save so
+    every surface updates in seconds.
 - **Vizi-verse** (the narrative side; currently only `top-10.html`) — deferred.
 
 ---

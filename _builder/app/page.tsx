@@ -8,6 +8,8 @@ import { PageEditor } from '../components/editor/PageEditor';
 import { blankPage, loadUserWikis, loadChildren, saveChildren, mergeWiki, wikiFromMeta, pageFromMeta, type ChildOverlay } from '../lib/builder';
 import { contentStore, type WikiMeta } from '../content-store';
 import { OriginateWiki } from '../components/OriginateWiki';
+import { ManageCategories } from '../components/ManageCategories';
+import { WikiIdentity } from '../components/WikiIdentity';
 import { AccountChip } from '../components/AccountChip';
 import { onAuth, fetchProfile, type Profile, type ContributorClass } from '../lib/auth';
 import { capsFor, grantedWikiIds, canApprove } from '../lib/caps.mjs';
@@ -32,13 +34,15 @@ export default function Page() {
   const [cloudWikis, setCloudWikis] = useState<Wiki[]>([]);
   const [cloudPages, setCloudPages] = useState<Record<string, Page[]>>({});
   const [originating, setOriginating] = useState(false);
+  const [managingTags, setManagingTags] = useState(false);     // admin: the category manager
+  const [editingIdentity, setEditingIdentity] = useState(false); // current wiki's identity editor
 
   // hydrate user-created content from localStorage (client only) + auth state
   useEffect(() => { setUserWikis(loadUserWikis()); setChildren(loadChildren()); }, []);
   // originated wikis come from the content store (rows beyond the extracted
   // flagships) — they exist for every account; the grant filter below decides
   // who sees which
-  useEffect(() => {
+  const refreshCloudWikis = () => {
     if (!contentStore) return;
     contentStore.listWikis()
       .then((rows) => setCloudWikis(rows
@@ -48,7 +52,8 @@ export default function Page() {
         .sort((a, b) => (a.status === 'coming_soon' ? 1 : 0) - (b.status === 'coming_soon' ? 1 : 0) || a.name.localeCompare(b.name))
         .map((r) => wikiFromMeta(r.id, r.name, r.status))))
       .catch(() => {});
-  }, []);
+  };
+  useEffect(refreshCloudWikis, []);
   useEffect(() => onAuth((email) => {
     setAuthEmail(email);
     if (email) fetchProfile().then(setProfile); else setProfile(null);
@@ -126,8 +131,16 @@ export default function Page() {
     return capsFor(realRole, realClass);
   }, [realRole, realClass, viewAs, profile?.wiki_id, baseWiki?.id]);
 
+  // who may edit the CURRENT wiki's identity: admin, or its wiki master
+  const canEditIdentity = !!baseWiki && !!contentStore && (
+    realRole === 'admin' ||
+    (realRole === 'contributor' && realClass === 'wiki_master' && profile?.wiki_id === baseWiki.id));
+
   const account = (
     <>
+      {realRole === 'admin' && contentStore && (
+        <button className="vt-btn" title="Manage the wiki category tags (admin)" onClick={() => setManagingTags(true)}>Tags</button>
+      )}
       <AccountChip email={authEmail} profile={profile} />
       {realRole === 'admin' && (
         <select className="vt-btn acct-viewas" title="Preview the builder as a class" value={viewAs} onChange={(e) => setViewAs(e.target.value)}>
@@ -143,8 +156,10 @@ export default function Page() {
 
   return (
     <>
-      <Topbar wikis={shownWikis} current={wiki || undefined} onSwitch={(w) => { setEditing(null); setWikiId(w.id); }} onNewWiki={realRole === 'admin' ? () => setOriginating(true) : undefined} account={account} />
+      <Topbar wikis={shownWikis} current={wiki || undefined} onSwitch={(w) => { setEditing(null); setWikiId(w.id); }} onNewWiki={realRole === 'admin' ? () => setOriginating(true) : undefined} onEditIdentity={canEditIdentity ? () => setEditingIdentity(true) : undefined} account={account} />
       {originating && <OriginateWiki existingIds={allWikis.map((w) => w.id)} onClose={() => setOriginating(false)} onCreated={onOriginated} />}
+      {managingTags && <ManageCategories onClose={() => setManagingTags(false)} />}
+      {editingIdentity && baseWiki && <WikiIdentity wikiId={baseWiki.id} wikiName={baseWiki.name} onClose={() => setEditingIdentity(false)} onSaved={refreshCloudWikis} />}
       {wiki && baseWiki ? (
         <>
           <div id="miller">
