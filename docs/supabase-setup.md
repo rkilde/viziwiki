@@ -218,3 +218,12 @@ Owner steps to switch it on:
 
 The key lives only in the server route (/api/generate); it is never sent to
 browsers. Generation requires a signed-in contributor/admin account.
+
+**Who pays (the billing split):** the platform key above is reserved for
+ADMINS — your wiki masters and contributors can never spend your credits.
+Everyone else clicks the 🔑 button next to ✨ Generate and connects THEIR OWN
+Anthropic API key: it is stored only in their browser (never on the
+platform), rides their requests as a header, and their generations bill
+their own Anthropic account. Also recommended: set a monthly spend limit on
+your own key's workspace in the Anthropic console (Settings → Limits), so
+even your admin usage has a hard ceiling.
