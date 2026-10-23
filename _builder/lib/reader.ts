@@ -11,7 +11,7 @@ import registry from '../data/visuals.json';
 import bankCss from '../data/bank-css.json';
 import { buildPolicy } from './policy.mjs';
 import { createRenderer, SENT_PREFIX } from './render-core.mjs';
-import { renderReaderBody, readerShell, readerIndexShell, escapeHtml } from './reader-core.mjs';
+import { renderReaderBody, readerShell, readerIndexShell, escapeHtml, wikiCoverTile } from './reader-core.mjs';
 import { rowsToDoc } from './content-map.mjs';
 import { serverSupabase } from './supabase-server';
 
@@ -35,4 +35,4 @@ export function noDb() {
     `<div class="rd-eyebrow">Reader</div><h1>Reader offline.</h1><div class="rd-empty">The content database is not configured (missing Supabase env keys).</div>`), 503);
 }
 
-export { renderer, SENT_PREFIX, renderReaderBody, readerShell, readerIndexShell, escapeHtml, rowsToDoc, serverSupabase, bankCss };
+export { renderer, SENT_PREFIX, renderReaderBody, readerShell, readerIndexShell, escapeHtml, rowsToDoc, serverSupabase, bankCss, wikiCoverTile };

@@ -879,5 +879,41 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(!canApprove('contributor', 'writer', null, 'apple') && !canApprove('viewer', null, null, 'apple'), 'writers/viewers never approve');
 }
 
+// ── case 20: the WIKI IDENTITY model (origination arc) — the category
+// taxonomy is canon + derived everywhere, and tile covers render from it ──
+{
+  console.log('case 20: wiki identity — canon taxonomy, derived pipes, tile covers');
+  const yaml = (await import('js-yaml')).default;
+  const canonTax = yaml.load(fs.readFileSync('../_data/wiki_categories.yml', 'utf8'));
+  const tax = JSON.parse(fs.readFileSync('data/wiki-categories.json', 'utf8'));
+  ok(JSON.stringify(tax) === JSON.stringify(canonTax), 'data/wiki-categories.json matches the canon yml byte-for-byte (run npm run gen if not)');
+  ok(Array.isArray(tax.categories) && tax.categories.length >= 12, 'the taxonomy carries the full category set');
+  ok(tax.categories.every((c) => c.key && c.label && c.icon && c.grad && tax.palette[c.grad.from] && tax.palette[c.grad.to]),
+    'every category has key/label/icon and a gradient that resolves in the palette');
+  ok(tax.categories.every((c) => includes.sprite.includes(`id="ic-${c.icon}"`)),
+    'every category icon exists in the canon sprite');
+  ok(new Set(tax.categories.map((c) => c.key)).size === tax.categories.length, 'category keys are unique');
+
+  // browse.html DERIVES the taxonomy (no restatement left behind)
+  const browse = fs.readFileSync('../browse.html', 'utf8');
+  ok(browse.includes('site.data.wiki_categories'), 'browse.html derives its categories from the canon data file');
+  ok(!browse.includes('label:"Pop Culture"') && !/\.grad-music\{background-image/.test(browse),
+    'browse.html no longer restates category labels or gradient rules');
+
+  // the reader's tile cover renders from the taxonomy
+  const { wikiCoverTile } = await import('../lib/reader-core.mjs');
+  const food = tax.categories.find((c) => c.key === 'food');
+  const t = wikiCoverTile({ id: 'taco-bell', name: 'Taco <Bell>', categories: ['food'], tagline: 'Menus · Sauces · Slogans', status: 'live', tile_cover: { kind: 'bespoke', cls: 'c-tacobell' } }, tax);
+  ok(t.includes(tax.palette[food.grad.from]) && t.includes(tax.palette[food.grad.to]), "the tile's gradient stops come from the taxonomy palette");
+  ok(t.includes(`#ic-${food.icon}`), "the tile's glyph is the category's sprite icon");
+  ok(t.includes('Taco &lt;Bell&gt;'), 'the wiki name is escaped');
+  ok(t.includes('href="/read/taco-bell"') && t.includes('Menus · Sauces · Slogans') && t.includes(food.label), 'link, tagline and genre label all render');
+  ok(!t.includes('Coming soon'), 'a live wiki shows no coming-soon badge');
+  ok(wikiCoverTile({ id: 'x', name: 'X', categories: ['games'], status: 'coming_soon' }, tax).includes('Coming soon'), 'a coming-soon wiki shows the badge');
+  ok(wikiCoverTile({ id: 'x', name: 'X', categories: ['games'], tile_cover: { kind: 'themed', glyph: 'pizza' } }, tax).includes('#ic-pizza'), 'tile_cover.glyph overrides the category icon');
+  const bare = wikiCoverTile({ id: 'y', name: 'Y' }, tax);
+  ok(bare.includes('href="/read/y"') && bare.includes('linear-gradient'), 'a wiki with no identity yet (pre-0006) still renders a cover');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

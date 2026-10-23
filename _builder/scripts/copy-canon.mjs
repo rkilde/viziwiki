@@ -7,6 +7,7 @@
 // Run from _builder:  node scripts/copy-canon.mjs
 import fs from 'node:fs';
 import path from 'node:path';
+import yaml from 'js-yaml';
 
 const ROOT = path.resolve(process.cwd(), '..');
 const OUT = path.join(process.cwd(), 'public', 'canon');
@@ -36,4 +37,9 @@ fs.writeFileSync(path.join(process.cwd(), 'data', 'bank-css.json'), JSON.stringi
 // build → always current.
 const inline = BANK.map((f) => `/* ${f} */\n${fs.readFileSync(path.join(ROOT, f), 'utf8')}`).join('\n');
 fs.writeFileSync(path.join(process.cwd(), 'data', 'bank-css-inline.json'), JSON.stringify(inline));
-console.log(`copied ${n} canonical stylesheets → public/canon/ (${BANK.length} bank stylesheets, discovered + inlined)`);
+// the wiki CATEGORY TAXONOMY is canon too (_data/wiki_categories.yml — the
+// single source browse.html Liquid-derives from). Copy it for the builder's
+// surfaces (reader tile covers, the origination form) — derived, not restated.
+const tax = yaml.load(fs.readFileSync(path.join(ROOT, '_data', 'wiki_categories.yml'), 'utf8'));
+fs.writeFileSync(path.join(process.cwd(), 'data', 'wiki-categories.json'), JSON.stringify(tax, null, 2));
+console.log(`copied ${n} canonical stylesheets → public/canon/ (${BANK.length} bank stylesheets, discovered + inlined); taxonomy → data/wiki-categories.json (${tax.categories.length} categories)`);

@@ -50,18 +50,10 @@ body_class: "no-facet-chrome"
   .text-hp{color:var(--hot-pink);} .bg-hp{background:var(--hot-pink);} .border-hp{border-color:var(--hot-pink);}
   .text-neon{color:var(--neon);}
   .grad-all{background-image:linear-gradient(to bottom right,var(--ink),var(--plum));}
-  .grad-pop{background-image:linear-gradient(to bottom right,var(--hot-pink),var(--neon));}
-  .grad-music{background-image:linear-gradient(to bottom right,var(--electric),var(--plum));}
-  .grad-film{background-image:linear-gradient(to bottom right,var(--rust),var(--gold));}
-  .grad-games{background-image:linear-gradient(to bottom right,var(--acid),var(--olive));}
-  .grad-mobile{background-image:linear-gradient(to bottom right,var(--teal),var(--plum));}
-  .grad-anime{background-image:linear-gradient(to bottom right,var(--plum),var(--hot-pink));}
-  .grad-sports{background-image:linear-gradient(to bottom right,var(--teal),var(--cyan-pop));}
-  .grad-food{background-image:linear-gradient(to bottom right,var(--gold),var(--rust));}
-  .grad-tech{background-image:linear-gradient(to bottom right,var(--electric),var(--cyan-pop));}
-  .grad-fashion{background-image:linear-gradient(to bottom right,var(--hot-pink),var(--plum));}
-  .grad-books{background-image:linear-gradient(to bottom right,var(--olive),var(--teal));}
-  .grad-internet{background-image:linear-gradient(to bottom right,var(--neon),var(--acid));}
+  /* DERIVED — the category gradients are emitted from the canon taxonomy
+     (_data/wiki_categories.yml). Add/recolor a category there, never here. */
+  {% endraw %}{% assign wc = site.data.wiki_categories %}{% for c in wc.categories %}{% assign gf = c.grad.from %}{% assign gt = c.grad.to %}.grad-{{ c.key }}{background-image:linear-gradient(to bottom right,{{ wc.palette[gf] }},{{ wc.palette[gt] }});}
+  {% endfor %}{% raw %}
   .tile{transition:transform .2s;}
   .tile:hover{transform:translateY(-4px);}
   .tile .icon{transition:transform .3s;}
@@ -242,20 +234,15 @@ body_class: "no-facet-chrome"
 </footer>
 
 <script>
+/* DERIVED — the category taxonomy is canon (_data/wiki_categories.yml);
+   Jekyll injects it below. "All" is this page's filter pseudo-chip (UI),
+   not a category, so it stays hand-written here. */
+{% endraw %}
+const WIKI_CATEGORIES = {{ site.data.wiki_categories.categories | jsonify }};
+{% raw %}
 const CATEGORIES = [
   {key:"all",label:"All",grad:"grad-all",icon:"sparkles"},
-  {key:"pop",label:"Pop Culture",grad:"grad-pop",icon:"sparkles"},
-  {key:"music",label:"Music",grad:"grad-music",icon:"music"},
-  {key:"film",label:"Film & TV",grad:"grad-film",icon:"film"},
-  {key:"games",label:"Video Games",grad:"grad-games",icon:"gamepad-2"},
-  {key:"mobile",label:"Mobile Games",grad:"grad-mobile",icon:"smartphone"},
-  {key:"anime",label:"Anime & Manga",grad:"grad-anime",icon:"tv"},
-  {key:"sports",label:"Sports",grad:"grad-sports",icon:"trophy"},
-  {key:"food",label:"Fast Food",grad:"grad-food",icon:"pizza"},
-  {key:"tech",label:"Tech & Web",grad:"grad-tech",icon:"cpu"},
-  {key:"fashion",label:"Fashion",grad:"grad-fashion",icon:"shirt"},
-  {key:"books",label:"Books",grad:"grad-books",icon:"book-open"},
-  {key:"internet",label:"Internet Lore",grad:"grad-internet",icon:"globe"},
+  ...WIKI_CATEGORIES.map(c => ({key:c.key, label:c.label, grad:"grad-"+c.key, icon:c.icon})),
 ];
 
 const WIKIS = [
