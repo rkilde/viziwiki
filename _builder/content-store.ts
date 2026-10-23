@@ -17,7 +17,19 @@ import { GRAMMAR } from './lib/grammar';
 import { supabase } from './lib/supabase';
 import { docToRows, rowsToDoc, validateDoc, persistableDoc } from './lib/content-map.mjs';
 
-export interface WikiMeta { id: string; slug: string; name: string; skin: string; }
+/** A wiki's tile cover (migration 0006 — the origination arc). "themed" is the
+ *  data-driven cover: gradient + glyph DERIVED from the wiki's first category
+ *  (taxonomy: _data/wiki_categories.yml → data/wiki-categories.json); `glyph`
+ *  optionally overrides the category icon. "bespoke" REFERENCES a hand-built
+ *  canon cover class (the 5 flagship covers in browse.html) by name. */
+export interface TileCover { kind: 'themed' | 'bespoke'; cls?: string; glyph?: string; }
+export interface WikiMeta {
+  id: string; slug: string; name: string; skin: string;
+  /** Identity (migration 0006) — optional so pre-0006 rows and the extracted
+   *  flagship metas stay valid; listWikis fills defaults when absent. */
+  categories?: string[]; blurb?: string | null; tagline?: string | null;
+  status?: 'live' | 'coming_soon'; tile_cover?: TileCover;
+}
 export interface PageMeta { id: string; slug: string; title: string; type: string; }
 /** One row of a page's history (phase 3 — the revision system). */
 export interface RevisionMeta {
@@ -73,9 +85,18 @@ export class SupabaseContentStore implements ContentStore {
   constructor(private db: NonNullable<typeof supabase>) {}
 
   async listWikis(): Promise<WikiMeta[]> {
-    const { data, error } = await this.db.from('wikis').select('id, slug, name, skin').order('id');
-    if (error) throw error;
-    return data ?? [];
+    // identity columns arrive with migration 0006 — fall back gracefully on a
+    // pre-0006 database (same pattern as the 0004 revision-insert fallback)
+    let r: { data: any[] | null; error: any } = await this.db.from('wikis')
+      .select('id, slug, name, skin, categories, blurb, tagline, status, tile_cover').order('id');
+    if (r.error) {
+      r = await this.db.from('wikis').select('id, slug, name, skin').order('id');
+      if (r.error) throw r.error;
+      return (r.data ?? []).map((w: any) => ({
+        ...w, categories: [], blurb: null, tagline: null, status: 'live', tile_cover: { kind: 'themed' },
+      })) as WikiMeta[];
+    }
+    return (r.data ?? []) as WikiMeta[];
   }
 
   async listPages(wiki: string): Promise<PageMeta[]> {

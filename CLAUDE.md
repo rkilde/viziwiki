@@ -480,6 +480,35 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
   (structure edits to the class propagate to every instance, like canon
   does — more powerful, needs an override model). Grammar's `page_types`
   is the seam it slots into.
+- **WIKI ORIGINATION ARC (ACTIVE — iteration 1 DONE, Oct 2026).** The owner's
+  directive: once a wiki is originated on the backend, its tile populates
+  everywhere wikis surface (home page, browse page, future algorithm-driven
+  recommendation links at page bottoms). Owner's vocabulary: a wiki's browse
+  art = its **"tile cover"**.
+  · **Iteration 1 — the identity model (DONE):** the category taxonomy is now
+    CANON at `_data/wiki_categories.yml` (palette + 12 categories: key · label ·
+    sprite icon · gradient) — browse.html Liquid-derives its filter chips AND
+    its `.grad-*` rules from it ({% endraw %}/{% raw %} splices; "All" stays a
+    page-UI pseudo-chip), and `copy-canon` emits `data/wiki-categories.json`
+    for the builder. Migration `0006_wiki_identity.sql`: `wikis` gains
+    `categories text[]` (taxonomy keys, app-validated — never a DB check, the
+    yml stays single-source) + `blurb` + `tagline` + `status`
+    (live/coming_soon) + `tile_cover jsonb` — `{"kind":"themed"}` = the
+    data-driven cover (gradient + glyph DERIVED from the first category,
+    optional `glyph` override) · `{"kind":"bespoke","cls":"c-apple"}` =
+    REFERENCE to a hand-built flagship cover class in browse.html (reference,
+    never restated art; canonizing those five is design-system-arc work).
+    Flagship identities backfilled. `WikiMeta` carries identity (optional
+    fields; graceful pre-0006 select fallback). First consumer: the reader's
+    `/read` index renders tile covers (`wikiCoverTile` in reader-core +
+    canon sprite). Guard: case 20 (363 total) — including "browse.html no
+    longer restates the taxonomy".
+  · **Iteration 2 (NEXT): origination** — an admin "New wiki" flow in the
+    builder (id/slug/name/skin + identity fields from the taxonomy, grant a
+    wiki master from the UI).
+  · **Iteration 3: all surfaces consume** — builder dashboard swatches off
+    hardcoded WIKI_COLOR, browse/home pages read the DB as they go DB-native,
+    the recommendations module (algorithm deferred, owner wants it later).
 - **Vizi-verse** (the narrative side; currently only `top-10.html`) — deferred.
 
 ---

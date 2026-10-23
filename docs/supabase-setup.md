@@ -123,3 +123,26 @@ Owner steps to switch phase 3 on:
 3. Trust ladder (recorded in CLAUDE.md, future flips — no schema changes
    needed): per-user auto-publish for proven contributors → publish-on-save +
    patrol/revert at scale.
+
+## Wiki identity (origination arc, iteration 1 — switch-on step)
+
+Every wiki now carries an **identity**: category tags (from the canon taxonomy
+`_data/wiki_categories.yml`), a blurb, a cover tagline, a status
+(live / coming soon), and a **tile cover** — so any surface that lists wikis
+(the reader's `/read` index today; browse page, home page, and the future
+recommendations module as they go DB-native) can render its tile from the
+database.
+
+Owner step to switch it on:
+1. **SQL Editor** → paste + Run `_builder/supabase/migrations/0006_wiki_identity.sql`.
+   It adds the identity columns to `wikis` and backfills the flagship
+   identities (Taco Bell → food, Apple → tech, plus no-op rows for
+   fallout / smurfs-village / doodle-jump until they're originated).
+2. Verify: open `vizwiki.vercel.app/read` — the wiki list renders as tile
+   covers (category gradient + glyph + title + tagline) instead of plain rows.
+
+Note: the reader renders every wiki with the data-driven **themed** cover for
+now. The five hand-built flagship covers (the Apple logo tile etc.) live in
+browse.html and get canonized in the design-system arc; the database already
+stores the reference (`tile_cover: {"kind":"bespoke","cls":"c-apple"}`) so
+nothing moves twice.

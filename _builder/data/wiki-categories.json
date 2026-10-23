@@ -1,0 +1,125 @@
+{
+  "palette": {
+    "ink": "oklch(0.18 0.02 60)",
+    "teal": "oklch(0.55 0.10 200)",
+    "olive": "oklch(0.55 0.10 130)",
+    "plum": "oklch(0.40 0.13 340)",
+    "gold": "oklch(0.78 0.14 75)",
+    "rust": "oklch(0.55 0.18 35)",
+    "neon": "oklch(0.65 0.26 5)",
+    "electric": "oklch(0.62 0.22 260)",
+    "hot-pink": "oklch(0.70 0.31 260)",
+    "acid": "oklch(0.88 0.24 130)",
+    "cyan-pop": "oklch(0.78 0.18 210)"
+  },
+  "categories": [
+    {
+      "key": "pop",
+      "label": "Pop Culture",
+      "icon": "sparkles",
+      "grad": {
+        "from": "hot-pink",
+        "to": "neon"
+      }
+    },
+    {
+      "key": "music",
+      "label": "Music",
+      "icon": "music",
+      "grad": {
+        "from": "electric",
+        "to": "plum"
+      }
+    },
+    {
+      "key": "film",
+      "label": "Film & TV",
+      "icon": "film",
+      "grad": {
+        "from": "rust",
+        "to": "gold"
+      }
+    },
+    {
+      "key": "games",
+      "label": "Video Games",
+      "icon": "gamepad-2",
+      "grad": {
+        "from": "acid",
+        "to": "olive"
+      }
+    },
+    {
+      "key": "mobile",
+      "label": "Mobile Games",
+      "icon": "smartphone",
+      "grad": {
+        "from": "teal",
+        "to": "plum"
+      }
+    },
+    {
+      "key": "anime",
+      "label": "Anime & Manga",
+      "icon": "tv",
+      "grad": {
+        "from": "plum",
+        "to": "hot-pink"
+      }
+    },
+    {
+      "key": "sports",
+      "label": "Sports",
+      "icon": "trophy",
+      "grad": {
+        "from": "teal",
+        "to": "cyan-pop"
+      }
+    },
+    {
+      "key": "food",
+      "label": "Fast Food",
+      "icon": "pizza",
+      "grad": {
+        "from": "gold",
+        "to": "rust"
+      }
+    },
+    {
+      "key": "tech",
+      "label": "Tech & Web",
+      "icon": "cpu",
+      "grad": {
+        "from": "electric",
+        "to": "cyan-pop"
+      }
+    },
+    {
+      "key": "fashion",
+      "label": "Fashion",
+      "icon": "shirt",
+      "grad": {
+        "from": "hot-pink",
+        "to": "plum"
+      }
+    },
+    {
+      "key": "books",
+      "label": "Books",
+      "icon": "book-open",
+      "grad": {
+        "from": "olive",
+        "to": "teal"
+      }
+    },
+    {
+      "key": "internet",
+      "label": "Internet Lore",
+      "icon": "globe",
+      "grad": {
+        "from": "neon",
+        "to": "acid"
+      }
+    }
+  ]
+}
