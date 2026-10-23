@@ -69,9 +69,16 @@ export interface ContentStore {
   // ── the origination arc (iteration 2) ──
   /** Originate a wiki: insert its row WITH identity (admin; RLS re-checks). */
   createWiki(meta: WikiMeta): Promise<void>;
+  /** Update a wiki's IDENTITY (tile cover, tags, blurb, tagline, status) —
+   *  admin or the wiki's master; never touches id/slug/skin/content. */
+  updateWikiIdentity(id: string, patch: Pick<WikiMeta, 'categories' | 'blurb' | 'tagline' | 'status' | 'tile_cover'>): Promise<void>;
   /** Admin-originated categories ([] on a pre-0007 database). */
   listCategories(): Promise<CategoryRow[]>;
   createCategory(cat: CategoryRow): Promise<void>;
+  /** Edit / remove an ORIGINATED category (the canon 12 live in the repo —
+   *  changing those is a canon edit, never a UI action). */
+  updateCategory(cat: CategoryRow): Promise<void>;
+  deleteCategory(key: string): Promise<void>;
   /** OPTIONAL grant: make `email`'s account the wiki master of `wikiId`
    *  (admin updates profiles). Throws a clear error if no such account. */
   grantWikiMaster(email: string, wikiId: string): Promise<void>;
@@ -93,8 +100,11 @@ export class GitContentStore implements ContentStore {
   async rejectRevision(): Promise<void>   { throw new Error("GitContentStore not built"); }
   async revertTo(): Promise<number>       { throw new Error("GitContentStore not built"); }
   async createWiki(): Promise<void>       { throw new Error("GitContentStore not built"); }
+  async updateWikiIdentity(): Promise<void> { throw new Error("GitContentStore not built"); }
   async listCategories(): Promise<CategoryRow[]> { throw new Error("GitContentStore not built"); }
   async createCategory(): Promise<void>   { throw new Error("GitContentStore not built"); }
+  async updateCategory(): Promise<void>   { throw new Error("GitContentStore not built"); }
+  async deleteCategory(): Promise<void>   { throw new Error("GitContentStore not built"); }
   async grantWikiMaster(): Promise<void>  { throw new Error("GitContentStore not built"); }
 }
 
@@ -210,6 +220,15 @@ export class SupabaseContentStore implements ContentStore {
     if (error) throw error;
   }
 
+  async updateWikiIdentity(id: string, patch: Pick<WikiMeta, 'categories' | 'blurb' | 'tagline' | 'status' | 'tile_cover'>): Promise<void> {
+    const { data, error } = await this.db.from('wikis').update({
+      categories: patch.categories ?? [], blurb: patch.blurb ?? null, tagline: patch.tagline ?? null,
+      status: patch.status ?? 'live', tile_cover: patch.tile_cover ?? { kind: 'themed' },
+    }).eq('id', id).select('id');
+    if (error) throw error;
+    if (!data?.length) throw new Error(`no wiki "${id}" to update`);
+  }
+
   async listCategories(): Promise<CategoryRow[]> {
     const { data, error } = await this.db.from('wiki_categories')
       .select('key, label, icon, grad_from, grad_to').order('key');
@@ -219,6 +238,18 @@ export class SupabaseContentStore implements ContentStore {
 
   async createCategory(cat: CategoryRow): Promise<void> {
     const { error } = await this.db.from('wiki_categories').insert(cat);
+    if (error) throw error;
+  }
+
+  async updateCategory(cat: CategoryRow): Promise<void> {
+    const { key, ...rest } = cat;
+    const { data, error } = await this.db.from('wiki_categories').update(rest).eq('key', key).select('key');
+    if (error) throw error;
+    if (!data?.length) throw new Error(`no originated category "${key}" to update`);
+  }
+
+  async deleteCategory(key: string): Promise<void> {
+    const { error } = await this.db.from('wiki_categories').delete().eq('key', key);
     if (error) throw error;
   }
 
