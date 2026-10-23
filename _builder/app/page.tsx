@@ -143,11 +143,15 @@ export default function Page() {
     realRole === 'admin' ||
     (realRole === 'contributor' && realClass === 'wiki_master' && profile?.wiki_id === baseWiki.id));
 
+  // the brand drawer's menu (the leftmost layers icon) — SITE-LEVEL controls.
+  // First entry per the owner: the wiki categorization tags (admin).
+  const drawerMenu = realRole === 'admin' && contentStore ? [
+    { label: 'Site Wiki Tags', hint: 'the categories every wiki is filed under', onClick: () => setManagingTags(true) },
+    { label: 'New wiki', hint: 'originate a wiki', onClick: () => setOriginating(true) },
+  ] : [];
+
   const account = (
     <>
-      {realRole === 'admin' && contentStore && (
-        <button className="vt-btn" title="Manage the wiki category tags (admin)" onClick={() => setManagingTags(true)}>Tags</button>
-      )}
       <AccountChip email={authEmail} profile={profile} />
       {realRole === 'admin' && (
         <select className="vt-btn acct-viewas" title="Preview the builder as a class" value={viewAs} onChange={(e) => setViewAs(e.target.value)}>
@@ -163,7 +167,7 @@ export default function Page() {
 
   return (
     <>
-      <Topbar wikis={shownWikis} current={wiki || undefined} onSwitch={(w) => { setEditing(null); setWikiId(w.id); }} onNewWiki={realRole === 'admin' ? () => setOriginating(true) : undefined} onEditIdentity={canEditIdentity ? () => setEditingIdentity(true) : undefined} account={account} />
+      <Topbar wikis={shownWikis} current={wiki || undefined} onSwitch={(w) => { setEditing(null); setWikiId(w.id); }} onNewWiki={realRole === 'admin' ? () => setOriginating(true) : undefined} onEditIdentity={canEditIdentity ? () => setEditingIdentity(true) : undefined} menu={drawerMenu} account={account} />
       {originating && <OriginateWiki existingIds={allWikis.map((w) => w.id)} onClose={() => setOriginating(false)} onCreated={onOriginated} genAsUser={realRole === 'admin' && viewAs !== 'me'} />}
       {managingTags && <ManageCategories onClose={() => setManagingTags(false)} />}
       {editingIdentity && baseWiki && <WikiIdentity wikiId={baseWiki.id} wikiName={baseWiki.name} onClose={() => setEditingIdentity(false)} onSaved={refreshCloudWikis} genAsUser={realRole === 'admin' && viewAs !== 'me'} />}

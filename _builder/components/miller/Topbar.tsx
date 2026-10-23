@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import type { Wiki } from '../../lib/wiki';
-import { BrandLockup } from './BrandLockup';
+import { BrandLockup, type DrawerItem } from './BrandLockup';
 import { ICON_SPRITE } from '../../lib/render';
 
 const WIKI_COLOR: Record<string, string> = { 'taco-bell': '#702082', 'apple': '#1d1d1f' };
@@ -20,7 +20,7 @@ const Swatch = ({ wiki }: { wiki: Wiki }) => {
   return <span className="wiki-btn-icon" style={{ background: color, color: '#fff', fontWeight: 700 }}>{wiki.name[0]}</span>;
 };
 
-export function Topbar({ wikis, current, onSwitch, onNewWiki, onEditIdentity, account }: { wikis: Wiki[]; current?: Wiki; onSwitch: (w: Wiki) => void; onNewWiki?: () => void; onEditIdentity?: () => void; account?: React.ReactNode }) {
+export function Topbar({ wikis, current, onSwitch, onNewWiki, onEditIdentity, menu, account }: { wikis: Wiki[]; current?: Wiki; onSwitch: (w: Wiki) => void; onNewWiki?: () => void; onEditIdentity?: () => void; menu?: DrawerItem[]; account?: React.ReactNode }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -28,7 +28,7 @@ export function Topbar({ wikis, current, onSwitch, onNewWiki, onEditIdentity, ac
       {/* the canon sprite, once — wiki glyph marks reference it */}
       <div style={{ display: 'none' }} dangerouslySetInnerHTML={{ __html: ICON_SPRITE }} />
       {/* brand lockup (ViziWiki + Build Kit), then a separator, then the existing chrome */}
-      <BrandLockup />
+      <BrandLockup menu={menu} />
       <span className="brand-sep" />
       {current ? (
       <div id="wiki-switcher">

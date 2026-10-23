@@ -44,7 +44,9 @@ const OpenKit = () => (
   </svg>
 );
 
-export function BrandLockup() {
+export type DrawerItem = { label: string; hint?: string; onClick: () => void };
+
+export function BrandLockup({ menu = [] }: { menu?: DrawerItem[] }) {
   const [drawer, setDrawer] = useState(false);
   return (
     <>
@@ -58,7 +60,16 @@ export function BrandLockup() {
       {drawer && (
         <>
           <div className="brand-drawer-scrim" onClick={() => setDrawer(false)} />
-          <aside className="brand-drawer" />
+          <aside className="brand-drawer">
+            <div className="brand-drawer-head">Build Kit</div>
+            {menu.map((it) => (
+              <button key={it.label} className="brand-drawer-item" onClick={() => { setDrawer(false); it.onClick(); }}>
+                <span className="bdi-label">{it.label}</span>
+                {it.hint && <span className="bdi-hint">{it.hint}</span>}
+              </button>
+            ))}
+            {!menu.length && <div className="brand-drawer-empty">nothing here for this account yet</div>}
+          </aside>
         </>
       )}
     </>
