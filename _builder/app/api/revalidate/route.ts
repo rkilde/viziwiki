@@ -8,7 +8,7 @@ import { revalidatePath } from 'next/cache';
 
 export async function POST(req: Request) {
   let paths: string[] = [];
-  try { paths = ((await req.json())?.paths ?? []).filter((p: unknown) => typeof p === 'string' && (p as string).startsWith('/read')); }
+  try { paths = ((await req.json())?.paths ?? []).filter((p: unknown) => typeof p === 'string' && ((p as string).startsWith('/read') || p === '/api/directory')); }
   catch { /* empty body → nothing to do */ }
   for (const p of paths.slice(0, 20)) revalidatePath(p);
   return Response.json({ ok: true, revalidated: paths.length });

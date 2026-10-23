@@ -30,6 +30,26 @@ export function resolveColor(palette, nameOrValue, fallback) {
   return (palette && palette[nameOrValue]) || nameOrValue;
 }
 
+/** The public DIRECTORY payload (GET /api/directory) — what the live site's
+ *  browse page (and any future wiki-listing surface) consumes: every wiki row
+ *  with its identity, plus the MERGED taxonomy with gradient colors RESOLVED
+ *  (palette names → values), so no consumer needs the palette. */
+export function directoryPayload(wikiRows, canonTax, dbCats) {
+  const merged = mergeTaxonomy(canonTax, dbCats);
+  const pal = merged.palette;
+  return {
+    wikis: (wikiRows || []).map((w) => ({
+      id: w.id, name: w.name, categories: w.categories || [], blurb: w.blurb || null,
+      tagline: w.tagline || null, status: w.status || 'live', tile_cover: w.tile_cover || { kind: 'themed' },
+      entries: w.entries || 0, popularity: w.popularity || 0,
+    })),
+    categories: merged.categories.map((c) => ({
+      key: c.key, label: c.label, icon: c.icon,
+      from: resolveColor(pal, c.grad.from, '#2a2630'), to: resolveColor(pal, c.grad.to, '#4a4454'),
+    })),
+  };
+}
+
 /** Every icon name in the canon sprite (id="ic-NAME") — the derived source of
  *  an icon picker's choices (never a hand-kept list). */
 export function spriteIconNames(spriteHtml) {

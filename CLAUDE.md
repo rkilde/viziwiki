@@ -529,10 +529,28 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
     (`wikiFromMeta`/`pageFromMeta`; home id = `<wiki>-home`), so an
     originated wiki is immediately workable and survives devices. Guard:
     case 21 (377 total). Owner switch-on: run 0007 (docs/supabase-setup.md).
-  · **Iteration 3 (NEXT): all surfaces consume** — builder dashboard swatches
-    off hardcoded WIKI_COLOR, browse/home pages read the DB as they go
-    DB-native, the recommendations module (algorithm deferred, owner wants it
-    later).
+  · **Iteration 3 — THE DIRECTORY LIVES IN THE DATABASE (browse slice DONE,
+    Oct 2026):** migration `0008_directory_seed.sql` moved EVERY wiki that was
+    hardcoded on browse.html into `wikis` (5 flagships live + 34 coming-soon
+    titles; new `entries`/`popularity` columns = PLACEHOLDER directory stats
+    until derived page-count/traffic numbers land in the same columns;
+    re-runs refresh stats + fill only missing identity). One public feed —
+    **GET `/api/directory`** (builder app; CORS-open, ISR-cached, invalidated
+    on origination) serves every wiki's identity + the MERGED taxonomy with
+    RESOLVED colors (`directoryPayload` in lib/taxonomy.mjs — the pipe for
+    every future wiki-listing surface: home tiles, recommendations).
+    **browse.html now derives:** fetches the feed; chips + tiles render from
+    it (themed gradients inline from resolved colors — the iteration-1 Liquid
+    grad/CATEGORIES splices are gone, superseded); hardcoded remains ONLY the
+    bespoke cover ART (keyed by the DB's `tile_cover.cls` reference), the
+    "All" chip, and layout. Tile links: bespoke (flagship) → its Jekyll page;
+    other live wikis → the reader (`/read/<id>`); coming-soon → none. Its
+    document text (eyebrow/H1/intro) reads the canon type roles
+    (`t-label`/`t-display`/`t-lead`); UI chrome (chips/sort/counters) is
+    widget text and keeps page-local styling. Guard: case 22 (393 total).
+    Remaining iteration-3 surfaces: home-page tiles, builder dashboard
+    swatches off hardcoded WIKI_COLOR, the recommendations module (algorithm
+    deferred, owner wants it later).
 - **Vizi-verse** (the narrative side; currently only `top-10.html`) — deferred.
 
 ---

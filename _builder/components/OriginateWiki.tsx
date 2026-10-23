@@ -87,8 +87,9 @@ export function OriginateWiki({ existingIds, onClose, onCreated }: {
         if (errs.length) { setErr(errs.join(' · ')); setBusy(false); return; }
         await contentStore.createWiki(meta);
         setCreatedId(meta.id);
-        // the new tile shows up on /read in seconds, not at the next ISR tick
-        fetch('/api/revalidate', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ paths: ['/read'] }) }).catch(() => {});
+        // the new tile shows up on /read AND the live browse page's directory
+        // feed in seconds, not at the next ISR tick
+        fetch('/api/revalidate', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ paths: ['/read', '/api/directory'] }) }).catch(() => {});
       }
       if (grantEmail.trim()) await contentStore.grantWikiMaster(grantEmail, meta.id);
       onCreated(meta);

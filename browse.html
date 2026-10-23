@@ -31,7 +31,10 @@ body_class: "no-facet-chrome"
   }
   html,body{background:var(--background); color:var(--foreground);}
   body{font-family:'Spectral',Georgia,serif;}
-  .font-display{font-family:'Fraunces','Spectral',Georgia,serif; font-optical-sizing:auto; font-variation-settings:"SOFT" 30,"WONK" 0; letter-spacing:-0.02em;}
+  /* document text (eyebrow / H1 / intro) reads the CANON type roles
+     (.t-label / .t-display / .t-lead — wiki-typography.css, loaded by the
+     layout); .font-mono-acc remains for the page's UI chrome (chips, sort,
+     counters — widget text, not document text). */
   .font-mono-acc{font-family:'JetBrains Mono',ui-monospace,monospace; letter-spacing:.05em;}
   .halftone{background-image:radial-gradient(var(--hot-pink) 1.4px, transparent 1.6px); background-size:10px 10px;}
   .sticker{box-shadow:3px 3px 0 0 var(--ink); border:2px solid var(--ink);}
@@ -49,11 +52,8 @@ body_class: "no-facet-chrome"
   .border-foreground\/30{border-color:color-mix(in oklab,var(--foreground) 30%, transparent);}
   .text-hp{color:var(--hot-pink);} .bg-hp{background:var(--hot-pink);} .border-hp{border-color:var(--hot-pink);}
   .text-neon{color:var(--neon);}
-  .grad-all{background-image:linear-gradient(to bottom right,var(--ink),var(--plum));}
-  /* DERIVED — the category gradients are emitted from the canon taxonomy
-     (_data/wiki_categories.yml). Add/recolor a category there, never here. */
-  {% endraw %}{% assign wc = site.data.wiki_categories %}{% for c in wc.categories %}{% assign gf = c.grad.from %}{% assign gt = c.grad.to %}.grad-{{ c.key }}{background-image:linear-gradient(to bottom right,{{ wc.palette[gf] }},{{ wc.palette[gt] }});}
-  {% endfor %}{% raw %}
+  /* (category gradients are painted inline from the directory feed — the
+     merged taxonomy arrives with resolved colors; no gradient CSS here) */
   .tile{transition:transform .2s;}
   .tile:hover{transform:translateY(-4px);}
   .tile .icon{transition:transform .3s;}
@@ -111,7 +111,8 @@ body_class: "no-facet-chrome"
 <style>
   /* ════════ Index-style cover tiles, ported into Browse ════════
      5 built wikis get bespoke covers; the rest get themed genre covers
-     (using browse's own .grad-* gradients) with an "Indexed" badge.
+     (gradient + glyph from the directory feed's merged taxonomy) or their
+     own uploaded cover art, with a status badge.
      Layout: responsive vertical-scroll grid — columns adapt to width on
      web, fixed 3-across on mobile. ════════════════════════════════ */
   .cover-grid{
@@ -177,7 +178,8 @@ body_class: "no-facet-chrome"
   .c-doodlejump:hover .doodler{ transform:translateY(-12px); }
   .c-doodlejump .plat{ fill:#6bb84a; stroke:#2c3a1e; stroke-width:2; }
 
-  /* ═══ themed covers (everything else) — use browse's .grad-* gradients ═══ */
+  /* ═══ themed covers (everything else) — gradients painted inline from the
+     directory feed's resolved category colors ═══ */
   .c-themed{ color:#fff; }
   .c-themed .c-genre{ color:rgba(255,255,255,.82); } .c-themed .c-vol{ color:rgba(255,255,255,.7); }
   .c-themed .c-blurb{ color:rgba(255,255,255,.82); }
@@ -191,9 +193,9 @@ body_class: "no-facet-chrome"
 </style>
 <section class="relative overflow-hidden border-b border-foreground/10 bg-gradient-to-b from-secondary/50 to-background">
   <div class="mx-auto max-w-[1500px] px-6 py-12 sm:py-14">
-    <div class="font-mono-acc text-[10px] uppercase tracking-[0.3em] text-muted-foreground">Index · The full library</div>
-    <h1 class="mt-3 font-display text-6xl sm:text-7xl font-semibold tracking-tight leading-none">Browse<span class="text-hp">.</span></h1>
-    <p class="mt-4 max-w-xl text-base text-muted-foreground">Browse and filter every wiki.</p>
+    <div class="t-label text-muted-foreground">Index · The full library</div>
+    <h1 class="mt-3 t-display">Browse<span class="text-hp">.</span></h1>
+    <p class="mt-4 max-w-xl t-lead text-muted-foreground">Browse and filter every wiki.</p>
 
     <!-- search -->
     <div class="mt-7 max-w-xl">
@@ -234,58 +236,17 @@ body_class: "no-facet-chrome"
 </footer>
 
 <script>
-/* DERIVED — the category taxonomy is canon (_data/wiki_categories.yml);
-   Jekyll injects it below. "All" is this page's filter pseudo-chip (UI),
-   not a category, so it stays hand-written here. */
-{% endraw %}
-const WIKI_CATEGORIES = {{ site.data.wiki_categories.categories | jsonify }};
-{% raw %}
-const CATEGORIES = [
-  {key:"all",label:"All",grad:"grad-all",icon:"sparkles"},
-  ...WIKI_CATEGORIES.map(c => ({key:c.key, label:c.label, grad:"grad-"+c.key, icon:c.icon})),
-];
-
-const WIKIS = [
-  {name:"Dune",category:"film",entries:4821,popularity:98,blurb:"Spice, sandworms, and Atreides lore."},
-  {name:"BTS",category:"music",entries:12044,popularity:99,blurb:"ARMY-built encyclopedia of the septet."},
-  {name:"The Legend of Zelda",category:"games",entries:8932,popularity:97,blurb:"Hyrule, Triforce, every dungeon mapped."},
-  {name:"Studio Ghibli",category:"anime",entries:2188,popularity:92,blurb:"Every frame, every Totoro."},
-  {name:"Taylor Swift",category:"music",entries:15788,popularity:99,blurb:"Eras, easter eggs, and re-records."},
-  {name:"McDonald's",category:"food",entries:1042,popularity:84,blurb:"McRib release schedule, Grimace, Travis meal."},
-  {name:"Star Wars",category:"film",entries:22910,popularity:96,blurb:"A galaxy far, far away — fully indexed."},
-  {name:"Minecraft",category:"games",entries:9821,popularity:95,blurb:"Blocks, mobs, redstone, every snapshot."},
-  {name:"Marvel Cinematic Universe",category:"film",entries:18044,popularity:97,blurb:"Phases 1 through whatever we're on now."},
-  {name:"Naruto",category:"anime",entries:7320,popularity:90,blurb:"Hidden villages, jutsu, the whole shinobi grid."},
-  {name:"NBA",category:"sports",entries:24018,popularity:93,blurb:"Every box score since 1946."},
-  {name:"FIFA World Cup",category:"sports",entries:6210,popularity:91,blurb:"Every tournament, every Panini sticker."},
-  {name:"Formula 1",category:"sports",entries:5094,popularity:89,blurb:"Drivers, constructors, lap records."},
-  {name:"Pokémon",category:"games",entries:14002,popularity:96,blurb:"All 1000+ pocket monsters."},
-  {name:"Genshin Impact",category:"games",entries:6814,popularity:87,blurb:"Teyvat, characters, weapons, banners."},
-  {name:"Kendrick Lamar",category:"music",entries:3210,popularity:94,blurb:"Pulitzer, Compton, GNX."},
-  {name:"Taco Bell",category:"food",entries:1284,popularity:96,blurb:"Crunchwraps, Mexican Pizza revivals, every limited-time menu logged.",url:"taco-bell.html"},
-  {name:"Chick-fil-A",category:"food",entries:488,popularity:75,blurb:"Sauces, secret menu, Sunday rule."},
-  {name:"Severance",category:"film",entries:1244,popularity:88,blurb:"Lumon, MDR, the goats."},
-  {name:"One Piece",category:"anime",entries:18991,popularity:95,blurb:"1100+ chapters mapped to the Grand Line."},
-  {name:"Sabrina Carpenter",category:"music",entries:1812,popularity:89,blurb:"Espresso, Short n' Sweet, every tour fit."},
-  {name:"TikTok Trends",category:"internet",entries:9421,popularity:92,blurb:"Sounds, dances, brain rot — archived."},
-  {name:"Y2K Fashion",category:"fashion",entries:2104,popularity:81,blurb:"Low-rise, butterfly clips, juicy tracksuits."},
-  {name:"GeoCities",category:"tech",entries:3088,popularity:70,blurb:"Neighborhoods of the early web."},
-  {name:"Fortnite",category:"games",entries:7041,popularity:88,blurb:"Every season, every skin, every collab."},
-  {name:"Beyoncé",category:"music",entries:9210,popularity:98,blurb:"Renaissance, Cowboy Carter, the BeyHive."},
-  {name:"Harry Potter",category:"books",entries:11240,popularity:91,blurb:"Hogwarts, Horcruxes, the whole wizarding world."},
-  {name:"Stranger Things",category:"film",entries:4112,popularity:90,blurb:"Hawkins, Upside Down, every Demogorgon."},
-  {name:"Demon Slayer",category:"anime",entries:3920,popularity:89,blurb:"Hashira, breathing styles, Muzan arc."},
-  {name:"K-pop",category:"music",entries:26012,popularity:96,blurb:"Every group, every comeback, every fandom name."},
-  {name:"Wendy's",category:"food",entries:410,popularity:72,blurb:"Square patties, frosty, Twitter roasts."},
-  {name:"Wii Sports",category:"games",entries:188,popularity:68,blurb:"Matt is undefeated. Document everything."},
-  {name:"Vine (rip)",category:"internet",entries:2491,popularity:80,blurb:"Six seconds, eternal."},
-  {name:"Streetwear",category:"fashion",entries:4204,popularity:83,blurb:"Supreme drops, Yeezys, Bape archives."},
-  {name:"Squid Game",category:"film",entries:1804,popularity:86,blurb:"Pink guards, dalgona, every game."},
-  {name:"Fallout",category:"games",entries:1140,popularity:95,blurb:"Vaults, wastelands, and the war that never changes.",url:"fallout.html"},
-  {name:"Smurfs' Village",category:"mobile",entries:612,popularity:79,blurb:"Rebuild the village berry by berry — every mushroom house, Smurf, crop, and mini-game.",url:"smurfs-village.html"},
-  {name:"Doodle Jump",category:"mobile",entries:318,popularity:82,blurb:"Every platform, monster, power-up, and theme from Lima Sky's 2009 vertical classic.",url:"doodle-jump.html"},
-  {name:"Apple",category:"tech",entries:2847,popularity:97,blurb:"Every product, every era, every Steve moment. Mac to Vision Pro.",url:"apple.html"},
-];
+/* THE DIRECTORY LIVES IN THE DATABASE (origination arc, iteration 3): every
+   wiki — identity, tags, tagline, status, tile cover, stats — and the MERGED
+   category taxonomy (the canon 12 + admin-originated ones, colors resolved)
+   arrive from the platform's public feed. Originate a wiki in the build kit
+   and its tile (and any new category's chip) appears here automatically.
+   Hardcoded below is only what should be: the hand-coded bespoke cover ART
+   (referenced by each wiki's tile_cover.cls) and the "All" filter
+   pseudo-chip (page UI, not a category). */
+const DIRECTORY_URL = 'https://vizwiki.vercel.app/api/directory';
+let CATEGORIES = [{key:"all",label:"All",icon:"sparkles"}];
+let WIKIS = [];
 
 let selected = new Set(), sort = "popular", q = "";
 
@@ -400,78 +361,41 @@ function renderFilters(){
   });
 }
 
-/* Decorative inner markup for the 5 built wikis (their bespoke covers). */
+/* The BESPOKE cover ART of the 5 built wikis — hand-coded decoration, keyed
+   by the cover class each wiki's tile_cover.cls REFERENCES from the database
+   (the art stays here until the design-system arc canonizes it). */
 const BESPOKE = {
-  "Taco Bell": { cls:"c-tacobell", vol:"Vol. 1", inner:`
+  "c-tacobell": { vol:"Vol. 1", inner:`
     <div class="halftone"></div>
     <svg class="bell" viewBox="0 0 100 100" fill="#fff" aria-hidden="true"><path d="M50 18c-20 0-34 14-36 40-1 9 5 14 14 14h44c9 0 15-5 14-14C84 32 70 18 50 18Z"/><rect x="12" y="74" width="76" height="10" rx="5"/></svg>` },
-  "Fallout": { cls:"c-fallout", vol:"Vol. 2", inner:`
+  "c-fallout": { vol:"Vol. 2", inner:`
     <div class="glow"></div><div class="scan"></div>
     <div class="term" aria-hidden="true">ROBCO TERMLINK<br>VAULT-TEC<br>&gt; RUN WIKI.EXE<br>&gt; ACCESS GRANTED ▮</div>`, titleSuffix:`<span class="cursor"></span>` },
-  "Apple": { cls:"c-apple", vol:"Vol. 3", inner:`
+  "c-apple": { vol:"Vol. 3", inner:`
     <svg class="logo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 12.04c-.03-2.65 2.16-3.92 2.26-3.98-1.23-1.8-3.15-2.05-3.83-2.08-1.63-.16-3.18.96-4.01.96-.82 0-2.1-.94-3.45-.91-1.78.03-3.42 1.03-4.33 2.62-1.85 3.2-.47 7.94 1.33 10.54.88 1.27 1.93 2.7 3.31 2.65 1.33-.05 1.83-.86 3.44-.86 1.6 0 2.05.86 3.45.83 1.42-.02 2.33-1.3 3.2-2.58 1.01-1.48 1.42-2.91 1.45-2.99-.03-.01-2.78-1.07-2.81-4.24zM14.6 4.3c.73-.89 1.22-2.12 1.09-3.35-1.05.04-2.32.7-3.07 1.58-.67.78-1.26 2.03-1.1 3.23 1.17.09 2.36-.6 3.08-1.46z"/></svg>` },
-  "Smurfs' Village": { cls:"c-smurfs", vol:"Vol. 4", inner:`
+  "c-smurfs": { vol:"Vol. 4", inner:`
     <svg class="house" viewBox="0 0 200 170" fill="none" aria-hidden="true"><ellipse cx="100" cy="158" rx="78" ry="9" fill="#000" opacity=".12"/><path d="M16 100C16 48 52 20 100 20s84 28 84 80c0 8-7 12-16 12H32c-9 0-16-4-16-12Z" fill="#B14A3C"/><circle cx="58" cy="66" r="7" fill="#F2EADA" opacity=".55"/><circle cx="122" cy="50" r="5" fill="#F2EADA" opacity=".5"/><circle cx="146" cy="82" r="8" fill="#F2EADA" opacity=".55"/><rect x="60" y="108" width="84" height="50" rx="10" fill="#553A24"/><rect x="72" y="120" width="20" height="20" rx="3" fill="#C19A52" opacity=".7"/><path d="M106 158v-22a16 16 0 0 1 32 0v22Z" fill="#7C5838"/></svg>` },
-  "Doodle Jump": { cls:"c-doodlejump", vol:"Vol. 5", inner:`
+  "c-doodlejump": { vol:"Vol. 5", inner:`
     <svg class="doodler" viewBox="0 0 100 100" aria-hidden="true"><ellipse cx="50" cy="55" rx="32" ry="28" fill="#6bb84a" stroke="#2c3a1e" stroke-width="2.5"/><ellipse cx="50" cy="62" rx="20" ry="14" fill="#8ed268" opacity=".55"/><ellipse cx="62" cy="56" rx="11" ry="9" fill="#6bb84a" stroke="#2c3a1e" stroke-width="2.5"/><circle cx="42" cy="42" r="9" fill="#fff" stroke="#2c3a1e" stroke-width="2.5"/><circle cx="44" cy="44" r="4" fill="#2c3a1e"/><circle cx="58" cy="40" r="9" fill="#fff" stroke="#2c3a1e" stroke-width="2.5"/><circle cx="60" cy="42" r="4" fill="#2c3a1e"/></svg>
     <svg class="plats" viewBox="0 0 300 375" preserveAspectRatio="none" aria-hidden="true" style="position:absolute;inset:0;z-index:2"><rect class="plat" x="40" y="250" width="60" height="12" rx="6"/><rect class="plat" x="150" y="300" width="60" height="12" rx="6"/></svg>` },
 };
 
-/* Short index-style taglines per wiki (the 5 built + 7 others use index's
-   exact text; the rest match that clean dot-separated style). Popularity and
-   entry counts stay in the WIKIS data for filter/sort — just not displayed. */
-const TAGLINES = {
-  "Taco Bell":"Menus · Sauces · Slogans",
-  "Fallout":"Factions · Timeline",
-  "Apple":"Products · Timeline",
-  "Smurfs' Village":"Buildings · Lore",
-  "Doodle Jump":"Platforms · Monsters",
-  "Star Wars":"Saga · Characters · Lore",
-  "Pokémon":"Pokédex · Regions · Games",
-  "Taylor Swift":"Eras · Discography",
-  "One Piece":"Arcs · Crews · Devil Fruits",
-  "Formula 1":"Teams · Circuits · Seasons",
-  "Marvel Cinematic Universe":"Phases · Heroes · Timeline",
-  "Minecraft":"Blocks · Mobs · Biomes",
-  "Dune":"Houses · Spice · Lore",
-  "BTS":"Members · Eras · Discography",
-  "The Legend of Zelda":"Games · Items · Timeline",
-  "Studio Ghibli":"Films · Characters · Lore",
-  "McDonald's":"Menu · History · Promos",
-  "Naruto":"Villages · Jutsu · Clans",
-  "NBA":"Teams · Players · Seasons",
-  "FIFA World Cup":"Teams · Tournaments · History",
-  "Genshin Impact":"Characters · Regions · Banners",
-  "Kendrick Lamar":"Albums · Era · Verses",
-  "Chick-fil-A":"Menu · History · Locations",
-  "Severance":"Episodes · Lumon · Lore",
-  "Sabrina Carpenter":"Eras · Discography",
-  "TikTok Trends":"Trends · Sounds · Eras",
-  "Y2K Fashion":"Styles · Icons · Eras",
-  "GeoCities":"Sites · History · Web Lore",
-  "Fortnite":"Seasons · Skins · Map",
-  "Beyoncé":"Eras · Discography · Tours",
-  "Harry Potter":"Books · Spells · Lore",
-  "Stranger Things":"Seasons · Characters · Lore",
-  "Demon Slayer":"Arcs · Hashira · Breathing",
-  "K-pop":"Groups · Eras · Charts",
-  "Wendy's":"Menu · History · Tweets",
-  "Wii Sports":"Games · Miis · Records",
-  "Vine (rip)":"Vines · Creators · Lore",
-  "Streetwear":"Brands · Drops · History",
-  "Squid Game":"Games · Players · Lore",
-};
-
 function coverTile(w){
-  const cat = catBy(w.category);
-  const href = w.url || '#';
-  const tag = TAGLINES[w.name] || cat.label;
-  const b = BESPOKE[w.name];
+  const cat = catBy((w.categories||[])[0]);
+  const genre = cat ? cat.label : 'Wiki';
+  const cover = w.tile_cover || {};
+  // live flagship (bespoke cover) → its built page here; any other live wiki
+  // is DB-native and reads on the platform's reader; coming soon → no link
+  const href = w.status !== 'live' ? '#'
+    : cover.kind === 'bespoke' ? (w.id + '.html')
+    : ('https://vizwiki.vercel.app/read/' + encodeURIComponent(w.id));
+  const tag = w.tagline || genre;
+  const b = cover.cls ? BESPOKE[cover.cls] : null;
   if(b){
-    // bespoke cover (built wiki) — matches index exactly: genre + Vol., title + tagline
-    return `<a class="cover ${b.cls}" href="${href}">
+    // bespoke cover (built wiki) — hand-coded art + the DB's identity text
+    return `<a class="cover ${cover.cls}" href="${href}">
       ${b.inner}
-      <div class="c-genre">${cat.label}</div>
+      <div class="c-genre">${genre}</div>
       <div class="c-vol">${b.vol}</div>
       <div class="c-foot">
         <div class="c-title">${w.name}${b.titleSuffix||''}</div>
@@ -479,12 +403,16 @@ function coverTile(w){
       </div>
     </a>`;
   }
-  // themed cover — matches index exactly: genre + Indexed badge, title + tagline
-  return `<a class="cover c-themed ${cat.grad}" href="${href}">
-    <div class="sheen"></div>
-    <svg class="wiki-icon glyph"><use href="#ic-${cat.icon}"></use></svg>
-    <div class="c-genre">${cat.label}</div>
-    <span class="c-soon">Indexed</span>
+  // per-wiki cover ART (uploaded image + legibility scrim), else the themed
+  // cover — gradient + glyph derived from the wiki's first category
+  const art = cover.kind === 'art' && cover.src
+    ? `background-image:linear-gradient(to top,rgba(10,8,12,.78) 0%,rgba(10,8,12,.12) 45%,rgba(10,8,12,.18) 100%),url('${cover.src}');background-size:cover;background-position:center`
+    : `background-image:linear-gradient(to bottom right,${cat?cat.from:'#2a2630'},${cat?cat.to:'#4a4454'})`;
+  return `<a class="cover c-themed" href="${href}" style="${art}">
+    ${cover.kind === 'art' ? '' : `<div class="sheen"></div>
+    <svg class="wiki-icon glyph"><use href="#ic-${cat?cat.icon:'sparkles'}"></use></svg>`}
+    <div class="c-genre">${genre}</div>
+    <span class="c-soon">${w.status === 'coming_soon' ? 'Coming soon' : 'Indexed'}</span>
     <div class="c-foot">
       <div class="c-title">${w.name}</div>
       <div class="c-blurb">${tag}</div>
@@ -494,8 +422,8 @@ function coverTile(w){
 
 function renderList(){
   let list = WIKIS.slice();
-  if(selected.size > 0) list = list.filter(w => selected.has(w.category));
-  if(q.trim()){ const s=q.toLowerCase(); list=list.filter(w=>w.name.toLowerCase().includes(s)||w.blurb.toLowerCase().includes(s)); }
+  if(selected.size > 0) list = list.filter(w => (w.categories||[]).some(k => selected.has(k)));
+  if(q.trim()){ const s=q.toLowerCase(); list=list.filter(w=>w.name.toLowerCase().includes(s)||(w.blurb||'').toLowerCase().includes(s)); }
   if(sort==='popular') list.sort((a,b)=>b.popularity-a.popularity);
   if(sort==='az') list.sort((a,b)=>a.name.localeCompare(b.name));
   if(sort==='entries') list.sort((a,b)=>b.entries-a.entries);
@@ -508,8 +436,21 @@ function renderList(){
 }
 
 el('q').addEventListener('input', e=>{ q=e.target.value; renderList(); });
-el('totalCount').textContent = WIKIS.length.toLocaleString();
-renderFilters(); renderList();
+
+// ── boot: fetch the directory, then render everything from it ──
+(async function boot(){
+  el('list').innerHTML = `<div class="p-12 text-center font-mono-acc text-[10px] uppercase tracking-wider text-muted-foreground">Loading the library…</div>`;
+  renderFilters();
+  try{
+    const dir = await (await fetch(DIRECTORY_URL)).json();
+    CATEGORIES = [{key:"all",label:"All",icon:"sparkles"}, ...(dir.categories||[])];
+    WIKIS = dir.wikis || [];
+    el('totalCount').textContent = WIKIS.length.toLocaleString();
+    renderFilters(); renderList();
+  }catch(e){
+    el('list').innerHTML = `<div class="border border-dashed border-foreground/25 bg-card p-12 text-center text-muted-foreground">The wiki directory is unreachable right now — refresh to try again.</div>`;
+  }
+})();
 
 </script>
 {% endraw %}
