@@ -113,8 +113,10 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, genAsUser = f
                 </button>
               ))}
             </div>
-            <input className="acct-input" placeholder="tagline — e.g. Menus · Sauces · Slogans" value={tagline} onChange={(e) => setTagline(e.target.value)} />
-            <textarea className="acct-input ow-blurb" placeholder="blurb — one sentence for cards and search" value={blurb} onChange={(e) => setBlurb(e.target.value)} />
+            <div className="ow-label">tagline — the dotted line under the title on the tile; a few words separated by ·</div>
+            <input className="acct-input" placeholder="e.g. Menus · Sauces · Slogans" value={tagline} onChange={(e) => setTagline(e.target.value)} />
+            <div className="ow-label">blurb — not shown on the tile: it powers browse search and the tile's hover tooltip</div>
+            <textarea className="acct-input ow-blurb" placeholder="one sentence describing the wiki" value={blurb} onChange={(e) => setBlurb(e.target.value)} />
             <div className="ow-row">
               <select className="acct-input" value={status} onChange={(e) => setStatus(e.target.value as any)}>
                 <option value="live">live</option>
