@@ -3,8 +3,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { contentStore, type CategoryRow, type TileCover, type WikiIcon, type WikiMeta } from '../content-store';
 import { ICON_SPRITE } from '../lib/render';
 import taxonomyCanon from '../data/wiki-categories.json';
-import { mergeTaxonomy, spriteIconNames } from '../lib/taxonomy.mjs';
+import { mergeTaxonomy, resolveColor, spriteIconNames } from '../lib/taxonomy.mjs';
 import { COVER_CSS, wikiCoverTile } from '../lib/reader-core.mjs';
+import { GenArtRow, type GenWiki } from './GenArt';
 
 // The WIKI IDENTITY editor — alter the current wiki's tile cover art, tags,
 // tagline, blurb and status AFTER origination (admin, or the wiki's master).
@@ -61,6 +62,13 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved }: {
   const cover: TileCover = kind === 'art'
     ? { kind: 'art', src: artUrl.trim() }
     : kind === 'bespoke' && bespokeCls ? { kind: 'bespoke', cls: bespokeCls } : { kind: 'themed' };
+  // the identity brief the AI generator draws from (relatedness is automatic)
+  const primaryCat = tax.categories.find((c: any) => c.key === cats[0]) || null;
+  const genWiki: GenWiki = {
+    name: wikiName, genreLabel: primaryCat?.label ?? null,
+    tagline: tagline.trim() || null, blurb: blurb.trim() || null,
+    colors: primaryCat ? [resolveColor(tax.palette, primaryCat.grad.from, ''), resolveColor(tax.palette, primaryCat.grad.to, '')].filter(Boolean) : [],
+  };
   const mark: WikiIcon = icKind === 'art'
     ? { kind: 'art', src: icSrc.trim() }
     : icKind === 'glyph' && icGlyph ? { kind: 'glyph', name: icGlyph } : { kind: 'auto' };
@@ -116,9 +124,10 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved }: {
                 {bespokeCls && <option value="bespoke">bespoke (hand-built: {bespokeCls})</option>}
               </select>
             </div>
-            {kind === 'art' && (
+            {kind === 'art' && (<>
               <input className="acct-input" placeholder="tile art URL — an image upload at public launch" value={artUrl} onChange={(e) => setArtUrl(e.target.value)} />
-            )}
+              <GenArtRow kind="cover" wiki={genWiki} onResult={setArtUrl} />
+            </>)}
             {kind === 'bespoke' && <div className="acct-note">This wiki wears one of the five hand-built covers (browse page art). Switch the kind above to replace it; the reference is kept if you switch back before saving.</div>}
             <div className="ow-label">wiki icon — the small mark (switcher, wiki bar / rail)</div>
             <div className="ow-row wi-icon-row">
@@ -144,9 +153,10 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved }: {
                 ))}
               </div>
             )}
-            {icKind === 'art' && (
+            {icKind === 'art' && (<>
               <input className="acct-input" placeholder="icon image URL — square works best; an upload at public launch" value={icSrc} onChange={(e) => setIcSrc(e.target.value)} />
-            )}
+              <GenArtRow kind="icon" wiki={genWiki} onResult={setIcSrc} />
+            </>)}
             {err && <div className="acct-msg">{err}</div>}
             <div className="ow-actions">
               <button className="acct-primary" onClick={save} disabled={busy}>{busy ? '…' : savedTick ? 'Saved ✓' : 'Save identity'}</button>

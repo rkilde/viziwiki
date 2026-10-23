@@ -5,6 +5,7 @@ import { ICON_SPRITE } from '../lib/render';
 import taxonomyCanon from '../data/wiki-categories.json';
 import { mergeTaxonomy, resolveColor, slugifyId, spriteIconNames, validateCategory, validateNewWiki } from '../lib/taxonomy.mjs';
 import { COVER_CSS, wikiCoverTile } from '../lib/reader-core.mjs';
+import { GenArtRow } from './GenArt';
 
 // The admin "New wiki" flow — ORIGINATION (the origination arc, iteration 2).
 // Identity in, wiki out: name → id, categories from the MERGED taxonomy (the
@@ -166,6 +167,14 @@ export function OriginateWiki({ existingIds, onClose, onCreated }: {
               <input className="acct-input" placeholder="tile art URL (optional — themed cover if blank)" value={artUrl}
                 onChange={(e) => setArtUrl(e.target.value)} disabled={!!createdId} />
             </div>
+            {!createdId && (() => {
+              const pc = tax.categories.find((c: any) => c.key === cats[0]) || null;
+              return <GenArtRow kind="cover" wiki={{
+                name: name.trim() || 'a new wiki', genreLabel: pc?.label ?? null,
+                tagline: tagline.trim() || null, blurb: blurb.trim() || null,
+                colors: pc ? [resolveColor((taxonomyCanon as any).palette, pc.grad.from, ''), resolveColor((taxonomyCanon as any).palette, pc.grad.to, '')].filter(Boolean) : [],
+              }} onResult={setArtUrl} />;
+            })()}
             <input className="acct-input" placeholder="grant wiki master — email (optional)" value={grantEmail}
               onChange={(e) => setGrantEmail(e.target.value)} />
             {err && <div className="acct-msg">{err}</div>}

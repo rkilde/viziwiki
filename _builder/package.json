@@ -13,6 +13,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.2.0",
     "@supabase/supabase-js": "^2.118.0",
     "js-yaml": "4.1.0",
     "liquidjs": "^10.27.0",

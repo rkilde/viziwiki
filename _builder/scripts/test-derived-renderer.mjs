@@ -995,5 +995,30 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(browse22.includes('t-display') && browse22.includes('t-label') && browse22.includes('t-lead'), "the page's document text reads the canon type roles");
 }
 
+// ── case 23: the AI art generator's pure parts — identity-derived prompts,
+// SVG extraction, and the sanitizer ──
+{
+  console.log('case 23: AI art gen — prompts from identity, svg sanitize');
+  const { buildSvgPrompt, extractSvg, sanitizeSvg, svgToDataUri } = await import('../lib/svg-gen.mjs');
+  const w23 = { name: 'Taco Bell', genreLabel: 'Fast Food', tagline: 'Menus · Sauces', blurb: 'Crunchwraps logged.', colors: ['oklch(0.78 0.14 75)', 'oklch(0.55 0.18 35)'] };
+  const pIcon = buildSvgPrompt('icon', w23, null);
+  const pCover = buildSvgPrompt('cover', w23, 'night neon');
+  ok(pIcon.includes('Taco Bell') && pIcon.includes('Fast Food') && pIcon.includes('oklch(0.78 0.14 75)'), 'the prompt derives from the wiki IDENTITY (relatedness is automatic)');
+  ok(pIcon.includes('0 0 64 64') && pCover.includes('0 0 360 480'), 'icon and cover carry their canvas contracts');
+  ok(pCover.includes('night neon') && !pIcon.includes('night neon'), 'the designer hint rides only its own request');
+  ok(pIcon.includes('NO <script>') && pIcon.includes('NO text'), 'the hard output contract is in every prompt');
+
+  ok(extractSvg('Here you go:\n```\n<svg viewBox="0 0 64 64"><rect/></svg>\n```') === '<svg viewBox="0 0 64 64"><rect/></svg>', 'extraction tolerates chatter + fences');
+  ok(extractSvg('no art here') === null, 'no svg → null, never garbage');
+
+  const dirty = '<svg viewBox="0 0 64 64" onload="x()"><script>evil()</script><a href="https://x.y"><rect fill="url(#g)"/></a><image href="https://x/y.png"/><use href="#ok"/></svg>';
+  const clean23 = sanitizeSvg(dirty);
+  ok(!/script|onload|https:/.test(clean23), 'scripts, handlers, and external refs are stripped');
+  ok(clean23.includes('url(#g)') && clean23.includes('href="#ok"'), 'local refs (gradients, defs) survive');
+  let threw = false; try { sanitizeSvg('<div>nope</div>'); } catch { threw = true; }
+  ok(threw, 'non-svg input is rejected outright');
+  ok(svgToDataUri('<svg viewBox="0 0 1 1"/>').startsWith('data:image/svg+xml;base64,'), 'output is a data URI the art slots accept');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
