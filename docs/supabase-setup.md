@@ -8,20 +8,28 @@ owner's click-by-click to turn the cloud on. (Code side is done: schema in
 
 ## One-time setup (~5 minutes)
 
-### 1 · Run the schema migration
+### 1 · Run the schema migrations (BOTH files, in order)
 1. Open **supabase.com/dashboard** → the **ViziWiki Website** project
    (if it's paused, hit Restore and wait a minute).
 2. Left sidebar → **SQL Editor** → **New query**.
 3. Paste the ENTIRE contents of `_builder/supabase/migrations/0001_init.sql`
-   (from the repo) and press **Run**. You should see "Success. No rows returned".
+   (from the repo) and press **Run** (approve the "destructive operations"
+   dialog — the drops are idempotency guards). Then repeat with
+   `0002_grants.sql` — newer Supabase projects don't auto-grant table
+   privileges to the API roles, and without it every request fails 42501
+   "permission denied". You should see "Success. No rows returned" for both.
 4. Sanity check: sidebar → **Table Editor** → you should now see three empty
    tables: `wikis`, `pages`, `sections`.
 
 ### 2 · Copy the two keys
-1. Sidebar → **Project Settings** (gear) → **API**.
-2. Copy **Project URL** (looks like `https://xxxx.supabase.co`).
-3. Copy the **anon / public** API key (the long one labeled `anon` `public`).
-   ⚠ NOT the `service_role` key — that one is secret and never leaves the
+1. Sidebar → **Project Settings** (gear) → **API** / **API Keys**.
+2. Copy **Project URL** (looks like `https://xxxx.supabase.co` — also shown
+   under Settings → Data API).
+3. Copy the key: use the **"Legacy anon, service_role API keys" tab → the
+   `anon` key** (long `eyJ…` string) — this is the proven one. (The new
+   `sb_publishable_…` key returned blanket 401s on this project when first
+   wired, Oct 2026 — retry it some day if Supabase irons that out.)
+   ⚠ NEVER anything labeled `service_role` or "secret" — those stay in the
    dashboard.
 
 ### 3 · Give the keys to Vercel
