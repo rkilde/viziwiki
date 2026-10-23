@@ -16,6 +16,7 @@
     "hero",
     "overview",
     "photo-rail",
+    "prose-rail",
     "spec",
     "config",
     "lifecycle-lane",
@@ -30,6 +31,7 @@
         "hero",
         "overview",
         "photo-rail",
+        "prose-rail",
         "spec",
         "config",
         "lifecycle-lane",
@@ -56,6 +58,7 @@
         "hero",
         "overview",
         "photo-rail",
+        "prose-rail",
         "spec",
         "config",
         "lifecycle-lane",
@@ -1184,6 +1187,154 @@
         ]
       },
       "min": "≥1 photo, each with an image (alt text optional)"
+    },
+    "prose-rail": {
+      "section": "prose-rail-section",
+      "display": {
+        "body": {
+          "kind": "Block"
+        },
+        "photos": {
+          "kind": "Photo"
+        }
+      },
+      "fields": {
+        "eyebrow": {
+          "type": "text",
+          "required": true,
+          "blank": "Section label",
+          "help": "The section's eyebrow label — editable because this one bank serves many section kinds"
+        },
+        "icon": {
+          "type": "icon",
+          "default": "sparkles",
+          "help": "Sprite icon beside the eyebrow (also the default icon on subtitled blocks)"
+        },
+        "heading": {
+          "type": "text",
+          "required": true,
+          "blank": "Section heading"
+        },
+        "tone": {
+          "type": "enum[a,b,special]",
+          "default": "a"
+        },
+        "visual": {
+          "type": "text",
+          "locked": true,
+          "default": "prose-rail",
+          "help": "The slot's visual type — registry hosts constrain it (admin)"
+        },
+        "anchor": {
+          "type": "text",
+          "locked": true,
+          "default": "prose-rail-section",
+          "help": "Section anchor id (admin — page TOCs link to it)"
+        },
+        "body": {
+          "type": "list<block>",
+          "required": true,
+          "min": 1,
+          "item_blank": {
+            "text": "Write this section's prose…"
+          }
+        },
+        "rail": {
+          "type": "rail",
+          "help": "Optional sticky side image rail (the archive panel). Omit → full-width prose",
+          "blank": {
+            "title": "Archive",
+            "photos": [
+              {
+                "strong": "Image Title",
+                "caption": "Caption",
+                "source": "· source"
+              }
+            ]
+          }
+        }
+      },
+      "subtypes": {
+        "block": {
+          "icon": {
+            "type": "icon",
+            "help": "Sprite icon for the subtitle (defaults to the section icon)"
+          },
+          "subtitle": {
+            "type": "text",
+            "blank": "Subtitle",
+            "help": "Optional run-in subtitle above this paragraph (the controversies style)"
+          },
+          "text": {
+            "type": "richtext",
+            "required": true,
+            "blank": "Write this section's prose…"
+          }
+        },
+        "rail": {
+          "title": {
+            "type": "text",
+            "default": "Archive",
+            "blank": "Archive",
+            "help": "The rail header label (e.g. 'Archive', 'Press archive')"
+          },
+          "photos": {
+            "type": "list<photo>",
+            "required": true,
+            "min": 1,
+            "item_blank": {
+              "strong": "Image Title",
+              "caption": "Caption",
+              "source": "· source"
+            }
+          }
+        },
+        "photo": {
+          "src": {
+            "type": "media",
+            "required": true,
+            "label": "add image",
+            "blank": "image URL"
+          },
+          "alt": {
+            "type": "text",
+            "label": "alt text",
+            "blank": "describe the photo"
+          },
+          "strong": {
+            "type": "text",
+            "blank": "Image Title"
+          },
+          "caption": {
+            "type": "text",
+            "blank": "Caption"
+          },
+          "source": {
+            "type": "text",
+            "blank": "· source"
+          }
+        }
+      },
+      "seed": {
+        "eyebrow": "Section label",
+        "heading": "Section heading",
+        "body": [
+          {
+            "text": "Write this section's prose…"
+          }
+        ],
+        "rail": {
+          "title": "Archive",
+          "photos": [
+            {
+              "strong": "Image Title",
+              "caption": "Caption",
+              "source": "· source"
+            }
+          ]
+        }
+      },
+      "min": "eyebrow + heading + ≥1 prose block; the rail (optional) needs ≥1 image"
     },
     "catalog": {
       "section": "catalog-section",

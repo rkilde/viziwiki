@@ -52,7 +52,7 @@ export default function Page() {
       <div id="miller">
         <MillerView key={wiki.id} wiki={wiki} onOpen={setEditing} onAddNode={addNode} />
       </div>
-      {editing && <PageEditor page={editing} skin={baseWiki.skin} onClose={() => setEditing(null)} />}
+      {editing && <PageEditor page={editing} skin={baseWiki.skin} wikiMeta={{ id: baseWiki.id, slug: baseWiki.id, name: baseWiki.name, skin: baseWiki.skin.bodyClass }} onClose={() => setEditing(null)} />}
     </>
   );
 }

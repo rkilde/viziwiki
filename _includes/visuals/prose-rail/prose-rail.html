@@ -1,0 +1,40 @@
+{%- comment -%}
+  PROSE-RAIL visual (Level B: data in → HTML out) — the sticky side image rail
+  (the "archive" panel): a dark vertical column of square photo cards with a
+  header label, scrolling independently beside the prose; a horizontal strip on
+  mobile. Fills the prose-rail-section slot.
+  Data: { title?, photos[] } — each photo { src, alt, strong, caption, source }
+  (the MASTER caption format, same as the photo-rail bank: three optional
+  lines — title / caption / source).
+  LAYOUT is pure CSS (sticky + native overflow scroll). The click-to-zoom
+  lightbox is a self-contained, idempotent LIVE-ONLY script (the builder strips
+  <script>; it toggles a class + sets img.src — no geometry mutation — so it
+  honors the bank layout contract).
+{%- endcomment -%}
+{%- assign d = include.data -%}
+{%- assign r = d.rail -%}
+<div class="arch-rail">
+  <div class="arch-rail-header"><span class="arch-rail-title">{{ r.title | default: "Archive" }}</span><span class="arch-rail-glyph">&#8597;</span></div>
+  {%- for im in r.photos -%}
+  <div class="arch-rail-card" data-alb-src="{{ im.src }}" data-alb-cap="{{ im.strong }} {{ im.caption }} {{ im.source }}">
+    <img src="{{ im.src }}" alt="{{ im.alt }}" loading="lazy">
+    <div class="arch-rail-caption"><strong>{{ im.strong }}</strong><span class="arail-cap-line">{{ im.caption }}</span><span class="arail-cap-src">{{ im.source }}</span></div>
+  </div>
+  {%- endfor -%}
+</div>
+<script>
+(function(){ if(window.__archRailLb)return; window.__archRailLb=1;
+  document.addEventListener('click',function(e){
+    var c=e.target.closest&&e.target.closest('.arch-rail-card[data-alb-src]'); if(!c||!c.getAttribute('data-alb-src'))return;
+    var lb=document.getElementById('arail-lb');
+    if(!lb){lb=document.createElement('div');lb.id='arail-lb';lb.className='arail-lb';
+      lb.innerHTML='<button class="arail-lb-x" aria-label="Close">×</button><img class="arail-lb-img" alt=""><div class="arail-lb-cap"></div>';
+      document.body.appendChild(lb);
+      lb.addEventListener('click',function(ev){if(ev.target===lb||(ev.target.className||'').indexOf('arail-lb-x')>-1)lb.classList.remove('open');});}
+    lb.querySelector('.arail-lb-img').src=c.getAttribute('data-alb-src');
+    lb.querySelector('.arail-lb-cap').textContent=(c.getAttribute('data-alb-cap')||'').replace(/\s+/g,' ').trim();
+    lb.classList.add('open');
+  });
+  document.addEventListener('keydown',function(e){var lb=document.getElementById('arail-lb');if(e.key==='Escape'&&lb)lb.classList.remove('open');});
+})();
+</script>

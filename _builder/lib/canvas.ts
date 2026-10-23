@@ -414,6 +414,18 @@ const AFFORDANCE = `
   /* the "+ photo" tile matches a card's footprint */
   .pr-add{ flex-shrink:0; width:280px; height:200px; display:flex; align-items:center; justify-content:center; border-radius:8px; }
   @media(max-width:600px){ .pr-add{ width:200px; height:148px; } }
+  /* ════ prose-rail editor ════ editable eyebrow (text + icon picker); body
+     blocks with optional subtitles; the archive rail mirrors the photo-rail
+     editor (dark panel → light-dashed affordances). */
+  .arch-rail-card .pe-tag-rm{ position:absolute; top:8px; right:8px; z-index:4; opacity:0;
+    background:rgba(0,0,0,.55); border-color:transparent; color:#fff; }
+  .arch-rail-card:hover .pe-tag-rm{ opacity:1; }
+  .arch-rail-card.pe-img-empty{ outline:2px dashed rgba(255,255,255,.3); outline-offset:-2px; min-height:120px; }
+  .arch-rail .pe-remove{ position:absolute; top:8px; right:8px; z-index:5; }
+  .ar-add{ width:100%; aspect-ratio:2.2/1; display:flex; align-items:center; justify-content:center; border-radius:8px;
+    border:2px dashed rgba(255,255,255,.3); background:rgba(255,255,255,.04); color:rgba(255,255,255,.65); }
+  .ar-add:hover{ background:rgba(255,255,255,.08); color:#fff; }
+  .ar-add-rail{ align-self:stretch; min-height:220px; display:flex; align-items:center; justify-content:center; border-radius:14px; }
   .img-pop .cc-img-url, .img-pop .cc-img-alt{ width:100%; box-sizing:border-box; padding:6px 8px; border:1px solid rgba(0,0,0,.18);
     border-radius:6px; font-family:'JetBrains Mono',monospace; font-size:10px; }
   .img-pop .cc-opt{ opacity:.55; text-transform:none; letter-spacing:0; }

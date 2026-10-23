@@ -679,5 +679,81 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(/\.alt(\s|$)/.test(card.getAttribute('data-pe-jump') || ''), 'the slot is still the editor for alt (jump target), even though alt is optional');
 }
 
+// ── case 15: prose-rail in-place editor (prose + optional archive rail) ──
+{
+  console.log('case 15: prose-rail editor — editable eyebrow/icon, blocks, archive rail');
+  const seed = JSON.parse(JSON.stringify(grammar.components['prose-rail'].seed));
+  const doc = {
+    hero: { eyebrow: null, title: 'T', subtitle: null, subtitle_meta: null, desc: 'D', stats: null, search: false, search_placeholder: '', spotlight: null, feature: null },
+    overview: { tone: 'b', heading: 'H', paragraphs: ['P'], infobox: null },
+    sections: [{ type: 'prose-rail', data: seed }],
+  };
+  const d = renderAndDecorate(doc, false);
+  const pr = d.querySelector('section.wiki-section.prose-rail');
+  ok(pr, 'prose-rail section rendered via its canonical include chain');
+  const eb = pr.querySelector('.wiki-section-eyebrow');
+  ok(eb && eb.querySelector('.ce[data-pe-path$=".eyebrow"]'), 'eyebrow TEXT editable in place (the first non-locked eyebrow)');
+  const ebIc = eb && eb.querySelector('svg');
+  ok(ebIc && ebIc.getAttribute('data-pe-opens') && /\.icon$/.test(ebIc.getAttribute('data-pe-scope') || ''), 'eyebrow icon opens the sprite-derived picker');
+  ok(pr.querySelector('.wiki-section-title .ce[data-pe-path$=".heading"]'), 'heading editable in place');
+  ok(pr.querySelector('.wiki-section-prose > p .ce[data-pe-path$=".text"]'), 'body block text editable in place');
+  ok([...pr.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === '+ subtitle'), 'a block without a subtitle offers "+ subtitle"');
+  ok([...pr.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === '+ paragraph'), '"+ paragraph" add at the end of the prose column');
+  const rail = pr.querySelector('.arch-rail');
+  ok(rail, 'the seeded section carries the archive rail');
+  ok(rail.querySelector('.arch-rail-title .ce[data-pe-path$="rail.title"]'), 'rail header title editable in place');
+  ok(rail.querySelector('.pe-remove'), 'the rail itself is removable (grammar optional field)');
+  const arCard = rail.querySelector('.arch-rail-card');
+  ok(arCard && arCard.classList.contains('pe-img-empty'), 'an empty rail image is flagged as a placeholder');
+  ok((arCard.querySelector('img').getAttribute('src') || '').indexOf('data:image/svg+xml') === 0, 'empty rail card renders a real placeholder image (holds its footprint)');
+  ok(arCard.getAttribute('data-pe-opens') && /rail\.photos\.0\.src$/.test(arCard.getAttribute('data-pe-scope') || ''), 'the card is the jump target for src (opens the image editor)');
+  ok(arCard.querySelector('.arch-rail-caption strong .ce[data-pe-path$=".strong"]'), 'caption title editable (the MASTER three-line format)');
+  ok(arCard.querySelector('.arail-cap-line .ce[data-pe-path$=".caption"]') && arCard.querySelector('.arail-cap-src .ce[data-pe-path$=".source"]'), 'caption + source lines editable');
+  ok([...rail.querySelectorAll('.pe-add, .pe-mini-add')].some((b) => b.textContent === '+ photo'), '"+ photo" tile in the rail');
+  // a doc WITHOUT the rail → full-width prose + a "+ image rail" affordance
+  const seed2 = JSON.parse(JSON.stringify(seed)); delete seed2.rail;
+  const d2 = renderAndDecorate({ ...doc, sections: [{ type: 'prose-rail', data: seed2 }] }, false);
+  const pr2 = d2.querySelector('section.wiki-section.prose-rail');
+  ok(!pr2.querySelector('.arch-rail'), 'no rail in data → no rail rendered');
+  ok([...pr2.querySelectorAll('.pe-add, .pe-mini-add')].some((b) => /\+ image rail/.test(b.textContent)), 'railless section offers "+ image rail"');
+  // readiness: eyebrow/heading/text required; the rail's image tracked per photo
+  let mk15 = [];
+  renderAndDecorate(doc, false, undefined, (w) => { w.__peMarkers = (list) => { mk15 = list; }; });
+  const m15 = mk15[mk15.length - 1] || {};
+  const secLabels = (m15.section || []).map((l) => l.label);
+  ok(secLabels.includes('Eyebrow') || secLabels.some((l) => /eyebrow/i.test(l)), 'widget tracks the eyebrow (required)');
+  const pcard15 = (m15.cards || []).find((c) => /Photo/.test(c.kind));
+  ok(pcard15 && pcard15.reqs.some((r) => r.label === 'add image'), 'widget tracks the rail photo\'s image ("add image")');
+}
+
+// ── case 16: ContentStore doc↔rows mapping + grammar validation (no network) ──
+{
+  console.log('case 16: content-store mapping — doc↔rows round-trip, grammar validation');
+  const { docToRows, rowsToDoc, validateDoc, persistableDoc } = await import('../lib/content-map.mjs');
+  const doc = {
+    hero: { title: 'T', desc: 'D' },
+    overview: { heading: 'H', paragraphs: ['P'] },
+    sections: [
+      { type: 'prose-rail', data: JSON.parse(JSON.stringify(grammar.components['prose-rail'].seed)) },
+      { type: 'photo-rail', data: JSON.parse(JSON.stringify(grammar.components['photo-rail'].seed)) },
+    ],
+    _stash: { feature: { title: 'editor-only' } },
+  };
+  const clean = persistableDoc(doc);
+  ok(!('_stash' in clean), '_stash (editor-only state) is never persisted');
+  const rows = docToRows(clean);
+  ok(rows.length === 4 && rows[0].component === 'hero' && rows[0].position === 0 && rows[1].component === 'overview' && rows[1].position === 1, 'hero + overview are the locked rows 0/1');
+  ok(rows[2].component === 'prose-rail' && rows[3].position === 3, 'body sections follow in order');
+  const back = rowsToDoc(rows);
+  ok(JSON.stringify(back) === JSON.stringify(clean), 'doc → rows → doc round-trips byte-identically');
+  ok(rowsToDoc(rows.slice().reverse()) && JSON.stringify(rowsToDoc(rows.slice().reverse())) === JSON.stringify(clean), 'row order in the DB does not matter (sorted by position)');
+  ok(rowsToDoc([]) === null, 'no rows → null (page never stored)');
+  ok(validateDoc(clean, grammar).ok, 'a doc of real grammar components validates');
+  const bad = { ...clean, sections: [{ type: 'not-a-component', data: {} }] };
+  const v = validateDoc(bad, grammar);
+  ok(!v.ok && /not-a-component/.test(v.errors.join(' ')), 'an unknown component type is refused (grammar is the validator)');
+  ok(!validateDoc({ sections: [] }, grammar).ok, 'a doc missing the locked hero/overview is refused');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

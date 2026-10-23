@@ -85,6 +85,12 @@ sections:
     h2: none                           # HEADERLESS — no eyebrow, no title
     full_bleed: true                   # the scroller bleeds edge-to-edge
     hosts: [photo-rail]                # visuals legal in the slot
+  prose-rail-section:
+    partial: sections/prose-rail-section.html
+    eyebrow: editable                  # the FIRST non-locked eyebrow — one bank, many section kinds
+    icon: editable                     # sprite icon picked per instance (grammar `icon` field)
+    h2: required
+    hosts: [prose-rail]                # visuals legal in the slot (the side rail)
 
 config:
   bank: charts
@@ -138,8 +144,16 @@ photo-rail:
   bank: media
   partial: visuals/photo-rail/photo-rail.html
   section: photo-rail-section
-  photo_fields: [src, alt, strong, caption]   # src = media (URL now, Supabase upload later); strong/caption optional
+  photo_fields: [src, alt, strong, caption, source]   # src = media (URL now, Supabase upload later); the MASTER caption format: title/caption/source, all optional
   lightbox: true                              # click-to-zoom (live-only; builder strips it)
+
+prose-rail:
+  bank: media
+  partial: visuals/prose-rail/prose-rail.html
+  section: prose-rail-section
+  photo_fields: [src, alt, strong, caption, source]   # the same MASTER caption format as photo-rail
+  lightbox: true                              # click-to-zoom (live-only; builder strips it)
+  sticky: true                                # the rail is a sticky side column (horizontal strip on mobile)
 
 catalog:
   bank: lists

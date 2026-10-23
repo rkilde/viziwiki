@@ -624,12 +624,20 @@
                   "label": "Overview"
                 },
                 {
+                  "type": "photo-rail",
+                  "label": "Photos"
+                },
+                {
                   "type": "spec",
                   "label": "Specifications"
                 },
                 {
                   "type": "config",
                   "label": "Configurations"
+                },
+                {
+                  "type": "prose-rail",
+                  "label": "Cultural impact"
                 },
                 {
                   "type": "lifecycle-lane",
@@ -642,9 +650,245 @@
                 {
                   "type": "delta",
                   "label": "Changes"
+                },
+                {
+                  "type": "prose-rail",
+                  "label": "Market positioning"
+                },
+                {
+                  "type": "prose-rail",
+                  "label": "Industrial design"
+                },
+                {
+                  "type": "prose-rail",
+                  "label": "Controversies"
                 }
               ],
-              "body": [],
+              "body": [
+                {
+                  "type": "photo-rail",
+                  "data": {
+                    "photos": [
+                      {
+                        "src": "https://photos2.insidercdn.com/ipod-touch-2g-unbox-1.jpg",
+                        "alt": "iPod touch 2G unboxing",
+                        "strong": "Unboxing",
+                        "source": "· 2008"
+                      },
+                      {
+                        "src": "https://i.redd.it/ipod-touch-2nd-gen-v0-bsz39n8xtl2h1.jpg?width=3024&format=pjpg&auto=webp&s=f2ee8d5051c4e3c4fc3a25c61c69eb9916814576",
+                        "alt": "iPod touch 2nd gen",
+                        "strong": "iPod touch 2G",
+                        "source": "· Reddit"
+                      },
+                      {
+                        "src": "https://i.redd.it/my-new-ipod-touch-2nd-generation-v0-itxpy328f5be1.jpg?width=3024&format=pjpg&auto=webp&s=af4673bd34b3a92451c708609d6642686313df63",
+                        "alt": "My new iPod touch 2G",
+                        "strong": "New arrival",
+                        "source": "· Reddit"
+                      },
+                      {
+                        "src": "https://files.lesterchan.net/images/apple/ipod_touch_2g.jpg",
+                        "alt": "iPod touch 2G",
+                        "strong": "iPod touch 2G",
+                        "source": "· lesterchan.net"
+                      },
+                      {
+                        "src": "https://media.512pixels.net/wp-content/uploads/2017/09/touch-gen-2-and-3.jpg",
+                        "alt": "iPod touch 2G and 3G",
+                        "strong": "2G and 3G",
+                        "source": "· 512pixels"
+                      },
+                      {
+                        "src": "https://allaboutstevejobs.com/resources/img/pics/2008-09-09_04117.jpg",
+                        "alt": "Steve Jobs iPod touch 2G announcement 2008",
+                        "strong": "Let's Rock · Sep 9, 2008",
+                        "source": "· Steve Jobs"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "prose-rail",
+                  "data": {
+                    "eyebrow": "Cultural impact",
+                    "icon": "gamepad-2",
+                    "anchor": "gaming-section",
+                    "heading": "The gateway to<br>mobile gaming.",
+                    "body": [
+                      {
+                        "text": "The iPod touch 2nd generation launched in September 2008 — two months after the App Store opened with 500 applications. Games were the dominant category from the start, and the 2G was the first iPod touch to ship with native App Store access. Where the 1st generation had been a music player that could browse the web, the 2nd generation arrived as a pocket gaming console that happened to play music."
+                      },
+                      {
+                        "text": "The timing was structurally significant. The 2G’s 3.5-inch multi-touch display, built-in accelerometer, and responsive capacitive screen made it a natural fit for the wave of touch-native games that defined the App Store’s first year: <strong>Tap Tap Revenge, Fieldrunners, Rolando, Flight Control</strong>. These were not ports of console games — they were designed from scratch for a touchscreen, and the iPod touch was the cheapest way to play them."
+                      },
+                      {
+                        "text": "Apple recognized this quickly. By 2009, the company’s marketing had shifted to position the iPod touch explicitly as a gaming device. The <strong>“Funnest iPod ever” campaign</strong> ran television spots showing games, not music. Steve Jobs showed game demos at keynote events. In multiple quarters between 2008 and 2010, iPod touch unit sales exceeded those of the Nintendo DS and Sony PSP."
+                      },
+                      {
+                        "text": "The absence of a cellular contract was the key. The iPhone cost $199 <em>plus</em> a two-year AT&T commitment at $60–100 per month. The iPod touch 2G cost $229 with no recurring cost. It introduced a generation of users to the concept that a pocket-sized touchscreen could be a primary gaming device — a market category that did not meaningfully exist before the App Store."
+                      }
+                    ],
+                    "rail": {
+                      "title": "Archive",
+                      "photos": [
+                        {
+                          "src": "https://allaboutstevejobs.com/resources/img/pics/2008-09_ipod_touch_2G_05865.jpg",
+                          "alt": "iPod touch 2G launch event 2008",
+                          "strong": "Let's Rock · Sep 9, 2008"
+                        },
+                        {
+                          "src": "https://preview.redd.it/does-any-one-still-playing-games-with-ipod-touch-4-v0-yalmn8ts8cef1.jpeg?auto=webp&s=1a10b21d04de6af4d97e9323525c0d55017e003b",
+                          "alt": "iPod touch gaming",
+                          "strong": "Still gaming"
+                        },
+                        {
+                          "src": "https://lh3.googleusercontent.com/proxy/HQNC-iFbmZ3FepTv7j1Ux3EXjgO09Td_p7t1ApRxFL9leT1hpOjQ2bW0y8Klvs853hxr-JHMnF5iD724G2u5Vjx33fufhlRP0Pum",
+                          "alt": "iPod touch App Store gaming era",
+                          "strong": "App Store era"
+                        },
+                        {
+                          "src": "https://i.redd.it/facu419yvypf1.png",
+                          "alt": "iPod touch nostalgia",
+                          "strong": "Nostalgia"
+                        },
+                        {
+                          "src": "https://pbs.twimg.com/media/HBEVKY2WIAAu_dk.jpg?name=orig",
+                          "alt": "iPod touch gaming collection",
+                          "strong": "The collection"
+                        },
+                        {
+                          "src": "https://phonedb.net/img/gallery/apple_ipod_touch_2nd_generation_in_hand.jpg",
+                          "alt": "iPod touch 2G in hand",
+                          "strong": "iPod touch 2G in hand"
+                        },
+                        {
+                          "src": "https://media.guitarcenter.com/is/image/MMGS7/583425000000000-01-260x260.jpg",
+                          "alt": "iPod touch 2G hardware",
+                          "strong": "The hardware"
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "prose-rail",
+                  "data": {
+                    "eyebrow": "Market positioning",
+                    "icon": "users",
+                    "anchor": "budget-section",
+                    "heading": "The budget<br>smartphone alternative.",
+                    "body": [
+                      {
+                        "text": "In 2008, the iPhone was not a mass-market device. It required an AT&T contract — the only carrier that sold it — at a minimum monthly cost of roughly $70. Over two years, the total cost of ownership exceeded $1,900. For a significant segment of the market, iOS was appealing but the economics were prohibitive."
+                      },
+                      {
+                        "text": "The iPod touch 2nd generation addressed this directly. At $229 for the entry model, with no contract, no monthly fee, and no carrier lock-in, the 2G delivered the core of the iPhone experience over WiFi: <strong>the same App Store, the same Safari, the same Maps, Mail, YouTube, Calendar, and Music</strong>. The only things missing were cellular data, a phone, and GPS."
+                      },
+                      {
+                        "text": "Apple announced <strong>20 million cumulative iPod touch sales</strong> by February 2009, less than five months after the 2G launched. The device found its largest audiences among <strong>students, teenagers, international users</strong> in countries where the iPhone had not yet launched, and cost-conscious consumers who wanted iOS without committing to a carrier."
+                      },
+                      {
+                        "text": "The revised 8GB model at $199 in September 2009 pushed this further. The iPod touch became the volume driver that expanded the iOS installed base beyond what the iPhone alone could have achieved — validating Apple’s belief that there was a market for a non-phone iOS device at a consumer price point."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "prose-rail",
+                  "data": {
+                    "eyebrow": "Industrial design",
+                    "icon": "palette",
+                    "anchor": "design-section",
+                    "heading": "Design blueprint<br>longevity.",
+                    "body": [
+                      {
+                        "text": "The iPod touch 1st generation had a flat aluminum back, sharp edges, and a recessed headphone jack. The 2nd generation replaced all of it: a <strong>curved, polished stainless steel back that tapered toward the edges</strong>, matching the iPhone 3G's silhouette. Volume buttons appeared on the left edge. The speaker sat behind a grille at the top. The headphone jack sat flush."
+                      },
+                      {
+                        "text": "This design became the template. The <strong>3rd generation</strong>, announced in September 2009, was externally identical: same curved back, same dimensions, same button placement, same speaker position. The only way to distinguish a 2G from a 3G was to check the model number."
+                      },
+                      {
+                        "text": "The <strong>4th generation</strong> in September 2010 added a Retina display, cameras, and the A4 chip but retained the fundamental design language: curved stainless back, chrome edge, front-face proportions. The 2G's form factor defined what the iPod touch <em>looked like</em> for four consecutive hardware generations spanning 2008 through 2012."
+                      },
+                      {
+                        "text": "It was not until the <strong>5th generation</strong> in October 2012 that Apple broke the pattern entirely, introducing a thinner aluminum unibody with a 4-inch display. The stainless-and-chrome design language that the 2G had introduced was retired after four years."
+                      }
+                    ],
+                    "rail": {
+                      "title": "Archive",
+                      "photos": [
+                        {
+                          "src": "https://media.guitarcenter.com/is/image/MMGS7/249993000000000-00-2000x2000.jpg",
+                          "alt": "iPod touch 2nd generation",
+                          "strong": "iPod touch 2G · 2008"
+                        },
+                        {
+                          "src": "https://spaceforfreedom.wordpress.com/wp-content/uploads/2017/11/s-l1000.jpg?w=486&h=486",
+                          "alt": "iPod touch 2nd generation detail",
+                          "strong": "iPod touch 2G · detail"
+                        },
+                        {
+                          "src": "https://www.slashgear.com/img/gallery/apple-ipod-touch-2g-video-unboxing/intro-import.jpg",
+                          "alt": "iPod touch 2G unboxing",
+                          "strong": "iPod touch 2G · unboxing"
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "prose-rail",
+                  "data": {
+                    "eyebrow": "Controversies",
+                    "icon": "scale",
+                    "anchor": "controversies-section",
+                    "heading": "Known issues and<br>public disputes.",
+                    "body": [
+                      {
+                        "icon": "lock",
+                        "subtitle": "Paid software upgrades",
+                        "text": "iPod touch users were charged $9.95 for the iPhone OS 2.0 update (App Store access) and $9.95 again for iPhone OS 3.0, while iPhone users received both for free. Apple attributed the fee to Sarbanes-Oxley accounting regulations. The explanation was legally defensible but commercially unpopular — particularly given that the 3.0 update unlocked Bluetooth hardware that had been physically present in their device since purchase."
+                      },
+                      {
+                        "icon": "cpu",
+                        "subtitle": "Dormant Bluetooth chip",
+                        "text": "The 2nd generation shipped with a Samsung/Broadcom Bluetooth chip inside every unit from September 2008 onward, but the chip was disabled at the firmware level. It was not enabled until iPhone OS 3.0 in June 2009 — nine months after launch. Apple never publicly explained why the chip shipped dormant. The decision to charge $9.95 to unlock hardware the user already owned compounded the controversy."
+                      },
+                      {
+                        "icon": "x",
+                        "subtitle": "iOS 4 feature exclusions",
+                        "text": "When iOS 4.0 was released in June 2010, the 2G received the update but was excluded from multitasking, custom home screen wallpapers, and Bluetooth keyboard support. Some users and developers disputed this, noting that jailbroken 2G units could run basic multitasking with acceptable performance, and that the wallpaper restriction in particular seemed more like a product decision than a hardware limitation."
+                      },
+                      {
+                        "icon": "shield",
+                        "subtitle": "Jailbreak and BootROM exploit",
+                        "text": "The original \"MB\" series models contained a hardware-level BootROM vulnerability that allowed unconditional jailbreaking — a persistent exploit that could not be patched via software update. Apple's response was the revised \"MC\" model in September 2009 with a patched BootROM. The original MB units remained permanently exploitable, creating a secondary market where un-patched 2G units commanded a premium."
+                      },
+                      {
+                        "icon": "hourglass",
+                        "subtitle": "Performance degradation on iOS 4",
+                        "text": "Users who upgraded to iOS 4.0 widely reported slower performance and reduced responsiveness compared to iPhone OS 3.1.3. Apple did not offer a way to downgrade once the update was installed, leaving users on a version of the operating system their hardware was not fully equipped to run smoothly. This pattern would recur across Apple's product line in later years and eventually result in regulatory scrutiny."
+                      }
+                    ],
+                    "rail": {
+                      "title": "Press archive",
+                      "photos": [
+                        {
+                          "src": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ88lSJO-eWnlywawjggbaUy2Yp5ccD_ujrzw&s",
+                          "alt": "Paid upgrade controversy",
+                          "strong": "Paid upgrade controversy"
+                        },
+                        {
+                          "src": "https://i.ytimg.com/vi/MflAs6JDcWs/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBumKUJU4nUV9MS_p8pwfvGCyeV5w",
+                          "alt": "iOS 4 performance issues",
+                          "strong": "iOS 4 degradation"
+                        }
+                      ]
+                    }
+                  }
+                }
+              ],
               "hero": {
                 "eyebrow": "iPod touch · 2nd Generation · 2008 – 2010",
                 "title": "iPod touch",
@@ -806,6 +1050,10 @@
                   "label": "Configurations"
                 },
                 {
+                  "type": "prose-rail",
+                  "label": "Cultural impact"
+                },
+                {
                   "type": "lifecycle-lane",
                   "label": "OS support"
                 },
@@ -816,9 +1064,90 @@
                 {
                   "type": "delta",
                   "label": "Changes"
+                },
+                {
+                  "type": "prose-rail",
+                  "label": "Industrial design"
+                },
+                {
+                  "type": "prose-rail",
+                  "label": "Controversies"
                 }
               ],
-              "body": [],
+              "body": [
+                {
+                  "type": "prose-rail",
+                  "data": {
+                    "eyebrow": "Cultural impact",
+                    "icon": "gamepad-2",
+                    "anchor": "gaming-section",
+                    "heading": "The game machine.",
+                    "body": [
+                      {
+                        "text": "No previous iPod touch had been sold primarily as a gaming device. The third generation changed that. Apple's September 2009 event benchmarked the 3G against the Nintendo DS and the Sony PlayStation Portable — two devices that had defined portable gaming for nearly a decade — and claimed superiority on available software alone. The App Store already carried over 21,000 game titles."
+                      },
+                      {
+                        "text": "The hardware justified the pitch. The PowerVR SGX535 GPU supported OpenGL ES 2.0, enabling per-pixel lighting, bloom effects, and shader-driven rendering that the previous generation's MBX Lite could not produce. Titles like <strong>Modern Combat</strong>, <strong>Infinity Blade</strong>, and <strong>Real Racing</strong> were built specifically for the 3G's graphics ceiling."
+                      },
+                      {
+                        "text": "Doubled RAM changed the experience more subtly but more fundamentally. The 2nd generation's 128 MB ceiling forced developers to aggressively compress assets and limit scene complexity. At 256 MB, the 3G could hold larger textures, run more complex physics, and switch between apps without the hard reloads that characterized its predecessor."
+                      },
+                      {
+                        "text": "The 3G's commercial timing was fortunate. iOS gaming was entering its first serious growth phase, and the 3G arrived exactly as the market needed a non-phone device capable of running its most demanding titles. It seeded a generation of players who had no console — only a pocket-sized slab with a touch screen and an App Store account."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "prose-rail",
+                  "data": {
+                    "eyebrow": "Industrial design",
+                    "icon": "palette",
+                    "anchor": "design-section",
+                    "heading": "The invisible upgrade.",
+                    "body": [
+                      {
+                        "text": "The 3rd generation iPod touch was externally indistinguishable from the 2nd generation. Same curved polished stainless steel back. Same flush 3.5 mm headphone jack. Same 110 × 61.8 × 8.5 mm footprint. Same weight. The home button, the dock connector, the volume buttons — unchanged. A user holding both devices simultaneously could not tell them apart by touch."
+                      },
+                      {
+                        "text": "This was a deliberate choice. Apple had invested in the 2G chassis — the curved stainless rear, the form that sat better in the hand than the flat aluminum of the original — and saw no reason to retire it after a single cycle. The industrial design story for the 3G was not the shell but the interior: what Apple had managed to fit inside an unchanged body."
+                      },
+                      {
+                        "text": "The one visible difference was in the retail box. The 3G shipped with the new earbuds including a three-button remote and microphone — the same accessory included with the iPhone 3GS. The EarPods era was still two years away, but these earbuds represented a meaningful upgrade over the plain earbuds in previous iPod touch boxes."
+                      },
+                      {
+                        "text": "For case manufacturers, the unchanged design was a gift and, briefly, a source of embarrassment. Cases designed for the 2G fit the 3G perfectly — but those same manufacturers had already tooled up for a 3G with a rear camera cutout, based on leaked designs that never materialised. For a few weeks in September 2009, camera cases for a camera-less device sat on the shelves at Best Buy."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "prose-rail",
+                  "data": {
+                    "eyebrow": "Controversies",
+                    "icon": "scale",
+                    "anchor": "controversies-section",
+                    "heading": "Ghost in the machine.",
+                    "body": [
+                      {
+                        "icon": "camera-off",
+                        "subtitle": "The missing camera",
+                        "text": "Before the September 9 launch, leaked images showed a 3rd generation iPod touch prototype with a rear camera centerd on the back panel. Case manufacturers — including products stocked at Best Buy retail locations — built and shipped camera-cutout cases based on these leaks. When the device launched with no camera and an unchanged back panel, the disconnect was immediate. A subsequent iFixit teardown of the 3rd generation confirmed the story: the camera socket was physically present inside the device. The hardware had been designed to accommodate a camera. Something — widely attributed to manufacturing yield problems with the camera module — removed it from the final product. Apple never commented. Prototypes with functioning cameras later surfaced on eBay in 2010, corroborating the teardown findings."
+                      },
+                      {
+                        "icon": "tag",
+                        "subtitle": "The 8GB labeling confusion",
+                        "text": "At launch, Apple continued selling the 2nd generation iPod touch in 8 GB form alongside the new 3G. Resellers — not Apple — began labeling these as \"3rd generation,\" creating persistent confusion in secondary markets that lasted years. The 8 GB model was hardware-identical to the original 2nd gen MC revision: same ARM11 processor, same 128 MB RAM, same GPU. It was not a 3rd generation device by any internal measure. Apple never publicly addressed the mislabeling."
+                      },
+                      {
+                        "icon": "ban",
+                        "subtitle": "The iOS 6 cutoff",
+                        "text": "The 3G's ARMv7 Cortex-A8 architecture nominally met the hardware requirements Apple later cited for iOS 6 compatibility. The decision to exclude it was not driven by an absolute hardware barrier — the iPhone 3GS, using the same SoC family, received iOS 6. The practical effect was that owners of a device discontinued in September 2010 lost software support in September 2012: a window of less than 24 months post-sale."
+                      }
+                    ]
+                  }
+                }
+              ],
               "hero": {
                 "eyebrow": "iPod touch · 3rd Generation · 2009 – 2010",
                 "title": "iPod touch",
@@ -972,12 +1301,20 @@
                   "label": "Overview"
                 },
                 {
+                  "type": "photo-rail",
+                  "label": "Photos"
+                },
+                {
                   "type": "spec",
                   "label": "Specifications"
                 },
                 {
                   "type": "config",
                   "label": "Configurations"
+                },
+                {
+                  "type": "prose-rail",
+                  "label": "Cultural impact"
                 },
                 {
                   "type": "lifecycle-lane",
@@ -990,9 +1327,172 @@
                 {
                   "type": "delta",
                   "label": "Changes"
+                },
+                {
+                  "type": "prose-rail",
+                  "label": "Industrial design"
+                },
+                {
+                  "type": "prose-rail",
+                  "label": "Controversies"
                 }
               ],
-              "body": [],
+              "body": [
+                {
+                  "type": "photo-rail",
+                  "data": {
+                    "photos": [
+                      {
+                        "src": "https://i.ebayimg.com/images/g/TVcAAOSwzhNkQfbA/s-l1200.jpg",
+                        "alt": "iPod touch 4th generation",
+                        "strong": "Front view.",
+                        "caption": "The 3.5-inch Retina display — 326 ppi, the headline feature of the 4th generation."
+                      },
+                      {
+                        "src": "https://cdn.mos.cms.futurecdn.net/bd36c0c29e32dccbfcb23b20c91ade9e-784-80.jpg",
+                        "alt": "iPod touch 4th generation",
+                        "strong": "In hand.",
+                        "caption": "At 7.2 mm and 86 g, the thinnest and lightest iPod touch to that point."
+                      },
+                      {
+                        "src": "https://www.idemigods.com/v/vspfiles/photos/4G_BCKCVRTCH_64GB-2.jpg?v-cache=1645793973",
+                        "alt": "iPod touch 4th generation rear",
+                        "strong": "Polished rear.",
+                        "caption": "The aluminum back with the protruding rear camera — the first camera in the line."
+                      },
+                      {
+                        "src": "https://everymac.com/images/ipod_pictures/apple-ipod-touch-5g.jpg",
+                        "alt": "iPod touch",
+                        "strong": "Product shot.",
+                        "caption": "Apple marketing image. ⚠ Filename suggests 5th gen — verify this shows the 4th gen before publishing."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "prose-rail",
+                  "data": {
+                    "eyebrow": "Cultural impact",
+                    "icon": "gamepad-2",
+                    "anchor": "gaming-section",
+                    "heading": "FaceTime without a phone.",
+                    "body": [
+                      {
+                        "text": "When Apple introduced FaceTime with the iPhone 4 in June 2010, it required a phone. Specifically, an iPhone 4, on AT&T, in the United States, calling another iPhone 4. The feature was genuinely remarkable — and practically limited to a narrow audience."
+                      },
+                      {
+                        "text": "The 4th generation iPod touch changed the audience. FaceTime over Wi-Fi, on a device with no carrier requirement, no monthly bill, and a price starting at $229, brought video calling to students, to children, to anyone with a Wi-Fi connection. The iPod touch became the first mass-market video communication device that wasn't a laptop."
+                      },
+                      {
+                        "text": "For families separated by geography, for students away at school, for children too young for a smartphone, the 4G iPod touch became the de facto FaceTime terminal for the first few years of video calling's mainstream adoption. Apple TV commercials throughout 2010 and 2011 — some of the most emotionally direct advertising Apple ever made — showed FaceTime conversations between grandparents and grandchildren, between soldiers and families. Nearly all of those ads used the iPod touch."
+                      },
+                      {
+                        "text": "The gyroscope added another dimension to gaming that the 3G's accelerometer-only setup had lacked. Combined with the Retina display's pixel density — which made games look definitively better than any competing portable device — the 4G became the platform of choice for the most graphically ambitious App Store titles of 2011 and 2012. <strong>Infinity Blade</strong>, <strong>Real Racing 2</strong>, and <strong>Dead Space</strong> were designed around its capabilities."
+                      }
+                    ],
+                    "rail": {
+                      "title": "Archive",
+                      "photos": [
+                        {
+                          "src": "https://cdn.ecoustics.com/db0/wblob/17BA35E873D594/C1/CC86/U9IotdWynY6yS12wVnLQGZNntnEUmXJAFAiKFGF-MxE/648988.jpg",
+                          "alt": "iPod touch 4th generation FaceTime",
+                          "strong": "FaceTime for everyone.",
+                          "caption": "Video calling over Wi-Fi, no carrier contract required — the 4th gen brought it to the masses."
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "prose-rail",
+                  "data": {
+                    "eyebrow": "Industrial design",
+                    "icon": "palette",
+                    "anchor": "design-section",
+                    "heading": "Thinner than the phone it resembled.",
+                    "body": [
+                      {
+                        "text": "The fourth generation iPod touch was 7.2 mm thin — 15% thinner than the 3rd generation's 8.5 mm, and actually slimmer than the iPhone 4 it visually referenced. At 86.3 grams, it weighed 25% less than its predecessor. Apple achieved this by moving away from the stainless steel-backed design of the 2nd and 3rd generations toward a polished aluminum rear with chamfered edges."
+                      },
+                      {
+                        "text": "The front face was entirely new: a Retina display with oleophobic coating, the same fingerprint-resistant treatment used on the iPhone 4. The volume buttons moved to the left edge. The headphone jack remained flush on the bottom — one of the iPod touch's distinguishing design elements since the second generation."
+                      },
+                      {
+                        "text": "The device initially launched in black only. The white model followed in October 2011, announced at the same event as the iPhone 4S. White iPod touch models had been rare — the original iPod touch came in silver, and no white was offered until the 4th generation. Apple offered the 4G in both colors through the end of its sales lifecycle."
+                      },
+                      {
+                        "text": "The slimming came with a cost that went unannounced: the rear camera protrudes from the back panel, creating a slight bump. On a device this thin, the camera module's depth was difficult to conceal. Apple chose performance over flush aesthetics — a tradeoff that would appear on every iPhone from the 6 onward and become an accepted convention of modern smartphone design."
+                      }
+                    ],
+                    "rail": {
+                      "title": "Archive",
+                      "photos": [
+                        {
+                          "src": "https://i5.walmartimages.com/asr/652b28dd-e1ee-4161-b9d0-8bb4bc0a8e78.bf330e5ca0c05730b446eb0e5c9f3dcb.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF",
+                          "alt": "iPod touch 4th generation design",
+                          "strong": "7.2 mm profile.",
+                          "caption": "The polished aluminum back and chamfered edges — 15% thinner than the 3rd generation."
+                        },
+                        {
+                          "src": "https://www.bhphotovideo.com/images/fb/Apple_MD057LL_A_8GB_iPod_touch_White_825484.jpg",
+                          "alt": "iPod touch 4th generation white",
+                          "strong": "White model.",
+                          "caption": "Introduced October 2011, over a year after the black launch — the first white iPod touch."
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "prose-rail",
+                  "data": {
+                    "eyebrow": "Controversies",
+                    "icon": "scale",
+                    "anchor": "controversies-section",
+                    "heading": "The compromises behind the headlines.",
+                    "body": [
+                      {
+                        "icon": "camera",
+                        "subtitle": "The 0.7 megapixel rear camera",
+                        "text": "The 4th generation iPod touch launched with a rear camera capable of 720p video — but still images were captured at 0.7 megapixels. The iPhone 4, announced three months earlier and sharing the same A4 processor family, had a 5-megapixel rear camera. Apple's decision to fit a substantially inferior still camera into the iPod touch was widely criticized. The gap was not subtle: the iPhone 4's camera was seven times higher resolution. Reviewers at the time speculated that Apple deliberately limited the iPod touch camera to protect iPhone margins and maintain a clear product hierarchy. Apple did not comment on the specification decision."
+                      },
+                      {
+                        "icon": "ban",
+                        "subtitle": "The iOS 7 timing problem",
+                        "text": "Apple discontinued the final 16 GB and 32 GB models of the 4th generation iPod touch on May 29, 2013. WWDC — where Apple announced iOS 7 — began eleven days later, on June 10. A customer who purchased the device new on May 28, 2013 would find, within two weeks, that the current iOS was incompatible with their new purchase. Apple offered no warning in the retail channel, no acknowledgment after the announcement, and no transition path. The company's position that iOS 7 required more RAM than the device carried was technically defensible — the iPhone 4, with 512 MB, already ran iOS 7 poorly — but the timing made it indefensible to customers."
+                      },
+                      {
+                        "icon": "users",
+                        "subtitle": "256 MB RAM — a ceiling the iPhone 4 didn't have",
+                        "text": "All three A4-based devices released in 2010 — the iPad, the iPod touch 4th generation, and the iPhone 4 — used the same Apple A4 processor. Apple gave the iPhone 4 512 MB of RAM. It gave the iPad and iPod touch 256 MB. The RAM differential had no immediate consequence in 2010, when iOS 4 ran adequately on 256 MB. Over time, as iOS updates consumed more memory, the gap widened. Safari tabs reloaded more aggressively, multitasking was more constrained, and the ultimate consequence was iOS 7 exclusion — an exclusion the iPhone 4, with its doubled RAM, avoided. The RAM decision looked like a cost-saving measure at launch; it looked like planned obsolescence by 2013."
+                      }
+                    ],
+                    "rail": {
+                      "title": "Press archive",
+                      "photos": [
+                        {
+                          "src": "https://www.cnet.com/a/img/resize/fb1891107ef4ba786a118c8bf2c6993a7ad26002/hub/2010/09/07/6b906e2a-6797-11e3-846b-14feb5ca9861/34167385_DT1.jpg?auto=webp&width=1200",
+                          "alt": "iPod touch 4th generation camera",
+                          "strong": "The 0.7 MP camera.",
+                          "caption": "720p video but only 0.7 MP stills — a fraction of the iPhone 4’s 5 MP sensor."
+                        },
+                        {
+                          "src": "https://i.ebayimg.com/images/g/ij8AAOSwluVfzi1D/s-l400.jpg",
+                          "alt": "iPod touch 4th generation rear camera",
+                          "strong": "Single rear lens.",
+                          "caption": "The protruding rear camera module — widely criticized for image quality at launch."
+                        },
+                        {
+                          "src": "https://preview.redd.it/black-or-white-ipod-touch-4-on-ios-7-1-2-v0-u9zwlnnuoyaf1.jpg?width=640&crop=smart&auto=webp&s=03e526604616bd590427a9d2c65055e90c3646e1",
+                          "alt": "iPod touch 4th generation iOS 7",
+                          "strong": "Unofficial iOS 7.",
+                          "caption": "Enthusiasts later ported iOS 7 to the 4th gen — the version Apple said its 256 MB RAM couldn’t run."
+                        }
+                      ]
+                    }
+                  }
+                }
+              ],
               "hero": {
                 "eyebrow": "iPod touch · 4th Generation · 2010 – 2013",
                 "title": "iPod touch",
@@ -1149,12 +1649,20 @@
                   "label": "Overview"
                 },
                 {
+                  "type": "photo-rail",
+                  "label": "Photos"
+                },
+                {
                   "type": "spec",
                   "label": "Specifications"
                 },
                 {
                   "type": "config",
                   "label": "Configurations"
+                },
+                {
+                  "type": "prose-rail",
+                  "label": "Cultural impact"
                 },
                 {
                   "type": "lifecycle-lane",
@@ -1167,9 +1675,172 @@
                 {
                   "type": "delta",
                   "label": "Changes"
+                },
+                {
+                  "type": "prose-rail",
+                  "label": "Industrial design"
+                },
+                {
+                  "type": "prose-rail",
+                  "label": "Controversies"
                 }
               ],
-              "body": [],
+              "body": [
+                {
+                  "type": "photo-rail",
+                  "data": {
+                    "photos": [
+                      {
+                        "src": "https://fonez.fr/cdn/shop/files/iPodTouch5thGenallcolor_1024x.webp?v=1691152062",
+                        "alt": "iPod touch 5G all colors",
+                        "strong": "All six colors",
+                        "source": "· fonez.fr"
+                      },
+                      {
+                        "src": "https://everymac.com/images/ipod_pictures/ipod-touch-5th-gen.jpg",
+                        "alt": "iPod touch 5th generation",
+                        "strong": "iPod touch 5G",
+                        "source": "· EveryMac"
+                      },
+                      {
+                        "src": "https://cdn.mos.cms.futurecdn.net/a6zzvJDxvxjQ2eVXUuS6VP.jpg",
+                        "alt": "iPod touch 5G product shot",
+                        "strong": "5G",
+                        "source": "· TechRadar"
+                      },
+                      {
+                        "src": "https://ilounge.com/wp-content/uploads/2021/05/1_33.jpg",
+                        "alt": "iPod touch 5G detail",
+                        "strong": "5G detail",
+                        "source": "· iLounge"
+                      },
+                      {
+                        "src": "https://eoe.works/cdn/shop/products/image_05e83587-2ac2-4218-8d1d-9c3b87366edb_300x300.png?v=1660276616",
+                        "alt": "iPod touch 5G",
+                        "strong": "iPod touch 5G",
+                        "source": "· eoe.works"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "prose-rail",
+                  "data": {
+                    "eyebrow": "Cultural impact",
+                    "icon": "gamepad-2",
+                    "anchor": "gaming-section",
+                    "heading": "The color of a generation.",
+                    "body": [
+                      {
+                        "text": "The fifth generation iPod touch did something no iPod touch had done before: it made you choose. Not just between capacities — between a color that expressed something about you. Slate, Silver, Pink, Yellow, Blue, and PRODUCT(RED) were not just finish options. Apple sold each one with a matching wrist loop in the same shade, making the device feel like an accessory as much as a computer."
+                      },
+                      {
+                        "text": "This was deliberate. Apple's advertising in 2012 and 2013 leaned hard into the color story — campaign imagery of people holding colorful iPods against colorful backgrounds, loop straps worn visibly. The 5G was the first iPod touch to appear in television commercials that had nothing to do with its technical capabilities and everything to do with how it looked on your wrist."
+                      },
+                      {
+                        "text": "The gaming dimension was equally significant. The A5's PowerVR SGX543MP2 GPU delivered roughly seven times the graphics performance of the A4 — and developers noticed immediately. <strong>Infinity Blade II</strong> (2011, ported to benefit from A5 iPad) became the showcase game for the 5G. <strong>Real Racing 3</strong>, <strong>Asphalt 8</strong>, and later <strong>XCOM: Enemy Unknown</strong> were all designed with the A5 in mind. By 2013, the App Store had crossed 900,000 apps, and the 5G was the primary gaming device for a generation of players who couldn't afford or didn't need a phone."
+                      },
+                      {
+                        "text": "Siri on the iPod touch was quietly significant. Apple had kept its voice assistant iPhone-exclusive for a year, using it as a differentiator for the 4S. Bringing it to the 5G democratised the feature — and opened a device that could answer questions, set timers, and play music by voice to an audience that included children too young for a phone contract."
+                      }
+                    ],
+                    "rail": {
+                      "title": "Archive",
+                      "photos": [
+                        {
+                          "src": "https://www.kidfriday.com/wp-content/uploads/2012/10/r-new-ipod-touch-nano-release-date-october-large5701.jpg",
+                          "alt": "iPod touch 5G colors lineup",
+                          "strong": "Five colors",
+                          "source": "· Oct 2012"
+                        },
+                        {
+                          "src": "https://cdn.ecoustics.com/db0/wblob/17BA35E873D594/C0/97F8/VRBwZ4J8-9PzpYh5zvMbv-MHKPoQtkEQnYG0I1nUevo/711596.jpg",
+                          "alt": "iPod touch 5G advertising",
+                          "strong": "Campaign",
+                          "source": "· 2012–2013"
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "prose-rail",
+                  "data": {
+                    "eyebrow": "Industrial design",
+                    "icon": "palette",
+                    "anchor": "design-section",
+                    "heading": "Thinner than the phone it resembled. Lighter than you expected.",
+                    "body": [
+                      {
+                        "text": "The fifth generation iPod touch was 6.1 mm thin — the thinnest iPod touch ever made, and thinner than the iPhone 5 (7.6 mm) it shared its design language with. Despite the larger screen, it was barely heavier than the 4th generation: 88 g versus 86 g. Apple achieved this with a lightweight aluminum rear that, unlike the polished finish of the 4th generation, was anodised in each of the six available colors."
+                      },
+                      {
+                        "text": "The anodising process was central to the color story. Each device's aluminum back was chemically treated to produce a durable, integral color — not a coating that could chip or wear. The color went into the metal. This process, the same used for the iPhone 5, was more expensive than painting, and Apple had been refining it since the colored iPod nano. The result was a device that felt premium in every color, not just silver."
+                      },
+                      {
+                        "text": "The 4-inch display maintained 326 PPI by moving from the 3:2 aspect ratio of all previous iPod touch screens to the 16:9 widescreen format of the iPhone 5. This meant 176 additional vertical pixels — enough for a fifth row of app icons on the home screen and letterbox-free playback of widescreen video. The extra height also accommodated a panorama mode camera, available for the first time on the iPod touch."
+                      },
+                      {
+                        "text": "The pop-out loop button sat in the lower-left of the back. Pressing it ejected a small metal nub from the chassis, to which a color-matched wrist loop could be attached. The mechanism was simple, the execution elegant — and just fragile enough to generate its own forum thread when units began snapping. The loop was included with 32 GB and 64 GB models; 16 GB models could purchase it separately."
+                      }
+                    ],
+                    "rail": {
+                      "title": "Archive",
+                      "photos": [
+                        {
+                          "src": "https://i.ebayimg.com/images/g/7RUAAOSw~KljofEp/s-l1200.jpg",
+                          "alt": "iPod touch 5G back anodised aluminum",
+                          "strong": "Anodised back",
+                          "source": "· eBay"
+                        },
+                        {
+                          "src": "https://i.redd.it/4xh3e2m1fqv41.jpg",
+                          "alt": "iPod touch 5G loop detail",
+                          "strong": "Loop mechanism",
+                          "source": "· Reddit"
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "prose-rail",
+                  "data": {
+                    "eyebrow": "Controversies",
+                    "icon": "scale",
+                    "anchor": "controversies-section",
+                    "heading": "Three things Apple got wrong.",
+                    "body": [
+                      {
+                        "icon": "video",
+                        "subtitle": "The A1509: a 5th gen without the 5th gen's headline feature",
+                        "text": "In May 2013, Apple added a 16 GB iPod touch to the lineup at $229 — but this model (A1509) had no rear camera, no LED flash, no loop button, and came only in Silver. It was sold as a 5th generation iPod touch with no prominent indication that it lacked the camera that had been the centerpiece of the 5G's September 2012 launch. A customer buying an iPod touch 5th gen at $229 in 2013 might reasonably expect a 5 MP camera. They would not get one. Apple discontinued the A1509 in June 2014, quietly, when it restored the camera to the 16 GB tier at $199."
+                      },
+                      {
+                        "icon": "cable",
+                        "subtitle": "Lightning broke everything",
+                        "text": "The iPod touch 5G was the first in the line to use Apple's new Lightning connector, replacing the 30-pin dock connector that had been the standard since 2003. Every dock speaker, car integration, alarm clock, and accessory built for the 30-pin iPod was instantly obsolete. Apple sold a 30-pin to Lightning adapter for $29 — a separate purchase required to use equipment the previous iPod touch had worked with natively. The transition was technically correct (Lightning was superior in every measurable way), but it landed on consumers as an expensive inconvenience."
+                      },
+                      {
+                        "icon": "alert-circle",
+                        "subtitle": "The A5 was already a year old on launch day",
+                        "text": "The iPhone 5, announced the same day, shipped with the Apple A6 — a new 32-bit dual-core processor with custom Apple-designed Swift cores, running at 1.3 GHz with significantly better single-thread performance than the A5. The 5G iPod touch launched with the A5, the same chip Apple had shipped in the iPhone 4S in October 2011 and in the iPad 2 in March 2011. By the time the 5G shipped, the A5 was over a year old. Apple's reasoning — cost management for a device at a lower price point — was defensible. But it meant the iPod touch launched behind the current iPhone on the day of its own announcement, a pattern that would continue in subsequent generations."
+                      }
+                    ],
+                    "rail": {
+                      "title": "Press archive",
+                      "photos": [
+                        {
+                          "src": "https://i5.walmartimages.com/asr/71e0874b-c0df-4511-974c-6e42ae322820.e353df10f23b81f73060e055d3f02049.jpeg?odnHeight=768&odnWidth=768&odnBg=FFFFFF",
+                          "alt": "iPod touch 5G A1509 budget model no camera",
+                          "strong": "A1509 budget model",
+                          "source": "· Walmart listing"
+                        }
+                      ]
+                    }
+                  }
+                }
+              ],
               "hero": {
                 "eyebrow": "iPod touch · 5th Generation · 2012 – 2015",
                 "title": "iPod touch",
@@ -1342,6 +2013,10 @@
                   "label": "Configurations"
                 },
                 {
+                  "type": "prose-rail",
+                  "label": "Cultural impact"
+                },
+                {
                   "type": "lifecycle-lane",
                   "label": "OS support"
                 },
@@ -1352,9 +2027,90 @@
                 {
                   "type": "delta",
                   "label": "Changes"
+                },
+                {
+                  "type": "prose-rail",
+                  "label": "Industrial design"
+                },
+                {
+                  "type": "prose-rail",
+                  "label": "Controversies"
                 }
               ],
-              "body": [],
+              "body": [
+                {
+                  "type": "prose-rail",
+                  "data": {
+                    "eyebrow": "Cultural impact",
+                    "icon": "gamepad-2",
+                    "anchor": "gaming-section",
+                    "heading": "The pocket console that outlived its console moment.",
+                    "body": [
+                      {
+                        "text": "By 2015, the iPod touch's role as a gaming device had quietly become its most durable. With the A8 — the same chip driving the iPhone 6 — the 6G could run essentially every iOS game of its era at full fidelity. For parents, it remained the obvious answer: a device that played the same App Store games as an iPhone, took 8 MP photos, ran FaceTime over Wi-Fi, and cost a fraction of a phone, with no contract and no cellular bill."
+                      },
+                      {
+                        "text": "Apple's A8 brought Metal, its low-overhead graphics API, to the iPod touch for the first time. Games like <strong>Asphalt 8</strong>, <strong>Real Racing 3</strong>, <strong>Modern Combat 5</strong>, and the wave of Metal-optimized titles that followed ran smoothly on the 6G. The device's 64-bit architecture meant it stayed compatible with new App Store releases far longer than the 32-bit 5G, which was cut off at iOS 9."
+                      },
+                      {
+                        "text": "The 6G also landed at the dawn of Apple Music. Shipping with iOS 8.4 — the release that introduced Apple Music and the Beats 1 global radio station on June 30, 2015 — the device was one of the first to carry Apple's streaming service out of the box. For a product line born as a music player, it was a fitting late-career pivot: the iPod touch became a streaming client as much as a library on a chip."
+                      },
+                      {
+                        "text": "Its longevity became the real story. The 6G received five years of major iOS updates and, remarkably, continued getting security patches into 2026 — over a decade after launch. Few consumer devices of its era stayed alive that long, and for a generation of kids it was a first computer, a first camera, and a first music app, all in a body thinner than the phone it borrowed its brain from."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "prose-rail",
+                  "data": {
+                    "eyebrow": "Industrial design",
+                    "icon": "palette",
+                    "anchor": "design-section",
+                    "heading": "The thinnest Apple had ever made — minus one button.",
+                    "body": [
+                      {
+                        "text": "At 6.1 mm thick, the sixth generation iPod touch was the thinnest device Apple had ever shipped — more than a millimetre slimmer than the iPhone 6 (6.9 mm), and identical in profile to the 5G it succeeded. The dimensions were unchanged from the previous generation: 123.4 mm tall, 58.6 mm wide, 88 g in weight. The aluminum unibody, anodised in color, carried straight over."
+                      },
+                      {
+                        "text": "The one visible change was a subtraction. The pop-out Loop button — the small spring-loaded nub on the lower-left of the 5G's back that ejected an anchor for a color-matched wrist strap — was removed entirely. The 6G's back was clean. It was the only external way to tell the two generations apart, and it marked the end of the most playful piece of industrial design in the line's history."
+                      },
+                      {
+                        "text": "The color palette was refreshed to match Apple's broader 2015 lineup. Slate became space gray; yellow was dropped; gold was added. The result was space gray, silver, gold, pink, blue, and (PRODUCT)RED. As before, the space gray model wore a black glass front while every other color had a white front, so the front face told you the finish at a glance."
+                      },
+                      {
+                        "text": "The 4-inch 1136×640 Retina display was carried over unchanged — same panel, same 326 ppi, same 16:9 ratio, same oleophobic coating. By 2015 it was beginning to look small next to the 4.7-inch iPhone 6, but it kept the iPod touch pocketable and, crucially, cheap. The screen was the one piece of the device Apple chose not to touch."
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "prose-rail",
+                  "data": {
+                    "eyebrow": "Controversies",
+                    "icon": "scale",
+                    "anchor": "controversies-section",
+                    "heading": "Three things people questioned.",
+                    "body": [
+                      {
+                        "icon": "alert-circle",
+                        "subtitle": "The A8 was underclocked",
+                        "text": "The 6th generation iPod touch used the same Apple A8 system-on-chip as the iPhone 6, but Apple ran it at 1.1 GHz rather than the iPhone 6's 1.4 GHz — and well below the iPad mini 4's 1.5 GHz implementation of the same chip. Apple attributed the lower clock to the iPod touch's smaller battery and thermal envelope. In practice the device was still fast for its class, but the spec line meant that the 'iPhone 6 chip' marketing came with an asterisk: same silicon, slower in this body."
+                      },
+                      {
+                        "icon": "memory-card",
+                        "subtitle": "16 GB in the iOS 9 era",
+                        "text": "The entry 6G shipped with 16 GB of storage at $199 — the same base capacity the line had used for years, but increasingly tight by 2015. iOS 9 and its updates, plus a single modern game or a short stretch of 1080p video from the new 8 MP camera, could fill the device quickly. Apple discontinued the 16 GB tier first, in July 2017, leaving 32 GB as the new floor. The base model was serviceable, but it asked buyers to manage storage carefully from day one."
+                      },
+                      {
+                        "icon": "bell",
+                        "subtitle": "No Touch ID, no loop, no Apple Pay",
+                        "text": "The 6G arrived without Touch ID, the fingerprint sensor that had been on iPhones since the 2013 5s, and without the Apple Pay capability that depended on it. It also dropped the 5G's pop-out Loop attachment. For a 2015 device priced from $199, the omissions were defensible cost decisions — but they underlined the iPod touch's status as a device deliberately kept a tier below the iPhone, sharing the processor while quietly lacking the features that defined the contemporary phone."
+                      }
+                    ]
+                  }
+                }
+              ],
               "hero": {
                 "eyebrow": "iPod touch · 6th Generation · 2015 – 2019",
                 "title": "iPod touch",
@@ -1531,12 +2287,20 @@
                   "label": "Overview"
                 },
                 {
+                  "type": "photo-rail",
+                  "label": "Photos"
+                },
+                {
                   "type": "spec",
                   "label": "Specifications"
                 },
                 {
                   "type": "config",
                   "label": "Configurations"
+                },
+                {
+                  "type": "prose-rail",
+                  "label": "Cultural impact"
                 },
                 {
                   "type": "lifecycle-lane",
@@ -1549,9 +2313,202 @@
                 {
                   "type": "delta",
                   "label": "Changes"
+                },
+                {
+                  "type": "prose-rail",
+                  "label": "Industrial design"
+                },
+                {
+                  "type": "prose-rail",
+                  "label": "Controversies"
                 }
               ],
-              "body": [],
+              "body": [
+                {
+                  "type": "photo-rail",
+                  "data": {
+                    "photos": [
+                      {
+                        "src": "https://www.apple.com/newsroom/images/product/ipod/standard/new-apple-ipodtouch-06032019_big.jpg.large.jpg",
+                        "alt": "iPod touch 7G family — all six colors",
+                        "strong": "All six colors",
+                        "source": "· Apple Newsroom · May 2019"
+                      },
+                      {
+                        "src": "https://www.apple.com/newsroom/images/product/ipod/standard/Apple-iPod-end-of-life-hero_inline.jpg.large.jpg",
+                        "alt": "iPod touch 7G end of life hero shot",
+                        "strong": "The music lives on",
+                        "source": "· Apple Newsroom · May 2022"
+                      },
+                      {
+                        "src": "https://i.ebayimg.com/images/g/8ngAAOSwZOVoV7s2/s-l1600.jpg",
+                        "alt": "iPod touch 7G boxed product",
+                        "strong": "Sealed retail",
+                        "source": "· eBay"
+                      },
+                      {
+                        "src": "https://i.ebayimg.com/images/g/kRIAAeSwLnposI6B/s-l1600.jpg",
+                        "alt": "iPod touch 7G space gray detail",
+                        "strong": "Space Gray · A2178",
+                        "source": "· eBay"
+                      },
+                      {
+                        "src": "https://i.ebayimg.com/images/g/afoAAOSwyG9lXbTg/s-l1600.jpg",
+                        "alt": "iPod touch 7G in hand",
+                        "strong": "In hand",
+                        "source": "· eBay listing"
+                      },
+                      {
+                        "src": "https://i.ebayimg.com/images/g/mfsAAOSw2OplXbUd/s-l1600.jpg",
+                        "alt": "iPod touch 7G color comparison",
+                        "strong": "Color lineup",
+                        "source": "· eBay"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "prose-rail",
+                  "data": {
+                    "eyebrow": "Cultural impact",
+                    "icon": "gamepad-2",
+                    "anchor": "gaming-section",
+                    "heading": "Apple Arcade's perfect target device — and a streaming-era music player.",
+                    "body": [
+                      {
+                        "text": "The 7G's timing was almost suspicious. It launched in May 2019, four months before Apple Arcade — Apple's $4.99/month gaming subscription — went live in September. With the A10 Fusion, the 7G could run Arcade's titles smoothly at full fidelity. For $199 it was, by a wide margin, the cheapest device that could meaningfully participate in Apple's new gaming push. Apple marketed it that way explicitly, leading the 2019 press release with \"the ultra-thin and lightweight design of iPod touch has always made it ideal for enjoying games.\""
+                      },
+                      {
+                        "text": "The graphics jump from the 6G was real. The PowerVR GT7600 Plus delivered roughly three times the graphics performance of the 6G's GX6450, and the A10's 64-bit cores kept the device compatible with new App Store releases right through iOS 15. Games like <strong>PUBG Mobile</strong>, <strong>Fortnite</strong> (briefly, before its 2020 removal), <strong>Asphalt 9: Legends</strong>, and the entire Arcade lineup ran at playable frame rates on the 4-inch screen."
+                      },
+                      {
+                        "text": "Music had also fully shifted to streaming by 2019. The 7G shipped with iOS 12.3, which was the launch version of the redesigned Apple Music app. The 256 GB top tier was a deliberate bet that some users still wanted their library on-device — for the gym, for flights, for places without coverage. Combined with the 7G's retained 3.5 mm headphone jack (a port the iPhone had dropped three years earlier with the 7), it became the last default device for anyone who wanted plug-in wired headphones and offline music in one pocket-sized package."
+                      },
+                      {
+                        "text": "For a generation of kids in 2019, 2020, and 2021, the 7G was a first iOS device. Its $199 price, no-contract availability, and full iOS compatibility made it the natural step before parents handed over a real phone. It outlived two iPhone generations before Apple finally ended the line in 2022 — at which point a used 7G was, briefly, more expensive on eBay than it had been at retail."
+                      }
+                    ],
+                    "rail": {
+                      "title": "Archive",
+                      "photos": [
+                        {
+                          "src": "https://www.apple.com/newsroom/images/product/ipod/standard/ipodtouch-apple-arcade-screen-06032019_inline.jpg.large.jpg",
+                          "alt": "iPod touch 7G running Apple Arcade",
+                          "strong": "Apple Arcade",
+                          "source": "· Apple · May 2019"
+                        },
+                        {
+                          "src": "https://www.apple.com/newsroom/images/product/ipod/standard/ipodtouch-blue-AR-screen-06032019_inline.jpg.large.jpg",
+                          "alt": "iPod touch 7G with AR experience",
+                          "strong": "AR on iPod",
+                          "source": "· Apple · May 2019"
+                        },
+                        {
+                          "src": "https://www.apple.com/newsroom/images/product/ipod/standard/ipodtouch-black-applemusic-screen-06032019_inline.jpg.large.jpg",
+                          "alt": "iPod touch 7G running Apple Music",
+                          "strong": "Apple Music",
+                          "source": "· Apple · May 2019"
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "prose-rail",
+                  "data": {
+                    "eyebrow": "Industrial design",
+                    "icon": "palette",
+                    "anchor": "design-section",
+                    "heading": "Unchanged from 2015 — and 2012 before that.",
+                    "body": [
+                      {
+                        "text": "The seventh generation iPod touch's industrial design was a complete carry-over from the 6G. 123.4 mm tall, 58.6 mm wide, 6.1 mm thin, 88 g. Anodised aluminum unibody. The same six colors — space gray, silver, gold, pink, blue, and (PRODUCT)RED — in the same finishes. Apple did not redesign a single externally visible element. By 2019, the iPod touch chassis had been on sale, essentially unchanged, since the 5G launched in September 2012. Seven years on the same body — a longer industrial-design run than any other major Apple product line of the era."
+                      },
+                      {
+                        "text": "The 4-inch Retina display at 1136×640 was likewise unchanged. By 2019 the iPhone XR shipped with a 6.1-inch display; the iPhone 11 was about to. The 7G's screen looked tiny in 2019 photos — a deliberate concession to keeping the device pocketable and affordable, but also the most visible sign that the iPod touch had become a deliberate side path rather than a flagship."
+                      },
+                      {
+                        "text": "Two ports survived in 2019 that the iPhone had already abandoned. The 3.5 mm headphone jack remained on the bottom edge — Apple had removed it from the iPhone in 2016 with the iPhone 7. And the Lightning connector, while shared with the iPhone, sat alongside the jack rather than alone. For a music-focused device, those two ports together made the 7G the last default Apple device built around wired headphones."
+                      },
+                      {
+                        "text": "What had clearly NOT been carried into the 7G was every iPhone-defining feature introduced after the 6G's 2015 launch: no Touch ID, no Face ID, no haptic engine, no NFC, no Apple Pay, no True Tone, no wide color gamut, no second rear camera, no portrait mode, no flash with True Tone, no force touch, no second-generation Lightning, no fast charge. The 7G was, by 2019 standards, the most feature-stripped current iOS device Apple sold."
+                      }
+                    ],
+                    "rail": {
+                      "title": "Archive",
+                      "photos": [
+                        {
+                          "src": "https://www.apple.com/newsroom/images/product/ipod/standard/new-apple-ipodtouch-06032019_big.jpg.large.jpg",
+                          "alt": "iPod touch 7G family — all six colors front and back",
+                          "strong": "All six finishes",
+                          "source": "· Apple · May 2019"
+                        },
+                        {
+                          "src": "https://www.apple.com/newsroom/images/product/ipod/standard/Apple-iPod-end-of-life-hero_inline.jpg.large.jpg",
+                          "alt": "iPod touch 7G end-of-life family shot",
+                          "strong": "The final lineup",
+                          "source": "· Apple · May 2022"
+                        },
+                        {
+                          "src": "https://i.ebayimg.com/images/g/Lg4AAeSwsJ9osI6B/s-l1600.jpg",
+                          "alt": "iPod touch 7G space gray back, aluminum unibody",
+                          "strong": "Aluminum back",
+                          "source": "· eBay"
+                        },
+                        {
+                          "src": "https://i.ebayimg.com/images/g/Ma8AAeSwZ9losI6B/s-l1600.jpg",
+                          "alt": "iPod touch 7G edge profile showing 6.1mm thickness",
+                          "strong": "6.1 mm thin",
+                          "source": "· eBay"
+                        }
+                      ]
+                    }
+                  }
+                },
+                {
+                  "type": "prose-rail",
+                  "data": {
+                    "eyebrow": "Controversies",
+                    "icon": "scale",
+                    "anchor": "controversies-section",
+                    "heading": "Three things people questioned.",
+                    "body": [
+                      {
+                        "icon": "alert-circle",
+                        "subtitle": "The A10 was underclocked — again",
+                        "text": "Apple pulled the same trick with the 7G that it had with the 6G. The A10 Fusion in the iPhone 7 ran at 2.34 GHz; in the 7G, it ran at 1.64 GHz — a roughly 30 percent reduction, attributed once again to the smaller battery and thermal envelope. Geekbench scores reflected the cut: the 7G benchmarked slower than the three-year-old iPhone 7 it borrowed its chip from, and slower than the A10-equipped iPad 7 of the same year. The marketing line was \"the A10 Fusion chip\" without qualification; the reality was a deliberately throttled implementation."
+                      },
+                      {
+                        "icon": "lock",
+                        "subtitle": "No biometrics, no Apple Pay, in 2019",
+                        "text": "By 2019 every other current iOS device had Touch ID, Face ID, or both, plus the NFC hardware needed for Apple Pay. The 7G had none of them. Unlock was a four- or six-digit passcode every time. There was no fingerprint sensor under the home button, no front-facing depth camera, no NFC chip on the back. For a $199 device aimed in part at younger users, the omissions were defensible cost decisions — but they also made the 7G the only current iOS device of 2019 that could not authenticate App Store purchases biometrically or make a contactless payment."
+                      },
+                      {
+                        "icon": "smartphone",
+                        "subtitle": "A 2012 chassis sold in 2022",
+                        "text": "When Apple discontinued the iPod touch in May 2022, the device on shelves was using a body design first introduced in September 2012 with the 5G. Same 4-inch screen, same dimensions, same general form factor — a chassis that had been in continuous production for nearly ten years and was still being sold new in the era of the iPhone 13 Pro Max. For some buyers it was a feature (familiarity, pocketability); for reviewers it was a sign that Apple had run the iPod line out gracefully rather than refreshed it. The 6G chassis had been a carryover; the 7G chassis was a near-decade-long victory lap."
+                      }
+                    ],
+                    "rail": {
+                      "title": "Press archive",
+                      "photos": [
+                        {
+                          "src": "https://www.apple.com/newsroom/images/product/ipod/standard/Apple-iPod-end-of-life-hero_inline.jpg.large.jpg",
+                          "alt": "iPod touch 7G — the end-of-line family shot",
+                          "strong": "End of line",
+                          "source": "· Apple · May 2022"
+                        },
+                        {
+                          "src": "https://i.ebayimg.com/images/g/RQ4AAeSw-ulosI6B/s-l1600.jpg",
+                          "alt": "iPod touch 7G home button and bezels",
+                          "strong": "Pre-Touch ID home button",
+                          "source": "· eBay"
+                        }
+                      ]
+                    }
+                  }
+                }
+              ],
               "hero": {
                 "eyebrow": "iPod touch · 7th Generation · 2019 – 2022",
                 "title": "iPod touch",

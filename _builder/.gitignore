@@ -2,3 +2,7 @@ node_modules/
 .next/
 next-env.d.ts
 *.tsbuildinfo
+
+# local secrets (Supabase keys live here locally; Vercel env in the dashboard)
+.env.local
+.env*.local

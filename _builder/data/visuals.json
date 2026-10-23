@@ -130,6 +130,15 @@
       "hosts": [
         "photo-rail"
       ]
+    },
+    "prose-rail-section": {
+      "partial": "sections/prose-rail-section.html",
+      "eyebrow": "editable",
+      "icon": "editable",
+      "h2": "required",
+      "hosts": [
+        "prose-rail"
+      ]
     }
   },
   "config": {
@@ -262,9 +271,24 @@
       "src",
       "alt",
       "strong",
-      "caption"
+      "caption",
+      "source"
     ],
     "lightbox": true
+  },
+  "prose-rail": {
+    "bank": "media",
+    "partial": "visuals/prose-rail/prose-rail.html",
+    "section": "prose-rail-section",
+    "photo_fields": [
+      "src",
+      "alt",
+      "strong",
+      "caption",
+      "source"
+    ],
+    "lightbox": true,
+    "sticky": true
   },
   "catalog": {
     "bank": "lists",
