@@ -122,6 +122,14 @@
       "hosts": [
         "lifecycle-lane"
       ]
+    },
+    "photo-rail-section": {
+      "partial": "sections/photo-rail-section.html",
+      "h2": "none",
+      "full_bleed": true,
+      "hosts": [
+        "photo-rail"
+      ]
     }
   },
   "config": {
@@ -245,6 +253,18 @@
       "preview",
       "body"
     ]
+  },
+  "photo-rail": {
+    "bank": "media",
+    "partial": "visuals/photo-rail/photo-rail.html",
+    "section": "photo-rail-section",
+    "photo_fields": [
+      "src",
+      "alt",
+      "strong",
+      "caption"
+    ],
+    "lightbox": true
   },
   "catalog": {
     "bank": "lists",

@@ -268,7 +268,7 @@ body.wiki-fallout .wiki-wpill {
 body.wiki-fallout .wiki-wpill-chev { color: var(--amber); }
 /* default.html hardcodes .wiki-cat-item text to Taco Bell's dark brown,
    which is invisible on the dark Fallout rail — restate the resting
-   colour here (dim phosphor), brightening on hover. */
+   color here (dim phosphor), brightening on hover. */
 body.wiki-fallout .wiki-cat-item { color: var(--wiki-fg); }
 body.wiki-fallout .wiki-cat-item:hover { color: var(--phosphor); }
 

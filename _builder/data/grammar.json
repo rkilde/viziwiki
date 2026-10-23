@@ -15,6 +15,7 @@
   "canon": [
     "hero",
     "overview",
+    "photo-rail",
     "spec",
     "config",
     "lifecycle-lane",
@@ -28,6 +29,7 @@
       "sections": [
         "hero",
         "overview",
+        "photo-rail",
         "spec",
         "config",
         "lifecycle-lane",
@@ -53,6 +55,7 @@
       "sections": [
         "hero",
         "overview",
+        "photo-rail",
         "spec",
         "config",
         "lifecycle-lane",
@@ -754,7 +757,7 @@
           "type": {
             "type": "enum[full,partial,dropped,security]",
             "required": true,
-            "help": "full=green · partial=amber · dropped=grey cliff · security=blue post-EOL"
+            "help": "full=green · partial=amber · dropped=gray cliff · security=blue post-EOL"
           },
           "badge": {
             "type": "text",
@@ -846,10 +849,12 @@
           "default": "a"
         },
         "intro": {
-          "type": "richtext"
+          "type": "richtext",
+          "blank": "Add an intro line"
         },
         "footnote": {
-          "type": "richtext"
+          "type": "richtext",
+          "blank": "Add a footnote"
         },
         "visual": {
           "type": "text",
@@ -858,14 +863,12 @@
           "help": "The slot's visual type — registry hosts constrain it (admin)"
         },
         "prev": {
-          "type": "axis",
-          "required": true,
-          "help": "The 'before' column header"
+          "type": "axis_old",
+          "help": "The 'before' column header (its name is required)"
         },
         "current": {
-          "type": "axis",
-          "required": true,
-          "help": "The 'after' column header"
+          "type": "axis_new",
+          "help": "The 'after' column header (its name is required)"
         },
         "hardware": {
           "type": "list<delta_row>",
@@ -881,14 +884,23 @@
         }
       },
       "subtypes": {
-        "axis": {
-          "tag": {
-            "type": "text"
-          },
+        "axis_old": {
           "name": {
             "type": "text",
             "required": true,
-            "blank": "Model name"
+            "label": "Old model",
+            "blank": "Old model"
+          },
+          "year": {
+            "type": "text"
+          }
+        },
+        "axis_new": {
+          "name": {
+            "type": "text",
+            "required": true,
+            "label": "New model",
+            "blank": "New model"
           },
           "year": {
             "type": "text"
@@ -901,10 +913,17 @@
             "blank": "Spec label"
           },
           "old": {
-            "type": "text"
+            "type": "text",
+            "required": true,
+            "label": "old value",
+            "blank": "old value",
+            "optional_when": "no_old"
           },
           "new": {
-            "type": "text"
+            "type": "text",
+            "required": true,
+            "label": "new value",
+            "blank": "new value"
           },
           "no_old": {
             "type": "bool",
@@ -913,7 +932,48 @@
           },
           "chip": {
             "type": "enum[better,feature,changed,worse,same]",
-            "help": "Color = the direction of change"
+            "help": "Color = the direction of change",
+            "presets": {
+              "better": [
+                "Faster",
+                {
+                  "tpl": "{n}×",
+                  "ph": "2"
+                },
+                {
+                  "tpl": "+{n}%",
+                  "ph": "50"
+                },
+                "Bigger",
+                "Improved"
+              ],
+              "feature": [
+                "New",
+                "Added",
+                "First",
+                "Now supported"
+              ],
+              "changed": [
+                "Redesigned",
+                "Moved",
+                "Swapped",
+                "Relocated"
+              ],
+              "worse": [
+                "Slower",
+                "Smaller",
+                "Removed",
+                {
+                  "tpl": "−{n}%",
+                  "ph": "30"
+                }
+              ],
+              "same": [
+                "Unchanged",
+                "Carried over",
+                "—"
+              ]
+            }
           },
           "chip_text": {
             "type": "text",
@@ -924,21 +984,14 @@
       "seed": {
         "heading": "Changes heading",
         "prev": {
-          "tag": "Previous",
-          "name": "Model name",
-          "year": "2020"
+          "name": "Old model"
         },
         "current": {
-          "tag": "Current",
-          "name": "Model name",
-          "year": "2023"
+          "name": "New model"
         },
         "hardware": [
           {
-            "label": "Spec label",
-            "new": "Faster SoC",
-            "chip": "better",
-            "chip_text": "2×"
+            "label": "Spec label"
           }
         ]
       },
@@ -1064,6 +1117,73 @@
         ]
       },
       "min": "≥2 events, each with month + year + title"
+    },
+    "photo-rail": {
+      "section": "photo-rail-section",
+      "display": {
+        "photos": {
+          "kind": "Photo"
+        }
+      },
+      "fields": {
+        "tone": {
+          "type": "enum[a,b,special]",
+          "default": "special"
+        },
+        "visual": {
+          "type": "text",
+          "locked": true,
+          "default": "photo-rail",
+          "help": "The slot's visual type — registry hosts constrain it (admin)"
+        },
+        "photos": {
+          "type": "list<photo>",
+          "required": true,
+          "min": 1,
+          "item_blank": {
+            "strong": "Image Title",
+            "caption": "Caption",
+            "source": "· source"
+          }
+        }
+      },
+      "subtypes": {
+        "photo": {
+          "src": {
+            "type": "media",
+            "required": true,
+            "label": "add image",
+            "blank": "image URL"
+          },
+          "alt": {
+            "type": "text",
+            "label": "alt text",
+            "blank": "describe the photo"
+          },
+          "strong": {
+            "type": "text",
+            "blank": "Image Title"
+          },
+          "caption": {
+            "type": "text",
+            "blank": "Caption"
+          },
+          "source": {
+            "type": "text",
+            "blank": "· source"
+          }
+        }
+      },
+      "seed": {
+        "photos": [
+          {
+            "strong": "Image Title",
+            "caption": "Caption",
+            "source": "· source"
+          }
+        ]
+      },
+      "min": "≥1 photo, each with an image (alt text optional)"
     },
     "catalog": {
       "section": "catalog-section",

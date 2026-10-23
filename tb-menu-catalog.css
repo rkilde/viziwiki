@@ -1,13 +1,13 @@
 /* ════════════════════════════════════════════════════════════════════
-   PAGE COMPONENT: Taco Bell MENU CATALOGUE (the menus listing page)
+   PAGE COMPONENT: Taco Bell MENU CATALOG (the menus listing page)
    ════════════════════════════════════════════════════════════════════
    The unique visual on taco-bell-menus.html: a status-grouped grid of
    menu tiles. Shared palette / section tokens / dark-hero text come from
    tb-editorial-base.css; section/hero/overview STRUCTURE comes from the
    universal canon. This file holds ONLY the page's genuinely-unique
-   visual (the catalogue + tiles + status dots) and its hero decoration.
+   visual (the catalog + tiles + status dots) and its hero decoration.
 
-   (When the visual bank is built, this catalogue/tile grid is a
+   (When the visual bank is built, this catalog/tile grid is a
    candidate "card-grid" bank type. For now it lives here as a
    self-contained component — no Tailwind, no universal-class overrides.)
    ════════════════════════════════════════════════════════════════════ */
@@ -32,7 +32,7 @@
   transform: rotate(8deg); opacity: .06; pointer-events: none;
 }
 
-/* ── Catalogue group header (Active / Retired bands) ──────────────── */
+/* ── Catalog group header (Active / Retired bands) ──────────────── */
 .cat-group { margin-bottom: 56px; }
 .cat-group:last-child { margin-bottom: 0; }
 .cat-group-header {

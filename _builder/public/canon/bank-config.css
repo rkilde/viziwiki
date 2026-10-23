@@ -2,17 +2,17 @@
    BANK · CONFIG  (storage / configuration chart)
    --------------------------------------------------------------------
    A contained chart: capacity rows with proportional fill bars, price,
-   dates, and device-colour dots. Bar widths are DERIVED from capacity in
+   dates, and device-color dots. Bar widths are DERIVED from capacity in
    the visual (Liquid), so authors enter only the number.
 
-   Colours are SKIN-DERIVED. The chart reads a handful of --cfg-* tokens,
+   Colors are SKIN-DERIVED. The chart reads a handful of --cfg-* tokens,
    each defaulting to a sensible mix of the wiki's base palette
    (--foreground / --card / --wiki-accent). A wiki that never touches a chart
-   still gets a coherent one (light chrome, an emphasis-coloured bar). A
+   still gets a coherent one (light chrome, an emphasis-colored bar). A
    skin can pin any token to lock an exact look — e.g. the Apple skin pins
    the originals (#fff / #f4f4f6 / #c7c7cc / #0a0a0a) so the iPod chart is
    byte-identical, via `body.wiki-apple .config { … }`.
-   Device-colour dots are CONTENT (real product hex), not theme.
+   Device-color dots are CONTENT (real product hex), not theme.
    ════════════════════════════════════════════════════════════════════ */
 
 /* ── skin-derived chrome tokens (defined once; a skin can override) ──── */
@@ -55,7 +55,7 @@
 .cfg-divider{height:1px;background:var(--cfg-line);margin:4px 0;}
 .cfg-divider-label{font-family:"JetBrains Mono",monospace;font-size:7px;text-transform:uppercase;letter-spacing:.14em;color:color-mix(in oklab,var(--cfg-ink) 32%,transparent);margin-top:6px;margin-bottom:2px;}
 
-/* ── device-colour dots (content hex, not theme) ────────────────────── */
+/* ── device-color dots (content hex, not theme) ────────────────────── */
 .cfg-colors{grid-column:2 / -1;display:flex;align-items:flex-start;gap:10px;justify-content:flex-start;flex-wrap:wrap;padding-left:4px;margin-top:2px;}
 .cfg-color{display:flex;flex-direction:column;align-items:center;gap:4px;width:34px;}
 .cfg-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0;box-shadow:0 1px 2px color-mix(in oklab,var(--cfg-ink) 12%,transparent);}

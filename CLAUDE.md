@@ -61,7 +61,7 @@ size/leading/tracking/weight token set (`--t-<role>-*`, body uses the legacy
 document heading/body across the whole site updates. Sizes are universal
 (skins set color, never size).
 **Visual components do NOT use this scale.** Charts, timelines, stat tiles,
-spotlight/infobox panels, catalogues, swim diagrams — *any* data-viz — keep
+spotlight/infobox panels, catalogs, swim diagrams — *any* data-viz — keep
 their own type, tuned to the component and controlled **in the bank** (Phase
 4). Forcing the universal scale onto dense widgets breaks their layouts (it
 did, on the iPod charts — hence this rule). **Rule of thumb: document text →
@@ -93,7 +93,7 @@ did, on the iPod charts — hence this rule). **Rule of thumb: document text →
   helpers + footer credit).
 - `tb-tw-compat.css` — frozen Tailwind utilities (+ a preflight reset) so the
   de-Tailwinded pages render identically without the Tailwind CDN.
-- `tb-drinks.css`, `tb-menu-catalogue.css`, `tb-slogans.css` — page-specific
+- `tb-drinks.css`, `tb-menu-catalog.css`, `tb-slogans.css` — page-specific
   unique-visual components (bank candidates, deferred).
 
 ---
@@ -168,10 +168,51 @@ follows:
   case 10 fails the build if any builder-hosted visual ships a geometry-mutating
   script (`.style.left/top/width/height/cssText =`).
 
+**Onboarded to the builder:** ALL SIX extracted banks — catalog, timeline, config,
+spec, lifecycle-lane, **delta** — have a live picker tile + an in-place editor.
+(Delta: the picker tile direct-adds; the editor binds the heading, the prev|current
+axis headers — model name required, the `.gd-sec-col` echoes locked as derived — and
+the Hardware/Software rows: label + old→new + a color chip via a derived enum
+popover, a `no_old` "before" toggle, per-group add/remove; intro/footnote are
+renderer-seeded sentinel "+" slots. Guard: case 13.)
+
+**Photo-rail bank — CANONIZED (onboarding next).** The iPod horizontal photo rail is
+extracted off the legacy `wiki-ipod-touch.js` engine into a bank: a headerless,
+full-bleed scroller of image cards (no "Photo archive" label — photos only), data
+`photo_rail.photos[]{ src, alt, strong?, caption? }` with `src` typed **`media`**
+(a URL today; a Supabase Storage upload later, no bank/output change). `bank-photo-rail.css`
+= single source; the include `_includes/visuals/photo-rail/` + `sections/photo-rail-section.html`
+(registry `photo-rail-section`, full_bleed, no h2). Rolled out to all 6 iPod pages
+(photos moved JS → front-matter; `renderPhotoRail` removed). Click-to-zoom lightbox is
+a self-contained live-only script (builder strips it; no geometry mutation). NOT yet
+onboarded to the builder picker/decorator — that's the next step.
+
+### The builder app (`_builder/`) — the 1.0 product, actively built
+A Next.js app (previewed on **Vercel**) that renders a page by EXECUTING the repo's
+own Liquid includes + canon CSS, then layers editing chrome — the derived renderer
+(rule #5). Key parts:
+- `lib/render.ts` / `render-core.mjs` — LiquidJS in Jekyll mode (the includes, executed).
+- `lib/canvas.ts` — `buildCanvas` (the iframe doc = canon CSS stack + affordance CSS +
+  runtime), `applyAction` (all data mutations), `setIn`.
+- `lib/grammar.ts` / `policy.mjs` — grammar → the policy the decorator + readiness read.
+- `public/editor/decorate.js` — the in-iframe decorator and the editing SURFACE: wraps
+  fields in `.ce`, adds `+`/× affordances, popovers, drag-reorder, posts the readiness
+  payload. (Shared `infoI`/`infoIcon` = the one info-"i" tooltip, portaled to `<body>`.)
+- `components/editor/` — `PageEditor` (iframe host + the scaled, centered true-1080
+  preview + the readiness rail in the left margin), `SectionPicker` (add-section
+  picker), `ReadinessPanel`.
+- `scripts/` — `copy-canon` (CSS + `bank-*.css` discovery), `extract-grammar`/
+  `-includes`/`-visuals`/`-taco-bell`/`-apple`, `gen-placeholders`, and the guards
+  `audit-*` + `test-derived-renderer` + `test-golden-render`.
+- Commands run FROM `/home/user/viziwiki/_builder`: `npm run gen` (regen data + copy
+  canon), `npm test` (the guards), `npm run build`.
+
 ## Workflow norms
-- Develop on branch `claude/quirky-carson-vKj8w`. Commit + push; owner previews
-  the Cloudflare deploy and merges PRs themselves (don't open PRs unless asked).
-- Cannot build Jekyll locally here — verify via the branch preview deploy.
+- Develop on the session's designated feature branch (it rotates per feature — the
+  owner names it; e.g. `claude/catalog-note-fixes`). Commit + push; the owner previews
+  the deploy and merges PRs themselves (don't open PRs unless asked).
+- Cannot build Jekyll locally here — verify the wiki via the Cloudflare branch preview;
+  the builder app (`_builder/`) previews on Vercel.
 - Permalinks are explicit flat slugs (`permalink:`), decoupled from file path;
   keep `.html` URLs.
 - Don't put the model identifier in commits/PRs/code.
@@ -199,7 +240,7 @@ follows:
   + rolled out to **7 pages** (drinks, discontinued-drinks, the 5 menu
   sub-pages). Section/visual split (`_includes/sections/` + `_includes/visuals/`
   + the `visual.html` dispatcher + `_data/visuals.yml` registry); add-ons:
-  skin-swatch category colors, ribbon tones (accent / gone-grey),
+  skin-swatch category colors, ribbon tones (accent / gone-gray),
   status·info-chip·pill-groups(+struck)·callout·notes, header+footer hairlines,
   auto-derived summary + optional note. `bank-catalog.css` = single source.
 - **Phase 4 — Timeline bank** (full-bleed, date-positioned scroller + station
@@ -216,7 +257,7 @@ follows:
   `ic-hard-drive`, required H2 + chart-title, optional intro/footer, contained).
   Bar widths **derived** from capacity (GB/TB normalized, exact proportion).
   Revised-group (`revised` flag → striped bar + `divider_label`); price "old →
-  new" drops; device-colour dots are content hex. **Skin-tokenized** (`--cfg-*`,
+  new" drops; device-color dots are content hex. **Skin-tokenized** (`--cfg-*`,
   Apple pinned) — first chart-bank themed from day one. Extracted out of the
   iPod JS engine (`bank-config.css` = single source; legacy `renderCfg` / CSS /
   placeholder removed).
@@ -230,12 +271,12 @@ follows:
   rolled out to **all 6 iPod pages**. New `section: delta` (locked eyebrow +
   `ic-chart-column-stacked`, required H2, optional intro/footnote). `prev → current`
   rows in hardware/software groups; change chips (`better/feature/changed/worse/same`)
-  where colour = direction, text = value. **Skin-tokenized** (`--gd-*`, Apple pinned).
+  where color = direction, text = value. **Skin-tokenized** (`--gd-*`, Apple pinned).
   `bank-delta.css` = single source.
 - **Phase 4 — Lifecycle-lane bank** (the OS-support ribbon / "iOS versions chart"):
   built + rolled out to **all 6 iPod pages**. New `section: os-section` (locked
   eyebrow + `ic-layers`, required H2, optional lead prose, contained). A segmented
-  support ribbon: tiers `full/partial/dropped/security` (fill colour), corner badges,
+  support ribbon: tiers `full/partial/dropped/security` (fill color), corner badges,
   an **auto-derived counter** (`launch → drop · duration · N major versions`, rounded
   to the nearest month; post-drop `security` patches excluded), and an **auto legend**.
   Width model `uniform` (default) or opt-in `weighted` (∝ date gap); `security` tile =
@@ -249,6 +290,18 @@ follows:
   bank; prose|infobox or two-column newspaper layout). Driven by an `overview:`
   front-matter block, **rolled out to ~24 pages** (6 iPod + the apple/smurfs/fallout/
   doodle homes + every TB drink + menu page). iPod overview pulled off `renderOverview`.
+- **Bank CSS = a universal layer (DONE).** All six `bank-*.css` load **once** in
+  `_layouts/default.html` (the bank layer, right after `wiki-universals.css`, before
+  `extra_head` so a skin can still pin bank tokens); the old per-page `extra_head` /
+  `class-tb-menu` links were removed (`class-tb-menu.html` carries a note to that
+  effect). Any page can now use any bank with zero CSS wiring. The builder mirrors it:
+  `copy-canon` auto-discovers `bank-*.css` → `data/bank-css.json` → the canvas links them.
+- **Universal-layer additions (builder/live parity).** `.wiki-hero-title` now sets
+  `text-wrap: balance` (balanced headlines; never orphans a trailing word or the accent
+  "." — same on the live site and the builder). `wiki-universals.css` §00 adds
+  `html, body { margin: 0; padding: 0 }`, mirroring the layout's global reset so any
+  context that loads the canon CSS but NOT `default.html`'s inline reset — i.e. the
+  builder's preview iframe — still renders the page flush to its frame (idempotent on live).
 
 **Open**
 - Phase 4 visual bank — **catalog + timeline + config + spec + delta +
@@ -271,45 +324,49 @@ follows:
   archive pages) — a future de-Tailwind pass.
 - Smurfs keeps its own small inline icon sprite (custom Smurf art) — optional
   fold into the universal sprite.
-- **Bank CSS as a universal layer (deferred for now — kept separate on
-  purpose for organization).** Each bank's stylesheet (e.g. `bank-catalog.css`)
-  is already the single source for its visual, but it's currently *loaded*
-  ad-hoc (per-page `extra_head` on drinks/discontinued/proof; via the
-  `class-tb-menu` layout on the 5 menu pages). Once the bank set is built out,
-  promote bank stylesheets to a first-class universal layer — loaded **once**
-  in `_layouts/default.html` (alongside `wiki-universals.css`), and drop the
-  scattered per-page/layout links — so any page can use a bank with zero CSS
-  wiring. (Content is already single-source; this only systematizes the
-  *loading*.)
-- The **builder UI** itself (the 1.0 product) — built once enough components are
-  data-driven banks.
-- **Admin / builder back-end (master access + in-page edit mode).** The site is
-  static (Cloudflare Pages) and content is already data-in-git, so no DB is
-  needed to start — a "back-end" here = **auth + the builder writing data back +
-  redeploy**. Recommended path (keeps the static/git single-source model):
-  (1) **auth** — Cloudflare Access (Zero-Trust, owner-email gated) in front of an
-  `/admin` route + a Worker holding a **GitHub App** token server-side (keeps the
-  write token out of the browser); or GitHub OAuth in-browser as the simpler
-  bridge. Master = repo admin; contributors = restricted role / PR-only.
-  (2) **editor** — wire OUR builder kit to read a page's `catalog:` front-matter
-  and commit edits via the **GitHub Contents API** (`visuals.yml` is already the
-  registry it reads); a fast bridge is an off-the-shelf git CMS (Sveltia/Decap/
-  Tina) configured against the front-matter schema. (3) **edit mode** — admin-only
-  "Edit" affordance on any live page opens the builder pre-loaded with that page's
-  data. (4) **draft→publish** — saves land on a `draft` branch (preview deploy),
-  "Publish" = merge to main; Cloudflare already rebuilds on push. Trade-off: saves
-  cost a deploy cycle (seconds), not instant-live — fine for a wiki; true instant
-  editing would mean a dynamic app + DB (bigger leap, not now). NOTE: the auth/
-  OAuth/Access/GitHub-App pieces need setup in the owner's GitHub + Cloudflare
-  dashboards (can't be done from the agent env) — code can be built here, clicks
-  walked through.
+- The **builder app** (`_builder/`, see "The builder app" above) is substantially
+  built — derived renderer, section picker, in-place decorator, readiness rail,
+  scaled + centered true-1080 desktop preview — with **all 6 extracted banks
+  onboarded** (catalog/timeline/config/spec/lifecycle-lane/delta). Two active tracks:
+  **(a) the Supabase back-end** (the public-contributor platform — now the decided
+  direction, see below) and **(b) more banks** (swim-lane / ladder / tile-directory /
+  quote-wall) so the builder can express more page types.
+- **Back-end = the public contributor platform (DECIDED — Supabase).** Target: a
+  crowdsourced platform in the class of **Wikipedia / Fandom** — many wikis, many
+  *public* contributors, moderation, near-instant edits. That scope means a
+  **database backend, not the git/file path** (a commit-per-save + deploy-per-publish
+  model can't carry public scale or public sign-ups). The architecture already has
+  the seam for it: **`_builder/content-store.ts`** defines ONE `ContentStore`
+  interface (`listWikis/listPages/loadPage/savePage/createPage/deletePage`) that the
+  builder UI imports *exclusively* — so the backend swaps WITHOUT touching the builder
+  ("no transfer headache"). Two implementations are stubbed today (both throw TODO;
+  the builder still saves to the `localStorage` stand-in — `lib/store.ts` /
+  `app/page.tsx`):
+    · `GitContentStore` — front-matter + GitHub-API commits; *friends-and-family / dev*
+      only (every save = a deploy cycle). NOT the path for this scope.
+    · `SupabaseContentStore` — **the chosen path.** Postgres `wikis / pages / sections`
+      (section `data` as `jsonb`, validated against `grammar.yml`), **Supabase Auth**
+      (real accounts + roles: admin / contributor / viewer), **Supabase Storage**
+      (media uploads — the grammar's image fields already point here). Instant saves,
+      no rebuild.
+  Build order: (1) wire `SupabaseContentStore` (schema + the six methods, grammar as
+  the validator) and switch the builder off `localStorage`; (2) **auth + roles** —
+  sign-up / sessions, a roles table, row-level security so a contributor edits only
+  what their role allows; (3) **moderation** — contributor edits land as
+  drafts/proposals; an admin approves → published (Wikipedia/Fandom-style review).
+  The dynamic DB serves the **content**; the static Jekyll site stays the
+  single-source home for **canon/design** — the CSS layers, the Liquid includes,
+  `grammar.yml` (the schema both the builder and the DB validate against). Caveat: the
+  Supabase project + auth providers are created in the owner's dashboards (not from the
+  agent env) — code is built here, the dashboard clicks walked through. See
+  `_builder/README.md` + `docs/registry-grammar-proposal.md`.
 - **Vizi-verse** (the narrative side; currently only `top-10.html`) — deferred.
 
 ---
 
 ## Reference snapshots (original hand-built code)
 
-The bank port replaced the hand-built catalogue markup/JS in the working
+The bank port replaced the hand-built catalog markup/JS in the working
 tree; the originals live in git history (merging to main preserves them).
 Two anchor commits to compare against — `git show <sha>:<file>`:
 
@@ -317,7 +374,7 @@ Two anchor commits to compare against — `git show <sha>:<file>`:
   page in its first form (pre-convergence).
 - **`910990e`** — *pre-bank-port*: the last all-hand-built state — the catalog
   bank existed as scaffolding, but drinks / discontinued / the 5 menu pages
-  were still hand-built catalogues (with `showDrink` / `showItemCard` /
+  were still hand-built catalogs (with `showDrink` / `showItemCard` /
   `FRESCO_ITEMS` etc.). Best "right before we banked it" reference.
 
 (This environment can't push git tags — the git proxy only accepts the work

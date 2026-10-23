@@ -12,19 +12,28 @@ import { SENT_PREFIX, REGISTRY } from './render';
 // bank stylesheets — DISCOVERED by copy-canon (every repo-root bank-*.css) and
 // written to this manifest, so the canvas loads each bank's single-source CSS
 // without a hardcoded <link> per bank (CLAUDE.md standing rule #5).
-import BANK_CSS from '../data/bank-css.json';
+// INLINED (not linked) so the preview iframe never depends on fetching a
+// separate /canon/bank-*.css that can 404 or serve a stale/cached asset —
+// still derived: copy-canon concatenates the canon bank-*.css into this string.
+import BANK_CSS_INLINE from '../data/bank-css-inline.json';
 
 // default skin = Taco Bell (keeps existing single-arg callers working)
 const TACO_BELL_SKIN: WikiSkin = { bodyClass: 'wiki-page wiki-taco-bell', css: ['wiki-taco-bell-skin.css', 'tb-editorial-base.css'] };
 
 const AFFORDANCE = `
-  /* editing field: grey box on hover (= editable), blue box on click (= editing).
+  /* editing field: gray box on hover (= editable), blue box on click (= editing).
      overflow-wrap:anywhere keeps a long unbroken string from inflating the
      field's min-content — without it the inline-block + fit-content sizing
      blows out the canon's grid/flex tracks (the live site never sees this
      because plain text wraps at spaces). Keeps the editor on the master format. */
   .ce{ cursor:text; border-radius:3px; display:inline-block; max-width:100%; overflow-wrap:anywhere;
        outline:2px solid transparent; outline-offset:2px; transition:outline-color .12s; }
+  /* the hero title's editing wrapper must NOT alter canon line-breaking: the
+     inline-block boundary would let the accent "." (a sibling span) orphan onto
+     its own line, and overflow-wrap:anywhere would break words mid-character —
+     neither of which the live site does. Render it as plain inline text so it
+     wraps EXACTLY like canon (which now balances via .wiki-hero-title). */
+  .wiki-hero-title .ce{ display:inline; max-width:none; overflow-wrap:normal; }
   .ce:hover{ outline-color:rgba(0,0,0,.18); }
   .ce:focus{ outline-color:rgba(0,113,227,.55); }
 
@@ -48,7 +57,7 @@ const AFFORDANCE = `
      the infobox value cells (grid-sized), the search bar, the stat grid */
   .wiki-infobox.pe-removable{ width:auto; overflow:visible; }
   .wiki-infobox-data > dd.pe-removable{ width:auto; }
-  /* infobox ONLY: the row × is right-aligned + vertically centred on its row,
+  /* infobox ONLY: the row × is right-aligned + vertically centerd on its row,
      not the upper-right corner — the corner rule still governs everything else */
   .wiki-infobox-data > dd.pe-removable > .pe-remove{ top:50%; right:-9px; left:auto; transform:translateY(-50%); }
   /* +row / +badge sit just BELOW the infobox (absolute, so the panel itself
@@ -176,8 +185,8 @@ const AFFORDANCE = `
   .sc-expand.pe-expand:hover{ color:#6366f1; background:rgba(99,102,241,.08); }
   /* the expandable card: the canvas iframe is full-height (the parent scrolls
      it), so the canon modal's flex-centering lands in the CONTENT middle —
-     off-screen. Pin the box and let centreModal place it at the visible-
-     viewport centre in content coordinates (top set by JS + this translate). */
+     off-screen. Pin the box and let centerModal place it at the visible-
+     viewport center in content coordinates (top set by JS + this translate). */
   .tl-modal-box{ position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); max-height:none; margin:0; }
   /* the body edit box: as a block it fits the text (inline-block left a baseline
      gap that made it look oversized); trim the last paragraph's margin */
@@ -197,7 +206,7 @@ const AFFORDANCE = `
   .cat-add-pill{ border-style:dashed !important; color:rgba(0,0,0,.4) !important; background:transparent !important; }
 
   /* ════ two-click delete confirm (mockup Direction 2) ════ The ✕ trigger fades
-     out and a red "✓ Delete" + grey undo pop in over it; a 2nd click commits,
+     out and a red "✓ Delete" + gray undo pop in over it; a 2nd click commits,
      undo / outside-click / Escape backs out. Routed via armDelete for every
      delete in the kit. */
   .pe-del-armed{ opacity:0 !important; pointer-events:none; }
@@ -219,7 +228,9 @@ const AFFORDANCE = `
     border:1px dashed rgba(0,0,0,.28); background:transparent; color:rgba(0,0,0,.46); position:relative;
     font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; }
   button.pe-note-chip:hover{ border-color:rgba(0,0,0,.45); color:rgba(0,0,0,.62); }
-  .pe-note-chip.has{ cursor:default; }
+  /* filled note: drop the dashed "add" affordance — it reads as plain inline
+     text (the corner × handles removal), only the empty "+ note" stays dashed */
+  .pe-note-chip.has{ cursor:default; border-color:transparent; padding-left:2px; padding-right:2px; }
   .pe-note-chip .ce{ text-transform:none; letter-spacing:normal; }
   .pe-note-chip > .pe-remove{ top:-7px; right:-7px; width:14px; height:14px; font-size:10px; }
   .modal-scroll .pe-mini-add, .modal-scroll .pe-add{ opacity:.7; }
@@ -255,6 +266,10 @@ const AFFORDANCE = `
   .pe-remove{ border:1px solid rgba(0,0,0,.18); background:#fff; color:rgba(0,0,0,.45); font-size:12px; cursor:pointer; }
   .pe-removable:hover > .pe-remove{ opacity:1; }
   .pe-remove:hover{ border-color:#ef4444; color:#ef4444; }
+  /* the canon stats grid clips its overflow (rounded wrapper, gap-bled dividers),
+     so the default -9px-OUTSIDE corner × gets sliced to a sliver. Pull this
+     block's × INSIDE the clip bounds so it shows whole. */
+  .wiki-hero-stats.pe-removable > .pe-remove{ top:6px; right:6px; }
   .pe-lock{ border:1px solid rgba(0,0,0,.12); background:#fff; color:rgba(0,0,0,.34); cursor:default; }
   .pe-lock svg{ width:10px; height:10px; }
   /* canon-locked (can't edit AND can't delete): red box on hover + padlock */
@@ -320,7 +335,7 @@ const AFFORDANCE = `
   .pe-add-section:hover .pe-add-dot::after{ opacity:1; transform:translateX(-50%) scale(1); }
 
   /* ════ config (storage / configuration chart) editor — the owner's DRAWER
-     flow (configeditorui.html). Inline grey/blue .ce boxes edit the chart
+     flow (configeditorui.html). Inline gray/blue .ce boxes edit the chart
      directly (+ feed the readiness widget); a per-row chevron opens a structured
      drawer for the full form. The bars stay CANON-sorted low→high (config.html);
      an inline/drawer capacity, unit or revised change re-runs that sort and the
@@ -350,21 +365,59 @@ const AFFORDANCE = `
   .dr-input:focus{ border-color:#2563eb; box-shadow:0 0 0 3px rgba(37,99,235,.14); }
   .dr-select{ appearance:none; cursor:pointer; padding-right:28px; background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E") no-repeat right 10px center; }
   .tog-row{ display:flex; gap:7px; flex-wrap:wrap; align-items:center; }
-  /* info "i" beside a toggle — a hover/focus tooltip explaining the option */
-  .dr-info{ position:relative; display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; color:rgba(0,0,0,.4); cursor:help; outline:none; }
+  /* info "i" beside a toggle — the explanatory bubble is PORTALED to <body> as
+     a fixed .dr-tip (below) so it clears every overflow:clip container (modal,
+     card) and stacks above all chrome. The icon itself is just the trigger. */
+  .dr-info{ position:relative; display:inline-flex; align-items:center; justify-content:center; vertical-align:middle; width:16px; height:16px; color:rgba(0,0,0,.4); cursor:help; outline:none; }
   .dr-info svg{ width:15px; height:15px; }
   .dr-info:hover, .dr-info:focus{ color:#2563eb; }
-  .dr-info::after{ content:attr(data-tip); position:absolute; left:0; bottom:calc(100% + 9px); transform:translateY(5px); width:300px; max-width:300px;
-    white-space:normal; text-align:left; background:#0a0a0a; color:#fff; font-family:'Spectral',Georgia,serif; font-size:12px; font-weight:400; line-height:1.5;
-    letter-spacing:0; text-transform:none; padding:10px 12px; border-radius:9px; box-shadow:0 10px 28px rgba(0,0,0,.24); opacity:0; pointer-events:none;
-    transition:opacity .14s ease, transform .14s ease; z-index:40; }
-  .dr-info::before{ content:''; position:absolute; left:6px; bottom:calc(100% + 3px); transform:translateY(5px) rotate(45deg); width:9px; height:9px; background:#0a0a0a; opacity:0; transition:opacity .14s ease, transform .14s ease; z-index:40; }
-  .dr-info:hover::after, .dr-info:focus::after, .dr-info:hover::before, .dr-info:focus::before{ opacity:1; transform:translateY(0); }
-  .dr-info:hover::before, .dr-info:focus::before{ transform:rotate(45deg); }
-  /* edge-flip (set by JS when the bubble would overrun the right edge): anchor it
-     to the icon's right and grow leftward so it stays on-screen */
-  .dr-info.flip-r::after{ left:auto; right:0; }
-  .dr-info.flip-r::before{ left:auto; right:6px; }
+  /* the single shared tooltip bubble — fixed, top-layer, never clipped */
+  .dr-tip{ position:fixed; z-index:1600; width:300px; max-width:300px; white-space:normal; text-align:left;
+    background:#0a0a0a; color:#fff; font-family:'Spectral',Georgia,serif; font-size:12px; font-weight:400; line-height:1.5;
+    letter-spacing:0; text-transform:none; padding:10px 12px; border-radius:9px; box-shadow:0 10px 28px rgba(0,0,0,.24);
+    opacity:0; transform:translateY(5px); pointer-events:none; transition:opacity .14s ease, transform .14s ease; }
+  .dr-tip.in{ opacity:1; transform:translateY(0); }
+  .dr-tip::after{ content:''; position:absolute; left:var(--ax,16px); bottom:-4px; transform:translateX(-50%) rotate(45deg); width:9px; height:9px; background:#0a0a0a; }
+  .dr-tip.below::after{ bottom:auto; top:-4px; }
+  /* rich tooltip: a small legend table (e.g. the chip color meanings). Pin the
+     --gd-* tokens here so the swatches color even though the bubble is on <body>. */
+  .dr-tip-rich{ width:auto; max-width:270px;
+    --gd-better-bg:#dcfce7;  --gd-better-fg:#15803d;  --gd-feature-bg:#eff6ff; --gd-feature-fg:#1d4ed8;
+    --gd-changed-bg:#fef9c3; --gd-changed-fg:#a16207; --gd-worse-bg:#fee2e2;   --gd-worse-fg:#b91c1c;
+    --gd-same-bg:#f3f4f6;    --gd-same-fg:#6b7280; }
+  .dr-tip-rich .dr-tip-p{ margin:0; }
+  .dr-legend{ border-collapse:collapse; margin:8px 0; }
+  .dr-legend td{ padding:2px 8px 2px 0; vertical-align:middle; font-size:12.5px; }
+  .dr-legend .dr-legend-c{ font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.06em; text-transform:uppercase; opacity:.95; }
+  .dr-legend .dr-legend-m{ opacity:.75; }
+  .dr-sw{ display:inline-block; width:12px; height:12px; border-radius:3px; border:1px solid; }
+  .dr-sw.gd-chip-better{ background:var(--gd-better-bg); border-color:var(--gd-better-fg); }
+  .dr-sw.gd-chip-feature{ background:var(--gd-feature-bg); border-color:var(--gd-feature-fg); }
+  .dr-sw.gd-chip-changed{ background:var(--gd-changed-bg); border-color:var(--gd-changed-fg); }
+  .dr-sw.gd-chip-worse{ background:var(--gd-worse-bg); border-color:var(--gd-worse-fg); }
+  .dr-sw.gd-chip-same{ background:var(--gd-same-bg); border-color:var(--gd-same-fg); }
+  /* ════ photo-rail editor ════ click the image to set its URL+alt; caption is
+     inline; drag the grip to reorder; an empty image shows a dashed slot. */
+  .photo-rail-card .pe-tag-rm{ position:absolute; top:8px; right:8px; z-index:4; opacity:0;
+    background:rgba(0,0,0,.55); border-color:transparent; color:#fff; }
+  .photo-rail-card:hover .pe-tag-rm{ opacity:1; }
+  .pr-grip{ position:absolute; top:8px; left:8px; z-index:4; width:22px; height:22px; border:0; border-radius:6px;
+    background:rgba(0,0,0,.45); color:#fff; cursor:grab; opacity:0; display:flex; align-items:center; justify-content:center; padding:0; }
+  .pr-grip svg{ width:13px; height:13px; }
+  .photo-rail-card:hover .pr-grip{ opacity:1; }
+  .photo-rail-card.pe-dragging{ opacity:.4; }
+  .photo-rail-card.pe-drop-before{ box-shadow:-3px 0 0 #6366f1; }
+  .photo-rail-card.pe-drop-after{ box-shadow:3px 0 0 #6366f1; }
+  /* empty card → the decorator renders a real 280×200 placeholder image (so the
+     card always has size, even with no sizing CSS); mark it with a dashed outline */
+  .photo-rail-card.pe-img-empty{ outline:2px dashed rgba(255,255,255,.3); outline-offset:-2px; }
+  /* the "+ photo" tile matches a card's footprint */
+  .pr-add{ flex-shrink:0; width:280px; height:200px; display:flex; align-items:center; justify-content:center; border-radius:8px; }
+  @media(max-width:600px){ .pr-add{ width:200px; height:148px; } }
+  .img-pop .cc-img-url, .img-pop .cc-img-alt{ width:100%; box-sizing:border-box; padding:6px 8px; border:1px solid rgba(0,0,0,.18);
+    border-radius:6px; font-family:'JetBrains Mono',monospace; font-size:10px; }
+  .img-pop .cc-opt{ opacity:.55; text-transform:none; letter-spacing:0; }
+  .img-pop .cc-img-apply{ margin-top:9px; }
   .tog{ display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:6px; border:1px solid rgba(0,0,0,.16); background:#fff;
     font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.08em; text-transform:uppercase; color:rgba(0,0,0,.5); cursor:pointer; transition:.12s; }
   .tog:hover{ border-color:rgba(0,0,0,.3); }
@@ -458,7 +511,86 @@ const AFFORDANCE = `
   .cc-pop-label-i{ display:flex; align-items:center; gap:6px; }
   .cc-pop-label-i .dr-info{ width:14px; height:14px; color:rgba(0,0,0,.4); }
   .cc-pop-label-i .dr-info svg{ width:13px; height:13px; }
+  /* the timeline tag is a tiny 8px label — shrink its inline "i" to match */
+  .sc-tag .dr-info{ width:12px; height:12px; margin-left:5px; }
+  .sc-tag .dr-info svg{ width:12px; height:12px; }
   .cc-pop.lane-pop{ min-width:230px; }
+  /* delta chip picker — a bearings catalog grouped by category + a custom row.
+     The gd-chip-* rules read --gd-* tokens scoped to .delta on the live site; the
+     popover lives on <body>, so pin the (light) token values here so the preset
+     chips render in their category colors. */
+  .cc-pop.chip-pop{ min-width:248px; max-width:300px;
+    --gd-better-bg:#dcfce7;  --gd-better-bd:#bbf7d0;  --gd-better-fg:#15803d;
+    --gd-feature-bg:#eff6ff; --gd-feature-bd:#bfdbfe; --gd-feature-fg:#1d4ed8;
+    --gd-changed-bg:#fef9c3; --gd-changed-bd:#fef08a; --gd-changed-fg:#a16207;
+    --gd-worse-bg:#fee2e2;   --gd-worse-bd:#fecaca;   --gd-worse-fg:#b91c1c;
+    --gd-same-bg:#f3f4f6;    --gd-same-bd:#e5e7eb;    --gd-same-fg:#6b7280; }
+  /* in the picker, render chips at a readable size (the live chip is 6.5px) */
+  .chip-pop{ min-width:300px; max-width:340px; }
+  .chip-pop .gd-chip{ font-size:9px; padding:4px 8px; margin:0 !important; }
+  .cc-chip-head{ display:flex; align-items:center; gap:6px; margin-bottom:10px; }
+  .cc-chip-head .cc-pop-label{ margin:0; }
+  .cc-chip-grid{ display:flex; flex-direction:column; gap:9px; }
+  /* each category is a labelled column-header row: the name (in its color) +
+     its chips */
+  .cc-chip-cat{ display:flex; align-items:stretch; gap:10px; }
+  /* category column-header: right-aligned, hugging a vertical hairline divider */
+  .cc-chip-cat-h{ flex:0 0 56px; padding:3px 10px 0 0; border-right:1px solid rgba(0,0,0,.12);
+    font-family:'JetBrains Mono',monospace; font-size:8px; font-weight:600; letter-spacing:.12em;
+    text-transform:uppercase; text-align:right; }
+  .cc-chip-cat-h.gd-chip-better{ color:var(--gd-better-fg); }
+  .cc-chip-cat-h.gd-chip-feature{ color:var(--gd-feature-fg); }
+  .cc-chip-cat-h.gd-chip-changed{ color:var(--gd-changed-fg); }
+  .cc-chip-cat-h.gd-chip-worse{ color:var(--gd-worse-fg); }
+  .cc-chip-cat-h.gd-chip-same{ color:var(--gd-same-fg); }
+  .cc-chip-row{ display:flex; flex-wrap:wrap; gap:4px; flex:1; }
+  .cc-chip-opt{ cursor:pointer; margin:0 !important; border-width:1px; }
+  .cc-chip-opt:hover{ filter:brightness(.97); box-shadow:0 0 0 2px rgba(0,0,0,.12); }
+  .cc-chip-opt.sel{ box-shadow:0 0 0 2px rgba(0,0,0,.45); }
+  /* parameterized chip — a fill-in {n} slot + a ✓ to resolve it */
+  .cc-chip-fill{ display:inline-flex; align-items:baseline; gap:0; font-weight:600; }
+  /* the {n} slot: snug to the unit (2×), a FAINT neutral underline (not the heavy
+     full-color one that blurred the digit) so it reads as one multiplier token */
+  .cc-chip-fill-in{ width:18px; border:0; border-bottom:1px solid rgba(0,0,0,.25); background:transparent; color:inherit;
+    font:inherit; font-weight:600; text-align:center; padding:0; }
+  .cc-chip-fill-in:focus{ outline:none; border-bottom-color:rgba(0,0,0,.55); }
+  .cc-chip-fill-go{ border:0; background:transparent; color:inherit; cursor:pointer; font-size:9px; line-height:1; padding:0 0 0 4px; opacity:.6; }
+  .cc-chip-fill-go:hover{ opacity:1; }
+  .cc-chip-custom{ border-top:1px solid rgba(0,0,0,.1); margin-top:4px; padding-top:9px; }
+  .cc-chip-text{ width:100%; box-sizing:border-box; padding:6px 8px; border:1px solid rgba(0,0,0,.18); border-radius:6px;
+    font-family:'JetBrains Mono',monospace; font-size:10px; margin-bottom:7px; }
+  .cc-chip-sw{ display:flex; gap:6px; margin-bottom:8px; }
+  .cc-chip-swatch{ width:20px; height:20px; border-radius:50%; cursor:pointer; border:1px solid; padding:0; }
+  .cc-chip-swatch.gd-chip-better{ background:var(--gd-better-bg); border-color:var(--gd-better-fg); }
+  .cc-chip-swatch.gd-chip-feature{ background:var(--gd-feature-bg); border-color:var(--gd-feature-fg); }
+  .cc-chip-swatch.gd-chip-changed{ background:var(--gd-changed-bg); border-color:var(--gd-changed-fg); }
+  .cc-chip-swatch.gd-chip-worse{ background:var(--gd-worse-bg); border-color:var(--gd-worse-fg); }
+  .cc-chip-swatch.gd-chip-same{ background:var(--gd-same-bg); border-color:var(--gd-same-fg); }
+  .cc-chip-swatch.sel{ box-shadow:0 0 0 2px rgba(0,0,0,.5); }
+  /* delta: show the placeholder for an EMPTY old/new value field so both columns
+     read as clear, fillable fields (scoped to .delta so other banks are untouched) */
+  .delta .ce:empty::before{ content:attr(data-ph); color:rgba(0,0,0,.34); font-style:italic; pointer-events:none; }
+  /* "no before" — an ALTERNATIVE toggle (dotted-underline link), deliberately NOT
+     the dashed add-pill language, so it doesn't read as "add something". */
+  /* old-value OR no-before: a clear either/or choice — the value field, then an
+     "or", then the alternative toggle */
+  .pe-or{ display:block; margin:7px 0 1px; font-family:'JetBrains Mono',monospace; font-size:8px;
+    letter-spacing:.16em; text-transform:uppercase; color:rgba(0,0,0,.3); }
+  .pe-noold{ display:block; margin-top:0; padding:0; border:0; background:transparent; cursor:pointer;
+    font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.1em; text-transform:uppercase;
+    color:rgba(0,0,0,.38); text-decoration:underline dotted; text-underline-offset:3px; }
+  .pe-noold:hover{ color:rgba(0,0,0,.7); }
+  .pe-noold.on{ color:rgba(0,0,0,.6); }
+  /* chip edit + × controls — revealed on hovering the current cell */
+  .gd-chip-ctrls{ display:inline-flex; gap:3px; margin-left:6px; vertical-align:middle; opacity:0; transition:opacity .12s; }
+  .gd-new:hover .gd-chip-ctrls{ opacity:1; }
+  .gd-chip-ctrl{ display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%;
+    border:1px solid rgba(0,0,0,.18); background:#fff; color:rgba(0,0,0,.5); cursor:pointer; padding:0; line-height:1; font-size:11px; }
+  .gd-chip-ctrl svg{ width:9px; height:9px; }
+  .gd-chip-edit:hover{ border-color:#6366f1; color:#6366f1; }
+  .gd-chip-rm:hover{ border-color:#ef4444; color:#ef4444; }
+  /* delta add-row: a small dashed pill (reverted from full-width) */
+  .pe-gd-addrow td{ padding:7px 18px; border:0; }
   .cc-pop.lane-pop .cc-enum{ grid-template-columns:repeat(2,1fr); }
   .cc-pop.lane-pop .cc-month-grid{ grid-template-columns:repeat(4,1fr); }   /* the date picker's month grid */
   .cc-lane-year{ width:100%; box-sizing:border-box; margin-top:2px; font-family:'JetBrains Mono',monospace; font-size:12px; padding:7px 9px;
@@ -473,14 +605,14 @@ const AFFORDANCE = `
   .cc-pop.lane-pop .cc-type-dropped{ background:#f3f4f6; border-color:#e5e7eb; border-style:dashed; color:#6b7280; }
   .cc-pop.lane-pop .cc-type-security{ background:#dbeafe; border-color:#bfdbfe; color:#1e40af; }
   .cc-pop.lane-pop .cc-enum-opt.sel{ box-shadow:0 0 0 2px #241a10; }
-  /* badge preset bank — text+color combos (each chip in its badge colour) */
+  /* badge preset bank — text+color combos (each chip in its badge color) */
   .cc-pop.lane-pop .cc-badge-ship{ background:rgba(0,0,0,.06); border-color:rgba(0,0,0,.12); color:#6b6b6b; }
   .cc-pop.lane-pop .cc-badge-paid{ background:#fbbf24; border-color:#f59e0b; color:#78350f; }
   .cc-pop.lane-pop .cc-badge-limited{ background:#f59e0b; border-color:#d97706; color:#78350f; }
   .cc-pop.lane-pop .cc-badge-final{ background:#0a0a0a; border-color:#0a0a0a; color:#fff; }
   .cc-pop.lane-pop .cc-badge-dropped{ background:transparent; border:1px dashed rgba(0,0,0,.24); color:#8a8a8a; }
   .cc-pop.lane-pop .cc-badge-security{ background:#3b82f6; border-color:#2563eb; color:#fff; }
-  /* all-in-one note add: segment chips (pick a version → derives colour) + fields */
+  /* all-in-one note add: segment chips (pick a version → derives color) + fields */
   .cc-pop.lane-pop.note-add{ min-width:254px; }
   .cc-pop.lane-pop .cc-noteseg{ display:flex; flex-wrap:wrap; gap:5px; grid-template-columns:none; }
   .cc-pop.lane-pop .cc-noteseg .cc-enum-opt{ flex:0 0 auto; padding:4px 9px; font-size:8.5px; }
@@ -493,9 +625,9 @@ const AFFORDANCE = `
   .cc-note-preview{ display:flex; align-items:flex-start; gap:7px; margin-top:2px; padding:8px 10px; border-radius:8px; background:rgba(0,0,0,.035);
     font-family:'Spectral',Georgia,serif; font-size:11.5px; line-height:1.45; color:#2a1f15; }
   .cc-note-preview .lane-note-dot{ margin-top:4px; flex:none; background:rgba(0,0,0,.12); }
-  /* the dot's colour comes from --lane-*-dot tokens scoped to the lane section,
-     which the popover (on document.body) can't see — pin the semantic colours so
-     the preview square shows the chosen version's support colour */
+  /* the dot's color comes from --lane-*-dot tokens scoped to the lane section,
+     which the popover (on document.body) can't see — pin the semantic colors so
+     the preview square shows the chosen version's support color */
   .cc-note-preview .lane-dot-full{ background:#6ee7b7; }
   .cc-note-preview .lane-dot-partial{ background:#fde68a; }
   .cc-note-preview .lane-dot-dropped{ background:#d1d5db; }
@@ -526,7 +658,7 @@ export function buildCanvas(bodyHtml: string, skin: WikiSkin = TACO_BELL_SKIN): 
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>${FONTS}
 <link rel="stylesheet" href="/canon/wiki-typography.css">
 <link rel="stylesheet" href="/canon/wiki-universals.css">
-${(BANK_CSS as string[]).map((f) => `<link rel="stylesheet" href="/canon/${f}">`).join('\n')}
+<style>${BANK_CSS_INLINE}</style>
 ${skinLinks}
 <style>${AFFORDANCE}</style>
 <script>
@@ -550,7 +682,7 @@ window.__retag=tagDark;
 // Enter inside a paragraph box → a block element (div), not a bare <br>, so the
 // new paragraph picks up the canonical inter-paragraph spacing (CSS above).
 try{document.execCommand('defaultParagraphSeparator',false,'div')}catch(e){}
-window.addEventListener('load',function(){if(window.__decorate)window.__decorate();H();try{new ResizeObserver(H).observe(document.body)}catch(e){}});
+window.addEventListener('load',function(){if(window.__decorate)window.__decorate();H();try{new ResizeObserver(function(){H();if(window.__pePostMarkers)window.__pePostMarkers();}).observe(document.body)}catch(e){}});
 </script>
 <script src="/editor/decorate.js"></script>
 </head>
@@ -657,6 +789,17 @@ export function applyAction(doc: PageDoc, action: string): void {
         const [el] = list.splice(from, 1);
         list.splice(to, 0, el);
       }
+      break;
+    }
+    case 'pillstrike': { // pillstrike:<pillpath>:<true|false> — toggle a group pill's
+      // strikethrough, converting a plain string pill ↔ {text, struck} (a string
+      // can't carry struck, so striking promotes it; un-striking collapses it back)
+      const ci3 = arg.lastIndexOf(':');
+      const on = arg.slice(ci3 + 1) === 'true';
+      const ppath = arg.slice(0, ci3);
+      const cur = getAt(doc, ppath);
+      const text = (cur && typeof cur === 'object') ? (cur as any).text : cur;
+      setAt(doc, ppath, on ? { text, struck: true } : text);
       break;
     }
     case 'commit': break; // no-op: forces a re-render so derived displays refresh

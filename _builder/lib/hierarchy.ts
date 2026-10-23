@@ -26,14 +26,14 @@ export function nodeKind(depth: number, hasChildren: boolean): NodeKind {
   return hasChildren ? 'subcategory' : 'page';
 }
 
-// dot colour class (maps to .mil-dot.<x> in globals.css) — always a solid,
-// role-coloured dot
+// dot color class (maps to .mil-dot.<x> in globals.css) — always a solid,
+// role-colored dot
 const DOT: Record<NodeKind, string> = {
   'main-category': 'cat',  // gold / amber
   'subcategory': 'sub',    // blue
   'page': 'leaf',          // neutral
 };
-// dot class for a node — solid colour by role
+// dot class for a node — solid color by role
 export function dotClass(depth: number, hasChildren: boolean): string {
   return DOT[nodeKind(depth, hasChildren)];
 }

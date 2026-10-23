@@ -392,7 +392,7 @@ body.wiki-doodle-jump{
   filter:brightness(1.08);
 }
 
-/* platform type colours — same system as before */
+/* platform type colors — same system as before */
 .dj-page .entry-plat.t-green{ background:var(--marker-green); box-shadow:0 3px 0 var(--marker-green-dark); color:#1a3a08; }
 .dj-page .entry-plat.t-blue { background:#6fb1e8; box-shadow:0 3px 0 #3d7eb5; color:#0e2540; }
 .dj-page .entry-plat.t-brown{ background:#c98a55; box-shadow:0 3px 0 #8a5a30; color:#2a1808; }

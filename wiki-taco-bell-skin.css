@@ -8,11 +8,11 @@
    The default.html chrome already uses a warm cream palette (#fdf8e7
    background, #2a1f15 text) that suits Taco Bell well. This file
    makes minimal, targeted overrides — it does NOT re-skin the bar or
-   drawer colour scheme, leaving those as the shared default.
+   drawer color scheme, leaving those as the shared default.
 
    Only two things change for Taco Bell:
      1. The wiki-toc rail gets a TB-purple right-edge border for depth.
-     2. The active / accent colour swaps from the default pink to TB
+     2. The active / accent color swaps from the default pink to TB
         purple, so highlighted section items feel on-brand.
    ===================================================================== */
 
@@ -67,7 +67,7 @@ body.wiki-taco-bell {
   --divider:        color-mix(in oklab, var(--foreground) 10%, transparent);
   --cat-divider:    var(--section-divider, var(--divider));   /* keep TB's warm catalog hairline (now its own token) */
   --ribbon-fg:      #ffffff;
-  /* locked "gone / phased out" ribbon grey — TB's warm desaturated tone
+  /* locked "gone / phased out" ribbon gray — TB's warm desaturated tone
      (the original hardcoded discontinued-ribbon color). Never colorful. */
   --ribbon-gone-bg: rgba(42,31,21,0.72);
   /* category accent palette — the skin's CATEGORY SWATCH SET. A catalog
@@ -183,7 +183,7 @@ body.wiki-taco-bell .wiki-hero .hero-bg-photo {
   z-index: 0;
 }
 
-/* Layer 3 — colorizer. Multiplies TB purple back over the now-greyscale
+/* Layer 3 — colorizer. Multiplies TB purple back over the now-grayscale
    photo, restoring the brand color while keeping the photo's texture. */
 body.wiki-taco-bell .wiki-hero .hero-bg-overlay-a {
   position: absolute;

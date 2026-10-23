@@ -32,7 +32,7 @@ const Badge = ({ status }: { status: string }) => (
 );
 
 function Row({ page, level, selected, onClick }: { page: Page; level: number; selected: boolean; onClick: () => void }) {
-  // role + colour come from the canonical hierarchy (gold main-cat / blue
+  // role + color come from the canonical hierarchy (gold main-cat / blue
   // subcategory / neutral page), so every wiki reads the same rule.
   const dot = dotClass(level, page.pages.length > 0);
   return (

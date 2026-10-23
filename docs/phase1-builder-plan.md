@@ -32,7 +32,7 @@ each `{ title (text), icon (icon picker), rows[] → [key, value] }`.
    component / `bank-spec.css`).
 2. **Page canvas** — renders a page's `sections[]` from data, with a dashed **+**
    slot at the end.
-3. **+ slot + side rail** — reads `grammar.yml` → lists the canon (greying out the
+3. **+ slot + side rail** — reads `grammar.yml` → lists the canon (graying out the
    singleton hero). Pick **Spec**.
 4. **Insert** — drops a grammar-**seeded** spec (one card, a couple of rows) → renders
    immediately, editable. The live grid *is* the editing surface, not a blank form.

@@ -118,27 +118,25 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 |---|---|---|---|
 | `heading` | • | text | `Changes heading` |
 | `tone` |  | enum | `a`  _(choice: a · b · special)_ |
-| `intro` |  | richtext | — |
-| `footnote` |  | richtext | — |
-| `prev` | • | axis | — |
-| `prev.tag` |  | text | — |
-| `prev.name` | • | text | `Model name` |
+| `intro` |  | richtext | `Add an intro line` |
+| `footnote` |  | richtext | `Add a footnote` |
+| `prev` |  | axis_old | — |
+| `prev.name` | • | text | `Old model` |
 | `prev.year` |  | text | — |
-| `current` | • | axis | — |
-| `current.tag` |  | text | — |
-| `current.name` | • | text | `Model name` |
+| `current` |  | axis_new | — |
+| `current.name` | • | text | `New model` |
 | `current.year` |  | text | — |
 | `hardware` |  | list<delta_row> | _(template — see sub-fields)_ |
 | `hardware[].label` | • | text | `Spec label` |
-| `hardware[].old` |  | text | — |
-| `hardware[].new` |  | text | — |
+| `hardware[].old` | • | text | `old value` |
+| `hardware[].new` | • | text | `new value` |
 | `hardware[].no_old` |  | bool | `false`  _(default)_ |
 | `hardware[].chip` |  | enum | `better`  _(choice: better · feature · changed · worse · same)_ |
 | `hardware[].chip_text` |  | text | — |
 | `software` |  | list<delta_row> | _(template — see sub-fields)_ |
 | `software[].label` | • | text | `Spec label` |
-| `software[].old` |  | text | — |
-| `software[].new` |  | text | — |
+| `software[].old` | • | text | `old value` |
+| `software[].new` | • | text | `new value` |
 | `software[].no_old` |  | bool | `false`  _(default)_ |
 | `software[].chip` |  | enum | `better`  _(choice: better · feature · changed · worse · same)_ |
 | `software[].chip_text` |  | text | — |
@@ -158,6 +156,18 @@ Legend: **•** = required · _driver_ = a real value that positions the layout 
 | `events[].title` | • | text | `Name this event` |
 | `events[].preview` | • | text | `Add a short summary of what happened` |
 | `events[].body` | • | richtext | `Write the full story for the expandable card…` |
+
+## photo-rail
+
+| Field | Req | Type | Placeholder |
+|---|---|---|---|
+| `tone` |  | enum | `special`  _(choice: a · b · special)_ |
+| `photos` | • | list<photo> | _(template — see sub-fields)_ |
+| `photos[].src` | • | media | `image URL` |
+| `photos[].alt` |  | text | `describe the photo` |
+| `photos[].strong` |  | text | `Image Title` |
+| `photos[].caption` |  | text | `Caption` |
+| `photos[].source` |  | text | `· source` |
 
 ## catalog
 

@@ -10,6 +10,13 @@ import { ReadinessPanel, type Marker, type Leaf } from './ReadinessPanel';
 
 const oneLine = (t: string) => t.replace(/<br\s*\/?>/gi, ' ');
 
+// Preview viewport — the canvas lays out at this logical desktop width, then
+// auto-scales to fit the editor's footprint (so 8vw and every proportion
+// resolve like a real desktop, not the narrow iframe). Single knob: the
+// scaling machinery stays intact, so re-sizing or re-adding views later is a
+// one-line change here — no in-iframe code touched.
+const CANVAS_W = 1080;
+
 // The marker payload (per section) is built + posted by the decorator, DERIVED
 // from grammar; the markers render out here in the editor chrome — an iframe
 // can't paint into the backdrop beside it. Shape lives in ReadinessPanel.
@@ -26,22 +33,43 @@ const oneLine = (t: string) => t.replace(/<br\s*\/?>/gi, ' ');
 export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin; onClose: () => void }) {
   const docRef = useRef<PageDoc>(loadPageDoc(page));
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const areaRef = useRef<HTMLDivElement>(null);   // the scroll area (sets the fit width)
+  const wrapRef = useRef<HTMLDivElement>(null);   // the scaled canvas footprint
   const [saved, setSaved] = useState(false);
   // per-section readiness markers (DERIVED in-canvas, rendered in the backdrop)
   const [markers, setMarkers] = useState<Marker[]>([]);
-  // the iframe's offset within the scroll area, so markers align to the canvas
+  // the SCALED canvas's screen offset, so markers align to it
   const [mkBox, setMkBox] = useState<{ left: number; top: number }>({ left: 0, top: 0 });
   const [openMk, setOpenMk] = useState<number | null>(null);
   // add-section picker: null = closed, number = the insert index the seam carries
   const [pickerAt, setPickerAt] = useState<number | null>(null);
   const isHome = !!page.home; // home pages get home-only canon (e.g. the search bar)
 
+  // ── the one scale source ── the canvas lays out at `logicalW`, then scales to
+  // fit the available width (never UP-scaled past 1:1). Every geometry below
+  // reads `scale`; the iframe content is unaware of it.
+  const [availW, setAvailW] = useState(0);        // canvas-area inner width
+  const [contentH, setContentH] = useState(600);  // iframe content height (logical px)
+  const logicalW = CANVAS_W;
+  // shared layout constants for the canvas AND the readiness widget in its left
+  // margin (so the two can't disagree).
+  const GUTTER = 20, GAP = 18, PANEL_MAX = 330, PANEL_MIN = 248;
+  const WIDGET_MIN = GUTTER + PANEL_MIN + GAP;            // 286 — min left margin the widget needs
+  // Keep the canvas CENTERED at TRUE 1080. Only scale down if a centered 1080
+  // wouldn't leave the widget its margin — reserve WIDGET_MIN on BOTH sides so it
+  // stays symmetric. So "true 1080 + centered + widget contained" hold together
+  // when the editor is wide enough (~1652px+); below that the canvas shrinks a
+  // touch so the widget still fits in the (now smaller) centered margin.
+  const maxDisp = availW - 2 * WIDGET_MIN;
+  const scale = availW > 0 ? Math.min(1, maxDisp / logicalW) : 1;
+
   // built once — never changes, so the iframe never reloads
   const srcDoc = useMemo(() => buildCanvas(renderBody(docRef.current, isHome), skin), []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // remeasure both the available width AND the scaled canvas's screen offset
   const measure = () => {
-    const ifr = iframeRef.current;
-    if (ifr) setMkBox({ left: ifr.offsetLeft, top: ifr.offsetTop });
+    if (areaRef.current) setAvailW(areaRef.current.clientWidth);
+    if (wrapRef.current) setMkBox({ left: wrapRef.current.offsetLeft, top: wrapRef.current.offsetTop });
   };
 
   useEffect(() => {
@@ -56,7 +84,11 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
     // drag-reorder mutates the doc WITHOUT a re-render — the decorator shuffles the
     // DOM nodes + FLIP-animates in place, then re-binds via a deferred swap.
     (window as any).__peReorderData = (action: string) => { applyAction(docRef.current, action); setSaved(false); };
-    (window as any).__peResize = (h: number) => { if (iframeRef.current) iframeRef.current.style.height = Math.max(h, 480) + 'px'; };
+    // render the current body WITHOUT swapping it in — lets the decorator splice a
+    // single new node (e.g. a delta table row) in place instead of recreating the
+    // whole table, so adds don't flash the static header rows.
+    (window as any).__peRenderBody = () => renderBody(docRef.current, isHome);
+    (window as any).__peResize = (h: number) => setContentH(Math.max(h, 480));
     (window as any).__peOpenPicker = (index: number) => setPickerAt(typeof index === 'number' ? index : 0); // seam → picker (carries insert position)
     (window as any).__peDoc = () => docRef.current; // decorator reads current values (e.g. toolbar editors)
     (window as any).__peMarkers = (list: Marker[]) => { setMarkers(list); measure(); }; // readiness, derived in-canvas
@@ -64,8 +96,15 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
     const onResize = () => measure();
     window.addEventListener('keydown', onKey);
     window.addEventListener('resize', onResize);
-    return () => { delete (window as any).__peField; delete (window as any).__peAction; delete (window as any).__peReorderData; delete (window as any).__peResize; delete (window as any).__peOpenPicker; delete (window as any).__peDoc; delete (window as any).__peMarkers; window.removeEventListener('keydown', onKey); window.removeEventListener('resize', onResize); };
+    // the canvas area drives the fit width — observe it so scale auto-fits
+    const ro = new ResizeObserver(() => measure());
+    if (areaRef.current) ro.observe(areaRef.current);
+    return () => { delete (window as any).__peField; delete (window as any).__peAction; delete (window as any).__peReorderData; delete (window as any).__peRenderBody; delete (window as any).__peResize; delete (window as any).__peOpenPicker; delete (window as any).__peDoc; delete (window as any).__peMarkers; window.removeEventListener('keydown', onKey); window.removeEventListener('resize', onResize); ro.disconnect(); };
   }, [onClose, isHome]);
+
+  // the scaled canvas's screen offset shifts whenever its footprint changes
+  // (view switch, content height, available width) → re-read so markers track it
+  useEffect(() => { measure(); }, [scale, contentH, availW, markers]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // mirror openMk into a ref so the keydown handler (bound once) sees it live
   const openMkRef = useRef<number | null>(null);
@@ -86,17 +125,30 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
   const jump = (it: Leaf) => { (iframeRef.current?.contentWindow as any)?.__peJump?.(it.jump, it.addpath); };
   const todoCount = markers.filter((m) => !m.done).length;
   const left = () => Math.max(6, mkBox.left - 50); // 50px into the backdrop, left of the canvas
+  // readiness panel: CONTAINED entirely in the left margin — right edge pinned a
+  // GAP before the canvas, left edge a GUTTER from the screen. Width adapts to the
+  // margin (clamped PANEL_MIN..PANEL_MAX); the left margin above guarantees room.
+  const panelAvail = mkBox.left - GAP - GUTTER;
+  const panelW = Math.round(Math.max(PANEL_MIN, Math.min(PANEL_MAX, panelAvail)));
+  const panelLeft = Math.max(GUTTER, mkBox.left - GAP - panelW);
 
   return (
     <div id="pe-overlay">
-      <div className="pe-canvas-area" onMouseDown={(e) => { if (!(e.target as HTMLElement).closest('.pe-mk, .pe-mk-panel')) setOpenMk(null); }}>
-        <iframe ref={iframeRef} className="pe-canvas" title="Page editor" srcDoc={srcDoc} style={{ height: 600 }} onLoad={measure} />
-        {/* readiness rail — out in the backdrop, aligned to each section */}
+      <div ref={areaRef} className="pe-canvas-area" onMouseDown={(e) => { if (!(e.target as HTMLElement).closest('.pe-mk, .pe-mk-panel')) setOpenMk(null); }}>
+        {/* the wrapper reserves the SCALED footprint; the iframe lays out at the
+            full logical width and is scaled (top-left) to fit — so the page
+            renders like that screen, just shown smaller. */}
+        <div ref={wrapRef} className="pe-canvas-wrap" style={{ width: logicalW * scale, height: contentH * scale }}>
+          <iframe ref={iframeRef} className="pe-canvas" title="Page editor" srcDoc={srcDoc}
+            style={{ width: logicalW, height: contentH, transform: `scale(${scale})`, transformOrigin: 'top left' }} onLoad={measure} />
+        </div>
+        {/* readiness rail — out in the backdrop, aligned to each section. m.top is
+            in iframe (logical) space → × scale to land on the scaled canvas. */}
         {markers.map((m, i) => (
           <React.Fragment key={i}>
             <button
               className={`pe-mk ${m.done ? 'done' : 'todo'} ${openMk === i ? 'open' : ''}`}
-              style={{ top: mkBox.top + m.top + 6, left: left() }}
+              style={{ top: mkBox.top + m.top * scale + 6, left: left() }}
               title={m.done ? 'Section ready' : `${m.left} required left`}
               onClick={(e) => { e.stopPropagation(); setOpenMk(openMk === i ? null : i); }}
             >
@@ -104,7 +156,7 @@ export function PageEditor({ page, skin, onClose }: { page: Page; skin: WikiSkin
               {!m.done && <span className="pe-mk-count">{m.left}</span>}
             </button>
             {openMk === i && (
-              <div className="pe-mk-panel" style={{ top: mkBox.top + m.top, left: Math.max(6, left() - 354) }} onMouseDown={(e) => e.stopPropagation()}>
+              <div className="pe-mk-panel" style={{ top: mkBox.top + m.top * scale, left: panelLeft, width: panelW }} onMouseDown={(e) => e.stopPropagation()}>
                 <ReadinessPanel marker={m} onJump={jump} onClose={() => setOpenMk(null)} />
               </div>
             )}

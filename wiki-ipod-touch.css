@@ -183,62 +183,9 @@
   .jb-two-col{grid-template-columns:1fr;gap:32px;}
 }
 
-/* .photo-rail-section / .photo-rail-inner removed — band now uses the
-   universal .wiki-section + data-tone, gutter uses .wiki-section-inner, and
-   the scroller bleeds via the canonical .wiki-section-bleed. */
-.photo-rail-label{
-  font-family:"JetBrains Mono",monospace;
-  font-size:8px;
-  text-transform:uppercase;
-  letter-spacing:.22em;
-  color:rgba(255,255,255,.28);
-  white-space:nowrap;
-  flex-shrink:0;
-  padding-right:16px;
-}
-.photo-rail-label span{
-  color:rgba(255,255,255,.12);
-  font-size:7px;
-}
-.photo-rail-scroll{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  overflow-x:auto;
-  overflow-y:hidden;
-  scrollbar-width:none;
-  -webkit-overflow-scrolling:touch;
-  padding-block:8px;
-  padding-right:48px;   /* left comes from .wiki-section-bleed (gutter-aligned start) */
-}
-.photo-rail-scroll::-webkit-scrollbar{display:none;}
-.photo-rail-card{
-  flex-shrink:0;
-  width:280px;
-  height:200px;
-  border-radius:8px;
-  overflow:hidden;
-  position:relative;
-  cursor:zoom-in;
-  border:1px solid rgba(255,255,255,.08);
-}
-.photo-rail-card img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-  transition:transform .35s ease;
-  image-rendering:-webkit-optimize-contrast;
-}
-.photo-rail-card:hover img{transform:scale(1.04);}
-.photo-rail-card .design-img-caption{
-  padding:18px 10px 8px;
-}
-@media(max-width:600px){
-  .photo-rail-inner{padding:10px 0 8px 12px;}
-  .photo-rail-card{width:200px;height:148px;}
-  .photo-rail-scroll{padding:8px 12px 8px 0;}
-}
+/* The photo-rail bank now owns this section's structure + CSS (bank-photo-rail.css,
+   loaded site-wide in the bank layer). The legacy .photo-rail-label / -scroll /
+   -card rules that used to live here were removed — single source. */
 
 /* ── Generation delta ─────────────────────────────── */
 .page-eyebrow{font-family:"JetBrains Mono",monospace;font-size:10px;text-transform:uppercase;letter-spacing:.3em;color:rgba(0,0,0,.4);margin-bottom:12px;display:flex;align-items:center;gap:8px;}

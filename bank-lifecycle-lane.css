@@ -2,7 +2,7 @@
    BANK · LIFECYCLE-LANE  —  a horizontal lifecycle ribbon (segmented support timeline)
    --------------------------------------------------------------------
    A single horizontal lane of segments, each a labelled span (version +
-   date) coloured by a support TYPE (full / partial / dropped), optionally
+   date) colored by a support TYPE (full / partial / dropped), optionally
    carrying a corner BADGE (launch / final / paid / …). Below it: status
    NOTES (dotted annotations) and an auto-derived LEGEND. The section frame
    (locked eyebrow + H2 + lead prose) lives in a section partial that hosts
@@ -14,9 +14,9 @@
                         the inline flex from each segment's date — optional,
                         contributor opts in by setting `weighted: true` + dates)
 
-   Colours: chrome (wrap / lines / ink) is SKIN-DERIVED from the base palette
+   Colors: chrome (wrap / lines / ink) is SKIN-DERIVED from the base palette
    (--foreground / --card). The support palette (full=green, partial=amber,
-   dropped=grey) + badge/note colours are SEMANTIC defaults (like the delta
+   dropped=gray) + badge/note colors are SEMANTIC defaults (like the delta
    chips) a skin may pin. The Apple defaults reproduce the original iPod look,
    so no skin pin is needed there.
    ════════════════════════════════════════════════════════════════════ */

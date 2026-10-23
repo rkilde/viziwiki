@@ -1,7 +1,7 @@
 // THE DECORATOR — the builder's editing layer, attached AFTER the canonical
 // Liquid includes render the page. The markup it decorates comes from the
 // repo's own templates (see lib/render-core.mjs); this file only adds editing
-// affordances (grey/blue edit boxes, corner ×, padlocks, "+" slots) and binds
+// affordances (gray/blue edit boxes, corner ×, padlocks, "+" slots) and binds
 // them to data paths.
 //
 // Derivation contract (CLAUDE.md standing rule #5):
@@ -76,6 +76,8 @@
   var SECTION_SLOTS = {
     'catalog.footnote': { root: '.cat-footnote', label: '+ footnote' },
     'config.footer':    { root: '.cfg-footer',   label: '+ footer' },
+    'delta.intro':      { root: '.delta-prose',  label: '+ intro text' },
+    'delta.footnote':   { root: '.gd-foot',      label: '+ footnote' },
   };
 
   // a body section's component type. The RELIABLE source is the DOC — body
@@ -274,7 +276,12 @@
   };
   var csvg = function (d) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + d + '</svg>'; };
   // a hover/focus info "i" with an explanatory tooltip (shared by every bank)
-  function infoI(tip) { return '<span class="dr-info" tabindex="0" data-tip="' + String(tip == null ? '' : tip).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;') + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>'; }
+  var INFO_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
+  function infoI(tip) { return '<span class="dr-info" tabindex="0" data-tip="' + String(tip == null ? '' : tip).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;') + '">' + INFO_SVG + '</span>'; }
+  // a rich (HTML) variant of the info tooltip — same control, but the bubble
+  // renders markup (e.g. a small legend table). HTML goes in an attribute, so
+  // escape only & and " (NOT < >, which we want as real tags); showTip uses it.
+  function infoIHtml(html) { return '<span class="dr-info" tabindex="0" data-tip-html="' + String(html == null ? '' : html).replace(/&/g, '&amp;').replace(/"/g, '&quot;') + '">' + INFO_SVG + '</span>'; }
   // append a shared info "i" (the one master control) to a parent element
   function infoIcon(parent, tip) { if (!parent) return; var s = document.createElement('span'); s.innerHTML = infoI(tip); parent.appendChild(s.firstChild); }
   function dockBtn(icon, tip, cls, onclick) {
@@ -367,9 +374,9 @@
     pePop = pop; return pop;
   }
   // ── two-click delete confirm (mockup Direction 2 — the ✕ trigger arms in
-  // place into a red "✓ Delete" + a grey undo; a 2nd click commits, undo /
+  // place into a red "✓ Delete" + a gray undo; a 2nd click commits, undo /
   // outside-click / Escape backs out). EVERY delete in the kit routes through
-  // armDelete(trigger, doDelete) so the behaviour is uniform. ──
+  // armDelete(trigger, doDelete) so the behavior is uniform. ──
   var CHK_SVG = csvg('<polyline points="20 6 9 17 4 12"/>');
   var UNDO_SVG = csvg('<path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/>');
   var delConfirm = null;
@@ -420,25 +427,46 @@
     setTimeout(function () { selectAllCE(el); }, 0); // defer past the click's caret placement
   });
 
-  // info "i" tooltip edge-flip: the bubble is left-anchored + wide, so a right-
-  // side icon (e.g. config price-drop) overruns the canvas. On hover/focus,
-  // flip it to right-anchored when it would overflow the right edge.
-  var flipInfo = function (ic) { if (!ic) return; var r = ic.getBoundingClientRect(); ic.classList.toggle('flip-r', (r.left + 300) > (window.innerWidth - 8)); };
-  document.addEventListener('mouseover', function (e) { var ic = e.target.closest && e.target.closest('.dr-info'); if (ic) flipInfo(ic); });
-  document.addEventListener('focusin', function (e) { var ic = e.target.closest && e.target.closest('.dr-info'); if (ic) flipInfo(ic); });
+  // info "i" tooltip — ONE shared bubble portaled to <body> (fixed, top-layer),
+  // so it clears every overflow:clip container (the modal, the masonry cards)
+  // and stacks above the floating dock / section chrome. Positioned per-icon
+  // off its rect: above by default, flipped below when there's no room up; the
+  // arrow (--ax) points back at the icon center, and it's clamped on-screen.
+  var drTip = null;
+  function ensureTip() { if (!drTip || !drTip.parentNode) { drTip = document.createElement('div'); drTip.className = 'dr-tip'; document.body.appendChild(drTip); } return drTip; }
+  function showTip(ic) {
+    var rich = ic.getAttribute('data-tip-html'), tip = ic.getAttribute('data-tip');
+    if (!rich && !tip) return;
+    var el = ensureTip(); el.className = 'dr-tip' + (rich ? ' dr-tip-rich' : '');
+    if (rich) el.innerHTML = rich; else el.textContent = tip;
+    el.style.left = '0px'; el.style.top = '0px';
+    var r = ic.getBoundingClientRect(), w = el.offsetWidth, h = el.offsetHeight;
+    var left = r.left + r.width / 2 - w / 2, top = r.top - h - 9, below = false;
+    if (top < 8) { top = r.bottom + 9; below = true; }
+    left = Math.max(8, Math.min(left, window.innerWidth - w - 8));
+    el.style.left = left + 'px'; el.style.top = top + 'px';
+    el.style.setProperty('--ax', (r.left + r.width / 2 - left) + 'px');
+    if (below) el.classList.add('below');
+    (window.requestAnimationFrame || function (f) { setTimeout(f, 0); })(function () { el.classList.add('in'); });
+  }
+  function hideTip() { if (drTip) drTip.classList.remove('in'); }
+  document.addEventListener('mouseover', function (e) { var ic = e.target.closest && e.target.closest('.dr-info'); if (ic) showTip(ic); });
+  document.addEventListener('mouseout', function (e) { var ic = e.target.closest && e.target.closest('.dr-info'); if (ic) hideTip(); });
+  document.addEventListener('focusin', function (e) { var ic = e.target.closest && e.target.closest('.dr-info'); if (ic) showTip(ic); });
+  document.addEventListener('focusout', function (e) { var ic = e.target.closest && e.target.closest('.dr-info'); if (ic) hideTip(); });
 
-  // group-pill action menu (object pills only): a small glass popover with the
-  // strike-through toggle. Deletion is NOT here — every pill uses the same
-  // two-click × confirm as the rest of the kit (makeRemovable).
-  function openPillPop(btn, accent, strikePath, isStruck) {
+  // group-pill ⋯ menu: the strike-through toggle. The strike action converts a
+  // string pill ↔ {text, struck}, so a plain pill can be struck too. Deletion is
+  // NOT here — every pill uses the standard two-click × (sitting to the ⋯'s right).
+  function openPillPop(btn, accent, pillPath, isStruck) {
     var html = '<button class="cc-row" data-a="strike">' + (isStruck ? 'Remove strike' : 'Strike through') + '</button>';
     var pop = openPop(btn, accent, html, { cls: 'pill-pop' });
-    var st = pop.querySelector('[data-a="strike"]'); if (st) st.onclick = function () { closePop(); A('set:' + strikePath + ':' + (!isStruck)); };
+    var st = pop.querySelector('[data-a="strike"]'); if (st) st.onclick = function () { closePop(); A('pillstrike:' + pillPath + ':' + (!isStruck)); };
   }
 
-  // centre the item-editor modal card in the VISIBLE viewport (the canvas is a
-  // tall iframe scrolled by the parent — fixed/inset:0 alone would mis-centre)
-  function centreModal(card) {
+  // center the item-editor modal card in the VISIBLE viewport (the canvas is a
+  // tall iframe scrolled by the parent — fixed/inset:0 alone would mis-center)
+  function centerModal(card) {
     try {
       var fr = window.frameElement, ph = (window.parent && window.parent.innerHeight) || window.innerHeight;
       var rect = fr.getBoundingClientRect();
@@ -720,7 +748,7 @@
             if (modalCard) modalCard.classList.toggle('has-ribbon', !!rbText);
           }
           det.setAttribute('data-pe-detail-open', '1'); modalBody.appendChild(det);
-          modal.classList.add('open'); if (modalCard) centreModal(modalCard);
+          modal.classList.add('open'); if (modalCard) centerModal(modalCard);
           window.__peOpenItem = { s: i, j: j, k: k };
         };
         if (modal) {
@@ -743,7 +771,7 @@
           var tones = (R('catalog.categories[].ribbon.tone').enum) || [];   // derived from grammar — never restate the values
           var tone = isObj ? (rb.tone || 'accent') : 'accent';
           var html = '<div class="cc-pop-label">Ribbon</div><div class="cc-ribbon-field"><input type="text" placeholder="Ribbon text">' +
-            (isObj ? '<div class="cc-tone">' + tones.map(function (t) { return '<button data-t="' + t + '" class="' + (t === tone ? 'on' : '') + '">' + (t === 'gone' ? 'Grey' : t) + '</button>'; }).join('') + '</div>' : '') +
+            (isObj ? '<div class="cc-tone">' + tones.map(function (t) { return '<button data-t="' + t + '" class="' + (t === tone ? 'on' : '') + '">' + (t === 'gone' ? 'Gray' : t) + '</button>'; }).join('') + '</div>' : '') +
             '<button class="cc-rm">Remove ribbon</button></div>';
           var pop = openPop(btn, accent, html, { avoid: qs('.cat-ribbon', card) });
           var input = qs('input', pop); input.value = isObj ? (rb.text || '') : rb;
@@ -796,7 +824,9 @@
               (function (p) { noteChip.onclick = function () { A('add:' + p); }; })(cpre + 'note');
             }
             cnt.appendChild(noteChip);   // INLINE in the count line (canon position)
-            infoIcon(cnt, 'An optional short qualifier shown after the item count on this category card (e.g. “12 items · seasonal” or “· discontinued”). Use it to flag something about the whole category at a glance.');
+            // the explainer "i" only sits beside the "+ note" prompt — once a note
+            // is added it's self-evident, so the icon goes away.
+            if (cdata.note == null) infoIcon(cnt, 'An optional short qualifier shown after the item count on this category card (e.g. “12 items · seasonal” or “· discontinued”). Use it to flag something about the whole category at a glance.');
           }
 
           // the glass dock (bottom-right): color · ribbon · remove
@@ -900,13 +930,13 @@
                 var pdata = (((idata.groups || [])[g] || {}).pills || [])[pm];
                 var isObj = pdata && typeof pdata === 'object';
                 wrapCE(gp, isObj ? ppath + '.text' : ppath);
-                // object pills carry the strike-through toggle in a small ⋯ menu
-                if (isObj) {
-                  var menu = document.createElement('button'); menu.className = 'gpill-menu'; menu.textContent = '⋯'; menu.title = 'Strike through'; menu.setAttribute('contenteditable', 'false');
-                  (function (p, struck) { menu.onclick = function (e) { e.stopPropagation(); openPillPop(menu, mAccent, p + '.struck', !!struck); }; })(ppath, pdata.struck);
-                  gp.appendChild(menu);
-                }
-                // delete = the standard two-click × confirm (same as everywhere else)
+                // ⋯ menu → the strike-through toggle, on EVERY pill. Striking a
+                // plain string pill converts it to {text, struck} (the only way to
+                // add a strike); un-striking collapses it back to a string.
+                var menu = document.createElement('button'); menu.className = 'gpill-menu'; menu.textContent = '⋯'; menu.title = 'Strike through'; menu.setAttribute('contenteditable', 'false');
+                (function (p, struck) { menu.onclick = function (e) { e.stopPropagation(); openPillPop(menu, mAccent, p, !!struck); }; })(ppath, isObj && pdata.struck);
+                gp.appendChild(menu);
+                // delete = the standard two-click × confirm, sitting to the RIGHT of ⋯
                 makeRemovable(gp, 'rm:' + ppath, true);
               });
               pillsDiv.appendChild(addBtn('push:' + ipre + 'groups.' + g + '.pills', '+ item', true));
@@ -1065,7 +1095,7 @@
           if (!det.textContent.trim()) det.innerHTML = '<p>' + bodyBlank + '</p>';   // empty body → show its placeholder
           det.setAttribute('data-pe-tl-open', '1'); tlBody.appendChild(det);
           if (!det.querySelector('.ce')) wrapCE(det, prefix + 'events.' + k + '.body');   // guard: don't re-wrap on manual re-open
-          tlModal.classList.add('open'); if (tlBox) centreModal(tlBox);
+          tlModal.classList.add('open'); if (tlBox) centerModal(tlBox);
           window.__peTlOpen = { s: i, k: k };
         };
         if (tlModal) { var tc = qs('[data-tl-close]', tlModal); if (tc) tc.onclick = closeTl; tlModal.onmousedown = function (e) { if (e.target === tlModal) closeTl(); }; }
@@ -1089,7 +1119,8 @@
             (function (kk) { dateEl.onclick = function (e) { e.stopPropagation(); openDatePop(dateEl, kk); }; })(k);
           }
           // tag / title / preview (no layout impact → plain .ce, no re-render)
-          wrapCE(qs('.sc-tag', st), epre + 'tag');
+          var tagEl = qs('.sc-tag', st);
+          if (tagEl) { wrapCE(tagEl, epre + 'tag'); infoIcon(tagEl, 'An optional short label above the event title — a category or phase tag (e.g. “Launch”, “Hardware”, “Era 1”). Use it to group or flag related events at a glance.'); }
           wrapCE(qs('.sc-title', st), epre + 'title');
           wrapCE(qs('.sc-prose', st), epre + 'preview');
           // remove event (× inside the card corner), only above the grammar min
@@ -1148,7 +1179,7 @@
       }
 
       // ── config: the storage/configuration chart — the owner's DRAWER editing
-      // flow (configeditorui.html). Inline grey/blue .ce boxes edit the chart
+      // flow (configeditorui.html). Inline gray/blue .ce boxes edit the chart
       // directly (and feed the readiness widget); a per-row chevron opens a
       // structured drawer for the full form (capacity/unit/price/model/dates,
       // revised + price-drop toggles, divider label, device colors, remove).
@@ -1160,7 +1191,7 @@
       // item. There is no manual reorder — the order is DERIVED from capacity. ──
       if (type === 'config') {
         var ea = function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); };
-        // number/price field behaviours, mirroring the timeline date fields:
+        // number/price field behaviors, mirroring the timeline date fields:
         //  · numCE/numInput — typing a letter is gracefully filtered out (the
         //    field only keeps digits + a decimal point); you can't break it.
         //  · enterBlur — pressing Enter LOCKS the value in (commits on blur) and
@@ -1494,6 +1525,294 @@
         if (grid) grid.parentNode.insertBefore(addLine('push:' + prefix + 'cards', '+ card'), grid.nextSibling);
       }
 
+      // ── delta: the side-by-side comparison table. Heading (req) + optional
+      // intro/footnote (sentinel "+"); the prev|current axis headers (name
+      // required — the gd-sec-col cells mirror it, so they're locked); and
+      // Hardware/Software groups of rows (label + old→new + an optional color
+      // chip). Add/remove rows per group; chip color is a derived enum popover;
+      // the "before" cell can be toggled off (no_old). No layout JS in the canon. ──
+      if (type === 'delta') {
+        // lock = derived/not-editable. In table cells the floating corner padlock
+        // pokes into neighbours (z-overlap), so signal it with the .pe-canon hover
+        // outline + a title tooltip only — no padlock glyph.
+        var lockD = function (el, tip) { if (!el) return; el.classList.add('pe-canon'); el.title = tip; };
+        wrapCE(qs('.wiki-section-title', secEl), prefix + 'heading');     // required H2
+
+        // intro / footnote: only the PRESENT case here (wrapCE + ×). When absent,
+        // the renderer seeds a sentinel that the sentinel pass already swapped for
+        // the "+ intro" / "+ footnote" slot (SECTION_SLOTS).
+        if (sdata.intro != null) { var dIntro = qs('.delta-prose p', secEl); if (dIntro) { wrapCE(dIntro, prefix + 'intro'); makeRemovable(dIntro, 'rm:' + prefix + 'intro'); } }
+        if (sdata.footnote != null) { var dFoot = qs('.gd-foot', secEl); if (dFoot) { wrapCE(dFoot, prefix + 'footnote'); makeRemovable(qs('.ce', dFoot) || dFoot, 'rm:' + prefix + 'footnote'); } }
+
+        // axis headers (prev | current): tag / name(req) / year. Editing a name
+        // commits (the gd-sec-col cells mirror it on re-render).
+        var eaD = function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); };
+        // year = digits only, 4 max, Enter locks in (no newline), "year" placeholder
+        var caretEnd = function (el) { try { var r = document.createRange(); r.selectNodeContents(el); r.collapse(false); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); } catch (e) {} };
+        var yearCE = function (ce) {
+          ce.setAttribute('data-ph', 'year');
+          ce.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); ce.blur(); } });
+          ce.addEventListener('input', function () { var t = (ce.textContent || '').replace(/\D/g, '').slice(0, 4); if (t !== (ce.textContent || '')) { ce.textContent = t; caretEnd(ce); } });
+        };
+        var bindAxis = function (cell, base, axisKey) {
+          if (!cell) return;
+          var tg = qs('.gd-tag', cell), nm = qs('.gd-name', cell), yr = qs('.gd-year', cell);
+          if (tg) lockD(tg, 'Locked label (canon: Predecessor / Successor)');
+          if (nm) { wrapCE(nm, base + '.name'); var nce = nm.querySelector('.ce'); if (nce) { nce.setAttribute('data-ph', (R('delta.' + axisKey + '.name').blank) || 'Model'); nce.addEventListener('blur', function () { A('commit'); }); } }
+          if (yr) { wrapCE(yr, base + '.year'); var yce = yr.querySelector('.ce'); if (yce) yearCE(yce); }
+        };
+        bindAxis(qs('.gd-gen-old', secEl), prefix + 'prev', 'prev');
+        bindAxis(qs('.gd-gen-new', secEl), prefix + 'current', 'current');
+        // the per-column model-name echoes + the group labels are derived → locked
+        qsa('.gd-sec-col', secEl).forEach(function (c) { lockD(c, 'Auto — mirrors the column’s model name'); });
+        qsa('.gd-sec-main', secEl).forEach(function (c) { lockD(c, 'Locked group label'); });
+
+        // chip picker — color = the DIRECTION of change (the enum). The popover
+        // is a bearings CATALOG: each category shows derived `presets` (suggested
+        // labels) the contributor can click; plus a CUSTOM row (pick a color, type
+        // anything). All derived from grammar (enum + presets); a pick sets BOTH the
+        // color (chip) and the text (chip_text) in one commit.
+        var chipEnumD = (R('delta.hardware[].chip').enum) || [];
+        var chipPresets = (R('delta.hardware[].chip').presets) || {};
+        // render one preset: a plain string → a ready-made chip; an object
+        // {tpl, ph} → a parameterized chip with a fill-in for its `{n}` slot.
+        var renderPreset = function (cat, p) {
+          if (typeof p === 'string') return '<button class="cc-chip-opt gd-chip gd-chip-' + cat + '" data-c="' + cat + '" data-t="' + eaD(p) + '">' + eaD(p) + '</button>';
+          var tpl = (p && p.tpl) || '', ph = (p && p.ph != null) ? String(p.ph) : '', parts = tpl.split('{n}');
+          return '<span class="cc-chip-fill gd-chip gd-chip-' + cat + '" data-c="' + cat + '" data-tpl="' + eaD(tpl) + '">'
+            + eaD(parts[0] || '') + '<input class="cc-chip-fill-in" inputmode="decimal" placeholder="' + eaD(ph) + '">' + eaD(parts[1] || '')
+            + '<button class="cc-chip-fill-go" title="Use this chip">✓</button></span>';
+        };
+        // the info "i" renders a small color-meaning LEGEND TABLE (derived from the
+        // enum), not a wall of text. A swatch per category + a one-line gloss.
+        var chipGloss = { better: 'an improvement', feature: 'a new feature', changed: 'reworked / moved', worse: 'a downgrade', same: 'unchanged' };
+        // keep the original explanatory text; only the color-MEANINGS become a table
+        var chipLegend = '<p class="dr-tip-p">A chip’s color is the direction of change:</p>'
+          + '<table class="dr-legend">'
+          + chipEnumD.map(function (c) { return '<tr><td><span class="dr-sw gd-chip-' + c + '"></span></td><td class="dr-legend-c">' + c + '</td><td class="dr-legend-m">' + (chipGloss[c] || '') + '</td></tr>'; }).join('')
+          + '</table>'
+          + '<p class="dr-tip-p">Click a ready-made chip, fill in a number on a template (e.g. 2×), or write your own under Custom.</p>';
+        var openChipPop = function (anchor, rpre, cur, curText) {
+          // header: title + the one info "i" (a color-meaning legend table)
+          var html = '<div class="cc-chip-head"><span class="cc-pop-label">Pick a chip</span>'
+            + infoIHtml(chipLegend)
+            + '</div><div class="cc-chip-grid">';
+          html += chipEnumD.map(function (c) {
+            var ts = chipPresets[c] || [];
+            return '<div class="cc-chip-cat"><div class="cc-chip-cat-h gd-chip-' + c + '">' + c + '</div><div class="cc-chip-row">'
+              + ts.map(function (t) { return renderPreset(c, t); }).join('') + '</div></div>';
+          }).join('') + '</div>';
+          html += '<div class="cc-chip-custom"><div class="cc-pop-label">Custom</div>'
+            + '<input type="text" class="cc-chip-text" placeholder="Your own label…" value="' + eaD(cur ? (curText || '') : '') + '">'
+            + '<div class="cc-chip-sw">' + chipEnumD.map(function (c) { return '<button class="cc-chip-swatch gd-chip-' + c + ((cur || chipEnumD[0]) === c ? ' sel' : '') + '" data-c="' + c + '" title="' + c + '"></button>'; }).join('') + '</div>'
+            + '<button class="cc-apply cc-chip-apply">Apply</button></div>'
+            + (cur ? '<button class="cc-rm">Remove chip</button>' : '');
+          var pop = openPop(anchor, '', html, { cls: 'lane-pop chip-pop' });
+          var pick = function (cat, text) { closePop(); PV(rpre + 'chip', cat); PV(rpre + 'chip_text', text); A('commit'); };
+          // ready-made chips: color + text in one commit
+          qsa('.cc-chip-opt', pop).forEach(function (b) { b.onclick = function () { pick(b.getAttribute('data-c'), b.getAttribute('data-t')); }; });
+          // parameterized chips: fill the {n} slot, then ✓ / Enter resolves the label
+          qsa('.cc-chip-fill', pop).forEach(function (el) {
+            var inp = qs('.cc-chip-fill-in', el), go = qs('.cc-chip-fill-go', el);
+            var apply = function () { var v = ((inp && inp.value) || (inp && inp.getAttribute('placeholder')) || '').trim(); pick(el.getAttribute('data-c'), el.getAttribute('data-tpl').replace('{n}', v)); };
+            if (inp) { inp.addEventListener('click', function (e) { e.stopPropagation(); }); inp.addEventListener('input', function () { inp.value = inp.value.replace(/[^0-9.]/g, ''); }); inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); apply(); } }); }
+            if (go) go.onclick = function (e) { e.stopPropagation(); apply(); };
+          });
+          // custom: a color swatch + free text → Apply
+          var selCat = cur || chipEnumD[0];
+          var txt = qs('.cc-chip-text', pop), applyB = qs('.cc-chip-apply', pop);
+          qsa('.cc-chip-swatch', pop).forEach(function (s) { s.onclick = function () { qsa('.cc-chip-swatch', pop).forEach(function (x) { x.classList.remove('sel'); }); s.classList.add('sel'); selCat = s.getAttribute('data-c'); }; });
+          if (applyB) applyB.onclick = function () { pick(selCat, (txt.value || '').trim()); };
+          var rm = qs('.cc-rm', pop); if (rm) rm.onclick = function () { closePop(); A('rm:' + rpre + 'chip'); };
+        };
+
+        var labBlankD = (R('delta.hardware[].label').blank) || 'Spec label';
+        var bindDeltaRow = function (tr, group, k) {
+          var rpre = prefix + group + '.' + k + '.';
+          var rdata = ((sdata[group] || [])[k]) || {};
+          var lab = qs('.gd-label-name', tr);
+          if (lab) { wrapCE(lab, rpre + 'label'); var lce = lab.querySelector('.ce'); if (lce) lce.setAttribute('data-ph', labBlankD); }
+          // OLD (previous) cell: a clearly-labelled editable value, OR — when the
+          // contributor marks "no before" (no_old) — a null cell with a restore.
+          // OLD value field + a SUBTLE "no before" alternative toggle (a dotted-
+          // underline link, NOT a dashed add-pill — it's an option you select when
+          // there's no previous value, not something you add alongside the value).
+          // Reads as an OR choice: enter an old value … or … mark "no before".
+          var oldCell = qs('.gd-old', tr);
+          var noOldBtn = function (label, on, tip) { var b = document.createElement('button'); b.className = 'pe-noold' + (on ? ' on' : ''); b.textContent = label; if (tip) b.title = tip; (function (v) { b.onclick = function () { A('set:' + rpre + 'no_old:' + v); }; })(on ? 'false' : 'true'); return b; };
+          var orSep = function () { var s = document.createElement('span'); s.className = 'pe-or'; s.textContent = 'or'; return s; };
+          if (oldCell) {
+            if (rdata.no_old) {
+              oldCell.appendChild(orSep());
+              oldCell.appendChild(noOldBtn('enter a “before” value', true, 'Give this spec a value on the predecessor instead'));
+            } else {
+              var ov = qs('.gd-old-val', oldCell); if (ov) { wrapCE(ov, rpre + 'old'); var oce = ov.querySelector('.ce'); if (oce) oce.setAttribute('data-ph', 'old value'); }
+              oldCell.appendChild(orSep());
+              oldCell.appendChild(noOldBtn('no “before” value', false, 'Select if this spec didn’t exist on the predecessor'));
+            }
+          }
+          // NEW (current) value field + an optional color chip. The chip is changed
+          // through its EDIT button (the picker) and removed with × — both shown on
+          // hovering the cell.
+          var newCell = qs('.gd-new', tr);
+          if (newCell) {
+            var nv = qs('.gd-new-val', newCell); if (nv) { wrapCE(nv, rpre + 'new'); var nce2 = nv.querySelector('.ce'); if (nce2) nce2.setAttribute('data-ph', 'new value'); }
+            var chip = qs('.gd-chip', newCell);
+            if (chip) {
+              var ctrls = document.createElement('span'); ctrls.className = 'gd-chip-ctrls';
+              var cEdit = document.createElement('button'); cEdit.className = 'gd-chip-ctrl gd-chip-edit'; cEdit.title = 'Edit chip';
+              cEdit.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+              (function (rp, cu, ct) { cEdit.onclick = function (e) { e.stopPropagation(); openChipPop(cEdit, rp, cu, ct); }; })(rpre, rdata.chip, rdata.chip_text);
+              var cRm = document.createElement('button'); cRm.className = 'gd-chip-ctrl gd-chip-rm'; cRm.textContent = '×'; cRm.title = 'Remove chip';
+              (function (rp) { armDelete(cRm, function () { A('rm:' + rp + 'chip'); }); })(rpre);
+              ctrls.appendChild(cEdit); ctrls.appendChild(cRm);
+              chip.parentNode.insertBefore(ctrls, chip.nextSibling);
+            } else {
+              var addChip = addBtn('', '+ chip', true);
+              (function (rp) { addChip.onclick = function () { openChipPop(addChip, rp, null, ''); }; })(rpre);
+              newCell.appendChild(addChip);
+            }
+          }
+          // remove the row (× on the label cell)
+          if (lab) makeRemovable(lab, 'rm:' + prefix + group + '.' + k, true);
+        };
+
+        // walk tbody: first gd-sec = Hardware, second = Software; rows between
+        var dBody = qs('.gd tbody', secEl);
+        if (dBody) {
+          var grp = null, ri = 0, swSec = null;
+          qsa('tr', dBody).forEach(function (tr) {
+            if (tr.classList.contains('gd-sec')) { grp = (grp === null) ? 'hardware' : 'software'; ri = 0; if (grp === 'software') swSec = tr; return; }
+            if (tr.classList.contains('gd-row') && grp) { bindDeltaRow(tr, grp, ri); ri++; }
+          });
+          // ADD A ROW — splice ONLY the new <tr> in, never recreate the table
+          // (a full re-render repaints the banded HARDWARE/SOFTWARE header rows →
+          // a flash). The new row's HTML still comes from the canon renderer
+          // (__peRenderBody), so it's not hand-built; we just transplant the one
+          // new <tr> the renderer produced. Falls back to a full render on any
+          // hiccup, so it can never wedge.
+          var addDeltaRow = function (group, anchorAdd) {
+            try {
+              // the new row's index = the count of live rows already in this group
+              var lb = qs('.gd tbody', secEl), cg = null, count = 0;
+              qsa('tr', lb).forEach(function (tr) {
+                if (tr.classList.contains('gd-sec')) { cg = (cg === null) ? 'hardware' : 'software'; return; }
+                if (tr.classList.contains('gd-row') && cg === group) count++;
+              });
+              window.parent.__peReorderData('push:' + prefix + group);     // mutate data, no swap
+              var pdoc = new DOMParser().parseFromString(window.parent.__peRenderBody(), 'text/html');
+              var myIdx = qsa('section.wiki-section.delta').indexOf(secEl);
+              var pSec = [].slice.call(pdoc.querySelectorAll('section.wiki-section.delta'))[myIdx];
+              if (!pSec) throw 0;
+              var pg = null, pRows = [];
+              [].slice.call(pSec.querySelectorAll('.gd tbody tr')).forEach(function (tr) {
+                if (tr.classList.contains('gd-sec')) { pg = (pg === null) ? 'hardware' : 'software'; return; }
+                if (tr.classList.contains('gd-row') && pg === group) pRows.push(tr);
+              });
+              var src = pRows[pRows.length - 1]; if (!src) throw 0;
+              var newTr = document.importNode(src, true);
+              lb.insertBefore(newTr, anchorAdd);                            // before the group's add-row
+              bindDeltaRow(newTr, group, count);
+              if (window.__pePostMarkers) window.__pePostMarkers();          // refresh readiness for the new row
+            } catch (e) { A('push:' + prefix + group); }                    // safe fallback: full render
+          };
+          var makeAddRow = function (group, label) {
+            var tr = document.createElement('tr'); tr.className = 'pe-gd-addrow';
+            var td = document.createElement('td'); td.colSpan = 3;
+            var b = document.createElement('button'); b.className = 'pe-mini-add'; b.textContent = label;
+            td.appendChild(b); tr.appendChild(td);
+            b.onclick = function () { addDeltaRow(group, tr); };
+            return tr;
+          };
+          if (swSec) dBody.insertBefore(makeAddRow('hardware', '+ hardware row'), swSec);   // hardware add: before the Software header
+          dBody.appendChild(makeAddRow('software', '+ software row'));                      // software add: end of table
+        }
+      }
+
+      // ── photo-rail: a headerless full-bleed scroller of photo cards. Each card
+      // is an image (the `media` src — a URL today, an upload later) + an optional
+      // bold label + caption. Click the image to set its URL + alt; the caption
+      // text is inline-editable; add/remove + drag-reorder per the kit standard. ──
+      if (type === 'photo-rail') {
+        var eaP = function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); };
+        var photosMin = (R('photo-rail.photos').min != null) ? R('photo-rail.photos').min : 1;
+        var srcBlankP = (R('photo-rail.photos[].src').blank) || 'image URL';
+        var altBlankP = (R('photo-rail.photos[].alt').blank) || 'describe the photo';
+        var prScroll = qs('.photo-rail-scroll', secEl);
+        // A blank, fully transparent 280×200 placeholder image for cards with no
+        // URL yet. An empty <img> contributes zero size, so a fresh card (or each
+        // extra "+ photo") would collapse if the sizing CSS hasn't loaded; an SVG
+        // with explicit width/height has intrinsic size even when invisible, so it
+        // always holds the card's footprint open — the user sees only the dashed
+        // outline, not the square. Replaced the moment a real URL is typed; never
+        // written to data (pure builder chrome).
+        var PR_PH = 'data:image/svg+xml,' + encodeURIComponent(
+          "<svg xmlns='http://www.w3.org/2000/svg' width='280' height='200' viewBox='0 0 280 200'><rect width='280' height='200' fill='none'/></svg>");
+        // image popover — the media field is a URL today (a Supabase upload later);
+        // editing the URL live-previews onto the card image. alt rides along.
+        var openImgPop = function (anchor, ppre, pd) {
+          var html = '<div class="cc-pop-label">Image URL</div><input type="text" class="cc-img-url" placeholder="' + eaP(srcBlankP) + '" value="' + eaP(pd.src) + '">'
+            + '<div class="cc-pop-label" style="margin-top:11px">Alt text <span class="cc-opt">(for accessibility)</span> ' + infoI('A short written description of the photo, for accessibility — screen readers read it aloud to blind and low-vision visitors, and it shows in place of the image if the file fails to load. It is NOT visible on the page. Optional: describe what the photo shows (e.g. "iPod touch 2G being unboxed"); no need to start with "image of".') + '</div><input type="text" class="cc-img-alt" placeholder="' + eaP(altBlankP) + '" value="' + eaP(pd.alt) + '">'
+            + '<button class="cc-apply cc-img-apply">Apply</button>';
+          var pop = openPop(anchor, '', html, { cls: 'lane-pop img-pop', onClose: function () { A('commit'); } });
+          var u = qs('.cc-img-url', pop), a = qs('.cc-img-alt', pop), card = anchor.closest('.photo-rail-card'), im = card && qs('img', card);
+          if (u) { enterBlurP(u); u.addEventListener('input', function () { PV(ppre + 'src', u.value); if (im) im.src = u.value || PR_PH; if (card) card.classList.toggle('pe-img-empty', !u.value); }); }
+          if (a) { enterBlurP(a); a.addEventListener('input', function () { PV(ppre + 'alt', a.value); if (im) im.alt = a.value; }); }
+          var ap = qs('.cc-img-apply', pop); if (ap) ap.onclick = function () { closePop(); A('commit'); };
+        };
+        var enterBlurP = function (el) { el.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); el.blur(); } }); };
+        var prCards = qsa('.photo-rail-card', secEl);
+        prCards.forEach(function (card, k) {
+          var ppre = prefix + 'photos.' + k + '.';
+          var pd = (sdata.photos && sdata.photos[k]) || {};
+          var im = qs('img', card);
+          if (!pd.src) { card.classList.add('pe-img-empty'); if (im) im.src = PR_PH; }
+          if (im) im.style.cursor = 'pointer';
+          // The CARD (not the inner <img>) is the readiness jump target + opener:
+          // src + alt are both edited in one popover, and flashing the card boxes
+          // the whole photo slot in red. A flash on the <img> was clipped away by
+          // the card's overflow:hidden, so the widget gave no visible feedback.
+          // Clicking the slot opens the image popover; clicks on the caption,
+          // grip, or × are left to their own handlers.
+          card.style.cursor = 'pointer';
+          card.setAttribute('data-pe-scope', ppre + 'src'); card.setAttribute('data-pe-opens', '1');
+          card.setAttribute('data-pe-jump', ppre + 'src ' + ppre + 'alt');
+          (function (pp, d, anchor) { card.addEventListener('click', function (e) {
+            if (e.target.closest && e.target.closest('.ce, .pr-grip, .pe-tag-rm')) return;
+            e.stopPropagation(); openImgPop(anchor || card, pp, d);
+          }); })(ppre, pd, im);
+          // caption: three optional inline lines — bold label (strong), a caption
+          // line, then a dotted source line — each separately inline-editable.
+          var cap = qs('.photo-rail-caption', card);
+          if (cap) {
+            var st = qs('strong', cap); if (st) { wrapCE(st, ppre + 'strong'); var sce = st.querySelector('.ce'); if (sce) sce.setAttribute('data-ph', (R('photo-rail.photos[].strong').blank) || 'Label'); }
+            var capLine = qs('.prail-cap-line', cap); if (capLine) { wrapCE(capLine, ppre + 'caption'); var cce = capLine.querySelector('.ce'); if (cce) cce.setAttribute('data-ph', (R('photo-rail.photos[].caption').blank) || 'Caption'); }
+            var srcLine = qs('.prail-cap-src', cap); if (srcLine) { wrapCE(srcLine, ppre + 'source'); var srce = srcLine.querySelector('.ce'); if (srce) srce.setAttribute('data-ph', (R('photo-rail.photos[].source').blank) || '· source'); }
+          }
+          if (prCards.length > photosMin) makeRemovable(card, 'rm:' + prefix + 'photos.' + k, true);
+          // drag-reorder (the kit standard) — a grip; the card is the drag image
+          var grip = document.createElement('button');
+          grip.className = 'pr-grip'; grip.title = 'Drag to reorder'; grip.setAttribute('draggable', 'true');
+          grip.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>';
+          (function (kk) {
+            grip.addEventListener('dragstart', function (e) { if (window.__peDragLock) { e.preventDefault(); return; } window.__pePhotoDrag = kk; card.classList.add('pe-dragging'); try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setDragImage(card, 20, 20); } catch (x) {} });
+            grip.addEventListener('dragend', function () { card.classList.remove('pe-dragging'); prCards.forEach(function (c) { c.classList.remove('pe-drop-before', 'pe-drop-after'); }); window.__pePhotoDrag = null; });
+            card.addEventListener('dragover', function (e) { if (window.__pePhotoDrag == null || window.__pePhotoDrag === kk) return; e.preventDefault(); var rc = card.getBoundingClientRect(); var after = (e.clientX - rc.left) > rc.width / 2; card.classList.toggle('pe-drop-after', after); card.classList.toggle('pe-drop-before', !after); });
+            card.addEventListener('dragleave', function () { card.classList.remove('pe-drop-before', 'pe-drop-after'); });
+            // reorder via a clean data-mutation + full re-render (A → swapBody),
+            // NOT the optimistic DOM shuffle: the rail's add tile lives inside the
+            // same horizontally-scrolled flex track, and appending nodes around it
+            // during the FLIP desynced the DOM from the data — a card would vanish
+            // (and only return on the next render). Rendering straight from data
+            // keeps the DOM and the array in lockstep.
+            card.addEventListener('drop', function (e) { e.preventDefault(); var from = window.__pePhotoDrag; if (from == null || from === kk) return; card.classList.remove('pe-drop-before', 'pe-drop-after'); var rc = card.getBoundingClientRect(); var after = (e.clientX - rc.left) > rc.width / 2; var to = kk; if (after && from > kk) to = kk + 1; else if (!after && from < kk) to = kk - 1; window.__pePhotoDrag = null; if (to === from) return; A('lmove:' + prefix + 'photos:' + from + ':' + to); });
+          })(k);
+          card.appendChild(grip);
+        });
+        // + photo — a card-sized dashed tile at the end of the rail
+        if (prScroll) { var addP = addBtn('push:' + prefix + 'photos', '+ photo', true); addP.className = 'pe-add pr-add'; prScroll.appendChild(addP); }
+      }
+
       // ── lifecycle-lane: the OS-support ribbon. Inline .ce on the heading,
       // lane title, lead prose, each segment's version + date, and the notes.
       // The auto range + legend are LOCKED (derived). Enum choices — support
@@ -1557,11 +1876,11 @@
           var dirty = false, committed = false;
           var html = '<div class="cc-pop-label">Software version</div><input type="text" class="cc-lane-ver" placeholder="' + ea2(verBlank) + '" value="' + ea2(sd.ver) + '">'
             + dateGridHtml(sd.date, true)
-            + '<div class="cc-pop-label cc-pop-label-i" style="margin-top:13px">Support type' + infoI('How well the device is supported at this version. Full (green) = full OS updates; Partial (amber) = limited/late updates; Dropped (grey) = no longer supported; Security (blue) = security-only patches after end-of-life.') + '</div><div class="cc-enum cc-lane-types">'
+            + '<div class="cc-pop-label cc-pop-label-i" style="margin-top:13px">Support type' + infoI('How well the device is supported at this version. Full (green) = full OS updates; Partial (amber) = limited/late updates; Dropped (gray) = no longer supported; Security (blue) = security-only patches after end-of-life.') + '</div><div class="cc-enum cc-lane-types">'
             + segTypes.map(function (t) { return '<button class="cc-enum-opt cc-type-' + t + (sd.type === t ? ' sel' : '') + '" data-t="' + t + '">' + t + '</button>'; }).join('') + '</div>'
             // BADGE = a bank of preset text+color combos (derived from the
             // badge_type enum + its grammar `presets` map). Pick one → sets the
-            // text AND the colour together; no freeform typing.
+            // text AND the color together; no freeform typing.
             + '<div class="cc-pop-label cc-pop-label-i" style="margin-top:13px">Badge' + infoI("A badge is a small corner label on a tile — use it to flag a milestone: the Launch, the Final update, when support was Dropped, a Security-only patch, a Paid upgrade, or a Limited release. Optional.") + '</div><div class="cc-enum cc-badge-bank">'
             + badgeTypes.map(function (b) { var tx = (badgePresets[b] || b); var on = (sd.badge != null && (sd.badge_type || 'ship') === b) ? ' sel' : ''; return '<button class="cc-enum-opt cc-badge-' + b + on + '" data-bt="' + b + '" data-btx="' + ea2(tx) + '">' + tx + '</button>'; }).join('') + '</div>'
             + (sd.badge != null ? '<button class="cc-rm">Remove badge</button>' : '');
@@ -1626,7 +1945,7 @@
           var pop = openPop(anchor, '', html, { cls: 'lane-pop' });
           qsa('[data-s]', pop).forEach(function (b) { b.onclick = function () { closePop(); A('set:' + npre + 'status:' + b.getAttribute('data-s')); }; });
         };
-        // ALL-IN-ONE note add: pick the software version it's about (→ the colour
+        // ALL-IN-ONE note add: pick the software version it's about (→ the color
         // is DERIVED from that segment's support type), then type the label + text.
         var openNoteAddPop = function (anchor) {
           var segData = sdata.segments || [];
@@ -1920,6 +2239,8 @@
               leaf = { label: listLabel(rel, r, need), sub: arr.length + ' / ' + need, met: arr.length >= need, jump: docPath, addpath: docPath, struct: true };
             } else {
               leaf = { label: scalarLabel(concrete, key), met: metScalar(docPath, val, r.blank), jump: docPath };
+              // conditionally-required: a sibling flag (e.g. no_old) exempts it
+              if (r.optional_when && inst.node && inst.node[r.optional_when]) leaf.met = true;
             }
             if (idxs.length === 0) { section.push(leaf); return; }
             var card = getCard(idxs[0], concrete);
@@ -2012,6 +2333,9 @@
         });
       }
       function postMarkers() { try { if (window.parent.__peMarkers) window.parent.__peMarkers(buildPayload()); } catch (e) {} }
+      // expose so the canvas's ResizeObserver can re-post after a reflow (e.g. a
+      // view-width switch) — section tops shift, markers must re-align
+      window.__pePostMarkers = postMarkers;
       hosts.forEach(function (host) {
         host.el.addEventListener('input', function (e) {
           if (!e.target || !e.target.getAttribute || e.target.getAttribute('data-pe-path') == null) return;

@@ -4,7 +4,7 @@
 // This is the SINGLE SOURCE for the build kit's rules: required/optional,
 // starter blanks, list bounds, enums, locks. Read constraints from here —
 // never hardcode them — so changing _data/grammar.yml alone changes builder
-// behaviour (CLAUDE.md standing rule #5).
+// behavior (CLAUDE.md standing rule #5).
 import grammar from '../data/grammar.json';
 import { buildPolicy, ruleFor } from './policy.mjs';
 

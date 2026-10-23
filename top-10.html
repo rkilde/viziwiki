@@ -47,10 +47,10 @@ no_wiki_typography: true   # Vizi-verse keeps its own Space Grotesk type system
    3. All §05 styles inherit automatically — no new CSS needed
    4. Add a card in view-main with  data-nav="view-[slug]"
    5. Put dates in  .acq-date / .prod-date  attrs on cards;
-      the §02 engine injects coloured pills automatically.
+      the §02 engine injects colored pills automatically.
 
    BRAND THEMING — CSS CUSTOM PROPERTIES:
-   --col    Primary brand colour (banner bg, accents, indicators)
+   --col    Primary brand color (banner bg, accents, indicators)
    --col2   Secondary / lighter variant
    Set both on the view div → all §05 accents cascade instantly.
    ═══════════════════════════════════════════════════════════════ */
@@ -302,7 +302,7 @@ no_wiki_typography: true   # Vizi-verse keeps its own Space Grotesk type system
 /* ─────────────────────────────────────────────────────────────────────
    § 05  MASTER DETAIL PAGE
          Every company & browser page inherits these rules.
-         Per-company colour is set via --col and --col2 on the view div.
+         Per-company color is set via --col and --col2 on the view div.
    ─────────────────────────────────────────────────────────────────────── */
   .detail {
     background:
@@ -6110,7 +6110,7 @@ body.has-graphic-overlay { overflow: hidden; }
     <div class="year-row">
       <div><div class="year-num">1995</div><div class="year-num-sub">Search wars begin · Netscape IPO · AltaVista launches</div></div>
       <div class="cards-grid">
-        <a class="card" data-co="yahoo" style="--col: #7B0099;"><div class="card-rank">1</div><div class="card-color"></div><div class="card-body"><div class="card-name">Yahoo!</div><div class="card-tag">100,000 entries catalogued by hand. The entire web, apparently.</div></div><div class="card-arrow">→</div></a>
+        <a class="card" data-co="yahoo" style="--col: #7B0099;"><div class="card-rank">1</div><div class="card-color"></div><div class="card-body"><div class="card-name">Yahoo!</div><div class="card-tag">100,000 entries catalogd by hand. The entire web, apparently.</div></div><div class="card-arrow">→</div></a>
         <a class="card" data-co="aol" style="--col: #0066cc;"><div class="card-rank">2</div><div class="card-color"></div><div class="card-body"><div class="card-name">AOL</div><div class="card-tag">3 million subscribers on dial-up. CDs are in frozen food shipments now.</div></div><div class="card-arrow">→</div></a>
         <a class="card" data-co="lycos" style="--col: #ec7211;"><div class="card-rank">3</div><div class="card-color"></div><div class="card-body"><div class="card-name">Lycos</div><div class="card-tag">Carnegie Mellon's search engine. 54 million pages indexed. Mascot is a dog.</div></div><div class="card-arrow">→</div></a>
         <a class="card" data-co="webcrawler" style="--col: #1e6bb8;"><div class="card-rank">4</div><div class="card-color"></div><div class="card-body"><div class="card-name">WebCrawler</div><div class="card-tag">First to index the full text of every page — not just titles.</div></div><div class="card-arrow">→</div></a>
@@ -15863,7 +15863,7 @@ const WC = {
   const diagramSvg = wrapper.querySelector(':scope > svg');
   if (!diagramSvg) return;
 
-  // Reuse the existing .expandable-graphic-overlay CSS — same backdrop colour,
+  // Reuse the existing .expandable-graphic-overlay CSS — same backdrop color,
   // blur, transitions, close button, and hint as the CompuServe infra fullscreen.
   let overlay = null, content = null;
 

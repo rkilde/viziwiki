@@ -1,11 +1,11 @@
 // Builder mutations: creating new wikis + new category/page nodes. Today this
 // is a localStorage stand-in for ContentStore (swaps to Supabase later, same
 // calls). New wikis get the NEUTRAL BASE SKIN (no skin of their own yet → mono
-// greyscale). New nodes are stored as an overlay merged into the wiki tree at
+// grayscale). New nodes are stored as an overlay merged into the wiki tree at
 // render time, so we never mutate the git-extracted static JSON.
 import type { Wiki, Page, WikiSkin } from './wiki';
 
-// the fallback skin for a brand-new, unstyled wiki — renders mono greyscale.
+// the fallback skin for a brand-new, unstyled wiki — renders mono grayscale.
 // No wiki-{name} body class, so only wiki-base-skin.css's tokens fire.
 export const BASE_SKIN: WikiSkin = { bodyClass: 'wiki-page wiki-base', css: ['wiki-base-skin.css'] };
 

@@ -1,5 +1,5 @@
 // GOLDEN RENDER GUARD — byte-stability for the derived renderer. Static audits
-// prove the field vocabulary agrees; this proves the BEHAVIOUR doesn't move:
+// prove the field vocabulary agrees; this proves the BEHAVIOR doesn't move:
 // the exact HTML the pipeline produces for a fixed corpus (deterministic
 // fixture docs + every live page of every wiki) is snapshotted, and any byte
 // of unintended change fails the build. At millions of pages, silent renderer

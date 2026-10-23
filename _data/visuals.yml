@@ -80,6 +80,11 @@ sections:
     paragraphs: optional               # lead prose above the ribbon
     contained: true                    # NOT full-bleed
     hosts: [lifecycle-lane]            # visuals legal in the slot
+  photo-rail-section:
+    partial: sections/photo-rail-section.html
+    h2: none                           # HEADERLESS — no eyebrow, no title
+    full_bleed: true                   # the scroller bleeds edge-to-edge
+    hosts: [photo-rail]                # visuals legal in the slot
 
 config:
   bank: charts
@@ -98,7 +103,7 @@ delta:
   axes: [prev, current]
   row_groups: [hardware, software]
   row_fields: [label, old, new, no_old, chip, chip_text]
-  chips: [better, feature, changed, worse, same]   # colour = the change direction; text = the value
+  chips: [better, feature, changed, worse, same]   # color = the change direction; text = the value
   colors: skin-derived                              # chrome via --gd-* tokens (Apple pinned)
 
 spec:
@@ -116,9 +121,9 @@ lifecycle-lane:
   range: derived                       # auto "launch → drop · duration · N versions" (N = distinct majors received); post-drop security tiles excluded from the count
   legend: derived                      # auto from the support types present
   segment_fields: [ver, date, type, badge, badge_type]
-  types: [full, partial, dropped, security]  # support tier → fill colour; `security` = post-EOL patch (place AFTER the drop)
+  types: [full, partial, dropped, security]  # support tier → fill color; `security` = post-EOL patch (place AFTER the drop)
   badge_types: [ship, paid, limited, final, dropped, security]
-  note_fields: [status, label, text]   # status → dot colour (full/partial/limited/final/dropped/security)
+  note_fields: [status, label, text]   # status → dot color (full/partial/limited/final/dropped/security)
   colors: skin-derived                 # chrome via --lane-* tokens; support palette = semantic defaults
 
 timeline:
@@ -129,6 +134,13 @@ timeline:
   pairs_with: detail-modal             # each card opens this
   event_fields: [month, day, year, tag, title, preview, body]
 
+photo-rail:
+  bank: media
+  partial: visuals/photo-rail/photo-rail.html
+  section: photo-rail-section
+  photo_fields: [src, alt, strong, caption]   # src = media (URL now, Supabase upload later); strong/caption optional
+  lightbox: true                              # click-to-zoom (live-only; builder strips it)
+
 catalog:
   bank: lists
   partial: visuals/catalog/catalog.html
@@ -136,6 +148,6 @@ catalog:
   pairs_with: expandable-card          # each item opens this
   category_color: skin-swatch          # `color: N` -> --cat-accent-N (else auto-cycle)
   addons: [ribbon]                     # catalog-level add-ons
-  ribbon_tones: [accent, gone]         # accent = category color; gone = locked skin grey ("phased out")
+  ribbon_tones: [accent, gone]         # accent = category color; gone = locked skin gray ("phased out")
   card_addons: [status, info-chip, pill-group, callout, notes]   # expandable-card add-ons
   status_states: [active, discontinued, retired, limited] # pre-defined set

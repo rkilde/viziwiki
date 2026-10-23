@@ -28,9 +28,7 @@ layout: default
 
 {% include sections/overview.html data=page.overview %}
 
-<section class="wiki-section" data-tone="special" id="photo-rail-section">
-  <div id="photo-rail-inner" class="wiki-section-inner"></div>
-</section>
+{%- if page.photo_rail -%}{% include sections/photo-rail-section.html data=page.photo_rail %}{%- endif -%}
 
 {% include sections/timeline-section.html data=page.timeline %}
 

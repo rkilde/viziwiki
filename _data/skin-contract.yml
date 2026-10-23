@@ -1,5 +1,5 @@
 # ════════════════════════════════════════════════════════════════════
-# THE WIKI SKIN CONTRACT  (the single source of truth for skin↔asset colour)
+# THE WIKI SKIN CONTRACT  (the single source of truth for skin↔asset color)
 # --------------------------------------------------------------------
 # The canonical, SEMANTIC tokens every wiki skin publishes and every visual
 # asset (universal component or bank) reads. Three-tier model:
@@ -10,9 +10,9 @@
 #
 # Naming canon (locked):
 #   · every contract token is namespaced  --wiki-*
-#   · backgrounds end -bg ; text/foreground colours end -color ; radii end -radius
+#   · backgrounds end -bg ; text/foreground colors end -color ; radii end -radius
 #   · the -bg / -color / -radius suffix is always LAST
-#   · background-aware colours split  -on-light / -on-dark
+#   · background-aware colors split  -on-light / -on-dark
 #   · text emphasis family: -color, -muted-color, -faint-color
 #
 # THE SCALING RULE: adding a new bank must require ZERO new contract tokens.
@@ -38,7 +38,7 @@ accent:
   - { token: --wiki-accent-on-light,   replaces: [--wiki-accent], role: "brand accent on a LIGHT surface" }
   - { token: --wiki-accent-on-dark,    replaces: [],              role: "brand accent on a DARK surface (was the hero period yellow)" }
 
-# Semantic meaning colours — a FIXED set. Every status/sentiment across every
+# Semantic meaning colors — a FIXED set. Every status/sentiment across every
 # asset derives from these (catalog status, delta chips, lifecycle tiers, …).
 meanings:
   - { token: --wiki-positive, replaces: [--st-active-bg, --st-active-fg],             role: "success / available / 'better'" }
@@ -48,19 +48,19 @@ meanings:
   - { token: --wiki-neutral,  replaces: [--st-retired-bg, --st-retired-fg],           role: "inactive / retired / 'same'" }
 
 # Categorical palette — one ordered ramp of DISTINGUISHABLE hues. Any asset that
-# needs N distinct colours (catalog categories, chart series, tiers) pulls from
+# needs N distinct colors (catalog categories, chart series, tiers) pulls from
 # THIS, never its own swatch set. `count` = how many the contract guarantees.
 palette:
-  - { token: --wiki-palette, count: 8, replaces: [--cat-accent], role: "category / series colours 1..N" }
+  - { token: --wiki-palette, count: 8, replaces: [--cat-accent], role: "category / series colors 1..N" }
 
 section:
   - { token: --wiki-section-panel-tone-a,       replaces: [--section-tone-a],       role: "default section panel bg" }
   - { token: --wiki-section-panel-tone-b,       replaces: [--section-tone-b],       role: "alternating section panel bg" }
   - { token: --wiki-section-panel-tone-special, replaces: [--section-tone-special], role: "inverted / dark band bg" }
-  - { token: --wiki-h2-color,            replaces: [--section-title-color], role: "section H2 heading colour" }
+  - { token: --wiki-h2-color,            replaces: [--section-title-color], role: "section H2 heading color" }
   - { token: --wiki-eyebrow-color,       replaces: [--eyebrow-color],       role: "section eyebrow / kicker" }
-  - { token: --wiki-prose-color,         replaces: [--prose-color],         role: "body prose colour" }
-  - { token: --wiki-prose-strong-color,  replaces: [--prose-strong-color],  role: "prose emphasis colour" }
+  - { token: --wiki-prose-color,         replaces: [--prose-color],         role: "body prose color" }
+  - { token: --wiki-prose-strong-color,  replaces: [--prose-strong-color],  role: "prose emphasis color" }
 
 shapes:
   - { token: --wiki-card-radius, replaces: [--card-shape], role: "card corner radius" }
@@ -127,7 +127,7 @@ typography:
   - { token: --wiki-prose-size,    replaces: [], role: "body prose font-size (typography layer)" }
   - { token: --wiki-prose-leading, replaces: [], role: "body prose line-height (typography layer)" }
 
-# Component colours that LEFT the skin contract — now derived inside the bank
+# Component colors that LEFT the skin contract — now derived inside the bank
 # from the tokens above, so skins never define them:
 #   catalog --st-*        ← meanings (active→positive, discontinued→negative, limited→warning, retired→neutral)
 #   catalog --cat-accent-* ← --wiki-palette-*

@@ -4,7 +4,7 @@
    Shared base for the Taco Bell *archive* sub-pages — the lighter,
    editorial layer that sits apart from the main cream/purple home skin:
      • the individual discontinued-drink profile pages   (tb-drinks.css)
-     • the listing / catalogue pages (menus, drinks, …)   (tb-menu-*.css)
+     • the listing / catalog pages (menus, drinks, …)   (tb-menu-*.css)
 
    It re-points the universal section color TOKENS to a warm light palette
    and sets the shared dark-hero text treatment. This file is loaded ONLY

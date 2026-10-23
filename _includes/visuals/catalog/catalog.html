@@ -5,12 +5,12 @@
   expandable-card modal. The section's framing (eyebrow / summary / foot-
   note) lives in _includes/sections/catalog-section.html, not here.
 
-  Colour: each category either references a skin swatch by number
+  Color: each category either references a skin swatch by number
   (`color: 3`) or, if it names none, auto-cycles the skin palette. The
   card/pill only ever read `--cat-color` — the swatch set lives in the skin.
 
   Data shape (per category): name, color?, ribbon?, note?, items[]
-    ribbon: "string" (accent-colored) OR {text:, tone:}  (tone "gone" = grey)
+    ribbon: "string" (accent-colored) OR {text:, tone:}  (tone "gone" = gray)
     item: name, status?, info?, desc, groups?[], callout?, notes?, cta?
       group: label, pills[]  (pill = "string" OR {text:, struck:true})
       callout: {label, text}
@@ -20,7 +20,7 @@
   {%- for cat in data.categories -%}
     {%- if cat.color -%}{%- assign accent = cat.color -%}{%- else -%}{%- assign accent = forloop.index0 | modulo: 8 | plus: 1 -%}{%- endif -%}
     {%- assign n = cat.items | size -%}
-    {%- comment -%} ribbon can be a plain string (accent-colored) or {text, tone}. tone "gone" locks to the skin's grey "phased out" token. {%- endcomment -%}
+    {%- comment -%} ribbon can be a plain string (accent-colored) or {text, tone}. tone "gone" locks to the skin's gray "phased out" token. {%- endcomment -%}
     {%- assign rb_text = cat.ribbon.text | default: cat.ribbon -%}
     {%- assign rb_tone = cat.ribbon.tone | default: 'accent' -%}
     <div class="cat-card{% if cat.ribbon %} has-ribbon{% endif %}" style="--cat-color:var(--wiki-palette-{{ accent }})">

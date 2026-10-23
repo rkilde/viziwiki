@@ -1,6 +1,6 @@
 {%- comment -%}
   DELTA data row. row: label, old, new (HTML ok), no_old?, chip?, chip_text?
-  chip is one of: better · feature · changed · worse · same (colour = the judgment).
+  chip is one of: better · feature · changed · worse · same (color = the judgment).
 {%- endcomment -%}
 {%- assign r = include.row -%}
 <tr class="gd-row"><td class="gd-label"><span class="gd-label-name">{{ r.label }}</span></td>{% if r.no_old %}<td class="gd-old"><span class="gd-dot"></span><span class="gd-old-val missing">{{ r.old | default: '—' }}</span></td>{% else %}<td class="gd-old"><span class="gd-old-val">{{ r.old }}</span></td>{% endif %}<td class="gd-new"><span class="gd-new-val">{{ r.new }}</span>{% if r.chip %}<span class="gd-chip gd-chip-{{ r.chip }}">{{ r.chip_text }}</span>{% endif %}</td></tr>

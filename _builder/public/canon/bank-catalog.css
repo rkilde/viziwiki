@@ -39,7 +39,7 @@
 .cat-ribbon span{position:absolute;top:30px;right:-42px;width:180px;padding:4px 0;transform:rotate(45deg);text-align:center;
   background:var(--cat-color);color:#fff;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:8px;font-weight:700;letter-spacing:.10em;text-transform:uppercase}
 /* "gone" tone — DERIVED from the contract neutral (a desaturated "phased out"
-   banner), darkened toward the wiki's text colour. Does NOT use --cat-color. */
+   banner), darkened toward the wiki's text color. Does NOT use --cat-color. */
 .cat-ribbon.ribbon-gone span{background:color-mix(in oklab,var(--wiki-neutral) 72%,var(--wiki-text-color,#000) 28%);color:#fff}
 
 /* ADD-ON: footer note (mono box, max 1) */
@@ -68,10 +68,10 @@
 .modal-eyebrow{display:inline-flex;align-items:center;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--wiki-text-muted-color,#777);line-height:1}
 .chip{border-radius:var(--wiki-chip-radius,999px);padding:3px 10px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:8.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;display:inline-flex;align-items:center;line-height:1;white-space:nowrap}
 .chip.info{background:color-mix(in oklab,var(--cat-color) 12%,var(--wiki-surface-bg,#fff));color:var(--cat-color)}
-/* status chips — DERIVED from the contract meaning colours (not skin --st-*):
+/* status chips — DERIVED from the contract meaning colors (not skin --st-*):
    active→positive, limited→warning, discontinued+retired→neutral (both "gone").
    bg = a light tint of the meaning on the surface; fg = the meaning darkened
-   toward the wiki's text colour for readable contrast. */
+   toward the wiki's text color for readable contrast. */
 .chip.st-active{background:color-mix(in oklab,var(--wiki-positive) 16%,var(--wiki-surface-bg,#fff));color:color-mix(in oklab,var(--wiki-positive) 72%,var(--wiki-text-color,#000))}
 .chip.st-limited{background:color-mix(in oklab,var(--wiki-warning) 16%,var(--wiki-surface-bg,#fff));color:color-mix(in oklab,var(--wiki-warning) 72%,var(--wiki-text-color,#000))}
 .chip.st-discontinued{background:color-mix(in oklab,var(--wiki-neutral) 16%,var(--wiki-surface-bg,#fff));color:color-mix(in oklab,var(--wiki-neutral) 72%,var(--wiki-text-color,#000))}

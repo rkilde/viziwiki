@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import type { Wiki } from '../../lib/wiki';
 import { BrandLockup } from './BrandLockup';
 
-// Wiki swatch — a small coloured tile. (Real per-wiki icons come later.)
+// Wiki swatch — a small colored tile. (Real per-wiki icons come later.)
 const Swatch = ({ color, label }: { color: string; label: string }) => (
   <span className="wiki-btn-icon" style={{ background: color, color: '#fff', fontWeight: 700 }}>{label}</span>
 );

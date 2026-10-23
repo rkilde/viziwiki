@@ -29,4 +29,11 @@ for (const f of [...BASE, ...BANK]) {
 // manifest of bank stylesheets → the canvas links these (derived, not restated)
 fs.mkdirSync(path.join(process.cwd(), 'data'), { recursive: true });
 fs.writeFileSync(path.join(process.cwd(), 'data', 'bank-css.json'), JSON.stringify(BANK, null, 2));
-console.log(`copied ${n} canonical stylesheets → public/canon/ (${BANK.length} bank stylesheets, discovered)`);
+// ALSO emit the concatenated bank CSS as one string — the canvas INLINES this
+// (a <style> block) rather than fetching each /canon/bank-*.css. Inlining can't
+// 404 or serve a stale/cached asset in the preview iframe, and it's still fully
+// derived (the bytes come straight from the canon bank-*.css here). Re-run on
+// build → always current.
+const inline = BANK.map((f) => `/* ${f} */\n${fs.readFileSync(path.join(ROOT, f), 'utf8')}`).join('\n');
+fs.writeFileSync(path.join(process.cwd(), 'data', 'bank-css-inline.json'), JSON.stringify(inline));
+console.log(`copied ${n} canonical stylesheets → public/canon/ (${BANK.length} bank stylesheets, discovered + inlined)`);

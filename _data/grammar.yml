@@ -28,7 +28,7 @@ field_types:
   url:      "validated link"
 
 # ── Layer 1: page grammar — just two types, one shared canon ──
-canon: &canon [hero, overview, spec, config, lifecycle-lane, timeline, delta, catalog]
+canon: &canon [hero, overview, photo-rail, spec, config, lifecycle-lane, timeline, delta, catalog]
 
 page_types:
   standard:                       # every content page (iPod, Taco Bell, anything)
@@ -210,7 +210,7 @@ components:
         ver:        { type: text, required: true, label: "Version", blank: "Version" }
         date:       { type: date, required: true, blank: "Month Year", help: "Set via the month/year picker; an unset date reads as 'Month Year' and isn't positioned until real" }
         type:       { type: "enum[full,partial,dropped,security]", required: true,
-                      help: "full=green · partial=amber · dropped=grey cliff · security=blue post-EOL" }
+                      help: "full=green · partial=amber · dropped=gray cliff · security=blue post-EOL" }
         badge:      { type: text, blank: "Badge" }
         badge_type: { type: "enum[ship,paid,limited,final,dropped,security]", default: ship,
                       presets: { ship: "Launch", paid: "Paid", limited: "Limited", final: "Final", dropped: "Dropped", security: "Security" },
@@ -241,27 +241,44 @@ components:
     fields:
       heading:  { type: text, required: true, blank: "Changes heading" }
       tone:     { type: "enum[a,b,special]", default: a }
-      intro:    { type: richtext }
-      footnote: { type: richtext }
+      intro:    { type: richtext, blank: "Add an intro line" }
+      footnote: { type: richtext, blank: "Add a footnote" }
       visual:  { type: text, locked: true, default: delta, help: "The slot's visual type — registry hosts constrain it (admin)" }
-      prev:     { type: axis, required: true, help: "The 'before' column header" }
-      current:  { type: axis, required: true, help: "The 'after' column header" }
+      prev:     { type: axis_old, help: "The 'before' column header (its name is required)" }
+      current:  { type: axis_new, help: "The 'after' column header (its name is required)" }
       hardware: { type: "list<delta_row>", item_blank: { label: "Spec label" } }
       software: { type: "list<delta_row>", item_blank: { label: "Spec label" } }
     subtypes:
-      axis: { tag: { type: text }, name: { type: text, required: true, blank: "Model name" }, year: { type: text } }
+      # prev/current share the name/year shape but carry distinct name
+      # placeholders so a contributor knows which column is which. The column
+      # LABELS (Predecessor / Successor) are locked canon literals in the visual
+      # include — not data — so there is no `tag` field here.
+      axis_old: { name: { type: text, required: true, label: "Old model", blank: "Old model" }, year: { type: text } }
+      axis_new: { name: { type: text, required: true, label: "New model", blank: "New model" }, year: { type: text } }
       delta_row:
         label:     { type: text, required: true, blank: "Spec label" }
-        old:       { type: text }
-        new:       { type: text }
+        # both the previous and current values are tracked; `old` is exempt when
+        # the row is marked no_old ("no before" — e.g. a brand-new feature).
+        old:       { type: text, required: true, label: "old value", blank: "old value", optional_when: no_old }
+        new:       { type: text, required: true, label: "new value", blank: "new value" }
         no_old:    { type: bool, default: false, help: "Hide the 'before' cell" }
-        chip:      { type: "enum[better,feature,changed,worse,same]", help: "Color = the direction of change" }
+        # chip color = the DIRECTION of change. `presets` is a bank of chips per
+        # category: a plain string is a ready-made label; an object {tpl, ph} is a
+        # PARAMETERIZED chip whose `{n}` slot the contributor fills in (e.g. "{n}×"
+        # → 1.5× / 3×). Builder-only authoring aid; the stored chip is still just
+        # chip(color) + chip_text(the resolved label).
+        chip:      { type: "enum[better,feature,changed,worse,same]", help: "Color = the direction of change",
+                     presets: { better:  ["Faster", { tpl: "{n}×", ph: "2" }, { tpl: "+{n}%", ph: "50" }, "Bigger", "Improved"],
+                                feature: ["New", "Added", "First", "Now supported"],
+                                changed: ["Redesigned", "Moved", "Swapped", "Relocated"],
+                                worse:   ["Slower", "Smaller", "Removed", { tpl: "−{n}%", ph: "30" }],
+                                same:    ["Unchanged", "Carried over", "—"] } }
         chip_text: { type: text, help: "The short value shown in the chip" }
     seed:
       heading: "Changes heading"
-      prev:    { tag: "Previous", name: "Model name", year: "2020" }
-      current: { tag: "Current",  name: "Model name", year: "2023" }
-      hardware: [ { label: "Spec label", new: "Faster SoC", chip: better, chip_text: "2×" } ]
+      prev:    { name: "Old model" }
+      current: { name: "New model" }
+      hardware: [ { label: "Spec label" } ]
     min: "heading + prev + current + one row"
 
   # ---- TIMELINE — the full-bleed date-positioned scroller --------------
@@ -295,6 +312,30 @@ components:
         - { month: "Month", year: "Year", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened", body: "Write the full story for the expandable card…" }
         - { month: "Month", year: "Year", tag: "Add a tag", title: "Name this event", preview: "Add a short summary of what happened", body: "Write the full story for the expandable card…" }
     min: "≥2 events, each with month + year + title"
+
+  # ---- PHOTO-RAIL — a headerless, full-bleed horizontal image scroller --
+  photo-rail:
+    section: photo-rail-section
+    display: { photos: { kind: "Photo" } }
+    fields:
+      tone:   { type: "enum[a,b,special]", default: special }
+      visual: { type: text, locked: true, default: photo-rail, help: "The slot's visual type — registry hosts constrain it (admin)" }
+      photos: { type: "list<photo>", required: true, min: 1, item_blank: { strong: "Image Title", caption: "Caption", source: "· source" } }
+    subtypes:
+      photo:
+        # src is `media` — a URL today; a Supabase Storage upload later, with no
+        # change to this bank or its rendered <img>.
+        src:     { type: media, required: true, label: "add image", blank: "image URL" }
+        alt:     { type: text,  label: "alt text", blank: "describe the photo" }
+        # caption text — all three optional, mirroring the image-rail caption:
+        # a top bold title, then a caption line, then a dotted source line.
+        strong:  { type: text,  blank: "Image Title" }
+        caption: { type: text,  blank: "Caption" }
+        source:  { type: text,  blank: "· source" }
+    seed:
+      photos:
+        - { strong: "Image Title", caption: "Caption", source: "· source" }
+    min: "≥1 photo, each with an image (alt text optional)"
 
   # ---- CATALOG — the data-driven list + expandable cards ---------------
   catalog:

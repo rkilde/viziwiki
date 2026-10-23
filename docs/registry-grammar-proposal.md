@@ -52,7 +52,7 @@ home, `standard` elsewhere) and that `home` is the wiki's designated landing pag
 Everything else — the whole bank canon — is identical and shared.
 
 This is exactly what the **"+" slot** reads: on *any* page it offers the full canon
-(greying out only the singleton `hero` once placed). Default is "optional +
+(graying out only the singleton `hero` once placed). Default is "optional +
 repeatable" so a page can stack, say, two timelines or three catalogs; cap specific
 sections at `max: 1` later if you want (e.g. one `overview`).
 
@@ -90,7 +90,7 @@ lifecycle-lane:
       ver:        { type: text, required: true }
       date:       { type: date, required: true }
       type:       { type: enum[full,partial,dropped,security], required: true,
-                    help: "full=green · partial=amber · dropped=grey cliff · security=blue post-EOL" }
+                    help: "full=green · partial=amber · dropped=gray cliff · security=blue post-EOL" }
       badge:      { type: text, required: false }
       badge_type: { type: enum[ship,paid,limited,final,dropped,security], default: ship }
     note:

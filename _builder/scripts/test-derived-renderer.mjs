@@ -2,7 +2,7 @@
 // repo's actual Liquid includes (the REAL lib/render-core.mjs — no fixture
 // copy), run the decorator over the result in jsdom, and assert the editing
 // affordances landed in their canonical positions AND that policy is truly
-// computed from grammar (flipping a grammar rule changes builder behaviour).
+// computed from grammar (flipping a grammar rule changes builder behavior).
 //
 // Run from _builder:  node scripts/test-derived-renderer.mjs
 import fs from 'node:fs';
@@ -125,7 +125,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(d.querySelector('section[data-section="overview"]').getAttribute('data-tone') === 'special', 'tone special rendered');
 }
 
-// ── case 4: DERIVATION — flip a grammar rule, builder behaviour follows ──
+// ── case 4: DERIVATION — flip a grammar rule, builder behavior follows ──
 {
   console.log('case 4: grammar flip (desc → required) changes the builder');
   const g2 = JSON.parse(JSON.stringify(grammar));
@@ -173,11 +173,11 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(aLabels.includes('+ footnote'), '+ footnote slot (sentinel — seed has none)');
   ok(aLabels.includes('+ category'), '+ category button after the masonry');
   ok(cat.querySelector('.cat-card-title .ce'), 'category name editable');
-  // glass dock: colour / ribbon / note / remove
+  // glass dock: color / ribbon / note / remove
   const dock = cat.querySelector('.cat-card .cc-dock');
   ok(dock, 'glass dock present on the card');
-  ok(dock.querySelectorAll('.cc-btn').length === 4, 'dock has 4 controls (drag/colour/ribbon/remove) — note is NOT a dock control');
-  ok(dock.querySelector('.cc-btn .cc-swatch'), 'colour control shows the swatch');
+  ok(dock.querySelectorAll('.cc-btn').length === 4, 'dock has 4 controls (drag/color/ribbon/remove) — note is NOT a dock control');
+  ok(dock.querySelector('.cc-btn .cc-swatch'), 'color control shows the swatch');
   ok(dock.querySelector('.cc-btn.danger'), 'remove-category control (danger)');
   ok(!dock.querySelector('.cc-btn[data-tip*="note"]'), 'no note button in the dock');
   ok([...dock.querySelectorAll('.cc-btn')].every((b) => b.getAttribute('data-tip')), 'every dock control has a hover tooltip');
@@ -259,18 +259,23 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(richDet.querySelector('.modal-group-label .ce'), 'group label editable');
   ok(richDet.querySelectorAll('.gpill .ce').length === 2, 'string + object pills both editable');
   const gpills = [...richDet.querySelectorAll('.gpill')];
-  // delete conforms to the kit-wide two-click × confirm (makeRemovable) on EVERY
-  // pill; the ⋯ menu now carries only the strike toggle, and only object pills get it.
+  // EVERY pill carries BOTH controls: the ⋯ strike menu, and — to its right — the
+  // standard two-click × delete (makeRemovable). The ⋯ works on string pills too:
+  // striking promotes a plain string to {text, struck}.
   ok(gpills.every((g) => g.querySelector('.pe-tag-rm')), 'each pill has the standard two-click × delete');
-  ok(!gpills[0].querySelector('.gpill-menu'), 'string pill: no ⋯ menu (delete is the ×)');
-  ok(gpills[1].querySelector('.gpill-menu'), 'object pill carries the ⋯ strike menu');
+  ok(gpills.every((g) => g.querySelector('.gpill-menu')), 'each pill has the ⋯ strike menu (string pills too)');
   ok(gpills[1].classList.contains('struck') && gpills[1].querySelector('.ce'), 'struck object pill carries the canon struck class (strikes the .ce)');
   const lastPop = () => [...d.querySelectorAll('.cc-pop.pill-pop')].pop();
-  gpills[1].querySelector('.gpill-menu').onclick({ stopPropagation() {} });   // object (struck) pill
+  // string pill (gpills[0], unstruck) → offers "Strike through", never a danger Remove
+  gpills[0].querySelector('.gpill-menu').onclick({ stopPropagation() {} });
   let pp = lastPop();
   ok(pp, '⋯ opens the pill strike popover');
-  ok([...pp.querySelectorAll('.cc-row')].some((r) => r.textContent === 'Remove strike'), 'struck object pill offers "Remove strike"');
+  ok([...pp.querySelectorAll('.cc-row')].some((r) => r.textContent === 'Strike through'), 'unstruck pill offers "Strike through"');
   ok(!pp.querySelector('.cc-row.danger'), 'no Remove row in the strike menu (delete is the standard ×)');
+  // object struck pill (gpills[1]) → offers "Remove strike"
+  gpills[1].querySelector('.gpill-menu').onclick({ stopPropagation() {} });
+  pp = lastPop();
+  ok([...pp.querySelectorAll('.cc-row')].some((r) => r.textContent === 'Remove strike'), 'struck object pill offers "Remove strike"');
   ok([...richDet.querySelectorAll('.pe-mini-add')].some((b) => b.textContent === '+ item'), '+ item (pill add)');
   ok(richDet.querySelector('.pe-adds'), 'bottom adders row present');
   ok([...richDet.querySelectorAll('.pe-adds .pe-mini-add')].some((b) => b.textContent === '+ group'), '+ group in adders row');
@@ -300,7 +305,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(!modal.classList.contains('open') && d.querySelector('.cat-details [id="d-0-0"]'), 'close returns the detail to its hidden home');
 }
 
-// ── case 7: section reorder + skin-derived colour swatches ──
+// ── case 7: section reorder + skin-derived color swatches ──
 {
   console.log('case 7: reorder arrows + skin-derived swatches');
   const catData = () => JSON.parse(JSON.stringify(grammar.components.catalog.seed));
@@ -311,7 +316,7 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   };
   doc.sections[0].data.categories[0].color = 2; // explicit swatch on the first
   const d = renderAndDecorate(doc, false, null, (w) => {
-    // stand in for the skin: define a 3-colour contract palette on the body
+    // stand in for the skin: define a 3-color contract palette on the body
     w.document.body.style.setProperty('--wiki-palette-1', '#111111');
     w.document.body.style.setProperty('--wiki-palette-2', '#222222');
     w.document.body.style.setProperty('--wiki-palette-3', '#333333');
@@ -322,12 +327,12 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   const chips1 = [...secs[1].querySelectorAll('.pe-sec-tools .pe-chip')].map((c) => c.textContent);
   ok(!chips0.includes('↑') && chips0.includes('↓'), 'first section: ↓ only (nothing above it is movable)');
   ok(chips1.includes('↑') && !chips1.includes('↓'), 'last section: ↑ only');
-  // colour popover (opened from the dock) — swatches are skin-derived
+  // color popover (opened from the dock) — swatches are skin-derived
   const colorBtn = [...secs[0].querySelectorAll('.cat-card .cc-dock .cc-btn')].find((b) => b.querySelector('.cc-swatch'));
-  ok(colorBtn && colorBtn.querySelector('.cc-swatch'), 'dock colour control present');
+  ok(colorBtn && colorBtn.querySelector('.cc-swatch'), 'dock color control present');
   colorBtn.onclick.call(colorBtn);
   const pop = d.querySelector('.cc-pop');
-  ok(pop, 'clicking colour opens the popover');
+  ok(pop, 'clicking color opens the popover');
   ok(pop.querySelectorAll('.cc-sw[data-i]').length === 3, 'swatches = exactly the 3 tokens the skin defines');
   ok(pop.querySelector('.cc-sw[data-i="2"]').className.includes('sel'), 'current swatch (color: 2) marked selected');
   ok(pop.querySelector('.cc-sw.auto'), 'auto (cycle) option present');
@@ -560,6 +565,118 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   const itemLeaf = catMk.cards[0].items[0].reqs.find((r) => /name/i.test(r.label));
   const scope = itemLeaf.jump.replace(/\.name$/, '');
   ok(catCap.d.querySelector(`[data-pe-scope="${scope}"][data-pe-opens]`), 'catalog item field resolves to its pill scope (which opens the item modal on jump)');
+}
+
+// ── case 13: delta in-place editor (the last onboarded bank) ──
+{
+  console.log('case 13: delta editor — axis, rows, chips, add/remove');
+  const dSeed = JSON.parse(JSON.stringify(grammar.components.delta.seed));
+  const doc = {
+    hero: { eyebrow: null, title: 'T', subtitle: null, subtitle_meta: null, desc: 'D', stats: null, search: false, search_placeholder: '', spotlight: null, feature: null },
+    overview: { tone: 'b', heading: 'H', paragraphs: ['P'], infobox: null },
+    sections: [{ type: 'delta', data: dSeed }],
+  };
+  const d = renderAndDecorate(doc, false);
+  const gd = d.querySelector('section.wiki-section.delta');
+  ok(gd, 'delta section rendered via its canonical include chain');
+  ok(gd.querySelector('.wiki-section-title .ce'), 'heading editable in place');
+  // axis headers — name editable + DISTINCT Old/New placeholders (per-axis blank)
+  const nm = gd.querySelector('.gd-gen-old .gd-name .ce');
+  ok(nm && nm.getAttribute('data-ph') === 'Old model', 'prev model-name placeholder is "Old model"');
+  ok(gd.querySelector('.gd-gen-new .gd-name .ce').getAttribute('data-ph') === 'New model', 'current model-name placeholder is "New model"');
+  // column labels are LOCKED canon literals (Predecessor / Successor), not editable
+  const ptag = gd.querySelector('.gd-gen-old .gd-tag'), ctag = gd.querySelector('.gd-gen-new .gd-tag');
+  ok(ptag.textContent.trim() === 'Predecessor' && ptag.classList.contains('pe-canon') && !ptag.querySelector('.ce'), 'predecessor label locked canon (not editable)');
+  ok(ctag.textContent.trim() === 'Successor' && ctag.classList.contains('pe-canon'), 'successor label locked canon');
+  ok(gd.querySelector('.gd-gen-old .gd-year .ce') && gd.querySelector('.gd-gen-old .gd-year .ce').getAttribute('data-ph') === 'year', 'year field starts as "year" placeholder');
+  // the derived per-column echoes + group labels are locked
+  ok([...gd.querySelectorAll('.gd-sec-col')].every((c) => c.classList.contains('pe-canon')), 'gd-sec-col echoes locked (derived from the model name)');
+  ok([...gd.querySelectorAll('.gd-sec-main')].every((c) => c.classList.contains('pe-canon')), 'Hardware/Software group labels locked');
+  // the seed row starts BLANK: label + empty old/new fields + a "+ chip" slot
+  const row = gd.querySelector('.gd-row');
+  ok(row.querySelector('.gd-label-name .ce'), 'row label editable');
+  ok(row.querySelector('.gd-old-val .ce') && row.querySelector('.gd-old-val .ce').getAttribute('data-ph') === 'old value', 'previous-value field is clearly labelled ("old value")');
+  ok(row.querySelector('.gd-new-val .ce') && row.querySelector('.gd-new-val .ce').getAttribute('data-ph') === 'new value', 'current-value field is clearly labelled ("new value")');
+  ok(!row.querySelector('.gd-chip'), 'seed row starts with no chip (blank)');
+  const addChip = [...row.querySelectorAll('.pe-mini-add')].find((b) => b.textContent === '+ chip');
+  ok(addChip, '"+ chip" slot present on a chipless row');
+  // "no before" reads as an OR choice: the value field, an "or", then the toggle
+  ok(row.querySelector('.pe-or') && /^or$/i.test(row.querySelector('.pe-or').textContent.trim()), 'old-value / no-before presented as an "or" choice');
+  ok(row.querySelector('.pe-noold') && /no .before. value/i.test(row.querySelector('.pe-noold').textContent), 'no-before is an alternative toggle (.pe-noold), not an add-pill');
+  // open the chip picker from "+ chip"
+  addChip.onclick();
+  const cpop = [...d.querySelectorAll('.cc-pop.chip-pop')].pop();
+  ok(cpop, 'chip popover opens');
+  ok(cpop.querySelector('.cc-chip-head .dr-info[data-tip-html]'), 'picker info "i" is a rich legend (color-meaning table), not a wall of text');
+  ok(cpop.querySelectorAll('.cc-chip-cat .cc-chip-cat-h').length === 5, 'five category column-headers (from the grammar enum)');
+  ok(cpop.querySelectorAll('.cc-chip-opt[data-c="better"]').length >= 1, '"better" category offers derived preset chips (bearings)');
+  ok(cpop.querySelector('.cc-chip-opt[data-c="feature"][data-t="New"]'), 'preset labels come from grammar (feature → "New")');
+  ok(cpop.querySelector('.cc-chip-fill[data-tpl] .cc-chip-fill-in'), 'a parameterized chip (e.g. {n}×) renders a fill-in input');
+  ok([...cpop.querySelectorAll('.cc-chip-fill')].some((el) => el.getAttribute('data-tpl').includes('{n}')), 'fill chip carries its {n} template (resolved to chip_text on use)');
+  ok(cpop.querySelector('.cc-chip-text') && cpop.querySelector('.cc-chip-apply'), 'a custom chip — free text + Apply');
+  ok(cpop.querySelectorAll('.cc-chip-swatch').length === 5, 'custom color swatch per category');
+  // a row WITH a chip → edit (opens picker) + × (remove) controls
+  const dChip = renderAndDecorate({ ...doc, sections: [{ type: 'delta', data: { ...dSeed, hardware: [{ label: 'L', new: 'V', chip: 'better', chip_text: '2×' }] } }] }, false);
+  const cRow = dChip.querySelector('section.wiki-section.delta .gd-row');
+  ok(cRow.querySelector('.gd-chip'), 'chip renders when set');
+  ok(cRow.querySelector('.gd-chip-ctrls .gd-chip-edit') && cRow.querySelector('.gd-chip-ctrls .gd-chip-rm'), 'a set chip carries both an edit (opens picker) and a × (remove)');
+  // add-row affordances: small pills (reverted), still spanning a full-width cell
+  const addRows = [...gd.querySelectorAll('.pe-gd-addrow .pe-mini-add')];
+  const adders = addRows.map((b) => b.textContent);
+  ok(adders.includes('+ hardware row') && adders.includes('+ software row'), '+ hardware row / + software row adders present');
+  ok(addRows.every((b) => b.closest('td').colSpan === 3), 'add-row cell still spans the table (colspan 3)');
+  // optional intro/footnote start as sentinel "+" slots (renderer-seeded), editable once added
+  ok([...gd.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ intro text') || gd.querySelector('.delta-prose .ce'), 'intro is a "+ intro text" slot when absent (renderer sentinel)');
+  ok([...gd.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ footnote') || gd.querySelector('.gd-foot .ce'), 'footnote is a "+" slot when absent');
+  // the readiness widget tracks the per-row OLD value + NEW value (new always;
+  // old unless the row is marked no_old)
+  let mk = [];
+  renderAndDecorate(doc, false, undefined, (w) => { w.__peMarkers = (list) => { mk = list; }; });
+  const hwCard = ((mk[mk.length - 1] || {}).cards || []).find((c) => /Hardware/.test(c.kind));
+  const reqLabels = hwCard ? hwCard.reqs.map((r) => r.label) : [];
+  ok(reqLabels.includes('old value') && reqLabels.includes('new value'), 'widget tracks a row\'s old value AND new value');
+  let mk2 = [];
+  renderAndDecorate({ ...doc, sections: [{ type: 'delta', data: { ...dSeed, hardware: [{ label: 'L', no_old: true }] } }] }, false, undefined, (w) => { w.__peMarkers = (list) => { mk2 = list; }; });
+  const hwCard2 = ((mk2[mk2.length - 1] || {}).cards || []).find((c) => /Hardware/.test(c.kind));
+  const oldLeaf = hwCard2 && hwCard2.reqs.find((r) => r.label === 'old value');
+  ok(oldLeaf && oldLeaf.met, 'no_old exempts the "old value" requirement (counts as met)');
+}
+
+// ── case 14: photo-rail in-place editor (headerless image bank) ──
+{
+  console.log('case 14: photo-rail editor — image popover, caption, add/remove');
+  const seed = JSON.parse(JSON.stringify(grammar.components['photo-rail'].seed));
+  const doc = {
+    hero: { eyebrow: null, title: 'T', subtitle: null, subtitle_meta: null, desc: 'D', stats: null, search: false, search_placeholder: '', spotlight: null, feature: null },
+    overview: { tone: 'b', heading: 'H', paragraphs: ['P'], infobox: null },
+    sections: [{ type: 'photo-rail', data: seed }],
+  };
+  const d = renderAndDecorate(doc, false);
+  const pr = d.querySelector('section.wiki-section.photo-rail');
+  ok(pr, 'photo-rail section rendered via its canonical include chain');
+  ok(!pr.querySelector('.wiki-section-title') && !pr.querySelector('.wiki-section-eyebrow'), 'headerless — no eyebrow/H2');
+  ok(pr.querySelector('.photo-rail-scroll.wiki-section-bleed'), 'full-bleed horizontal scroller');
+  const card = pr.querySelector('.photo-rail-card');
+  ok(card.classList.contains('pe-img-empty'), 'an empty image is flagged as a placeholder');
+  ok((card.querySelector('img').getAttribute('src') || '').indexOf('data:image/svg+xml') === 0, 'empty card renders a real placeholder image (holds its 280×200 footprint with no sizing CSS)');
+  ok(card.querySelector('.photo-rail-caption strong .ce'), 'caption label (strong) editable in place');
+  ok(card.querySelector('.photo-rail-caption .prail-cap-line .ce[data-pe-path$=".caption"]'), 'caption line editable in place');
+  ok(card.querySelector('.photo-rail-caption .prail-cap-src .ce[data-pe-path$=".source"]'), 'source line editable in place');
+  ok(card.querySelector('.pr-grip[draggable="true"]'), 'drag-to-reorder grip present');
+  const img = card.querySelector('img');
+  ok(card.getAttribute('data-pe-opens') && /photos\.0\.src$/.test(card.getAttribute('data-pe-scope') || ''), 'the card (whole slot) is the jump target for src — so the red flash boxes the slot, not the clipped img');
+  card.dispatchEvent(new d.defaultView.MouseEvent('click', { bubbles: true }));
+  const ipop = [...d.querySelectorAll('.cc-pop.img-pop')].pop();
+  ok(ipop && ipop.querySelector('.cc-img-url') && ipop.querySelector('.cc-img-alt'), 'clicking the slot opens a URL + alt popover (the media field is a URL today)');
+  ok([...pr.querySelectorAll('.pe-add')].some((b) => b.textContent === '+ photo'), '"+ photo" tile present');
+  // readiness tracks each photo's image (src) + alt text
+  let mk = [];
+  renderAndDecorate(doc, false, undefined, (w) => { w.__peMarkers = (list) => { mk = list; }; });
+  const pcard = ((mk[mk.length - 1] || {}).cards || []).find((c) => /Photo/.test(c.kind));
+  const plabels = pcard ? pcard.reqs.map((r) => r.label) : [];
+  ok(plabels.includes('add image'), 'widget tracks each photo\'s image (required)');
+  ok(!plabels.includes('alt text'), 'alt text is optional — not a readiness requirement');
+  ok(/\.alt(\s|$)/.test(card.getAttribute('data-pe-jump') || ''), 'the slot is still the editor for alt (jump target), even though alt is optional');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);
