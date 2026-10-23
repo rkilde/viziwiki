@@ -453,6 +453,19 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
   Supabase project + auth providers are created in the owner's dashboards (not from the
   agent env) — code is built here, the dashboard clicks walked through. See
   `_builder/README.md` + `docs/registry-grammar-proposal.md`.
+- **CURATOR PAGE CLASSES (deferred — owner-named, Oct 2026).** The build-kit,
+  per-wiki version of Layer-2 page classes: a curator composes a page once
+  (its sections, emblem choices, seeded defaults, locked bits) and saves it
+  as a reusable CLASS/template; every new entry of that kind instantiates
+  from it — e.g. ONE "Taco Bell drink entry" class → every drink page.
+  Exactly what `class-tb-drink.html` does in Jekyll, but curator-authored in
+  the builder and stored in the DB (a per-wiki `page_classes` table holding
+  a template PageDoc + per-field lock/seed flags; "New page → from class" in
+  the picker). OPEN DESIGN QUESTION for when it's built: copy-on-create
+  (simple — the class seeds the page, then they diverge) vs LINKED classes
+  (structure edits to the class propagate to every instance, like canon
+  does — more powerful, needs an override model). Grammar's `page_types`
+  is the seam it slots into.
 - **Vizi-verse** (the narrative side; currently only `top-10.html`) — deferred.
 
 ---
