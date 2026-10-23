@@ -294,10 +294,12 @@ export function PageEditor({ page, skin, wikiMeta, caps = ALL_CAPS, canApprove =
               {revs.map((r) => (
                 <div key={r.id} className={`pe-hist-rev st-${r.status} ${diffFor === r.id ? 'open' : ''}`}>
                   <button className="pe-hist-row" onClick={() => (diffFor === r.id ? setDiffFor(null) : showDiff(r))}>
+                    <span className="pe-hist-id">#{r.id}</span>
                     <span className={`pe-hist-st st-${r.status}`}>{r.status}</span>
                     <span className="pe-hist-who">{r.author_email || 'system'}</span>
                     <span className="pe-hist-when">{new Date(r.created_at).toLocaleString()}</span>
                     {r.note && <span className="pe-hist-note" title={r.note}>{r.note}</span>}
+                    <span className="pe-hist-view">{diffFor === r.id ? 'hide changes ▴' : 'view changes ▾'}</span>
                   </button>
                   {canApprove && (
                     <span className="pe-hist-acts">
@@ -308,7 +310,10 @@ export function PageEditor({ page, skin, wikiMeta, caps = ALL_CAPS, canApprove =
                   )}
                   {diffFor === r.id && (
                     <div className="pe-hist-diff">
-                      {!diffRows.length && <div className="pe-hist-empty">no textual changes vs the previous revision</div>}
+                      {(() => { const older = revs.find((o) => o.id < r.id); return (
+                        <div className="pe-diff-vs">changes vs {older ? `#${older.id}` : 'nothing (first revision)'}{diffRows.length ? ` · ${diffRows.length} field${diffRows.length !== 1 ? 's' : ''}` : ''}</div>
+                      ); })()}
+                      {!diffRows.length && <div className="pe-hist-empty">identical content to the previous revision — typical for a revert back, or a save with no edits</div>}
                       {diffRows.map((d, i) => (
                         <div key={i} className={`pe-diff-row ${d.kind}`}>
                           <span className="pe-diff-path">{d.path}</span>

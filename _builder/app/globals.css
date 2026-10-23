@@ -453,3 +453,10 @@ button{ font-family:inherit; }
 .pe-diff-new{ background:rgba(34,197,94,.13); color:#86efac; }
 .pe-diff-row.added .pe-diff-new{ background:rgba(34,197,94,.18); }
 .pe-diff-row.removed .pe-diff-old{ background:rgba(248,113,113,.18); }
+
+/* history rows: revision ids + the discoverable diff affordance */
+.pe-hist-id{ font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--dim); flex:none; min-width:30px; }
+.pe-hist-view{ margin-left:auto; font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.06em; text-transform:uppercase; color:#8b8bf0; white-space:nowrap; }
+.pe-hist-row:hover .pe-hist-view{ color:#c7c7ff; }
+.pe-hist-row .pe-hist-note{ margin-left:0; }
+.pe-diff-vs{ font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--dim); padding:0 2px 4px; }
