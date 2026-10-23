@@ -1,102 +1,102 @@
 {
   "fixture:blank-home": {
-    "hash": "feb3a8ef7852723e",
-    "bytes": 25414
+    "hash": "dd2fec22a59863e9",
+    "bytes": 35608
   },
   "fixture:spotlight-page": {
-    "hash": "5d5f1768cf65dce2",
-    "bytes": 25739
+    "hash": "722ef08d24654193",
+    "bytes": 35933
   },
   "fixture:feature-catalog-page": {
-    "hash": "c79b8e475f76a080",
-    "bytes": 28893
+    "hash": "ad27d9a29385bb85",
+    "bytes": 39087
   },
   "taco-bell:taco-bell-home": {
-    "hash": "b75c360015071845",
-    "bytes": 28384
+    "hash": "32e061bb2443b497",
+    "bytes": 38578
   },
   "taco-bell:taco-bell-drinks": {
-    "hash": "b85eee33a7d84abe",
-    "bytes": 51939
+    "hash": "6064e676af6c6472",
+    "bytes": 62133
   },
   "taco-bell:taco-bell-discontinued-drinks": {
-    "hash": "c764283400b13d29",
-    "bytes": 94426
+    "hash": "e3897869da28d1ad",
+    "bytes": 104620
   },
   "taco-bell:taco-bell-sangrita-blast": {
-    "hash": "e8c32adbf2bf09ca",
-    "bytes": 26217
+    "hash": "a4625cefae089860",
+    "bytes": 36411
   },
   "taco-bell:taco-bell-brisk-raspberry": {
-    "hash": "f2a4c68e05672855",
-    "bytes": 26216
+    "hash": "ac89c7b31bd8512e",
+    "bytes": 36410
   },
   "taco-bell:taco-bell-pina-colada-frutista": {
-    "hash": "66ddc732312c9b7e",
-    "bytes": 26128
+    "hash": "37f9543cc5c79d64",
+    "bytes": 36322
   },
   "taco-bell:taco-bell-spiked-lemonade": {
-    "hash": "cdf9d8688bad93aa",
-    "bytes": 26091
+    "hash": "0cebd50f86b5d1e0",
+    "bytes": 36285
   },
   "taco-bell:taco-bell-sauces": {
-    "hash": "63e58e7704abf803",
-    "bytes": 26330
+    "hash": "c0ff5569bb7e6ae2",
+    "bytes": 36524
   },
   "taco-bell:taco-bell-menus": {
-    "hash": "e66d8cacc47cefb6",
-    "bytes": 27645
+    "hash": "3fe3795f1d33790e",
+    "bytes": 37839
   },
   "taco-bell:taco-bell-menu-cantina-chicken": {
-    "hash": "aeb3359f03ed862f",
-    "bytes": 45922
+    "hash": "5b5158c203d8c9c1",
+    "bytes": 56116
   },
   "taco-bell:taco-bell-menu-2-dollar-deals": {
-    "hash": "3c1866401173f5ed",
-    "bytes": 33839
+    "hash": "8eb0be2ddb986334",
+    "bytes": 44033
   },
   "taco-bell:taco-bell-menu-fresco": {
-    "hash": "78e7341345d52194",
-    "bytes": 41645
+    "hash": "6d608791e4ae7025",
+    "bytes": 51839
   },
   "taco-bell:taco-bell-menu-big-bell-value": {
-    "hash": "92aa96749751f626",
-    "bytes": 41581
+    "hash": "c3e04616f442bb46",
+    "bytes": 51775
   },
   "taco-bell:taco-bell-menu-luxe-value": {
-    "hash": "68f979642dd91465",
-    "bytes": 40771
+    "hash": "7c1ed77ee2775dcc",
+    "bytes": 50965
   },
   "taco-bell:taco-bell-slogans": {
-    "hash": "96e1ebb49477825b",
-    "bytes": 27323
+    "hash": "268f5c64aec8acbe",
+    "bytes": 37517
   },
   "apple:apple-home": {
-    "hash": "35535430d571886c",
-    "bytes": 28039
+    "hash": "26031901a9f0b5d9",
+    "bytes": 38233
   },
   "apple:apple-ipod-touch-2g": {
-    "hash": "6c3742025cd552b9",
-    "bytes": 92540
+    "hash": "246a5a4af12f963e",
+    "bytes": 102734
   },
   "apple:apple-ipod-touch-3g": {
-    "hash": "e58770ff5be683d2",
-    "bytes": 81181
+    "hash": "23c5d5ee0c852780",
+    "bytes": 91375
   },
   "apple:apple-ipod-touch-4g": {
-    "hash": "7dc0f2d59bb6ad56",
-    "bytes": 84052
+    "hash": "40ff9079102c8308",
+    "bytes": 94246
   },
   "apple:apple-ipod-touch-5g": {
-    "hash": "9a7c4e4eea661462",
-    "bytes": 84057
+    "hash": "e5410e8b8afb444a",
+    "bytes": 94251
   },
   "apple:apple-ipod-touch-6g": {
-    "hash": "3090b0c66467835b",
-    "bytes": 75996
+    "hash": "324d64be727b3b30",
+    "bytes": 86190
   },
   "apple:apple-ipod-touch-7g": {
-    "hash": "5180acaf75c96cb3",
-    "bytes": 89060
+    "hash": "a4664c562fb91fac",
+    "bytes": 99254
   }
 }
