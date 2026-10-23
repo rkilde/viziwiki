@@ -4,6 +4,7 @@ import { contentStore, type CategoryRow } from '../content-store';
 import { ICON_SPRITE } from '../lib/render';
 import taxonomyCanon from '../data/wiki-categories.json';
 import { resolveColor, slugifyId, spriteIconNames, validateCategory } from '../lib/taxonomy.mjs';
+import { LucidePicker, LucideGlyph, loadLucide, type LucideLib } from './LucidePicker';
 
 // ADMIN-ONLY: the category (tag) manager for the main wiki categorization.
 // The canon 12 live in the repo (_data/wiki_categories.yml) and show here as
@@ -24,7 +25,13 @@ export function ManageCategories({ onClose }: { onClose: () => void }) {
   const [draft, setDraft] = useState<Draft | null>(null);   // key=null → creating
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
-  const icons = useMemo(() => spriteIconNames(ICON_SPRITE), []);
+  // the FULL Lucide library (searchable picker + inline row glyphs); the
+  // valid-icon set = canon sprite ∪ the library
+  const [lib, setLib] = useState<LucideLib | null>(null);
+  useEffect(() => { loadLucide().then(setLib); }, []);
+  const icons = useMemo(
+    () => Array.from(new Set([...spriteIconNames(ICON_SPRITE), ...(lib?.icons.map((i) => i.n) ?? [])])),
+    [lib]);
   const canon = (taxonomyCanon as any).categories as Array<{ key: string; label: string; icon: string; grad: { from: string; to: string } }>;
 
   const load = () => {
@@ -106,7 +113,7 @@ export function ManageCategories({ onClose }: { onClose: () => void }) {
           {canon.map((c) => (
             <div key={c.key} className="mc-row canon">
               {gradChip(resolveColor((taxonomyCanon as any).palette, c.grad.from, '#333'), resolveColor((taxonomyCanon as any).palette, c.grad.to, '#555'))}
-              <svg className="mc-ic"><use href={`#ic-${c.icon}`} /></svg>
+              <LucideGlyph name={c.icon} lib={lib} className="mc-ic" />
               <span className="mc-label">{c.label}</span>
               <span className="mc-key">{c.key}</span>
               {usage[c.key]?.length ? <span className="mc-usage" title={usage[c.key].join(', ')}>{usage[c.key].length} wiki{usage[c.key].length !== 1 ? 's' : ''}</span> : null}
@@ -118,7 +125,7 @@ export function ManageCategories({ onClose }: { onClose: () => void }) {
           {rows.map((r) => (
             <div key={r.key} className="mc-row">
               {gradChip(r.grad_from, r.grad_to)}
-              <svg className="mc-ic"><use href={`#ic-${r.icon}`} /></svg>
+              <LucideGlyph name={r.icon} lib={lib} className="mc-ic" />
               <span className="mc-label">{r.label}</span>
               <span className="mc-key">{r.key}</span>
               {usage[r.key]?.length ? <span className="mc-usage" title={usage[r.key].join(', ')}>{usage[r.key].length} wiki{usage[r.key].length !== 1 ? 's' : ''}</span> : null}
@@ -136,14 +143,7 @@ export function ManageCategories({ onClose }: { onClose: () => void }) {
             <input className="acct-input" autoFocus placeholder="category label — e.g. Tabletop Games" value={draft.label}
               onChange={(e) => setDraft({ ...draft, label: e.target.value })} />
             {draft.key && <div className="ow-label">key: {draft.key} (fixed — wikis reference it)</div>}
-            <div className="ow-icons">
-              {icons.map((ic) => (
-                <button key={ic} type="button" title={ic} className={`ow-icon ${draft.icon === ic ? 'on' : ''}`}
-                  onClick={() => setDraft({ ...draft, icon: ic })}>
-                  <svg><use href={`#ic-${ic}`} /></svg>
-                </button>
-              ))}
-            </div>
+            <LucidePicker value={draft.icon} onPick={(n) => setDraft({ ...draft, icon: n })} />
             {swatchRow('from')}
             {swatchRow('to')}
             <div className="ow-newcat-actions">

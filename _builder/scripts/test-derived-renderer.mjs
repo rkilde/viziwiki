@@ -1020,5 +1020,35 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(svgToDataUri('<svg viewBox="0 0 1 1"/>').startsWith('data:image/svg+xml;base64,'), 'output is a data URI the art slots accept');
 }
 
+// ── case 24: the FULL Lucide library — derived from the pinned package,
+// searchable tags, and inline rendering beyond the canon sprite ──
+{
+  console.log('case 24: lucide library — pinned derivation, tags, inline glyph pipe');
+  const { attachIconBodies, spriteIconNames } = await import('../lib/taxonomy.mjs');
+  const { wikiCoverTile } = await import('../lib/reader-core.mjs');
+  const lib = JSON.parse(fs.readFileSync('data/lucide-library.json', 'utf8'));
+  const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+
+  ok(lib.icons.length >= 2000, `the WHOLE library rides along (${lib.icons.length} icons)`);
+  ok(pkg.devDependencies['lucide-static'] && pkg.scripts.gen.includes('gen-lucide'),
+    'the library derives from the PINNED lucide-static dep via the gen chain');
+  const pizza = lib.icons.find((i) => i.n === 'pizza');
+  ok(pizza && pizza.t.includes('food') && pizza.b.includes('<path'), 'icons carry official tags + vector bodies');
+  ok(lib.icons.filter((i) => i.t.length).length > 1500, 'tags cover the bulk of the library (searchable)');
+
+  const spriteSet = new Set(spriteIconNames(includes.sprite));
+  const outside = lib.icons.find((i) => !spriteSet.has(i.n));
+  const cats24 = attachIconBodies(
+    [{ key: 'a', label: 'A', icon: 'pizza', grad: { from: '#1', to: '#2' } },
+     { key: 'b', label: 'B', icon: outside.n, grad: { from: '#1', to: '#2' } }],
+    includes.sprite, lib);
+  ok(!cats24[0].iconSvg, 'a sprite icon stays a <use> reference (the sprite is already on-page)');
+  ok(cats24[1].iconSvg === outside.b, 'an icon beyond the sprite gains its inline vector body');
+
+  const t24 = wikiCoverTile({ id: 'x', name: 'X', categories: ['b'] },
+    { palette: {}, categories: cats24.map((c) => ({ ...c, grad: { from: '#111', to: '#222' } })) });
+  ok(t24.includes(outside.b) && !t24.includes(`#ic-${outside.n}`), 'tile covers render library-only icons INLINE — zero sprite edits');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

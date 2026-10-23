@@ -57,6 +57,20 @@ export function spriteIconNames(spriteHtml) {
   return [...String(spriteHtml || '').matchAll(/id="ic-([a-z0-9-]+)"/g)].map((m) => m[1]);
 }
 
+/** Resolve category icons against the FULL Lucide library (data/
+ *  lucide-library.json — derived from the pinned lucide-static package).
+ *  A category whose icon is NOT in the canon page sprite gains `iconSvg`
+ *  (the icon's vector body, resolved server-side from the trusted pinned
+ *  package — the DB stores only the NAME), so browse tiles and reader
+ *  covers render ANY of the ~2,200 icons inline with zero sprite edits.
+ *  Sprite icons stay as `<use>` references (the sprite is already on-page). */
+export function attachIconBodies(categories, spriteHtml, library) {
+  const have = new Set(spriteIconNames(spriteHtml));
+  const map = new Map(((library && library.icons) || []).map((i) => [i.n, i.b]));
+  return (categories || []).map((c) =>
+    !c.icon || have.has(c.icon) || !map.has(c.icon) ? c : { ...c, iconSvg: map.get(c.icon) });
+}
+
 /** Validate an originated category before it's stored. Returns error strings
  *  (empty = valid). `taken` = keys already in the merged taxonomy. */
 export function validateCategory(cat, taken, iconNames) {

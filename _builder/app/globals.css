@@ -436,6 +436,11 @@ button{ font-family:inherit; }
 .ow-cat-new{ border-style:dashed; }
 .ow-newcat{ display:flex; flex-direction:column; gap:8px; padding:10px; border:1px dashed var(--purple-bd); border-radius:10px; }
 .ow-icons{ display:flex; flex-wrap:wrap; gap:4px; max-height:96px; overflow-y:auto; }
+/* the full-library Lucide picker (search by name/tag) */
+.lp{ display:flex; flex-direction:column; gap:7px; }
+.lp .acct-input{ font-size:10px; }
+.lp-grid{ max-height:190px; }
+.lp-note{ font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.04em; color:var(--dim); }
 .ow-icon{ width:26px; height:26px; display:flex; align-items:center; justify-content:center; border-radius:6px; border:1px solid transparent; background:none; color:var(--muted); cursor:pointer; }
 .ow-icon svg{ width:14px; height:14px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
 .ow-icon.on{ border-color:#6366f1; color:#fff; background:rgba(99,102,241,.18); }
