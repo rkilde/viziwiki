@@ -48,7 +48,7 @@ export function AccountChip({ email, profile }: { email: string | null; profile:
           <form className="acct-modal" method="post" onMouseDown={(e) => e.stopPropagation()}
             onSubmit={(e) => { e.preventDefault(); submit(); }}>
             <div className="acct-title">{mode === 'in' ? 'Sign in' : 'Create account'}</div>
-            <input className="acct-input" type="email" name="email" autoComplete="username email"
+            <input className="acct-input" type="email" name="email" autoComplete="username"
               placeholder="email" autoFocus value={em} onChange={(e) => setEm(e.target.value)} />
             <input className="acct-input" type="password" name="password"
               autoComplete={mode === 'in' ? 'current-password' : 'new-password'}
