@@ -3,7 +3,7 @@
 **You are being handed one self-contained file: `browse-ui.html`. Open it in a
 browser — it renders with zero setup.** It is the Apple wiki's home page below
 the hero, extracted verbatim from the live codebase. The iteration target is
-the **BROWSE stanza** — the "Directory / Browse the wiki" section: a drill-in
+the **BROWSE section** — the "Directory / Browse the wiki" section: a drill-in
 tile grid over a `TREE`/`LABELS` data object, with breadcrumb nav, expanding
 drawers, mini image carousels, and status chips. Everything else in the file
 (timeline / numbers / see-also, the stylesheets) is context so the page looks
@@ -12,11 +12,11 @@ and behaves real.
 ## What ViziWiki is (one paragraph)
 
 A platform of visually-designed wikis. Admins own a design system (the
-**canon**); contributors supply content. A page is a stack of **stanzas**
+**canon**); contributors supply content. A page is a stack of **sections**
 (horizontal sections, each an eyebrow + H2 + content on a toned band); most
-stanzas hold an **emblem** — a canonized, data-driven visual format that
+sections hold an **emblem** — a canonized, data-driven visual format that
 renders entirely from supplied data. The browse UI is the home page's
-directory stanza: how a reader descends from a wiki's home into its content
+directory section: how a reader descends from a wiki's home into its content
 tree.
 
 ## Status: browse is NOT yet canonized
@@ -32,9 +32,9 @@ owner converge on becomes the canonical browse emblem. Design accordingly:
    shape in the file (nodes: name, range/date, href or stub, children via
    `key`, model lists). No hand-placed tiles. If you need richer data per
    node (an image, a blurb), define the field — don't hardcode instances.
-2. **The stanza frame stays.** Eyebrow + H2 + the toned band
+2. **The section frame stays.** Eyebrow + H2 + the toned band
    (`.wiki-section`, `data-tone`) are canon. Redesign what's INSIDE the
-   stanza, not the frame.
+   section, not the frame.
 3. **Layout = CSS only. JS = interaction only.** The builder renders markup
    with scripts stripped — a layout computed in JS collapses there. Drill-in,
    drawers, carousels (interaction) are fine in JS; geometry is not.

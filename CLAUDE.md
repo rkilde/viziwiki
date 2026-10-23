@@ -86,13 +86,14 @@ did, on the iPod charts — hence this rule). **Rule of thumb: document text →
   lifecycle-lane, photo-rail, prose-rail… From Greek *emblēma* — the
   prefabricated mosaic panel a master made once and inlaid into many floors:
   made once in canon, inserted into any page, data in → HTML+CSS out.
-- **Stanza** = one horizontal band of a page — the room that holds an emblem
-  (Italian *stanza*, "room"; a page is composed of stanzas the way a poem is).
-  Hero and overview are the two locked stanzas; the rest are contributor-added.
-  In code this is still a "section" (`.wiki-section`, `_includes/sections/`).
-- The tiering: **page** → **stanzas** → each stanza frames one **emblem** →
+- **Section** = one horizontal band of a page — the frame that holds an emblem
+  (matches the code: `.wiki-section`, `_includes/sections/`). Hero and overview
+  are the two locked sections; the rest are contributor-added. (The owner
+  briefly adopted "stanza" for this, then reverted to "section" — don't use
+  "stanza".)
+- The tiering: **page** → **sections** → each section frames one **emblem** →
   emblems live in the **banks** → everything obeys the **canon**.
-  ("Pick a stanza slot, choose an emblem from the bank, fill it in place.")
+  ("Pick a section slot, choose an emblem from the bank, fill it in place.")
 - These are VOCABULARY terms (chat, docs, UI copy) — never rename existing
   code identifiers, CSS classes, or `bank-*.css` files to match.
 - **Token** = a CSS custom property (`--section-title-color`, `--panel-bg`, …)
