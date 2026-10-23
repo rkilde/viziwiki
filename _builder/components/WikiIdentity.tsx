@@ -6,6 +6,7 @@ import taxonomyCanon from '../data/wiki-categories.json';
 import { mergeTaxonomy, resolveColor, spriteIconNames } from '../lib/taxonomy.mjs';
 import { COVER_CSS, wikiCoverTile } from '../lib/reader-core.mjs';
 import { GenArtRow, type GenWiki } from './GenArt';
+import { TaglineFields, joinTagline, splitTagline, type TagParts } from './TaglineFields';
 
 // The WIKI IDENTITY editor — alter the current wiki's tile cover art, tags,
 // tagline, blurb and status AFTER origination (admin, or the wiki's master).
@@ -23,7 +24,8 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, genAsUser = f
   const [loaded, setLoaded] = useState(false);
   const [cats, setCats] = useState<string[]>([]);
   const [blurb, setBlurb] = useState('');
-  const [tagline, setTagline] = useState('');
+  const [tagParts, setTagParts] = useState<TagParts>(['', '', '']);
+  const tagline = joinTagline(tagParts);
   const [status, setStatus] = useState<'live' | 'coming_soon'>('live');
   const [kind, setKind] = useState<'themed' | 'art' | 'bespoke'>('themed');
   const [artUrl, setArtUrl] = useState('');
@@ -43,7 +45,7 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, genAsUser = f
       const w = ws.find((x) => x.id === wikiId);
       if (w) {
         setCats(w.categories ?? []);
-        setBlurb(w.blurb ?? ''); setTagline(w.tagline ?? '');
+        setBlurb(w.blurb ?? ''); setTagParts(splitTagline(w.tagline));
         setStatus((w.status as any) ?? 'live');
         const tc = (w.tile_cover ?? { kind: 'themed' }) as TileCover;
         setKind(tc.kind); setArtUrl(tc.src ?? ''); setBespokeCls(tc.cls ?? null);
@@ -113,8 +115,8 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, genAsUser = f
                 </button>
               ))}
             </div>
-            <div className="ow-label">tagline — the dotted line under the title on the tile; a few words separated by ·</div>
-            <input className="acct-input" placeholder="e.g. Menus · Sauces · Slogans" value={tagline} onChange={(e) => setTagline(e.target.value)} />
+            <div className="ow-label">tagline — the dotted line under the title on the tile</div>
+            <TaglineFields parts={tagParts} onChange={setTagParts} placeholders={['Menus', 'Sauces', 'Slogans']} />
             <div className="ow-label">blurb — not shown on the tile: it powers browse search and the tile's hover tooltip</div>
             <textarea className="acct-input ow-blurb" placeholder="one sentence describing the wiki" value={blurb} onChange={(e) => setBlurb(e.target.value)} />
             <div className="ow-row">

@@ -7,6 +7,7 @@ import { mergeTaxonomy, resolveColor, slugifyId, spriteIconNames, validateCatego
 import { COVER_CSS, wikiCoverTile } from '../lib/reader-core.mjs';
 import { GenArtRow } from './GenArt';
 import { LucidePicker, loadLucide, type LucideLib } from './LucidePicker';
+import { TaglineFields, joinTagline, type TagParts } from './TaglineFields';
 
 // The admin "New wiki" flow — ORIGINATION (the origination arc, iteration 2).
 // Identity in, wiki out: name → id, categories from the MERGED taxonomy (the
@@ -32,7 +33,8 @@ export function OriginateWiki({ existingIds, onClose, onCreated, genAsUser = fal
   const [idTouched, setIdTouched] = useState(false);
   const [cats, setCats] = useState<string[]>([]);          // selection order = primary first
   const [blurb, setBlurb] = useState('');
-  const [tagline, setTagline] = useState('');
+  const [tagParts, setTagParts] = useState<TagParts>(['', '', '']);
+  const tagline = joinTagline(tagParts);
   const [status, setStatus] = useState<'live' | 'coming_soon'>('live');
   const [artUrl, setArtUrl] = useState('');
   const [grantEmail, setGrantEmail] = useState('');
@@ -157,9 +159,8 @@ export function OriginateWiki({ existingIds, onClose, onCreated, genAsUser = fal
                 </div>
               </div>
             )}
-            <div className="ow-label">tagline — the dotted line under the title on the tile; a few words separated by ·</div>
-            <input className="acct-input" placeholder="e.g. Teams · Players · Seasons" value={tagline}
-              onChange={(e) => setTagline(e.target.value)} disabled={!!createdId} />
+            <div className="ow-label">tagline — the dotted line under the title on the tile</div>
+            <TaglineFields parts={tagParts} onChange={setTagParts} disabled={!!createdId} />
             <div className="ow-label">blurb — not shown on the tile: it powers browse search and the tile's hover tooltip</div>
             <textarea className="acct-input ow-blurb" placeholder="one sentence describing the wiki" value={blurb}
               onChange={(e) => setBlurb(e.target.value)} disabled={!!createdId} />
