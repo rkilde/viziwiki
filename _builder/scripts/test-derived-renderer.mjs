@@ -894,9 +894,12 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
     'every category icon exists in the canon sprite');
   ok(new Set(tax.categories.map((c) => c.key)).size === tax.categories.length, 'category keys are unique');
 
-  // browse.html DERIVES the taxonomy (no restatement left behind)
+  // browse.html DERIVES the taxonomy — first via a build-time Liquid splice
+  // (iteration 1), since superseded by the /api/directory feed (iteration 3,
+  // case 22). Either pipe counts; restating labels/gradients never does.
   const browse = fs.readFileSync('../browse.html', 'utf8');
-  ok(browse.includes('site.data.wiki_categories'), 'browse.html derives its categories from the canon data file');
+  ok(browse.includes('site.data.wiki_categories') || browse.includes('/api/directory'),
+    'browse.html derives its categories (Liquid splice or the directory feed)');
   ok(!browse.includes('label:"Pop Culture"') && !/\.grad-music\{background-image/.test(browse),
     'browse.html no longer restates category labels or gradient rules');
 
@@ -951,6 +954,43 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(validateNewWiki({ name: 'Dune', id: 'dune', categories: ['film'] }, ['apple'], merged.categories.map((c) => c.key)).length === 0, 'a valid wiki passes');
   ok(validateNewWiki({ name: 'Apple', id: 'apple', categories: ['tech'] }, ['apple'], merged.categories.map((c) => c.key)).length === 1, 'a taken wiki id is rejected');
   ok(validateNewWiki({ name: 'X', id: 'x', categories: [] }, [], []).length === 1, 'a wiki needs at least one category');
+}
+
+// ── case 22: THE DIRECTORY LIVES IN THE DATABASE (origination arc, iter. 3)
+// — the public feed's payload, the seeded migration, and a browse page that
+// derives instead of restating ──
+{
+  console.log('case 22: directory — /api/directory payload, 0008 seed, browse derives');
+  const { directoryPayload } = await import('../lib/taxonomy.mjs');
+  const canonTax = JSON.parse(fs.readFileSync('data/wiki-categories.json', 'utf8'));
+
+  const pay = directoryPayload(
+    [{ id: 'taco-bell', name: 'Taco Bell', categories: ['food'], tagline: 'Menus', status: 'live', tile_cover: { kind: 'bespoke', cls: 'c-tacobell' }, entries: 1284, popularity: 96 },
+     { id: 'bare', name: 'Bare' }],
+    canonTax,
+    [{ key: 'tabletop', label: 'Tabletop', icon: 'gamepad-2', grad_from: '#123', grad_to: '#456' }]);
+  const food22 = pay.categories.find((c) => c.key === 'food');
+  ok(food22 && food22.from === canonTax.palette.gold && food22.to === canonTax.palette.rust, 'canon categories arrive with RESOLVED colors (no palette needed by consumers)');
+  const tt22 = pay.categories.find((c) => c.key === 'tabletop');
+  ok(tt22 && tt22.from === '#123' && tt22.to === '#456', 'originated categories ride the same feed');
+  const bare = pay.wikis.find((w) => w.id === 'bare');
+  ok(bare && bare.status === 'live' && bare.tile_cover.kind === 'themed' && bare.entries === 0, 'identity-less rows (pre-0006) get safe defaults');
+  ok(pay.wikis[0].tile_cover.cls === 'c-tacobell' && pay.wikis[0].popularity === 96, 'identity and stats pass through');
+
+  // migration 0008 seeds the WHOLE hand-built directory
+  const mig = fs.readFileSync('supabase/migrations/0008_directory_seed.sql', 'utf8');
+  for (const id of ['taco-bell', 'fallout', 'apple', 'smurfs-village', 'doodle-jump'])
+    ok(mig.includes(`('${id}','`), `0008 seeds the ${id} flagship`);
+  ok((mig.match(/'coming_soon'/g) || []).length >= 34, '0008 seeds the full coming-soon directory (34 titles)');
+  ok(mig.includes('on conflict (id) do update') && mig.includes('coalesce(wikis.blurb'), '0008 re-runs refresh stats + fill only MISSING identity');
+
+  // the browse page DERIVES — no wiki data restated on the page
+  const browse22 = fs.readFileSync('../browse.html', 'utf8');
+  ok(browse22.includes('/api/directory'), 'browse.html fetches the public directory feed');
+  ok(!browse22.includes('entries:4821') && !browse22.includes('TAGLINES') && !browse22.includes('Crunchwraps'), 'no wiki rows, taglines or blurbs restated on the page');
+  ok(!browse22.includes('site.data.wiki_categories'), 'no build-time taxonomy splice left (the feed carries the merged set)');
+  ok(browse22.includes('"c-tacobell"') && browse22.includes('tile_cover'), 'the bespoke cover ART stays on-page, keyed by the DB tile_cover.cls reference');
+  ok(browse22.includes('t-display') && browse22.includes('t-label') && browse22.includes('t-lead'), "the page's document text reads the canon type roles");
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

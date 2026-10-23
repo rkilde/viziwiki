@@ -165,3 +165,26 @@ Owner step to switch it on:
    in the repo; surfaces render the merged set).
 2. Verify: builder → wiki switcher → **New wiki** → originate a test wiki →
    it opens in the builder and its cover tile appears on `/read`.
+
+## The directory lives in the database (iteration 3 — switch-on step)
+
+The live site's **browse page now renders from the database**: it fetches the
+platform's public feed (`vizwiki.vercel.app/api/directory` — every wiki's
+identity + the merged category taxonomy with resolved colors) and builds its
+filter chips and cover tiles from it. Originate a wiki (or a new category) in
+the build kit → its tile (and chip) appears on the live browse page
+automatically, no deploy. Hardcoded on the page now: only the five hand-coded
+bespoke covers (referenced by `tile_cover.cls`), the "All" chip, and the page
+layout. The page's document text (eyebrow / H1 / intro) reads the canon type
+roles.
+
+Owner step to switch it on:
+1. **SQL Editor** → paste + Run `_builder/supabase/migrations/0008_directory_seed.sql`.
+   It seeds EVERY wiki that was hardcoded on the browse page into `wikis`
+   (the 5 flagships live + 34 coming-soon titles, with their categories,
+   blurbs, taglines, and placeholder entries/popularity stats — those columns
+   become derived page-count/traffic numbers later). Re-runs refresh stats
+   and never clobber identity.
+2. Verify: hard-refresh the live `/browse.html` — the full library renders as
+   before (now from the database; coming-soon tiles say "Coming soon"), and a
+   freshly originated wiki shows up on it within a minute.
