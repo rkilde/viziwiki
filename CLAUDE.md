@@ -564,6 +564,16 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
     origination (store: updateWikiIdentity — identity only, never
     id/slug/skin/content). Both ping /read + /api/directory on save so
     every surface updates in seconds.
+  · **WIKI ICON slot (DONE, Oct 2026):** migration `0009_wiki_icon.sql` —
+    `wikis.icon jsonb` (`{"kind":"auto"}` letter mark default ·
+    `{"kind":"glyph","name":…}` canon sprite · `{"kind":"art","src":…}` the
+    wiki's own image, master media pattern). The wiki's compact MARK: the
+    build-kit switcher renders it now (flagships included via an icons map
+    over the static entries); the live chrome's `#wiki-bar-logo-host` /
+    TOC-rail slot consumes it when the chrome goes DB-native (the five
+    flagship hand-set `toc.wikiLogo` marks stay page-side till then).
+    Editable in the identity editor (kind select + glyph grid + art URL +
+    live mark preview); rides `/api/directory` for future compact listings.
 - **Vizi-verse** (the narrative side; currently only `top-10.html`) — deferred.
 
 ---

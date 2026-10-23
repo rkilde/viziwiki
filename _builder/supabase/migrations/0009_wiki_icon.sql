@@ -1,0 +1,21 @@
+-- ════════════════════════════════════════════════════════════════════
+-- ViziWiki · Supabase — migration 0009: the WIKI ICON slot.
+-- Paste into SQL Editor → Run. Idempotent; content untouched.
+--
+-- The wiki's small MARK — shown wherever a wiki needs a compact identity:
+-- the build kit's wiki switcher today; the live site's wiki chrome (the
+-- mobile wiki-bar logo + desktop TOC rail — #wiki-bar-logo-host) and any
+-- future compact listing as those surfaces go DB-native. Like the tile
+-- cover, the icon is PER-WIKI CONTENT (the canon owns only the frame):
+--
+--   {"kind":"auto"}                   — derived letter mark (the default)
+--   {"kind":"glyph","name":"pizza"}   — a canon sprite icon
+--   {"kind":"art","src":"https://…"}  — the wiki's own uploaded image
+--                                       (master media pattern: URL today,
+--                                        Supabase Storage at launch)
+--
+-- The five flagships' hand-built chrome logos stay hand-set in their Jekyll
+-- pages (toc.wikiLogo) until the chrome goes DB-native — no restated art.
+-- ════════════════════════════════════════════════════════════════════
+
+alter table public.wikis add column if not exists icon jsonb not null default '{"kind":"auto"}'::jsonb;

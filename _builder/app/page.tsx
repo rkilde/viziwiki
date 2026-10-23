@@ -42,15 +42,21 @@ export default function Page() {
   // originated wikis come from the content store (rows beyond the extracted
   // flagships) — they exist for every account; the grant filter below decides
   // who sees which
+  // wiki MARKS (migration 0009) for EVERY row — flagships included, since their
+  // dashboard entries come from the static extraction, not the DB row
+  const [wikiIcons, setWikiIcons] = useState<Record<string, Wiki['icon']>>({});
   const refreshCloudWikis = () => {
     if (!contentStore) return;
     contentStore.listWikis()
-      .then((rows) => setCloudWikis(rows
-        .filter((r) => !WIKIS.some((w) => w.id === r.id))
-        // live wikis first (the ones with work in them), then the coming-soon
-        // directory seeds, A–Z within each
-        .sort((a, b) => (a.status === 'coming_soon' ? 1 : 0) - (b.status === 'coming_soon' ? 1 : 0) || a.name.localeCompare(b.name))
-        .map((r) => wikiFromMeta(r.id, r.name, r.status))))
+      .then((rows) => {
+        setWikiIcons(Object.fromEntries(rows.map((r) => [r.id, r.icon as Wiki['icon']])));
+        setCloudWikis(rows
+          .filter((r) => !WIKIS.some((w) => w.id === r.id))
+          // live wikis first (the ones with work in them), then the coming-soon
+          // directory seeds, A–Z within each
+          .sort((a, b) => (a.status === 'coming_soon' ? 1 : 0) - (b.status === 'coming_soon' ? 1 : 0) || a.name.localeCompare(b.name))
+          .map((r) => wikiFromMeta(r.id, r.name, r.status, r.icon as Wiki['icon'])));
+      })
       .catch(() => {});
   };
   useEffect(refreshCloudWikis, []);
@@ -68,9 +74,10 @@ export default function Page() {
   const realClass = (profile?.class ?? null) as ContributorClass | null;
   const grantRole = realRole === 'admin' && viewAs !== 'me' ? (viewAs === 'viewer' ? 'viewer' : 'contributor') : realRole;
   const grantClass = grantRole === 'contributor' ? (realRole === 'admin' && viewAs !== 'me' ? (viewAs as ContributorClass) : realClass) : null;
-  const allWikis = useMemo(
-    () => (realRole === 'admin' ? [...WIKIS, ...cloudWikis, ...userWikis] : [...WIKIS, ...cloudWikis]),
-    [userWikis, cloudWikis, realRole]);
+  const allWikis = useMemo(() => {
+    const statics = WIKIS.map((w) => (wikiIcons[w.id] ? { ...w, icon: wikiIcons[w.id] } : w));
+    return realRole === 'admin' ? [...statics, ...cloudWikis, ...userWikis] : [...statics, ...cloudWikis];
+  }, [userWikis, cloudWikis, wikiIcons, realRole]);
   const shownWikis = useMemo(() => {
     const ids = grantedWikiIds(grantRole, grantClass, profile?.wiki_id ?? null, allWikis.map((w) => w.id));
     return allWikis.filter((w) => ids.includes(w.id));

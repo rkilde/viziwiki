@@ -445,6 +445,14 @@ button{ font-family:inherit; }
 
 /* ════ category manager (admin tags) + identity button ════ */
 .wiki-identity-btn{ display:inline-flex; align-items:center; gap:5px; margin-left:4px; }
+/* the wiki MARK (icon slot, 0009) in the switcher + the identity preview */
+.wiki-mark-img{ width:100%; height:100%; object-fit:cover; display:block; }
+.wiki-mark-glyph{ width:12px; height:12px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.wi-icon-row{ grid-template-columns:1fr auto; align-items:center; }
+.wi-mark-preview{ width:30px; height:30px; border-radius:7px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:var(--bg4); border:1px solid var(--border3); color:var(--text); }
+.wi-mark-preview img{ width:100%; height:100%; object-fit:cover; }
+.wi-mark-preview svg{ width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.wi-mark-preview b{ font-family:'Fraunces',serif; font-size:14px; }
 .mc-modal{ width:min(640px, calc(100vw - 32px)); max-height:min(86vh, 900px); overflow-y:auto; }
 .mc-list{ display:flex; flex-direction:column; gap:4px; }
 .mc-row{ display:flex; align-items:center; gap:9px; padding:6px 8px; border:1px solid var(--border2); border-radius:8px; background:var(--bg3); }
