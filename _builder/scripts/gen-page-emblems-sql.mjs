@@ -32,6 +32,7 @@ const fmTitle = (txt, fallback) => {
 const pageRows = [];
 const wikiMarks = [];
 for (const [wikiId, dirs] of Object.entries(WIKIS)) {
+  let homeMark = null, anyWikiLogo = null;
   for (const dir of dirs) {
     const abs = path.join(ROOT, dir);
     if (!fs.existsSync(abs)) continue;
@@ -40,28 +41,31 @@ for (const [wikiId, dirs] of Object.entries(WIKIS)) {
       if (!txt.includes('WIKI_TOC')) continue;
       const icon = extractPageEmblem(txt);
       const isHome = f === HOME_FILE[wikiId];
-      if (icon) {
-        pageRows.push({
-          wiki: wikiId,
-          id: isHome ? `${wikiId}-home` : f.replace(/\.html$/, ''),
-          slug: f,
-          title: fmTitle(txt, f.replace(/\.html$/, '')),
-          type: isHome ? 'home' : 'standard',
-          icon,
-        });
-      }
-      if (isHome) {
-        // the WIKI's mark: its wikiLogo, else its home pageLogo (the homes
-        // that define only pageLogo use it as the wiki mark)
-        const wm = extractPageEmblem(txt, 'wikiLogo') || icon;
-        if (wm) wikiMarks.push({ wiki: wikiId, icon: wm });
-      }
+      // EVERY scanned page gets a row — a null icon clears a previously
+      // seeded mark, and the identity-only row is the page's seat in the
+      // table (no published revision → invisible to readers)
+      pageRows.push({
+        wiki: wikiId,
+        id: isHome ? `${wikiId}-home` : f.replace(/\.html$/, ''),
+        slug: f,
+        title: fmTitle(txt, f.replace(/\.html$/, '')),
+        type: isHome ? 'home' : 'standard',
+        icon,
+      });
+      // the WIKI's mark: the home's wikiLogo, else ANY page's wikiLogo (the
+      // sub-pages carry the real mark where the home leaves it out — Taco
+      // Bell's bell lives on its listing pages), else the home's pageLogo
+      const wl = extractPageEmblem(txt, 'wikiLogo');
+      if (wl && (isHome || !anyWikiLogo)) anyWikiLogo = wl;
+      if (isHome && icon) homeMark = icon;
     }
   }
+  const wm = anyWikiLogo || homeMark;
+  if (wm) wikiMarks.push({ wiki: wikiId, icon: wm });
 }
 
 const lines = pageRows.map((r) =>
-  `  ('${sq(r.wiki)}', '${sq(r.id)}', '${sq(r.slug)}', '${sq(r.title)}', '${sq(r.type)}', '${sq(JSON.stringify(r.icon))}'::jsonb)`);
+  `  ('${sq(r.wiki)}', '${sq(r.id)}', '${sq(r.slug)}', '${sq(r.title)}', '${sq(r.type)}', ${r.icon ? `'${sq(JSON.stringify(r.icon))}'::jsonb` : 'null'})`);
 
 const sql = `-- 0010_page_emblems.sql — PAGE EMBLEMS live in the table (owner's rule,
 -- late Oct 2026). Adds pages.icon (the page's small MARK, master media
@@ -83,10 +87,12 @@ insert into public.pages (wiki_id, id, slug, title, type, icon) values
 ${lines.join(',\n')}
 on conflict (wiki_id, id) do update set icon = excluded.icon;
 
--- ── the flagship WIKI emblems (hand-drawn wikiLogo marks) — fill only where
--- the wiki still wears the auto default, never clobber an owner-set mark ──
+-- ── the flagship WIKI emblems (hand-drawn wikiLogo marks) — fill where the
+-- wiki still wears the auto default OR a previously SEEDED mark (an inline
+-- data-uri svg, i.e. an earlier run of this file); a glyph pick or an image
+-- URL the owner set is never touched ──
 ${wikiMarks.map((w) =>
-  `update public.wikis set icon = '${sq(JSON.stringify(w.icon))}'::jsonb\n  where id = '${sq(w.wiki)}' and (icon is null or icon->>'kind' = 'auto');`).join('\n')}
+  `update public.wikis set icon = '${sq(JSON.stringify(w.icon))}'::jsonb\n  where id = '${sq(w.wiki)}' and (icon is null or icon->>'kind' = 'auto'\n    or (icon->>'kind' = 'art' and icon->>'src' like 'data:image/svg+xml;base64,%'));`).join('\n')}
 `;
 
 const out = path.join(process.cwd(), 'supabase', 'migrations', '0010_page_emblems.sql');

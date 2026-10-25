@@ -35,12 +35,37 @@ export function readTocString(txt, key) {
 // media pattern's next step), rather than bloating the bundle/table
 const IMG_CAP = 8 * 1024;
 
+/** Make an inline-HTML `<svg>` SELF-CONTAINED so it renders as a standalone
+ *  image (<img src="data:…">): inline HTML tolerates a missing xmlns and
+ *  inherits currentColor from the chrome — a standalone SVG document does
+ *  neither (no xmlns = the browser refuses to render it at all). The live
+ *  rails draw these marks light-on-dark, so currentColor becomes #fff. */
+export function standaloneSvg(svg) {
+  let s = String(svg);
+  const root = s.match(/<svg\b[^>]*>/i);
+  if (root && !/xmlns\s*=/.test(root[0])) {
+    s = s.replace(/<svg\b/i, '<svg xmlns="http://www.w3.org/2000/svg"');
+  }
+  if (/xlink:/.test(s) && !/xmlns:xlink/.test(s)) {
+    s = s.replace(/<svg\b/i, '<svg xmlns:xlink="http://www.w3.org/1999/xlink"');
+  }
+  return s.replace(/currentColor/g, '#fff');
+}
+
 /** The page's emblem (WIKI_TOC.pageLogo) as master-media art, or null.
- *  Handles the two shapes found on the site: an inline `<svg>` (lifted as a
- *  data URI) and a small `<img src="data:…">` (its data URI lifted as-is). */
+ *  Handles the two shapes found on the site: an inline `<svg>` (made
+ *  self-contained, lifted as a data URI) and a small `<img src="data:…">`
+ *  (its data URI lifted as-is). An svg with no drawable content (the empty
+ *  placeholder open-tags on two pages) or one leaning on an on-page sprite
+ *  (<use href="#…">) can't stand alone — those lift as null. */
 export function extractPageEmblem(txt, key = 'pageLogo') {
   const val = (readTocString(txt, key) || '').trim();
-  if (val.startsWith('<svg')) return { kind: 'art', src: svgToDataUri(val) };
+  if (val.startsWith('<svg')) {
+    const inner = val.replace(/^<svg\b[^>]*>/i, '').replace(/<\/svg\s*>\s*$/i, '');
+    if (!/<\s*[a-z]/i.test(inner)) return null;            // nothing drawn
+    if (/<use\b/i.test(inner)) return null;                // needs the page's sprite
+    return { kind: 'art', src: svgToDataUri(standaloneSvg(val)) };
+  }
   if (val.startsWith('<img')) {
     const m = val.match(/src\s*=\s*["'](data:image\/[^"']+)["']/i);
     if (m && m[1].length <= IMG_CAP) return { kind: 'art', src: m[1] };

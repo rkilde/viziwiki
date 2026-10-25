@@ -1206,8 +1206,8 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
 
   // the extract pipes carry the scanned marks into the builder data
   const tb27 = JSON.parse(fs.readFileSync('data/taco-bell.json', 'utf8'));
-  ok(tb27.home.icon?.kind === 'art' && tb27.pages.some((p) => p.icon?.kind === 'art'),
-    'extraction carries page emblems (taco-bell home + category pages)');
+  ok(tb27.pages.some((p) => p.icon?.kind === 'art'), 'extraction carries page emblems (taco-bell category pages)');
+  ok(tb27.home.icon == null, 'the home\'s EMPTY placeholder mark correctly lifts as none (the broken-image bug)');
   ok(JSON.parse(fs.readFileSync('data/apple.json', 'utf8')).home.icon?.kind === 'art', 'apple home carries its mark');
 
   // the table: migration 0010 adds pages.icon + seeds every scanned mark
@@ -1226,6 +1226,50 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
     'the rail header carries the page-emblem slot: the mark, or the dashed "+" with the clickable hover tip');
   ok(fs.readFileSync('components/canvas/PageEmblemSheet.tsx', 'utf8').includes('setPageIcon'),
     'the emblem sheet saves through the store — the mark lives in the table');
+}
+
+// ── case 28: PROJECT DBNATIVE slice 1 — the flagship content backfill, and
+// emblems made SELF-CONTAINED (standalone-SVG fix) ──
+{
+  console.log('case 28: DBNATIVE — flagship backfill serves, emblems stand alone');
+  const { flagshipDocs } = await import('../lib/backfill-docs.mjs');
+  const { validateDoc: vd28 } = await import('../lib/content-map.mjs');
+  const { buildPolicy: bp28 } = await import('../lib/policy.mjs');
+  const { createRenderer: cr28 } = await import('../lib/render-core.mjs');
+  const g28 = JSON.parse(fs.readFileSync('data/grammar.json', 'utf8'));
+  const r28 = cr28(JSON.parse(fs.readFileSync('data/includes.json', 'utf8')), bp28(g28), JSON.parse(fs.readFileSync('data/visuals.json', 'utf8')));
+  const docs28 = flagshipDocs();
+  ok(docs28.length >= 22, `every extracted flagship page assembles as a stored doc (${docs28.length})`);
+  let served = 0;
+  for (const p of docs28) {
+    const v = vd28(p.doc, g28);
+    if (!v.ok) { ok(false, `${p.wiki}/${p.id} fails grammar validation: ${v.errors[0]}`); continue; }
+    const html = r28.renderBody(p.doc, p.isHome);
+    if (html && html.length > 200) served++;
+  }
+  ok(served === docs28.length, `the derived renderer serves ALL backfilled docs (${served}/${docs28.length}) — reader-ready`);
+  const ipod28 = docs28.find((p) => p.id === 'apple-ipod-touch-4g');
+  ok(ipod28 && ipod28.doc.sections.length >= 8, 'a fully-banked page carries its whole body (iPod 4g ≥ 8 sections)');
+
+  const mig28 = fs.readFileSync('supabase/migrations/0011_db_native_content.sql', 'utf8');
+  ok((mig28.match(/insert into public\.pages /g) || []).length >= 22, '0011 backfills every flagship page');
+  ok(mig28.includes('where not exists (select 1 from public.sections'), 'a page already saved in the builder is NEVER clobbered');
+  ok(mig28.includes("set_config('vizi.publishing', '1', false)") && mig28.includes('published_rev'),
+    'each backfilled page gets a published revision + the guarded pointer move (0004 pattern)');
+
+  // emblems render STANDALONE: xmlns injected, currentColor resolved, empty
+  // or sprite-dependent marks never lift (the broken-image bug)
+  const { extractPageEmblem: epe28, standaloneSvg } = await import('../lib/page-emblem.mjs');
+  const dec = (u) => Buffer.from(u.src.split(',')[1], 'base64').toString('utf8');
+  const lifted = epe28(`WIKI_TOC={pageLogo:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 1"/></svg>'}`);
+  ok(/xmlns="http:\/\/www\.w3\.org\/2000\/svg"/.test(dec(lifted)) && !/currentColor/.test(dec(lifted)),
+    'a lifted mark gains xmlns + fixed colors — it renders inside <img>');
+  ok(epe28(`WIKI_TOC={pageLogo:'<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">'}`) === null,
+    'an EMPTY placeholder svg never lifts (the broken-mark bug)');
+  ok(epe28(`WIKI_TOC={pageLogo:'<svg><use href="#ic-x"/></svg>'}`) === null, 'a sprite-dependent mark never lifts');
+  ok(standaloneSvg('<svg><path/></svg>').startsWith('<svg xmlns='), 'standaloneSvg injects the namespace');
+  const mig28b = fs.readFileSync('supabase/migrations/0010_page_emblems.sql', 'utf8');
+  ok(mig28b.includes("like 'data:image/svg+xml;base64,%'"), 're-running 0010 refreshes previously SEEDED wiki marks (owner picks untouched)');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);
