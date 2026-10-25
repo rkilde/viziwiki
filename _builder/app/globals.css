@@ -97,8 +97,12 @@ button{ font-family:inherit; }
   --panel-w:424px; --cvl-w:236px;
 }
 #cvt{ position:fixed; top:var(--topbar-h); left:0; right:0; bottom:0; display:grid;
-  grid-template-columns:var(--cvl-w) minmax(0,1fr) var(--panel-w); overflow:hidden; }
+  grid-template-columns:var(--cvl-w) minmax(0,1fr) var(--panel-w);
+  /* clamp the one row to the shell's height — otherwise a tall page preview
+     grows the row and pushes the rail's pinned action below the screen */
+  grid-template-rows:minmax(0,1fr); overflow:hidden; }
 #cvt.solo{ grid-template-columns:var(--cvl-w) minmax(0,1fr); }
+#cvt .work, #cvt .panel, #cvt .cvt-left{ min-height:0; }
 /* narrower windows shrink the rail, then float it over the map — never dropped */
 @media (max-width:1320px){ :root{ --panel-w:380px; } }
 @media (max-width:1120px){ :root{ --panel-w:344px; --cvl-w:204px; } }
@@ -109,10 +113,32 @@ button{ font-family:inherit; }
 }
 @keyframes cvt-rail-in{ from{ transform:translateX(26px); opacity:.4; } to{ transform:none; opacity:1; } }
 
-/* ── the LEFT rail: wiki identity first, then the category quick-nav ── */
+/* ── the LEFT rail, in SECTIONS (owner's structure): the emblem + title
+   header, then identity, then Wiki home, then the main categories with
+   their sub pages expandable ── */
 .cvt-left{ display:flex; flex-direction:column; min-width:0; border-right:1px solid var(--border2);
-  background:var(--bg2); overflow-y:auto; padding:12px 10px; gap:2px; }
-.cvt-id-btn{ display:flex; align-items:center; gap:10px; text-align:left; width:100%; margin-bottom:10px;
+  background:var(--bg2); overflow-y:auto; padding:12px 10px 16px; }
+/* the rail header: the wiki's EMBLEM + its title. Hovering the emblem pops a
+   clickable tooltip that opens the master-emblem editor. */
+.cvt-rail-head{ display:flex; align-items:center; gap:10px; padding:4px 5px 13px; }
+.cvt-mark{ width:34px; height:34px; flex:none; border-radius:10px; overflow:hidden; display:flex; align-items:center;
+  justify-content:center; background:var(--purple); color:#fff; font-family:'Fraunces',serif; font-weight:700; font-size:16px; }
+.cvt-mark img{ width:100%; height:100%; object-fit:cover; display:block; }
+.cvt-mark svg{ width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.cvt-mark-wrap{ position:relative; flex:none; }
+.cvt-mark-btn{ display:block; padding:0; border:0; background:none; cursor:pointer; border-radius:10px; }
+.cvt-mark-btn:hover, .cvt-mark-btn:focus-visible{ box-shadow:0 0 0 2px var(--purple-bd); outline:none; }
+.cvt-mark-tip{ position:absolute; top:100%; left:0; z-index:40; display:none; padding:6px 0 0; border:0; background:none; cursor:pointer; }
+.cvt-mark-wrap:hover .cvt-mark-tip, .cvt-mark-tip:hover, .cvt-mark-btn:focus-visible + .cvt-mark-tip{ display:block; }
+.cvt-mark-tip span{ display:block; white-space:nowrap; padding:7px 11px; border-radius:9px;
+  background:var(--bg4); border:1px solid var(--purple-bd); color:var(--purple-lt); font-size:11.5px;
+  font-family:'Spectral',serif; box-shadow:0 10px 26px rgba(0,0,0,.5); transition:.12s; }
+.cvt-mark-tip:hover span{ background:var(--purple-bg); border-color:var(--purple); color:#fff; }
+.cvt-rail-title{ flex:1; min-width:0; font-family:'Fraunces',serif; font-size:15.5px; font-weight:600;
+  letter-spacing:-.01em; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+/* a rail section */
+.cvt-sec{ padding:10px 0; border-top:1px solid var(--border); }
+.cvt-id-btn{ display:flex; align-items:center; gap:10px; text-align:left; width:100%;
   padding:11px 11px; border-radius:11px; cursor:pointer; color:var(--text);
   background:var(--purple-bg); border:1px solid var(--purple-bd); transition:border-color .14s, background .14s; }
 .cvt-id-btn:hover{ border-color:var(--purple); }
@@ -123,19 +149,28 @@ button{ font-family:inherit; }
 .cvt-id-tx b{ font-family:'Fraunces',serif; font-size:13px; font-weight:600; letter-spacing:-.01em; }
 .cvt-id-tx i{ font-style:normal; font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.04em; color:var(--muted);
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.cvt-left-head{ padding:8px 9px 7px; font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.18em;
+.cvt-left-head{ padding:2px 9px 7px; font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.18em;
   text-transform:uppercase; color:var(--dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.cvt-nav{ display:flex; align-items:center; gap:8px; width:100%; text-align:left; padding:8px 9px; border-radius:7px;
-  border:0; background:none; cursor:pointer; color:var(--text); transition:background .1s; }
+/* a nav row: the row body navigates; the chevron (holders only) expands its
+   sub pages in place */
+.cvt-nav{ display:flex; align-items:center; width:100%; border-radius:7px; transition:background .1s; }
 .cvt-nav:hover{ background:var(--bg3); }
 .cvt-nav.sel{ background:var(--bg4); }
+.cvt-nav.on .cvt-nav-nm{ color:var(--purple-lt); }
+.cvt-nav-main{ flex:1; min-width:0; display:flex; align-items:center; gap:8px; padding:8px 9px; border:0; background:none;
+  cursor:pointer; color:var(--text); text-align:left; font-family:inherit; }
 .cvt-nav-ic{ width:13px; height:13px; flex:none; color:var(--purple); display:flex; align-items:center; }
 .cvt-nav-ic svg{ width:13px; height:13px; }
 .cvt-nav-nm{ flex:1; min-width:0; font-family:'Spectral',serif; font-size:12.5px; line-height:1.3;
   overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .cvt-nav-tag{ font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:.12em; text-transform:uppercase;
-  color:var(--purple); background:var(--purple-bg); border-radius:4px; padding:2px 6px; flex:none; }
+  color:var(--purple); background:var(--purple-bg); border-radius:4px; padding:2px 6px; flex:none; margin-right:7px; }
 .cvt-nav-n{ font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--dim); flex:none; }
+.cvt-exp{ width:26px; height:26px; flex:none; margin-right:3px; border:0; border-radius:6px; background:none; cursor:pointer;
+  color:var(--dim); display:flex; align-items:center; justify-content:center; transition:.12s; }
+.cvt-exp:hover{ color:var(--text); background:var(--bg4); }
+.cvt-exp svg{ width:11px; height:11px; transition:transform .16s; }
+.cvt-exp.open svg{ transform:rotate(90deg); }
 /* canonical hierarchy dots — gold main-category / blue subcategory / neutral page */
 .cvt-dot{ width:8px; height:8px; border-radius:50%; flex:none; background:var(--border3); }
 .cvt-dot.cat{ background:var(--amber); }

@@ -218,12 +218,55 @@ const IcPencil = <><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 
 const IcIdentity = <><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21" /></>;
 const IcHome = <><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></>;
 
+/* the wiki's EMBLEM mark (the icon slot, migration 0009): art image →
+   sprite glyph → auto letter. The sprite is injected once by the Topbar. */
+function WikiEmblemMark({ wiki }: { wiki: Wiki }) {
+  const ic = wiki.icon;
+  if (ic?.kind === 'art' && ic.src) return <span className="cvt-mark"><img src={ic.src} alt="" /></span>;
+  if (ic?.kind === 'glyph' && ic.name) return <span className="cvt-mark"><svg><use href={`#ic-${ic.name}`} /></svg></span>;
+  return <span className="cvt-mark">{((wiki.name || '?').trim()[0] || '?').toUpperCase()}</span>;
+}
+
+/* a left-rail nav row, RECURSIVE: the row body navigates the map; the
+   chevron (holders only) expands the branch's sub pages in place. Dots come
+   from the canonical hierarchy (lib/hierarchy). */
+function NavRow({ p, depth, wiki, selId, focusId, expanded, onToggle, onNav }: {
+  p: Page; depth: number; wiki: Wiki; selId: string; focusId: string | null;
+  expanded: Record<string, boolean>; onToggle: (id: string) => void; onNav: (id: string) => void;
+}) {
+  const kids = kidsOf(wiki, p);
+  const open = !!expanded[p.id];
+  return (
+    <>
+      <div className={`cvt-nav ${selId === p.id ? 'sel' : ''} ${focusId === p.id && selId !== p.id ? 'on' : ''}`}>
+        <button className="cvt-nav-main" style={{ paddingLeft: 9 + depth * 15 }} onClick={() => onNav(p.id)}>
+          <span className={`cvt-dot ${dotClass(depth, kids.length > 0)}`} />
+          <span className="cvt-nav-nm">{oneLine(p.title)}</span>
+          {kids.length > 0 && !open && <span className="cvt-nav-n">{kids.length}</span>}
+        </button>
+        {kids.length > 0 && (
+          <button className={`cvt-exp ${open ? 'open' : ''}`} onClick={() => onToggle(p.id)}
+            aria-label={open ? `Collapse ${oneLine(p.title)}` : `Expand ${oneLine(p.title)}`}>
+            <Svg d={IcFwd} w={2.6} />
+          </button>
+        )}
+      </div>
+      {open && kids.map((k) => (
+        <NavRow key={k.id} p={k} depth={depth + 1} wiki={wiki} selId={selId} focusId={focusId}
+          expanded={expanded} onToggle={onToggle} onNav={onNav} />
+      ))}
+    </>
+  );
+}
+
 /* ════════════════════════ the component ════════════════════════ */
-export function CanvasTree({ wiki, onOpen, onAddNode, onEditIdentity }: {
+export function CanvasTree({ wiki, onOpen, onAddNode, onEditIdentity, onEditEmblem }: {
   wiki: Wiki;
   onOpen?: (page: Page) => void;
   onAddNode?: (parentId: string, title: string) => Page;
   onEditIdentity?: () => void;
+  /** opens the identity editor straight on the master wiki-emblem screen */
+  onEditEmblem?: () => void;
 }) {
   const homeId = wiki.home.id;
   const [rootId, setRootId] = useState(homeId);
@@ -234,6 +277,8 @@ export function CanvasTree({ wiki, onOpen, onAddNode, onEditIdentity }: {
   const [adding, setAdding] = useState<{ kind: 'cat' | 'page'; parentId: string } | null>(null);
   const [addTitle, setAddTitle] = useState('');
   const [zoom, setZoom] = useState(1);
+  // which left-rail branches are expanded (category id → open)
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
 
   // keep the view valid when the tree changes under it (wiki prop updates)
   const sel = findPage(wiki, selId) || wiki.home;
@@ -403,28 +448,43 @@ export function CanvasTree({ wiki, onOpen, onAddNode, onEditIdentity }: {
 
   return (
     <div id="cvt" className={panelOff ? 'solo' : ''}>
-      {/* ── LEFT RAIL — site/wiki controls; identity first (owner's rule),
-          then the category quick-nav (where the main-category column was) ── */}
+      {/* ── LEFT RAIL, in SECTIONS (owner's structure): the emblem + title
+          header · the identity button · Wiki home · the main categories,
+          each expandable to its sub pages ── */}
       <div className="cvt-left">
+        <div className="cvt-rail-head">
+          {onEditEmblem ? (
+            <span className="cvt-mark-wrap">
+              <button className="cvt-mark-btn" onClick={onEditEmblem} aria-label="Change the wiki emblem"><WikiEmblemMark wiki={wiki} /></button>
+              <button className="cvt-mark-tip" onClick={onEditEmblem} tabIndex={-1}><span>Change the wiki emblem</span></button>
+            </span>
+          ) : <WikiEmblemMark wiki={wiki} />}
+          <span className="cvt-rail-title">{wiki.name}</span>
+        </div>
         {onEditIdentity && (
-          <button className="cvt-id-btn" onClick={onEditIdentity} title={`Wiki identity — ${wiki.name}'s tile cover art, categories, tagline, emblem`}>
-            <span className="cvt-id-ic"><Svg d={IcIdentity} /></span>
-            <span className="cvt-id-tx"><b>Wiki identity</b><i>tile cover art · categories · tagline · emblem</i></span>
-          </button>
+          <div className="cvt-sec">
+            <button className="cvt-id-btn" onClick={onEditIdentity} title={`Wiki identity — ${wiki.name}'s tile cover art, categories, tagline, emblem`}>
+              <span className="cvt-id-ic"><Svg d={IcIdentity} /></span>
+              <span className="cvt-id-tx"><b>Wiki identity</b><i>tile cover art · categories · tagline · emblem</i></span>
+            </button>
+          </div>
         )}
-        <div className="cvt-left-head">{ROOT_COLUMN_HEAD}</div>
-        <button className={`cvt-nav ${selId === homeId ? 'sel' : ''}`} onClick={() => navigate(homeId)}>
-          <span className="cvt-nav-ic"><Svg d={IcHome} /></span>
-          <span className="cvt-nav-nm">Wiki home</span>
-          <span className="cvt-nav-tag">home</span>
-        </button>
-        {wiki.pages.map((p) => (
-          <button key={p.id} className={`cvt-nav ${focusId === p.id ? 'sel' : ''}`} onClick={() => navigate(p.id)}>
-            <span className={`cvt-dot ${dotClass(0, kidsOf(wiki, p).length > 0)}`} />
-            <span className="cvt-nav-nm">{oneLine(p.title)}</span>
-            {kidsOf(wiki, p).length > 0 && <span className="cvt-nav-n">{kidsOf(wiki, p).length}</span>}
-          </button>
-        ))}
+        <div className="cvt-sec">
+          <div className={`cvt-nav ${selId === homeId ? 'sel' : ''}`}>
+            <button className="cvt-nav-main" onClick={() => navigate(homeId)}>
+              <span className="cvt-nav-ic"><Svg d={IcHome} /></span>
+              <span className="cvt-nav-nm">Wiki home</span>
+            </button>
+            <span className="cvt-nav-tag">home</span>
+          </div>
+        </div>
+        <div className="cvt-sec">
+          <div className="cvt-left-head">{ROOT_COLUMN_HEAD}</div>
+          {wiki.pages.map((p) => (
+            <NavRow key={p.id} p={p} depth={0} wiki={wiki} selId={selId} focusId={focusId}
+              expanded={expanded} onToggle={(id) => setExpanded((e) => ({ ...e, [id]: !e[id] }))} onNav={navigate} />
+          ))}
+        </div>
       </div>
 
       {/* ── THE MAP ── */}
