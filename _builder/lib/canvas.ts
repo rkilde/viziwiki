@@ -721,6 +721,28 @@ window.addEventListener('load',function(){if(window.__decorate)window.__decorate
 <body class="${skin.bodyClass}${capCls ? ' ' + capCls : ''}" style="overflow-x:hidden">${bodyHtml}</body></html>`;
 }
 
+/** A READ-ONLY preview document: the SAME canonical CSS stack as the editor
+ *  canvas (typography → universals → banks → skin, plus the home layer on
+ *  home pages — reader parity), but NO affordance CSS, NO decorator, NO
+ *  runtime. The canvas-tree dashboard's right rail scrolls through this —
+ *  "exactly what a reader sees". The only script is a height reporter so the
+ *  parent can size the scaled scroller. */
+export function buildReadOnlyCanvas(bodyHtml: string, skin: WikiSkin = TACO_BELL_SKIN, isHome = false): string {
+  const skinLinks = skin.css.map((f) => `<link rel="stylesheet" href="/canon/${f}">`).join('\n');
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>${FONTS}
+<link rel="stylesheet" href="/canon/wiki-typography.css">
+<link rel="stylesheet" href="/canon/wiki-universals.css">
+${isHome ? '<link rel="stylesheet" href="/canon/wiki-home.css">\n' : ''}<style>${BANK_CSS_INLINE}</style>
+${skinLinks}
+<script>
+function H(){try{window.parent.postMessage({__cvtH:document.documentElement.scrollHeight},'*')}catch(e){}}
+window.addEventListener('load',function(){H();try{new ResizeObserver(H).observe(document.body)}catch(e){}});
+</script>
+</head>
+<body class="${skin.bodyClass}" style="overflow-x:hidden">${bodyHtml}</body></html>`;
+}
+
 // ── data sync (called from the React side) ──
 function getAt(doc: any, path: string): any {
   let o: any = doc;

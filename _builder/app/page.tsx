@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { WIKIS } from '../lib/wiki';
 import type { Page, Wiki } from '../lib/wiki';
 import { Topbar } from '../components/miller/Topbar';
-import { MillerView } from '../components/miller/MillerView';
+import { CanvasTree } from '../components/canvas/CanvasTree';
 import { PageEditor } from '../components/editor/PageEditor';
 import { blankPage, loadUserWikis, loadChildren, saveChildren, mergeWiki, wikiFromMeta, pageFromMeta, type ChildOverlay } from '../lib/builder';
 import { contentStore, type WikiMeta } from '../content-store';
@@ -15,11 +15,11 @@ import { onAuth, fetchProfile, type Profile, type ContributorClass } from '../li
 import { capsFor, grantedWikiIds, canApprove } from '../lib/caps.mjs';
 import type { EditCaps } from '../lib/canvas';
 
-// The builder home: wiki switcher + Miller column view (real wikis from git +
-// user-created blank wikis). "+ New wiki" makes a blank (mono base-skin) wiki;
-// "+ category / + page" at the bottom of each column adds a node you title in
-// place — that title becomes the H1. "Open & edit" opens the hero + overview
-// editor (both locked on every page). Saved to localStorage now, Supabase later.
+// The builder home: wiki switcher + the CANVAS TREE page organizer (real wikis
+// from git + originated cloud wikis). The map's "+" sheets add a node you title
+// in place — that title becomes the H1. The left rail carries the wiki identity
+// button + the category quick-nav; the right rail is purely the selected page,
+// live. "Open and edit" opens the page editor.
 export default function Page() {
   const [userWikis, setUserWikis] = useState<Wiki[]>([]);
   const [children, setChildren] = useState<ChildOverlay>({});
@@ -167,7 +167,7 @@ export default function Page() {
 
   return (
     <>
-      <Topbar wikis={shownWikis} current={wiki || undefined} onSwitch={(w) => { setEditing(null); setWikiId(w.id); }} onEditIdentity={canEditIdentity ? () => setEditingIdentity(true) : undefined} menu={drawerMenu} account={account} />
+      <Topbar wikis={shownWikis} current={wiki || undefined} onSwitch={(w) => { setEditing(null); setWikiId(w.id); }} menu={drawerMenu} account={account} />
       {originating && <OriginateWiki existingIds={allWikis.map((w) => w.id)} onClose={() => setOriginating(false)} onCreated={onOriginated} genAsUser={realRole === 'admin' && viewAs !== 'me'} />}
       {managingTags && <ManageCategories onClose={() => setManagingTags(false)}
         onGotoWiki={(id) => { setManagingTags(false); setEditing(null); setWikiId(id); setEditingIdentity(true); }} />}
@@ -176,9 +176,11 @@ export default function Page() {
         onDeleted={() => { setEditingIdentity(false); setEditing(null); setWikiId(WIKIS[0].id); refreshCloudWikis(); }} />}
       {wiki && baseWiki ? (
         <>
-          <div id="miller">
-            <MillerView key={wiki.id} wiki={wiki} onOpen={setEditing} onAddNode={caps.structure ? addNode : undefined} />
-          </div>
+          {/* the CANVAS TREE — the main page organizer (v12 handback): the map
+              of pages as paper, the left rail (identity first), and the right
+              rail that is purely the selected page, live */}
+          <CanvasTree key={wiki.id} wiki={wiki} onOpen={setEditing} onAddNode={caps.structure ? addNode : undefined}
+            onEditIdentity={canEditIdentity ? () => setEditingIdentity(true) : undefined} />
           {editing && <PageEditor key={`${editing.id}:${JSON.stringify(caps)}`} page={editing} skin={baseWiki.skin} wikiMeta={{ id: baseWiki.id, slug: baseWiki.id, name: baseWiki.name, skin: baseWiki.skin.bodyClass }} caps={caps}
             canApprove={realRole === 'admin' && viewAs !== 'me'
               ? viewAs === 'wiki_master'   // preview honors the previewed class
