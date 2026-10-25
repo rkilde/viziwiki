@@ -217,6 +217,29 @@ to seed inline; they keep it page-side until Storage uploads land. If a
 page-side mark changes, re-run `node scripts/gen-page-emblems-sql.mjs`
 (from `_builder/`) and re-run the refreshed 0010.
 
+**If your emblems showed as broken-image icons:** the first cut of 0010
+seeded marks that can't render standalone (missing xmlns / empty
+placeholders). **Re-run the current 0010** — it refreshes every seeded
+mark fixed, clears the unrenderable ones, and never touches a glyph or
+image-URL mark you picked yourself.
+
+## Project DBNATIVE — flagship content in the database (switch-on step)
+
+Migration 0011 moves the **content of every built flagship page** (Taco
+Bell ×16 incl. home, Apple home + the 6 iPods — 22 pages) into the
+database as section rows + one published revision each, so the reader
+serves them at `/read/taco-bell/...` and `/read/apple/...` exactly like an
+originated wiki. A page you've already saved from the builder is **never
+overwritten** — the backfill fills only pages the database doesn't hold.
+
+Owner step: **SQL Editor** → paste + Run
+`_builder/supabase/migrations/0011_db_native_content.sql` (it's ~275KB —
+one paste, one Run). Then open `vizwiki.vercel.app/read/taco-bell` and the
+pages are there. If page content later changes in a git-authored file,
+re-run `node scripts/gen-db-native-sql.mjs` (from `_builder/`, after
+`npm run gen`) — though from here forward the builder is the place to
+edit, and the database copy is the one readers see.
+
 ## AI art generation (switch-on step — optional)
 
 The identity editor and origination modal have **✨ Generate** buttons that

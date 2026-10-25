@@ -10,10 +10,7 @@
     "folder": false,
     "count": null,
     "accent": null,
-    "icon": {
-      "kind": "art",
-      "src": "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+"
-    },
+    "icon": null,
     "sections": [
       {
         "type": "hero",
@@ -2499,10 +2496,7 @@
       "folder": false,
       "count": 9,
       "accent": "#dc2626",
-      "icon": {
-        "kind": "art",
-        "src": "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+"
-      },
+      "icon": null,
       "sections": [
         {
           "type": "hero",
