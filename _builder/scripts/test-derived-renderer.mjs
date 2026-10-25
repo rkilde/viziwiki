@@ -1232,6 +1232,11 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   const tree27 = fs.readFileSync('components/canvas/CanvasTree.tsx', 'utf8');
   ok(tree27.includes('PageMarkView') && tree27.includes('Add a page emblem') && tree27.includes('cvt-mark-tip'),
     'the rail header carries the page-emblem slot: the mark, or the dashed "+" with the clickable hover tip');
+  // the mark's modifier classes must NOT collide with the map's generic
+  // `#cvt .pg` / `#cvt .add` rules — that collision absolutely-positioned the
+  // mark out of flow and overlapped the title (the owner's overset bug)
+  ok(tree27.includes('cvt-mark pmark') && !/cvt-mark pg\b/.test(tree27) && !/cvt-mark pmark add\b/.test(tree27),
+    'the rail mark wears collision-proof classes (pmark/empty — never bare pg/add inside #cvt)');
   ok(fs.readFileSync('components/canvas/PageEmblemSheet.tsx', 'utf8').includes('setPageIcon'),
     'the emblem sheet saves through the store — the mark lives in the table');
 }
