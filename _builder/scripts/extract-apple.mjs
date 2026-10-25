@@ -86,7 +86,8 @@ function homeNode(file, wikiId, name) {
   const d = parseFile(file);
   return {
     id: `${wikiId}-home`, title: name, permalink: '/' + path.basename(file), status: 'live', home: true,
-    folder: false, count: null, accent: null, icon: d.icon, sections: d.sections, body: d.body, hero: d.hero, overview: d.overview, pages: [],
+    // the HOME page's emblem IS the wiki emblem (owner's rule) — no own mark
+    folder: false, count: null, accent: null, icon: null, sections: d.sections, body: d.body, hero: d.hero, overview: d.overview, pages: [],
   };
 }
 

@@ -1207,13 +1207,21 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   // the extract pipes carry the scanned marks into the builder data
   const tb27 = JSON.parse(fs.readFileSync('data/taco-bell.json', 'utf8'));
   ok(tb27.pages.some((p) => p.icon?.kind === 'art'), 'extraction carries page emblems (taco-bell category pages)');
-  ok(tb27.home.icon == null, 'the home\'s EMPTY placeholder mark correctly lifts as none (the broken-image bug)');
-  ok(JSON.parse(fs.readFileSync('data/apple.json', 'utf8')).home.icon?.kind === 'art', 'apple home carries its mark');
+  // THE RULE (owner): the HOME page's emblem IS the wiki emblem — home rows
+  // carry none of their own, and the rail's home slot edits the wiki mark
+  ok(tb27.home.icon == null && JSON.parse(fs.readFileSync('data/apple.json', 'utf8')).home.icon == null,
+    'home pages carry NO own mark — the wiki emblem is the single source');
+  const tree27b = fs.readFileSync('components/canvas/CanvasTree.tsx', 'utf8');
+  ok(/sel\.id === homeId[\s\S]{0,400}onEditEmblem[\s\S]{0,400}WikiEmblemMark/.test(tree27b),
+    'the rail\'s HOME emblem slot shows the wiki mark and opens the master-emblem editor');
 
   // the table: migration 0010 adds pages.icon + seeds every scanned mark
   const mig27 = fs.readFileSync('supabase/migrations/0010_page_emblems.sql', 'utf8');
   ok(mig27.includes('add column if not exists icon'), '0010 adds pages.icon');
-  ok((mig27.match(/'\{"kind":"art"/g) || []).length >= 19, 'the scanned page emblems are seeded (19+)');
+  // 13 page marks + 5 wiki marks (homes + the empty-placeholder/heavy marks
+  // are null rows by design — the home-emblem rule + the standalone rules)
+  ok((mig27.match(/'\{"kind":"art"/g) || []).length >= 17, 'the scanned emblems are seeded (17+ art marks)');
+  ok((mig27.match(/, null\)/g) || []).length >= 10, 'home/placeholder rows seed NULL marks (the single-source rule)');
   ok(mig27.includes('on conflict (wiki_id, id) do update set icon = excluded.icon'), 're-runs refresh the icons only');
   ok(mig27.includes("icon->>'kind' = 'auto'") && mig27.includes("update public.wikis set icon"),
     'flagship wikiLogo marks fill wikis.icon ONLY where still the auto default');
