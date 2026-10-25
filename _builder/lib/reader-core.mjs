@@ -92,8 +92,9 @@ export function wikiCoverTile(w, taxonomy) {
   const cover = w.tile_cover || {};
   // tile ART is per-wiki CONTENT (the master media pattern — a URL today, a
   // Supabase Storage upload later): kind 'art' paints the uploaded image with
-  // a legibility scrim; 'themed' (and, until canonized, 'bespoke') paints the
-  // category gradient + glyph.
+  // a legibility scrim; 'themed' — and, on THIS surface, 'bespoke' and
+  // uploaded 'html' art files too — paints the category gradient + glyph
+  // (hand-coded and uploaded art render on the browse page itself).
   const art = cover.kind === 'art' && cover.src
     ? `background-image:linear-gradient(to top,rgba(10,8,12,.78) 0%,rgba(10,8,12,.12) 45%,rgba(10,8,12,.18) 100%),url('${escapeHtml(cover.src)}');background-size:cover;background-position:center`
     : `background-image:linear-gradient(to bottom right,${from},${to})`;

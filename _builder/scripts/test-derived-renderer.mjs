@@ -1050,5 +1050,63 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(t24.includes(outside.b) && !t24.includes(`#ic-${outside.n}`), 'tile covers render library-only icons INLINE — zero sprite edits');
 }
 
+// ── case 25: UPLOADED TILE-ART FILES — parse keeps the art, drops the
+// canon + identity, blocks the dangerous; serve-time re-sanitize ──
+{
+  console.log('case 25: tile-art files — parse, strip, sanitize, serve');
+  const { parseTileArt, safeHtmlCover, sanitizeTileMarkup } = await import('../lib/tile-html.mjs');
+  const fixture = `<!doctype html><html><head><style>
+  .cover{position:relative;aspect-ratio:4/5;}
+  .cover-grid{display:grid;}
+  .c-test{background:#eadbb8;color:#3b2416;}
+  .c-test .ink{stroke:#9c3d24;}
+  .c-test:hover .ink{animation:test-draw 1s both;}
+  @keyframes test-draw{from{stroke-dashoffset:1;}to{stroke-dashoffset:0;}}
+  @keyframes unused-anim{from{opacity:0;}}
+  @media (prefers-reduced-motion:reduce){ .c-test:hover .ink{animation:none;} .cover{border:0;} }
+  </style></head><body>
+  <a class="cover c-test" href="#" onclick="evil()">
+    <svg class="art" viewBox="0 0 300 375"><g filter="url(#rough)"><path class="ink" d="M0 0L10 10"/></g></svg>
+    <div class="mirror">decorative text</div>
+    <script>alert(1)</script>
+    <div class="c-genre">Art &amp; History</div><div class="c-vol">Vol. 6</div>
+    <div class="c-foot"><div class="c-title">Test</div><div class="c-blurb">A · B</div></div>
+  </a></body></html>`;
+  const art = parseTileArt(fixture);
+  ok(art.cls === 'c-test', 'the skin class is found beside "cover"');
+  ok(art.css.includes('.c-test') && art.css.includes('@keyframes test-draw'), 'skin rules + their keyframes are kept');
+  ok(!art.css.includes('.cover{') && !art.css.includes('cover-grid') && !art.css.includes('unused-anim'), 'canon cover-base CSS and unused keyframes are dropped');
+  ok(art.css.includes('prefers-reduced-motion') && !/@media[^{]*\{[^@]*\.cover\{border/.test(art.css), 'media blocks keep only the skin rules');
+  ok(art.inner.includes('class="art"') && art.inner.includes('mirror') && art.inner.includes('url(#rough)'), 'the decorative markup + local refs survive');
+  ok(!/c-genre|c-vol|c-foot|c-title/.test(art.inner), 'identity text slots are stripped (the DB renders those)');
+  ok(!/script|alert/.test(art.inner), 'scripts are stripped');
+
+  let threw25 = false; try { parseTileArt('<div>no cover here</div>'); } catch { threw25 = true; }
+  ok(threw25, 'a file with no cover element is rejected with a reason');
+
+  const served = safeHtmlCover({ kind: 'html', cls: art.cls, css: art.css + ' .x{background:url(https://evil/x)}', inner: art.inner + '<img src=x onerror=hack()>' });
+  ok(served && !served.css.includes('url(https') && !/onerror/.test(served.inner), 'serve-time re-sanitize blocks externals + handlers');
+  ok(safeHtmlCover({ kind: 'html', cls: 'bad cls!', css: '', inner: 'x' }) === null, 'an unsafe cover degrades to null (→ themed)');
+  ok(sanitizeTileMarkup('<use href="#ok"/>').includes('#ok'), 'local references stay');
+
+  // the REAL uploaded Renaissance tile parses when present (owner upload dir)
+  try {
+    const fs25 = await import('node:fs');
+    const real = '/root/.claude/uploads/0b5307bc-a6f8-57c5-835f-bc517a421b5a/47c3e209-renaissance-tile-a7_1.html';
+    if (fs25.existsSync(real)) {
+      const r = parseTileArt(fs25.readFileSync(real, 'utf8'));
+      ok(r.cls === 'c-ren-codex' && r.css.includes('@keyframes ren-draw'), 'the Vitruvian tile parses end-to-end');
+    }
+  } catch { /* upload dir absent outside this session — fixture covers it */ }
+
+  // browse renders the kind; the reader deliberately falls back to themed
+  const browse25 = fs.readFileSync('../browse.html', 'utf8');
+  ok(browse25.includes("cover.kind === 'html'") && browse25.includes('ensureTileArtCss'), 'browse renders uploaded tile art (CSS injected once)');
+  const { wikiCoverTile: tile25 } = await import('../lib/reader-core.mjs');
+  const t25 = tile25({ id: 'x', name: 'X', categories: ['food'], tile_cover: { kind: 'html', cls: 'c-test', inner: '<b>art</b>' } },
+    JSON.parse(fs.readFileSync('data/wiki-categories.json', 'utf8')));
+  ok(t25.includes('linear-gradient') && !t25.includes('<b>art</b>'), 'reader covers fall back to themed for html art (renders on browse itself)');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

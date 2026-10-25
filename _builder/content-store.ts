@@ -22,9 +22,13 @@ import { docToRows, rowsToDoc, validateDoc, persistableDoc } from './lib/content
  *  "themed" = the data-driven default: gradient + glyph DERIVED from the
  *  wiki's first category (`glyph` optionally overrides the icon). "art" = the
  *  wiki's own uploaded cover image (`src` — the master media pattern: a URL
- *  today, a Supabase Storage upload later). "bespoke" REFERENCES a hand-built
- *  flagship cover class in browse.html by name (never restated art). */
-export interface TileCover { kind: 'themed' | 'art' | 'bespoke'; src?: string; cls?: string; glyph?: string; }
+ *  today, a Supabase Storage upload later). "html" = UPLOADED TILE-ART FILE
+ *  (a designer's self-contained html/css/svg tile — parsed + sanitized by
+ *  lib/tile-html.mjs into its skin `cls`, skin-scoped `css`, and decorative
+ *  `inner` markup; identity text renders from the database on top).
+ *  "bespoke" REFERENCES a hand-built flagship cover class in browse.html by
+ *  name (never restated art). */
+export interface TileCover { kind: 'themed' | 'art' | 'html' | 'bespoke'; src?: string; cls?: string; glyph?: string; css?: string; inner?: string; }
 /** The wiki's small MARK (migration 0009) — the compact identity shown in the
  *  build kit's switcher and, as the chrome goes DB-native, the live wiki-bar
  *  logo / TOC rail. Per-wiki content: "auto" = derived letter mark (default),

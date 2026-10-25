@@ -1,163 +1,142 @@
 'use client';
 import React, { useEffect, useMemo, useState } from 'react';
 import { contentStore, type CategoryRow } from '../content-store';
-import { ICON_SPRITE } from '../lib/render';
-import taxonomyCanon from '../data/wiki-categories.json';
-import { resolveColor, slugifyId, spriteIconNames, validateCategory } from '../lib/taxonomy.mjs';
-import { LucidePicker, LucideGlyph, loadLucide, type LucideLib } from './LucidePicker';
+import {
+  FlowRoot, I, Ic, IconSheet, NewTagSheet, TagIcon,
+  grad, mergedTags, resolve, slugifyId, useLucide,
+  type Tag, type TagDraft,
+} from './identity/kit';
 
-// ADMIN-ONLY: the category (tag) manager for the main wiki categorization.
-// The canon 12 live in the repo (_data/wiki_categories.yml) and show here as
-// LOCKED rows — editing those is a canon change, never a UI action. Rows the
-// admin ORIGINATED (wiki_categories table) are fully managed here: create,
-// relabel, re-icon, regrade, delete. Every surface (browse chips + tiles,
-// /read covers, the origination picker) renders the merged set, so a change
-// here propagates everywhere wikis surface.
+// SITE WIKI TAGS — the owner's redesigned surface C: a plain list. Yours
+// first (fully editable), the built-in twelve below (locked — they live in
+// the repo's canon). The delete rule in plain words: a tag any wiki wears
+// cannot be deleted — the panel names the wearers as tappable chips that
+// jump straight to that wiki's identity.
 
-type Draft = { key: string | null; label: string; icon: string | null; from: string | null; to: string | null };
-const PAL = Object.entries((taxonomyCanon as any).palette as Record<string, string>);
+type WikiLite = { id: string; name: string; categories: string[] };
 
-export function ManageCategories({ onClose }: { onClose: () => void }) {
+export function ManageCategories({ onClose, onGotoWiki }: { onClose: () => void; onGotoWiki?: (wikiId: string) => void }) {
   const [rows, setRows] = useState<CategoryRow[]>([]);
-  // which WIKIS wear each tag (names) — deletes are BLOCKED while a tag is
-  // worn: the owner re-assigns those wikis' tags first (identity editor)
-  const [usage, setUsage] = useState<Record<string, string[]>>({});
-  const [draft, setDraft] = useState<Draft | null>(null);   // key=null → creating
+  const [wikis, setWikis] = useState<WikiLite[]>([]);
+  const [blocked, setBlocked] = useState<string | null>(null);
+  const [confirm, setConfirm] = useState<string | null>(null);
+  const [screen, setScreen] = useState<null | 'newtag' | 'icon'>(null);
+  const [draft, setDraft] = useState<TagDraft>({ label: '', icon: null, from: null, to: null });
+  const [iconQ, setIconQ] = useState('');
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
-  // the FULL Lucide library (searchable picker + inline row glyphs); the
-  // valid-icon set = canon sprite ∪ the library
-  const [lib, setLib] = useState<LucideLib | null>(null);
-  useEffect(() => { loadLucide().then(setLib); }, []);
-  const icons = useMemo(
-    () => Array.from(new Set([...spriteIconNames(ICON_SPRITE), ...(lib?.icons.map((i) => i.n) ?? [])])),
-    [lib]);
-  const canon = (taxonomyCanon as any).categories as Array<{ key: string; label: string; icon: string; grad: { from: string; to: string } }>;
+  const lib = useLucide();
 
   const load = () => {
     contentStore?.listCategories().then(setRows).catch(() => {});
-    contentStore?.listWikis().then((ws) => {
-      const u: Record<string, string[]> = {};
-      for (const w of ws) for (const k of w.categories ?? []) (u[k] = u[k] || []).push(w.name);
-      setUsage(u);
-    }).catch(() => {});
+    contentStore?.listWikis().then((ws) => setWikis(ws.map((w) => ({ id: w.id, name: w.name, categories: w.categories ?? [] })))).catch(() => {});
   };
   useEffect(load, []);
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [onClose]);
-
+  const tax = useMemo(() => mergedTags(rows), [rows]);
+  const canon = tax.categories.filter((t) => !t.originated);
+  const originated = tax.categories.filter((t) => t.originated);
+  const wearers = (k: string) => wikis.filter((w) => w.categories.includes(k));
   const ping = () => fetch('/api/revalidate', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ paths: ['/read', '/api/directory'] }) }).catch(() => {});
 
-  const commit = async () => {
-    if (!draft || !contentStore) return;
+  const commitTag = async () => {
+    if (!contentStore) return;
     const row: CategoryRow = {
       key: draft.key ?? slugifyId(draft.label), label: draft.label.trim(), icon: draft.icon || '',
-      grad_from: resolveColor((taxonomyCanon as any).palette, draft.from, ''),
-      grad_to: resolveColor((taxonomyCanon as any).palette, draft.to, ''),
+      grad_from: resolve(draft.from, ''), grad_to: resolve(draft.to, ''),
     };
-    const taken = [...canon.map((c) => c.key), ...rows.map((r) => r.key)].filter((k) => k !== draft.key);
-    const errs = validateCategory(row, taken, icons);
-    if (errs.length) { setErr(errs.join(' · ')); return; }
     setBusy(true); setErr(null);
     try {
       if (draft.key) await contentStore.updateCategory(row); else await contentStore.createCategory(row);
-      setDraft(null); load(); ping();
+      setScreen(null); setDraft({ label: '', icon: null, from: null, to: null });
+      load(); ping();
     } catch (e: any) { setErr(e?.message || String(e)); }
     setBusy(false);
   };
 
-  const remove = async (r: CategoryRow) => {
+  const doDelete = async (key: string) => {
     if (!contentStore) return;
-    const wearers = usage[r.key] || [];
-    if (wearers.length) {
-      // the owner's rule: a worn tag can't be deleted — re-assign first
-      const shown = wearers.slice(0, 8).join(', ') + (wearers.length > 8 ? ` + ${wearers.length - 8} more` : '');
-      setErr(`"${r.label}" is worn by ${wearers.length} wiki${wearers.length !== 1 ? 's' : ''} (${shown}). Re-assign their tags first — open each wiki's identity editor — then delete.`);
-      return;
-    }
-    if (!window.confirm(`Delete "${r.label}"? No wiki carries this tag.`)) return;
     setBusy(true); setErr(null);
-    try { await contentStore.deleteCategory(r.key); load(); ping(); }
+    try { await contentStore.deleteCategory(key); setConfirm(null); load(); ping(); }
     catch (e: any) { setErr(e?.message || String(e)); }
     setBusy(false);
   };
 
-  const edit = (r: CategoryRow) => setDraft({ key: r.key, label: r.label, icon: r.icon, from: r.grad_from, to: r.grad_to });
+  if (screen === 'icon') return <IconSheet q={iconQ} onQ={setIconQ} sel={draft.icon} onPick={(n) => { setDraft({ ...draft, icon: n }); setScreen('newtag'); }} onBack={() => setScreen('newtag')} />;
+  if (screen === 'newtag') return <NewTagSheet nt={draft} onChange={setDraft}
+    takenKeys={tax.categories.filter((c) => c.key !== draft.key).map((c) => c.key)} lib={lib}
+    onPickIcon={() => { setIconQ(''); setScreen('icon'); }} onAdd={commitTag}
+    onBack={() => { setScreen(null); setErr(null); }} busy={busy}
+    title={draft.key ? 'Edit the tag.' : 'Make a new tag.'}
+    sub={draft.key ? `${wearers(draft.key).length || 'No'} wiki${wearers(draft.key).length === 1 ? ' wears' : 's wear'} it — their covers change too.` : 'Every wiki on the site can use it after this.'}
+    cta={draft.key ? 'Save changes' : 'Add tag'} />;
 
-  const swatchRow = (which: 'from' | 'to') => (
-    <div className="ow-swatches">
-      <span className="ow-swatch-label">{which}</span>
-      {PAL.map(([pname, val]) => (
-        <button key={pname} type="button" title={pname}
-          className={`ow-swatch ${draft && (draft[which] === pname || draft[which] === val) ? 'on' : ''}`}
-          style={{ background: val }} onClick={() => setDraft((d) => d && { ...d, [which]: pname })} />
-      ))}
-    </div>
-  );
-
-  const gradChip = (from: string, to: string) => (
-    <span className="mc-grad" style={{ background: `linear-gradient(to bottom right, ${from}, ${to})` }} />
-  );
+  const row = (t: Tag) => {
+    const w = wearers(t.key), n = w.length;
+    if (blocked === t.key) {
+      return (
+        <div className="panel warn" key={t.key}>
+          <div className="panel-h"><Ic d={I.warn} w={2} />
+            <div><div className="panel-t">“{t.label}” is being used</div>
+              <div className="panel-d">{n} wiki{n === 1 ? '' : 's'} {n === 1 ? 'wears' : 'wear'} this tag, so it can’t be deleted yet. Open {n === 1 ? 'it' : 'them'} and pick a different tag first.</div></div></div>
+          <div className="wearers">{w.map((x) => (
+            <button key={x.id} type="button" className="wearer" onClick={() => onGotoWiki?.(x.id)}>
+              <span className="emblem e-sm" style={{ background: grad(t.grad.from, t.grad.to) }}>{(x.name[0] || '?').toUpperCase()}</span>{x.name}
+            </button>))}</div>
+          <div className="panel-acts"><button className="btn2" onClick={() => setBlocked(null)}>OK</button></div>
+        </div>
+      );
+    }
+    if (confirm === t.key) {
+      return (
+        <div className="panel warn" key={t.key}>
+          <div className="panel-t">Delete “{t.label}”?</div>
+          <div className="panel-d">No wiki uses it, so nothing changes for readers.</div>
+          <div className="panel-acts">
+            <button className="btn2" onClick={() => setConfirm(null)}>Keep it</button>
+            <button className="btn2 danger" disabled={busy} onClick={() => doDelete(t.key)}>Delete</button>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className="tagrow" key={t.key}>
+        <span className="g" style={{ background: grad(t.grad.from, t.grad.to) }}><TagIcon name={t.icon} lib={lib} /></span>
+        <span className="m"><div className="l">{t.label}</div>
+          <div className="u">{n ? `used by ${w.map((x) => x.name).join(', ')}` : 'not used yet'}</div></span>
+        {!t.originated ? (
+          <span className="locked"><Ic d={I.lock} w={2} /> built in</span>
+        ) : (<>
+          <button type="button" className="act" onClick={() => {
+            setBlocked(null); setConfirm(null);
+            setDraft({ key: t.key, label: t.label, icon: t.icon, from: t.grad.from, to: t.grad.to });
+            setScreen('newtag');
+          }}>Edit</button>
+          <button type="button" className="act danger" onClick={() => {
+            if (wearers(t.key).length) { setBlocked(t.key); setConfirm(null); } else { setConfirm(t.key); setBlocked(null); }
+          }}>Delete</button>
+        </>)}
+      </div>
+    );
+  };
 
   return (
-    <div className="acct-modal-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-      <div className="acct-modal mc-modal" onMouseDown={(e) => e.stopPropagation()}>
-        <div style={{ display: 'none' }} dangerouslySetInnerHTML={{ __html: ICON_SPRITE }} />
-        <div className="acct-title">Wiki categories</div>
-        <div className="acct-note">The tags wikis are categorized by — they drive the browse filter chips and every themed tile cover. Canon tags live in the repo and are locked here; tags you originate are fully editable.</div>
-
-        <div className="mc-list">
-          {canon.map((c) => (
-            <div key={c.key} className="mc-row canon">
-              {gradChip(resolveColor((taxonomyCanon as any).palette, c.grad.from, '#333'), resolveColor((taxonomyCanon as any).palette, c.grad.to, '#555'))}
-              <LucideGlyph name={c.icon} lib={lib} className="mc-ic" />
-              <span className="mc-label">{c.label}</span>
-              <span className="mc-key">{c.key}</span>
-              {usage[c.key]?.length ? <span className="mc-usage" title={usage[c.key].join(', ')}>{usage[c.key].length} wiki{usage[c.key].length !== 1 ? 's' : ''}</span> : null}
-              <span className="mc-lock" title="Canon — defined in the repo (_data/wiki_categories.yml)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg> canon
-              </span>
-            </div>
-          ))}
-          {rows.map((r) => (
-            <div key={r.key} className="mc-row">
-              {gradChip(r.grad_from, r.grad_to)}
-              <LucideGlyph name={r.icon} lib={lib} className="mc-ic" />
-              <span className="mc-label">{r.label}</span>
-              <span className="mc-key">{r.key}</span>
-              {usage[r.key]?.length ? <span className="mc-usage" title={usage[r.key].join(', ')}>{usage[r.key].length} wiki{usage[r.key].length !== 1 ? 's' : ''}</span> : null}
-              <span className="mc-acts">
-                <button className="vt-btn" disabled={busy} onClick={() => edit(r)}>Edit</button>
-                <button className="vt-btn mc-del" disabled={busy} onClick={() => remove(r)}>Delete</button>
-              </span>
-            </div>
-          ))}
-          {!rows.length && <div className="mc-empty">No originated tags yet — everything above is canon.</div>}
-        </div>
-
-        {draft ? (
-          <div className="ow-newcat">
-            <input className="acct-input" autoFocus placeholder="category label — e.g. Tabletop Games" value={draft.label}
-              onChange={(e) => setDraft({ ...draft, label: e.target.value })} />
-            {draft.key && <div className="ow-label">key: {draft.key} (fixed — wikis reference it)</div>}
-            <LucidePicker value={draft.icon} onPick={(n) => setDraft({ ...draft, icon: n })} />
-            {swatchRow('from')}
-            {swatchRow('to')}
-            <div className="ow-newcat-actions">
-              <button type="button" className="acct-primary" onClick={commit} disabled={busy}>{draft.key ? 'Save changes' : 'Add category'}</button>
-              <button type="button" className="acct-switch" onClick={() => { setDraft(null); setErr(null); }}>cancel</button>
-            </div>
-          </div>
-        ) : (
-          <button type="button" className="ow-cat ow-cat-new" style={{ alignSelf: 'flex-start' }}
-            onClick={() => setDraft({ key: null, label: '', icon: null, from: null, to: null })}>+ new category</button>
-        )}
-        {err && <div className="acct-msg">{err}</div>}
-        <div className="ow-actions"><button className="acct-switch" type="button" onClick={onClose}>close</button></div>
+    <FlowRoot kind="pane">
+      <div className="pane-head">
+        <button className="fl-icon-btn" onClick={onClose}><Ic d={I.back} w={2.2} /></button>
+        <div className="pane-h"><div className="t">Tags</div><div className="s">What wikis are filed under, across the whole site</div></div>
+        <button className="btn2 primary" onClick={() => { setDraft({ label: '', icon: null, from: null, to: null }); setScreen('newtag'); }}>
+          + New tag
+        </button>
       </div>
-    </div>
+      <div className="pane-body"><div className="pane-in">
+        <div className="rows-cap" style={{ paddingTop: 4 }}><span>Yours</span><span className="line" /></div>
+        <div className="rows">{originated.length ? originated.map(row)
+          : <div className="panel"><div className="panel-d" style={{ margin: 0 }}>No tags of your own yet. “New tag” makes one.</div></div>}</div>
+        <div className="rows-cap"><span>Built in</span><span className="line" /></div>
+        <div className="rows">{canon.map(row)}</div>
+        <div className="side-note" style={{ marginTop: 14 }}>The twelve built-in tags are part of ViziWiki itself, so they can’t be changed or deleted.</div>
+        {err && <div className="in-under bad" style={{ marginTop: 12 }}><Ic d={I.warn} w={2} /> {err}</div>}
+      </div></div>
+    </FlowRoot>
   );
 }

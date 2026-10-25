@@ -380,6 +380,22 @@ const BESPOKE = {
     <svg class="plats" viewBox="0 0 300 375" preserveAspectRatio="none" aria-hidden="true" style="position:absolute;inset:0;z-index:2"><rect class="plat" x="40" y="250" width="60" height="12" rx="6"/><rect class="plat" x="150" y="300" width="60" height="12" rx="6"/></svg>` },
 };
 
+const esc = (s) => String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+
+/* UPLOADED TILE-ART (tile_cover kind "html"): each art's skin CSS (already
+   sanitized server-side by the feed) is injected ONCE; the cover element
+   then wears the art's skin class with its decorative markup inside, and
+   the identity text (genre/status/title/tagline) renders from the DB on top
+   — exactly how the five hand-built bespoke covers work, but data-driven. */
+const TILE_ART_SEEN = {};
+function ensureTileArtCss(cls, css){
+  if(TILE_ART_SEEN[cls] || !css) return;
+  TILE_ART_SEEN[cls] = true;
+  let el = document.getElementById('db-tile-art');
+  if(!el){ el = document.createElement('style'); el.id = 'db-tile-art'; document.head.appendChild(el); }
+  el.textContent += '\n' + css;
+}
+
 function coverTile(w){
   const cat = catBy((w.categories||[])[0]);
   // the genre corner lists EVERY tag the wiki wears (first tag still drives
@@ -403,6 +419,19 @@ function coverTile(w){
       <div class="c-foot">
         <div class="c-title">${w.name}${b.titleSuffix||''}</div>
         <div class="c-blurb">${tag}</div>
+      </div>
+    </a>`;
+  }
+  // uploaded TILE-ART FILE — the designer's own html/css/svg art
+  if(cover.kind === 'html' && cover.cls && cover.inner){
+    ensureTileArtCss(cover.cls, cover.css);
+    return `<a class="cover ${cover.cls}" href="${href}">
+      ${cover.inner}
+      <div class="c-genre">${esc(genre)}</div>
+      ${w.status === 'coming_soon' ? '<span class="c-soon">Coming soon</span>' : ''}
+      <div class="c-foot">
+        <div class="c-title">${esc(w.name)}</div>
+        <div class="c-blurb">${esc(tag)}</div>
       </div>
     </a>`;
   }

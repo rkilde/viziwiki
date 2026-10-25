@@ -597,6 +597,33 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
     rendered only via <img>/CSS background where scripts can't run).
     Guard: case 23 (405 total). Owner switch-on: ANTHROPIC_API_KEY in
     Vercel (docs/supabase-setup.md).
+  · **IDENTITY SURFACES REDESIGNED (owner's design handback applied, Oct
+    2026).** Surfaces A–D rebuilt per the owner's "simple" design:
+    **origination = a sign-up flow** (5 questions, one per screen, Enter to
+    continue, progress dots, identity-tinted bloom, done screen) ·
+    **identity = a settings list** (hero tile + rows → one-question screens)
+    · **tags = a plain list** (Yours / Built-in; edit via the new-tag sheet;
+    worn-tag deletes blocked by a panel whose WEARER CHIPS jump to that
+    wiki's identity — onGotoWiki) · shared sheets (full-library icon search,
+    new-tag with canon-palette swatches + gradient preview) + the
+    plain-words ✨/keyline (admin platform key + "see what others get";
+    user key browser-only). All in `components/identity/kit.tsx` + the
+    three rebuilt components; chrome CSS `.idf`-scoped in globals.css.
+    THE SIDE TILE IS THE REAL RENDERER (wikiCoverTile + COVER_CSS) — the
+    design's tile mock was deliberately NOT ported (rule #5).
+  · **UPLOADED TILE-ART FILES (DONE, Oct 2026):** tile_cover kind `html` —
+    a designer's self-contained art file (like the owner's Renaissance
+    "Vitruvian" tile: hand-coded CSS/SVG with hover ink-draw) uploaded in
+    the identity editor's cover screen. `lib/tile-html.mjs` (pure) parses
+    it: skin class + skin-scoped CSS (keyframes/media kept, canon
+    cover-base dropped) + decorative inner markup (identity text slots
+    stripped — the DB renders those), sanitized (no scripts/handlers/
+    external refs; local url(#) refs kept; 80KB cap) and RE-SANITIZED at
+    serve time (`safeHtmlCover` in /api/directory — unsafe degrades to
+    themed). browse.html renders it (CSS injected once per skin class,
+    identity text on top — the bespoke pattern, data-driven); reader
+    covers fall back to themed. No migration (jsonb). Guard: case 25
+    (426 total).
 - **READER ON THE MAIN DOMAIN (deferred — owner-requested, Oct 2026).** The
   owner wants DB-native wikis at `viziwiki.com/the-renaissance`-style URLs
   instead of `vizwiki.vercel.app/read/<id>`. Config-level, two tiers:

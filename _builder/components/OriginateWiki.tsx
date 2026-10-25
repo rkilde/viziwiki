@@ -1,91 +1,60 @@
 'use client';
 import React, { useEffect, useMemo, useState } from 'react';
 import { contentStore, type CategoryRow, type WikiMeta } from '../content-store';
-import { ICON_SPRITE } from '../lib/render';
-import taxonomyCanon from '../data/wiki-categories.json';
-import { mergeTaxonomy, resolveColor, slugifyId, spriteIconNames, validateCategory, validateNewWiki } from '../lib/taxonomy.mjs';
-import { COVER_CSS, wikiCoverTile } from '../lib/reader-core.mjs';
-import { GenArtRow } from './GenArt';
-import { LucidePicker, loadLucide, type LucideLib } from './LucidePicker';
-import { TaglineFields, joinTagline, type TagParts } from './TaglineFields';
+import { validateNewWiki } from '../lib/taxonomy.mjs';
+import {
+  Bloom, FlowRoot, GenBlock, I, Ic, IconSheet, NewTagSheet, SideTile, TagPick, Words,
+  draftMeta, emptyDraft, mergedTags, resolve, slugifyId, useLucide,
+  type Draft, type TagDraft,
+} from './identity/kit';
 
-// The admin "New wiki" flow — ORIGINATION (the origination arc, iteration 2).
-// Identity in, wiki out: name → id, categories from the MERGED taxonomy (the
-// canon 12 + admin-originated ones, with "+ new category" right here), blurb,
-// tagline, status, and the tile cover — themed by default (derived from the
-// first category), or per-wiki ART (an image URL today, a Supabase Storage
-// upload later — the master media pattern). Granting a wiki master is
-// OPTIONAL: originate and work on it yourself, grant any time later.
-// The live preview is the READER'S OWN renderer + CSS (wikiCoverTile +
-// COVER_CSS) — never a restated copy.
+// ORIGINATION — the owner's redesigned "New wiki": a sign-up flow. One
+// question per screen, Enter to continue, and the REAL tile (the reader's
+// own renderer) building itself alongside. Model, rules and vocabulary are
+// unchanged from the previous modal — this is the same machinery re-staged.
 
-type NewCat = { label: string; icon: string | null; from: string | null; to: string | null };
+const STEPS = [
+  { k: 'name', q: 'What’s the wiki called?', s: <>This is the big title on its card, and it sets the web address.</> },
+  { k: 'tags', q: 'What’s it about?', s: <>Pick its tags. <b>The first one you pick designs the cover.</b></> },
+  { k: 'words', q: 'Give it three words.', s: <>The little line under the title. Then one sentence so people can find it.</> },
+  { k: 'cover', q: 'Pick a cover.', s: <>Keep the one made from your tag, or bring your own art.</> },
+  { k: 'owner', q: 'Who runs it?', s: <>You can keep it and hand it over any time.</> },
+] as const;
 
 export function OriginateWiki({ existingIds, onClose, onCreated, genAsUser = false }: {
-  existingIds: string[];
-  onClose: () => void;
-  onCreated: (meta: WikiMeta) => void;
-  /** admin "view as" preview: AI generation bills like a contributor's */
-  genAsUser?: boolean;
+  existingIds: string[]; onClose: () => void; onCreated: (meta: WikiMeta) => void; genAsUser?: boolean;
 }) {
-  const [name, setName] = useState('');
-  const [id, setId] = useState('');
-  const [idTouched, setIdTouched] = useState(false);
-  const [cats, setCats] = useState<string[]>([]);          // selection order = primary first
-  const [blurb, setBlurb] = useState('');
-  const [tagParts, setTagParts] = useState<TagParts>(['', '', '']);
-  const tagline = joinTagline(tagParts);
-  const [status, setStatus] = useState<'live' | 'coming_soon'>('live');
-  const [artUrl, setArtUrl] = useState('');
-  const [grantEmail, setGrantEmail] = useState('');
+  const [step, setStep] = useState(0);
+  const [d, setD] = useState<Draft>(emptyDraft);
   const [dbCats, setDbCats] = useState<CategoryRow[]>([]);
-  const [newCat, setNewCat] = useState<NewCat | null>(null);
+  const [sub, setSub] = useState<null | 'newtag' | 'icon'>(null);
+  const [nt, setNt] = useState<TagDraft>({ label: '', icon: null, from: null, to: null });
+  const [iconQ, setIconQ] = useState('');
+  const [owner, setOwner] = useState<'me' | 'other' | null>(null);
+  const [email, setEmail] = useState('');
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
-  const [createdId, setCreatedId] = useState<string | null>(null);  // wiki created; grant still open
+  const [createdId, setCreatedId] = useState<string | null>(null);   // wiki row exists; grant may still be open
+  const [done, setDone] = useState<null | { grantNote?: string }>(null);
+  const lib = useLucide();
 
   useEffect(() => { contentStore?.listCategories().then(setDbCats).catch(() => {}); }, []);
+  const tax = useMemo(() => mergedTags(dbCats), [dbCats]);
+  const id = slugifyId(d.name);
+  const meta: WikiMeta = { ...draftMeta({ ...d, id }), slug: id, skin: 'wiki-page wiki-base' } as WikiMeta;
+  const idTaken = !!id && existingIds.includes(id) && !createdId;
 
-  const tax = useMemo(() => mergeTaxonomy(taxonomyCanon as any, dbCats), [dbCats]);
-  // valid icons for a new category = canon sprite ∪ the full Lucide library
-  // (loaded when the new-category form opens)
-  const [lib, setLib] = useState<LucideLib | null>(null);
-  useEffect(() => { if (newCat) loadLucide().then(setLib); }, [newCat]);
-  const icons = useMemo(
-    () => Array.from(new Set([...spriteIconNames(ICON_SPRITE), ...(lib?.icons.map((i) => i.n) ?? [])])),
-    [lib]);
-  const palette = Object.entries((taxonomyCanon as any).palette as Record<string, string>);
-  const wikiId = idTouched ? id : slugifyId(name);
+  const set = (patch: Partial<Draft>) => setD((p) => ({ ...p, ...patch }));
+  const toggleTag = (k: string) => set({ tags: d.tags.includes(k) ? d.tags.filter((x) => x !== k) : [...d.tags, k] });
 
-  const meta: WikiMeta = useMemo(() => ({
-    id: wikiId, slug: wikiId, name: name.trim(), skin: 'wiki-page wiki-base',
-    categories: cats, blurb: blurb.trim() || null, tagline: tagline.trim() || null,
-    status, tile_cover: artUrl.trim() ? { kind: 'art', src: artUrl.trim() } : { kind: 'themed' },
-  }), [wikiId, name, cats, blurb, tagline, status, artUrl]);
-
-  // the live preview IS the reader's tile (same renderer, same CSS)
-  const previewHtml = useMemo(
-    () => `<div class="rd-covers" style="grid-template-columns:1fr">${wikiCoverTile(meta, tax)}</div>`,
-    [meta, tax]);
-
-  const toggleCat = (k: string) =>
-    setCats((prev) => (prev.includes(k) ? prev.filter((x) => x !== k) : [...prev, k]));
-
-  const addCategory = async () => {
-    if (!newCat || !contentStore) return;
-    const row: CategoryRow = {
-      key: slugifyId(newCat.label), label: newCat.label.trim(), icon: newCat.icon || '',
-      grad_from: resolveColor((taxonomyCanon as any).palette, newCat.from, ''),
-      grad_to: resolveColor((taxonomyCanon as any).palette, newCat.to, ''),
-    };
-    const errs = validateCategory(row, tax.categories.map((c: any) => c.key), icons);
-    if (errs.length) { setErr(errs.join(' · ')); return; }
+  const addTag = async () => {
+    if (!contentStore) return;
+    const row: CategoryRow = { key: slugifyId(nt.label), label: nt.label.trim(), icon: nt.icon || '', grad_from: resolve(nt.from, ''), grad_to: resolve(nt.to, '') };
     setBusy(true); setErr(null);
     try {
       await contentStore.createCategory(row);
-      setDbCats((prev) => [...prev, row]);
-      setCats((prev) => [...prev, row.key]);
-      setNewCat(null);
+      setDbCats((p) => [...p, row]); set({ tags: [...d.tags, row.key] });
+      setSub(null); setNt({ label: '', icon: null, from: null, to: null });
     } catch (e: any) { setErr(e?.message || String(e)); }
     setBusy(false);
   };
@@ -95,111 +64,178 @@ export function OriginateWiki({ existingIds, onClose, onCreated, genAsUser = fal
     setBusy(true); setErr(null);
     try {
       if (!createdId) {
-        const errs = validateNewWiki(meta, existingIds, tax.categories.map((c: any) => c.key));
+        const errs = validateNewWiki(meta, existingIds, tax.categories.map((c) => c.key));
         if (errs.length) { setErr(errs.join(' · ')); setBusy(false); return; }
         await contentStore.createWiki(meta);
         setCreatedId(meta.id);
-        // the new tile shows up on /read AND the live browse page's directory
-        // feed in seconds, not at the next ISR tick
         fetch('/api/revalidate', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ paths: ['/read', '/api/directory'] }) }).catch(() => {});
       }
-      if (grantEmail.trim()) await contentStore.grantWikiMaster(grantEmail, meta.id);
-      onCreated(meta);
+      if (owner === 'other' && email.trim()) await contentStore.grantWikiMaster(email, meta.id);
+      setDone({});
     } catch (e: any) {
-      setErr((createdId ? 'Wiki created — the grant failed: ' : '') + (e?.message || String(e)));
+      setErr((createdId || meta.id ? 'The wiki is created — the grant failed: ' : '') + (e?.message || String(e)));
+      if (!createdId) setCreatedId(meta.id);   // createWiki succeeded if we got to the grant
     }
     setBusy(false);
   };
 
-  const swatchRow = (which: 'from' | 'to') => (
-    <div className="ow-swatches">
-      <span className="ow-swatch-label">{which}</span>
-      {palette.map(([pname, val]) => (
-        <button key={pname} type="button" title={pname}
-          className={`ow-swatch ${newCat?.[which] === pname ? 'on' : ''}`}
-          style={{ background: val }} onClick={() => setNewCat((c) => c && { ...c, [which]: pname })} />
-      ))}
-    </div>
-  );
+  const next = () => {
+    if (step < STEPS.length - 1) { setStep(step + 1); return; }
+    create();
+  };
+  const onKey = (e: React.KeyboardEvent) => {
+    if (e.key !== 'Enter' || (e.target as HTMLElement).tagName === 'TEXTAREA') return;
+    e.preventDefault();
+    if (can && !busy) next();
+  };
 
-  return (
-    <div className="acct-modal-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-      <div className="acct-modal ow-modal" onMouseDown={(e) => e.stopPropagation()}>
-        {/* the canon sprite, once — the icon picker and the cover preview reference it */}
-        <div style={{ display: 'none' }} dangerouslySetInnerHTML={{ __html: ICON_SPRITE }} />
-        <div className="acct-title">Originate a wiki</div>
-        <div className="ow-cols">
-          <div className="ow-form">
-            <input className="acct-input" placeholder="name — e.g. Dune" autoFocus value={name}
-              onChange={(e) => setName(e.target.value)} disabled={!!createdId} />
-            <input className="acct-input ow-id" placeholder="id (auto)" value={wikiId}
-              onChange={(e) => { setIdTouched(true); setId(slugifyId(e.target.value)); }} disabled={!!createdId} />
-            <div className="ow-label">categories — first pick drives the cover</div>
-            <div className="ow-cats">
-              {tax.categories.map((c: any) => (
-                <button key={c.key} type="button" disabled={!!createdId}
-                  className={`ow-cat ${cats.includes(c.key) ? 'on' : ''}`}
-                  onClick={() => toggleCat(c.key)}>
-                  {c.label}{cats[0] === c.key ? ' ★' : ''}
-                </button>
-              ))}
-              {!newCat && <button type="button" className="ow-cat ow-cat-new" disabled={!!createdId}
-                onClick={() => setNewCat({ label: '', icon: null, from: null, to: null })}>+ new category</button>}
-            </div>
-            {newCat && (
-              <div className="ow-newcat">
-                <input className="acct-input" placeholder="category label — e.g. Tabletop Games" value={newCat.label}
-                  onChange={(e) => setNewCat({ ...newCat, label: e.target.value })} />
-                <LucidePicker value={newCat.icon} onPick={(n) => setNewCat({ ...newCat, icon: n })} />
-                {swatchRow('from')}
-                {swatchRow('to')}
-                <div className="ow-newcat-actions">
-                  <button type="button" className="acct-primary" onClick={addCategory} disabled={busy}>Add category</button>
-                  <button type="button" className="acct-switch" onClick={() => setNewCat(null)}>cancel</button>
-                </div>
-              </div>
-            )}
-            <div className="ow-label">tagline — the dotted line under the title on the tile</div>
-            <TaglineFields parts={tagParts} onChange={setTagParts} disabled={!!createdId} />
-            <div className="ow-label">blurb — not shown on the tile: it powers browse search and the tile's hover tooltip</div>
-            <textarea className="acct-input ow-blurb" placeholder="one sentence describing the wiki" value={blurb}
-              onChange={(e) => setBlurb(e.target.value)} disabled={!!createdId} />
-            <div className="ow-row">
-              <select className="acct-input" value={status} onChange={(e) => setStatus(e.target.value as any)} disabled={!!createdId}>
-                <option value="live">live</option>
-                <option value="coming_soon">coming soon</option>
-              </select>
-              <input className="acct-input" placeholder="tile art URL (optional — themed cover if blank)" value={artUrl}
-                onChange={(e) => setArtUrl(e.target.value)} disabled={!!createdId} />
-            </div>
-            {!createdId && (() => {
-              const pc = tax.categories.find((c: any) => c.key === cats[0]) || null;
-              return <GenArtRow kind="cover" wiki={{
-                name: name.trim() || 'a new wiki', genreLabel: pc?.label ?? null,
-                tagline: tagline.trim() || null, blurb: blurb.trim() || null,
-                colors: pc ? [resolveColor((taxonomyCanon as any).palette, pc.grad.from, ''), resolveColor((taxonomyCanon as any).palette, pc.grad.to, '')].filter(Boolean) : [],
-              }} onResult={setArtUrl} asUser={genAsUser} />;
-            })()}
-            <input className="acct-input" placeholder="grant wiki master — email (optional)" value={grantEmail}
-              onChange={(e) => setGrantEmail(e.target.value)} />
-            {err && <div className="acct-msg">{err}</div>}
-            <div className="ow-actions">
-              <button className="acct-primary" onClick={create} disabled={busy || (!createdId && !name.trim())}>
-                {busy ? '…' : createdId ? (grantEmail.trim() ? 'Grant & finish' : 'Finish') : 'Originate'}
-              </button>
-              <button className="acct-switch" type="button" onClick={() => (createdId ? onCreated(meta) : onClose())}>
-                {createdId ? 'finish without grant' : 'cancel'}
-              </button>
-            </div>
-            <div className="acct-note">The cover art is per-wiki content — an image URL now, a Storage upload at public launch. The grant is optional; you can work the wiki yourself and grant later.</div>
+  if (sub === 'icon') return <IconSheet q={iconQ} onQ={setIconQ} sel={nt.icon} onPick={(n) => { setNt({ ...nt, icon: n }); setSub('newtag'); }} onBack={() => setSub('newtag')} />;
+  if (sub === 'newtag') return <NewTagSheet nt={nt} onChange={setNt} takenKeys={tax.categories.map((c) => c.key)} lib={lib}
+    onPickIcon={() => { setIconQ(''); setSub('icon'); }} onAdd={addTag} onBack={() => { setSub(null); setErr(null); }} busy={busy} />;
+
+  if (done) {
+    return (
+      <FlowRoot kind="fl">
+        <Bloom d={d} tax={tax} />
+        <div className="fl-head"><span style={{ width: 34 }} /><div className="fl-dots" />
+          <button className="fl-icon-btn" onClick={onClose}><Ic d={I.x} w={2.2} /></button></div>
+        <div className="fl-body"><div className="done">
+          <div className="done-tile"><SideTileBare d={{ ...d, id }} tax={tax} /></div>
+          <h1 className="done-h">{d.name.trim()} is ready.</h1>
+          <p className="done-s">It’s on the browse page already — no deploy, no waiting. Add pages whenever you like.</p>
+          <div className={`done-live ${err ? 'warn' : ''}`}><i />{err ? 'Live — grant still open' : d.status === 'coming_soon' ? 'Showing as coming soon' : 'Live now'}</div>
+          {err && <p className="done-s" style={{ fontSize: 13 }}>{err} You can grant any time from its identity.</p>}
+          <div className="done-acts">
+            <button className="go" style={{ justifyContent: 'center' }} onClick={() => onCreated(meta)}>Open its build kit<Ic d={I.fwd} w={2.4} /></button>
+            <button className="skip" onClick={() => { setD(emptyDraft()); setStep(0); setOwner(null); setEmail(''); setErr(null); setCreatedId(null); setDone(null); }}>Create another wiki</button>
           </div>
-          <div className="ow-preview">
-            <div className="ow-label">tile cover — live</div>
-            <style>{COVER_CSS}</style>
-            <div dangerouslySetInnerHTML={{ __html: previewHtml }} onClick={(e) => e.preventDefault()} />
-          </div>
-        </div>
+        </div></div>
+      </FlowRoot>
+    );
+  }
+
+  const stepDef = STEPS[step];
+  let field: React.ReactNode = null, note = '', can = true, skip = '';
+
+  if (stepDef.k === 'name') {
+    can = !!d.name.trim() && !idTaken; note = 'Name it and the card draws itself.';
+    field = (<>
+      <input className="in" value={d.name} autoFocus placeholder="The Renaissance" disabled={!!createdId}
+        onChange={(e) => set({ name: e.target.value })} />
+      {d.name.trim() && !idTaken && <div className="in-under"><Ic d={I.globe} w={1.8} /> viziwiki.com/read/<b>{id}</b></div>}
+      {idTaken && <div className="in-under bad"><Ic d={I.warn} w={2} /> “{id}” already exists — pick another name.</div>}
+    </>);
+  } else if (stepDef.k === 'tags') {
+    can = d.tags.length > 0; note = 'All your tags show in the corner of the card.';
+    field = <TagPick tax={tax} lib={lib} selected={d.tags} onToggle={createdId ? () => {} : toggleTag}
+      onNew={createdId ? undefined : () => { setNt({ label: '', icon: null, from: null, to: null }); setSub('newtag'); }} />;
+  } else if (stepDef.k === 'words') {
+    skip = 'Skip for now'; note = 'Two or three words works best.';
+    field = (<>
+      <Words parts={d.tagline} onChange={(p) => set({ tagline: p })} />
+      <div style={{ marginTop: 28 }}>
+        <textarea className="in sm" value={d.blurb} placeholder="One sentence — what is this wiki about?" onChange={(e) => set({ blurb: e.target.value })} />
+        <div className="in-under"><Ic d={I.search} w={1.8} /> Used for search only. <b>It never shows on the card.</b></div>
       </div>
-    </div>
+    </>);
+  } else if (stepDef.k === 'cover') {
+    const prim = tax.categories.find((t) => t.key === d.tags[0]);
+    note = d.cover.kind === 'themed' ? 'Change your first tag and this changes with it.' : 'A dark fade keeps the title readable.';
+    field = (<>
+      <div className="choice">
+        <button type="button" className={`choice-card ${d.cover.kind === 'themed' ? 'on' : ''}`} onClick={() => set({ cover: { kind: 'themed' } })}>
+          <span className="choice-top"><span className="choice-ic"><Ic d={I.paint} w={1.8} /></span><span className="choice-t">Made for you</span></span>
+          <span className="choice-mini"><MiniTile d={{ ...d, cover: { kind: 'themed' } }} tax={tax} /></span>
+          <div className="choice-d">Built from {prim ? <b>{prim.label}</b> : 'your tag'} — nothing to do.</div>
+        </button>
+        <button type="button" className={`choice-card ${d.cover.kind === 'art' ? 'on' : ''}`} onClick={() => set({ cover: { kind: 'art', src: d.cover.src || '' } })}>
+          <span className="choice-top"><span className="choice-ic"><Ic d={I.spark} w={1.8} /></span><span className="choice-t">Your own art</span></span>
+          <span className="choice-mini"><MiniTile d={{ ...d, cover: { kind: 'art', src: d.cover.src } }} tax={tax} /></span>
+          <div className="choice-d">Paste a picture, or let us draw one.</div>
+        </button>
+      </div>
+      {d.cover.kind === 'art' && (
+        <div style={{ marginTop: 20 }}>
+          <input className="in sm" value={d.cover.src || ''} placeholder="Paste an image link" onChange={(e) => set({ cover: { kind: 'art', src: e.target.value } })} />
+          <GenBlock kind="cover" d={d} tax={tax} isAdmin={!genAsUser} onResult={(uri) => set({ cover: { kind: 'art', src: uri } })} />
+        </div>
+      )}
+    </>);
+  } else {
+    can = owner !== null && (owner === 'me' || !busy); note = 'You can change all of this later.';
+    field = (<>
+      <div className="choice">
+        <button type="button" className={`choice-card ${owner === 'me' ? 'on' : ''}`} onClick={() => setOwner('me')}>
+          <span className="choice-top"><span className="choice-ic"><Ic d={I.me} w={1.8} /></span><span className="choice-t">I’ll run it</span></span>
+          <div className="choice-d">You keep it. Hand it to someone whenever you like.</div>
+        </button>
+        <button type="button" className={`choice-card ${owner === 'other' ? 'on' : ''}`} onClick={() => setOwner('other')}>
+          <span className="choice-top"><span className="choice-ic"><Ic d={I.hand} w={1.8} /></span><span className="choice-t">Someone else</span></span>
+          <div className="choice-d">They become its wiki master — this wiki only.</div>
+        </button>
+      </div>
+      {owner === 'other' && (
+        <div style={{ marginTop: 20 }}>
+          <input className="in sm" value={email} placeholder="their email" onChange={(e) => setEmail(e.target.value)} />
+          <div className="in-under"><Ic d={I.check} w={2.2} /> No account yet? Finish without it — you can grant any time from its identity.</div>
+        </div>
+      )}
+      <div className="rows-cap" style={{ paddingTop: 28 }}><span>When it goes live</span><span className="line" /></div>
+      <div className="choice">
+        <button type="button" className={`choice-card ${d.status === 'live' ? 'on' : ''}`} onClick={() => set({ status: 'live' })}>
+          <span className="choice-top"><span className="choice-ic"><Ic d={I.globe} w={1.8} /></span><span className="choice-t">Live now</span></span>
+          <div className="choice-d">Readable the second you finish.</div>
+        </button>
+        <button type="button" className={`choice-card ${d.status === 'coming_soon' ? 'on' : ''}`} onClick={() => set({ status: 'coming_soon' })}>
+          <span className="choice-top"><span className="choice-ic"><Ic d={I.clock} w={1.8} /></span><span className="choice-t">Coming soon</span></span>
+          <div className="choice-d">Shows on browse with a badge, opens for no one yet.</div>
+        </button>
+      </div>
+      {err && <div className="in-under bad" style={{ marginTop: 16 }}><Ic d={I.warn} w={2} /> {err}</div>}
+      {createdId && err && <button type="button" className="quiet-link" onClick={() => setDone({})}>Finish without the grant →</button>}
+    </>);
+  }
+
+  const last = step === STEPS.length - 1;
+  return (
+    <FlowRoot kind="fl">
+      <div onKeyDown={onKey} style={{ display: 'contents' }}>
+        <Bloom d={d} tax={tax} />
+        <div className="fl-head">
+          <button className="fl-icon-btn" onClick={() => setStep(Math.max(0, step - 1))} disabled={!step}><Ic d={I.back} w={2.2} /></button>
+          <div className="fl-dots">{STEPS.map((s, i) => (
+            <button key={s.k} className={`fl-dot ${i === step ? 'on' : ''} ${i < step ? 'done' : ''}`} title={s.q} onClick={() => setStep(i)} />))}</div>
+          <button className="fl-icon-btn" onClick={onClose}><Ic d={I.x} w={2.2} /></button>
+        </div>
+        <div className="fl-brand">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth={1.4} strokeLinejoin="round"><polygon points="7,1.5 12.5,7 7,12.5 1.5,7" /><line x1="1.5" y1="7" x2="12.5" y2="7" /></svg>
+          <span>New wiki</span>
+        </div>
+        <div className="fl-body"><div className="fl-wrap">
+          <div className="q">
+            <div className="q-step">Step {step + 1} of {STEPS.length}</div>
+            <h1 className="q-h">{stepDef.q}</h1>
+            <p className="q-sub">{stepDef.s}</p>
+            <div className="q-field">{field}</div>
+          </div>
+          <SideTile d={{ ...d, id }} tax={tax} note={note} lib={lib} />
+        </div></div>
+        <div className="fl-foot"><div className="fl-foot-in">
+          <button className="go" onClick={next} disabled={!can || busy}>{busy ? '…' : last ? 'Create the wiki' : 'Continue'}<Ic d={I.fwd} w={2.4} /></button>
+          {skip && <button className="skip" onClick={next}>{skip}</button>}
+          <span className="enter"><span className="kbd2">↵</span> {last ? 'to create' : 'to continue'}</span>
+        </div></div>
+      </div>
+    </FlowRoot>
   );
+}
+
+/* tiny tile wrappers (the REAL renderer, framed) */
+import { wikiCoverTile } from '../lib/reader-core.mjs';
+function MiniTile({ d, tax }: { d: Draft; tax: any }) {
+  const html = d.name.trim() || d.tags.length ? wikiCoverTile(draftMeta(d), tax) : '';
+  return <span dangerouslySetInnerHTML={{ __html: `<div class="rd-covers">${html}</div>` }} />;
+}
+function SideTileBare({ d, tax }: { d: Draft; tax: any }) {
+  return <div className="fl-side" style={{ position: 'static' }}><div dangerouslySetInnerHTML={{ __html: `<div class="rd-covers">${wikiCoverTile(draftMeta(d), tax)}</div>` }} /></div>;
 }
