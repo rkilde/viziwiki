@@ -37,6 +37,34 @@ export function sanitizeTileCss(css) {
   return s;
 }
 
+/** Remove the identity text slots (c-genre / c-vol / c-foot / c-soon) with
+ *  BALANCED same-tag depth counting — a slot like c-foot holds nested divs
+ *  (c-title, c-blurb), so a non-greedy regex would cut at the first inner
+ *  close and leave an orphan + a stray closer that breaks the page's DOM
+ *  (the Renaissance upload hit exactly this). */
+export function removeIdentitySlots(html) {
+  let s = String(html || '');
+  // c-title / c-blurb normally live inside c-foot, but stand-alone orphans
+  // (left by the pre-fix parser) must go too
+  for (const slot of ['c-genre', 'c-vol', 'c-foot', 'c-soon', 'c-title', 'c-blurb']) {
+    const openRe = new RegExp(`<([a-z0-9]+)\\b[^>]*class\\s*=\\s*"[^"]*\\b${slot}\\b[^"]*"[^>]*>`, 'i');
+    let m;
+    while ((m = s.match(openRe))) {
+      const tag = m[1].toLowerCase();
+      const start = m.index;
+      const walker = new RegExp(`<${tag}\\b[^>]*>|<\\/${tag}\\s*>`, 'gi');
+      walker.lastIndex = start + m[0].length;
+      let depth = 1, end = s.length, w;
+      while ((w = walker.exec(s))) {
+        if (w[0][1] === '/') depth--; else if (!/\/>$/.test(w[0])) depth++;
+        if (depth === 0) { end = w.index + w[0].length; break; }
+      }
+      s = s.slice(0, start) + s.slice(end);
+    }
+  }
+  return s;
+}
+
 /* split a stylesheet into top-level blocks: rules, @keyframes, @media */
 function cssBlocks(css) {
   const out = [];
@@ -77,9 +105,7 @@ export function parseTileArt(fileHtml) {
   let inner = src.slice(startIdx, endIdx);
 
   // 2 · drop the identity text slots — the DATABASE renders those
-  for (const slot of ['c-genre', 'c-vol', 'c-foot', 'c-soon']) {
-    inner = inner.replace(new RegExp(`<([a-z0-9]+)\\b[^>]*class\\s*=\\s*"[^"]*\\b${slot}\\b[^"]*"[^>]*>[\\s\\S]*?<\\/\\1\\s*>`, 'gi'), '');
-  }
+  inner = removeIdentitySlots(inner);
   inner = sanitizeTileMarkup(inner).trim();
   if (!inner) throw new Error('the cover element holds no decorative markup after removing the identity text slots');
 
@@ -121,6 +147,34 @@ export function safeHtmlCover(cover) {
   try {
     if (!cover || cover.kind !== 'html' || !cover.cls || !cover.inner) return null;
     if (!/^[a-z][a-z0-9-]*$/i.test(cover.cls)) return null;
-    return { kind: 'html', cls: cover.cls, css: sanitizeTileCss(cover.css || ''), inner: sanitizeTileMarkup(cover.inner) };
+    // re-run the slot strip too — SELF-HEALS covers stored by the earlier
+    // parser (orphaned slot fragments repair at serve time, no re-upload)
+    let inner = removeIdentitySlots(sanitizeTileMarkup(cover.inner));
+    // drop any stray unmatched closers an older store left behind
+    inner = balanceClosers(inner);
+    return { kind: 'html', cls: cover.cls, css: sanitizeTileCss(cover.css || ''), inner };
   } catch { return null; }
+}
+
+/** Remove end tags that have no matching opener (per tag name, in order) —
+ *  a stray `</div>` inside a tile would close the page's grid early. */
+export function balanceClosers(html) {
+  const s = String(html || '');
+  const re = /<([a-z0-9]+)\b[^>]*?(\/?)>|<\/([a-z0-9]+)\s*>/gi;
+  const depth = {};
+  const drop = [];
+  let m;
+  while ((m = re.exec(s))) {
+    if (m[3]) {
+      const t = m[3].toLowerCase();
+      if ((depth[t] || 0) > 0) depth[t]--; else drop.push([m.index, m.index + m[0].length]);
+    } else if (!m[2] && !/^(br|img|input|hr|meta|link|path|circle|rect|line|polyline|polygon|ellipse|stop|use)$/i.test(m[1])) {
+      const t = m[1].toLowerCase();
+      depth[t] = (depth[t] || 0) + 1;
+    }
+  }
+  if (!drop.length) return s;
+  let out = '', last = 0;
+  for (const [a, b] of drop) { out += s.slice(last, a); last = b; }
+  return out + s.slice(last);
 }
