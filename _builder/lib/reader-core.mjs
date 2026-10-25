@@ -4,6 +4,8 @@
 // and rendered copies are cached at the edge — "cache until edited").
 // Plain .mjs so the Next routes AND the guard suite share it (case 18).
 
+import { safeHtmlCover } from './tile-html.mjs';
+
 // A reader page must show no builder plumbing: absent optional fields render
 // as sentinel tokens (the decorator's "+"-slot protocol) — strip every
 // sentinel-bearing text so readers see clean canon output.
@@ -78,9 +80,13 @@ export const COVER_CSS = `
  *  data/wiki-categories.json), genre label + title + tagline over it.
  *  NOTE: the 5 flagship "bespoke" covers (tile_cover.kind === 'bespoke') are
  *  hand-built art living in browse.html — not canon CSS yet (the design-system
- *  arc canonizes them). Until then the reader renders EVERY wiki themed; the
- *  stored `cls` reference stays ready for that arc. */
-export function wikiCoverTile(w, taxonomy) {
+ *  arc canonizes them); those render themed here, the stored `cls` reference
+ *  stays ready for that arc. An UPLOADED art file (kind 'html') renders FOR
+ *  REAL when `opts.htmlArt` is set (the build-kit previews, the reader index):
+ *  the stored skin CSS + inner markup, re-sanitized at render (safeHtmlCover),
+ *  with the identity text on top — the owner's rule: the tile always shows
+ *  the most up-to-date art, never a stand-in. */
+export function wikiCoverTile(w, taxonomy, opts) {
   const cats = Array.isArray(w.categories) ? w.categories : [];
   const cat = ((taxonomy && taxonomy.categories) || []).find((c) => c.key === cats[0]) || null;
   const pal = (taxonomy && taxonomy.palette) || {};
@@ -108,14 +114,26 @@ export function wikiCoverTile(w, taxonomy) {
   const genre = cats
     .map((k) => { const c = ((taxonomy && taxonomy.categories) || []).find((x) => x.key === k); return c ? c.label : null; })
     .filter(Boolean).join(' · ') || 'Wiki';
-  return `<a class="rd-cover" href="/read/${encodeURIComponent(w.id)}" style="${art}">` +
-    (glyphSvg ? `<svg class="rd-cover-glyph" viewBox="0 0 24 24" aria-hidden="true">${glyphSvg}</svg>`
-      : glyph ? `<svg class="rd-cover-glyph" aria-hidden="true"><use href="#ic-${escapeHtml(glyph)}"></use></svg>` : '') +
+  const identity =
     `<span class="rd-cover-genre">${escapeHtml(genre)}</span>` +
     (w.status === 'coming_soon' ? `<span class="rd-cover-soon">Coming soon</span>` : '') +
     `<span class="rd-cover-foot"><span class="rd-cover-title">${escapeHtml(w.name)}</span>` +
     (tag ? `<span class="rd-cover-tag">${escapeHtml(tag)}</span>` : '') +
-    `</span></a>`;
+    `</span>`;
+  // the uploaded art, FOR REAL: re-sanitized skin CSS + inner markup under the
+  // identity text (unsafe or incomplete covers fall through to themed)
+  if (opts && opts.htmlArt && cover.kind === 'html') {
+    const safe = safeHtmlCover(cover);
+    if (safe) {
+      return `<style>${safe.css}</style>` +
+        `<a class="rd-cover ${escapeHtml(safe.cls)}" href="/read/${encodeURIComponent(w.id)}" style="background:linear-gradient(to bottom right,${from},${to})">` +
+        safe.inner + identity + `</a>`;
+    }
+  }
+  return `<a class="rd-cover" href="/read/${encodeURIComponent(w.id)}" style="${art}">` +
+    (glyphSvg ? `<svg class="rd-cover-glyph" viewBox="0 0 24 24" aria-hidden="true">${glyphSvg}</svg>`
+      : glyph ? `<svg class="rd-cover-glyph" aria-hidden="true"><use href="#ic-${escapeHtml(glyph)}"></use></svg>` : '') +
+    identity + `</a>`;
 }
 
 /** A minimal reader index document (wiki / page listings). */

@@ -575,12 +575,24 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
     Remaining iteration-3 surfaces: home-page tiles, builder dashboard
     swatches off hardcoded WIKI_COLOR, the recommendations module (algorithm
     deferred, owner wants it later).
-  · **IDENTITY MANAGEMENT (DONE, Oct 2026):** two build-kit surfaces.
-    **Tags manager** (`components/ManageCategories.tsx`, admin-only "Tags"
-    topbar button): create/relabel/re-icon/regrade/delete ORIGINATED
-    categories (store: updateCategory/deleteCategory; delete confirms with
-    a usage count from wikis.categories); the canon 12 render as LOCKED
-    rows ("canon" + lock icon — editing those is a repo edit, never UI).
+  · **IDENTITY MANAGEMENT (DONE, Oct 2026; categories surface REDESIGNED
+    per the owner's site-categories handback, late Oct 2026):** two
+    build-kit surfaces.
+    **Wiki Categories** (`components/ManageCategories.tsx`; opened from the
+    admin drawer — whose rows now carry gradient icon tiles per the same
+    handback): a SCANNABLE list — search (finds a wiki inside a category
+    too), Most-used/A–Z sort, a tally line, then "Added" (originated,
+    editable) and "Legacy" (the canon 12, locked) row groups; each row =
+    swatch · mono name · the filed wikis' marks (their emblems) · counts
+    ("N wikis", "N covers" = themed covers derived from it as primary).
+    A category opens into its own screen: facts (key/symbol/colours),
+    legacy lockline, the wikis filed under it (each row jumps to that
+    wiki's identity editor — onGotoWiki), and the browse filter row
+    previewed as readers see it. Remove: in-use → blocked panel listing
+    wearers; empty → confirm screen. The EDIT WINDOW stays the shared
+    NewTagSheet (owner's call — unchanged). Create/relabel/re-icon/regrade/
+    delete ORIGINATED categories (store: updateCategory/deleteCategory);
+    the canon 12 are locked (editing those is a repo edit, never UI).
     **Wiki identity editor** (`components/WikiIdentity.tsx`, "identity"
     button beside the switcher; admin or that wiki's master): alter the
     CURRENT wiki's tile cover (themed / art URL / keep-bespoke), tags,
@@ -640,9 +652,24 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
     external refs; local url(#) refs kept; 80KB cap) and RE-SANITIZED at
     serve time (`safeHtmlCover` in /api/directory — unsafe degrades to
     themed). browse.html renders it (CSS injected once per skin class,
-    identity text on top — the bespoke pattern, data-driven); reader
-    covers fall back to themed. No migration (jsonb). Guard: case 25
-    (426 total).
+    identity text on top — the bespoke pattern, data-driven). **The tile
+    always shows the most up-to-date art (owner's rule, late Oct 2026):**
+    `wikiCoverTile(w, tax, { htmlArt: true })` renders an html cover FOR
+    REAL (re-sanitized via safeHtmlCover at render, identity text on top) —
+    passed by every build-kit preview (identity hero, side tiles, mini
+    tiles) AND the `/read` index, so uploaded art never shows a themed
+    stand-in. No migration (jsonb). Guard: case 25.
+  · **SEARCH TERMS ARE TAG CHIPS (late Oct 2026):** the blurb input in
+    identity + origination is `TermChips` (kit) — the YouTube-tags model:
+    type, a comma/Enter makes a chip, × or backspace removes one. The
+    STORED field stays the `blurb` string (chips join ", "), so browse
+    search and the DB column are untouched.
+- **WIKI EMBLEM REWORK (deferred — owner-requested, late Oct 2026).** The
+  emblem screen's options become TWO: **Letter** (explicitly temporary) and
+  **custom emblem** — an image URL *or an uploaded file*, exactly like tile
+  art (master media pattern; the current middle "Symbol/glyph" option goes
+  away as a choice for wikis — the glyph kind stays in the DB/jsonb for the
+  rows that already use it). Owner said this can wait.
 - **SOFT-DELETE FOR WIKIS (deferred — owner-requested, Oct 2026).** In-app
   undo for wiki deletion: a `deleted_at` stamp instead of the current hard
   cascade — hides the wiki everywhere (dashboard grant filter, /read, the

@@ -91,7 +91,7 @@ export function EmblemMark({ d, tags, lib, size }: { d: Draft; tags: Tag[]; lib:
 /* ── the LIVE side tile — the real reader renderer, never a mock ── */
 export function SideTile({ d, tax, note, showEmblem = true, lib }: { d: Draft; tax: { palette: any; categories: Tag[] }; note?: string; showEmblem?: boolean; lib: LucideLib | null }) {
   const named = d.name.trim();
-  const html = useMemo(() => (named ? wikiCoverTile(draftMeta(d), tax) : ''),
+  const html = useMemo(() => (named ? wikiCoverTile(draftMeta(d), tax, { htmlArt: true }) : ''),
     [d, tax, named]);  // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <div className="fl-side">
@@ -99,7 +99,6 @@ export function SideTile({ d, tax, note, showEmblem = true, lib }: { d: Draft; t
       {named
         ? <div dangerouslySetInnerHTML={{ __html: `<div class="rd-covers">${html}</div>` }} onClick={(e) => e.preventDefault()} />
         : <div className="tile-empty">Your card appears<br />as you name it</div>}
-      {d.cover.kind === 'html' && <div className="side-note">Uploaded art renders on the browse page itself — this preview shows the themed stand-in.</div>}
       {d.cover.kind === 'bespoke' && <div className="side-note">Its hand-made artwork renders on the browse page itself.</div>}
       {note && <div className="side-note">{note}</div>}
       {showEmblem && named ? (
@@ -173,6 +172,47 @@ export function Words({ parts, onChange }: { parts: [string, string, string]; on
       </div>
       <div className="words-out">{out.length ? out.join(' · ') : <span className="e">shows under the title</span>}</div>
     </>
+  );
+}
+
+/* ── SEARCH TERMS as tags (the owner's YouTube-tags model): type, a comma or
+   Enter turns it into a chip, × (or backspace on empty) removes one. The
+   stored field stays the `blurb` string — chips are joined ", " on change,
+   so search matching and the DB column are untouched. ── */
+export const splitTerms = (blurb: string): string[] =>
+  String(blurb || '').split(',').map((s) => s.trim()).filter(Boolean);
+export function TermChips({ value, onChange, placeholder }: {
+  value: string; onChange: (blurb: string) => void; placeholder?: string;
+}) {
+  const terms = splitTerms(value);
+  const [draft, setDraft] = useState('');
+  const commit = (raw: string) => {
+    const add = splitTerms(raw).filter((t) => !terms.some((x) => x.toLowerCase() === t.toLowerCase()));
+    if (add.length) onChange([...terms, ...add].join(', '));
+    setDraft('');
+  };
+  const remove = (i: number) => onChange(terms.filter((_, x) => x !== i).join(', '));
+  return (
+    <div className="terms" onClick={(e) => (e.currentTarget.querySelector('input') as HTMLInputElement | null)?.focus()}>
+      {terms.map((t, i) => (
+        <span className="term" key={`${t}-${i}`}>{t}
+          <button type="button" aria-label={`remove ${t}`} onClick={(e) => { e.stopPropagation(); remove(i); }}><Ic d={I.x} w={2.6} /></button>
+        </span>
+      ))}
+      <input
+        value={draft}
+        placeholder={terms.length ? 'add another…' : (placeholder || 'Da Vinci, Medici, Italian art…')}
+        onChange={(e) => {
+          const v = e.target.value;
+          if (v.includes(',')) commit(v); else setDraft(v);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && draft.trim()) { e.preventDefault(); e.stopPropagation(); commit(draft); }
+          else if (e.key === 'Backspace' && !draft && terms.length) remove(terms.length - 1);
+        }}
+        onBlur={() => { if (draft.trim()) commit(draft); }}
+      />
+    </div>
   );
 }
 
