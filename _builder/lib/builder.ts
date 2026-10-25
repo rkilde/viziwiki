@@ -40,9 +40,10 @@ export function wikiFromMeta(id: string, name: string, status?: string, icon?: W
   home.id = `${id}-home`;
   return { id, name, home, pages: [], skin: BASE_SKIN, status, icon };
 }
-export function pageFromMeta(meta: { id: string; title: string }): Page {
+export function pageFromMeta(meta: { id: string; title: string; icon?: Page['icon'] }): Page {
   return {
     id: meta.id, title: meta.title, permalink: null, status: 'draft', folder: false,
+    icon: meta.icon ?? null,
     count: null, accent: null, sections: [], hero: { ...EMPTY_HERO }, overview: null, pages: [],
   };
 }

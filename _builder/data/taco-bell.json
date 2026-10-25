@@ -10,6 +10,10 @@
     "folder": false,
     "count": null,
     "accent": null,
+    "icon": {
+      "kind": "art",
+      "src": "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+"
+    },
     "sections": [
       {
         "type": "hero",
@@ -140,6 +144,7 @@
       "folder": false,
       "count": 38,
       "accent": "#ea580c",
+      "icon": null,
       "sections": [],
       "body": [],
       "hero": {
@@ -164,6 +169,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -189,6 +195,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -214,6 +221,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -239,6 +247,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -264,6 +273,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -289,6 +299,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -314,6 +325,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -339,6 +351,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -364,6 +377,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -389,6 +403,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -414,6 +429,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -439,6 +455,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -464,6 +481,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -489,6 +507,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -516,6 +535,7 @@
       "folder": false,
       "count": 27,
       "accent": "#e11d48",
+      "icon": null,
       "sections": [],
       "body": [],
       "hero": {
@@ -540,6 +560,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -565,6 +586,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -590,6 +612,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -615,6 +638,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -640,6 +664,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -667,6 +692,7 @@
       "folder": false,
       "count": 14,
       "accent": "#c026d3",
+      "icon": null,
       "sections": [],
       "body": [],
       "hero": {
@@ -691,6 +717,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -716,6 +743,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -741,6 +769,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -766,6 +795,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -793,6 +823,7 @@
       "folder": false,
       "count": 19,
       "accent": "#d97706",
+      "icon": null,
       "sections": [],
       "body": [],
       "hero": {
@@ -817,6 +848,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -842,6 +874,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -867,6 +900,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -892,6 +926,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -919,6 +954,10 @@
       "folder": false,
       "count": 22,
       "accent": "#0891b2",
+      "icon": {
+        "kind": "art",
+        "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHJ4PSIxMCIgZmlsbD0iIzE3MjU1NCIvPjxyZWN0IHg9IjM1IiB5PSI3IiB3aWR0aD0iMi42IiBoZWlnaHQ9IjM2IiByeD0iMS4zIiBmaWxsPSIjZGMyNjI2IiB0cmFuc2Zvcm09InJvdGF0ZSgtNyAzNi4zIDI1KSIvPjxwYXRoIGQ9Ik0yMi41IDMwIEMyNSAzMS41IDI4IDI4LjUgMzIgMzAgQzM2IDMxLjUgMzkuNSAyOSA0MS41IDMwIEwzOSA1MSBDMzguODUgNTIuOCAzNy40IDU0IDM1LjcgNTQgTDI4LjMgNTQgQzI2LjYgNTQgMjUuMTUgNTIuOCAyNSA1MSBaIiBmaWxsPSIjMjJkM2VlIi8+PHBhdGggZD0iTTIxLjUgMjIuNSBMMjUgNTEgQzI1LjE1IDUyLjggMjYuNiA1NCAyOC4zIDU0IEwzNS43IDU0IEMzNy40IDU0IDM4Ljg1IDUyLjggMzkgNTEgTDQyLjUgMjIuNSBaIiBmaWxsPSJyZ2JhKDIxMCwyMDgsMjAwLC40NSkiLz48cmVjdCB4PSIxOSIgeT0iMTgiIHdpZHRoPSIyNiIgaGVpZ2h0PSI0LjUiIHJ4PSIyLjI1IiBmaWxsPSJyZ2JhKDE5MCwxODgsMTgwLC43NSkiLz48L3N2Zz4="
+      },
       "sections": [
         {
           "type": "hero",
@@ -1290,6 +1329,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -1315,6 +1355,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -1340,6 +1381,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -1365,6 +1407,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -1390,6 +1433,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -1415,6 +1459,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -1440,6 +1485,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -1465,6 +1511,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -1490,6 +1537,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -1515,6 +1563,10 @@
           "folder": true,
           "count": null,
           "accent": "#64748b",
+          "icon": {
+            "kind": "art",
+            "src": "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjQgNjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgZmlsbD0ibm9uZSI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTAiIGZpbGw9IiMxNzI1NTQiLz48bGluZSB4MT0iMzYiIHkxPSI4IiB4Mj0iMzUiIHkyPSIxOCIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LC40KSIgc3Ryb2tlLXdpZHRoPSIxLjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWRhc2hhcnJheT0iMyAzIi8+PGxpbmUgeDE9IjE4IiB5MT0iMTkiIHgyPSI0NiIgeTI9IjE5IiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsLjQpIiBzdHJva2Utd2lkdGg9IjEuMiIgc3Ryb2tlLWRhc2hhcnJheT0iMyAzIi8+PGxpbmUgeDE9IjE4IiB5MT0iMTkiIHgyPSIyMSIgeTI9IjIzLjUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwuNCkiIHN0cm9rZS13aWR0aD0iMS4yIiBzdHJva2UtZGFzaGFycmF5PSIzIDMiLz48bGluZSB4MT0iNDYiIHkxPSIxOSIgeDI9IjQzIiB5Mj0iMjMuNSIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LC40KSIgc3Ryb2tlLXdpZHRoPSIxLjIiIHN0cm9rZS1kYXNoYXJyYXk9IjMgMyIvPjxsaW5lIHgxPSIyMSIgeTE9IjIzLjUiIHgyPSI0MyIgeTI9IjIzLjUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwuNCkiIHN0cm9rZS13aWR0aD0iMS4yIiBzdHJva2UtZGFzaGFycmF5PSIzIDMiLz48bGluZSB4MT0iMjEiIHkxPSIyMy41IiB4Mj0iMjYiIHkyPSI1NCIgc3Ryb2tlPSJyZ2JhKDI1NSwyNTUsMjU1LC40KSIgc3Ryb2tlLXdpZHRoPSIxLjIiIHN0cm9rZS1kYXNoYXJyYXk9IjMgMyIvPjxsaW5lIHgxPSI0MyIgeTE9IjIzLjUiIHgyPSIzOCIgeTI9IjU0IiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsLjQpIiBzdHJva2Utd2lkdGg9IjEuMiIgc3Ryb2tlLWRhc2hhcnJheT0iMyAzIi8+PHBhdGggZD0iTTI2IDU0IEMyNiA1NiAyOSA1Ny41IDMyIDU3LjUgQzM1IDU3LjUgMzggNTYgMzggNTQiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwuNCkiIHN0cm9rZS13aWR0aD0iMS4yIiBzdHJva2UtZGFzaGFycmF5PSIzIDMiIGZpbGw9Im5vbmUiLz48L3N2Zz4="
+          },
           "sections": [
             {
               "type": "hero",
@@ -2251,6 +2303,10 @@
               "folder": false,
               "count": null,
               "accent": null,
+              "icon": {
+                "kind": "art",
+                "src": "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgODAgODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgZmlsbD0ibm9uZSI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiByeD0iMTIiIGZpbGw9IiM0YzA1MTkiLz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9InNnIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2UxMWQ0OCIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzg4MTMzNyIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxsaW5lIHgxPSI0MyIgeTE9IjEwIiB4Mj0iNDEiIHkyPSIyOCIgc3Ryb2tlPSIjZmI3MTg1IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxyZWN0IHg9IjI0IiB5PSIyNiIgd2lkdGg9IjMyIiBoZWlnaHQ9IjQiIHJ4PSIyIiBmaWxsPSIjYmUxMjNjIi8+PHJlY3QgeD0iMjIiIHk9IjI5IiB3aWR0aD0iMzYiIGhlaWdodD0iMyIgcng9IjEuNSIgZmlsbD0iIzlmMTIzOSIvPjxwYXRoIGQ9Ik0yNSwzMkwyOSw2OEMyOSw3MCAzNCw3MiA0MCw3MkM0Niw3MiA1MSw3MCA1MSw2OEw1NSwzMloiIGZpbGw9InVybCgjc2cpIi8+PGxpbmUgeDE9IjMwIiB5MT0iMzQiIHgyPSIzMSIgeTI9IjY2IiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsLjEyKSIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg=="
+              },
               "sections": [
                 {
                   "type": "hero",
@@ -2295,6 +2351,10 @@
               "folder": false,
               "count": null,
               "accent": null,
+              "icon": {
+                "kind": "art",
+                "src": "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgODAgODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgZmlsbD0ibm9uZSI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiByeD0iMTIiIGZpbGw9IiM1MDA3MjQiLz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImJyIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2VjNDg5OSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzgzMTg0MyIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxsaW5lIHgxPSI0MyIgeTE9IjEwIiB4Mj0iNDEiIHkyPSIyOCIgc3Ryb2tlPSIjZjQ3MmI2IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxyZWN0IHg9IjI0IiB5PSIyNiIgd2lkdGg9IjMyIiBoZWlnaHQ9IjQiIHJ4PSIyIiBmaWxsPSIjOWQxNzRkIi8+PHJlY3QgeD0iMjIiIHk9IjI5IiB3aWR0aD0iMzYiIGhlaWdodD0iMyIgcng9IjEuNSIgZmlsbD0iI2JlMTg1ZCIvPjxwYXRoIGQ9Ik0yNSwzMkwyOSw2OEMyOSw3MCAzNCw3MiA0MCw3MkM0Niw3MiA1MSw3MCA1MSw2OEw1NSwzMloiIGZpbGw9InVybCgjYnIpIi8+PGxpbmUgeDE9IjMwIiB5MT0iMzQiIHgyPSIzMSIgeTI9IjY2IiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsLjEyKSIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg=="
+              },
               "sections": [
                 {
                   "type": "hero",
@@ -2339,6 +2399,10 @@
               "folder": false,
               "count": null,
               "accent": null,
+              "icon": {
+                "kind": "art",
+                "src": "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgODAgODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgZmlsbD0ibm9uZSI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiByeD0iMTIiIGZpbGw9IiM3ODM1MGYiLz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9InBjIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Y1OWUwYiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzkyNDAwZSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxwYXRoIGQ9Ik0yNCwyNEwyOCw2NEMyOCw2NyAzMyw3MCA0MCw3MEM0Nyw3MCA1Miw2NyA1Miw2NEw1NiwyNFoiIGZpbGw9InVybCgjcGMpIi8+PHJlY3QgeD0iMzAiIHk9IjE5IiB3aWR0aD0iNiIgaGVpZ2h0PSI2IiByeD0iMSIgZmlsbD0iI2ZiYmYyNCIgb3BhY2l0eT0iLjciIHRyYW5zZm9ybT0icm90YXRlKDE1IDMzIDIyKSIvPjxyZWN0IHg9IjM4IiB5PSIxNyIgd2lkdGg9IjUiIGhlaWdodD0iNSIgcng9IjEiIGZpbGw9IiNmNTllMGIiIG9wYWNpdHk9Ii42Ii8+PHJlY3QgeD0iNDUiIHk9IjIwIiB3aWR0aD0iNSIgaGVpZ2h0PSI1IiByeD0iMSIgZmlsbD0iI2ZiYmYyNCIgb3BhY2l0eT0iLjUiLz48bGluZSB4MT0iNDgiIHkxPSI4IiB4Mj0iNDUiIHkyPSIyNCIgc3Ryb2tlPSIjZmJiZjI0IiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBvcGFjaXR5PSIuNyIvPjwvc3ZnPg=="
+              },
               "sections": [
                 {
                   "type": "hero",
@@ -2383,6 +2447,10 @@
               "folder": false,
               "count": null,
               "accent": null,
+              "icon": {
+                "kind": "art",
+                "src": "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgODAgODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgZmlsbD0ibm9uZSI+PHJlY3Qgd2lkdGg9IjgwIiBoZWlnaHQ9IjgwIiByeD0iMTIiIGZpbGw9IiMxYTJlMDUiLz48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9InNsIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzg0Y2MxNiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzM2NTMxNCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxsaW5lIHgxPSI0MyIgeTE9IjEwIiB4Mj0iNDEiIHkyPSIyOCIgc3Ryb2tlPSIjYTNlNjM1IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxyZWN0IHg9IjI0IiB5PSIyNiIgd2lkdGg9IjMyIiBoZWlnaHQ9IjQiIHJ4PSIyIiBmaWxsPSIjNGQ3YzBmIi8+PHJlY3QgeD0iMjIiIHk9IjI5IiB3aWR0aD0iMzYiIGhlaWdodD0iMyIgcng9IjEuNSIgZmlsbD0iIzY1YTMwZCIvPjxwYXRoIGQ9Ik0yNSwzMkwyOSw2OEMyOSw3MCAzNCw3MiA0MCw3MkM0Niw3MiA1MSw3MCA1MSw2OEw1NSwzMloiIGZpbGw9InVybCgjc2wpIi8+PGxpbmUgeDE9IjMwIiB5MT0iMzQiIHgyPSIzMSIgeTI9IjY2IiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsLjEyKSIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg=="
+              },
               "sections": [
                 {
                   "type": "hero",
@@ -2431,6 +2499,10 @@
       "folder": false,
       "count": 9,
       "accent": "#dc2626",
+      "icon": {
+        "kind": "art",
+        "src": "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+"
+      },
       "sections": [
         {
           "type": "hero",
@@ -2496,6 +2568,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -2521,6 +2594,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -2546,6 +2620,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -2571,6 +2646,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -2596,6 +2672,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -2621,6 +2698,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -2646,6 +2724,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -2673,6 +2752,10 @@
       "folder": false,
       "count": 15,
       "accent": "#059669",
+      "icon": {
+        "kind": "art",
+        "src": "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzcwMjA4MiIvPjxyZWN0IHg9IjQiIHk9IjciIHdpZHRoPSIyNCIgaGVpZ2h0PSIxNiIgcng9IjIiIGZpbGw9IiNGRUQxNDEiLz48cmVjdCB4PSI0IiB5PSI3IiB3aWR0aD0iMjQiIGhlaWdodD0iNCIgcng9IjIiIGZpbGw9IiNGRUQxNDEiIG9wYWNpdHk9Ii41NSIvPjxyZWN0IHg9IjciIHk9IjEwIiB3aWR0aD0iNSIgaGVpZ2h0PSIxLjUiIHJ4PSIuNzUiIGZpbGw9IiM3MDIwODIiIG9wYWNpdHk9Ii40Ii8+PHJlY3QgeD0iNyIgeT0iMTMuNSIgd2lkdGg9IjciIGhlaWdodD0iMS41IiByeD0iLjc1IiBmaWxsPSIjNzAyMDgyIiBvcGFjaXR5PSIuMzUiLz48cmVjdCB4PSI3IiB5PSIxNi41IiB3aWR0aD0iNSIgaGVpZ2h0PSIxLjUiIHJ4PSIuNzUiIGZpbGw9IiM3MDIwODIiIG9wYWNpdHk9Ii4zNSIvPjxyZWN0IHg9IjciIHk9IjE5LjUiIHdpZHRoPSI4IiBoZWlnaHQ9IjEuNSIgcng9Ii43NSIgZmlsbD0iIzcwMjA4MiIgb3BhY2l0eT0iLjM1Ii8+PHJlY3QgeD0iMTYiIHk9IjEzLjUiIHdpZHRoPSI2IiBoZWlnaHQ9IjEuNSIgcng9Ii43NSIgZmlsbD0iIzcwMjA4MiIgb3BhY2l0eT0iLjM1Ii8+PHJlY3QgeD0iMTYiIHk9IjE2LjUiIHdpZHRoPSI4IiBoZWlnaHQ9IjEuNSIgcng9Ii43NSIgZmlsbD0iIzcwMjA4MiIgb3BhY2l0eT0iLjM1Ii8+PHJlY3QgeD0iMTYiIHk9IjE5LjUiIHdpZHRoPSI1IiBoZWlnaHQ9IjEuNSIgcng9Ii43NSIgZmlsbD0iIzcwMjA4MiIgb3BhY2l0eT0iLjM1Ii8+PHJlY3QgeD0iMTMiIHk9IjIzIiB3aWR0aD0iNiIgaGVpZ2h0PSIzIiByeD0iMSIgZmlsbD0iI0ZFRDE0MSIgb3BhY2l0eT0iLjUiLz48L3N2Zz4="
+      },
       "sections": [
         {
           "type": "hero",
@@ -2733,6 +2816,10 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": {
+            "kind": "art",
+            "src": "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzcwMjA4MiIvPjxyZWN0IHg9IjQiIHk9IjciIHdpZHRoPSIyNCIgaGVpZ2h0PSIxNiIgcng9IjIiIGZpbGw9IiNGRUQxNDEiLz48cmVjdCB4PSI0IiB5PSI3IiB3aWR0aD0iMjQiIGhlaWdodD0iNCIgcng9IjIiIGZpbGw9IiNGRUQxNDEiIG9wYWNpdHk9Ii41NSIvPjxyZWN0IHg9IjciIHk9IjEwIiB3aWR0aD0iNSIgaGVpZ2h0PSIxLjUiIHJ4PSIuNzUiIGZpbGw9IiM3MDIwODIiIG9wYWNpdHk9Ii40Ii8+PHJlY3QgeD0iNyIgeT0iMTMuNSIgd2lkdGg9IjciIGhlaWdodD0iMS41IiByeD0iLjc1IiBmaWxsPSIjNzAyMDgyIiBvcGFjaXR5PSIuMzUiLz48cmVjdCB4PSI3IiB5PSIxNi41IiB3aWR0aD0iNSIgaGVpZ2h0PSIxLjUiIHJ4PSIuNzUiIGZpbGw9IiM3MDIwODIiIG9wYWNpdHk9Ii4zNSIvPjxyZWN0IHg9IjciIHk9IjE5LjUiIHdpZHRoPSI4IiBoZWlnaHQ9IjEuNSIgcng9Ii43NSIgZmlsbD0iIzcwMjA4MiIgb3BhY2l0eT0iLjM1Ii8+PHJlY3QgeD0iMTYiIHk9IjEzLjUiIHdpZHRoPSI2IiBoZWlnaHQ9IjEuNSIgcng9Ii43NSIgZmlsbD0iIzcwMjA4MiIgb3BhY2l0eT0iLjM1Ii8+PHJlY3QgeD0iMTYiIHk9IjE2LjUiIHdpZHRoPSI4IiBoZWlnaHQ9IjEuNSIgcng9Ii43NSIgZmlsbD0iIzcwMjA4MiIgb3BhY2l0eT0iLjM1Ii8+PHJlY3QgeD0iMTYiIHk9IjE5LjUiIHdpZHRoPSI1IiBoZWlnaHQ9IjEuNSIgcng9Ii43NSIgZmlsbD0iIzcwMjA4MiIgb3BhY2l0eT0iLjM1Ii8+PHJlY3QgeD0iMTMiIHk9IjIzIiB3aWR0aD0iNiIgaGVpZ2h0PSIzIiByeD0iMSIgZmlsbD0iI0ZFRDE0MSIgb3BhY2l0eT0iLjUiLz48L3N2Zz4="
+          },
           "sections": [
             {
               "type": "hero",
@@ -2794,6 +2881,10 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": {
+            "kind": "art",
+            "src": "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzcwMjA4MiIvPjxyZWN0IHg9IjYiIHk9IjI0IiB3aWR0aD0iMjAiIGhlaWdodD0iMi41IiByeD0iMS4yNSIgZmlsbD0iI0ZFRDE0MSIvPjxwYXRoIGQ9Ik0xMCAyMSBRMTAgMTUuNSAxMyAxNS41IFExNiAxNS41IDE2IDEwIiBzdHJva2U9IiNGRUQxNDEiIHN0cm9rZS13aWR0aD0iMi4yIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMTYgMjEgUTE2IDE2IDE4LjUgMTYgUTIxIDE2IDIxIDExIiBzdHJva2U9IiNGRUQxNDEiIHN0cm9rZS13aWR0aD0iMi4yIiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiIG9wYWNpdHk9Ii43Ii8+PHBhdGggZD0iTTIxIDIxIFEyMSAxNy41IDIzIDE3LjUgUTI1IDE3LjUgMjUgMTQiIHN0cm9rZT0iI0ZFRDE0MSIgc3Ryb2tlLXdpZHRoPSIyLjIiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgb3BhY2l0eT0iLjQiLz48L3N2Zz4="
+          },
           "sections": [
             {
               "type": "hero",
@@ -3174,6 +3265,10 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": {
+            "kind": "art",
+            "src": "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzcwMjA4MiIvPjxyZWN0IHg9IjQiIHk9IjkiIHdpZHRoPSIyNCIgaGVpZ2h0PSIxNCIgcng9IjIiIGZpbGw9IiNGRUQxNDEiLz48cmVjdCB4PSI0IiB5PSI5IiB3aWR0aD0iMjQiIGhlaWdodD0iMi41IiByeD0iMCIgZmlsbD0iI0ZFRDE0MSIgb3BhY2l0eT0iLjU1Ii8+PHJlY3QgeD0iNCIgeT0iMjAuNSIgd2lkdGg9IjI0IiBoZWlnaHQ9IjIuNSIgcng9IjAiIGZpbGw9IiNGRUQxNDEiIG9wYWNpdHk9Ii41NSIvPjxyZWN0IHg9IjYiIHk9IjEwIiB3aWR0aD0iMyIgaGVpZ2h0PSIyIiByeD0iMSIgZmlsbD0iIzcwMjA4MiIgb3BhY2l0eT0iLjQiLz48cmVjdCB4PSIyMyIgeT0iMTAiIHdpZHRoPSIzIiBoZWlnaHQ9IjIiIHJ4PSIxIiBmaWxsPSIjNzAyMDgyIiBvcGFjaXR5PSIuNCIvPjxyZWN0IHg9IjYiIHk9IjIwIiB3aWR0aD0iMyIgaGVpZ2h0PSIyIiByeD0iMSIgZmlsbD0iIzcwMjA4MiIgb3BhY2l0eT0iLjQiLz48cmVjdCB4PSIyMyIgeT0iMjAiIHdpZHRoPSIzIiBoZWlnaHQ9IjIiIHJ4PSIxIiBmaWxsPSIjNzAyMDgyIiBvcGFjaXR5PSIuNCIvPjx0ZXh0IHg9IjE2IiB5PSIxOC41IiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC1zaXplPSI4IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjNzAyMDgyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4kMjwvdGV4dD48L3N2Zz4="
+          },
           "sections": [
             {
               "type": "hero",
@@ -3340,6 +3435,10 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": {
+            "kind": "art",
+            "src": "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzcwMjA4MiIvPjxyZWN0IHg9IjE1IiB5PSIxMyIgd2lkdGg9IjIiIGhlaWdodD0iMTIiIHJ4PSIxIiBmaWxsPSIjRkVEMTQxIi8+PHBhdGggZD0iTTE2IDE3IFE4IDE1IDggNyBRMTYgMTEgMTYgMTd6IiBmaWxsPSIjRkVEMTQxIi8+PHBhdGggZD0iTTE2IDIwIFEyNCAxNyAyNSA5IFExNyAxNCAxNiAyMHoiIGZpbGw9IiNGRUQxNDEiIG9wYWNpdHk9Ii43NSIvPjxyZWN0IHg9IjkiIHk9IjI2IiB3aWR0aD0iMTQiIGhlaWdodD0iMiIgcng9IjEiIGZpbGw9IiNGRUQxNDEiIG9wYWNpdHk9Ii40NSIvPjwvc3ZnPg=="
+          },
           "sections": [
             {
               "type": "hero",
@@ -3699,6 +3798,10 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": {
+            "kind": "art",
+            "src": "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzcwMjA4MiIvPjx0ZXh0IHg9IjE0IiB5PSIyMSIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTciIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNGRUQxNDEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPsK9PC90ZXh0Pjx0ZXh0IHg9IjI5IiB5PSIyOCIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNGRUQxNDEiIHRleHQtYW5jaG9yPSJlbmQiPmxiLjwvdGV4dD48L3N2Zz4="
+          },
           "sections": [
             {
               "type": "hero",
@@ -3972,6 +4075,10 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": {
+            "kind": "art",
+            "src": "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzcwMjA4MiIvPjxyZWN0IHg9IjQiIHk9IjciIHdpZHRoPSIyNCIgaGVpZ2h0PSIxNiIgcng9IjIiIGZpbGw9IiNGRUQxNDEiLz48cmVjdCB4PSI0IiB5PSI3IiB3aWR0aD0iMjQiIGhlaWdodD0iNCIgcng9IjIiIGZpbGw9IiNGRUQxNDEiIG9wYWNpdHk9Ii41NSIvPjxyZWN0IHg9IjciIHk9IjEwIiB3aWR0aD0iNSIgaGVpZ2h0PSIxLjUiIHJ4PSIuNzUiIGZpbGw9IiM3MDIwODIiIG9wYWNpdHk9Ii40Ii8+PHJlY3QgeD0iNyIgeT0iMTMuNSIgd2lkdGg9IjciIGhlaWdodD0iMS41IiByeD0iLjc1IiBmaWxsPSIjNzAyMDgyIiBvcGFjaXR5PSIuMzUiLz48cmVjdCB4PSI3IiB5PSIxNi41IiB3aWR0aD0iNSIgaGVpZ2h0PSIxLjUiIHJ4PSIuNzUiIGZpbGw9IiM3MDIwODIiIG9wYWNpdHk9Ii4zNSIvPjxyZWN0IHg9IjciIHk9IjE5LjUiIHdpZHRoPSI4IiBoZWlnaHQ9IjEuNSIgcng9Ii43NSIgZmlsbD0iIzcwMjA4MiIgb3BhY2l0eT0iLjM1Ii8+PHJlY3QgeD0iMTYiIHk9IjEzLjUiIHdpZHRoPSI2IiBoZWlnaHQ9IjEuNSIgcng9Ii43NSIgZmlsbD0iIzcwMjA4MiIgb3BhY2l0eT0iLjM1Ii8+PHJlY3QgeD0iMTYiIHk9IjE2LjUiIHdpZHRoPSI4IiBoZWlnaHQ9IjEuNSIgcng9Ii43NSIgZmlsbD0iIzcwMjA4MiIgb3BhY2l0eT0iLjM1Ii8+PHJlY3QgeD0iMTYiIHk9IjE5LjUiIHdpZHRoPSI1IiBoZWlnaHQ9IjEuNSIgcng9Ii43NSIgZmlsbD0iIzcwMjA4MiIgb3BhY2l0eT0iLjM1Ii8+PHJlY3QgeD0iMTMiIHk9IjIzIiB3aWR0aD0iNiIgaGVpZ2h0PSIzIiByeD0iMSIgZmlsbD0iI0ZFRDE0MSIgb3BhY2l0eT0iLjUiLz48L3N2Zz4="
+          },
           "sections": [
             {
               "type": "hero",
@@ -4240,6 +4347,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -4265,6 +4373,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -4290,6 +4399,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -4315,6 +4425,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -4340,6 +4451,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -4367,6 +4479,10 @@
       "folder": false,
       "count": 24,
       "accent": "#6d28d9",
+      "icon": {
+        "kind": "art",
+        "src": "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMzIgMzIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzcwMjA4MiIvPjxwYXRoIGQ9Ik02IDggQzYgNi45IDYuOSA2IDggNiBMMjQgNiBDMjUuMSA2IDI2IDYuOSAyNiA4IEwyNiAxOSBDMjYgMjAuMSAyNS4xIDIxIDI0IDIxIEwxMiAyMSBMOCAyNiBMOCAyMSBDNi45IDIxIDYgMjAuMSA2IDE5IFoiIGZpbGw9IiNGRUQxNDEiLz48dGV4dCB4PSIxMyIgeT0iMTciIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLHNlcmlmIiBmb250LXNpemU9IjkiIGZvbnQtc3R5bGU9Iml0YWxpYyIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzcwMjA4MiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+IjwvdGV4dD48L3N2Zz4="
+      },
       "sections": [
         {
           "type": "hero",
@@ -4427,6 +4543,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -4452,6 +4569,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -4477,6 +4595,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -4502,6 +4621,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -4527,6 +4647,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -4554,6 +4675,7 @@
       "folder": false,
       "count": 16,
       "accent": "#db5b1e",
+      "icon": null,
       "sections": [],
       "body": [],
       "hero": {
@@ -4578,6 +4700,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -4603,6 +4726,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -4628,6 +4752,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -4653,6 +4778,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -4680,6 +4806,7 @@
       "folder": false,
       "count": 47,
       "accent": "#a21caf",
+      "icon": null,
       "sections": [],
       "body": [],
       "hero": {
@@ -4704,6 +4831,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -4729,6 +4857,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -4754,6 +4883,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {
@@ -4779,6 +4909,7 @@
           "folder": false,
           "count": null,
           "accent": null,
+          "icon": null,
           "sections": [],
           "body": [],
           "hero": {

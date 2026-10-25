@@ -26,6 +26,9 @@ export type Page = {
   permalink: string | null;
   status: string;          // 'live' (built page) | 'stub' (directory entry, not built) | 'draft'
   home?: boolean;          // the wiki's single home page
+  /** the PAGE's emblem (its small mark — extraction/pages.icon, master media
+   *  pattern): a sprite/library glyph or the page's own image/SVG art */
+  icon?: { kind: 'glyph' | 'art'; name?: string; src?: string } | null;
   folder?: boolean;
   count?: number | null;
   accent?: string | null;

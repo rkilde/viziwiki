@@ -199,6 +199,24 @@ Owner step: **SQL Editor** → paste + Run
 `_builder/supabase/migrations/0009_wiki_icon.sql`, then set any wiki's icon
 from its **identity** modal (the button beside the wiki switcher).
 
+## Page emblems (switch-on step)
+
+Each **page** has its own small mark too — the second emblem the live rails
+show beside the wiki's. Migration 0010 adds `pages.icon` and **seeds every
+emblem scanned off the live site** (the per-page `WIKI_TOC.pageLogo` SVGs —
+19 pages), and lifts the five flagships' hand-drawn `wikiLogo` marks into
+`wikis.icon` wherever the wiki still wears the auto letter default.
+
+Owner step: **SQL Editor** → paste + Run
+`_builder/supabase/migrations/0010_page_emblems.sql`. Afterwards any page's
+emblem is editable from the build kit: the mark slot at the top of the
+canvas right rail (a dashed **+** when the page has none).
+
+Note: the six iPod pages share one 84KB photo PNG as their mark — too heavy
+to seed inline; they keep it page-side until Storage uploads land. If a
+page-side mark changes, re-run `node scripts/gen-page-emblems-sql.mjs`
+(from `_builder/`) and re-run the refreshed 0010.
+
 ## AI art generation (switch-on step — optional)
 
 The identity editor and origination modal have **✨ Generate** buttons that
