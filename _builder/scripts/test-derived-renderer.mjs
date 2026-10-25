@@ -1119,5 +1119,31 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(t25.includes('linear-gradient') && !t25.includes('<b>art</b>'), 'reader covers fall back to themed for html art (renders on browse itself)');
 }
 
+// ── case 26: THE CANVAS TREE dashboard — the right rail's live page is the
+// DERIVED render (rule #5), never a restated mini-page; the read-only shell
+// is inert canon ──
+{
+  console.log('case 26: canvas tree — live rail derives, read-only shell is inert canon');
+  const live = fs.readFileSync('components/canvas/LivePage.tsx', 'utf8');
+  ok(live.includes('renderBody(') && live.includes('stripSentinels('),
+    'the rail renders the REAL doc through the derived renderer, sentinels stripped like the reader');
+  ok(live.includes('buildReadOnlyCanvas('), 'the rail wraps the body in the shared read-only canon shell');
+  ok(!/pp-hero|pp-band|dangerouslySetInnerHTML/.test(live), 'no restated mini-page markup in the preview');
+
+  const canvasSrc = fs.readFileSync('lib/canvas.ts', 'utf8');
+  const ro = canvasSrc.slice(canvasSrc.indexOf('export function buildReadOnlyCanvas'), canvasSrc.indexOf('// ── data sync'));
+  ok(ro.includes('wiki-typography.css') && ro.includes('wiki-universals.css') && ro.includes('BANK_CSS_INLINE'),
+    'the read-only shell loads the SAME canon stack as the editor canvas');
+  ok(ro.includes('wiki-home.css'), 'home pages load the home layer (reader parity — the editor canvas lacks it)');
+  ok(!ro.includes('decorate.js') && !ro.includes('AFFORDANCE'), 'no decorator, no editing chrome — inert read-only canvas');
+
+  const tree = fs.readFileSync('components/canvas/CanvasTree.tsx', 'utf8');
+  ok(tree.includes('ROOT_COLUMN_HEAD') && tree.includes('dotClass('),
+    'the left rail derives its header + dots from the canonical hierarchy, not copies');
+  ok(tree.includes('onEditIdentity') && /cvt-id-btn/.test(tree), 'the identity button lives FIRST in the left rail (owner\'s rule)');
+  ok(!/sum-n|What it still needs|ReadinessPanel/.test(tree), 'the right rail carries NO completion-progress block (owner\'s rule)');
+  ok(tree.includes('<LivePage'), 'the right rail is the live page itself');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

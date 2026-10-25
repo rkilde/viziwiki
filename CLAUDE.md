@@ -247,6 +247,19 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
 - `components/editor/` — `PageEditor` (iframe host + the scaled, centered true-1080
   preview + the readiness rail in the left margin), `SectionPicker` (add-section
   picker), `ReadinessPanel`.
+- `components/canvas/` — THE DASHBOARD (Oct 2026: the owner's v12 canvas-tree
+  handback REPLACED the Miller columns). `CanvasTree` = a pan/zoom map (drag,
+  wheel, ⌘-wheel zoom, Fit) of pages drawn as paper sheets — home → categories →
+  the one open branch; sheet thumbnails derive from each page's REAL section
+  types; nest chips show a branch's health; "+" sheets add pages in place
+  (Enter creates via the existing overlay/addNode). LEFT rail = the wiki
+  IDENTITY button FIRST (owner's rule — moved off the topbar) + the
+  main-category quick-nav (header/dots from `lib/hierarchy`). RIGHT rail =
+  PURELY the live page (owner's rule: NO completion/progress info): `LivePage`
+  renders the stored doc through `renderBody` + `stripSentinels` into
+  `buildReadOnlyCanvas` (lib/canvas.ts — the editor's canon CSS stack + the
+  home layer on home pages, no decorator, inert) scaled into the rail, which
+  scrolls it; one pinned "Open and edit". Guard: case 26.
 - `scripts/` — `copy-canon` (CSS + `bank-*.css` discovery), `extract-grammar`/
   `-includes`/`-visuals`/`-taco-bell`/`-apple`, `gen-placeholders`, and the guards
   `audit-*` + `test-derived-renderer` + `test-golden-render`.
