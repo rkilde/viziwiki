@@ -42,7 +42,10 @@ export interface WikiMeta {
   categories?: string[]; blurb?: string | null; tagline?: string | null;
   status?: 'live' | 'coming_soon'; tile_cover?: TileCover; icon?: WikiIcon;
 }
-export interface PageMeta { id: string; slug: string; title: string; type: string; }
+/** A PAGE's small MARK (its emblem — migration 0010, same master-media shape
+ *  as the wiki's): a sprite/library glyph, or the page's own image/SVG art. */
+export type PageIcon = { kind: 'glyph'; name: string } | { kind: 'art'; src: string };
+export interface PageMeta { id: string; slug: string; title: string; type: string; icon?: PageIcon | null; }
 /** One row of a page's history (phase 3 — the revision system). */
 export interface RevisionMeta {
   id: number; status: 'pending' | 'published' | 'rejected';
@@ -96,6 +99,11 @@ export interface ContentStore {
    *  history cascade with it (admin only; the RLS delete policy re-checks).
    *  NOT undoable from the app: recovery exists only via database backups. */
   deleteWiki(id: string): Promise<void>;
+  /** Set (or clear, with null) a PAGE's emblem — upserts the page row so a
+   *  flagship page whose content still lives in git gets a row carrying just
+   *  its identity + mark (it holds no published revision, so readers never
+   *  see it as a page). */
+  setPageIcon(wikiId: string, page: PageMeta, icon: PageIcon | null): Promise<void>;
 }
 
 /* ── Implementation A — git/files (dev-era idea; superseded) ────────────
@@ -117,6 +125,7 @@ export class GitContentStore implements ContentStore {
   async updateWikiIdentity(): Promise<void> { throw new Error("GitContentStore not built"); }
   async listCategories(): Promise<CategoryRow[]> { throw new Error("GitContentStore not built"); }
   async createCategory(): Promise<void>   { throw new Error("GitContentStore not built"); }
+  async setPageIcon(): Promise<void>      { throw new Error("GitContentStore not built"); }
   async updateCategory(): Promise<void>   { throw new Error("GitContentStore not built"); }
   async deleteCategory(): Promise<void>   { throw new Error("GitContentStore not built"); }
   async grantWikiMaster(): Promise<void>  { throw new Error("GitContentStore not built"); }
@@ -146,9 +155,18 @@ export class SupabaseContentStore implements ContentStore {
   }
 
   async listPages(wiki: string): Promise<PageMeta[]> {
-    const { data, error } = await this.db.from('pages').select('id, slug, title, type').eq('wiki_id', wiki).order('id');
+    // icon arrived with migration 0010 — fall back gracefully on older DBs
+    let r: { data: any[] | null; error: any } =
+      await this.db.from('pages').select('id, slug, title, type, icon').eq('wiki_id', wiki).order('id');
+    if (r.error) r = await this.db.from('pages').select('id, slug, title, type').eq('wiki_id', wiki).order('id');
+    if (r.error) throw r.error;
+    return r.data ?? [];
+  }
+
+  async setPageIcon(wikiId: string, page: PageMeta, icon: PageIcon | null): Promise<void> {
+    const { error } = await this.db.from('pages')
+      .upsert({ wiki_id: wikiId, id: page.id, slug: page.slug, title: page.title, type: page.type, icon }, { onConflict: 'wiki_id,id' });
     if (error) throw error;
-    return data ?? [];
   }
 
   async loadPage(wiki: string, page: string): Promise<PageDoc | null> {

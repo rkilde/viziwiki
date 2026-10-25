@@ -4,6 +4,10 @@ import type { Wiki, Page } from '../../lib/wiki';
 import { oneLine } from '../../lib/wiki';
 import { ROOT_COLUMN_HEAD, dotClass } from '../../lib/hierarchy';
 import { LivePage } from './LivePage';
+import { PageEmblemSheet } from './PageEmblemSheet';
+import { TagIcon, useLucide } from '../identity/kit';
+import type { LucideLib } from '../LucidePicker';
+import type { PageIcon } from '../../content-store';
 
 /* ════════════════════════════════════════════════════════════════════
    THE CANVAS TREE — the build kit's main page organizer (replaces the
@@ -259,14 +263,24 @@ function NavRow({ p, depth, wiki, selId, focusId, expanded, onToggle, onNav }: {
   );
 }
 
+/* the PAGE's emblem mark in the right rail: its own art, a library glyph, or
+   (when it has none) the dashed "+" slot that adds one */
+function PageMarkView({ icon, lib }: { icon: PageIcon | null; lib: LucideLib | null }) {
+  if (icon?.kind === 'art' && icon.src) return <span className="cvt-mark pg"><img src={icon.src} alt="" /></span>;
+  if (icon?.kind === 'glyph' && icon.name) return <span className="cvt-mark pg"><TagIcon name={icon.name} lib={lib} /></span>;
+  return <span className="cvt-mark pg add">+</span>;
+}
+
 /* ════════════════════════ the component ════════════════════════ */
-export function CanvasTree({ wiki, onOpen, onAddNode, onEditIdentity, onEditEmblem }: {
+export function CanvasTree({ wiki, onOpen, onAddNode, onEditIdentity, onEditEmblem, canEditPageEmblem = false }: {
   wiki: Wiki;
   onOpen?: (page: Page) => void;
   onAddNode?: (parentId: string, title: string) => Page;
   onEditIdentity?: () => void;
   /** opens the identity editor straight on the master wiki-emblem screen */
   onEditEmblem?: () => void;
+  /** design capability + cloud store present: the rail's page-emblem slot edits */
+  canEditPageEmblem?: boolean;
 }) {
   const homeId = wiki.home.id;
   const [rootId, setRootId] = useState(homeId);
@@ -279,6 +293,11 @@ export function CanvasTree({ wiki, onOpen, onAddNode, onEditIdentity, onEditEmbl
   const [zoom, setZoom] = useState(1);
   // which left-rail branches are expanded (category id → open)
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  // the page-emblem editor target + saved overrides (shown instantly; the
+  // store row is the durable copy)
+  const [emblemFor, setEmblemFor] = useState<Page | null>(null);
+  const [pageIcons, setPageIcons] = useState<Record<string, PageIcon | null>>({});
+  const lib = useLucide();
 
   // keep the view valid when the tree changes under it (wiki prop updates)
   const sel = findPage(wiki, selId) || wiki.home;
@@ -568,8 +587,25 @@ export function CanvasTree({ wiki, onOpen, onAddNode, onEditIdentity, onEditEmbl
         <div className="panel">
           <button className="panel-x" onClick={() => setPanelOff(true)} title="Hide this panel"><Svg d={IcFwd} w={2.4} /></button>
           <div className="panel-top">
-            <div className="panel-eye">{whereName}</div>
-            <h2 className="panel-nm">{oneLine(sel.title)}</h2>
+            <div className="panel-id">
+              {/* the PAGE's emblem slot: its mark, or a dashed "+" to add one;
+                  hover pops the clickable tip (the wiki-mark pattern) */}
+              {(() => {
+                const selIcon = (sel.id in pageIcons ? pageIcons[sel.id] : (sel.icon as PageIcon | null)) ?? null;
+                if (!canEditPageEmblem) return selIcon ? <PageMarkView icon={selIcon} lib={lib} /> : null;
+                const tip = selIcon ? 'Change the page emblem' : 'Add a page emblem';
+                return (
+                  <span className="cvt-mark-wrap">
+                    <button className="cvt-mark-btn" onClick={() => setEmblemFor(sel)} aria-label={tip}><PageMarkView icon={selIcon} lib={lib} /></button>
+                    <button className="cvt-mark-tip" onClick={() => setEmblemFor(sel)} tabIndex={-1}><span>{tip}</span></button>
+                  </span>
+                );
+              })()}
+              <div className="panel-id-tx">
+                <div className="panel-eye">{whereName}</div>
+                <h2 className="panel-nm">{oneLine(sel.title)}</h2>
+              </div>
+            </div>
             <div className="panel-meta">
               <span className={`pill ${sel.status}`}>{STATUS[sel.status] || sel.status}</span>
               <span className="when">read only — exactly what a reader sees</span>
@@ -584,6 +620,14 @@ export function CanvasTree({ wiki, onOpen, onAddNode, onEditIdentity, onEditEmbl
             </button>
           </div>
         </div>
+      )}
+
+      {/* the page-emblem editor (solo window — back/× return right here) */}
+      {emblemFor && (
+        <PageEmblemSheet wikiId={wiki.id}
+          page={{ ...emblemFor, icon: (emblemFor.id in pageIcons ? pageIcons[emblemFor.id] : emblemFor.icon) as PageIcon | null }}
+          onClose={() => setEmblemFor(null)}
+          onSaved={(ic) => setPageIcons((p) => ({ ...p, [emblemFor.id]: ic }))} />
       )}
     </div>
   );

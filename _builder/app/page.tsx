@@ -193,7 +193,8 @@ export default function Page() {
               rail that is purely the selected page, live */}
           <CanvasTree key={wiki.id} wiki={wiki} onOpen={setEditing} onAddNode={caps.structure ? addNode : undefined}
             onEditIdentity={canEditIdentity ? () => { setIdentityStart(null); setEditingIdentity(true); } : undefined}
-            onEditEmblem={canEditIdentity ? () => { setIdentityStart('emblem'); setEditingIdentity(true); } : undefined} />
+            onEditEmblem={canEditIdentity ? () => { setIdentityStart('emblem'); setEditingIdentity(true); } : undefined}
+            canEditPageEmblem={!!contentStore && caps.design} />
           {editing && <PageEditor key={`${editing.id}:${JSON.stringify(caps)}`} page={editing} skin={baseWiki.skin} wikiMeta={{ id: baseWiki.id, slug: baseWiki.id, name: baseWiki.name, skin: baseWiki.skin.bodyClass }} caps={caps}
             canApprove={realRole === 'admin' && viewAs !== 'me'
               ? viewAs === 'wiki_master'   // preview honors the previewed class

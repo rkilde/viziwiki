@@ -9,6 +9,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import yaml from 'js-yaml';
+import { extractPageEmblem } from '../lib/page-emblem.mjs';
 
 const ROOT = path.resolve(process.cwd(), '..');
 const TB = path.join(ROOT, 'taco-bell');
@@ -43,6 +44,8 @@ function parseFile(file) {
   const BODY_TYPES = ['photo_rail', 'spec', 'config', 'os', 'timeline', 'delta', 'catalog'];
   const keyType = (k) => (k === 'os' ? 'lifecycle-lane' : k === 'photo_rail' ? 'photo-rail' : k);
   return {
+    // the page's EMBLEM (WIKI_TOC.pageLogo) — lifted into master-media art
+    icon: extractPageEmblem(txt),
     sections: SECTION_ORDER.filter((k) => fm[k] != null).map((k) => ({ type: keyType(k), label: SECTION_LABEL[k] })),
     body: BODY_TYPES.filter((k) => fm[k] != null).map((k) => ({ type: keyType(k), data: fm[k] })),
     hero: { eyebrow: h.eyebrow || null, title: h.title || null, subtitle: h.subtitle || null, subtitle_meta: h.subtitle_meta || null, desc: h.desc || null, stats: Array.isArray(h.stats) ? h.stats : [], search: !!h.search, search_placeholder: h.search_placeholder || null, spotlight: h.spotlight || null, feature: h.feature || null },
@@ -69,7 +72,7 @@ function homeNode(file, wikiId, name) {
   const d = parseFile(file);
   return {
     id: `${wikiId}-home`, title: name, permalink: '/' + path.basename(file), status: 'live', home: true,
-    folder: false, count: null, accent: null, sections: d.sections, body: d.body, hero: d.hero, overview: d.overview, pages: [],
+    folder: false, count: null, accent: null, icon: d.icon, sections: d.sections, body: d.body, hero: d.hero, overview: d.overview, pages: [],
   };
 }
 
@@ -85,6 +88,7 @@ function toNode(node) {
     folder: !!node.isFolder,
     count: typeof node.count === 'number' ? node.count : null,
     accent: node.accent || (node.grad && node.grad[0]) || null,
+    icon: built ? built.icon : null,
     sections: built ? built.sections : [],
     body: built ? built.body : [],
     hero: built ? built.hero : { eyebrow: null, title: null, subtitle: null, subtitle_meta: null, desc: null, stats: [], search: false, search_placeholder: null, spotlight: null, feature: null },

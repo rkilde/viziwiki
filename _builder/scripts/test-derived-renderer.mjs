@@ -1189,5 +1189,44 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
     'the shell row is clamped — the rail scrolls the page and the pinned Open-and-edit stays on screen');
 }
 
+// ── case 27: PAGE EMBLEMS — scanned off the live chrome into DATA (the
+// extraction, the table, the rail editor); never bespoke-hardcoded-only ──
+{
+  console.log('case 27: page emblems — scan to data, table seed, rail editor');
+  const { readTocString, extractPageEmblem } = await import('../lib/page-emblem.mjs');
+  const fix = `window.WIKI_TOC = { pageTitle: 'X', pageLogo: '<svg viewBox=\\'0 0 9 9\\'><rect/></svg>', wikiLogo: \`<svg><circle/></svg>\` };`;
+  ok(readTocString(fix, 'pageLogo').includes("viewBox='0 0 9 9'"), 'readTocString unescapes the quoted literal');
+  const e27 = extractPageEmblem(fix);
+  ok(e27?.kind === 'art' && e27.src.startsWith('data:image/svg+xml;base64,'), 'an inline <svg> mark lifts into master-media art');
+  ok(extractPageEmblem(fix, 'wikiLogo')?.kind === 'art', 'the wikiLogo mark lifts the same way');
+  ok(extractPageEmblem(`WIKI_TOC={pageLogo:'<img src="data:image/png;base64,AAAA">'}`)?.src === 'data:image/png;base64,AAAA',
+    'a small <img data:…> mark lifts its data URI as-is');
+  ok(extractPageEmblem(`WIKI_TOC={pageLogo:'<img src="data:image/png;base64,${'A'.repeat(9000)}">'}`) === null,
+    'a heavy image mark is left page-side (emblems are SMALL; Storage uploads later)');
+
+  // the extract pipes carry the scanned marks into the builder data
+  const tb27 = JSON.parse(fs.readFileSync('data/taco-bell.json', 'utf8'));
+  ok(tb27.home.icon?.kind === 'art' && tb27.pages.some((p) => p.icon?.kind === 'art'),
+    'extraction carries page emblems (taco-bell home + category pages)');
+  ok(JSON.parse(fs.readFileSync('data/apple.json', 'utf8')).home.icon?.kind === 'art', 'apple home carries its mark');
+
+  // the table: migration 0010 adds pages.icon + seeds every scanned mark
+  const mig27 = fs.readFileSync('supabase/migrations/0010_page_emblems.sql', 'utf8');
+  ok(mig27.includes('add column if not exists icon'), '0010 adds pages.icon');
+  ok((mig27.match(/'\{"kind":"art"/g) || []).length >= 19, 'the scanned page emblems are seeded (19+)');
+  ok(mig27.includes('on conflict (wiki_id, id) do update set icon = excluded.icon'), 're-runs refresh the icons only');
+  ok(mig27.includes("icon->>'kind' = 'auto'") && mig27.includes("update public.wikis set icon"),
+    'flagship wikiLogo marks fill wikis.icon ONLY where still the auto default');
+
+  // the store + the rail editor
+  const cs27 = fs.readFileSync('content-store.ts', 'utf8');
+  ok(cs27.includes('setPageIcon') && cs27.includes("'id, slug, title, type, icon'"), 'store upserts + lists the page icon (graceful pre-0010)');
+  const tree27 = fs.readFileSync('components/canvas/CanvasTree.tsx', 'utf8');
+  ok(tree27.includes('PageMarkView') && tree27.includes('Add a page emblem') && tree27.includes('cvt-mark-tip'),
+    'the rail header carries the page-emblem slot: the mark, or the dashed "+" with the clickable hover tip');
+  ok(fs.readFileSync('components/canvas/PageEmblemSheet.tsx', 'utf8').includes('setPageIcon'),
+    'the emblem sheet saves through the store — the mark lives in the table');
+}
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
