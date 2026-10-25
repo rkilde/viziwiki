@@ -145,7 +145,7 @@ export function TagPick({ tax, lib, selected, onToggle, onNew }: {
             </button>
           );
         })}
-        {onNew && <button type="button" className="pick-card pick-new" onClick={onNew}><Ic d={I.plus} w={2.4} /> Add a new tag</button>}
+        {onNew && <button type="button" className="pick-card pick-new" onClick={onNew}><Ic d={I.plus} w={2.4} /> Add a new category</button>}
       </div>
       {prim && (
         <div className="primary-say">

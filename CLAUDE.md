@@ -488,8 +488,11 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
 - **WIKI ORIGINATION ARC (ACTIVE — iteration 1 DONE, Oct 2026).** The owner's
   directive: once a wiki is originated on the backend, its tile populates
   everywhere wikis surface (home page, browse page, future algorithm-driven
-  recommendation links at page bottoms). Owner's vocabulary: a wiki's browse
-  art = its **"tile cover"**.
+  recommendation links at page bottoms). Owner's vocabulary (Oct 2026
+  updates): a wiki's browse art = its **"tile cover art"** (earlier "tile
+  cover" — same thing), and a WIKI's tags are called **"categories"** in all
+  wiki-facing UI copy (the admin site surface keeps its "Site Wiki Tags"
+  name; the DB columns stay `categories`/`wiki_categories`).
   · **Iteration 1 — the identity model (DONE):** the category taxonomy is now
     CANON at `_data/wiki_categories.yml` (palette + 12 categories: key · label ·
     sprite icon · gradient) — browse.html Liquid-derives its filter chips AND
