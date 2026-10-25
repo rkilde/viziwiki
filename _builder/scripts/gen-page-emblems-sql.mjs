@@ -43,14 +43,16 @@ for (const [wikiId, dirs] of Object.entries(WIKIS)) {
       const isHome = f === HOME_FILE[wikiId];
       // EVERY scanned page gets a row — a null icon clears a previously
       // seeded mark, and the identity-only row is the page's seat in the
-      // table (no published revision → invisible to readers)
+      // table (no published revision → invisible to readers).
+      // THE RULE (owner): the HOME page's emblem IS the wiki emblem — home
+      // rows carry none of their own (wikis.icon is the single source).
       pageRows.push({
         wiki: wikiId,
         id: isHome ? `${wikiId}-home` : f.replace(/\.html$/, ''),
         slug: f,
         title: fmTitle(txt, f.replace(/\.html$/, '')),
         type: isHome ? 'home' : 'standard',
-        icon,
+        icon: isHome ? null : icon,
       });
       // the WIKI's mark: the home's wikiLogo, else ANY page's wikiLogo (the
       // sub-pages carry the real mark where the home leaves it out — Taco

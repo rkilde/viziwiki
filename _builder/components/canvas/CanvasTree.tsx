@@ -589,8 +589,20 @@ export function CanvasTree({ wiki, onOpen, onAddNode, onEditIdentity, onEditEmbl
           <div className="panel-top">
             <div className="panel-id">
               {/* the PAGE's emblem slot: its mark, or a dashed "+" to add one;
-                  hover pops the clickable tip (the wiki-mark pattern) */}
+                  hover pops the clickable tip (the wiki-mark pattern).
+                  THE RULE (owner): the HOME page's emblem IS the wiki emblem —
+                  one mark, always identical, edited only in the master-emblem
+                  screen — so home shows the wiki mark and clicks go there. */}
               {(() => {
+                if (sel.id === homeId) {
+                  if (!onEditEmblem) return <WikiEmblemMark wiki={wiki} />;
+                  return (
+                    <span className="cvt-mark-wrap">
+                      <button className="cvt-mark-btn" onClick={onEditEmblem} aria-label="Change the wiki emblem"><WikiEmblemMark wiki={wiki} /></button>
+                      <button className="cvt-mark-tip" onClick={onEditEmblem} tabIndex={-1}><span>Change the wiki emblem</span></button>
+                    </span>
+                  );
+                }
                 const selIcon = (sel.id in pageIcons ? pageIcons[sel.id] : (sel.icon as PageIcon | null)) ?? null;
                 if (!canEditPageEmblem) return selIcon ? <PageMarkView icon={selIcon} lib={lib} /> : null;
                 const tip = selIcon ? 'Change the page emblem' : 'Add a page emblem';

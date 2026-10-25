@@ -675,7 +675,12 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
     regenerated 0010 emits null rows that CLEAR earlier bad seeds; its
     wiki-mark update also refreshes previously-seeded data-uri svg marks —
     owner glyph/URL picks stay untouched; the TB bell comes from the
-    sub-pages' wikiLogo since the home's is an empty placeholder). Builder:
+    sub-pages' wikiLogo since the home's is an empty placeholder).
+    **HOME-EMBLEM RULE (owner, late Oct 2026): the HOME page's emblem IS
+    the wiki emblem — always identical, one mark.** Home rows seed NULL
+    icons (wikis.icon is the single source), extraction home nodes carry
+    none, and the rail's home slot shows the WIKI mark and opens the
+    master-emblem editor (onEditEmblem), never PageEmblemSheet. Builder:
     the canvas
     right rail's header carries the page-emblem SLOT (the mark, or a dashed
     "+" when none, with the clickable hover tip) → `PageEmblemSheet` (solo:

@@ -10,10 +10,7 @@
     "folder": false,
     "count": null,
     "accent": null,
-    "icon": {
-      "kind": "art",
-      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2ZmZiI+PHBhdGggZD0iTTE4LjcxIDE5LjVjLS44MyAxLjI0LTEuNzEgMi40NS0zLjA1IDIuNDctMS4zNC4wMy0xLjc3LS43OS0zLjI5LS43OS0xLjUzIDAtMiAuNzctMy4yNy44Mi0xLjMxLjA1LTIuMy0xLjMyLTMuMTQtMi41M0M0LjI1IDE3IDIuOTQgMTIuNDUgNC43IDkuMzljLjg3LTEuNTIgMi40My0yLjQ4IDQuMTItMi41MSAxLjI4LS4wMiAyLjUuODcgMy4yOS44Ny43OCAwIDIuMjYtMS4wNyAzLjgtLjkxLjY1LjAzIDIuNDcuMjYgMy42NCAxLjk4LS4wOS4wNi0yLjE3IDEuMjgtMi4xNSAzLjgxLjAzIDMuMDIgMi42NSA0LjAzIDIuNjggNC4wNC0uMDMuMDctLjQyIDEuNDQtMS4zOCAyLjgzTTEzIDMuNWMuNzMtLjgzIDEuOTQtMS40NiAyLjk0LTEuNS4xMyAxLjE3LS4zNCAyLjM1LTEuMDQgMy4xOS0uNjkuODUtMS44MyAxLjUxLTIuOTUgMS40Mi0uMTUtMS4xNS40MS0yLjM1IDEuMDUtMy4xMXoiLz48L3N2Zz4="
-    },
+    "icon": null,
     "sections": [
       {
         "type": "hero",

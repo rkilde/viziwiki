@@ -311,10 +311,13 @@ button{ font-family:inherit; }
 #cvt .panel{ position:relative; display:flex; flex-direction:column; min-width:0;
   border-left:1px solid var(--border2); background:var(--bg2); }
 /* slim fixed header; the page itself fills the middle and scrolls ON ITS OWN */
-#cvt .panel-top{ flex:none; padding:15px 18px 13px; border-bottom:1px solid var(--border); }
+/* right padding reserves the collapse button's corner (it is absolutely
+   positioned) so the header text never runs under it */
+#cvt .panel-top{ flex:none; padding:15px 52px 13px 18px; border-bottom:1px solid var(--border); }
 /* the header's identity row: the PAGE's emblem slot + where/name */
-#cvt .panel-id{ display:flex; align-items:center; gap:11px; }
-#cvt .panel-id .panel-nm{ margin-top:4px; }
+#cvt .panel-id{ display:flex; align-items:center; gap:12px; }
+#cvt .panel-id .cvt-mark-wrap, #cvt .panel-id .cvt-mark{ flex:none; }
+#cvt .panel-id .panel-nm{ margin-top:3px; font-size:21px; }
 #cvt .panel-id-tx{ flex:1; min-width:0; }
 .cvt-mark.pg{ width:32px; height:32px; border-radius:9px; background:var(--bg4); color:var(--muted);
   font-family:'JetBrains Mono',monospace; font-weight:500; font-size:15px; }
@@ -332,7 +335,7 @@ button{ font-family:inherit; }
 #cvt .pill.live{ background:var(--green-bg); border-color:var(--green-bd); color:var(--green); }
 #cvt .pill.draft{ background:rgba(157,124,244,.13); border-color:var(--purple-bd); color:var(--purple); }
 #cvt .pill.review{ background:var(--amber-bg); border-color:var(--amber-bd); color:var(--amber); }
-#cvt .when{ font-size:12px; color:var(--dim); white-space:nowrap; }
+#cvt .when{ font-size:12px; color:var(--dim); line-height:1.5; flex:1; min-width:0; }
 /* the live page — the REAL render, scaled into the rail; the RAIL scrolls it */
 #cvt .cvt-live{ border:1px solid var(--border2); border-radius:13px; background:#fff; overflow:hidden; position:relative; }
 #cvt .cvt-live-sizer{ position:relative; }
