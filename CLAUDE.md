@@ -256,17 +256,21 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
   (owner's structure, late Oct 2026): (1) the rail HEADER = the wiki's
   EMBLEM + title — hovering the emblem pops a clickable tooltip that opens
   the identity editor STRAIGHT on the master-emblem screen
-  (`WikiIdentity initialScreen='emblem'` via `onEditEmblem`); (2) the wiki
+  (`WikiIdentity initialScreen='emblem'` via `onEditEmblem`; a screen opened
+  that way is SOLO — back/× return straight to the build kit, never the
+  identity summary, and its footer is "Save emblem" which saves + closes
+  right there); (2) the wiki
   IDENTITY button as its own section; (3) Wiki home; (4) the main
   categories, each EXPANDABLE (recursively) to its sub pages — header/dots
   from `lib/hierarchy`. The shell grid row is clamped
   (`grid-template-rows:minmax(0,1fr)`) so the rail scrolls the full page
   preview and the pinned action never leaves the screen. RIGHT rail =
-  PURELY the live page (owner's rule: NO completion/progress info): `LivePage`
-  renders the stored doc through `renderBody` + `stripSentinels` into
-  `buildReadOnlyCanvas` (lib/canvas.ts — the editor's canon CSS stack + the
-  home layer on home pages, no decorator, inert) scaled into the rail, which
-  scrolls it; one pinned "Open and edit". Guard: case 26.
+  PURELY the live page (owner's rule: NO completion/progress info): a slim
+  fixed header, then `LivePage` — the stored doc through `renderBody` +
+  `stripSentinels` into `buildReadOnlyCanvas` (lib/canvas.ts — the editor's
+  canon CSS stack + the home layer on home pages, no decorator, inert) —
+  scaled small and filling the rail's middle, which scrolls ON ITS OWN
+  (`.cvt-live-scroll`); one pinned "Open and edit". Guard: case 26.
 - `scripts/` — `copy-canon` (CSS + `bank-*.css` discovery), `extract-grammar`/
   `-includes`/`-visuals`/`-taco-bell`/`-apple`, `gen-placeholders`, and the guards
   `audit-*` + `test-derived-renderer` + `test-golden-render`.

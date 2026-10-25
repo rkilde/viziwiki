@@ -561,23 +561,22 @@ export function CanvasTree({ wiki, onOpen, onAddNode, onEditIdentity, onEditEmbl
         {panelOff && <button className="panel-tab" onClick={() => setPanelOff(false)}>The page</button>}
       </div>
 
-      {/* ── RIGHT RAIL — purely the live page (the owner's rule): who it is,
-          then the page itself, scrolled by the rail; one pinned action ── */}
+      {/* ── RIGHT RAIL — purely the live page (the owner's rule): a slim
+          fixed header, then THE PAGE ITSELF at small scale filling the rail
+          and scrolling on its own; one pinned action ── */}
       {!panelOff && (
         <div className="panel">
           <button className="panel-x" onClick={() => setPanelOff(true)} title="Hide this panel"><Svg d={IcFwd} w={2.4} /></button>
-          <div className="rail">
-            <div className="block">
-              <div className="panel-eye">{whereName}</div>
-              <h2 className="panel-nm">{oneLine(sel.title)}</h2>
-              <div className="panel-meta">
-                <span className={`pill ${sel.status}`}>{STATUS[sel.status] || sel.status}</span>
-                <span className="when">read only — exactly what a reader sees</span>
-              </div>
+          <div className="panel-top">
+            <div className="panel-eye">{whereName}</div>
+            <h2 className="panel-nm">{oneLine(sel.title)}</h2>
+            <div className="panel-meta">
+              <span className={`pill ${sel.status}`}>{STATUS[sel.status] || sel.status}</span>
+              <span className="when">read only — exactly what a reader sees</span>
             </div>
-            <div className="block">
-              <LivePage key={`${wiki.id}:${sel.id}`} page={sel} wiki={wiki} />
-            </div>
+          </div>
+          <div className="cvt-live-scroll">
+            <LivePage key={`${wiki.id}:${sel.id}`} page={sel} wiki={wiki} />
           </div>
           <div className="panel-foot">
             <button className="open" onClick={() => onOpen?.(sel)}>

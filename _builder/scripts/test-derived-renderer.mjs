@@ -1178,10 +1178,13 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
     'the rail header is the wiki emblem + title; its hover tip opens the master-emblem editor');
   ok(tree.includes('cvt-exp') && tree.includes('dotClass(depth'),
     'category rows expand to their sub pages, recursively, dots from the hierarchy');
-  ok(fs.readFileSync('components/WikiIdentity.tsx', 'utf8').includes('initialScreen') &&
-     fs.readFileSync('app/page.tsx', 'utf8').includes("setIdentityStart('emblem')"),
+  const wi26 = fs.readFileSync('components/WikiIdentity.tsx', 'utf8');
+  ok(wi26.includes('initialScreen') && fs.readFileSync('app/page.tsx', 'utf8').includes("setIdentityStart('emblem')"),
     'the emblem mark opens identity straight on the emblem screen');
+  ok(wi26.includes('solo') && wi26.includes('saveAndClose'),
+    'a screen opened directly (solo) backs straight out to the build kit and saves right there — never the identity summary');
   const css26 = fs.readFileSync('app/globals.css', 'utf8');
+  ok(css26.includes('cvt-live-scroll'), 'the rail\'s page preview scrolls on its own, full height');
   ok(css26.includes('grid-template-rows:minmax(0,1fr)'),
     'the shell row is clamped — the rail scrolls the page and the pinned Open-and-edit stays on screen');
 }

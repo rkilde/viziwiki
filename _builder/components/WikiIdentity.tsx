@@ -84,18 +84,21 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, onDeleted, ca
   const toggleTag = (k: string) => set({ tags: d.tags.includes(k) ? d.tags.filter((x) => x !== k) : [...d.tags, k] });
   const prim = tax.categories.find((t) => t.key === d.tags[0]);
 
-  const save = async () => {
-    if (!contentStore) { setErr('Cloud not configured'); return; }
-    if (!d.tags.length) { setErr('pick at least one tag'); setScreen('tags'); return; }
+  const save = async (): Promise<boolean> => {
+    if (!contentStore) { setErr('Cloud not configured'); return false; }
+    if (!d.tags.length) { setErr('pick at least one tag'); setScreen('tags'); return false; }
     setBusy(true); setErr(null);
+    let ok = false;
     try {
       const m = draftMeta(d);
       await contentStore.updateWikiIdentity(wikiId, m as Pick<WikiMeta, 'categories' | 'blurb' | 'tagline' | 'status' | 'tile_cover' | 'icon'>);
       fetch('/api/revalidate', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ paths: ['/read', '/api/directory'] }) }).catch(() => {});
       setSaved(true); setTimeout(() => setSaved(false), 2200);
       onSaved();
+      ok = true;
     } catch (e: any) { setErr(e?.message || String(e)); }
     setBusy(false);
+    return ok;
   };
 
   const addTag = async () => {
@@ -226,13 +229,19 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, onDeleted, ca
         </div>
       );
     }
+    // SOLO mode: this screen was opened DIRECTLY (the rail's emblem mark →
+    // 'emblem'). Back/× return straight to the build kit — never the full
+    // identity summary — and the footer saves right here.
+    const solo = !!initialScreen && screen === initialScreen;
+    const leave = () => (solo ? onClose() : setScreen(null));
+    const saveAndClose = async () => { if (await save()) onClose(); };
     return (
       <FlowRoot kind="fl">
         <Bloom d={d} tax={tax} />
         <div className="fl-head">
-          <button className="fl-icon-btn" onClick={() => setScreen(null)}><Ic d={I.back} w={2.2} /></button>
+          <button className="fl-icon-btn" onClick={leave}><Ic d={I.back} w={2.2} /></button>
           <div className="fl-dots" />
-          <button className="fl-icon-btn" onClick={() => setScreen(null)}><Ic d={I.x} w={2.2} /></button>
+          <button className="fl-icon-btn" onClick={leave}><Ic d={I.x} w={2.2} /></button>
         </div>
         <div className="fl-body"><div className="fl-wrap">
           <div className="q">
@@ -244,8 +253,14 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, onDeleted, ca
           <SideTile d={d} tax={tax} note={note} lib={lib} />
         </div></div>
         <div className="fl-foot"><div className="fl-foot-in">
-          <button className="go" onClick={() => setScreen(null)}>Done<Ic d={I.check} w={2.4} /></button>
-          <span className="enter"><span className="kbd2">↵</span> to go back</span>
+          {solo ? (<>
+            <button className="go" onClick={saveAndClose} disabled={busy || !loaded}>{busy ? '…' : 'Save emblem'}<Ic d={I.check} w={2.4} /></button>
+            <button className="skip" onClick={onClose}>Cancel</button>
+            {err && <span className="in-under bad" style={{ margin: 0 }}><Ic d={I.warn} w={2} /> {err}</span>}
+          </>) : (<>
+            <button className="go" onClick={() => setScreen(null)}>Done<Ic d={I.check} w={2.4} /></button>
+            <span className="enter"><span className="kbd2">↵</span> to go back</span>
+          </>)}
         </div></div>
       </FlowRoot>
     );
