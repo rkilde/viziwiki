@@ -125,13 +125,14 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, onDeleted, ca
   if (screen === 'icon') return <IconSheet q={iconQ} onQ={setIconQ} sel={nt.icon} onPick={(n) => { setNt({ ...nt, icon: n }); setScreen('newtag'); }} onBack={() => setScreen('newtag')} />;
   if (screen === 'emblemicon') return <IconSheet q={iconQ} onQ={setIconQ} sel={d.emblem.name ?? null} onPick={(n) => { set({ emblem: { kind: 'glyph', name: n } }); setScreen('emblem'); }} onBack={() => setScreen('emblem')} />;
   if (screen === 'newtag') return <NewTagSheet nt={nt} onChange={setNt} takenKeys={tax.categories.map((c) => c.key)} lib={lib}
-    onPickIcon={() => { setIconQ(''); setScreen('icon'); }} onAdd={addTag} onBack={() => { setScreen('tags'); setErr(null); }} busy={busy} />;
+    onPickIcon={() => { setIconQ(''); setScreen('icon'); }} onAdd={addTag} onBack={() => { setScreen('tags'); setErr(null); }} busy={busy}
+    title="Make a new category." cta="Add category" />;
 
   if (screen) {
     let q = '', sub: React.ReactNode = '', field: React.ReactNode = null, note = '';
     if (screen === 'tags') {
-      q = 'What’s it about?'; sub = <>Pick its tags. <b>The first one designs the cover.</b></>;
-      note = 'All its tags show in the corner of the card.';
+      q = 'What’s it about?'; sub = <>Pick its categories. <b>The first one designs the cover.</b></>;
+      note = 'All its categories show in the corner of the card.';
       field = <TagPick tax={tax} lib={lib} selected={d.tags} onToggle={toggleTag}
         onNew={() => { setNt({ label: '', icon: null, from: null, to: null }); setScreen('newtag'); }} />;
     } else if (screen === 'words') {
@@ -144,13 +145,13 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, onDeleted, ca
         <div className="in-under"><Ic d={I.search} w={1.8} /> Search only. <b>It never shows on the card.</b></div>
       </>);
     } else if (screen === 'cover') {
-      q = 'Pick a cover.'; sub = 'Keep the one made from your tag, or bring your own art.';
-      note = d.cover.kind === 'themed' ? 'Change its first tag and this changes with it.' : '';
+      q = 'Pick its tile cover art.'; sub = 'Keep the one made from its category, or bring your own art.';
+      note = d.cover.kind === 'themed' ? 'Change its first category and this changes with it.' : '';
       field = (<>
         <div className="choice">
           <button type="button" className={`choice-card ${d.cover.kind === 'themed' ? 'on' : ''}`} onClick={() => set({ cover: { kind: 'themed' } })}>
             <span className="choice-top"><span className="choice-ic"><Ic d={I.paint} w={1.8} /></span><span className="choice-t">Made for you</span></span>
-            <div className="choice-d">Built from {prim ? <b>{prim.label}</b> : 'its tag'} — nothing to do.</div>
+            <div className="choice-d">Built from {prim ? <b>{prim.label}</b> : 'its category'} — nothing to do.</div>
           </button>
           <button type="button" className={`choice-card ${d.cover.kind === 'art' ? 'on' : ''}`} onClick={() => set({ cover: { kind: 'art', src: d.cover.kind === 'art' ? d.cover.src : '' } })}>
             <span className="choice-top"><span className="choice-ic"><Ic d={I.spark} w={1.8} /></span><span className="choice-t">Your own art</span></span>
@@ -190,7 +191,7 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, onDeleted, ca
         <div className="choice">
           <button type="button" className={`choice-card ${d.emblem.kind === 'auto' ? 'on' : ''}`} onClick={() => set({ emblem: { kind: 'auto' } })}>
             <span className="choice-top"><EmblemMark d={{ ...d, emblem: { kind: 'auto' } }} tags={tax.categories} lib={lib} size="lg" /><span className="choice-t">Letter</span></span>
-            <div className="choice-d">The first letter of the name, in its tag’s colour.</div>
+            <div className="choice-d">The first letter of the name, in its category’s colour.</div>
           </button>
           <button type="button" className={`choice-card ${d.emblem.kind === 'glyph' ? 'on' : ''}`} onClick={() => { setIconQ(''); setScreen('emblemicon'); }}>
             <span className="choice-top"><EmblemMark d={{ ...d, emblem: { kind: 'glyph', name: d.emblem.name || 'sparkles' } }} tags={tax.categories} lib={lib} size="lg" /><span className="choice-t">Symbol</span></span>
@@ -265,7 +266,7 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, onDeleted, ca
               <div className="d">Every change here shows up on browse, in the reader and in the wiki switcher within seconds. No deploy.</div></div>
           </div>
           <div className="rows">
-            <button className="row" onClick={() => setScreen('tags')}><span className="row-k">Tags</span>
+            <button className="row" onClick={() => setScreen('tags')}><span className="row-k">Categories</span>
               <span className="row-chips">
                 {d.tags.length ? d.tags.map((k) => { const t = tax.categories.find((x) => x.key === k); return t ? (
                   <span key={k} className="row-sw" style={{ background: `linear-gradient(140deg, ${resolve(t.grad.from)}, ${resolve(t.grad.to)})` }} title={t.label}><TagIcon name={t.icon} lib={lib} /></span>
@@ -276,8 +277,8 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, onDeleted, ca
               <span className={`row-v ${line.length ? '' : 'empty'}`}>{line.length ? line.join(' · ') : 'three words'}</span><RowGo /></button>
             <button className="row" onClick={() => setScreen('blurb')}><span className="row-k">Blurb</span>
               <span className={`row-v ${d.blurb ? '' : 'empty'}`}>{d.blurb || 'one sentence, for search'}</span><RowGo /></button>
-            <button className="row" onClick={() => setScreen('cover')}><span className="row-k">Tile cover</span>
-              <span className="row-v">{d.cover.kind === 'themed' ? 'Made from its tag' : d.cover.kind === 'art' ? 'Its own art' : d.cover.kind === 'html' ? `Uploaded art file${d.cover.cls ? ` (${d.cover.cls})` : ''}` : 'Bespoke artwork'}</span><RowGo /></button>
+            <button className="row" onClick={() => setScreen('cover')}><span className="row-k">Tile cover art</span>
+              <span className="row-v">{d.cover.kind === 'themed' ? 'Made from its category' : d.cover.kind === 'art' ? 'Its own art' : d.cover.kind === 'html' ? `Uploaded art file${d.cover.cls ? ` (${d.cover.cls})` : ''}` : 'Bespoke artwork'}</span><RowGo /></button>
             <button className="row" onClick={() => setScreen('emblem')}><span className="row-k">Emblem</span>
               <span className="row-chips"><EmblemMark d={d} tags={tax.categories} lib={lib} size="sm" />
                 <span className="row-v">{d.emblem.kind === 'auto' ? 'Letter mark' : d.emblem.kind === 'glyph' ? 'Symbol' : 'Its own image'}</span></span><RowGo /></button>
