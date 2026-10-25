@@ -92,6 +92,10 @@ export interface ContentStore {
   /** OPTIONAL grant: make `email`'s account the wiki master of `wikiId`
    *  (admin updates profiles). Throws a clear error if no such account. */
   grantWikiMaster(email: string, wikiId: string): Promise<void>;
+  /** PERMANENTLY delete a wiki — its pages, sections, and whole revision
+   *  history cascade with it (admin only; the RLS delete policy re-checks).
+   *  NOT undoable from the app: recovery exists only via database backups. */
+  deleteWiki(id: string): Promise<void>;
 }
 
 /* ── Implementation A — git/files (dev-era idea; superseded) ────────────
@@ -116,6 +120,7 @@ export class GitContentStore implements ContentStore {
   async updateCategory(): Promise<void>   { throw new Error("GitContentStore not built"); }
   async deleteCategory(): Promise<void>   { throw new Error("GitContentStore not built"); }
   async grantWikiMaster(): Promise<void>  { throw new Error("GitContentStore not built"); }
+  async deleteWiki(): Promise<void>       { throw new Error("GitContentStore not built"); }
 }
 
 /* ── Implementation B — Supabase (the platform path) ──────────────────── */
@@ -279,6 +284,14 @@ export class SupabaseContentStore implements ContentStore {
   async deletePage(wiki: string, page: string): Promise<void> {
     const { error } = await this.db.from('pages').delete().eq('wiki_id', wiki).eq('id', page);
     if (error) throw error;  // sections cascade
+  }
+
+  async deleteWiki(id: string): Promise<void> {
+    // one cascading delete: wikis → pages → sections + revisions (the FK
+    // chain from 0001/0004). RLS "delete wikis" is admin-only (0003).
+    const { data, error } = await this.db.from('wikis').delete().eq('id', id).select('id');
+    if (error) throw error;
+    if (!data?.length) throw new Error(`no wiki "${id}" was deleted — admin rights are required`);
   }
 }
 

@@ -171,7 +171,9 @@ export default function Page() {
       {originating && <OriginateWiki existingIds={allWikis.map((w) => w.id)} onClose={() => setOriginating(false)} onCreated={onOriginated} genAsUser={realRole === 'admin' && viewAs !== 'me'} />}
       {managingTags && <ManageCategories onClose={() => setManagingTags(false)}
         onGotoWiki={(id) => { setManagingTags(false); setEditing(null); setWikiId(id); setEditingIdentity(true); }} />}
-      {editingIdentity && baseWiki && <WikiIdentity wikiId={baseWiki.id} wikiName={baseWiki.name} onClose={() => setEditingIdentity(false)} onSaved={refreshCloudWikis} genAsUser={realRole === 'admin' && viewAs !== 'me'} />}
+      {editingIdentity && baseWiki && <WikiIdentity wikiId={baseWiki.id} wikiName={baseWiki.name} onClose={() => setEditingIdentity(false)} onSaved={refreshCloudWikis} genAsUser={realRole === 'admin' && viewAs !== 'me'}
+        canDelete={realRole === 'admin'}
+        onDeleted={() => { setEditingIdentity(false); setEditing(null); setWikiId(WIKIS[0].id); refreshCloudWikis(); }} />}
       {wiki && baseWiki ? (
         <>
           <div id="miller">
