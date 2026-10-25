@@ -252,9 +252,16 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
   wheel, ⌘-wheel zoom, Fit) of pages drawn as paper sheets — home → categories →
   the one open branch; sheet thumbnails derive from each page's REAL section
   types; nest chips show a branch's health; "+" sheets add pages in place
-  (Enter creates via the existing overlay/addNode). LEFT rail = the wiki
-  IDENTITY button FIRST (owner's rule — moved off the topbar) + the
-  main-category quick-nav (header/dots from `lib/hierarchy`). RIGHT rail =
+  (Enter creates via the existing overlay/addNode). LEFT rail is SECTIONED
+  (owner's structure, late Oct 2026): (1) the rail HEADER = the wiki's
+  EMBLEM + title — hovering the emblem pops a clickable tooltip that opens
+  the identity editor STRAIGHT on the master-emblem screen
+  (`WikiIdentity initialScreen='emblem'` via `onEditEmblem`); (2) the wiki
+  IDENTITY button as its own section; (3) Wiki home; (4) the main
+  categories, each EXPANDABLE (recursively) to its sub pages — header/dots
+  from `lib/hierarchy`. The shell grid row is clamped
+  (`grid-template-rows:minmax(0,1fr)`) so the rail scrolls the full page
+  preview and the pinned action never leaves the screen. RIGHT rail =
   PURELY the live page (owner's rule: NO completion/progress info): `LivePage`
   renders the stored doc through `renderBody` + `stripSentinels` into
   `buildReadOnlyCanvas` (lib/canvas.ts — the editor's canon CSS stack + the

@@ -36,6 +36,9 @@ export default function Page() {
   const [originating, setOriginating] = useState(false);
   const [managingTags, setManagingTags] = useState(false);     // admin: the category manager
   const [editingIdentity, setEditingIdentity] = useState(false); // current wiki's identity editor
+  // the screen the identity editor opens on — the rail's emblem mark jumps
+  // straight to the master wiki-emblem screen
+  const [identityStart, setIdentityStart] = useState<'emblem' | null>(null);
 
   // hydrate user-created content from localStorage (client only) + auth state
   useEffect(() => { setUserWikis(loadUserWikis()); setChildren(loadChildren()); }, []);
@@ -179,8 +182,8 @@ export default function Page() {
       <Topbar wikis={shownWikis} current={wiki || undefined} onSwitch={(w) => { setEditing(null); setWikiId(w.id); }} menu={drawerMenu} account={account} />
       {originating && <OriginateWiki existingIds={allWikis.map((w) => w.id)} onClose={() => setOriginating(false)} onCreated={onOriginated} genAsUser={realRole === 'admin' && viewAs !== 'me'} />}
       {managingTags && <ManageCategories onClose={() => setManagingTags(false)}
-        onGotoWiki={(id) => { setManagingTags(false); setEditing(null); setWikiId(id); setEditingIdentity(true); }} />}
-      {editingIdentity && baseWiki && <WikiIdentity wikiId={baseWiki.id} wikiName={baseWiki.name} onClose={() => setEditingIdentity(false)} onSaved={refreshCloudWikis} genAsUser={realRole === 'admin' && viewAs !== 'me'}
+        onGotoWiki={(id) => { setManagingTags(false); setEditing(null); setWikiId(id); setIdentityStart(null); setEditingIdentity(true); }} />}
+      {editingIdentity && baseWiki && <WikiIdentity wikiId={baseWiki.id} wikiName={baseWiki.name} initialScreen={identityStart ?? undefined} onClose={() => setEditingIdentity(false)} onSaved={refreshCloudWikis} genAsUser={realRole === 'admin' && viewAs !== 'me'}
         canDelete={realRole === 'admin'}
         onDeleted={() => { setEditingIdentity(false); setEditing(null); setWikiId(WIKIS[0].id); refreshCloudWikis(); }} />}
       {wiki && baseWiki ? (
@@ -189,7 +192,8 @@ export default function Page() {
               of pages as paper, the left rail (identity first), and the right
               rail that is purely the selected page, live */}
           <CanvasTree key={wiki.id} wiki={wiki} onOpen={setEditing} onAddNode={caps.structure ? addNode : undefined}
-            onEditIdentity={canEditIdentity ? () => setEditingIdentity(true) : undefined} />
+            onEditIdentity={canEditIdentity ? () => { setIdentityStart(null); setEditingIdentity(true); } : undefined}
+            onEditEmblem={canEditIdentity ? () => { setIdentityStart('emblem'); setEditingIdentity(true); } : undefined} />
           {editing && <PageEditor key={`${editing.id}:${JSON.stringify(caps)}`} page={editing} skin={baseWiki.skin} wikiMeta={{ id: baseWiki.id, slug: baseWiki.id, name: baseWiki.name, skin: baseWiki.skin.bodyClass }} caps={caps}
             canApprove={realRole === 'admin' && viewAs !== 'me'
               ? viewAs === 'wiki_master'   // preview honors the previewed class

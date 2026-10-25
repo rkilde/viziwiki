@@ -1169,9 +1169,21 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   const tree = fs.readFileSync('components/canvas/CanvasTree.tsx', 'utf8');
   ok(tree.includes('ROOT_COLUMN_HEAD') && tree.includes('dotClass('),
     'the left rail derives its header + dots from the canonical hierarchy, not copies');
-  ok(tree.includes('onEditIdentity') && /cvt-id-btn/.test(tree), 'the identity button lives FIRST in the left rail (owner\'s rule)');
+  ok(tree.includes('onEditIdentity') && /cvt-id-btn/.test(tree), 'the identity button has its own left-rail section (owner\'s rule)');
   ok(!/sum-n|What it still needs|ReadinessPanel/.test(tree), 'the right rail carries NO completion-progress block (owner\'s rule)');
   ok(tree.includes('<LivePage'), 'the right rail is the live page itself');
+  // the owner's rail structure: emblem+title header (hover tip → the master
+  // emblem editor), sectioned rail, categories expandable to their sub pages
+  ok(tree.includes('cvt-rail-head') && tree.includes('onEditEmblem') && tree.includes('cvt-mark-tip'),
+    'the rail header is the wiki emblem + title; its hover tip opens the master-emblem editor');
+  ok(tree.includes('cvt-exp') && tree.includes('dotClass(depth'),
+    'category rows expand to their sub pages, recursively, dots from the hierarchy');
+  ok(fs.readFileSync('components/WikiIdentity.tsx', 'utf8').includes('initialScreen') &&
+     fs.readFileSync('app/page.tsx', 'utf8').includes("setIdentityStart('emblem')"),
+    'the emblem mark opens identity straight on the emblem screen');
+  const css26 = fs.readFileSync('app/globals.css', 'utf8');
+  ok(css26.includes('grid-template-rows:minmax(0,1fr)'),
+    'the shell row is clamped — the rail scrolls the page and the pinned Open-and-edit stays on screen');
 }
 
 console.log(`\n${pass} passed, ${fail} failed`);

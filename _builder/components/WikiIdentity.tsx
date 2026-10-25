@@ -20,16 +20,18 @@ import {
 
 type Screen = null | 'tags' | 'words' | 'blurb' | 'cover' | 'emblem' | 'status' | 'newtag' | 'icon' | 'emblemicon';
 
-export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, onDeleted, canDelete = false, genAsUser = false }: {
+export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, onDeleted, canDelete = false, genAsUser = false, initialScreen }: {
   wikiId: string; wikiName: string; onClose: () => void; onSaved: () => void;
   /** admin only: permanent wiki deletion (triple-click confirmed) */
   onDeleted?: () => void; canDelete?: boolean; genAsUser?: boolean;
+  /** open straight on one screen — the rail's emblem mark jumps here with 'emblem' */
+  initialScreen?: Extract<Screen, 'emblem'>;
 }) {
   const [loaded, setLoaded] = useState(false);
   const [d, setD] = useState<Draft>({ ...emptyDraft(), id: wikiId, name: wikiName });
   const [hadBespoke, setHadBespoke] = useState<string | null>(null);
   const [dbCats, setDbCats] = useState<CategoryRow[]>([]);
-  const [screen, setScreen] = useState<Screen>(null);
+  const [screen, setScreen] = useState<Screen>(initialScreen ?? null);
   const [nt, setNt] = useState<TagDraft>({ label: '', icon: null, from: null, to: null });
   const [iconQ, setIconQ] = useState('');
   const [busy, setBusy] = useState(false);
