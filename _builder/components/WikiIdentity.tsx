@@ -5,8 +5,8 @@ import { splitTagline } from './TaglineFields';
 import { parseTileArt } from '../lib/tile-html.mjs';
 import { wikiCoverTile } from '../lib/reader-core.mjs';
 import {
-  Bloom, EmblemMark, FlowRoot, GenBlock, I, Ic, IconSheet, NewTagSheet, SideTile, TagIcon, TagPick, Words,
-  draftMeta, emptyDraft, mergedTags, resolve, slugifyId, useLucide,
+  Bloom, EmblemMark, FlowRoot, GenBlock, I, Ic, IconSheet, NewTagSheet, SideTile, TagIcon, TagPick, TermChips, Words,
+  draftMeta, emptyDraft, mergedTags, resolve, slugifyId, splitTerms, useLucide,
   type Draft, type TagDraft,
 } from './identity/kit';
 
@@ -139,10 +139,10 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, onDeleted, ca
       q = 'Give it three words.'; sub = 'The little line under the title on its card.';
       field = <Words parts={d.tagline} onChange={(p) => set({ tagline: p })} />;
     } else if (screen === 'blurb') {
-      q = 'What might people search?'; sub = 'Names, topics, nicknames — anything someone might type. If it’s in here, the wiki comes up.';
+      q = 'What might people search?'; sub = 'Names, topics, nicknames — anything someone might type. A comma makes each one a tag.';
       field = (<>
-        <textarea className="in sm" value={d.blurb} placeholder="e.g. Da Vinci, Michelangelo, Medici, Italian art, the 1500s…" onChange={(e) => set({ blurb: e.target.value })} />
-        <div className="in-under"><Ic d={I.search} w={1.8} /> Search only. <b>It never shows on the card.</b></div>
+        <TermChips value={d.blurb} placeholder="Da Vinci, Michelangelo, Medici, Italian art…" onChange={(blurb) => set({ blurb })} />
+        <div className="in-under"><Ic d={I.search} w={1.8} /> Search only. <b>They never show on the card.</b></div>
       </>);
     } else if (screen === 'cover') {
       q = 'Pick its tile cover art.'; sub = 'Keep the one made from its category, or bring your own art.';
@@ -251,7 +251,7 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, onDeleted, ca
 
   /* ── the settings list ── */
   const line = d.tagline.map((s) => s.trim()).filter(Boolean);
-  const heroHtml = d.name.trim() ? wikiCoverTile(draftMeta(d), tax) : '';
+  const heroHtml = d.name.trim() ? wikiCoverTile(draftMeta(d), tax, { htmlArt: true }) : '';
   return (
     <FlowRoot kind="pane">
       <div className="pane-head">
@@ -276,7 +276,7 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, onDeleted, ca
             <button className="row" onClick={() => setScreen('words')}><span className="row-k">Tagline</span>
               <span className={`row-v ${line.length ? '' : 'empty'}`}>{line.length ? line.join(' · ') : 'three words'}</span><RowGo /></button>
             <button className="row" onClick={() => setScreen('blurb')}><span className="row-k">Search terms</span>
-              <span className={`row-v ${d.blurb ? '' : 'empty'}`}>{d.blurb || 'what people might type to find it'}</span><RowGo /></button>
+              <span className={`row-v ${d.blurb ? '' : 'empty'}`}>{splitTerms(d.blurb).join(' · ') || 'what people might type to find it'}</span><RowGo /></button>
             <button className="row" onClick={() => setScreen('cover')}><span className="row-k">Tile cover art</span>
               <span className="row-v">{d.cover.kind === 'themed' ? 'Made from its category' : d.cover.kind === 'art' ? 'Its own art' : d.cover.kind === 'html' ? `Uploaded art file${d.cover.cls ? ` (${d.cover.cls})` : ''}` : 'Bespoke artwork'}</span><RowGo /></button>
             <button className="row" onClick={() => setScreen('emblem')}><span className="row-k">Wiki Emblem</span>

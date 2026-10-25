@@ -4,7 +4,7 @@ import { contentStore, type CategoryRow, type WikiMeta } from '../content-store'
 import { validateNewWiki } from '../lib/taxonomy.mjs';
 import { parseTileArt } from '../lib/tile-html.mjs';
 import {
-  Bloom, FlowRoot, GenBlock, I, Ic, IconSheet, NewTagSheet, SideTile, TagPick, Words,
+  Bloom, FlowRoot, GenBlock, I, Ic, IconSheet, NewTagSheet, SideTile, TagPick, TermChips, Words,
   draftMeta, emptyDraft, mergedTags, resolve, slugifyId, useLucide,
   type Draft, type TagDraft,
 } from './identity/kit';
@@ -150,8 +150,8 @@ export function OriginateWiki({ existingIds, onClose, onCreated, genAsUser = fal
     field = (<>
       <Words parts={d.tagline} onChange={(p) => set({ tagline: p })} />
       <div style={{ marginTop: 28 }}>
-        <textarea className="in sm" value={d.blurb} placeholder="Search terms — names, topics, nicknames people might type (e.g. Da Vinci, Medici, Italian art)" onChange={(e) => set({ blurb: e.target.value })} />
-        <div className="in-under"><Ic d={I.search} w={1.8} /> If it’s in here, the wiki comes up in search. <b>It never shows on the card.</b></div>
+        <TermChips value={d.blurb} placeholder="Search terms — Da Vinci, Medici, Italian art…" onChange={(blurb) => set({ blurb })} />
+        <div className="in-under"><Ic d={I.search} w={1.8} /> A comma makes each one a tag. If it’s in here, the wiki comes up in search. <b>They never show on the card.</b></div>
       </div>
     </>);
   } else if (stepDef.k === 'cover') {
@@ -261,9 +261,9 @@ export function OriginateWiki({ existingIds, onClose, onCreated, genAsUser = fal
 /* tiny tile wrappers (the REAL renderer, framed) */
 import { wikiCoverTile } from '../lib/reader-core.mjs';
 function MiniTile({ d, tax }: { d: Draft; tax: any }) {
-  const html = d.name.trim() || d.tags.length ? wikiCoverTile(draftMeta(d), tax) : '';
+  const html = d.name.trim() || d.tags.length ? wikiCoverTile(draftMeta(d), tax, { htmlArt: true }) : '';
   return <span dangerouslySetInnerHTML={{ __html: `<div class="rd-covers">${html}</div>` }} />;
 }
 function SideTileBare({ d, tax }: { d: Draft; tax: any }) {
-  return <div className="fl-side" style={{ position: 'static' }}><div dangerouslySetInnerHTML={{ __html: `<div class="rd-covers">${wikiCoverTile(draftMeta(d), tax)}</div>` }} /></div>;
+  return <div className="fl-side" style={{ position: 'static' }}><div dangerouslySetInnerHTML={{ __html: `<div class="rd-covers">${wikiCoverTile(draftMeta(d), tax, { htmlArt: true })}</div>` }} /></div>;
 }

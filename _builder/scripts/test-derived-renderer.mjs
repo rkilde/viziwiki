@@ -1110,13 +1110,42 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
     }
   } catch { /* upload dir absent outside this session — fixture covers it */ }
 
-  // browse renders the kind; the reader deliberately falls back to themed
+  // browse renders the kind; wikiCoverTile renders it FOR REAL wherever the
+  // htmlArt option is passed (the owner's rule: the tile always shows the
+  // most up-to-date art) — re-sanitized per cover at render
   const browse25 = fs.readFileSync('../browse.html', 'utf8');
   ok(browse25.includes("cover.kind === 'html'") && browse25.includes('ensureTileArtCss'), 'browse renders uploaded tile art (CSS injected once)');
   const { wikiCoverTile: tile25 } = await import('../lib/reader-core.mjs');
-  const t25 = tile25({ id: 'x', name: 'X', categories: ['food'], tile_cover: { kind: 'html', cls: 'c-test', inner: '<b>art</b>' } },
-    JSON.parse(fs.readFileSync('data/wiki-categories.json', 'utf8')));
-  ok(t25.includes('linear-gradient') && !t25.includes('<b>art</b>'), 'reader covers fall back to themed for html art (renders on browse itself)');
+  const tax25 = JSON.parse(fs.readFileSync('data/wiki-categories.json', 'utf8'));
+  const wHtml = { id: 'x', name: 'X', categories: ['food'], tile_cover: { kind: 'html', cls: 'c-test', css: '.c-test .art{opacity:.9}', inner: '<svg class="art"><rect/></svg>' } };
+  const plain25 = tile25(wHtml, tax25);
+  ok(plain25.includes('linear-gradient') && !plain25.includes('class="art"'), 'without the option, an html cover still falls back to themed');
+  const live25 = tile25(wHtml, tax25, { htmlArt: true });
+  ok(live25.includes('rd-cover c-test') && live25.includes('class="art"') && live25.includes('.c-test .art'),
+    'with htmlArt, the UPLOADED art renders for real — skin CSS + inner markup under the identity text');
+  ok(live25.includes('rd-cover-title') && live25.includes('>X<'), 'the identity text still renders from the database on top');
+  const evil25 = tile25({ ...wHtml, tile_cover: { ...wHtml.tile_cover, inner: '<script>x()</script><svg class="art"/>' } }, tax25, { htmlArt: true });
+  ok(!evil25.includes('<script'), 'htmlArt re-sanitizes at render (safeHtmlCover) — scripts never reach a tile');
+  // every preview surface + the reader index passes the option, so the owner
+  // always sees the art they uploaded, never the themed stand-in
+  for (const [f, what] of [['components/identity/kit.tsx', 'the side tile'], ['components/WikiIdentity.tsx', 'the identity hero'],
+    ['components/OriginateWiki.tsx', 'the origination tiles'], ['app/read/route.ts', 'the reader index']]) {
+    ok(fs.readFileSync(f, 'utf8').includes('htmlArt: true'), `${what} renders uploaded art live (htmlArt)`);
+  }
+
+  // SEARCH TERMS are tags (the YouTube-tags model) — stored field stays the
+  // blurb string, chips are a comma-joined view of it
+  const kit25 = fs.readFileSync('components/identity/kit.tsx', 'utf8');
+  ok(kit25.includes('export function TermChips') && kit25.includes("split(',')"), 'TermChips: comma-separated blurb ↔ chips');
+  ok(fs.readFileSync('components/WikiIdentity.tsx', 'utf8').includes('<TermChips') &&
+     fs.readFileSync('components/OriginateWiki.tsx', 'utf8').includes('<TermChips'), 'identity + origination use the term chips');
+
+  // WIKI CATEGORIES (the site-categories handback): scannable rows + per-
+  // category screen; the edit sheet stays the shared NewTagSheet
+  const mc25 = fs.readFileSync('components/ManageCategories.tsx', 'utf8');
+  ok(mc25.includes('Wiki Categories') && mc25.includes('coveredBy') && mc25.includes('NewTagSheet'),
+    'the categories surface is the handback list (covers derived from primary-category wikis; edit sheet unchanged)');
+  ok(mc25.includes('onGotoWiki') && mc25.includes('BrowseRow'), 'wiki rows jump to identity; the browse filter row previews as readers see it');
 }
 
 // ── case 26: THE CANVAS TREE dashboard — the right rail's live page is the

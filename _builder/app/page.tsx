@@ -143,11 +143,20 @@ export default function Page() {
     realRole === 'admin' ||
     (realRole === 'contributor' && realClass === 'wiki_master' && profile?.wiki_id === baseWiki.id));
 
-  // the brand drawer's menu (the leftmost layers icon) — SITE-LEVEL controls.
-  // First entry per the owner: the wiki categorization tags (admin).
+  // the brand drawer's menu (the leftmost layers icon) — SITE-LEVEL controls,
+  // each row with an icon tile per the owner's drawer design. First entry:
+  // the site-wide wiki categories (admin).
   const drawerMenu = realRole === 'admin' && contentStore ? [
-    { label: 'Site Wiki Tags', hint: 'the categories every wiki is filed under', onClick: () => setManagingTags(true) },
-    { label: '+ Create wiki', hint: 'originate a new wiki', onClick: () => setOriginating(true) },
+    {
+      label: 'Wiki Categories', hint: 'what every wiki is filed under', onClick: () => setManagingTags(true),
+      icon: '<path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0l-7.2-7.2A2 2 0 0 1 2.8 12V4.8A2 2 0 0 1 4.8 2.8H12a2 2 0 0 1 1.4.6l7.2 7.2a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.4"/>',
+      iconBg: 'linear-gradient(140deg,#7c3aed,#4f46e5)',
+    },
+    {
+      label: 'Create wiki', hint: 'start a new one', onClick: () => setOriginating(true),
+      icon: '<path d="M12 5v14"/><path d="M5 12h14"/>',
+      iconBg: 'linear-gradient(140deg,#e07856,#f8bc42)',
+    },
   ] : [];
 
   const account = (

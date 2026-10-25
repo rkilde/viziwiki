@@ -44,7 +44,14 @@ const OpenKit = () => (
   </svg>
 );
 
-export type DrawerItem = { label: string; hint?: string; onClick: () => void };
+export type DrawerItem = {
+  label: string; hint?: string; onClick: () => void;
+  /** the row's icon tile (per the owner's drawer design): an svg path set + a gradient */
+  icon?: string; iconBg?: string;
+};
+const Chev = () => (
+  <svg className="bdi-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
+);
 
 export function BrandLockup({ menu = [] }: { menu?: DrawerItem[] }) {
   const [drawer, setDrawer] = useState(false);
@@ -64,8 +71,16 @@ export function BrandLockup({ menu = [] }: { menu?: DrawerItem[] }) {
             <div className="brand-drawer-head">Build Kit</div>
             {menu.map((it) => (
               <button key={it.label} className="brand-drawer-item" onClick={() => { setDrawer(false); it.onClick(); }}>
-                <span className="bdi-label">{it.label}</span>
-                {it.hint && <span className="bdi-hint">{it.hint}</span>}
+                {it.icon && (
+                  <span className="bdi-ic" style={it.iconBg ? { background: it.iconBg } : undefined}>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round" dangerouslySetInnerHTML={{ __html: it.icon }} />
+                  </span>
+                )}
+                <span className="bdi-m">
+                  <span className="bdi-label">{it.label}</span>
+                  {it.hint && <span className="bdi-hint">{it.hint}</span>}
+                </span>
+                <Chev />
               </button>
             ))}
             {!menu.length && <div className="brand-drawer-empty">nothing here for this account yet</div>}

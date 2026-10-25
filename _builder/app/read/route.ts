@@ -22,7 +22,9 @@ export async function GET() {
   const taxonomy = mergeTaxonomy(taxonomyCanon as any, dbCats.error ? [] : dbCats.data || []);
   // icons beyond the canon sprite render inline (full Lucide library)
   taxonomy.categories = attachIconBodies(taxonomy.categories, renderer.sprite, lucide as any);
-  const items = (r.data || []).map((w: any) => wikiCoverTile(w, taxonomy)).join('');
+  // htmlArt: an uploaded tile-art file renders FOR REAL here too (re-sanitized
+  // per cover at render) — the tile always shows the most up-to-date art
+  const items = (r.data || []).map((w: any) => wikiCoverTile(w, taxonomy, { htmlArt: true })).join('');
   return html(readerIndexShell('Wikis — ViziWiki Reader', readerNav([['Wikis', null]]),
     `<div class="rd-eyebrow">ViziWiki · Reader</div><h1>Wikis.</h1>` +
     (items
