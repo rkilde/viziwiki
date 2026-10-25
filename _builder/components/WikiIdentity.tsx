@@ -139,9 +139,9 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, onDeleted, ca
       q = 'Give it three words.'; sub = 'The little line under the title on its card.';
       field = <Words parts={d.tagline} onChange={(p) => set({ tagline: p })} />;
     } else if (screen === 'blurb') {
-      q = 'One sentence about it.'; sub = 'This is how people find it in search.';
+      q = 'What might people search?'; sub = 'Names, topics, nicknames — anything someone might type. If it’s in here, the wiki comes up.';
       field = (<>
-        <textarea className="in sm" value={d.blurb} placeholder="One sentence — what is this wiki about?" onChange={(e) => set({ blurb: e.target.value })} />
+        <textarea className="in sm" value={d.blurb} placeholder="e.g. Da Vinci, Michelangelo, Medici, Italian art, the 1500s…" onChange={(e) => set({ blurb: e.target.value })} />
         <div className="in-under"><Ic d={I.search} w={1.8} /> Search only. <b>It never shows on the card.</b></div>
       </>);
     } else if (screen === 'cover') {
@@ -186,7 +186,7 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, onDeleted, ca
         )}
       </>);
     } else if (screen === 'emblem') {
-      q = 'Pick its little mark.'; sub = 'The emblem — the small badge in the wiki switcher and on mobile.';
+      q = 'Pick its little mark.'; sub = 'The wiki emblem — the small badge in the wiki switcher and on mobile.';
       field = (<>
         <div className="choice">
           <button type="button" className={`choice-card ${d.emblem.kind === 'auto' ? 'on' : ''}`} onClick={() => set({ emblem: { kind: 'auto' } })}>
@@ -275,11 +275,11 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, onDeleted, ca
               </span><RowGo /></button>
             <button className="row" onClick={() => setScreen('words')}><span className="row-k">Tagline</span>
               <span className={`row-v ${line.length ? '' : 'empty'}`}>{line.length ? line.join(' · ') : 'three words'}</span><RowGo /></button>
-            <button className="row" onClick={() => setScreen('blurb')}><span className="row-k">Blurb</span>
-              <span className={`row-v ${d.blurb ? '' : 'empty'}`}>{d.blurb || 'one sentence, for search'}</span><RowGo /></button>
+            <button className="row" onClick={() => setScreen('blurb')}><span className="row-k">Search terms</span>
+              <span className={`row-v ${d.blurb ? '' : 'empty'}`}>{d.blurb || 'what people might type to find it'}</span><RowGo /></button>
             <button className="row" onClick={() => setScreen('cover')}><span className="row-k">Tile cover art</span>
               <span className="row-v">{d.cover.kind === 'themed' ? 'Made from its category' : d.cover.kind === 'art' ? 'Its own art' : d.cover.kind === 'html' ? `Uploaded art file${d.cover.cls ? ` (${d.cover.cls})` : ''}` : 'Bespoke artwork'}</span><RowGo /></button>
-            <button className="row" onClick={() => setScreen('emblem')}><span className="row-k">Emblem</span>
+            <button className="row" onClick={() => setScreen('emblem')}><span className="row-k">Wiki Emblem</span>
               <span className="row-chips"><EmblemMark d={d} tags={tax.categories} lib={lib} size="sm" />
                 <span className="row-v">{d.emblem.kind === 'auto' ? 'Letter mark' : d.emblem.kind === 'glyph' ? 'Symbol' : 'Its own image'}</span></span><RowGo /></button>
             <button className="row" onClick={() => setScreen('status')}><span className="row-k">Status</span>

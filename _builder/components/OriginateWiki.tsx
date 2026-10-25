@@ -17,7 +17,7 @@ import {
 const STEPS = [
   { k: 'name', q: 'What’s the wiki called?', s: <>This is the big title on its card, and it sets the web address.</> },
   { k: 'tags', q: 'What’s it about?', s: <>Pick its categories. <b>The first one you pick designs the cover.</b></> },
-  { k: 'words', q: 'Give it three words.', s: <>The little line under the title. Then one sentence so people can find it.</> },
+  { k: 'words', q: 'Give it three words.', s: <>The little line under the title. Then the search terms that bring it up.</> },
   { k: 'cover', q: 'Pick its tile cover art.', s: <>Keep the one made from your category, or bring your own art.</> },
   { k: 'owner', q: 'Who runs it?', s: <>You can keep it and hand it over any time.</> },
 ] as const;
@@ -150,8 +150,8 @@ export function OriginateWiki({ existingIds, onClose, onCreated, genAsUser = fal
     field = (<>
       <Words parts={d.tagline} onChange={(p) => set({ tagline: p })} />
       <div style={{ marginTop: 28 }}>
-        <textarea className="in sm" value={d.blurb} placeholder="One sentence — what is this wiki about?" onChange={(e) => set({ blurb: e.target.value })} />
-        <div className="in-under"><Ic d={I.search} w={1.8} /> Used for search only. <b>It never shows on the card.</b></div>
+        <textarea className="in sm" value={d.blurb} placeholder="Search terms — names, topics, nicknames people might type (e.g. Da Vinci, Medici, Italian art)" onChange={(e) => set({ blurb: e.target.value })} />
+        <div className="in-under"><Ic d={I.search} w={1.8} /> If it’s in here, the wiki comes up in search. <b>It never shows on the card.</b></div>
       </div>
     </>);
   } else if (stepDef.k === 'cover') {
