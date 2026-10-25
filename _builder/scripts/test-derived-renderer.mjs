@@ -1078,8 +1078,19 @@ const ok = (cond, msg) => { if (cond) { pass++; } else { fail++; console.error('
   ok(!art.css.includes('.cover{') && !art.css.includes('cover-grid') && !art.css.includes('unused-anim'), 'canon cover-base CSS and unused keyframes are dropped');
   ok(art.css.includes('prefers-reduced-motion') && !/@media[^{]*\{[^@]*\.cover\{border/.test(art.css), 'media blocks keep only the skin rules');
   ok(art.inner.includes('class="art"') && art.inner.includes('mirror') && art.inner.includes('url(#rough)'), 'the decorative markup + local refs survive');
-  ok(!/c-genre|c-vol|c-foot|c-title/.test(art.inner), 'identity text slots are stripped (the DB renders those)');
+  ok(!/c-genre|c-vol|c-foot|c-title|c-blurb/.test(art.inner), 'identity slots are FULLY stripped, nested children included (the Renaissance bug)');
+  const opens25 = (art.inner.match(/<div\b/g) || []).length, closes25 = (art.inner.match(/<\/div/g) || []).length;
+  ok(opens25 === closes25, `inner markup stays tag-balanced (${opens25} open vs ${closes25} close) — a stray closer breaks the page grid`);
   ok(!/script|alert/.test(art.inner), 'scripts are stripped');
+
+  // serve-time SELF-HEAL: a cover stored by the old parser (orphan slot
+  // fragment + stray closer) repairs on the way out
+  const { balanceClosers } = await import('../lib/tile-html.mjs');
+  const corrupted = '<svg class="art"><rect/></svg><div class="c-blurb">A · B</div>\n    </div>';
+  const healed = safeHtmlCover({ kind: 'html', cls: 'c-test', css: '', inner: corrupted });
+  ok(healed && !/c-blurb/.test(healed.inner) && !/<\/div>/.test(healed.inner) && healed.inner.includes('class="art"'),
+    'safeHtmlCover strips orphaned slot fragments AND stray closers (stored covers self-heal)');
+  ok(balanceClosers('<div><b>x</b></div></div></span>') === '<div><b>x</b></div>', 'balanceClosers drops only the unmatched end tags');
 
   let threw25 = false; try { parseTileArt('<div>no cover here</div>'); } catch { threw25 = true; }
   ok(threw25, 'a file with no cover element is rejected with a reason');
