@@ -266,9 +266,9 @@ function NavRow({ p, depth, wiki, selId, focusId, expanded, onToggle, onNav }: {
 /* the PAGE's emblem mark in the right rail: its own art, a library glyph, or
    (when it has none) the dashed "+" slot that adds one */
 function PageMarkView({ icon, lib }: { icon: PageIcon | null; lib: LucideLib | null }) {
-  if (icon?.kind === 'art' && icon.src) return <span className="cvt-mark pg"><img src={icon.src} alt="" /></span>;
-  if (icon?.kind === 'glyph' && icon.name) return <span className="cvt-mark pg"><TagIcon name={icon.name} lib={lib} /></span>;
-  return <span className="cvt-mark pg add">+</span>;
+  if (icon?.kind === 'art' && icon.src) return <span className="cvt-mark pmark"><img src={icon.src} alt="" /></span>;
+  if (icon?.kind === 'glyph' && icon.name) return <span className="cvt-mark pmark"><TagIcon name={icon.name} lib={lib} /></span>;
+  return <span className="cvt-mark pmark empty">+</span>;
 }
 
 /* ════════════════════════ the component ════════════════════════ */
