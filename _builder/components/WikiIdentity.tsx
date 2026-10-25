@@ -1,184 +1,282 @@
 'use client';
 import React, { useEffect, useMemo, useState } from 'react';
 import { contentStore, type CategoryRow, type TileCover, type WikiIcon, type WikiMeta } from '../content-store';
-import { ICON_SPRITE } from '../lib/render';
-import taxonomyCanon from '../data/wiki-categories.json';
-import { mergeTaxonomy, resolveColor, spriteIconNames } from '../lib/taxonomy.mjs';
-import { COVER_CSS, wikiCoverTile } from '../lib/reader-core.mjs';
-import { GenArtRow, type GenWiki } from './GenArt';
-import { TaglineFields, joinTagline, splitTagline, type TagParts } from './TaglineFields';
+import { splitTagline } from './TaglineFields';
+import { parseTileArt } from '../lib/tile-html.mjs';
+import { wikiCoverTile } from '../lib/reader-core.mjs';
+import {
+  Bloom, EmblemMark, FlowRoot, GenBlock, I, Ic, IconSheet, NewTagSheet, SideTile, TagIcon, TagPick, Words,
+  draftMeta, emptyDraft, mergedTags, resolve, slugifyId, useLucide,
+  type Draft, type TagDraft,
+} from './identity/kit';
 
-// The WIKI IDENTITY editor — alter the current wiki's tile cover art, tags,
-// tagline, blurb and status AFTER origination (admin, or the wiki's master).
-// Same form language and the same LIVE preview as the origination modal: the
-// preview IS the reader's tile renderer + stylesheet, never a restatement.
-// Cover kinds: themed (derived from the first tag) · art (the wiki's own
-// image — a URL today, a Storage upload at public launch) · bespoke (the five
-// hand-built flagship covers; kept unless deliberately switched away).
+// WIKI IDENTITY — the owner's redesigned surface B: a short settings list
+// (hero tile + rows), each row opening ONE question screen that reuses the
+// origination flow's shapes. Save persists the whole identity at once.
+// Includes the new UPLOADED TILE-ART kind: drop in a self-contained html
+// art file (like the Renaissance "Vitruvian" tile) and it becomes the
+// wiki's cover on the browse page — parsed + sanitized, identity text
+// rendered from the database on top.
+
+type Screen = null | 'tags' | 'words' | 'blurb' | 'cover' | 'emblem' | 'status' | 'newtag' | 'icon' | 'emblemicon';
 
 export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, genAsUser = false }: {
-  wikiId: string; wikiName: string; onClose: () => void; onSaved: () => void;
-  /** admin "view as" preview: AI generation bills like a contributor's */
-  genAsUser?: boolean;
+  wikiId: string; wikiName: string; onClose: () => void; onSaved: () => void; genAsUser?: boolean;
 }) {
   const [loaded, setLoaded] = useState(false);
-  const [cats, setCats] = useState<string[]>([]);
-  const [blurb, setBlurb] = useState('');
-  const [tagParts, setTagParts] = useState<TagParts>(['', '', '']);
-  const tagline = joinTagline(tagParts);
-  const [status, setStatus] = useState<'live' | 'coming_soon'>('live');
-  const [kind, setKind] = useState<'themed' | 'art' | 'bespoke'>('themed');
-  const [artUrl, setArtUrl] = useState('');
-  const [bespokeCls, setBespokeCls] = useState<string | null>(null);
-  // the wiki MARK (migration 0009): auto letter · sprite glyph · art image
-  const [icKind, setIcKind] = useState<'auto' | 'glyph' | 'art'>('auto');
-  const [icGlyph, setIcGlyph] = useState<string | null>(null);
-  const [icSrc, setIcSrc] = useState('');
+  const [d, setD] = useState<Draft>({ ...emptyDraft(), id: wikiId, name: wikiName });
+  const [hadBespoke, setHadBespoke] = useState<string | null>(null);
   const [dbCats, setDbCats] = useState<CategoryRow[]>([]);
+  const [screen, setScreen] = useState<Screen>(null);
+  const [nt, setNt] = useState<TagDraft>({ label: '', icon: null, from: null, to: null });
+  const [iconQ, setIconQ] = useState('');
   const [busy, setBusy] = useState(false);
+  const [saved, setSaved] = useState(false);
   const [err, setErr] = useState<string | null>(null);
-  const [savedTick, setSavedTick] = useState(false);
+  const [artMsg, setArtMsg] = useState<string | null>(null);
+  const lib = useLucide();
 
   useEffect(() => {
     contentStore?.listCategories().then(setDbCats).catch(() => {});
     contentStore?.listWikis().then((ws) => {
       const w = ws.find((x) => x.id === wikiId);
       if (w) {
-        setCats(w.categories ?? []);
-        setBlurb(w.blurb ?? ''); setTagParts(splitTagline(w.tagline));
-        setStatus((w.status as any) ?? 'live');
         const tc = (w.tile_cover ?? { kind: 'themed' }) as TileCover;
-        setKind(tc.kind); setArtUrl(tc.src ?? ''); setBespokeCls(tc.cls ?? null);
-        const wi = (w.icon ?? { kind: 'auto' }) as WikiIcon;
-        setIcKind(wi.kind); setIcGlyph(wi.name ?? null); setIcSrc(wi.src ?? '');
+        if (tc.kind === 'bespoke') setHadBespoke(tc.cls ?? null);
+        setD({
+          id: w.id, name: w.name, tags: w.categories ?? [],
+          tagline: splitTagline(w.tagline), blurb: w.blurb ?? '',
+          status: (w.status as any) ?? 'live', cover: tc, emblem: (w.icon ?? { kind: 'auto' }) as WikiIcon,
+        });
       }
       setLoaded(true);
     }).catch(() => setLoaded(true));
   }, [wikiId]);
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [onClose]);
 
-  const tax = useMemo(() => mergeTaxonomy(taxonomyCanon as any, dbCats), [dbCats]);
-  const icons = useMemo(() => spriteIconNames(ICON_SPRITE), []);
-  const cover: TileCover = kind === 'art'
-    ? { kind: 'art', src: artUrl.trim() }
-    : kind === 'bespoke' && bespokeCls ? { kind: 'bespoke', cls: bespokeCls } : { kind: 'themed' };
-  // the identity brief the AI generator draws from (relatedness is automatic)
-  const primaryCat = tax.categories.find((c: any) => c.key === cats[0]) || null;
-  const genWiki: GenWiki = {
-    name: wikiName, genreLabel: primaryCat?.label ?? null,
-    tagline: tagline.trim() || null, blurb: blurb.trim() || null,
-    colors: primaryCat ? [resolveColor(tax.palette, primaryCat.grad.from, ''), resolveColor(tax.palette, primaryCat.grad.to, '')].filter(Boolean) : [],
-  };
-  const mark: WikiIcon = icKind === 'art'
-    ? { kind: 'art', src: icSrc.trim() }
-    : icKind === 'glyph' && icGlyph ? { kind: 'glyph', name: icGlyph } : { kind: 'auto' };
-  const meta = { id: wikiId, name: wikiName, categories: cats, blurb: blurb.trim() || null, tagline: tagline.trim() || null, status, tile_cover: cover, icon: mark };
-  const previewHtml = useMemo(
-    () => `<div class="rd-covers" style="grid-template-columns:1fr">${wikiCoverTile(meta, tax)}</div>`,
-    [cats, blurb, tagline, status, kind, artUrl, bespokeCls, tax]);  // eslint-disable-line react-hooks/exhaustive-deps
-
-  const toggleCat = (k: string) => setCats((prev) => (prev.includes(k) ? prev.filter((x) => x !== k) : [...prev, k]));
+  const tax = useMemo(() => mergedTags(dbCats), [dbCats]);
+  const set = (patch: Partial<Draft>) => { setD((p) => ({ ...p, ...patch })); setSaved(false); };
+  const toggleTag = (k: string) => set({ tags: d.tags.includes(k) ? d.tags.filter((x) => x !== k) : [...d.tags, k] });
+  const prim = tax.categories.find((t) => t.key === d.tags[0]);
 
   const save = async () => {
     if (!contentStore) { setErr('Cloud not configured'); return; }
-    if (!cats.length) { setErr('pick at least one category'); return; }
-    if (kind === 'art' && !artUrl.trim()) { setErr('give the art an image URL, or switch the cover kind'); return; }
-    if (icKind === 'art' && !icSrc.trim()) { setErr('give the icon an image URL, or switch the icon kind'); return; }
-    if (icKind === 'glyph' && !icGlyph) { setErr('pick a glyph for the icon, or switch the icon kind'); return; }
+    if (!d.tags.length) { setErr('pick at least one tag'); setScreen('tags'); return; }
     setBusy(true); setErr(null);
     try {
-      await contentStore.updateWikiIdentity(wikiId, meta as Pick<WikiMeta, 'categories' | 'blurb' | 'tagline' | 'status' | 'tile_cover' | 'icon'>);
+      const m = draftMeta(d);
+      await contentStore.updateWikiIdentity(wikiId, m as Pick<WikiMeta, 'categories' | 'blurb' | 'tagline' | 'status' | 'tile_cover' | 'icon'>);
       fetch('/api/revalidate', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ paths: ['/read', '/api/directory'] }) }).catch(() => {});
-      setSavedTick(true); setTimeout(() => setSavedTick(false), 1800);
+      setSaved(true); setTimeout(() => setSaved(false), 2200);
       onSaved();
     } catch (e: any) { setErr(e?.message || String(e)); }
     setBusy(false);
   };
 
-  return (
-    <div className="acct-modal-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-      <div className="acct-modal ow-modal" onMouseDown={(e) => e.stopPropagation()}>
-        <div style={{ display: 'none' }} dangerouslySetInnerHTML={{ __html: ICON_SPRITE }} />
-        <div className="acct-title">Wiki identity — {wikiName}</div>
-        {!loaded ? <div className="acct-note">loading…</div> : (
-        <div className="ow-cols">
-          <div className="ow-form">
-            <div className="ow-label">categories — first pick drives the themed cover</div>
-            <div className="ow-cats">
-              {tax.categories.map((c: any) => (
-                <button key={c.key} type="button" className={`ow-cat ${cats.includes(c.key) ? 'on' : ''}`} onClick={() => toggleCat(c.key)}>
-                  {c.label}{cats[0] === c.key ? ' ★' : ''}
-                </button>
-              ))}
-            </div>
-            <div className="ow-label">tagline — the dotted line under the title on the tile</div>
-            <TaglineFields parts={tagParts} onChange={setTagParts} placeholders={['Menus', 'Sauces', 'Slogans']} />
-            <div className="ow-label">blurb — not shown on the tile: it powers browse search and the tile's hover tooltip</div>
-            <textarea className="acct-input ow-blurb" placeholder="one sentence describing the wiki" value={blurb} onChange={(e) => setBlurb(e.target.value)} />
-            <div className="ow-row">
-              <select className="acct-input" value={status} onChange={(e) => setStatus(e.target.value as any)}>
-                <option value="live">live</option>
-                <option value="coming_soon">coming soon</option>
-              </select>
-              <select className="acct-input" value={kind} onChange={(e) => setKind(e.target.value as any)}>
-                <option value="themed">themed cover (derived from first tag)</option>
-                <option value="art">cover art (your image)</option>
-                {bespokeCls && <option value="bespoke">bespoke (hand-built: {bespokeCls})</option>}
-              </select>
-            </div>
-            {kind === 'art' && (<>
-              <input className="acct-input" placeholder="tile art URL — an image upload at public launch" value={artUrl} onChange={(e) => setArtUrl(e.target.value)} />
-              <GenArtRow kind="cover" wiki={genWiki} onResult={setArtUrl} asUser={genAsUser} />
-            </>)}
-            {kind === 'bespoke' && <div className="acct-note">This wiki wears one of the five hand-built covers (browse page art). Switch the kind above to replace it; the reference is kept if you switch back before saving.</div>}
-            <div className="ow-label">wiki emblem — the small mark (switcher, wiki bar / rail)</div>
-            <div className="ow-row wi-icon-row">
-              <select className="acct-input" value={icKind} onChange={(e) => setIcKind(e.target.value as any)}>
-                <option value="auto">auto (letter mark)</option>
-                <option value="glyph">sprite glyph</option>
-                <option value="art">emblem art (your image)</option>
-              </select>
-              <span className="wi-mark-preview" title="icon preview">
-                {icKind === 'art' && icSrc.trim()
-                  ? <img src={icSrc.trim()} alt="" />
-                  : icKind === 'glyph' && icGlyph
-                    ? <svg><use href={`#ic-${icGlyph}`} /></svg>
-                    : <b>{wikiName[0]}</b>}
-              </span>
-            </div>
-            {icKind === 'glyph' && (
-              <div className="ow-icons">
-                {icons.map((ic) => (
-                  <button key={ic} type="button" title={ic} className={`ow-icon ${icGlyph === ic ? 'on' : ''}`} onClick={() => setIcGlyph(ic)}>
-                    <svg><use href={`#ic-${ic}`} /></svg>
-                  </button>
-                ))}
-              </div>
-            )}
-            {icKind === 'art' && (<>
-              <input className="acct-input" placeholder="icon image URL — square works best; an upload at public launch" value={icSrc} onChange={(e) => setIcSrc(e.target.value)} />
-              <GenArtRow kind="icon" wiki={genWiki} onResult={setIcSrc} asUser={genAsUser} />
-            </>)}
-            {err && <div className="acct-msg">{err}</div>}
-            <div className="ow-actions">
-              <button className="acct-primary" onClick={save} disabled={busy}>{busy ? '…' : savedTick ? 'Saved ✓' : 'Save identity'}</button>
-              <button className="acct-switch" type="button" onClick={onClose}>close</button>
-            </div>
-            <div className="acct-note">Changes reach every surface that lists wikis — the reader index and the live browse page — within seconds.</div>
-          </div>
-          <div className="ow-preview">
-            <div className="ow-label">tile cover — live</div>
-            <style>{COVER_CSS}</style>
-            <div dangerouslySetInnerHTML={{ __html: previewHtml }} onClick={(e) => e.preventDefault()} />
-            {kind === 'bespoke' && <div className="acct-note">Preview shows the themed fallback — the bespoke art renders on the browse page itself.</div>}
-          </div>
+  const addTag = async () => {
+    if (!contentStore) return;
+    const row: CategoryRow = { key: slugifyId(nt.label), label: nt.label.trim(), icon: nt.icon || '', grad_from: resolve(nt.from, ''), grad_to: resolve(nt.to, '') };
+    setBusy(true); setErr(null);
+    try {
+      await contentStore.createCategory(row);
+      setDbCats((p) => [...p, row]); set({ tags: [...d.tags, row.key] });
+      setScreen('tags'); setNt({ label: '', icon: null, from: null, to: null });
+    } catch (e: any) { setErr(e?.message || String(e)); }
+    setBusy(false);
+  };
+
+  const onArtFile = (file: File) => {
+    setArtMsg(null);
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const art = parseTileArt(String(reader.result || ''));
+        set({ cover: { kind: 'html', cls: art.cls, css: art.css, inner: art.inner } });
+        setArtMsg(`found "${art.cls}" — ${(art.css.length / 1024).toFixed(1)}KB of skin CSS, ${(art.inner.length / 1024).toFixed(1)}KB of art`);
+      } catch (e: any) { setArtMsg('✗ ' + (e?.message || String(e))); }
+    };
+    reader.readAsText(file);
+  };
+
+  /* ── sub-screens ── */
+  if (screen === 'icon') return <IconSheet q={iconQ} onQ={setIconQ} sel={nt.icon} onPick={(n) => { setNt({ ...nt, icon: n }); setScreen('newtag'); }} onBack={() => setScreen('newtag')} />;
+  if (screen === 'emblemicon') return <IconSheet q={iconQ} onQ={setIconQ} sel={d.emblem.name ?? null} onPick={(n) => { set({ emblem: { kind: 'glyph', name: n } }); setScreen('emblem'); }} onBack={() => setScreen('emblem')} />;
+  if (screen === 'newtag') return <NewTagSheet nt={nt} onChange={setNt} takenKeys={tax.categories.map((c) => c.key)} lib={lib}
+    onPickIcon={() => { setIconQ(''); setScreen('icon'); }} onAdd={addTag} onBack={() => { setScreen('tags'); setErr(null); }} busy={busy} />;
+
+  if (screen) {
+    let q = '', sub: React.ReactNode = '', field: React.ReactNode = null, note = '';
+    if (screen === 'tags') {
+      q = 'What’s it about?'; sub = <>Pick its tags. <b>The first one designs the cover.</b></>;
+      note = 'All its tags show in the corner of the card.';
+      field = <TagPick tax={tax} lib={lib} selected={d.tags} onToggle={toggleTag}
+        onNew={() => { setNt({ label: '', icon: null, from: null, to: null }); setScreen('newtag'); }} />;
+    } else if (screen === 'words') {
+      q = 'Give it three words.'; sub = 'The little line under the title on its card.';
+      field = <Words parts={d.tagline} onChange={(p) => set({ tagline: p })} />;
+    } else if (screen === 'blurb') {
+      q = 'One sentence about it.'; sub = 'This is how people find it in search.';
+      field = (<>
+        <textarea className="in sm" value={d.blurb} placeholder="One sentence — what is this wiki about?" onChange={(e) => set({ blurb: e.target.value })} />
+        <div className="in-under"><Ic d={I.search} w={1.8} /> Search only. <b>It never shows on the card.</b></div>
+      </>);
+    } else if (screen === 'cover') {
+      q = 'Pick a cover.'; sub = 'Keep the one made from your tag, or bring your own art.';
+      note = d.cover.kind === 'themed' ? 'Change its first tag and this changes with it.' : '';
+      field = (<>
+        <div className="choice">
+          <button type="button" className={`choice-card ${d.cover.kind === 'themed' ? 'on' : ''}`} onClick={() => set({ cover: { kind: 'themed' } })}>
+            <span className="choice-top"><span className="choice-ic"><Ic d={I.paint} w={1.8} /></span><span className="choice-t">Made for you</span></span>
+            <div className="choice-d">Built from {prim ? <b>{prim.label}</b> : 'its tag'} — nothing to do.</div>
+          </button>
+          <button type="button" className={`choice-card ${d.cover.kind === 'art' ? 'on' : ''}`} onClick={() => set({ cover: { kind: 'art', src: d.cover.kind === 'art' ? d.cover.src : '' } })}>
+            <span className="choice-top"><span className="choice-ic"><Ic d={I.spark} w={1.8} /></span><span className="choice-t">Your own art</span></span>
+            <div className="choice-d">Paste a picture, or let us draw one.</div>
+          </button>
+          <button type="button" className={`choice-card ${d.cover.kind === 'html' ? 'on' : ''}`} onClick={() => set({ cover: d.cover.kind === 'html' ? d.cover : { kind: 'html' } })}>
+            <span className="choice-top"><span className="choice-ic"><Ic d={I.file} w={1.8} /></span><span className="choice-t">An art file</span></span>
+            <div className="choice-d">Upload a designed tile — html, css and svg, animations and all.</div>
+          </button>
+          {hadBespoke && (
+            <button type="button" className={`choice-card ${d.cover.kind === 'bespoke' ? 'on' : ''}`} onClick={() => set({ cover: { kind: 'bespoke', cls: hadBespoke } })}>
+              <span className="choice-top"><span className="choice-ic"><Ic d={I.lock} w={1.8} /></span><span className="choice-t">Bespoke</span></span>
+              <div className="choice-d">Its hand-made artwork. Only the five original wikis have one.</div>
+            </button>
+          )}
         </div>
+        {d.cover.kind === 'art' && (
+          <div style={{ marginTop: 20 }}>
+            <input className="in sm" value={d.cover.src || ''} placeholder="Paste an image link" onChange={(e) => set({ cover: { kind: 'art', src: e.target.value } })} />
+            <GenBlock kind="cover" d={d} tax={tax} isAdmin={!genAsUser} onResult={(uri) => set({ cover: { kind: 'art', src: uri } })} />
+          </div>
         )}
+        {d.cover.kind === 'html' && (
+          <div className="upload-box">
+            <p><b>Upload the art file.</b> A self-contained tile page (like the design handbacks): one element with <b>class="cover c-your-skin"</b>, its skin CSS in a style block. The genre, title and tagline render from the database on top — leave those slots out or they’ll be stripped.</p>
+            <input type="file" accept=".html,.htm,text/html" onChange={(e) => { const f = e.target.files?.[0]; if (f) onArtFile(f); }} />
+            {d.cover.inner && !artMsg?.startsWith('✗') && (
+              <div className="upload-ok"><Ic d={I.check} w={2.4} /> {artMsg || `art loaded — "${d.cover.cls}"`}</div>
+            )}
+            {artMsg?.startsWith('✗') && <div className="in-under bad"><Ic d={I.warn} w={2} /> {artMsg.slice(2)}</div>}
+          </div>
+        )}
+      </>);
+    } else if (screen === 'emblem') {
+      q = 'Pick its little mark.'; sub = 'The emblem — the small badge in the wiki switcher and on mobile.';
+      field = (<>
+        <div className="choice">
+          <button type="button" className={`choice-card ${d.emblem.kind === 'auto' ? 'on' : ''}`} onClick={() => set({ emblem: { kind: 'auto' } })}>
+            <span className="choice-top"><EmblemMark d={{ ...d, emblem: { kind: 'auto' } }} tags={tax.categories} lib={lib} size="lg" /><span className="choice-t">Letter</span></span>
+            <div className="choice-d">The first letter of the name, in its tag’s colour.</div>
+          </button>
+          <button type="button" className={`choice-card ${d.emblem.kind === 'glyph' ? 'on' : ''}`} onClick={() => { setIconQ(''); setScreen('emblemicon'); }}>
+            <span className="choice-top"><EmblemMark d={{ ...d, emblem: { kind: 'glyph', name: d.emblem.name || 'sparkles' } }} tags={tax.categories} lib={lib} size="lg" /><span className="choice-t">Symbol</span></span>
+            <div className="choice-d">Choose a symbol instead of a letter.</div>
+          </button>
+          <button type="button" className={`choice-card ${d.emblem.kind === 'art' ? 'on' : ''}`} onClick={() => set({ emblem: { kind: 'art', src: d.emblem.kind === 'art' ? d.emblem.src : '' } })}>
+            <span className="choice-top"><EmblemMark d={d.emblem.kind === 'art' ? d : { ...d, emblem: { kind: 'art', src: '' } }} tags={tax.categories} lib={lib} size="lg" /><span className="choice-t">Your own image</span></span>
+            <div className="choice-d">Paste a small square image, or let us draw one.</div>
+          </button>
+        </div>
+        {d.emblem.kind === 'art' && (
+          <div style={{ marginTop: 20 }}>
+            <input className="in sm" value={d.emblem.src || ''} placeholder="Paste an image link — square works best" onChange={(e) => set({ emblem: { kind: 'art', src: e.target.value } })} />
+            <GenBlock kind="icon" d={d} tax={tax} isAdmin={!genAsUser} onResult={(uri) => set({ emblem: { kind: 'art', src: uri } })} />
+          </div>
+        )}
+      </>);
+    } else {
+      q = 'When is it open?'; sub = 'Coming soon still shows on browse — it just doesn’t open yet.';
+      field = (
+        <div className="choice">
+          <button type="button" className={`choice-card ${d.status === 'live' ? 'on' : ''}`} onClick={() => set({ status: 'live' })}>
+            <span className="choice-top"><span className="choice-ic"><Ic d={I.globe} w={1.8} /></span><span className="choice-t">Live</span></span>
+            <div className="choice-d">Anyone can read it now.</div>
+          </button>
+          <button type="button" className={`choice-card ${d.status === 'coming_soon' ? 'on' : ''}`} onClick={() => set({ status: 'coming_soon' })}>
+            <span className="choice-top"><span className="choice-ic"><Ic d={I.clock} w={1.8} /></span><span className="choice-t">Coming soon</span></span>
+            <div className="choice-d">Visible with a badge, opens for no one yet.</div>
+          </button>
+        </div>
+      );
+    }
+    return (
+      <FlowRoot kind="fl">
+        <Bloom d={d} tax={tax} />
+        <div className="fl-head">
+          <button className="fl-icon-btn" onClick={() => setScreen(null)}><Ic d={I.back} w={2.2} /></button>
+          <div className="fl-dots" />
+          <button className="fl-icon-btn" onClick={() => setScreen(null)}><Ic d={I.x} w={2.2} /></button>
+        </div>
+        <div className="fl-body"><div className="fl-wrap">
+          <div className="q">
+            <div className="q-step">{d.name}</div>
+            <h1 className="q-h">{q}</h1>
+            <p className="q-sub">{sub}</p>
+            <div className="q-field">{field}</div>
+          </div>
+          <SideTile d={d} tax={tax} note={note} lib={lib} />
+        </div></div>
+        <div className="fl-foot"><div className="fl-foot-in">
+          <button className="go" onClick={() => setScreen(null)}>Done<Ic d={I.check} w={2.4} /></button>
+          <span className="enter"><span className="kbd2">↵</span> to go back</span>
+        </div></div>
+      </FlowRoot>
+    );
+  }
+
+  /* ── the settings list ── */
+  const line = d.tagline.map((s) => s.trim()).filter(Boolean);
+  const heroHtml = d.name.trim() ? wikiCoverTile(draftMeta(d), tax) : '';
+  return (
+    <FlowRoot kind="pane">
+      <div className="pane-head">
+        <button className="fl-icon-btn" onClick={onClose}><Ic d={I.back} w={2.2} /></button>
+        <div className="pane-h"><div className="t">Wiki identity</div><div className="s">How {d.name} looks wherever wikis are listed</div></div>
       </div>
-    </div>
+      <div className="pane-body"><div className="pane-in">
+        {!loaded ? <div className="side-note">loading…</div> : (<>
+          <div className="pane-hero">
+            <div className="tw"><div dangerouslySetInnerHTML={{ __html: `<div class="rd-covers">${heroHtml}</div>` }} onClick={(e) => e.preventDefault()} /></div>
+            <div className="m"><div className="n">{d.name}</div>
+              <div className="d">Every change here shows up on browse, in the reader and in the wiki switcher within seconds. No deploy.</div></div>
+          </div>
+          <div className="rows">
+            <button className="row" onClick={() => setScreen('tags')}><span className="row-k">Tags</span>
+              <span className="row-chips">
+                {d.tags.length ? d.tags.map((k) => { const t = tax.categories.find((x) => x.key === k); return t ? (
+                  <span key={k} className="row-sw" style={{ background: `linear-gradient(140deg, ${resolve(t.grad.from)}, ${resolve(t.grad.to)})` }} title={t.label}><TagIcon name={t.icon} lib={lib} /></span>
+                ) : null; }) : <span className="row-v empty">none yet</span>}
+                {prim && <span className="row-v" style={{ marginLeft: 4 }}>{prim.label} designs the cover</span>}
+              </span><RowGo /></button>
+            <button className="row" onClick={() => setScreen('words')}><span className="row-k">Tagline</span>
+              <span className={`row-v ${line.length ? '' : 'empty'}`}>{line.length ? line.join(' · ') : 'three words'}</span><RowGo /></button>
+            <button className="row" onClick={() => setScreen('blurb')}><span className="row-k">Blurb</span>
+              <span className={`row-v ${d.blurb ? '' : 'empty'}`}>{d.blurb || 'one sentence, for search'}</span><RowGo /></button>
+            <button className="row" onClick={() => setScreen('cover')}><span className="row-k">Tile cover</span>
+              <span className="row-v">{d.cover.kind === 'themed' ? 'Made from its tag' : d.cover.kind === 'art' ? 'Its own art' : d.cover.kind === 'html' ? `Uploaded art file${d.cover.cls ? ` (${d.cover.cls})` : ''}` : 'Bespoke artwork'}</span><RowGo /></button>
+            <button className="row" onClick={() => setScreen('emblem')}><span className="row-k">Emblem</span>
+              <span className="row-chips"><EmblemMark d={d} tags={tax.categories} lib={lib} size="sm" />
+                <span className="row-v">{d.emblem.kind === 'auto' ? 'Letter mark' : d.emblem.kind === 'glyph' ? 'Symbol' : 'Its own image'}</span></span><RowGo /></button>
+            <button className="row" onClick={() => setScreen('status')}><span className="row-k">Status</span>
+              <span className="row-v">{d.status === 'coming_soon' ? 'Coming soon' : 'Live'}</span><RowGo /></button>
+          </div>
+          <div className="rows-cap"><span>Fixed</span><span className="line" /></div>
+          <div className="rows"><div className="row static">
+            <span className="row-k">Web address</span>
+            <span className="row-v" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12.5, color: 'var(--muted)' }}>viziwiki.com/read/{d.id}</span>
+            <span className="locked" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 11.5, color: 'var(--dim)' }}><Ic d={I.lock} w={2} /> can’t change</span>
+          </div></div>
+          {err && <div className="in-under bad" style={{ marginTop: 14 }}><Ic d={I.warn} w={2} /> {err}</div>}
+        </>)}
+      </div></div>
+      <div className="pane-foot"><div className="pane-foot-in">
+        {saved
+          ? <span className="saved2"><Ic d={I.check} w={2.6} /> Saved</span>
+          : (<><button className="btn2 primary" onClick={save} disabled={busy || !loaded}>{busy ? '…' : 'Save changes'}</button>
+              <button className="btn2" onClick={onClose}>Cancel</button></>)}
+      </div></div>
+    </FlowRoot>
   );
 }
+
+const RowGo = () => <svg className="row-go" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" dangerouslySetInnerHTML={{ __html: I.fwd }} />;

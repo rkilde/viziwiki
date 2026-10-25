@@ -169,7 +169,8 @@ export default function Page() {
     <>
       <Topbar wikis={shownWikis} current={wiki || undefined} onSwitch={(w) => { setEditing(null); setWikiId(w.id); }} onNewWiki={realRole === 'admin' ? () => setOriginating(true) : undefined} onEditIdentity={canEditIdentity ? () => setEditingIdentity(true) : undefined} menu={drawerMenu} account={account} />
       {originating && <OriginateWiki existingIds={allWikis.map((w) => w.id)} onClose={() => setOriginating(false)} onCreated={onOriginated} genAsUser={realRole === 'admin' && viewAs !== 'me'} />}
-      {managingTags && <ManageCategories onClose={() => setManagingTags(false)} />}
+      {managingTags && <ManageCategories onClose={() => setManagingTags(false)}
+        onGotoWiki={(id) => { setManagingTags(false); setEditing(null); setWikiId(id); setEditingIdentity(true); }} />}
       {editingIdentity && baseWiki && <WikiIdentity wikiId={baseWiki.id} wikiName={baseWiki.name} onClose={() => setEditingIdentity(false)} onSaved={refreshCloudWikis} genAsUser={realRole === 'admin' && viewAs !== 'me'} />}
       {wiki && baseWiki ? (
         <>

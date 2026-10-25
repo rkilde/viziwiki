@@ -7,6 +7,7 @@
 import { NextResponse } from 'next/server';
 import { serverSupabase } from '../../../lib/supabase-server';
 import { attachIconBodies, directoryPayload } from '../../../lib/taxonomy.mjs';
+import { safeHtmlCover } from '../../../lib/tile-html.mjs';
 import taxonomyCanon from '../../../data/wiki-categories.json';
 import includes from '../../../data/includes.json';
 import lucide from '../../../data/lucide-library.json';
@@ -31,5 +32,11 @@ export async function GET() {
   // body (resolved from the pinned Lucide library) so consumers render them
   // inline — the browse page needs no sprite edit for any library icon
   payload.categories = attachIconBodies(payload.categories, (includes as any).sprite, lucide as any);
+  // uploaded tile-art files are RE-SANITIZED at serve time (defense in
+  // depth); one that can't be made safe degrades to the themed cover
+  payload.wikis = payload.wikis.map((w: any) =>
+    w.tile_cover?.kind === 'html'
+      ? { ...w, tile_cover: safeHtmlCover(w.tile_cover) ?? { kind: 'themed' } }
+      : w);
   return NextResponse.json(payload, { headers: CORS });
 }
