@@ -20,8 +20,10 @@ import {
 
 type Screen = null | 'tags' | 'words' | 'blurb' | 'cover' | 'emblem' | 'status' | 'newtag' | 'icon' | 'emblemicon';
 
-export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, genAsUser = false }: {
-  wikiId: string; wikiName: string; onClose: () => void; onSaved: () => void; genAsUser?: boolean;
+export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, onDeleted, canDelete = false, genAsUser = false }: {
+  wikiId: string; wikiName: string; onClose: () => void; onSaved: () => void;
+  /** admin only: permanent wiki deletion (triple-click confirmed) */
+  onDeleted?: () => void; canDelete?: boolean; genAsUser?: boolean;
 }) {
   const [loaded, setLoaded] = useState(false);
   const [d, setD] = useState<Draft>({ ...emptyDraft(), id: wikiId, name: wikiName });
@@ -34,7 +36,29 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, genAsUser = f
   const [saved, setSaved] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [artMsg, setArtMsg] = useState<string | null>(null);
+  // the DANGER row's triple-click state: 0 untouched · 1 · 2 · 3 = deleting.
+  // Arms down automatically after 4s of hesitation.
+  const [delClicks, setDelClicks] = useState(0);
   const lib = useLucide();
+  useEffect(() => {
+    if (!delClicks || delClicks >= 3) return;
+    const t = setTimeout(() => setDelClicks(0), 4000);
+    return () => clearTimeout(t);
+  }, [delClicks]);
+
+  const clickDelete = async () => {
+    if (!contentStore || !canDelete) return;
+    const n = delClicks + 1;
+    setDelClicks(n);
+    if (n < 3) return;
+    setBusy(true); setErr(null);
+    try {
+      await contentStore.deleteWiki(wikiId);
+      fetch('/api/revalidate', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ paths: ['/read', '/api/directory'] }) }).catch(() => {});
+      onDeleted?.();
+    } catch (e: any) { setErr(e?.message || String(e)); setDelClicks(0); }
+    setBusy(false);
+  };
 
   useEffect(() => {
     contentStore?.listCategories().then(setDbCats).catch(() => {});
@@ -266,6 +290,27 @@ export function WikiIdentity({ wikiId, wikiName, onClose, onSaved, genAsUser = f
             <span className="row-v" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12.5, color: 'var(--muted)' }}>viziwiki.com/read/{d.id}</span>
             <span className="locked" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 11.5, color: 'var(--dim)' }}><Ic d={I.lock} w={2} /> can’t change</span>
           </div></div>
+          {canDelete && (<>
+            <div className="rows-cap"><span>Danger</span><span className="line" /></div>
+            <div className="rows"><div className={`panel ${delClicks ? 'warn' : ''}`}>
+              <div className="panel-h">{delClicks > 0 && <Ic d={I.warn} w={2} />}
+                <div>
+                  <div className="panel-t">{delClicks === 0 ? 'Delete this wiki' : delClicks === 1 ? 'Really delete it?' : 'Last click erases it forever'}</div>
+                  <div className="panel-d">
+                    {delClicks === 0 && <>Erases {d.name} permanently — every page, its whole revision history, and its identity, everywhere it appears. <b>Not undoable.</b> Click three times to confirm.</>}
+                    {delClicks === 1 && <>All of {d.name}’s pages and history go with it. Two more clicks.</>}
+                    {delClicks >= 2 && <>There is no undo for this. One more click deletes {d.name}.</>}
+                  </div>
+                </div>
+              </div>
+              <div className="panel-acts">
+                {delClicks > 0 && <button className="btn2" onClick={() => setDelClicks(0)}>Keep it</button>}
+                <button className="btn2 danger" disabled={busy} onClick={clickDelete}>
+                  {busy ? 'deleting…' : delClicks === 0 ? 'Delete wiki' : delClicks === 1 ? 'Click again (2 of 3)' : 'Click to erase (3 of 3)'}
+                </button>
+              </div>
+            </div></div>
+          </>)}
           {err && <div className="in-under bad" style={{ marginTop: 14 }}><Ic d={I.warn} w={2} /> {err}</div>}
         </>)}
       </div></div>
