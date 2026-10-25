@@ -147,7 +147,7 @@ export default function Page() {
   // First entry per the owner: the wiki categorization tags (admin).
   const drawerMenu = realRole === 'admin' && contentStore ? [
     { label: 'Site Wiki Tags', hint: 'the categories every wiki is filed under', onClick: () => setManagingTags(true) },
-    { label: 'New wiki', hint: 'originate a wiki', onClick: () => setOriginating(true) },
+    { label: '+ Create wiki', hint: 'originate a new wiki', onClick: () => setOriginating(true) },
   ] : [];
 
   const account = (
@@ -167,7 +167,7 @@ export default function Page() {
 
   return (
     <>
-      <Topbar wikis={shownWikis} current={wiki || undefined} onSwitch={(w) => { setEditing(null); setWikiId(w.id); }} onNewWiki={realRole === 'admin' ? () => setOriginating(true) : undefined} onEditIdentity={canEditIdentity ? () => setEditingIdentity(true) : undefined} menu={drawerMenu} account={account} />
+      <Topbar wikis={shownWikis} current={wiki || undefined} onSwitch={(w) => { setEditing(null); setWikiId(w.id); }} onEditIdentity={canEditIdentity ? () => setEditingIdentity(true) : undefined} menu={drawerMenu} account={account} />
       {originating && <OriginateWiki existingIds={allWikis.map((w) => w.id)} onClose={() => setOriginating(false)} onCreated={onOriginated} genAsUser={realRole === 'admin' && viewAs !== 'me'} />}
       {managingTags && <ManageCategories onClose={() => setManagingTags(false)}
         onGotoWiki={(id) => { setManagingTags(false); setEditing(null); setWikiId(id); setEditingIdentity(true); }} />}
