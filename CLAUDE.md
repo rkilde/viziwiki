@@ -624,6 +624,17 @@ own Liquid includes + canon CSS, then layers editing chrome — the derived rend
     identity text on top — the bespoke pattern, data-driven); reader
     covers fall back to themed. No migration (jsonb). Guard: case 25
     (426 total).
+- **SOFT-DELETE FOR WIKIS (deferred — owner-requested, Oct 2026).** In-app
+  undo for wiki deletion: a `deleted_at` stamp instead of the current hard
+  cascade — hides the wiki everywhere (dashboard grant filter, /read, the
+  directory feed, browse), restorable from an admin "recently deleted"
+  surface, purged permanently after 30 days. ~An hour of work: one nullable
+  column + `where deleted_at is null` in listWikis/the feed/the readers +
+  restore/purge store methods; the existing triple-click Danger flow then
+  soft-deletes, and the purge can be a scheduled job or purge-on-open.
+  Until then the hard delete stands (admin-only, triple-click, cascades
+  pages + sections + revision history; recovery only via DB backups —
+  Supabase Pro daily backups are on the launch list).
 - **READER ON THE MAIN DOMAIN (deferred — owner-requested, Oct 2026).** The
   owner wants DB-native wikis at `viziwiki.com/the-renaissance`-style URLs
   instead of `vizwiki.vercel.app/read/<id>`. Config-level, two tiers:
